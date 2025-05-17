@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { companies } from '../data/companies';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 export default function BrandsDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +29,7 @@ export default function BrandsDropdown() {
     return (
       <div className="relative">
         <button className="text-gray-700 px-3 py-2 rounded-md hover:bg-gray-50 flex items-center">
-          Our Brands
+          Our Partner Brands
           <svg
             className="ml-2 h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
@@ -52,35 +53,34 @@ export default function BrandsDropdown() {
         onClick={() => setIsOpen(!isOpen)}
         className="text-gray-700 px-3 py-2 rounded-md hover:bg-gray-50 flex items-center"
       >
-        Our Brands
-        <svg
+        Our Partner Brands
+        <ChevronDownIcon
           className={`ml-2 h-5 w-5 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
+          aria-hidden="true"
+        />
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-          <div className="py-1" role="menu" aria-orientation="vertical">
-            {companies.map((company) => (
-              <Link
-                key={company.id}
-                href={`/companies/${company.slug}`}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                role="menuitem"
-                onClick={() => setIsOpen(false)}
-              >
-                {company.name}
-              </Link>
-            ))}
+        <div className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
+          <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+            <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+              <div className="-m-3">
+                <h3 className="text-base font-medium text-gray-900">Our Partner Brands</h3>
+                <div className="mt-2 space-y-2">
+                  {companies.map((company) => (
+                    <Link
+                      key={company.id}
+                      href={`/companies/${company.slug}`}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      role="menuitem"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {company.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}

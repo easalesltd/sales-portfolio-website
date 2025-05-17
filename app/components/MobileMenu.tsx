@@ -107,8 +107,8 @@ export default function MobileMenu() {
               </Link>
               
               {/* Brands Section */}
-              <div className="py-4">
-                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Our Brands</h3>
+              <div className="py-6">
+                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Our Partner Brands</h3>
                 <div className="space-y-3">
                   {companies.map((company) => (
                     <Link

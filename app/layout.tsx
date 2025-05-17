@@ -41,7 +41,7 @@ const BrandsDropdown = dynamic(() => import('./components/BrandsDropdown'), {
   ssr: true,
   loading: () => (
     <div className="text-gray-700 px-3 py-2 rounded-md hover:bg-gray-50 flex items-center animate-pulse">
-      Our Brands
+      Our Partner Brands
       <svg className="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
       </svg>
@@ -137,6 +137,7 @@ export default function RootLayout({
         <meta name="ICBM" content="52.2333, 0.7167" />
         <meta name="distribution" content="UK" />
         <meta name="coverage" content="Suffolk, Norfolk, Essex, Cambridgeshire" />
+        <meta name="description" content="East Anglian Sales LTD - Our Partner Brands" />
         <Script
           id="schema-org"
           type="application/ld+json"
