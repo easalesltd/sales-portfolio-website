@@ -1,0 +1,91 @@
+'use client';
+
+import Image from "next/image";
+import Link from "next/link";
+import { companies } from "./data/companies";
+import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
+import RequestVisitForm from "./components/RequestVisitForm";
+import { useState } from "react";
+
+export default function Home() {
+  const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+
+  return (
+    <main className="min-h-screen">
+      {/* Hero Section */}
+      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full">
+        {/* Showcase Section */}
+        <div className="w-full h-full relative">
+          <ShowcaseSlideshow />
+        </div>
+      </div>
+
+      {/* About Section */}
+      <div className="bg-white py-20">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-lg text-gray-700 mb-6">
+            EA Sales represents quality brands supplying greeting cards, stationery, gift wrapping, gift bags, toys, homeware and gifts. Working with independent retailers, visitor centres, museums, farm shops, garden centres and more. We offer a huge selection of classic and on-trend designs plus free of charge display solutions.
+          </p>
+          <p className="text-lg text-gray-700 mb-8">
+            We cover Essex, Suffolk, Norfolk and Cambridgeshire and are a leading sales agency within our market. If you would like to stock our brands please get in touch.
+          </p>
+          <div className="flex justify-center gap-6">
+            <button
+              onClick={() => setIsRequestFormOpen(true)}
+              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Request an Agent Visit
+            </button>
+            <Link 
+              href="/about" 
+              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              About Us
+            </Link>
+            <Link 
+              href="/contact" 
+              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Get In Touch
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Brands Grid */}
+      <div className="bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">Our Brands</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {companies.map((company) => (
+              <Link 
+                key={company.id}
+                href={`/companies/${company.slug}`}
+                className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <div className="aspect-[3/2] relative">
+                  <Image
+                    src={company.logoUrl}
+                    alt={`${company.name} logo`}
+                    fill
+                    className="object-contain p-6 group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6 bg-white">
+                  <h3 className="text-xl font-semibold text-center">{company.name}</h3>
+                  <p className="text-gray-600 text-center mt-2">{company.description}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Request Visit Form Modal */}
+      <RequestVisitForm 
+        isOpen={isRequestFormOpen} 
+        onClose={() => setIsRequestFormOpen(false)} 
+      />
+    </main>
+  );
+}
