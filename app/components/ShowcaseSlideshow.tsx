@@ -8,14 +8,14 @@ const SLIDE_DURATION = 3500; // 3.5 seconds per slide (changed from 5 seconds)
 
 // Using only valid showcase images
 const showcaseImages = [
+  '/images/showcase/showcase1.jpeg',
+  '/images/showcase/showcase2.jpeg',
   '/images/showcase/1-1-25.jpeg',
   '/images/showcase/1-1-26.jpeg',
   '/images/showcase/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
-  '/images/showcase/showcase1.jpeg',
   '/images/showcase/showcase3.jpeg',
   '/images/showcase/showcase4.jpeg',
   '/images/showcase/showcase6.jpeg',
-  '/images/showcase/showcase8.jpeg',
   '/images/showcase/showcase9.jpeg',
   '/images/showcase/showcase13.jpeg'
 ];
