@@ -54,7 +54,7 @@ export default function Home() {
       </div>
 
       {/* Brands Grid */}
-      <div id="partner-brands" className="relative">
+      <div id="partner-brands" className="relative min-h-screen">
         <VideoBackground videoUrl="/videos/brands-background.mp4">
           <div className="py-20">
             <div className="max-w-7xl mx-auto px-4">

@@ -6,18 +6,29 @@ import Image from 'next/image';
 const TRANSITION_DURATION = 800; // 0.8 second for a smoother fade transition
 const SLIDE_DURATION = 5000; // 5 seconds per slide for better viewing
 
-// Using only valid showcase images
+// Using all available showcase images
 const showcaseImages = [
   '/images/showcase/showcase1.jpeg',
   '/images/showcase/showcase2.jpeg',
-  '/images/showcase/1-1-25.jpeg',
-  '/images/showcase/1-1-26.jpeg',
-  '/images/showcase/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
   '/images/showcase/showcase3.jpeg',
   '/images/showcase/showcase4.jpeg',
   '/images/showcase/showcase6.jpeg',
   '/images/showcase/showcase9.jpeg',
-  '/images/showcase/showcase13.jpeg'
+  '/images/showcase/showcase13.jpeg',
+  '/images/showcase/1-1-25.jpeg',
+  '/images/showcase/1-1-26.jpeg',
+  '/images/showcase/bd66610d-a7c2-4835-9657-9e4248cf7400.jpeg',
+  '/images/showcase/1066f4f9-50ba-4dfb-8f5d-703151fd119e.jpeg',
+  '/images/showcase/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
+  '/images/showcase/4003f792-f399-4cc5-8802-e2bfcd93c330.jpeg',
+  '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg',
+  '/images/showcase/901d0ddb-3e10-4a3d-aeee-c2d207eba557.jpeg',
+  '/images/showcase/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
+  '/images/showcase/PGA_Gift_Set_Web_Banner_2bb5540a-8eb3-446a-9bf0-53b3250f4c37.jpeg',
+  '/images/showcase/Screenshot 2025-05-18 at 09.18.44.png',
+  '/images/showcase/Screenshot 2025-05-18 at 09.18.13.png',
+  '/images/showcase/Screenshot 2025-05-18 at 09.18.07.png',
+  '/images/showcase/Screenshot 2025-05-18 at 09.16.46.png'
 ];
 
 export default function ShowcaseSlideshow() {
@@ -25,8 +36,26 @@ export default function ShowcaseSlideshow() {
   const [nextIndex, setNextIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [imageError, setImageError] = useState<boolean[]>(new Array(showcaseImages.length).fill(false));
+  const [shuffledImages, setShuffledImages] = useState<string[]>([]);
+
+  // Function to shuffle array using Fisher-Yates algorithm
+  const shuffleArray = (array: string[]) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Initialize shuffled images on component mount
+  useEffect(() => {
+    setShuffledImages(shuffleArray(showcaseImages));
+  }, []);
 
   useEffect(() => {
+    if (shuffledImages.length === 0) return;
+
     const timer = setInterval(() => {
       // Start transition
       setIsTransitioning(true);
@@ -34,14 +63,14 @@ export default function ShowcaseSlideshow() {
       // After transition duration, update indices
       setTimeout(() => {
         setCurrentIndex(nextIndex);
-        setNextIndex((nextIndex + 1) % showcaseImages.length);
+        setNextIndex((nextIndex + 1) % shuffledImages.length);
         setIsTransitioning(false);
       }, TRANSITION_DURATION);
       
     }, SLIDE_DURATION);
 
     return () => clearInterval(timer);
-  }, [nextIndex]);
+  }, [nextIndex, shuffledImages]);
 
   const handleImageError = (index: number) => {
     setImageError(prev => {
@@ -62,6 +91,17 @@ export default function ShowcaseSlideshow() {
     );
   }
 
+  // If shuffled images are not ready yet
+  if (shuffledImages.length === 0) {
+    return (
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-gray-900">
+        <div className="flex items-center justify-center h-full text-white text-lg">
+          Preparing showcase images...
+        </div>
+      </div>
+    );
+  }
+
   const goToSlide = (index: number) => {
     if (index === currentIndex) return;
     setIsTransitioning(true);
@@ -77,7 +117,7 @@ export default function ShowcaseSlideshow() {
         }`}
       >
         <Image
-          src={showcaseImages[currentIndex]}
+          src={shuffledImages[currentIndex]}
           alt={`Showcase image ${currentIndex + 1}`}
           fill
           className="object-cover transform scale-[1.02] transition-transform duration-[10000ms] ease-linear"
@@ -95,7 +135,7 @@ export default function ShowcaseSlideshow() {
         }`}
       >
         <Image
-          src={showcaseImages[nextIndex]}
+          src={shuffledImages[nextIndex]}
           alt={`Showcase image ${nextIndex + 1}`}
           fill
           className="object-cover transform scale-[1.02] transition-transform duration-[10000ms] ease-linear"
@@ -108,7 +148,7 @@ export default function ShowcaseSlideshow() {
 
       {/* Navigation Dots */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3 z-10">
-        {showcaseImages.map((_, index) => (
+        {shuffledImages.map((_, index) => (
           !imageError[index] && (
             <button
               key={index}

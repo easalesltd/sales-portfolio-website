@@ -10,37 +10,78 @@ interface VideoBackgroundProps {
 export default function VideoBackground({ videoUrl, children }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      // Initial setup
+      video.muted = true;
+      video.playsInline = true;
+      video.load();
+      video.pause();
+    }
+
     const observer = new IntersectionObserver(
-      ([entry]) => {
+      (entries) => {
+        const [entry] = entries;
         setIsVisible(entry.isIntersecting);
-        if (entry.isIntersecting && videoRef.current) {
-          videoRef.current.play().catch(() => {
-            console.log('Video autoplay failed - this is expected on some browsers');
-          });
+        
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (entry.isIntersecting) {
+          // When section becomes visible
+          const playVideo = async () => {
+            try {
+              video.currentTime = 0;
+              await video.play();
+            } catch (error) {
+              console.log('Playback failed, trying with muted...', error);
+              video.muted = true;
+              try {
+                await video.play();
+              } catch (secondError) {
+                console.log('Muted playback failed, waiting for interaction...', secondError);
+                const playOnTouch = async () => {
+                  try {
+                    await video.play();
+                    document.removeEventListener('touchstart', playOnTouch);
+                  } catch (e) {
+                    console.log('Touch playback failed:', e);
+                  }
+                };
+                document.addEventListener('touchstart', playOnTouch, { once: true });
+              }
+            }
+          };
+          playVideo();
+        } else {
+          // When section is not visible
+          video.pause();
+          video.currentTime = 0;
         }
       },
       {
-        threshold: 0.2,
-        rootMargin: '-50px',
+        threshold: [0.1, 0.5], // Trigger at both 10% and 50% visibility
+        rootMargin: '0px',
       }
     );
 
-    const currentVideo = videoRef.current;
-    if (currentVideo) {
-      observer.observe(currentVideo);
+    const currentContainer = containerRef.current;
+    if (currentContainer) {
+      observer.observe(currentContainer);
     }
 
     return () => {
-      if (currentVideo) {
-        observer.unobserve(currentVideo);
+      if (currentContainer) {
+        observer.unobserve(currentContainer);
       }
     };
   }, []);
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="relative">
       {/* Video Background */}
       <div className="absolute inset-0 bg-white">
         <video
@@ -49,9 +90,12 @@ export default function VideoBackground({ videoUrl, children }: VideoBackgroundP
             isVisible ? 'opacity-30' : 'opacity-0'
           }`}
           muted
-          loop
           playsInline
-          preload="auto"
+          loop
+          preload="metadata"
+          x-webkit-airplay="deny"
+          disablePictureInPicture
+          controlsList="nodownload noplaybackrate"
         >
           <source src={videoUrl} type="video/mp4" />
         </video>
