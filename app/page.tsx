@@ -24,10 +24,10 @@ export default function Home() {
       <div className="bg-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-lg text-gray-700 mb-6">
-            EA Sales represents quality brands supplying greeting cards, stationery, gift wrapping, gift bags, toys, homeware and gifts. Working with independent retailers, visitor centres, museums, farm shops, garden centres and more. We offer a huge selection of classic and on-trend designs plus free of charge display solutions.
+            EA Sales represents quality brands supplying Greeting Cards, Stationery, Gift Wrapping, Gift Bags, Toys, Homeware and Gifts. Working with Independent Retailers, Visitor Centres, Museums, Farm Shops, Garden Centres and more. We offer a huge selection of classic and on-trend designs plus free of charge display solutions.
           </p>
           <p className="text-lg text-gray-700 mb-8">
-            We cover Essex, Suffolk, Norfolk and Cambridgeshire and are a leading sales agency within our market. If you would like to stock our brands please get in touch.
+            We cover Essex, Suffolk, Norfolk and Cambridgeshire and are a leading sales agency within our market. If you would like to stock our brands, Please get in touch.
           </p>
           <div className="flex justify-center gap-6">
             <button
