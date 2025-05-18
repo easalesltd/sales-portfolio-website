@@ -56,8 +56,7 @@ export default function ShowcaseSlideshow() {
   useEffect(() => {
     if (shuffledImages.length === 0) return;
 
-    const timer = setInterval(() => {
-      // Start transition
+    const transitionToNext = () => {
       setIsTransitioning(true);
       
       // After transition duration, update indices
@@ -66,11 +65,14 @@ export default function ShowcaseSlideshow() {
         setNextIndex((nextIndex + 1) % shuffledImages.length);
         setIsTransitioning(false);
       }, TRANSITION_DURATION);
-      
-    }, SLIDE_DURATION);
+    };
 
-    return () => clearInterval(timer);
-  }, [nextIndex, shuffledImages]);
+    const timer = setInterval(transitionToNext, SLIDE_DURATION);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [nextIndex, shuffledImages.length]);
 
   const handleImageError = (index: number) => {
     setImageError(prev => {
@@ -120,7 +122,7 @@ export default function ShowcaseSlideshow() {
           src={shuffledImages[currentIndex]}
           alt={`Showcase image ${currentIndex + 1}`}
           fill
-          className="object-cover transform scale-[1.02] transition-transform duration-[10000ms] ease-linear"
+          className="object-cover"
           priority={currentIndex === 0}
           onError={() => handleImageError(currentIndex)}
           sizes="100vw"
@@ -138,7 +140,7 @@ export default function ShowcaseSlideshow() {
           src={shuffledImages[nextIndex]}
           alt={`Showcase image ${nextIndex + 1}`}
           fill
-          className="object-cover transform scale-[1.02] transition-transform duration-[10000ms] ease-linear"
+          className="object-cover"
           priority
           onError={() => handleImageError(nextIndex)}
           sizes="100vw"
