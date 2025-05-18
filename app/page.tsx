@@ -6,6 +6,7 @@ import { companies } from "./data/companies";
 import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
 import RequestVisitForm from "./components/RequestVisitForm";
 import { useState } from "react";
+import VideoBackground from "./components/VideoBackground";
 
 export default function Home() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
@@ -53,32 +54,36 @@ export default function Home() {
       </div>
 
       {/* Brands Grid */}
-      <div id="partner-brands" className="bg-gray-50 py-20">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Our Partner Brands</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {companies.map((company) => (
-              <Link 
-                key={company.id}
-                href={`/companies/${company.slug}`}
-                className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
-              >
-                <div className="aspect-[3/2] relative">
-                  <Image
-                    src={company.logoUrl}
-                    alt={`${company.name} logo`}
-                    fill
-                    className="object-contain p-6 group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div className="p-6 bg-white">
-                  <h3 className="text-xl font-semibold text-center">{company.name}</h3>
-                  <p className="text-gray-600 text-center mt-2">{company.description}</p>
-                </div>
-              </Link>
-            ))}
+      <div id="partner-brands" className="relative">
+        <VideoBackground videoUrl="/videos/brands-background.mp4">
+          <div className="py-20">
+            <div className="max-w-7xl mx-auto px-4">
+              <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Our Partner Brands</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {companies.map((company) => (
+                  <Link 
+                    key={company.id}
+                    href={`/companies/${company.slug}`}
+                    className="group block bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    <div className="aspect-[3/2] relative">
+                      <Image
+                        src={company.logoUrl}
+                        alt={`${company.name} logo`}
+                        fill
+                        className="object-contain p-6 group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="p-6 bg-white/90 backdrop-blur-sm">
+                      <h3 className="text-xl font-semibold text-center text-gray-900">{company.name}</h3>
+                      <p className="text-gray-700 text-center mt-2">{company.description}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        </VideoBackground>
       </div>
 
       {/* Request Visit Form Modal */}

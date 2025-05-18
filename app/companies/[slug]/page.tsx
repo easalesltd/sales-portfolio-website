@@ -248,27 +248,9 @@ export default async function CompanyPage({ params }: Props) {
 
   if (hasVideoBackground) {
     const videoPath = `/videos/companies/${params.slug}/background.mp4`;
-    const imagePath = `/images/companies/${params.slug}/background.jpg`;
-    const fallbackImagePath = `/images/companies/${params.slug}/background.png`;
-    
-    // Function to check if a file exists
-    const checkImageExists = async (path: string) => {
-      try {
-        const res = await fetch(path, { method: 'HEAD' });
-        return res.ok;
-      } catch {
-        return false;
-      }
-    };
-
-    // Use the first available image as fallback
-    const fallbackImage = await checkImageExists(imagePath) ? imagePath : fallbackImagePath;
     
     return (
-      <VideoBackground
-        videoUrl={videoPath}
-        fallbackImageUrl={fallbackImage}
-      >
+      <VideoBackground videoUrl={videoPath}>
         {content}
       </VideoBackground>
     );
