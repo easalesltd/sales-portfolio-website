@@ -25,6 +25,15 @@ export default function BrandsDropdown() {
     setMounted(true);
   }, []);
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Find the brands section and scroll to it
+    const brandsSection = document.querySelector('#partner-brands');
+    if (brandsSection) {
+      brandsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   if (!mounted) {
     return (
       <div className="relative">
@@ -48,9 +57,14 @@ export default function BrandsDropdown() {
   }
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div 
+      className="relative" 
+      ref={dropdownRef}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleClick}
         className="text-gray-700 px-3 py-2 rounded-md hover:bg-gray-50 flex items-center"
       >
         Our Partner Brands
@@ -73,7 +87,6 @@ export default function BrandsDropdown() {
                       href={`/companies/${company.slug}`}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       role="menuitem"
-                      onClick={() => setIsOpen(false)}
                     >
                       {company.name}
                     </Link>
