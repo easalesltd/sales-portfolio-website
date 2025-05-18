@@ -24,10 +24,10 @@ export default function Home() {
       <div className="bg-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-lg text-gray-700 mb-6">
-            EA Sales represents quality brands supplying Greeting Cards, Stationery, Gift Wrapping, Gift Bags, Toys, Homeware and Gifts. Working with Independent Retailers, Visitor Centres, Museums, Farm Shops, Garden Centres and more. We offer a huge selection of classic and on-trend designs plus free of charge display solutions.
+            Welcome to EA Sales! We're your friendly supplier of quality Greeting Cards, Stationery, and Gifts across East Anglia. From charming Independent Shops to bustling Garden Centres, we help retailers create amazing displays that customers love.
           </p>
           <p className="text-lg text-gray-700 mb-8">
-            We cover Essex, Suffolk, Norfolk and Cambridgeshire and are a leading sales agency within our market. If you would like to stock our brands, Please get in touch.
+            Based in Suffolk and covering Norfolk, Essex, and Cambridgeshire, we're here to help your business grow. Ready to explore our brands? Let's chat!
           </p>
           <div className="flex justify-center gap-6">
             <button
