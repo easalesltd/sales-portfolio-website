@@ -50,45 +50,37 @@ const BrandsDropdown = dynamic(() => import('./components/BrandsDropdown'), {
 });
 
 export const metadata: Metadata = {
-  title: "East Anglian Sales LTD | Greeting Cards, Gifts & More in East Anglia",
-  description: "Leading supplier and wholesaler of greeting cards, gifts, candles, diffusers, and chocolate in East Anglia. Serving retailers in Suffolk, Norfolk, Essex, and Cambridgeshire. Specializing in sale or return Christmas cards.",
+  title: "East Anglian Sales LTD | Leading Wholesale Supplier in East Anglia",
+  description: "East Anglian Sales LTD - Your trusted local supplier of greeting cards, gifts, and display solutions in Suffolk, Norfolk, Essex, and Cambridgeshire. Family-run business with personal service.",
   icons: {
     icon: '/images/logo.svg.png?v=2',
     apple: '/images/logo.svg.png?v=2',
   },
   keywords: [
-    "greeting cards East Anglia",
-    "gifts Suffolk",
-    "candles Norfolk",
-    "diffusers Essex",
-    "chocolate supplier Cambridgeshire",
-    "sale or return Christmas cards",
-    "Christmas cards East Anglia",
-    "wholesale gifts Suffolk",
-    "gift supplier Norfolk",
-    "greeting card wholesaler Essex",
+    "East Anglian Sales LTD",
     "East Anglian Sales",
-    "gift trade supplier",
-    "wholesale supplier East Anglia",
-    "wholesaler East Anglia",
-    "gift wholesaler Suffolk",
-    "greeting card wholesaler Norfolk",
-    "wholesale distributor East Anglia",
-    "gift trade wholesaler",
-    "greeting card spinners",
-    "card display spinners",
-    "rotating card displays",
-    "card display solutions",
-    "coin dispenser machines",
-    "£1 coin vending machines",
-    "card vending solutions",
-    "retail display equipment",
-    "card shop equipment",
-    "greeting card display units"
+    "EA Sales Ltd",
+    "Dave Langdon sales",
+    "greeting cards East Anglia",
+    "wholesale gifts Suffolk",
+    "card supplier Norfolk",
+    "gift wholesaler Essex",
+    "Cambridgeshire wholesale supplier",
+    "greeting card wholesaler East Anglia",
+    "display solutions East Anglia",
+    "local gift supplier Suffolk",
+    "card display solutions Norfolk",
+    "retail supplier Ipswich",
+    "East Anglian wholesale distributor",
+    "Suffolk sales agent",
+    "Norfolk trade supplier",
+    "Essex gift wholesaler",
+    "Cambridgeshire retail supplier",
+    "East Anglia business supplier"
   ],
   openGraph: {
-    title: "East Anglian Sales LTD | Greeting Cards & Gifts Wholesaler",
-    description: "Leading wholesaler and supplier of greeting cards, gifts, candles, diffusers, and chocolate in East Anglia. Serving retailers in Suffolk, Norfolk, Essex, and Cambridgeshire.",
+    title: "East Anglian Sales LTD | Your Local Wholesale Partner",
+    description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Personal service from Dave Langdon in Suffolk, Norfolk, Essex, and Cambridgeshire.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD"
@@ -144,11 +136,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
+              "@type": ["Organization", "LocalBusiness"],
               "name": "East Anglian Sales LTD",
-              "description": "Leading supplier and wholesaler of greeting cards, gifts, candles, diffusers, and chocolate in East Anglia.",
+              "alternateName": ["EA Sales", "East Anglian Sales"],
+              "description": "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia.",
               "url": "https://www.easalesltd.co.uk",
               "logo": "https://www.easalesltd.co.uk/images/logo.svg.png",
+              "image": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Office 2, Paragon House, 35 Lower Brook Street",
@@ -157,28 +151,45 @@ export default function RootLayout({
                 "postalCode": "IP4 1AQ",
                 "addressCountry": "GB"
               },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": "52.2333",
+                "longitude": "0.7167"
+              },
               "contactPoint": {
                 "@type": "ContactPoint",
                 "telephone": "07709197915",
                 "email": "dave@easalesltd.co.uk",
-                "contactType": "sales"
+                "contactType": "sales",
+                "areaServed": ["Suffolk", "Norfolk", "Essex", "Cambridgeshire"]
               },
               "sameAs": [
                 "https://www.instagram.com/eastangliansalesltd/",
                 "https://www.linkedin.com/company/east-anglian-sales-ltd"
               ],
               "areaServed": [
-                "Suffolk",
-                "Norfolk",
-                "Essex",
-                "Cambridgeshire"
+                {
+                  "@type": "GeoCircle",
+                  "geoMidpoint": {
+                    "@type": "GeoCoordinates",
+                    "latitude": "52.2333",
+                    "longitude": "0.7167"
+                  },
+                  "geoRadius": "100000"
+                }
               ],
+              "priceRange": "££",
               "vatID": "481 2602 07",
               "foundingDate": "2022",
               "founder": {
                 "@type": "Person",
-                "name": "Dave Langdon"
-              }
+                "name": "Dave Langdon",
+                "jobTitle": "Sales Agent",
+                "description": "Professional Sales Agent with over a decade of experience in East Anglia"
+              },
+              "openingHours": "Mo-Fr 09:00-17:00",
+              "paymentAccepted": ["Credit Card", "Debit Card", "Bank Transfer"],
+              "currenciesAccepted": "GBP"
             })
           }}
         />
