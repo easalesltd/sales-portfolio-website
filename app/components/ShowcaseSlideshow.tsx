@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-const TRANSITION_DURATION = 500; // 0.5 second for fade transition (reduced from 1 second)
-const SLIDE_DURATION = 3500; // 3.5 seconds per slide (changed from 5 seconds)
+const TRANSITION_DURATION = 800; // 0.8 second for a smoother fade transition
+const SLIDE_DURATION = 5000; // 5 seconds per slide for better viewing
 
 // Using only valid showcase images
 const showcaseImages = [
@@ -22,32 +22,26 @@ const showcaseImages = [
 
 export default function ShowcaseSlideshow() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [imageError, setImageError] = useState<boolean[]>(new Array(showcaseImages.length).fill(false));
 
   useEffect(() => {
     const timer = setInterval(() => {
+      // Start transition
       setIsTransitioning(true);
       
-      // Wait for fade out
+      // After transition duration, update indices
       setTimeout(() => {
-        setCurrentIndex((prevIndex) => {
-          // Find next valid image
-          let nextIndex = (prevIndex + 1) % showcaseImages.length;
-          let attempts = 0;
-          while (imageError[nextIndex] && attempts < showcaseImages.length) {
-            nextIndex = (nextIndex + 1) % showcaseImages.length;
-            attempts++;
-          }
-          return nextIndex;
-        });
+        setCurrentIndex(nextIndex);
+        setNextIndex((nextIndex + 1) % showcaseImages.length);
         setIsTransitioning(false);
       }, TRANSITION_DURATION);
       
     }, SLIDE_DURATION);
 
     return () => clearInterval(timer);
-  }, [imageError]);
+  }, [nextIndex]);
 
   const handleImageError = (index: number) => {
     setImageError(prev => {
@@ -68,11 +62,17 @@ export default function ShowcaseSlideshow() {
     );
   }
 
+  const goToSlide = (index: number) => {
+    if (index === currentIndex) return;
+    setIsTransitioning(true);
+    setNextIndex(index);
+  };
+
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       {/* Current Image */}
       <div 
-        className={`absolute inset-0 transition-opacity duration-500 ${
+        className={`absolute inset-0 transition-opacity duration-800 ease-in-out ${
           isTransitioning ? 'opacity-0' : 'opacity-100'
         }`}
       >
@@ -80,31 +80,43 @@ export default function ShowcaseSlideshow() {
           src={showcaseImages[currentIndex]}
           alt={`Showcase image ${currentIndex + 1}`}
           fill
-          className="object-cover"
+          className="object-cover transform scale-[1.02] transition-transform duration-[10000ms] ease-linear"
           priority={currentIndex === 0}
           onError={() => handleImageError(currentIndex)}
           sizes="100vw"
-          quality={85}
+          quality={90}
+        />
+      </div>
+
+      {/* Next Image (for smooth transition) */}
+      <div 
+        className={`absolute inset-0 transition-opacity duration-800 ease-in-out ${
+          isTransitioning ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <Image
+          src={showcaseImages[nextIndex]}
+          alt={`Showcase image ${nextIndex + 1}`}
+          fill
+          className="object-cover transform scale-[1.02] transition-transform duration-[10000ms] ease-linear"
+          priority
+          onError={() => handleImageError(nextIndex)}
+          sizes="100vw"
+          quality={90}
         />
       </div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3 z-10">
         {showcaseImages.map((_, index) => (
           !imageError[index] && (
             <button
               key={index}
-              onClick={() => {
-                setIsTransitioning(true);
-                setTimeout(() => {
-                  setCurrentIndex(index);
-                  setIsTransitioning(false);
-                }, TRANSITION_DURATION);
-              }}
-              className={`w-2 h-2 rounded-full transition-all duration-300 shadow-md ${
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-500 ${
                 currentIndex === index
-                  ? 'bg-blue-600 w-4'
-                  : 'bg-gray-200 hover:bg-blue-400'
+                  ? 'bg-white w-6 shadow-lg'
+                  : 'bg-white/50 hover:bg-white/80'
               }`}
               aria-label={`Go to image ${index + 1}`}
             />
