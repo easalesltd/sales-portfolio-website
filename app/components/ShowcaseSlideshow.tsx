@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-const TRANSITION_DURATION = 800; // 0.8 second for a smoother fade transition
+const TRANSITION_DURATION = 1000; // 1 second for a smoother fade transition
 const SLIDE_DURATION = 5000; // 5 seconds per slide for better viewing
 
 // Using all available showcase images
@@ -56,23 +56,18 @@ export default function ShowcaseSlideshow() {
   useEffect(() => {
     if (shuffledImages.length === 0) return;
 
-    const transitionToNext = () => {
+    const timer = setInterval(() => {
+      setNextIndex((currentIndex + 1) % shuffledImages.length);
       setIsTransitioning(true);
-      
-      // After transition duration, update indices
+
       setTimeout(() => {
-        setCurrentIndex(nextIndex);
-        setNextIndex((nextIndex + 1) % shuffledImages.length);
+        setCurrentIndex((currentIndex + 1) % shuffledImages.length);
         setIsTransitioning(false);
       }, TRANSITION_DURATION);
-    };
+    }, SLIDE_DURATION);
 
-    const timer = setInterval(transitionToNext, SLIDE_DURATION);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [nextIndex, shuffledImages.length]);
+    return () => clearInterval(timer);
+  }, [currentIndex, shuffledImages.length]);
 
   const handleImageError = (index: number) => {
     setImageError(prev => {
@@ -106,46 +101,51 @@ export default function ShowcaseSlideshow() {
 
   const goToSlide = (index: number) => {
     if (index === currentIndex) return;
-    setIsTransitioning(true);
     setNextIndex(index);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentIndex(index);
+      setIsTransitioning(false);
+    }, TRANSITION_DURATION);
   };
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
-      {/* Current Image */}
-      <div 
-        className={`absolute inset-0 transition-opacity duration-800 ease-in-out ${
-          isTransitioning ? 'opacity-0' : 'opacity-100'
-        }`}
-      >
-        <Image
-          src={shuffledImages[currentIndex]}
-          alt={`Showcase image ${currentIndex + 1}`}
-          fill
-          className="object-cover"
-          priority={currentIndex === 0}
-          onError={() => handleImageError(currentIndex)}
-          sizes="100vw"
-          quality={90}
-        />
-      </div>
+      {/* Images Container */}
+      <div className="relative w-full h-full">
+        {/* Current Image */}
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={{ opacity: isTransitioning ? 0 : 1, transition: `opacity ${TRANSITION_DURATION}ms ease-in-out` }}
+        >
+          <Image
+            src={shuffledImages[currentIndex]}
+            alt={`Showcase image ${currentIndex + 1}`}
+            fill
+            className="object-cover"
+            priority={currentIndex === 0}
+            onError={() => handleImageError(currentIndex)}
+            sizes="100vw"
+            quality={90}
+          />
+        </div>
 
-      {/* Next Image (for smooth transition) */}
-      <div 
-        className={`absolute inset-0 transition-opacity duration-800 ease-in-out ${
-          isTransitioning ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <Image
-          src={shuffledImages[nextIndex]}
-          alt={`Showcase image ${nextIndex + 1}`}
-          fill
-          className="object-cover"
-          priority
-          onError={() => handleImageError(nextIndex)}
-          sizes="100vw"
-          quality={90}
-        />
+        {/* Next Image */}
+        <div 
+          className="absolute inset-0 w-full h-full"
+          style={{ opacity: isTransitioning ? 1 : 0, transition: `opacity ${TRANSITION_DURATION}ms ease-in-out` }}
+        >
+          <Image
+            src={shuffledImages[nextIndex]}
+            alt={`Showcase image ${nextIndex + 1}`}
+            fill
+            className="object-cover"
+            priority
+            onError={() => handleImageError(nextIndex)}
+            sizes="100vw"
+            quality={90}
+          />
+        </div>
       </div>
 
       {/* Navigation Dots */}
