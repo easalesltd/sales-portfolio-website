@@ -6,6 +6,8 @@ import { FaEnvelope, FaInstagram, FaLinkedin, FaPhone } from 'react-icons/fa';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { companies, type Company } from './data/companies';
+import Breadcrumbs from './components/Breadcrumbs';
 
 // Optimize font loading
 const inter = Inter({ 
@@ -149,63 +151,105 @@ export default function RootLayout({
           id="schema-org"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": ["Organization", "LocalBusiness"],
-              "name": "East Anglian Sales LTD",
-              "alternateName": ["EA Sales", "East Anglian Sales"],
-              "description": "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia.",
-              "url": "https://www.easalesltd.co.uk",
-              "logo": "https://www.easalesltd.co.uk/images/logo.svg.png",
-              "image": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "Office 2, Paragon House, 35 Lower Brook Street",
-                "addressLocality": "Ipswich",
-                "addressRegion": "Suffolk",
-                "postalCode": "IP4 1AQ",
-                "addressCountry": "GB"
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": "52.2333",
-                "longitude": "0.7167"
-              },
-              "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "07709197915",
-                "email": "dave@easalesltd.co.uk",
-                "contactType": "sales",
-                "areaServed": ["Suffolk", "Norfolk", "Essex", "Cambridgeshire"]
-              },
-              "sameAs": [
-                "https://www.instagram.com/eastangliansalesltd/",
-                "https://www.linkedin.com/company/east-anglian-sales-ltd"
-              ],
-              "areaServed": [
-                {
-                  "@type": "GeoCircle",
-                  "geoMidpoint": {
-                    "@type": "GeoCoordinates",
-                    "latitude": "52.2333",
-                    "longitude": "0.7167"
-                  },
-                  "geoRadius": "100000"
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": ["Organization", "LocalBusiness"],
+                "@id": "https://www.easalesltd.co.uk/#organization",
+                "name": "East Anglian Sales LTD",
+                "alternateName": ["EA Sales", "East Anglian Sales"],
+                "description": "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia.",
+                "url": "https://www.easalesltd.co.uk",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://www.easalesltd.co.uk/images/logo.svg.png",
+                  "width": "100",
+                  "height": "67"
+                },
+                "image": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "Office 2, Paragon House, 35 Lower Brook Street",
+                  "addressLocality": "Ipswich",
+                  "addressRegion": "Suffolk",
+                  "postalCode": "IP4 1AQ",
+                  "addressCountry": "GB"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": "52.2333",
+                  "longitude": "0.7167"
+                },
+                "contactPoint": [
+                  {
+                    "@type": "ContactPoint",
+                    "telephone": "07709197915",
+                    "email": "dave@easalesltd.co.uk",
+                    "contactType": "sales",
+                    "areaServed": ["Suffolk", "Norfolk", "Essex", "Cambridgeshire"],
+                    "availableLanguage": "English"
+                  }
+                ],
+                "sameAs": [
+                  "https://www.instagram.com/eastangliansalesltd/",
+                  "https://www.linkedin.com/company/east-anglian-sales-ltd"
+                ],
+                "areaServed": [
+                  {
+                    "@type": "GeoCircle",
+                    "geoMidpoint": {
+                      "@type": "GeoCoordinates",
+                      "latitude": "52.2333",
+                      "longitude": "0.7167"
+                    },
+                    "geoRadius": "100000"
+                  }
+                ],
+                "priceRange": "££",
+                "vatID": "481 2602 07",
+                "foundingDate": "2022",
+                "founder": {
+                  "@type": "Person",
+                  "name": "Dave Langdon",
+                  "jobTitle": "Sales Agent",
+                  "description": "Professional Sales Agent with over a decade of experience in East Anglia"
+                },
+                "openingHours": "Mo-Fr 09:00-17:00",
+                "paymentAccepted": ["Credit Card", "Debit Card", "Bank Transfer"],
+                "currenciesAccepted": "GBP",
+                "hasOfferCatalog": {
+                  "@type": "OfferCatalog",
+                  "name": "Product Catalog",
+                  "itemListElement": [
+                    {
+                      "@type": "OfferCatalog",
+                      "name": "Greeting Cards",
+                      "itemListElement": companies.map((company: Company) => ({
+                        "@type": "Offer",
+                        "itemOffered": {
+                          "@type": "Product",
+                          "name": company.name,
+                          "description": company.description,
+                          "url": `https://www.easalesltd.co.uk/companies/${company.slug}`
+                        }
+                      }))
+                    }
+                  ]
                 }
-              ],
-              "priceRange": "££",
-              "vatID": "481 2602 07",
-              "foundingDate": "2022",
-              "founder": {
-                "@type": "Person",
-                "name": "Dave Langdon",
-                "jobTitle": "Sales Agent",
-                "description": "Professional Sales Agent with over a decade of experience in East Anglia"
               },
-              "openingHours": "Mo-Fr 09:00-17:00",
-              "paymentAccepted": ["Credit Card", "Debit Card", "Bank Transfer"],
-              "currenciesAccepted": "GBP"
-            })
+              {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://www.easalesltd.co.uk"
+                  }
+                ]
+              }
+            ])
           }}
         />
       </head>
@@ -238,7 +282,7 @@ export default function RootLayout({
             </div>
           </nav>
         </header>
-
+        <Breadcrumbs />
         <main className="pt-16 min-h-screen bg-white">
           {children}
         </main>
