@@ -19,12 +19,12 @@ export default function AboutPage() {
           <div className="prose prose-lg mx-auto">
             <div className="bg-blue-50 rounded-xl p-8 mb-12 shadow-lg">
               <p className="text-xl text-gray-700 italic">
-                "Hi, I'm Dave, a Sales Agent based in Ipswich, Suffolk. I've been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant Brands with brilliant Retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
+                "Hi, I'm Dave, a Sales Agent based in Ipswich, Suffolk. I've been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
               </p>
             </div>
             
             <p className="text-lg text-gray-700 mb-6">
-              East Anglian Sales LTD was established in 2022, but our experience in the industry spans much further. We've built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, understanding their unique needs and helping them succeed.
+              East Anglian Sales Ltd was established in 2022, but our experience in the industry spans much further. We've built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, understanding their unique needs and helping them succeed.
             </p>
             
             <p className="text-lg text-gray-700 mb-6">
