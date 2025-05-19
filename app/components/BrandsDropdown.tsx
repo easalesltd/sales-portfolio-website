@@ -4,11 +4,14 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { companies } from '../data/companies';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { useRouter, usePathname } from 'next/navigation';
 
 export default function BrandsDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -27,10 +30,15 @@ export default function BrandsDropdown() {
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Find the brands section and scroll to it
-    const brandsSection = document.querySelector('#partner-brands');
-    if (brandsSection) {
-      brandsSection.scrollIntoView({ behavior: 'smooth' });
+    if (pathname === '/') {
+      // On homepage, scroll to section
+      const brandsSection = document.querySelector('#partner-brands');
+      if (brandsSection) {
+        brandsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // On other pages, navigate to homepage with hash
+      router.push('/#partner-brands');
     }
   };
 
