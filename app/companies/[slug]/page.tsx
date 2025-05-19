@@ -87,11 +87,11 @@ export default async function CompanyPage({ params }: Props) {
   ] : [];
 
   const davidFischoffImages = params.slug === 'david-fischoff' ? [
-    '/images/companies/david-fischoff/36.jpeg',
-    '/images/companies/david-fischoff/695.jpeg',
-    '/images/companies/david-fischoff/68.jpeg',
-    '/images/companies/david-fischoff/13.jpeg',
-    '/images/companies/david-fischoff/67.jpeg'
+    '/images/companies/david-fischhoff/36.jpeg',
+    '/images/companies/david-fischhoff/695.jpeg',
+    '/images/companies/david-fischhoff/68.jpeg',
+    '/images/companies/david-fischhoff/13.jpeg',
+    '/images/companies/david-fischhoff/67.jpeg'
   ] : [];
 
   const ohhDeerImages = params.slug === 'ohh-deer-wholesale' ? [

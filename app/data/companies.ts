@@ -23,7 +23,7 @@ export const companies: Company[] = [
     name: "David Fischhoff",
     slug: "david-fischhoff",
     description: "We are a family owned wholesale and import business specialising in artificial flowers, grave ornaments & memorial ornaments specialists.",
-    logoUrl: "/images/logos/david-fischhoff-placeholder.png",
+    logoUrl: "/images/companies/david-fischhoff/logo-transparent.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1MdQ96ZWv9rW2Ms3AqvYkrcx5WSJCaazW?usp=drive_link",
     websiteUrl: "https://www.davidfischhoff.co.uk"
   },
