@@ -86,7 +86,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/boxer-gifts/Untitled_550_550_px_4_.png'
   ] : [];
 
-  const davidFischoffImages = params.slug === 'david-fischoff' ? [
+  const davidFischhoffImages = params.slug === 'david-fischhoff' ? [
     '/images/companies/david-fischhoff/36.jpeg',
     '/images/companies/david-fischhoff/695.jpeg',
     '/images/companies/david-fischhoff/68.jpeg',
@@ -181,9 +181,9 @@ export default async function CompanyPage({ params }: Props) {
                     <ImageGallery images={boxerGiftsImages} interval={5000} />
                   </div>
                 )}
-                {params.slug === 'david-fischoff' && (
+                {params.slug === 'david-fischhoff' && (
                   <div className="mb-8">
-                    <ImageGallery images={davidFischoffImages} interval={5000} />
+                    <ImageGallery images={davidFischhoffImages} interval={5000} />
                   </div>
                 )}
                 {params.slug === 'ohh-deer-wholesale' && (
