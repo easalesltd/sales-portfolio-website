@@ -25,7 +25,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
 
   const [companies, setCompanies] = useState<Company[]>([
     { name: 'Boxer Gifts', checked: false },
-    { name: 'David Fischoff', checked: false },
+    { name: 'David Fischhoff', checked: false },
     { name: 'Emotional Rescue', checked: false },
     { name: 'Global Journey Gifts', checked: false },
     { name: 'Gnaw Chocolate', checked: false },

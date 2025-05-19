@@ -19,13 +19,13 @@ export const companies: Company[] = [
     websiteUrl: "https://www.boxergifts.com"
   },
   {
-    id: "david-fischoff",
-    name: "David Fischoff",
-    slug: "david-fischoff",
+    id: "david-fischhoff",
+    name: "David Fischhoff",
+    slug: "david-fischhoff",
     description: "We are a family owned wholesale and import business specialising in artificial flowers, grave ornaments & memorial ornaments specialists.",
-    logoUrl: "/images/logos/david-fischoff-placeholder.png",
+    logoUrl: "/images/logos/david-fischhoff-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1MdQ96ZWv9rW2Ms3AqvYkrcx5WSJCaazW?usp=drive_link",
-    websiteUrl: "https://www.davidfischoff.co.uk"
+    websiteUrl: "https://www.davidfischhoff.co.uk"
   },
   {
     id: "emotional-rescue",

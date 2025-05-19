@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
-import TurnstileWidget from '../../components/TurnstileWidget'
 
 interface OrderFormProps {
   companyName: string
@@ -25,7 +24,6 @@ export default function OrderForm({ companyName }: OrderFormProps) {
   const [orderLines, setOrderLines] = useState<OrderLine[]>([{ productCode: '', quantity: '' }])
   const [notes, setNotes] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     companyName: '',
     contactPerson: '',
@@ -64,12 +62,6 @@ export default function OrderForm({ companyName }: OrderFormProps) {
     e.preventDefault()
     setStatus('loading')
 
-    if (!turnstileToken) {
-      alert('Please wait for security verification to complete');
-      setStatus('idle');
-      return;
-    }
-
     // Filter out empty lines
     const filledLines = orderLines.filter(line => line.productCode.trim() !== '' && line.quantity.trim() !== '')
     
@@ -103,8 +95,7 @@ export default function OrderForm({ companyName }: OrderFormProps) {
           delivery_address: contactInfo.address,
           order_list: formattedOrderLines,
           notes: notes || 'No additional notes provided',
-          reply_to: contactInfo.emailAddress,
-          cf_turnstile_response: turnstileToken
+          reply_to: contactInfo.emailAddress
         },
         service_id: 'service_fvfxlgh',
         template_id: 'template_1sz03e8',
@@ -121,7 +112,6 @@ export default function OrderForm({ companyName }: OrderFormProps) {
       setStatus('success')
       setOrderLines([{ productCode: '', quantity: '' }])
       setNotes('')
-      setTurnstileToken(null)
       setContactInfo({
         companyName: '',
         contactPerson: '',
@@ -288,19 +278,9 @@ export default function OrderForm({ companyName }: OrderFormProps) {
         />
       </div>
 
-      <div className="mt-4">
-        <TurnstileWidget
-          onVerify={(token) => setTurnstileToken(token)}
-          onError={() => {
-            setStatus('error');
-            console.error('Turnstile verification failed');
-          }}
-        />
-      </div>
-
       <button
         type="submit"
-        disabled={status === 'loading' || !turnstileToken}
+        disabled={status === 'loading'}
         className="w-full rounded-md bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
       >
         {status === 'loading' ? 'Sending...' : 'Submit Order'}
