@@ -130,6 +130,7 @@ export default function RootLayout({
         <meta name="distribution" content="UK" />
         <meta name="coverage" content="Suffolk, Norfolk, Essex, Cambridgeshire" />
         <meta name="description" content="East Anglian Sales LTD - Our Partner Brands" />
+        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
         <Script
           id="schema-org"
           type="application/ld+json"
