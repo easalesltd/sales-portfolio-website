@@ -12,6 +12,7 @@ export default function BrandsDropdown() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const closeTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -68,8 +69,17 @@ export default function BrandsDropdown() {
     <div 
       className="relative" 
       ref={dropdownRef}
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
+      onMouseEnter={() => {
+        if (closeTimeout.current) {
+          clearTimeout(closeTimeout.current);
+        }
+        setIsOpen(true);
+      }}
+      onMouseLeave={() => {
+        closeTimeout.current = setTimeout(() => {
+          setIsOpen(false);
+        }, 200); // 200ms delay
+      }}
     >
       <button
         onClick={handleClick}
