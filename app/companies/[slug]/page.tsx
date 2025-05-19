@@ -129,6 +129,16 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/mint-publishing/1-30.jpeg'
   ] : [];
 
+  const gnawChocolateImages = params.slug === 'gnaw-chocolate' ? [
+    '/images/companies/gnaw-chocolate/gnaw-milk-peppermint-chocolate-bar-002-gpn0005-1024x1024-72dpi.jpeg',
+    '/images/companies/gnaw-chocolate/GNAW-Popcorn_Peanut-Snack-Bar-GPN0028-CBG-02.jpeg',
+    '/images/companies/gnaw-chocolate/GNAW-Milk-Chocolate-Buttons-GPN0066-CBG-02.jpeg',
+    '/images/companies/gnaw-chocolate/GNAW-Easter-Egg-Chocolate-Curls-GPN0069.png',
+    '/images/companies/gnaw-chocolate/gnaw-mochamelt-salted-caramel-cbg-01.jpeg',
+    '/images/companies/gnaw-chocolate/gnaw-taste-adventure-hot-choc-spoon-gift-gpn0052-lfs-01.jpeg',
+    '/images/companies/gnaw-chocolate/GNAW-Caramel-Chocolate-Buttons-GPN0067-CBG-02.png'
+  ] : [];
+
   const content = (
     <div className="min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -205,6 +215,11 @@ export default async function CompanyPage({ params }: Props) {
                 {params.slug === 'mint-publishing' && (
                   <div className="mb-8">
                     <ImageGallery images={mintPublishingImages} interval={5000} />
+                  </div>
+                )}
+                {params.slug === 'gnaw-chocolate' && (
+                  <div className="mb-8">
+                    <ImageGallery images={gnawChocolateImages} interval={5000} />
                   </div>
                 )}
               </div>
