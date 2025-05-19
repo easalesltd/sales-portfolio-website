@@ -94,7 +94,15 @@ export const companies: Company[] = [
     id: "peppermint-grove",
     name: "Peppermint Grove",
     slug: "peppermint-grove",
-    description: "Luxury home fragrances and lifestyle products.",
+    description: `Welcome to Peppermint Grove Fragrances, it's really nice to meet you!
+
+Established over eight years ago, Peppermint Grove offers an expansive range of home fragrance and bath & body care. Our fragrances are designed and made using high quality ingredients at our in-house perfumery in the Southern Highlands of New South Wales, Australia. 
+
+Featuring highly polished, custom-designed faceted glassware, the candle and diffuser vessels add a hint of sophistication to any chosen space. Personalisation is at the forefront of gift giving for us, so we love that we can engrave your candles for free! 
+
+The luxe bath and body care range is lovingly handmade in the Southern Highlands and beautifully presented in our custom-designed bottles. Made with high-quality ingredients that leave your skin feeling nourished and wonderfully fragrant.
+
+The Peppermint Grove collection is made up of signature core fragrances as well as special limited editions from time to time.`,
     logoUrl: "/images/logos/peppermint-grove-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1QIbWuPgEMmHjMae7XnFlMvwX_Y_NSfJX?usp=drive_link",
     websiteUrl: "https://peppermintgroveaustralia.com"
