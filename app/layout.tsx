@@ -53,9 +53,23 @@ export const metadata: Metadata = {
   title: "East Anglian Sales LTD | Leading Wholesale Supplier in East Anglia",
   description: "East Anglian Sales LTD - Your trusted local supplier of greeting cards, gifts, and display solutions in Suffolk, Norfolk, Essex, and Cambridgeshire. Family-run business with personal service.",
   icons: {
-    icon: '/images/logo.svg.png?v=2',
-    apple: '/images/logo.svg.png?v=2',
+    icon: [
+      { url: '/images/logo.svg.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/logo.svg.png', sizes: '16x16', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/images/logo.svg.png', sizes: '180x180', type: 'image/png' }
+    ],
+    shortcut: '/images/logo.svg.png',
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/images/logo.svg.png',
+        color: '#000000'
+      }
+    ]
   },
+  manifest: '/site.webmanifest',
   keywords: [
     "East Anglian Sales LTD",
     "East Anglian Sales",
