@@ -2,6 +2,13 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
+import GoogleReviews from "../components/GoogleReviews";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About East Anglian Sales LTD | Your Local Wholesale Partner",
+  description: "Learn about East Anglian Sales LTD, your trusted wholesale supplier of greeting cards and gifts in East Anglia. Family-run business with personal service from Dave Langdon.",
+};
 
 export default function AboutPage() {
   const [imageError, setImageError] = useState<{[key: string]: boolean}>({});
@@ -94,6 +101,9 @@ export default function AboutPage() {
             />
           </div>
         </div>
+
+        {/* Add Google Reviews section */}
+        <GoogleReviews />
       </div>
     </div>
   );
