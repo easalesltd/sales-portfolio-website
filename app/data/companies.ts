@@ -58,7 +58,7 @@ export const companies: Company[] = [
     id: "mint-publishing",
     name: "Mint Publishing",
     slug: "mint-publishing",
-    description: `M!NT is your fully refreshed and refreshingly different publisher of (mostly funny) birthday, blank and captioned greetings cards.\n\nOur unique license, artists and designs stand out, raise a smile – and really sell. Our product is backed with great customer service, dependable distribution and can-do attitude.\n\nWe're also an independent family-owned and family-run business. That's why every customer matters and why we're not afraid to do things differently. We know what it takes!\n\nSo show your card displays some love and give your business a point of difference. Why not see what M!NT can do for you?\n\nWe're Refreshingly Different!`,
+    description: "M!NT is your fully refreshed and refreshingly different publisher of (mostly funny) birthday, blank and captioned greetings cards.",
     logoUrl: "/images/logos/MINT-PUBLISHING-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1oUU_899INjpAiD-gu9Zf2Vo9AEjLe-2y?usp=drive_link",
     websiteUrl: "https://www.mintpublishing.co.uk"
