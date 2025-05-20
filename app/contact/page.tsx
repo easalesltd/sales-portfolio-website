@@ -2,8 +2,12 @@
 
 import Link from 'next/link';
 import { FaEnvelope, FaInstagram, FaLinkedin, FaCalendarCheck, FaPhone } from 'react-icons/fa';
+import { useState } from 'react';
+import RequestVisitForm from '../components/RequestVisitForm';
 
 export default function ContactPage() {
+  const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+
   return (
     <div className="min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -11,15 +15,15 @@ export default function ContactPage() {
         
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="space-y-6">
-            {/* Request an Agent Visit Button (updated so that it opens a modal (or a form) (or navigates to a “/request-agent” (or “/request” or “/agent” or “/request-an-agent”) route) –– similar to the top navigation bar (for requesting an agent) */}
+            {/* Request an Agent Visit Button */}
             <div className="flex justify-center mb-8">
-              <Link
-                href="/request-agent"
+              <button
+                onClick={() => setIsRequestFormOpen(true)}
                 className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
               >
                 <FaCalendarCheck className="mr-2" />
                 Request an Agent Visit
-              </Link>
+              </button>
             </div>
 
             {/* Phone */}
@@ -72,6 +76,12 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+
+      {/* Request Visit Form Modal */}
+      <RequestVisitForm 
+        isOpen={isRequestFormOpen} 
+        onClose={() => setIsRequestFormOpen(false)} 
+      />
     </div>
   );
 } 
