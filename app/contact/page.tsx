@@ -11,15 +11,15 @@ export default function ContactPage() {
         
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="space-y-6">
-            {/* Request Visit Button */}
+            {/* Request an Agent Visit Button (updated so that it opens a modal (or a form) (or navigates to a “/request-agent” (or “/request” or “/agent” or “/request-an-agent”) route) –– similar to the top navigation bar (for requesting an agent) */}
             <div className="flex justify-center mb-8">
-              <a 
-                href="mailto:dave@easalesltd.co.uk?subject=Request%20a%20visit"
+              <Link
+                href="/request-agent"
                 className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
               >
                 <FaCalendarCheck className="mr-2" />
                 Request an Agent Visit
-              </a>
+              </Link>
             </div>
 
             {/* Phone */}
