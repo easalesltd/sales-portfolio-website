@@ -29,7 +29,8 @@ export default async function CompanyPage({ params }: Props) {
     'ohh-deer-wholesale',
     'boxer-gifts',
     'emotional-rescue',
-    'peppermint-grove'
+    'peppermint-grove',
+    'mint-publishing'
   ].includes(params.slug);
 
   const paperSaladImages = params.slug === 'paper-salad' ? [
