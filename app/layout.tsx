@@ -9,11 +9,13 @@ import Image from 'next/image';
 import { companies, type Company } from './data/companies';
 import Breadcrumbs from './components/Breadcrumbs';
 
-// Optimize font loading
+// Optimize font loading with display swap and preload
 const inter = Inter({ 
   subsets: ["latin"],
   display: 'swap',
-  preload: true
+  preload: true,
+  adjustFontFallback: true,
+  fallback: ['system-ui', 'arial']
 });
 
 // Import the components dynamically to avoid 'use client' conflicts
@@ -23,7 +25,7 @@ const ClientButton = dynamic(() => import('./components/ClientButton'), {
     <div className="px-4 py-2 bg-blue-600/50 text-white rounded-md animate-pulse">
       Request an Agent Visit
     </div>
-  ),
+  )
 });
 
 const MobileMenu = dynamic(() => import('./components/MobileMenu'), {
@@ -36,7 +38,7 @@ const MobileMenu = dynamic(() => import('./components/MobileMenu'), {
         </svg>
       </button>
     </div>
-  ),
+  )
 });
 
 const BrandsDropdown = dynamic(() => import('./components/BrandsDropdown'), {
@@ -48,15 +50,15 @@ const BrandsDropdown = dynamic(() => import('./components/BrandsDropdown'), {
         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
       </svg>
     </div>
-  ),
+  )
 });
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | East Anglian Sales LTD',
-    default: 'East Anglian Sales LTD | Wholesale Supplier in East Anglia',
+    template: '%s | East Anglian Sales LTD - Wholesale Cards & Gifts',
+    default: 'East Anglian Sales LTD | Wholesale Cards, Gifts & Display Solutions in East Anglia',
   },
-  description: 'Official wholesale supplier in East Anglia. We supply a wide range of products to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+  description: 'Leading wholesale supplier of greeting cards, gifts, and display solutions in East Anglia. Serving retailers across Suffolk, Norfolk, Essex, and Cambridgeshire with personal service from Dave Langdon.',
   icons: {
     icon: [
       { url: '/favicons/favicon.ico', sizes: 'any' },
@@ -106,7 +108,7 @@ export const metadata: Metadata = {
     "East Anglia business supplier"
   ],
   openGraph: {
-    title: "East Anglian Sales LTD | Your Local Wholesale Partner",
+    title: "East Anglian Sales LTD | Wholesale Cards, Gifts & Display Solutions",
     description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Personal service from Dave Langdon in Suffolk, Norfolk, Essex, and Cambridgeshire.",
     type: "website",
     locale: "en_GB",
@@ -150,13 +152,33 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Preload critical assets */}
+        <link
+          rel="preload"
+          href="/images/logo.svg.png"
+          as="image"
+          type="image/png"
+        />
+        <link
+          rel="preload"
+          href="/favicons/favicon.ico"
+          as="image"
+          type="image/x-icon"
+        />
+        
+        {/* Preconnect to external domains */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Geo and location meta tags */}
         <meta name="geo.region" content="GB-ENG" />
         <meta name="geo.placename" content="East Anglia" />
         <meta name="geo.position" content="52.2333;0.7167" />
         <meta name="ICBM" content="52.2333, 0.7167" />
         <meta name="distribution" content="UK" />
         <meta name="coverage" content="Suffolk, Norfolk, Essex, Cambridgeshire" />
-        <meta name="description" content="East Anglian Sales LTD - Our Partner Brands" />
+        
+        {/* Sitemap */}
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
         
         {/* Touch Icon and Web App Declarations */}
@@ -174,9 +196,11 @@ export default function RootLayout({
         <meta name="msapplication-TileImage" content="/favicons/msapplication-TileImage.png" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         
+        {/* Defer non-critical schema.org script */}
         <Script
           id="schema-org"
           type="application/ld+json"
+          strategy="worker"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
               {

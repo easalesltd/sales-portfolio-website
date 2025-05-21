@@ -1,8 +1,32 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact East Anglian Sales LTD | Wholesale Supplier in East Anglia",
-  description: "Get in touch with Dave Langdon at East Anglian Sales LTD. We supply greeting cards, gifts, and display solutions to retailers across Suffolk, Norfolk, Essex, and Cambridgeshire.",
+  title: "Contact East Anglian Sales LTD | Request a Visit from Your Local Agent",
+  description: "Get in touch with Dave Langdon, your local wholesale agent in East Anglia. Request a visit, discuss trade prices, or place an order for greeting cards, gifts, and display solutions across Suffolk, Norfolk, Essex, and Cambridgeshire.",
+  keywords: [
+    "contact East Anglian Sales",
+    "request agent visit",
+    "wholesale trade prices",
+    "local sales agent Suffolk",
+    "Norfolk wholesale contact",
+    "Essex gift supplier contact",
+    "Cambridgeshire retail supplier",
+    "wholesale order enquiry",
+    "trade account application",
+    "local agent visit",
+    "wholesale supplier contact",
+    "East Anglia sales agent",
+    "greeting cards wholesale contact",
+    "gift supplier enquiry",
+    "display solutions contact"
+  ],
+  openGraph: {
+    title: "Contact East Anglian Sales LTD | Request a Visit from Your Local Agent",
+    description: "Get in touch with Dave Langdon, your local wholesale agent in East Anglia. Request a visit, discuss trade prices, or place an order for greeting cards, gifts, and display solutions across Suffolk, Norfolk, Essex, and Cambridgeshire.",
+    type: "website",
+    locale: "en_GB",
+    siteName: "East Anglian Sales LTD"
+  },
   // Add Google Business Profile verification
   verification: {
     google: "YOUR_VERIFICATION_CODE", // You'll get this from Google Business Profile

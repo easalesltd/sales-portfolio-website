@@ -18,12 +18,6 @@ export default function Home() {
         {/* Showcase Section */}
         <div className="w-full h-full relative">
           <ShowcaseSlideshow />
-          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-            <div className="text-center text-white px-4">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4">East Anglian Sales LTD</h1>
-              <h2 className="text-xl md:text-2xl font-semibold mb-6">Your Trusted Wholesale Partner in East Anglia</h2>
-            </div>
-          </div>
         </div>
       </div>
 
