@@ -56,18 +56,33 @@ export const metadata: Metadata = {
   description: "East Anglian Sales LTD - Your trusted local supplier of greeting cards, gifts, and display solutions in Suffolk, Norfolk, Essex, and Cambridgeshire. Family-run business with personal service.",
   icons: {
     icon: [
-      { url: '/images/logo.svg.png', sizes: '32x32', type: 'image/png' },
-      { url: '/images/logo.svg.png', sizes: '16x16', type: 'image/png' }
+      { rel: 'icon', url: '/icons/favicon.ico', sizes: 'any' },
+      { rel: 'icon', url: '/icons/favicon.svg', type: 'image/svg+xml' },
+      { rel: 'apple-touch-icon', url: '/icons/apple-touch-icon.png' },
+      { rel: 'mask-icon', url: '/icons/safari-pinned-tab.svg', color: '#000000' }
     ],
+    shortcut: '/icons/favicon.ico',
     apple: [
-      { url: '/images/logo.svg.png', sizes: '180x180', type: 'image/png' }
+      { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
     ],
-    shortcut: '/images/logo.svg.png',
     other: [
       {
-        rel: 'mask-icon',
-        url: '/images/logo.svg.png',
-        color: '#000000'
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '96x96',
+        url: '/icons/favicon-96x96.png'
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '192x192',
+        url: '/icons/web-app-manifest-192x192.png'
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '512x512',
+        url: '/icons/web-app-manifest-512x512.png'
       }
     ]
   },
