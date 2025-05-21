@@ -52,39 +52,35 @@ const BrandsDropdown = dynamic(() => import('./components/BrandsDropdown'), {
 });
 
 export const metadata: Metadata = {
-  title: "East Anglian Sales LTD | Leading Wholesale Supplier in East Anglia",
-  description: "East Anglian Sales LTD - Your trusted local supplier of greeting cards, gifts, and display solutions in Suffolk, Norfolk, Essex, and Cambridgeshire. Family-run business with personal service.",
+  title: {
+    template: '%s | East Anglian Sales LTD',
+    default: 'East Anglian Sales LTD | Wholesale Supplier in East Anglia',
+  },
+  description: 'Official wholesale supplier in East Anglia. We supply a wide range of products to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
   icons: {
     icon: [
-      { rel: 'icon', url: '/icons/favicon.ico', sizes: 'any' },
-      { rel: 'icon', url: '/icons/favicon.svg', type: 'image/svg+xml' },
-      { rel: 'apple-touch-icon', url: '/icons/apple-touch-icon.png' },
-      { rel: 'mask-icon', url: '/icons/safari-pinned-tab.svg', color: '#000000' }
+      { url: '/favicons/favicon.ico', sizes: 'any' },
+      { url: '/favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicons/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
     ],
-    shortcut: '/icons/favicon.ico',
     apple: [
-      { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+      { url: '/favicons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     other: [
       {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '96x96',
-        url: '/icons/favicon-96x96.png'
+        rel: 'android-chrome-192x192',
+        url: '/favicons/android-chrome-192x192.png',
       },
       {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '192x192',
-        url: '/icons/web-app-manifest-192x192.png'
+        rel: 'android-chrome-512x512',
+        url: '/favicons/android-chrome-512x512.png',
       },
       {
-        rel: 'icon',
-        type: 'image/png',
-        sizes: '512x512',
-        url: '/icons/web-app-manifest-512x512.png'
-      }
-    ]
+        rel: 'msapplication-TileImage',
+        url: '/favicons/msapplication-TileImage.png',
+      },
+    ],
   },
   manifest: '/site.webmanifest',
   keywords: [
@@ -162,6 +158,22 @@ export default function RootLayout({
         <meta name="coverage" content="Suffolk, Norfolk, Essex, Cambridgeshire" />
         <meta name="description" content="East Anglian Sales LTD - Our Partner Brands" />
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+        
+        {/* Touch Icon and Web App Declarations */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="EA Sales" />
+        <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/favicons/favicon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="167x167" href="/favicons/favicon-167x167.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/favicons/favicon-120x120.png" />
+        <meta name="application-name" content="EA Sales" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="msapplication-TileImage" content="/favicons/msapplication-TileImage.png" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        
         <Script
           id="schema-org"
           type="application/ld+json"

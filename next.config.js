@@ -7,7 +7,13 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['www.easalesltd.co.uk'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.easalesltd.co.uk',
+        pathname: '/**',
+      },
+    ],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
