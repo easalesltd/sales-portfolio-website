@@ -15,13 +15,13 @@ export default function ContactPage() {
         
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="space-y-6">
-            {/* Request an Agent Visit Button */}
-            <div className="flex justify-center mb-8">
+            {/* Request an Agent Visit */}
+            <div className="flex items-center space-x-4">
+              <FaCalendarCheck className="text-2xl text-gray-600" />
               <button
                 onClick={() => setIsRequestFormOpen(true)}
-                className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
               >
-                <FaCalendarCheck className="mr-2" />
                 Request an Agent Visit
               </button>
             </div>

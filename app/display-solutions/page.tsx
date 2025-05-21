@@ -99,7 +99,8 @@ export default function DisplaySolutionsPage() {
   return (
     <div className="min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Display Solutions</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Display Solutions</h1>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">Professional Retail Display Solutions for Your Business</h2>
         
         <div className="mb-12">
           <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
@@ -110,7 +111,7 @@ export default function DisplaySolutionsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <DisplaySection 
-              title="Counter Displays (CDU)"
+              title="Counter Display Units (CDU)"
               description="Perfect for making the most of your counter space - these displays are great for catching your customer's eye right at the point of sale."
               images={cduImages}
               features={[
@@ -122,7 +123,7 @@ export default function DisplaySolutionsPage() {
             />
 
             <DisplaySection 
-              title="Floor Standing Units (FSDU)"
+              title="Floor Standing Display Units (FSDU)"
               description="Want to make a big impact? Our floor-standing displays are real attention-grabbers, perfect for high-traffic areas in your shop."
               images={fsduImages}
               features={[
@@ -135,28 +136,46 @@ export default function DisplaySolutionsPage() {
             />
 
             <DisplaySection 
-              title="Wall Displays"
-              description="Make the most of your wall space with our stylish and practical wall-mounted displays - they're brilliant for cards, artwork, and gifts!"
+              title="Wall Mounted Displays"
+              description="Make the most of your wall space with our range of wall-mounted display solutions, perfect for showcasing products at eye level."
               images={wallDisplayImages}
               features={[
-                'Space-saving wall mounted units',
-                'Adjustable shelving options',
-                'Easy to install and maintain',
-                'Perfect for card and gift displays'
+                'Space-saving wall units',
+                'Eye-level product placement',
+                'Customizable configurations',
+                'Easy installation'
               ]}
             />
 
             <DisplaySection 
-              title="Coin Dispenser Machines"
-              description="Need a hassle-free way to handle £1 coin sales? Our reliable coin dispensers make self-service super simple for your customers."
+              title="Specialized Display Solutions"
+              description="Looking for something specific? We offer custom display solutions tailored to your unique needs and space requirements."
               images={coinDispenserImages}
               features={[
-                '£1 coin vending solutions',
-                'Secure and reliable operation',
-                'Easy to maintain and refill',
-                'Perfect for self-service retail'
+                'Custom-designed displays',
+                'Specialized product presentation',
+                'Space optimization',
+                'Brand-specific solutions'
               ]}
             />
+          </div>
+        </div>
+
+        <div className="bg-blue-50 rounded-xl p-8 mt-12">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4 text-center">Why Choose Our Display Solutions?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Quality Materials</h3>
+              <p className="text-gray-700">Built to last with premium materials and expert craftsmanship</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Custom Design</h3>
+              <p className="text-gray-700">Tailored solutions to match your space and product needs</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Support</h3>
+              <p className="text-gray-700">Professional installation and ongoing maintenance support</p>
+            </div>
           </div>
         </div>
 

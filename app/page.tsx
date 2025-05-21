@@ -18,14 +18,21 @@ export default function Home() {
         {/* Showcase Section */}
         <div className="w-full h-full relative">
           <ShowcaseSlideshow />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+            <div className="text-center text-white px-4">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4">East Anglian Sales LTD</h1>
+              <h2 className="text-xl md:text-2xl font-semibold mb-6">Your Trusted Wholesale Partner in East Anglia</h2>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* About Section */}
       <div className="bg-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Welcome to EA Sales</h2>
           <p className="text-lg text-gray-700 mb-6">
-            Welcome to EA Sales! We're your friendly supplier of quality Greeting Cards, Stationery, and Gifts across East Anglia. From charming Independent Shops to bustling Garden Centres, we help retailers create amazing displays that customers love.
+            We're your friendly supplier of quality Greeting Cards, Stationery, and Gifts across East Anglia. From charming Independent Shops to bustling Garden Centres, we help retailers create amazing displays that customers love.
           </p>
           <p className="text-lg text-gray-700 mb-8">
             Based in Suffolk and covering Norfolk, Essex, and Cambridgeshire, we're here to help your business grow. Ready to explore our brands? Let's chat!
@@ -58,7 +65,8 @@ export default function Home() {
         <VideoBackground videoUrl="/videos/brands-background.mp4">
           <div className="py-20">
             <div className="max-w-7xl mx-auto px-4">
-              <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Our Partner Brands</h2>
+              <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Our Partner Brands</h2>
+              <h3 className="text-xl text-center mb-12 text-gray-700">Quality Products from Leading Suppliers</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {companies.map((company) => (
                   <Link 
