@@ -5,6 +5,16 @@ import OrderForm from './OrderForm'
 import VideoBackground from '../../components/VideoBackground'
 import ImageGallery from '../../components/ImageGallery'
 
+// Add shuffle function at the top level
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 interface Props {
   params: {
     slug: string
@@ -1434,13 +1444,14 @@ export default async function CompanyPage({ params }: Props) {
     'mint-publishing'
   ].includes(params.slug);
 
-  const paperSaladImages = params.slug === 'paper-salad' ? [
+  // Define base image arrays
+  const paperSaladBaseImages = params.slug === 'paper-salad' ? [
     '/images/companies/paper-salad/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
     '/images/companies/paper-salad/43a8e5ac-f223-4213-a4ca-c0c7d53aed48_1500x.jpeg',
     '/images/companies/paper-salad/Birthday_Collection_copy_1500x.jpeg'
   ] : [];
 
-  const emotionalRescueImages = params.slug === 'emotional-rescue' ? [
+  const emotionalRescueBaseImages = params.slug === 'emotional-rescue' ? [
     '/images/companies/emotional-rescue/336207-IMG_3646-copy.jpeg',
     '/images/companies/emotional-rescue/emo_web.jpeg',
     '/images/companies/emotional-rescue/81J8YSOEzoL.jpeg',
@@ -1450,7 +1461,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/emotional-rescue/EMZFPW11770_600x.jpeg'
   ] : [];
 
-  const museumsAndGalleriesImages = params.slug === 'museums-and-galleries' ? [
+  const museumsAndGalleriesBaseImages = params.slug === 'museums-and-galleries' ? [
     '/images/companies/museums-and-galleries/7d55e712-89d5-448b-aa75-f4cec8b7cf87.jpeg',
     '/images/companies/museums-and-galleries/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
     '/images/companies/museums-and-galleries/cc0ff00f-b373-4a7f-ae5c-fa1e61f846fa.jpeg',
@@ -1461,7 +1472,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/museums-and-galleries/59a26b7f-162c-454e-9efd-c483fae2ecfa.jpeg'
   ] : [];
 
-  const starEditionsImages = params.slug === 'star-editions' ? [
+  const starEditionsBaseImages = params.slug === 'star-editions' ? [
     '/images/companies/star-editions/E6EDAD48-3745-4C0D-B057-1C2EB79CF436.JPG',
     '/images/companies/star-editions/IMG_0562.jpg',
     '/images/companies/star-editions/IMG_0558.jpeg',
@@ -1478,7 +1489,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/star-editions/BRIGGS_DESKTOP.jpeg'
   ] : [];
 
-  const peppermintGroveImages = params.slug === 'peppermint-grove' ? [
+  const peppermintGroveBaseImages = params.slug === 'peppermint-grove' ? [
     '/images/companies/peppermint-grove/PGA_Uk_Diffuser_Category_d8e301ee-42b8-4ef0-9d68-5221f68c83b3.jpeg',
     '/images/companies/peppermint-grove/PGA_Uk_Candle_engraving_14e985bb-cf2d-43af-917f-773eea41e718.jpeg',
     '/images/companies/peppermint-grove/PGA_UK_Bath_Category_8c6ce571-33e1-42dc-b009-dd680a331094.jpeg',
@@ -1490,7 +1501,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/peppermint-grove/New_Arrivals_65e95d71-0d66-43a3-abf2-f1eff2913b3f.jpg'
   ] : [];
 
-  const boxerGiftsImages = params.slug === 'boxer-gifts' ? [
+  const boxerGiftsBaseImages = params.slug === 'boxer-gifts' ? [
     '/images/companies/boxer-gifts/OT2075_a70b.webp',
     '/images/companies/boxer-gifts/CO1012___MR_GOOD_LOOKIN__APRON___34_49a0.webp',
     '/images/companies/boxer-gifts/MU3131_4d24.webp',
@@ -1498,7 +1509,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/boxer-gifts/Untitled_550_550_px_4_.png'
   ] : [];
 
-  const davidFischhoffImages = params.slug === 'david-fischhoff' ? [
+  const davidFischhoffBaseImages = params.slug === 'david-fischhoff' ? [
     '/images/companies/david-fischhoff/36.jpeg',
     '/images/companies/david-fischhoff/695.jpeg',
     '/images/companies/david-fischhoff/68.jpeg',
@@ -1506,7 +1517,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/david-fischhoff/67.jpeg'
   ] : [];
 
-  const ohhDeerImages = params.slug === 'ohh-deer-wholesale' ? [
+  const ohhDeerBaseImages = params.slug === 'ohh-deer-wholesale' ? [
     '/images/companies/ohh-deer-wholesale/Assortment-2_3e4a487e-7b88-468e-bd2d-943c8543cafb.jpeg',
     '/images/companies/ohh-deer-wholesale/OD-DJ-3924-A5_OhhDeer_2023_June_DailyPlanners_Desk_Lifestyle__WebRes_1x1_sRGB__Ref.1722.jpeg',
     '/images/companies/ohh-deer-wholesale/ODGBL11789-Hoping-You-Don_t-Like-It-Large-Gift-Bag.jpeg',
@@ -1516,7 +1527,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/ohh-deer-wholesale/NDLFLEXNB9187---Volcanic-Abstract-Web.jpeg'
   ] : [];
 
-  const globalJourneyImages = params.slug === 'global-journey-gifts' ? [
+  const globalJourneyBaseImages = params.slug === 'global-journey-gifts' ? [
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.34.04.png',
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.54.png',
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.48.png',
@@ -1525,13 +1536,13 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.00.png'
   ] : [];
 
-  const wplGiftsImages = params.slug === 'wpl-gifts' ? [
+  const wplGiftsBaseImages = params.slug === 'wpl-gifts' ? [
     '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.34.png',
     '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.28.png',
     '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.21.png'
   ] : [];
 
-  const mintPublishingImages = params.slug === 'mint-publishing' ? [
+  const mintPublishingBaseImages = params.slug === 'mint-publishing' ? [
     '/images/companies/mint-publishing/1-1-27.jpeg',
     '/images/companies/mint-publishing/1-1-26.jpeg',
     '/images/companies/mint-publishing/1-1-29.jpeg',
@@ -1540,7 +1551,7 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/mint-publishing/1-30.jpeg'
   ] : [];
 
-  const gnawChocolateImages = params.slug === 'gnaw-chocolate' ? [
+  const gnawChocolateBaseImages = params.slug === 'gnaw-chocolate' ? [
     '/images/companies/gnaw-chocolate/gnaw-milk-peppermint-chocolate-bar-002-gpn0005-1024x1024-72dpi.jpeg',
     '/images/companies/gnaw-chocolate/GNAW-Popcorn_Peanut-Snack-Bar-GPN0028-CBG-02.jpeg',
     '/images/companies/gnaw-chocolate/GNAW-Milk-Chocolate-Buttons-GPN0066-CBG-02.jpeg',
@@ -1549,6 +1560,20 @@ export default async function CompanyPage({ params }: Props) {
     '/images/companies/gnaw-chocolate/gnaw-taste-adventure-hot-choc-spoon-gift-gpn0052-lfs-01.jpeg',
     '/images/companies/gnaw-chocolate/GNAW-Caramel-Chocolate-Buttons-GPN0067-CBG-02.png'
   ] : [];
+
+  // Shuffle all image arrays
+  const paperSaladImages = shuffleArray(paperSaladBaseImages);
+  const emotionalRescueImages = shuffleArray(emotionalRescueBaseImages);
+  const museumsAndGalleriesImages = shuffleArray(museumsAndGalleriesBaseImages);
+  const starEditionsImages = shuffleArray(starEditionsBaseImages);
+  const peppermintGroveImages = shuffleArray(peppermintGroveBaseImages);
+  const boxerGiftsImages = shuffleArray(boxerGiftsBaseImages);
+  const davidFischhoffImages = shuffleArray(davidFischhoffBaseImages);
+  const ohhDeerImages = shuffleArray(ohhDeerBaseImages);
+  const globalJourneyImages = shuffleArray(globalJourneyBaseImages);
+  const wplGiftsImages = shuffleArray(wplGiftsBaseImages);
+  const mintPublishingImages = shuffleArray(mintPublishingBaseImages);
+  const gnawChocolateImages = shuffleArray(gnawChocolateBaseImages);
 
   const content = (
     <>
