@@ -29,6 +29,6 @@ export const metadata: Metadata = {
   },
   // Add Google Business Profile verification
   verification: {
-    google: "YOUR_VERIFICATION_CODE", // You'll get this from Google Business Profile
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_CODE || '',
   },
 }; 

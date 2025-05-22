@@ -9,6 +9,13 @@ interface TurnstileWidgetProps {
 }
 
 export default function TurnstileWidget({ onVerify, onError }: TurnstileWidgetProps) {
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  if (!siteKey) {
+    console.warn('Turnstile site key not found in environment variables');
+    return null;
+  }
+
   const handleCallback = useCallback((token: string) => {
     onVerify(token);
   }, [onVerify]);
@@ -37,7 +44,7 @@ export default function TurnstileWidget({ onVerify, onError }: TurnstileWidgetPr
       />
       <div
         className="cf-turnstile"
-        data-sitekey="YOUR_TURNSTILE_SITE_KEY"
+        data-sitekey={siteKey}
         data-callback={handleCallback}
         data-error={onError}
         data-theme="light"
