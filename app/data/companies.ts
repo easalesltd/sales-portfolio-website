@@ -103,7 +103,7 @@ export const companies: Company[] = [
     id: "star-editions",
     name: "Star Editions",
     slug: "star-editions",
-    description: "For over a decade, Star Editions Ltd have been sourcing the very best imagery from around the globe and transforming it onto Greeting Cards, Art Prints, Giftware, Stationery and everything in between.",
+    description: "Star Editions Ltd specializes in bespoke merchandise and custom branding, with all products finished in the UK for exceptional quality. We offer a rapid 5-day turnaround on all orders, transforming your designs into premium greeting cards, art prints, giftware, and stationery. Our UK-based finishing ensures the highest standards while maintaining quick delivery times.",
     logoUrl: "/images/logos/star-editions-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1JpQGmvHZWN6WaZkmHax8Qk0Jou_7dyK7?usp=drive_link",
     websiteUrl: "https://www.stareditions.com"

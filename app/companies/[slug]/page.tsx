@@ -17,31 +17,43 @@ type County = typeof counties[number];
 function generateCompanyMetadata(company: typeof companies[0]): Metadata {
   // Special handling for Global Journey
   if (company.slug === 'global-journey-gifts') {
-    const baseTitle = `Global Journey Spinner Products & Coin Dispenser Machines | East Anglian Sales LTD`;
-    const baseDescription = `Official Global Journey spinner products and coin dispenser machines supplier in East Anglia. We supply high-quality spinner displays, £1 coin machines, and interactive retail displays to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Global Journey | Retail Display Solutions for Gift Shops, Garden Centres & Tourist Attractions in East Anglia`;
+    const baseDescription = `Official Global Journey wholesale supplier for gift shops, garden centres, museums, and tourist attractions in East Anglia. We provide innovative retail display solutions, interactive gift products, and high-performance spinner units with local delivery and personal support across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
     const locationMetadata = counties.map(county => ({
-      title: `Global Journey ${county} Spinner Supplier | Coin Dispenser Machines in ${county}`,
-      description: `Looking for Global Journey spinner products and coin dispenser machines in ${county}? We are the official supplier of interactive retail displays, £1 coin machines, and spinner units in ${county}. Contact us for trade prices and local delivery.`,
+      title: `Global Journey ${county} | Display Solutions for Gift Shops, Garden Centres & Tourist Attractions in ${county}`,
+      description: `Looking for innovative retail displays in ${county}? Global Journey provides high-performance spinner units and interactive gift solutions for gift shops, garden centres, museums, and tourist attractions in ${county}. Local supplier with personal support and same-day delivery.`,
       keywords: [
-        `Global Journey spinner ${county}`,
-        `coin dispenser machines ${county}`,
-        `£1 coin machines ${county}`,
-        `spinner displays ${county}`,
-        `interactive retail displays ${county}`,
-        `${county} spinner supplier`,
-        `coin vend machines ${county}`,
-        `retail display solutions ${county}`,
-        `spinner trade prices ${county}`,
-        `${county} coin machine distributor`,
-        `spinner local supplier ${county}`,
-        `coin dispenser retailer supplier ${county}`,
-        `spinner wholesale prices ${county}`,
-        `coin machine trade account ${county}`,
-        `spinner units wholesale ${county}`,
-        `coin vend wholesale ${county}`,
-        `retail display solutions wholesale ${county}`,
-        `interactive displays ${county}`
+        `Global Journey ${county}`,
+        `gift shop displays ${county}`,
+        `garden centre displays ${county}`,
+        `museum shop solutions ${county}`,
+        `tourist attraction displays ${county}`,
+        `visitor centre displays ${county}`,
+        `theme park retail ${county}`,
+        `greeting card shop displays ${county}`,
+        `retail spinner units ${county}`,
+        `interactive displays ${county}`,
+        `retail display support ${county}`,
+        `spinner solutions ${county}`,
+        `gift shop innovation ${county}`,
+        `retail technology ${county}`,
+        `customer engagement ${county}`,
+        `retail display quality ${county}`,
+        `interactive retail ${county}`,
+        `spinner performance ${county}`,
+        `retail innovation ${county}`,
+        `gift display solutions ${county}`,
+        `retail support ${county}`,
+        `${county} local supplier`,
+        `independent retailer support ${county}`,
+        `same day delivery ${county}`,
+        `personal retail support ${county}`,
+        `garden centre retail ${county}`,
+        `museum shop displays ${county}`,
+        `tourist attraction retail ${county}`,
+        `visitor centre solutions ${county}`,
+        `theme park displays ${county}`
       ]
     }));
 
@@ -50,22 +62,43 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
       description: baseDescription,
       keywords: [
         ...locationMetadata.flatMap(m => m.keywords),
-        'Global Journey spinner wholesale',
-        'coin dispenser machines supplier',
-        'spinner products distributor',
-        'coin machine trade prices',
-        'spinner wholesale prices',
-        'interactive displays supplier',
-        'East Anglia spinner wholesale',
-        'East Anglian coin machine supplier',
-        'local spinner supplier',
-        '£1 coin machines wholesale',
-        'spinner displays trade prices',
-        'coin vend machines wholesale',
-        'retail display solutions trade',
-        'spinner products East Anglia',
-        'coin dispenser wholesaler UK',
-        'interactive retail displays supplier'
+        'Global Journey East Anglia',
+        'gift shop displays East Anglia',
+        'garden centre displays East Anglia',
+        'museum shop solutions East Anglia',
+        'tourist attraction displays East Anglia',
+        'visitor centre displays East Anglia',
+        'theme park retail East Anglia',
+        'greeting card shop displays East Anglia',
+        'retail spinner units East Anglia',
+        'interactive displays East Anglia',
+        'retail display support East Anglia',
+        'spinner solutions East Anglia',
+        'gift shop innovation East Anglia',
+        'retail technology East Anglia',
+        'customer engagement East Anglia',
+        'retail display quality East Anglia',
+        'interactive retail East Anglia',
+        'spinner performance East Anglia',
+        'retail innovation East Anglia',
+        'gift display solutions East Anglia',
+        'retail support East Anglia',
+        'local supplier East Anglia',
+        'independent retailer support East Anglia',
+        'same day delivery East Anglia',
+        'personal retail support East Anglia',
+        'garden centre retail East Anglia',
+        'museum shop displays East Anglia',
+        'tourist attraction retail East Anglia',
+        'visitor centre solutions East Anglia',
+        'theme park displays East Anglia',
+        'East Anglia gift shops',
+        'East Anglia garden centres',
+        'East Anglia museums',
+        'East Anglia tourist attractions',
+        'East Anglia visitor centres',
+        'East Anglia theme parks',
+        'East Anglia greeting card shops'
       ],
       openGraph: {
         title: baseTitle,
@@ -78,7 +111,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Global Journey spinner products and coin dispenser machines'
+            alt: 'Global Journey - Retail Display Solutions for Gift Shops, Garden Centres & Tourist Attractions in East Anglia'
           }
         ]
       },
@@ -518,6 +551,104 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
     };
   }
 
+  // Special handling for Star Editions
+  if (company.slug === 'star-editions') {
+    const baseTitle = `Star Editions | Bespoke UK-Made Merchandise & Custom Branding | 5-Day Turnaround`;
+    const baseDescription = `Official Star Editions supplier in East Anglia. Create your own bespoke merchandise with custom branding, made in the UK. Low minimum orders, 5-day turnaround, and local delivery across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    
+    const locationMetadata = counties.map(county => ({
+      title: `Star Editions ${county} | Bespoke UK-Made Merchandise & Custom Branding in ${county}`,
+      description: `Looking for bespoke merchandise in ${county}? Star Editions offers custom branding, UK manufacturing, and 5-day turnaround for your unique products. Low minimum orders with local delivery in ${county}.`,
+      keywords: [
+        `Star Editions ${county}`,
+        `bespoke merchandise ${county}`,
+        `custom branding ${county}`,
+        `UK made products ${county}`,
+        `low volume manufacturing ${county}`,
+        `quick turnaround ${county}`,
+        `5 day delivery ${county}`,
+        `custom products ${county}`,
+        `branded merchandise ${county}`,
+        `UK manufacturing ${county}`,
+        `small batch production ${county}`,
+        `custom design ${county}`,
+        `bespoke gifts ${county}`,
+        `branded gifts ${county}`,
+        `custom packaging ${county}`,
+        `local delivery ${county}`,
+        `trade supplier ${county}`,
+        `wholesale merchandise ${county}`,
+        `custom products supplier ${county}`,
+        `bespoke manufacturing ${county}`,
+        `UK made gifts ${county}`,
+        `quick production ${county}`,
+        `custom branding service ${county}`,
+        `bespoke product design ${county}`
+      ]
+    }));
+
+    return {
+      title: baseTitle,
+      description: baseDescription,
+      keywords: [
+        ...locationMetadata.flatMap(m => m.keywords),
+        'Star Editions wholesale',
+        'bespoke merchandise UK',
+        'custom branding service',
+        'UK made products',
+        'low volume manufacturing',
+        'quick turnaround manufacturing',
+        '5 day delivery UK',
+        'custom products supplier',
+        'branded merchandise wholesale',
+        'UK manufacturing service',
+        'small batch production',
+        'custom design service',
+        'bespoke gifts wholesale',
+        'branded gifts supplier',
+        'custom packaging service',
+        'local delivery East Anglia',
+        'trade supplier UK',
+        'wholesale merchandise',
+        'custom products East Anglia',
+        'bespoke manufacturing UK',
+        'UK made gifts wholesale',
+        'quick production service',
+        'custom branding East Anglia',
+        'bespoke product design',
+        'low minimum orders',
+        'UK manufacturing East Anglia',
+        'custom merchandise supplier',
+        'bespoke product service',
+        'branded products wholesale',
+        'quick turnaround service',
+        'custom design manufacturing'
+      ],
+      openGraph: {
+        title: baseTitle,
+        description: baseDescription,
+        type: 'website',
+        locale: 'en_GB',
+        siteName: 'East Anglian Sales LTD',
+        images: [
+          {
+            url: company.logoUrl,
+            width: 800,
+            height: 600,
+            alt: 'Star Editions - Bespoke UK-Made Merchandise & Custom Branding'
+          }
+        ]
+      },
+      alternates: {
+        canonical: `https://www.easalesltd.co.uk/companies/star-editions`
+      },
+      robots: {
+        index: true,
+        follow: true
+      }
+    };
+  }
+
   // Default metadata generation for other companies
   const baseTitle = `${company.name} Wholesale Supplier | East Anglian Sales LTD`;
   const baseDescription = `${company.name} wholesale products available across East Anglia. ${company.description}`;
@@ -589,8 +720,8 @@ function generateStructuredData(company: typeof companies[0]) {
       '@context': 'https://schema.org',
       '@type': ['Organization', 'LocalBusiness', 'WholesaleStore'],
       '@id': `https://www.easalesltd.co.uk/companies/global-journey-gifts#organization`,
-      'name': 'Global Journey Spinner Products & Coin Dispenser Machines',
-      'description': 'Official Global Journey spinner products and coin dispenser machines supplier in East Anglia. We supply high-quality spinner displays, £1 coin machines, and interactive retail displays to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+      'name': 'Global Journey - Retail Display Solutions for Tourist & Retail Attractions',
+      'description': 'Leading supplier of innovative retail display solutions and interactive gift products for gift shops, garden centres, museums, and tourist attractions in East Anglia. We provide high-performance spinner units, local delivery, and personal support across Essex, Suffolk, Norfolk, and Cambridgeshire.',
       'url': 'https://www.easalesltd.co.uk/companies/global-journey-gifts',
       'logo': {
         '@type': 'ImageObject',
@@ -609,78 +740,54 @@ function generateStructuredData(company: typeof companies[0]) {
       })),
       'hasOfferCatalog': {
         '@type': 'OfferCatalog',
-        'name': 'Global Journey Retail Display Solutions',
+        'name': 'Global Journey Retail Solutions for Tourist & Retail Attractions',
         'itemListElement': [
           {
             '@type': 'Offer',
             'itemOffered': {
               '@type': 'Product',
-              'name': 'Spinner Displays',
-              'description': 'High-quality spinner displays for retail use.',
+              'name': 'Gift Shop & Garden Centre Display Solutions',
+              'description': 'High-performance spinner units and interactive display solutions for gift shops and garden centres in East Anglia. Includes local delivery and personal support.',
               'brand': {
                 '@type': 'Brand',
                 'name': 'Global Journey'
               },
-              'category': ['Retail Displays', 'Spinner Products', 'Interactive Displays']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
+              'category': ['Retail Technology', 'Display Solutions', 'Gift Shop Solutions', 'Garden Centre Retail', 'East Anglia Retail'],
+              'offers': {
+                '@type': 'Offer',
+                'availability': 'https://schema.org/InStock',
+                'deliveryLeadTime': 'P1D',
+                'areaServed': counties.map(county => ({
+                  '@type': 'State',
+                  'name': county
+                }))
+              }
+            }
           },
           {
             '@type': 'Offer',
             'itemOffered': {
               '@type': 'Product',
-              'name': 'Coin Dispenser Machines',
-              'description': '£1 coin machines and coin vend units for retail.',
+              'name': 'Tourist Attraction & Museum Shop Solutions',
+              'description': 'Specialized display solutions for museums, visitor centres, theme parks, and tourist attractions in East Anglia. Includes local delivery and personal support.',
               'brand': {
                 '@type': 'Brand',
                 'name': 'Global Journey'
               },
-              'category': ['Retail Displays', 'Coin Machines', 'Vending Solutions']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
-          },
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Interactive Retail Displays',
-              'description': 'Interactive display solutions for retail environments.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Global Journey'
-              },
-              'category': ['Retail Displays', 'Interactive Solutions', 'Display Units']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
+              'category': ['Tourist Attraction Retail', 'Museum Shop Solutions', 'Visitor Centre Displays', 'Theme Park Retail', 'East Anglia Retail'],
+              'offers': {
+                '@type': 'Offer',
+                'availability': 'https://schema.org/InStock',
+                'deliveryLeadTime': 'P1D',
+                'areaServed': counties.map(county => ({
+                  '@type': 'State',
+                  'name': county
+                }))
+              }
+            }
           }
-        ],
-        'availability': 'https://schema.org/InStock',
-        'priceSpecification': {
-          '@type': 'PriceSpecification',
-          'priceType': 'https://schema.org/Wholesale'
-        }
-      },
-      'makesOffer': counties.map(county => ({
-        '@type': 'Offer',
-        'itemOffered': {
-          '@type': 'Product',
-          'name': `Global Journey Retail Display Solutions in ${county}`,
-          'description': `Official Global Journey spinner products and coin dispenser machines supplier in ${county}. Spinner displays, £1 coin machines, and interactive retail displays available for retailers.`
-        },
-        'areaServed': {
-          '@type': 'State',
-          'name': county
-        }
-      }))
+        ]
+      }
     };
   }
 
@@ -1167,6 +1274,83 @@ function generateStructuredData(company: typeof companies[0]) {
     };
   }
 
+  // Special handling for Star Editions
+  if (company.slug === 'star-editions') {
+    return {
+      '@context': 'https://schema.org',
+      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore'],
+      '@id': `https://www.easalesltd.co.uk/companies/star-editions#organization`,
+      'name': 'Star Editions - Bespoke UK-Made Merchandise & Custom Branding',
+      'description': 'Official Star Editions supplier in East Anglia. Create your own bespoke merchandise with custom branding, made in the UK. Low minimum orders, 5-day turnaround, and local delivery across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+      'url': 'https://www.easalesltd.co.uk/companies/star-editions',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
+        'width': '800',
+        'height': '600'
+      },
+      'areaServed': counties.map(county => ({
+        '@type': 'State',
+        'name': county,
+        'address': {
+          '@type': 'PostalAddress',
+          'addressRegion': county,
+          'addressCountry': 'GB'
+        }
+      })),
+      'hasOfferCatalog': {
+        '@type': 'OfferCatalog',
+        'name': 'Star Editions Bespoke Merchandise Solutions',
+        'itemListElement': [
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'Bespoke UK-Made Merchandise',
+              'description': 'Create your own custom merchandise with UK manufacturing, low minimum orders, and 5-day turnaround. Perfect for branded gifts and custom products.',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'Star Editions'
+              },
+              'category': ['Bespoke Manufacturing', 'UK Made Products', 'Custom Branding', 'Quick Turnaround', 'East Anglia Retail'],
+              'offers': {
+                '@type': 'Offer',
+                'availability': 'https://schema.org/InStock',
+                'deliveryLeadTime': 'P5D',
+                'areaServed': counties.map(county => ({
+                  '@type': 'State',
+                  'name': county
+                }))
+              }
+            }
+          },
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'Custom Branding Service',
+              'description': 'Professional custom branding service for your merchandise. UK manufacturing with quick turnaround and local delivery.',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'Star Editions'
+              },
+              'category': ['Custom Branding', 'UK Manufacturing', 'Bespoke Products', 'Quick Production', 'East Anglia Retail'],
+              'offers': {
+                '@type': 'Offer',
+                'availability': 'https://schema.org/InStock',
+                'deliveryLeadTime': 'P5D',
+                'areaServed': counties.map(county => ({
+                  '@type': 'State',
+                  'name': county
+                }))
+              }
+            }
+          }
+        ]
+      }
+    };
+  }
+
   // Default structured data for other companies
   return {
     '@context': 'https://schema.org',
@@ -1278,10 +1462,19 @@ export default async function CompanyPage({ params }: Props) {
   ] : [];
 
   const starEditionsImages = params.slug === 'star-editions' ? [
+    '/images/companies/star-editions/E6EDAD48-3745-4C0D-B057-1C2EB79CF436.JPG',
+    '/images/companies/star-editions/IMG_0562.jpg',
+    '/images/companies/star-editions/IMG_0558.jpeg',
+    '/images/companies/star-editions/IMG-20240510-WA0007.jpg',
+    '/images/companies/star-editions/IMG-20240906-WA0024.jpg',
+    '/images/companies/star-editions/IMG-20250217-WA0001.jpg',
+    '/images/companies/star-editions/IMG-20240713-WA0013.jpg',
+    '/images/companies/star-editions/IMG-20250228-WA0016.jpg',
+    '/images/companies/star-editions/IMG-20250124-WA0007.jpg',
     '/images/companies/star-editions/Stephen-Millership.jpeg',
     '/images/companies/star-editions/stick_man.jpeg',
     '/images/companies/star-editions/ZOG011.jpeg',
-    '/images/companies/star-editions/jimmy_medium.jpeg',
+    '/images/companies/star-editions/miffy_logo.png',
     '/images/companies/star-editions/BRIGGS_DESKTOP.jpeg'
   ] : [];
 

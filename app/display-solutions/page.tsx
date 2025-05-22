@@ -96,128 +96,193 @@ export default function DisplaySolutionsPage() {
     </div>
   );
 
+  // Add structured data for free spinner offerings
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': ['Organization', 'LocalBusiness', 'WholesaleStore'],
+    '@id': 'https://www.easalesltd.co.uk/display-solutions#organization',
+    'name': 'East Anglian Sales LTD - Free Display Solutions',
+    'description': 'Professional retail display solutions including FREE greeting card spinners, giftware displays, and retail display units. Serving retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+    'url': 'https://www.easalesltd.co.uk/display-solutions',
+    'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+      '@type': 'State',
+      'name': county,
+      'address': {
+        '@type': 'PostalAddress',
+        'addressRegion': county,
+        'addressCountry': 'GB'
+      }
+    })),
+    'hasOfferCatalog': {
+      '@type': 'OfferCatalog',
+      'name': 'Free Retail Display Solutions',
+      'itemListElement': [
+        {
+          '@type': 'Offer',
+          'itemOffered': {
+            '@type': 'Product',
+            'name': 'Free Greeting Card Spinners',
+            'description': 'Complimentary greeting card spinners and display units for retailers.',
+            'category': ['Retail Displays', 'Card Spinners', 'Free Displays', 'Greeting Card Solutions'],
+            'offers': {
+              '@type': 'Offer',
+              'price': '0',
+              'priceCurrency': 'GBP',
+              'availability': 'https://schema.org/InStock',
+              'priceValidUntil': '2024-12-31',
+              'description': 'Free of charge greeting card spinners for qualifying retailers'
+            }
+          }
+        },
+        {
+          '@type': 'Offer',
+          'itemOffered': {
+            '@type': 'Product',
+            'name': 'Free Giftware Displays',
+            'description': 'Complimentary giftware display solutions for retailers.',
+            'category': ['Retail Displays', 'Giftware Displays', 'Free Displays', 'Retail Solutions'],
+            'offers': {
+              '@type': 'Offer',
+              'price': '0',
+              'priceCurrency': 'GBP',
+              'availability': 'https://schema.org/InStock',
+              'priceValidUntil': '2024-12-31',
+              'description': 'Free of charge giftware displays for qualifying retailers'
+            }
+          }
+        }
+      ]
+    }
+  };
+
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Display Solutions</h1>
-        <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">Professional Retail Display Solutions for Your Business</h2>
-        
-        <div className="mb-12">
-          <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
-            Looking for the perfect way to showcase your products? We've got you covered! From counter displays to wall units, 
-            we'll help you create eye-catching displays that your customers will love. Take a look at our options below - 
-            just click on any section to see examples of what we can do for you.
-          </p>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <div className="min-h-screen py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Free Display Solutions</h1>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">Complimentary Retail Display Solutions for Your Business</h2>
+          
+          <div className="mb-12">
+            <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
+              Looking for professional display solutions at no cost? We offer FREE greeting card spinners and giftware displays to help showcase your products! 
+              From counter displays to wall units, we'll help you create eye-catching displays that your customers will love - all at no charge to you. 
+              Take a look at our complimentary options below - just click on any section to see examples of what we can provide for free.
+            </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <DisplaySection 
-              title="Counter Display Units (CDU)"
-              description="Perfect for making the most of your counter space - these displays are great for catching your customer's eye right at the point of sale."
-              images={cduImages}
-              features={[
-                'Custom-designed counter units',
-                'Space-efficient solutions',
-                'Eye-catching product presentation',
-                'Flexible configurations'
-              ]}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <DisplaySection 
+                title="Counter Display Units (CDU)"
+                description="Perfect for making the most of your counter space - these displays are great for catching your customer's eye right at the point of sale."
+                images={cduImages}
+                features={[
+                  'Custom-designed counter units',
+                  'Space-efficient solutions',
+                  'Eye-catching product presentation',
+                  'Flexible configurations'
+                ]}
+              />
 
-            <DisplaySection 
-              title="Floor Standing Display Units (FSDU)"
-              description="Want to make a big impact? Our floor-standing displays are real attention-grabbers, perfect for high-traffic areas in your shop."
-              images={fsduImages}
-              features={[
-                'Greeting Card Spinners',
-                'Free-standing display solutions',
-                'Maximum visibility placement',
-                'Sturdy and durable construction',
-                'Various size options available'
-              ]}
-            />
+              <DisplaySection 
+                title="Floor Standing Display Units (FSDU)"
+                description="Want to make a big impact? Our floor-standing displays are real attention-grabbers, perfect for high-traffic areas in your shop."
+                images={fsduImages}
+                features={[
+                  'Greeting Card Spinners',
+                  'Free-standing display solutions',
+                  'Maximum visibility placement',
+                  'Sturdy and durable construction',
+                  'Various size options available'
+                ]}
+              />
 
-            <DisplaySection 
-              title="Wall Mounted Displays"
-              description="Make the most of your wall space with our range of wall-mounted display solutions, perfect for showcasing products at eye level."
-              images={wallDisplayImages}
-              features={[
-                'Space-saving wall units',
-                'Eye-level product placement',
-                'Customizable configurations',
-                'Easy installation'
-              ]}
-            />
+              <DisplaySection 
+                title="Wall Mounted Displays"
+                description="Make the most of your wall space with our range of wall-mounted display solutions, perfect for showcasing products at eye level."
+                images={wallDisplayImages}
+                features={[
+                  'Space-saving wall units',
+                  'Eye-level product placement',
+                  'Customizable configurations',
+                  'Easy installation'
+                ]}
+              />
 
-            <DisplaySection 
-              title="Specialized Display Solutions"
-              description="Looking for something specific? We offer custom display solutions tailored to your unique needs and space requirements."
-              images={coinDispenserImages}
-              features={[
-                'Custom-designed displays',
-                'Specialized product presentation',
-                'Space optimization',
-                'Brand-specific solutions'
-              ]}
-            />
-          </div>
-        </div>
-
-        <div className="bg-blue-50 rounded-xl p-8 mt-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4 text-center">Why Choose Our Display Solutions?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Quality Materials</h3>
-              <p className="text-gray-700">Built to last with premium materials and expert craftsmanship</p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Custom Design</h3>
-              <p className="text-gray-700">Tailored solutions to match your space and product needs</p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Support</h3>
-              <p className="text-gray-700">Professional installation and ongoing maintenance support</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-blue-50 rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Need Display Solutions?</h2>
-          <p className="text-lg text-gray-700 mb-6">
-            Contact us to discuss your display requirements. We'll help you find the perfect solution for your retail space.
-          </p>
-          <Link 
-            href="/contact" 
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          >
-            Get in Touch
-          </Link>
-        </div>
-      </div>
-
-      {/* Image Modal */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative w-full max-w-2xl mx-auto">
-            <button
-              className="absolute -top-8 right-0 text-white text-xl font-bold z-10"
-              onClick={() => setSelectedImage(null)}
-            >
-              ×
-            </button>
-            <div className="relative h-[60vh] w-full">
-              <Image
-                src={`/images/display-solutions/${selectedImage}`}
-                alt={selectedImage.replace('.png', '')}
-                fill
-                className="object-contain rounded-lg"
-                sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, 800px"
+              <DisplaySection 
+                title="Specialized Display Solutions"
+                description="Looking for something specific? We offer custom display solutions tailored to your unique needs and space requirements."
+                images={coinDispenserImages}
+                features={[
+                  'Custom-designed displays',
+                  'Specialized product presentation',
+                  'Space optimization',
+                  'Brand-specific solutions'
+                ]}
               />
             </div>
           </div>
+
+          <div className="bg-blue-50 rounded-xl p-8 mt-12">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4 text-center">Why Choose Our Display Solutions?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Quality Materials</h3>
+                <p className="text-gray-700">Built to last with premium materials and expert craftsmanship</p>
+              </div>
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Custom Design</h3>
+                <p className="text-gray-700">Tailored solutions to match your space and product needs</p>
+              </div>
+              <div className="text-center">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Support</h3>
+                <p className="text-gray-700">Professional installation and ongoing maintenance support</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Need Display Solutions?</h2>
+            <p className="text-lg text-gray-700 mb-6">
+              Contact us to discuss your display requirements. We'll help you find the perfect solution for your retail space.
+            </p>
+            <Link 
+              href="/contact" 
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Get in Touch
+            </Link>
+          </div>
         </div>
-      )}
-    </div>
+
+        {/* Image Modal */}
+        {selectedImage && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <div className="relative w-full max-w-2xl mx-auto">
+              <button
+                className="absolute -top-8 right-0 text-white text-xl font-bold z-10"
+                onClick={() => setSelectedImage(null)}
+              >
+                ×
+              </button>
+              <div className="relative h-[60vh] w-full">
+                <Image
+                  src={`/images/display-solutions/${selectedImage}`}
+                  alt={selectedImage.replace('.png', '')}
+                  fill
+                  className="object-contain rounded-lg"
+                  sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, 800px"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 } 
