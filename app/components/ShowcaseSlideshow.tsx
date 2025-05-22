@@ -28,7 +28,8 @@ const showcaseImages = [
   '/images/showcase/Screenshot 2025-05-18 at 09.18.44.png',
   '/images/showcase/Screenshot 2025-05-18 at 09.18.13.png',
   '/images/showcase/Screenshot 2025-05-18 at 09.18.07.png',
-  '/images/showcase/Screenshot 2025-05-18 at 09.16.46.png'
+  '/images/showcase/Screenshot 2025-05-18 at 09.16.46.png',
+  '/images/showcase/image (17).png'
 ];
 
 export default function ShowcaseSlideshow() {

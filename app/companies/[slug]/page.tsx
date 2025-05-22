@@ -1518,13 +1518,11 @@ export default async function CompanyPage({ params }: Props) {
   ] : [];
 
   const ohhDeerBaseImages = params.slug === 'ohh-deer-wholesale' ? [
-    '/images/companies/ohh-deer-wholesale/Assortment-2_3e4a487e-7b88-468e-bd2d-943c8543cafb.jpeg',
-    '/images/companies/ohh-deer-wholesale/OD-DJ-3924-A5_OhhDeer_2023_June_DailyPlanners_Desk_Lifestyle__WebRes_1x1_sRGB__Ref.1722.jpeg',
-    '/images/companies/ohh-deer-wholesale/ODGBL11789-Hoping-You-Don_t-Like-It-Large-Gift-Bag.jpeg',
-    '/images/companies/ohh-deer-wholesale/CATHGC11510-Best-Birthday-Ponies_RGB_WEB.jpeg',
-    '/images/companies/ohh-deer-wholesale/TP-GC-4065-A6_Silly_Sausage.jpeg',
-    '/images/companies/ohh-deer-wholesale/A6_Card_Spinner_Single_Page.jpeg',
-    '/images/companies/ohh-deer-wholesale/NDLFLEXNB9187---Volcanic-Abstract-Web.jpeg'
+    '/images/companies/ohh-deer-wholesale/Tiny-Notebooks-Web-Square.jpg',
+    '/images/companies/ohh-deer-wholesale/Cath-Kidston-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer-wholesale/Beth-Evans-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer-wholesale/Daily-Planners-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer-wholesale/Laura-Ashley-Web-Asset-Square.jpg'
   ] : [];
 
   const globalJourneyBaseImages = params.slug === 'global-journey-gifts' ? [
