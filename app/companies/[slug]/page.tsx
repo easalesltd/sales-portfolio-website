@@ -432,6 +432,92 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
     };
   }
 
+  // Special handling for Peppermint Grove
+  if (company.slug === 'peppermint-grove') {
+    const baseTitle = `Peppermint Grove Candles & Diffusers | Luxury Home Fragrance Wholesale`;
+    const baseDescription = `Official Peppermint Grove wholesale supplier in East Anglia. We supply luxury candles, diffusers, and home fragrance products to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    
+    const locationMetadata = counties.map(county => ({
+      title: `Peppermint Grove ${county} Wholesaler | Luxury Candles & Diffusers in ${county}`,
+      description: `Looking for Peppermint Grove luxury candles and diffusers in ${county}? We are the official supplier of home fragrance products, including candles, diffusers, and room sprays in ${county}. Contact us for trade prices and local delivery.`,
+      keywords: [
+        `Peppermint Grove ${county}`,
+        `Peppermint Grove ${county} wholesaler`,
+        `luxury candles ${county}`,
+        `home fragrance ${county}`,
+        `diffusers wholesale ${county}`,
+        `${county} Peppermint Grove distributor`,
+        `Peppermint Grove local supplier ${county}`,
+        `candles trade prices ${county}`,
+        `${county} wholesale Peppermint Grove`,
+        `diffusers retailer supplier ${county}`,
+        `${county} Peppermint Grove wholesale prices`,
+        `luxury home fragrance ${county}`,
+        `room sprays ${county}`,
+        `candles wholesale ${county}`,
+        `Peppermint Grove trade account ${county}`,
+        `home fragrance products ${county}`,
+        `luxury candles wholesale ${county}`,
+        `diffusers trade prices ${county}`,
+        `room sprays wholesale ${county}`,
+        `home fragrance supplier ${county}`,
+        `luxury candles supplier ${county}`,
+        `diffusers supplier ${county}`
+      ]
+    }));
+
+    return {
+      title: baseTitle,
+      description: baseDescription,
+      keywords: [
+        ...locationMetadata.flatMap(m => m.keywords),
+        'Peppermint Grove wholesale',
+        'luxury candles supplier',
+        'home fragrance wholesale',
+        'diffusers trade prices',
+        'Peppermint Grove distributor',
+        'candles wholesale prices',
+        'home fragrance supplier',
+        'East Anglia candles wholesale',
+        'East Anglian diffuser supplier',
+        'local home fragrance supplier',
+        'luxury candles wholesale',
+        'diffusers supplier',
+        'room sprays wholesale',
+        'home fragrance products',
+        'luxury candles East Anglia',
+        'diffusers UK',
+        'home fragrance wholesale UK',
+        'Peppermint Grove candles',
+        'luxury home fragrance',
+        'diffusers wholesale',
+        'room sprays supplier'
+      ],
+      openGraph: {
+        title: baseTitle,
+        description: baseDescription,
+        type: 'website',
+        locale: 'en_GB',
+        siteName: 'East Anglian Sales LTD',
+        images: [
+          {
+            url: company.logoUrl,
+            width: 800,
+            height: 600,
+            alt: 'Peppermint Grove luxury candles and diffusers'
+          }
+        ]
+      },
+      alternates: {
+        canonical: `https://www.easalesltd.co.uk/companies/peppermint-grove`
+      },
+      robots: {
+        index: true,
+        follow: true
+      }
+    };
+  }
+
   // Default metadata generation for other companies
   const baseTitle = `${company.name} Wholesale Supplier | East Anglian Sales LTD`;
   const baseDescription = `${company.name} wholesale products available across East Anglia. ${company.description}`;
@@ -993,6 +1079,85 @@ function generateStructuredData(company: typeof companies[0]) {
           '@type': 'Product',
           'name': `Ohh Deer A6 Card Spinners in ${county}`,
           'description': `Official Ohh Deer wholesale supplier in ${county}. A6 greeting card spinners, display units, and card racks available for retailers.`
+        },
+        'areaServed': {
+          '@type': 'State',
+          'name': county
+        }
+      }))
+    };
+  }
+
+  // Special handling for Peppermint Grove structured data
+  if (company.slug === 'peppermint-grove') {
+    return {
+      '@context': 'https://schema.org',
+      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore'],
+      '@id': `https://www.easalesltd.co.uk/companies/peppermint-grove#organization`,
+      'name': 'Peppermint Grove Luxury Home Fragrance Wholesale',
+      'description': 'Official Peppermint Grove wholesale supplier in East Anglia. We supply luxury candles, diffusers, and home fragrance products to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+      'url': 'https://www.easalesltd.co.uk/companies/peppermint-grove',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
+        'width': '800',
+        'height': '600'
+      },
+      'areaServed': counties.map(county => ({
+        '@type': 'State',
+        'name': county,
+        'address': {
+          '@type': 'PostalAddress',
+          'addressRegion': county,
+          'addressCountry': 'GB'
+        }
+      })),
+      'hasOfferCatalog': {
+        '@type': 'OfferCatalog',
+        'name': 'Peppermint Grove Product Catalog',
+        'itemListElement': [
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'Peppermint Grove Luxury Candles',
+              'description': 'High-quality luxury candles in various fragrances and sizes',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'Peppermint Grove'
+              }
+            },
+            'availability': 'https://schema.org/InStock',
+            'priceSpecification': {
+              '@type': 'PriceSpecification',
+              'priceType': 'https://schema.org/Wholesale'
+            }
+          },
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'Peppermint Grove Diffusers',
+              'description': 'Premium reed diffusers and room sprays for home fragrance',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'Peppermint Grove'
+              }
+            },
+            'availability': 'https://schema.org/InStock',
+            'priceSpecification': {
+              '@type': 'PriceSpecification',
+              'priceType': 'https://schema.org/Wholesale'
+            }
+          }
+        ]
+      },
+      'makesOffer': counties.map(county => ({
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Product',
+          'name': `Peppermint Grove Home Fragrance in ${county}`,
+          'description': `Official Peppermint Grove wholesale supplier in ${county}. Luxury candles, diffusers, and home fragrance products available for retailers.`
         },
         'areaServed': {
           '@type': 'State',
