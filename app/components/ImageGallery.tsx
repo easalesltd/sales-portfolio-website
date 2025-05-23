@@ -40,11 +40,27 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
         src={images[currentIndex]}
         alt={`Gallery image ${currentIndex + 1}`}
         fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+        priority={currentIndex === 0}
+        quality={85}
         className={`object-cover transition-opacity duration-500 ${
           isLoading ? 'opacity-0' : 'opacity-100'
         }`}
         onLoadingComplete={() => setIsLoading(false)}
       />
+
+      {/* Preload Next Image (hidden) */}
+      {images.length > 1 && (
+        <Image
+          src={images[(currentIndex + 1) % images.length]}
+          alt="Preload next gallery image"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+          priority={false}
+          quality={85}
+          style={{ display: 'none' }}
+        />
+      )}
 
       {/* Navigation Dots */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
