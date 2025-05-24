@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface ImageModalProps {
@@ -11,6 +11,26 @@ interface ImageModalProps {
 }
 
 export default function ImageModal({ isOpen, onClose, imageSrc, alt }: ImageModalProps) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [blurDataUrl, setBlurDataUrl] = useState<string>('');
+
+  useEffect(() => {
+    // Generate a tiny blur placeholder
+    const generateBlurPlaceholder = async () => {
+      try {
+        const response = await fetch(`/api/blur-placeholder?image=${encodeURIComponent(imageSrc)}`);
+        const data = await response.json();
+        setBlurDataUrl(data.blurDataUrl);
+      } catch (error) {
+        console.error('Failed to generate blur placeholder:', error);
+      }
+    };
+
+    if (isOpen) {
+      generateBlurPlaceholder();
+    }
+  }, [isOpen, imageSrc]);
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -61,15 +81,27 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt }: ImageModa
           </svg>
         </button>
         <div className="relative w-full h-full flex items-center justify-center">
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+            </div>
+          )}
           <Image
             src={imageSrc}
             alt={alt}
-            width={1200}
-            height={800}
-            className="object-contain max-h-[90vh] w-auto max-w-full"
+            width={1920}
+            height={1080}
+            className={`object-contain max-h-[90vh] w-auto max-w-full transition-opacity duration-300 ${
+              isLoading ? 'opacity-0' : 'opacity-100'
+            }`}
             quality={100}
             priority
-            sizes="(max-width: 768px) 95vw, (max-width: 1200px) 80vw, 1200px"
+            placeholder={blurDataUrl ? 'blur' : 'empty'}
+            blurDataURL={blurDataUrl}
+            sizes="(max-width: 768px) 95vw, (max-width: 1200px) 80vw, 1920px"
+            onLoadingComplete={() => setIsLoading(false)}
+            loading="eager"
           />
         </div>
       </div>
