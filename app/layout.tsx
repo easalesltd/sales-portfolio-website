@@ -55,8 +55,8 @@ const BrandsDropdown = dynamic(() => import('./components/BrandsDropdown'), {
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | East Anglian Sales LTD - Wholesale Cards & Gifts',
-    default: 'East Anglian Sales LTD | Wholesale Cards, Gifts & Display Solutions in East Anglia',
+    template: '%s | EA Sales - Wholesale Cards & Gifts',
+    default: 'EA Sales | Wholesale Cards & Gifts in East Anglia',
   },
   description: 'Leading wholesale supplier of greeting cards, gifts, and display solutions in East Anglia. Serving retailers across Suffolk, Norfolk, Essex, and Cambridgeshire with personal service from Dave Langdon.',
   icons: {
