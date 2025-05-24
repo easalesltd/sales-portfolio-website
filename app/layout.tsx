@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     template: '%s | EA Sales - Wholesale Cards & Gifts',
     default: 'EA Sales | Wholesale Cards & Gifts in East Anglia',
   },
-  description: 'Leading wholesale supplier of greeting cards, gifts, and display solutions in East Anglia. Serving retailers across Suffolk, Norfolk, Essex, and Cambridgeshire with personal service from Dave Langdon.',
+  description: 'Family-run wholesale supplier of greeting cards and gifts in East Anglia. Personal service from Dave Langdon, serving retailers across Suffolk, Norfolk, Essex, and Cambridgeshire.',
   icons: {
     icon: [
       { url: '/favicons/favicon.ico', sizes: 'any' },
