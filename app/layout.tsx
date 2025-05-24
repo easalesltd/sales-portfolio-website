@@ -153,19 +153,23 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-7HWXWDZG4F"
-          strategy="afterInteractive"
+        <script
           async
+          src="https://www.googletagmanager.com/gtag/js?id=G-7HWXWDZG4F"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-7HWXWDZG4F');
-          `}
-        </Script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-7HWXWDZG4F', {
+                send_page_view: true,
+                debug_mode: true
+              });
+            `
+          }}
+        />
         
         {/* Preload critical assets */}
         <link
