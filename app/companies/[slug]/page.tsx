@@ -126,7 +126,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         ]
       },
       alternates: {
-        canonical: `https://www.easalesltd.co.uk/companies/global-journey-gifts`
+        canonical: `https://easalesltd.com/companies/global-journey-gifts`
       },
       robots: {
         index: true,
@@ -203,7 +203,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         ]
       },
       alternates: {
-        canonical: `https://www.easalesltd.co.uk/companies/david-fischhoff`
+        canonical: `https://easalesltd.com/companies/david-fischhoff`
       },
       robots: {
         index: true,
@@ -288,7 +288,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         ]
       },
       alternates: {
-        canonical: `https://www.easalesltd.co.uk/companies/museums-and-galleries`
+        canonical: `https://easalesltd.com/companies/museums-and-galleries`
       },
       robots: {
         index: true,
@@ -377,7 +377,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         ]
       },
       alternates: {
-        canonical: `https://www.easalesltd.co.uk/companies/emotional-rescue`
+        canonical: `https://easalesltd.com/companies/emotional-rescue`
       },
       robots: {
         index: true,
@@ -466,7 +466,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         ]
       },
       alternates: {
-        canonical: `https://www.easalesltd.co.uk/companies/ohh-deer-wholesale`
+        canonical: `https://easalesltd.com/companies/ohh-deer-wholesale`
       },
       robots: {
         index: true,
@@ -552,7 +552,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         ]
       },
       alternates: {
-        canonical: `https://www.easalesltd.co.uk/companies/peppermint-grove`
+        canonical: `https://easalesltd.com/companies/peppermint-grove`
       },
       robots: {
         index: true,
@@ -650,7 +650,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         ]
       },
       alternates: {
-        canonical: `https://www.easalesltd.co.uk/companies/star-editions`
+        canonical: `https://easalesltd.com/companies/star-editions`
       },
       robots: {
         index: true,
@@ -712,7 +712,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
       ]
     },
     alternates: {
-      canonical: `https://www.easalesltd.co.uk/companies/${company.slug}`
+      canonical: `https://easalesltd.com/companies/${company.slug}`
     },
     robots: {
       index: true,
