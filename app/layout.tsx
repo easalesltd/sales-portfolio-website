@@ -262,7 +262,8 @@ export default function RootLayout({
                 ],
                 "sameAs": [
                   "https://www.instagram.com/eastangliansalesltd/",
-                  "https://www.linkedin.com/company/east-anglian-sales-ltd"
+                  "https://www.linkedin.com/company/east-anglian-sales-ltd",
+                  "https://www.facebook.com/eastangliansalesltd"
                 ],
                 "areaServed": [
                   {
