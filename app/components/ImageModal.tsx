@@ -53,7 +53,7 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt }: ImageModa
       >
         <button
           onClick={onClose}
-          className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors p-2 z-10"
+          className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 z-10 transition-colors"
           aria-label="Close modal"
         >
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
