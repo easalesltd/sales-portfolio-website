@@ -24,7 +24,7 @@ export default function Home() {
       {/* About Section */}
       <div className="bg-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Welcome to EA Sales</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">Welcome to EA Sales LTD</h2>
           <p className="text-lg text-gray-700 mb-6">
             We're your friendly supplier of quality Greeting Cards, Stationery, and Gifts across East Anglia. From charming Independent Shops to bustling Garden Centres, we help retailers create amazing displays that customers love.
           </p>
