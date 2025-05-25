@@ -8,8 +8,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { companies, type Company } from './data/companies';
 import Breadcrumbs from './components/Breadcrumbs';
-import RequestVisitForm from './components/RequestVisitForm';
-import { useState } from 'react';
+import MobileRequestButton from './components/MobileRequestButton';
 
 // Optimize font loading with display swap and preload
 const inter = Inter({ 
@@ -151,7 +150,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
   return (
     <html lang="en">
       <head>
@@ -344,13 +342,7 @@ export default function RootLayout({
                   />
                 </Link>
                 {/* Mobile: Request Agent Visit Button */}
-                <button
-                  onClick={() => setIsRequestFormOpen(true)}
-                  className="ml-2 px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium text-sm block md:hidden"
-                  style={{ minWidth: 'auto' }}
-                >
-                  Request an Agent Visit
-                </button>
+                <MobileRequestButton />
               </div>
               <div className="hidden md:flex items-center space-x-8">
                 <Link href="/" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Home</Link>
@@ -364,7 +356,6 @@ export default function RootLayout({
             </div>
           </nav>
         </header>
-        <RequestVisitForm isOpen={isRequestFormOpen} onClose={() => setIsRequestFormOpen(false)} />
         <Breadcrumbs />
         <main className="pt-16 min-h-screen bg-white">
           {children}
