@@ -341,8 +341,6 @@ export default function RootLayout({
                     unoptimized
                   />
                 </Link>
-                {/* Mobile: Request Agent Visit Button */}
-                <MobileRequestButton />
               </div>
               <div className="hidden md:flex items-center space-x-8">
                 <Link href="/" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Home</Link>
@@ -352,7 +350,10 @@ export default function RootLayout({
                 <Link href="/contact" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
                 <ClientButton />
               </div>
-              <MobileMenu />
+              <div className="flex items-center md:hidden gap-2">
+                <MobileRequestButton />
+                <MobileMenu />
+              </div>
             </div>
           </nav>
         </header>
