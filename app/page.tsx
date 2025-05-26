@@ -39,19 +39,12 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section with Background Video */}
-<<<<<<< Updated upstream
-      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative">
-        <div className="w-full h-full relative">
-          <ShowcaseSlideshow />
-        </div>
-=======
       <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden">
         <VideoBackground videoUrl="/videos/background.mp4">
           <div className="w-full h-full">
             <ShowcaseSlideshow />
           </div>
         </VideoBackground>
->>>>>>> Stashed changes
       </div>
 
       {/* About Section */}
@@ -89,7 +82,7 @@ export default function Home() {
 
       {/* Brands Grid */}
       <div id="partner-brands" ref={brandsSectionRef} className="relative min-h-screen">
-        <VideoBackground videoUrl="/videos/brands-background.mp4" fadeIn={true} fadeOut={true}>
+        <VideoBackground videoUrl="/videos/brands-background.mp4">
           <div className="py-20">
             <div className="max-w-7xl mx-auto px-4">
               <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Our Partner Brands</h2>
