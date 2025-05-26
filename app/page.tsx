@@ -39,10 +39,19 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section with Background Video */}
+<<<<<<< Updated upstream
       <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative">
         <div className="w-full h-full relative">
           <ShowcaseSlideshow />
         </div>
+=======
+      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden">
+        <VideoBackground videoUrl="/videos/background.mp4">
+          <div className="w-full h-full">
+            <ShowcaseSlideshow />
+          </div>
+        </VideoBackground>
+>>>>>>> Stashed changes
       </div>
 
       {/* About Section */}

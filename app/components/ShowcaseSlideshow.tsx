@@ -111,13 +111,17 @@ export default function ShowcaseSlideshow() {
   };
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden">
+    <div className="relative w-full h-full">
       {/* Images Container */}
       <div className="relative w-full h-full">
         {/* Current Image */}
         <div 
           className="absolute inset-0 w-full h-full"
-          style={{ opacity: isTransitioning ? 0 : 1, transition: `opacity ${TRANSITION_DURATION}ms ease-in-out` }}
+          style={{ 
+            opacity: isTransitioning ? 0 : 1, 
+            transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
+            backgroundColor: 'rgba(0, 0, 0, 0.1)'
+          }}
         >
           <Image
             src={shuffledImages[currentIndex]}
@@ -134,7 +138,11 @@ export default function ShowcaseSlideshow() {
         {/* Next Image */}
         <div 
           className="absolute inset-0 w-full h-full"
-          style={{ opacity: isTransitioning ? 1 : 0, transition: `opacity ${TRANSITION_DURATION}ms ease-in-out` }}
+          style={{ 
+            opacity: isTransitioning ? 1 : 0, 
+            transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
+            backgroundColor: 'rgba(0, 0, 0, 0.1)'
+          }}
         >
           <Image
             src={shuffledImages[nextIndex]}
@@ -150,7 +158,7 @@ export default function ShowcaseSlideshow() {
       </div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3 z-10">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
         {shuffledImages.map((_, index) => (
           !imageError[index] && (
             <button

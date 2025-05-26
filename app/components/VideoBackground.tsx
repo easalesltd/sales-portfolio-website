@@ -16,6 +16,10 @@ export default function VideoBackground({
   fadeOut = true
 }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+<<<<<<< Updated upstream
+=======
+  const [isLoaded, setIsLoaded] = useState(false);
+>>>>>>> Stashed changes
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -28,6 +32,7 @@ export default function VideoBackground({
     video.playsInline = true;
     video.loop = true;
 
+<<<<<<< Updated upstream
     const checkVisibility = () => {
       if (!containerRef.current) return;
       
@@ -64,15 +69,50 @@ export default function VideoBackground({
       }
     };
   }, [isPlaying]);
+=======
+    const handleLoadedData = () => {
+      setIsLoaded(true);
+      // Attempt to play immediately when loaded
+      video.play().catch(error => {
+        console.log('Initial playback failed:', error);
+        // If initial play fails, try again with user interaction
+        const playOnInteraction = async () => {
+          try {
+            await video.play();
+            document.removeEventListener('click', playOnInteraction);
+            document.removeEventListener('touchstart', playOnInteraction);
+          } catch (e) {
+            console.log('Interaction playback failed:', e);
+          }
+        };
+        document.addEventListener('click', playOnInteraction);
+        document.addEventListener('touchstart', playOnInteraction);
+      });
+    };
+
+    video.addEventListener('loadeddata', handleLoadedData);
+
+    // Cleanup
+    return () => {
+      video.removeEventListener('loadeddata', handleLoadedData);
+      document.removeEventListener('click', handleLoadedData);
+      document.removeEventListener('touchstart', handleLoadedData);
+    };
+  }, []);
+>>>>>>> Stashed changes
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative w-full h-full">
       {/* Video Background */}
-      <div className="absolute inset-0 bg-white">
+      <div className="absolute inset-0 bg-black/20">
         <video
           ref={videoRef}
           className={`w-full h-full object-cover transition-opacity duration-1000 ${
+<<<<<<< Updated upstream
             isPlaying ? 'opacity-30' : 'opacity-0'
+=======
+            isLoaded ? 'opacity-20' : 'opacity-0'
+>>>>>>> Stashed changes
           }`}
           style={{
             transition: fadeIn ? 'opacity 1s ease-in' : 'none'
@@ -90,7 +130,7 @@ export default function VideoBackground({
       </div>
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative w-full h-full">
         {children}
       </div>
     </div>
