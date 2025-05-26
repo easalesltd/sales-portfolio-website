@@ -82,7 +82,7 @@ export default function Home() {
 
       {/* Brands Grid */}
       <div id="partner-brands" ref={brandsSectionRef} className="relative min-h-screen">
-        <VideoBackground videoUrl="/videos/brands-background.mp4">
+        <VideoBackground videoUrl="/videos/background.mp4">
           <div className="py-20">
             <div className="max-w-7xl mx-auto px-4">
               <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Our Partner Brands</h2>
