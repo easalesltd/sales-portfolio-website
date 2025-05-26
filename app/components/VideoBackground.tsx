@@ -5,36 +5,51 @@ import { useEffect, useRef, useState } from 'react';
 interface VideoBackgroundProps {
   videoUrl: string;
   children: React.ReactNode;
+  fadeIn?: boolean;
+  fadeOut?: boolean;
 }
 
-export default function VideoBackground({ videoUrl, children }: VideoBackgroundProps) {
+export default function VideoBackground({ 
+  videoUrl, 
+  children,
+  fadeIn = true,
+  fadeOut = true
+}: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video) {
-      // Initial setup
-      video.muted = true;
-      video.playsInline = true;
-      video.load();
-      video.pause();
-    }
+    if (!video) return;
+
+    // Initial setup
+    video.muted = true;
+    video.playsInline = true;
+    video.load();
+
+    const handleLoadedData = () => {
+      setIsLoaded(true);
+    };
+
+    video.addEventListener('loadeddata', handleLoadedData);
 
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
         setIsVisible(entry.isIntersecting);
         
-        const video = videoRef.current;
         if (!video) return;
 
         if (entry.isIntersecting) {
           // When section becomes visible
           const playVideo = async () => {
             try {
-              video.currentTime = 0;
+              if (video.currentTime > 0) {
+                // If video was previously played, start from beginning
+                video.currentTime = 0;
+              }
               await video.play();
             } catch (error) {
               console.log('Playback failed, trying with muted...', error);
@@ -58,8 +73,18 @@ export default function VideoBackground({ videoUrl, children }: VideoBackgroundP
           playVideo();
         } else {
           // When section is not visible
-          video.pause();
-          video.currentTime = 0;
+          if (fadeOut) {
+            // Fade out before pausing
+            video.style.transition = 'opacity 1s ease-out';
+            video.style.opacity = '0';
+            setTimeout(() => {
+              video.pause();
+              video.currentTime = 0;
+            }, 1000);
+          } else {
+            video.pause();
+            video.currentTime = 0;
+          }
         }
       },
       {
@@ -77,8 +102,9 @@ export default function VideoBackground({ videoUrl, children }: VideoBackgroundP
       if (currentContainer) {
         observer.unobserve(currentContainer);
       }
+      video.removeEventListener('loadeddata', handleLoadedData);
     };
-  }, []);
+  }, [fadeOut]);
 
   return (
     <div ref={containerRef} className="relative">
@@ -87,8 +113,11 @@ export default function VideoBackground({ videoUrl, children }: VideoBackgroundP
         <video
           ref={videoRef}
           className={`w-full h-full object-cover transition-opacity duration-1000 ${
-            isVisible ? 'opacity-30' : 'opacity-0'
+            isVisible && isLoaded ? 'opacity-30' : 'opacity-0'
           }`}
+          style={{
+            transition: fadeIn ? 'opacity 1s ease-in' : 'none'
+          }}
           muted
           playsInline
           loop

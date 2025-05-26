@@ -5,20 +5,46 @@ import Link from "next/link";
 import { companies } from "./data/companies";
 import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
 import RequestVisitForm from "./components/RequestVisitForm";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import VideoBackground from "./components/VideoBackground";
 
 export default function Home() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+  const [showBrandsVideo, setShowBrandsVideo] = useState(false);
+  const brandsSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        setShowBrandsVideo(entry.isIntersecting);
+      },
+      {
+        threshold: 0.5, // Trigger when 50% of the section is visible
+        rootMargin: '-100px 0px', // Add some margin to make the transition smoother
+      }
+    );
+
+    if (brandsSectionRef.current) {
+      observer.observe(brandsSectionRef.current);
+    }
+
+    return () => {
+      if (brandsSectionRef.current) {
+        observer.unobserve(brandsSectionRef.current);
+      }
+    };
+  }, []);
 
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
-      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full">
-        {/* Showcase Section */}
-        <div className="w-full h-full relative">
-          <ShowcaseSlideshow />
-        </div>
+      {/* Hero Section with Background Video */}
+      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative">
+        <VideoBackground videoUrl="/videos/background.mp4">
+          <div className="w-full h-full relative">
+            <ShowcaseSlideshow />
+          </div>
+        </VideoBackground>
       </div>
 
       {/* About Section */}
@@ -55,7 +81,7 @@ export default function Home() {
       </div>
 
       {/* Brands Grid */}
-      <div id="partner-brands" className="relative min-h-screen">
+      <div id="partner-brands" ref={brandsSectionRef} className="relative min-h-screen">
         <VideoBackground videoUrl="/videos/brands-background.mp4">
           <div className="py-20">
             <div className="max-w-7xl mx-auto px-4">

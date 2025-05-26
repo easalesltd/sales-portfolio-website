@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import GoogleReviews from "../components/GoogleReviews";
 import ImageModal from "../components/ImageModal";
 
 const aboutImages = [
@@ -11,6 +10,7 @@ const aboutImages = [
   { src: '/images/about/20240420_103516.jpg', alt: 'Recent photo' },
   { src: '/images/about/IMG-20230810-WA0046.jpg', alt: 'Family moment' },
   { src: '/images/about/IMG-20240923-WA0018.jpg', alt: 'Family at Legoland' },
+  { src: '/images/about/20250526_145646.jpg', alt: 'Latest photo' },
 ];
 
 export default function AboutPage() {
@@ -182,25 +182,36 @@ export default function AboutPage() {
                 />
               </div>
             </div>
-            {/* Bottom Row - Full Width Photo */}
-            <div 
-              className="relative h-96 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-              onClick={() => handleImageClick('/images/about/IMG-20240923-WA0018.jpg', 'Family at Legoland')}
-            >
-              <Image
-                src="/images/about/IMG-20240923-WA0018.jpg"
-                alt="Family at Legoland"
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-300"
-                onError={() => handleImageError('/images/about/IMG-20240923-WA0018.jpg')}
-              />
+            {/* Bottom Row - 2 Photos */}
+            <div className="grid grid-cols-2 gap-6">
+              {/* Legoland Photo */}
+              <div 
+                className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => handleImageClick('/images/about/IMG-20240923-WA0018.jpg', 'Family at Legoland')}
+              >
+                <Image
+                  src="/images/about/IMG-20240923-WA0018.jpg"
+                  alt="Family at Legoland"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  onError={() => handleImageError('/images/about/IMG-20240923-WA0018.jpg')}
+                />
+              </div>
+              {/* Latest Photo */}
+              <div 
+                className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => handleImageClick('/images/about/20250526_145646.jpg', 'Latest photo')}
+              >
+                <Image
+                  src="/images/about/20250526_145646.jpg"
+                  alt="Latest photo"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  onError={() => handleImageError('/images/about/20250526_145646.jpg')}
+                />
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Google Reviews section - Full Width */}
-        <div className="mt-16">
-          <GoogleReviews />
         </div>
 
         {/* Image Modal */}
