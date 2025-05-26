@@ -16,9 +16,8 @@ export default function VideoBackground({
   fadeOut = true
 }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -27,75 +26,44 @@ export default function VideoBackground({
     // Initial setup
     video.muted = true;
     video.playsInline = true;
-    video.load();
+    video.loop = true;
 
-    const handleLoadedData = () => {
-      setIsLoaded(true);
-      // If the video is already visible when loaded, try to play it
-      if (isVisible) {
-        video.play().catch(error => {
-          console.log('Initial playback failed:', error);
-        });
+    const checkVisibility = () => {
+      if (!containerRef.current) return;
+      
+      const rect = containerRef.current.getBoundingClientRect();
+      const isVisible = (
+        rect.top < window.innerHeight &&
+        rect.bottom > 0
+      );
+
+      if (isVisible && !isPlaying) {
+        video.play()
+          .then(() => setIsPlaying(true))
+          .catch(error => console.log('Playback failed:', error));
+      } else if (!isVisible && isPlaying) {
+        video.pause();
+        video.currentTime = 0;
+        setIsPlaying(false);
       }
     };
 
-    video.addEventListener('loadeddata', handleLoadedData);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        setIsVisible(entry.isIntersecting);
-        
-        if (!video) return;
-
-        if (entry.isIntersecting) {
-          // When section becomes visible
-          const playVideo = async () => {
-            try {
-              if (video.currentTime > 0) {
-                // If video was previously played, start from beginning
-                video.currentTime = 0;
-              }
-              await video.play();
-            } catch (error) {
-              console.log('Playback failed:', error);
-            }
-          };
-          playVideo();
-        } else {
-          // When section is not visible
-          if (fadeOut) {
-            // Fade out before pausing
-            video.style.transition = 'opacity 1s ease-out';
-            video.style.opacity = '0';
-            setTimeout(() => {
-              video.pause();
-              video.currentTime = 0;
-            }, 1000);
-          } else {
-            video.pause();
-            video.currentTime = 0;
-          }
-        }
-      },
-      {
-        threshold: 0.1, // Trigger when 10% of the section is visible
-        rootMargin: '0px',
-      }
-    );
-
-    const currentContainer = containerRef.current;
-    if (currentContainer) {
-      observer.observe(currentContainer);
-    }
+    // Check visibility on scroll and resize
+    window.addEventListener('scroll', checkVisibility);
+    window.addEventListener('resize', checkVisibility);
+    
+    // Initial check
+    checkVisibility();
 
     return () => {
-      if (currentContainer) {
-        observer.unobserve(currentContainer);
+      window.removeEventListener('scroll', checkVisibility);
+      window.removeEventListener('resize', checkVisibility);
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
       }
-      video.removeEventListener('loadeddata', handleLoadedData);
     };
-  }, [fadeOut]);
+  }, [isPlaying]);
 
   return (
     <div ref={containerRef} className="relative">
@@ -104,7 +72,7 @@ export default function VideoBackground({
         <video
           ref={videoRef}
           className={`w-full h-full object-cover transition-opacity duration-1000 ${
-            isVisible && isLoaded ? 'opacity-30' : 'opacity-0'
+            isPlaying ? 'opacity-30' : 'opacity-0'
           }`}
           style={{
             transition: fadeIn ? 'opacity 1s ease-in' : 'none'
