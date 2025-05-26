@@ -31,6 +31,12 @@ export default function VideoBackground({
 
     const handleLoadedData = () => {
       setIsLoaded(true);
+      // If the video is already visible when loaded, try to play it
+      if (isVisible) {
+        video.play().catch(error => {
+          console.log('Initial playback failed:', error);
+        });
+      }
     };
 
     video.addEventListener('loadeddata', handleLoadedData);
@@ -52,22 +58,7 @@ export default function VideoBackground({
               }
               await video.play();
             } catch (error) {
-              console.log('Playback failed, trying with muted...', error);
-              video.muted = true;
-              try {
-                await video.play();
-              } catch (secondError) {
-                console.log('Muted playback failed, waiting for interaction...', secondError);
-                const playOnTouch = async () => {
-                  try {
-                    await video.play();
-                    document.removeEventListener('touchstart', playOnTouch);
-                  } catch (e) {
-                    console.log('Touch playback failed:', e);
-                  }
-                };
-                document.addEventListener('touchstart', playOnTouch, { once: true });
-              }
+              console.log('Playback failed:', error);
             }
           };
           playVideo();
@@ -88,7 +79,7 @@ export default function VideoBackground({
         }
       },
       {
-        threshold: [0.1, 0.5], // Trigger at both 10% and 50% visibility
+        threshold: 0.1, // Trigger when 10% of the section is visible
         rootMargin: '0px',
       }
     );
@@ -121,7 +112,7 @@ export default function VideoBackground({
           muted
           playsInline
           loop
-          preload="metadata"
+          preload="auto"
           x-webkit-airplay="deny"
           disablePictureInPicture
           controlsList="nodownload noplaybackrate"
