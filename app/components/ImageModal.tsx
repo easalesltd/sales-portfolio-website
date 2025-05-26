@@ -41,15 +41,13 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt }: ImageModa
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4 touch-none"
-      onClick={onClose}
-      onTouchStart={onClose}
+      onPointerDown={onClose}
     >
-      <div 
+      <div
         className="relative w-full h-full max-w-[95vw] max-h-[95vh] flex items-center justify-center"
-        onClick={(e) => e.stopPropagation()}
-        onTouchStart={(e) => e.stopPropagation()}
+        onPointerDown={e => e.stopPropagation()}
       >
         <button
           onClick={e => {
