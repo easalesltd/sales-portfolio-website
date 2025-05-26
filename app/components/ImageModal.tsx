@@ -44,7 +44,7 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt }: ImageModa
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4 touch-none"
       onClick={onClose}
-      onTouchStart={(e) => e.stopPropagation()}
+      onTouchStart={onClose}
     >
       <div 
         className="relative w-full h-full max-w-[95vw] max-h-[95vh] flex items-center justify-center"
