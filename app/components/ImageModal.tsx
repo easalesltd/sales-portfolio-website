@@ -52,7 +52,10 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt }: ImageModa
         onTouchStart={(e) => e.stopPropagation()}
       >
         <button
-          onClick={onClose}
+          onClick={e => {
+            e.stopPropagation();
+            onClose();
+          }}
           className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 z-10 transition-colors"
           aria-label="Close modal"
         >
