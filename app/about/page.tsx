@@ -58,37 +58,25 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left column - Text content (Desktop) */}
           <div className="space-y-8">
-            {/* Interleaved Photos with Text (Mobile Only) */}
+            {/* Mobile: Only text, no interleaved images */}
             <div className="block lg:hidden space-y-8">
               <div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">A Message from your agent</h3>
                 <p className="text-xl text-gray-700 italic mb-4">
                   "Hi, I'm Dave, a Sales Agent based in Ipswich, Suffolk. I've been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
                 </p>
-                {/* Interleaved Photo 1 */}
-                <div className="relative h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer mb-4" onClick={() => handleImageClick(aboutImages[0].src, aboutImages[0].alt)}>
-                  <Image src={aboutImages[0].src} alt={aboutImages[0].alt} fill className="object-cover" onError={() => handleImageError(aboutImages[0].src)} />
-                </div>
               </div>
               <div>
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Story</h2>
                 <p className="text-lg text-gray-700 mb-4">
                   East Anglian Sales Ltd was established in 2022, but our experience in the industry spans much further. We've built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, understanding their unique needs and helping them succeed.
                 </p>
-                {/* Interleaved Photo 2 */}
-                <div className="relative h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer mb-4" onClick={() => handleImageClick(aboutImages[1].src, aboutImages[1].alt)}>
-                  <Image src={aboutImages[1].src} alt={aboutImages[1].alt} fill className="object-cover" onError={() => handleImageError(aboutImages[1].src)} />
-                </div>
               </div>
               <div>
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>
                 <p className="text-lg text-gray-700 mb-4">
                   Our mission is simple: to connect quality brands with quality retailers. We believe in personal service, regular visits, and building lasting partnerships. Whether you're a small independent shop or a larger retail outlet, we're here to help you grow.
                 </p>
-                {/* Interleaved Photo 3 */}
-                <div className="relative h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer mb-4" onClick={() => handleImageClick(aboutImages[2].src, aboutImages[2].alt)}>
-                  <Image src={aboutImages[2].src} alt={aboutImages[2].alt} fill className="object-cover" onError={() => handleImageError(aboutImages[2].src)} />
-                </div>
               </div>
               <div>
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Service Area</h2>
@@ -101,14 +89,6 @@ export default function AboutPage() {
                   <li>Essex</li>
                   <li>Cambridgeshire</li>
                 </ul>
-                {/* Interleaved Photo 4 */}
-                <div className="relative h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer mb-4" onClick={() => handleImageClick(aboutImages[3].src, aboutImages[3].alt)}>
-                  <Image src={aboutImages[3].src} alt={aboutImages[3].alt} fill className="object-cover" onError={() => handleImageError(aboutImages[3].src)} />
-                </div>
-              </div>
-              {/* Interleaved Photo 5 */}
-              <div className="relative h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer mb-4" onClick={() => handleImageClick(aboutImages[4].src, aboutImages[4].alt)}>
-                <Image src={aboutImages[4].src} alt={aboutImages[4].alt} fill className="object-cover" onError={() => handleImageError(aboutImages[4].src)} />
               </div>
             </div>
 
