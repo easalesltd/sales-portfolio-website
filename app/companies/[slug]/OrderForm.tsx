@@ -42,7 +42,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
   };
 
   const handleAddLine = () => {
-    if (orderLines.length < 50) {
+    if (orderLines.length < 200) {
       setOrderLines([...orderLines, { productCode: '', quantity: '' }]);
     }
   };
@@ -229,10 +229,10 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
         <button
           type="button"
           onClick={handleAddLine}
-          disabled={orderLines.length >= 50}
+          disabled={orderLines.length >= 200}
           className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
-          Add Product Line {orderLines.length}/50
+          Add Product Line {orderLines.length}/200
         </button>
       </div>
 
@@ -287,7 +287,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
   };
 
   const handleAddLine = () => {
-    if (orderLines.length < 50) {
+    if (orderLines.length < 200) {
       setOrderLines([...orderLines, { productCode: '', quantity: '' }]);
     }
   };
@@ -474,10 +474,10 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
         <button
           type="button"
           onClick={handleAddLine}
-          disabled={orderLines.length >= 50}
+          disabled={orderLines.length >= 200}
           className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
         >
-          Add Product Line {orderLines.length}/50
+          Add Product Line {orderLines.length}/200
         </button>
       </div>
 
