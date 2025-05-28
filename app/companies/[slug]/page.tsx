@@ -689,6 +689,94 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
     };
   }
 
+  // Special handling for V&A Cards and Gifts
+  if (company.slug === 'va-cards-and-gifts') {
+    const baseTitle = `V&A Cards and Gifts Sales Agent | Licensed Museum Art Cards & Stationery | Wholesale Supplier`;
+    const baseDescription = `Official V&A Cards and Gifts sales agent and wholesale supplier in East Anglia. We supply licensed V&A Museum art cards, stationery, and gifts to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    
+    const locationMetadata = counties.map(county => ({
+      title: `V&A Cards and Gifts Sales Agent ${county} | Licensed Museum Art Cards & Stationery in ${county}`,
+      description: `Looking for a V&A Cards and Gifts sales agent in ${county}? We are the official supplier of licensed V&A Museum art cards, stationery, and gifts in ${county}. Contact us for trade prices and local delivery.`,
+      keywords: [
+        `V&A Cards and Gifts Sales Agent ${county}`,
+        `V&A Cards and Gifts Agent ${county}`,
+        `V&A Cards and Gifts ${county}`,
+        `V&A Cards and Gifts ${county} wholesaler`,
+        `V&A Museum cards ${county}`,
+        `licensed art cards ${county}`,
+        `museum stationery ${county}`,
+        `art-inspired gifts ${county}`,
+        `${county} V&A Cards and Gifts distributor`,
+        `V&A Cards and Gifts local supplier ${county}`,
+        `museum cards trade prices ${county}`,
+        `${county} wholesale V&A Cards and Gifts`,
+        `art cards retailer supplier ${county}`,
+        `${county} V&A Cards and Gifts wholesale prices`,
+        `licensed museum cards ${county}`,
+        `art stationery ${county}`,
+        `museum gifts wholesale ${county}`,
+        `V&A Cards and Gifts trade account ${county}`,
+        `licensed art greeting cards ${county}`,
+        `museum stationery wholesale ${county}`,
+        `art-inspired cards distributor ${county}`,
+        `museum cards trade prices ${county}`,
+        `licensed art cards supplier ${county}`,
+        `V&A Museum gifts supplier ${county}`
+      ]
+    }));
+
+    return {
+      title: baseTitle,
+      description: baseDescription,
+      keywords: [
+        ...locationMetadata.flatMap(m => m.keywords),
+        'V&A Cards and Gifts Sales Agent',
+        'V&A Cards and Gifts Agent East Anglia',
+        'V&A Cards and Gifts wholesale',
+        'V&A Museum cards wholesale',
+        'licensed art cards supplier',
+        'museum stationery wholesale',
+        'V&A Cards and Gifts distributor',
+        'museum cards trade prices',
+        'art cards wholesale prices',
+        'licensed greeting cards supplier',
+        'East Anglia museum cards wholesale',
+        'East Anglian licensed art supplier',
+        'local museum cards wholesale supplier',
+        'V&A Museum licensed products',
+        'art-inspired cards supplier',
+        'museum stationery distributor',
+        'licensed art cards trade prices',
+        'V&A Museum gifts supplier',
+        'museum cards East Anglia',
+        'licensed art cards UK',
+        'V&A Museum products wholesale UK'
+      ],
+      openGraph: {
+        title: baseTitle,
+        description: baseDescription,
+        type: 'website',
+        locale: 'en_GB',
+        siteName: 'East Anglian Sales LTD',
+        images: [
+          {
+            url: company.logoUrl,
+            width: 800,
+            height: 600,
+            alt: 'V&A Cards and Gifts - Licensed Museum Art Cards & Stationery'
+          }
+        ]
+      },
+      alternates: {
+        canonical: `https://easalesltd.com/companies/va-cards-and-gifts`
+      },
+      robots: {
+        index: true,
+        follow: true
+      }
+    };
+  }
+
   // Default metadata generation for other companies
   const baseTitle = `${company.name} Sales Agent | Wholesale Supplier | East Anglian Sales LTD`;
   const baseDescription = `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`;
@@ -1088,6 +1176,73 @@ function generateStructuredData(company: typeof companies[0]) {
               },
               'category': ['Bespoke Manufacturing', 'UK Made Products', 'Custom Branding', 'Quick Turnaround', 'East Anglia Retail', 'Sales Agent Services']
             }
+          }
+        ]
+      }
+    };
+  }
+
+  // Special handling for V&A Cards and Gifts
+  if (company.slug === 'va-cards-and-gifts') {
+    return {
+      '@context': 'https://schema.org',
+      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
+      '@id': `https://www.easalesltd.co.uk/companies/va-cards-and-gifts#organization`,
+      'name': 'V&A Cards and Gifts Sales Agent - Licensed Museum Art Cards & Stationery',
+      'description': 'Official V&A Cards and Gifts sales agent and wholesale supplier in East Anglia. We supply licensed V&A Museum art cards, stationery, and gifts to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+      'url': 'https://www.easalesltd.co.uk/companies/va-cards-and-gifts',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
+        'width': '800',
+        'height': '600'
+      },
+      'areaServed': counties.map(county => ({
+        '@type': 'State',
+        'name': county,
+        'address': {
+          '@type': 'PostalAddress',
+          'addressRegion': county,
+          'addressCountry': 'GB'
+        }
+      })),
+      'hasOfferCatalog': {
+        '@type': 'OfferCatalog',
+        'name': 'V&A Cards and Gifts Sales Agent - Licensed Museum Products',
+        'itemListElement': [
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'V&A Museum Licensed Art Cards',
+              'description': 'Official V&A Cards and Gifts sales agent providing licensed V&A Museum art cards and stationery.',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'V&A Cards and Gifts'
+              },
+              'category': ['Greeting Cards', 'Licensed Products', 'Museum Products', 'Art Cards', 'Sales Agent Services']
+            },
+            'areaServed': counties.map(county => ({
+              '@type': 'State',
+              'name': county
+            }))
+          },
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'V&A Museum Stationery',
+              'description': 'Official V&A Cards and Gifts sales agent providing licensed V&A Museum stationery and art-inspired gifts.',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'V&A Cards and Gifts'
+              },
+              'category': ['Stationery', 'Licensed Products', 'Museum Products', 'Art Gifts', 'Sales Agent Services']
+            },
+            'areaServed': counties.map(county => ({
+              '@type': 'State',
+              'name': county
+            }))
           }
         ]
       }
