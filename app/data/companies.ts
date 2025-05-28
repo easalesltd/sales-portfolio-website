@@ -112,7 +112,7 @@ export const companies: Company[] = [
     id: "star-editions",
     name: "Star Editions",
     slug: "star-editions",
-    description: "Star Editions Ltd specializes in bespoke merchandise and custom branding, with all products finished in the UK for exceptional quality. We offer a rapid 5-day turnaround on all orders, transforming your designs into premium greeting cards, art prints, giftware, and stationery. Our UK-based finishing ensures the highest standards while maintaining quick delivery times.",
+    description: "Star Editions Ltd specializes in bespoke merchandise and custom branding, with all products finished in the UK for exceptional quality. We are proud to supply the official Richard Briggs and Dave Thompson greeting cards and gifts ranges, featuring their unique and humorous designs. We offer a rapid 5-day turnaround on all orders, transforming your designs into premium greeting cards, art prints, giftware, and stationery. Our UK-based finishing ensures the highest standards while maintaining quick delivery times.",
     logoUrl: "/images/logos/star-editions-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1JpQGmvHZWN6WaZkmHax8Qk0Jou_7dyK7?usp=drive_link",
     websiteUrl: "https://www.stareditions.com"

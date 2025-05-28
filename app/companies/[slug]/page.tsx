@@ -637,16 +637,20 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
 
   // Special handling for Star Editions
   if (company.slug === 'star-editions') {
-    const baseTitle = `Star Editions Sales Agent | Bespoke UK-Made Merchandise & Custom Branding | 5-Day Turnaround`;
-    const baseDescription = `Official Star Editions sales agent and supplier in East Anglia. Create your own bespoke merchandise with custom branding, made in the UK. Low minimum orders, 5-day turnaround, and local delivery across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Star Editions Sales Agent | Richard Briggs & Dave Thompson Cards | Bespoke UK-Made Merchandise`;
+    const baseDescription = `Official Star Editions sales agent and wholesale supplier in East Anglia. We supply Richard Briggs and Dave Thompson greeting cards and gifts, along with bespoke merchandise and custom branding services. All products are UK-made with 5-day turnaround, available for retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
     const locationMetadata = counties.map(county => ({
-      title: `Star Editions Sales Agent ${county} | Bespoke UK-Made Merchandise & Custom Branding in ${county}`,
-      description: `Looking for a Star Editions sales agent in ${county}? We offer custom branding, UK manufacturing, and 5-day turnaround for your unique products. Low minimum orders with local delivery in ${county}.`,
+      title: `Star Editions Sales Agent ${county} | Richard Briggs & Dave Thompson Cards in ${county}`,
+      description: `Looking for a Star Editions sales agent in ${county}? We are the official supplier of Richard Briggs and Dave Thompson greeting cards and gifts, plus bespoke merchandise and custom branding services. Low minimum orders with local delivery in ${county}.`,
       keywords: [
         `Star Editions Sales Agent ${county}`,
         `Star Editions Agent ${county}`,
         `Star Editions ${county}`,
+        `Richard Briggs cards ${county}`,
+        `Dave Thompson cards ${county}`,
+        `Richard Briggs gifts ${county}`,
+        `Dave Thompson gifts ${county}`,
         `bespoke merchandise ${county}`,
         `custom branding ${county}`,
         `UK made products ${county}`,
@@ -669,7 +673,13 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         `UK made gifts ${county}`,
         `quick production ${county}`,
         `custom branding service ${county}`,
-        `bespoke product design ${county}`
+        `bespoke product design ${county}`,
+        `Richard Briggs trade prices ${county}`,
+        `Dave Thompson trade prices ${county}`,
+        `humorous cards ${county}`,
+        `unique greeting cards ${county}`,
+        `Richard Briggs wholesale ${county}`,
+        `Dave Thompson wholesale ${county}`
       ]
     }));
 
@@ -681,6 +691,10 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'Star Editions Sales Agent',
         'Star Editions Agent East Anglia',
         'Star Editions wholesale',
+        'Richard Briggs cards wholesale',
+        'Dave Thompson cards wholesale',
+        'Richard Briggs gifts supplier',
+        'Dave Thompson gifts supplier',
         'bespoke merchandise UK',
         'custom branding service',
         'UK made products',
@@ -703,14 +717,16 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'UK made gifts wholesale',
         'quick production service',
         'custom branding East Anglia',
-        'bespoke product design',
-        'low minimum orders',
-        'UK manufacturing East Anglia',
-        'custom merchandise supplier',
-        'bespoke product service',
-        'branded products wholesale',
-        'quick turnaround service',
-        'custom design manufacturing'
+        'Richard Briggs trade prices',
+        'Dave Thompson trade prices',
+        'humorous cards wholesale',
+        'unique greeting cards supplier',
+        'Richard Briggs wholesale prices',
+        'Dave Thompson wholesale prices',
+        'East Anglia Richard Briggs cards',
+        'East Anglia Dave Thompson cards',
+        'East Anglia bespoke merchandise',
+        'East Anglia custom branding'
       ],
       openGraph: {
         title: baseTitle,
@@ -723,7 +739,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Star Editions - Bespoke UK-Made Merchandise & Custom Branding'
+            alt: 'Star Editions - Richard Briggs & Dave Thompson Cards, Bespoke UK-Made Merchandise'
           }
         ]
       },
@@ -1224,8 +1240,8 @@ function generateStructuredData(company: typeof companies[0]) {
       '@context': 'https://schema.org',
       '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
       '@id': `https://www.easalesltd.co.uk/companies/star-editions#organization`,
-      'name': 'Star Editions Sales Agent - Bespoke UK-Made Merchandise & Custom Branding',
-      'description': 'Official Star Editions sales agent and supplier in East Anglia. Create your own bespoke merchandise with custom branding, made in the UK. Low minimum orders, 5-day turnaround, and local delivery across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+      'name': 'Star Editions Sales Agent - Richard Briggs, Dave Thompson & Bespoke Products',
+      'description': 'Official Star Editions sales agent and wholesale supplier in East Anglia. We supply Richard Briggs and Dave Thompson greeting cards and gifts, along with bespoke merchandise and custom branding services. All products are UK-made with 5-day turnaround, available for retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
       'url': 'https://www.easalesltd.co.uk/companies/star-editions',
       'logo': {
         '@type': 'ImageObject',
@@ -1244,19 +1260,72 @@ function generateStructuredData(company: typeof companies[0]) {
       })),
       'hasOfferCatalog': {
         '@type': 'OfferCatalog',
-        'name': 'Star Editions Sales Agent - Bespoke Merchandise Solutions',
+        'name': 'Star Editions Sales Agent - Richard Briggs, Dave Thompson & Bespoke Products',
         'itemListElement': [
           {
             '@type': 'Offer',
             'itemOffered': {
               '@type': 'Product',
-              'name': 'Bespoke UK-Made Merchandise',
-              'description': 'Official Star Editions sales agent providing custom merchandise with UK manufacturing, low minimum orders, and 5-day turnaround. Perfect for branded gifts and custom products.',
+              'name': 'Richard Briggs Greeting Cards & Gifts',
+              'description': 'Official Star Editions sales agent providing Richard Briggs greeting cards and gifts featuring unique and humorous designs.',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'Richard Briggs'
+              },
+              'category': ['Greeting Cards', 'Gifts', 'Humorous Cards', 'Unique Designs', 'Sales Agent Services'],
+              'offers': {
+                '@type': 'Offer',
+                'availability': 'https://schema.org/InStock',
+                'deliveryLeadTime': 'P5D',
+                'areaServed': counties.map(county => ({
+                  '@type': 'State',
+                  'name': county
+                }))
+              }
+            }
+          },
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'Dave Thompson Greeting Cards & Gifts',
+              'description': 'Official Star Editions sales agent providing Dave Thompson greeting cards and gifts featuring unique and humorous designs.',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'Dave Thompson'
+              },
+              'category': ['Greeting Cards', 'Gifts', 'Humorous Cards', 'Unique Designs', 'Sales Agent Services'],
+              'offers': {
+                '@type': 'Offer',
+                'availability': 'https://schema.org/InStock',
+                'deliveryLeadTime': 'P5D',
+                'areaServed': counties.map(county => ({
+                  '@type': 'State',
+                  'name': county
+                }))
+              }
+            }
+          },
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'Bespoke Merchandise & Custom Branding',
+              'description': 'Official Star Editions sales agent providing bespoke merchandise and custom branding services with 5-day turnaround. All products are UK-made for exceptional quality.',
               'brand': {
                 '@type': 'Brand',
                 'name': 'Star Editions'
               },
-              'category': ['Bespoke Manufacturing', 'UK Made Products', 'Custom Branding', 'Quick Turnaround', 'East Anglia Retail', 'Sales Agent Services']
+              'category': ['Custom Products', 'Bespoke Merchandise', 'Branding Services', 'UK Manufacturing', 'Sales Agent Services'],
+              'offers': {
+                '@type': 'Offer',
+                'availability': 'https://schema.org/InStock',
+                'deliveryLeadTime': 'P5D',
+                'areaServed': counties.map(county => ({
+                  '@type': 'State',
+                  'name': county
+                }))
+              }
             }
           }
         ]
