@@ -27,15 +27,18 @@ type County = typeof counties[number];
 function generateCompanyMetadata(company: typeof companies[0]): Metadata {
   // Special handling for Global Journey
   if (company.slug === 'global-journey-gifts') {
-    const baseTitle = `Global Journey Sales Agent | Retail Display Solutions for Gift Shops, Garden Centres & Tourist Attractions in East Anglia`;
-    const baseDescription = `Official Global Journey sales agent and wholesale supplier for gift shops, garden centres, museums, and tourist attractions in East Anglia. We provide innovative retail display solutions, interactive gift products, and high-performance spinner units with local delivery and personal support across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Global Journey Sales Agent | Coin Dispensers & Retail Display Solutions for Tourist Attractions in East Anglia`;
+    const baseDescription = `Official Global Journey sales agent and wholesale supplier for gift shops, garden centres, museums, and tourist attractions in East Anglia. We provide high-quality coin dispenser machines, innovative retail display solutions, interactive gift products, and high-performance spinner units with local delivery and personal support across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
     const locationMetadata = counties.map(county => ({
-      title: `Global Journey Sales Agent ${county} | Display Solutions for Gift Shops, Garden Centres & Tourist Attractions in ${county}`,
-      description: `Looking for a Global Journey sales agent in ${county}? We are the official supplier of high-performance spinner units and interactive gift solutions for gift shops, garden centres, museums, and tourist attractions in ${county}. Local sales agent with personal support and same-day delivery.`,
+      title: `Global Journey Sales Agent ${county} | Coin Dispensers & Display Solutions for Tourist Attractions in ${county}`,
+      description: `Looking for a Global Journey sales agent in ${county}? We are the official supplier of coin dispenser machines, high-performance spinner units, and interactive gift solutions for gift shops, garden centres, museums, and tourist attractions in ${county}. Local sales agent with personal support and same-day delivery.`,
       keywords: [
         `Global Journey Sales Agent ${county}`,
         `Global Journey Agent ${county}`,
+        `coin dispenser machines ${county}`,
+        `coin dispensers ${county}`,
+        `coin machines ${county}`,
         `gift shop displays ${county}`,
         `garden centre displays ${county}`,
         `museum shop solutions ${county}`,
@@ -65,13 +68,18 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         `tourist attraction retail ${county}`,
         `visitor centre solutions ${county}`,
         `theme park displays ${county}`,
+        `coin machine supplier ${county}`,
+        `coin dispenser trade prices ${county}`,
+        `coin machine wholesale ${county}`,
+        `coin dispenser solutions ${county}`,
         `East Anglia gift shops`,
         `East Anglia garden centres`,
         `East Anglia museums`,
         `East Anglia tourist attractions`,
         `East Anglia visitor centres`,
         `East Anglia theme parks`,
-        `East Anglia greeting card shops`
+        `East Anglia greeting card shops`,
+        `East Anglia coin dispensers`
       ]
     }));
 
@@ -83,6 +91,9 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'Global Journey Sales Agent',
         'Global Journey Agent East Anglia',
         'Global Journey East Anglia',
+        'coin dispenser machines East Anglia',
+        'coin dispensers wholesale',
+        'coin machines supplier',
         'gift shop displays East Anglia',
         'garden centre displays East Anglia',
         'museum shop solutions East Anglia',
@@ -112,13 +123,18 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'tourist attraction retail East Anglia',
         'visitor centre solutions East Anglia',
         'theme park displays East Anglia',
+        'coin machine supplier East Anglia',
+        'coin dispenser trade prices',
+        'coin machine wholesale',
+        'coin dispenser solutions',
         'East Anglia gift shops',
         'East Anglia garden centres',
         'East Anglia museums',
         'East Anglia tourist attractions',
         'East Anglia visitor centres',
         'East Anglia theme parks',
-        'East Anglia greeting card shops'
+        'East Anglia greeting card shops',
+        'East Anglia coin dispensers'
       ],
       openGraph: {
         title: baseTitle,
@@ -131,7 +147,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Global Journey - Retail Display Solutions for Gift Shops, Garden Centres & Tourist Attractions in East Anglia'
+            alt: 'Global Journey - Coin Dispensers & Retail Display Solutions for Tourist Attractions in East Anglia'
           }
         ]
       },
@@ -406,37 +422,51 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
 
   // Special handling for Ohh Deer wholesale
   if (company.slug === 'ohh-deer-wholesale') {
-    const baseTitle = `Ohh Deer Sales Agent | A6 Greeting Card Spinners & Displays | Wholesale Card Solutions`;
-    const baseDescription = `Official Ohh Deer sales agent and wholesale supplier in East Anglia. We supply A6 greeting card spinners, display units, and card racks to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Ohh Deer Sales Agent | Laura Ashley & Cath Kidston Cards | Gift Wrap & Stationery`;
+    const baseDescription = `Official Ohh Deer sales agent and wholesale supplier in East Anglia. We supply Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards and stationery, and A6 greeting card spinners to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
     const locationMetadata = counties.map(county => ({
-      title: `Ohh Deer Sales Agent ${county} | A6 Card Spinners & Greeting Card Displays in ${county}`,
-      description: `Looking for an Ohh Deer sales agent in ${county}? We are the official supplier of card display units, spinners, and racks in ${county}. Contact us for trade prices and local delivery.`,
+      title: `Ohh Deer Sales Agent ${county} | Laura Ashley & Cath Kidston Cards in ${county}`,
+      description: `Looking for an Ohh Deer sales agent in ${county}? We are the official supplier of Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards, stationery, and card display units in ${county}. Contact us for trade prices and local delivery.`,
       keywords: [
         `Ohh Deer Sales Agent ${county}`,
         `Ohh Deer Agent ${county}`,
         `Ohh Deer ${county}`,
         `Ohh Deer ${county} wholesaler`,
+        `Laura Ashley cards ${county}`,
+        `Laura Ashley gift bags ${county}`,
+        `Laura Ashley wrapping paper ${county}`,
+        `Cath Kidston cards ${county}`,
+        `Cath Kidston stationery ${county}`,
         `A6 greeting card spinners ${county}`,
         `card display units ${county}`,
         `greeting card racks ${county}`,
         `${county} Ohh Deer distributor`,
         `Ohh Deer local supplier ${county}`,
-        `card spinner trade prices ${county}`,
+        `Laura Ashley trade prices ${county}`,
+        `Cath Kidston trade prices ${county}`,
         `${county} wholesale Ohh Deer`,
         `card display retailer supplier ${county}`,
         `${county} Ohh Deer wholesale prices`,
-        `A6 card spinners ${county}`,
-        `greeting card displays ${county}`,
-        `card racks wholesale ${county}`,
+        `Laura Ashley greeting cards ${county}`,
+        `Laura Ashley gift wrap ${county}`,
+        `Cath Kidston greeting cards ${county}`,
+        `vintage-inspired stationery ${county}`,
+        `floral cards wholesale ${county}`,
         `Ohh Deer trade account ${county}`,
-        `A6 card spinner units ${county}`,
+        `Laura Ashley stationery ${county}`,
+        `Cath Kidston A6 cards ${county}`,
         `greeting card display solutions ${county}`,
         `card spinner wholesale ${county}`,
         `A6 display units distributor ${county}`,
         `card rack trade prices ${county}`,
         `spinner display supplier ${county}`,
-        `A6 greeting card racks supplier ${county}`
+        `Laura Ashley wholesale ${county}`,
+        `Cath Kidston stationery wholesale ${county}`,
+        `vintage cards supplier ${county}`,
+        `floral stationery distributor ${county}`,
+        `Laura Ashley gift bags wholesale ${county}`,
+        `Laura Ashley wrapping paper trade ${county}`
       ]
     }));
 
@@ -448,29 +478,47 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'Ohh Deer Sales Agent',
         'Ohh Deer Agent East Anglia',
         'Ohh Deer wholesale',
+        'Laura Ashley cards wholesale',
+        'Laura Ashley gift bags supplier',
+        'Laura Ashley wrapping paper wholesale',
+        'Cath Kidston cards wholesale',
+        'Cath Kidston stationery supplier',
         'A6 greeting card spinners',
         'card display units wholesale',
         'greeting card racks supplier',
         'Ohh Deer distributor',
-        'card spinner trade prices',
+        'Laura Ashley trade prices',
+        'Cath Kidston trade prices',
         'A6 display wholesale prices',
         'greeting card spinners supplier',
         'East Anglia card displays wholesale',
         'East Anglian spinner supplier',
         'local card display wholesale supplier',
-        'A6 greeting card spinners',
-        'card display units supplier',
-        'greeting card racks',
-        'A6 spinner distributor',
-        'card display trade prices',
-        'greeting card spinner supplier',
-        'A6 card displays East Anglia',
-        'card spinners UK',
-        'greeting card racks wholesale UK',
+        'Laura Ashley greeting cards',
+        'Laura Ashley gift wrap wholesale',
+        'Laura Ashley stationery supplier',
+        'Cath Kidston greeting cards',
+        'vintage-inspired stationery',
+        'floral cards wholesale',
         'A6 card spinner units',
         'greeting card display solutions',
         'card spinner wholesale',
-        'A6 display units wholesale'
+        'A6 display units wholesale',
+        'Laura Ashley wholesale supplier',
+        'Cath Kidston stationery wholesale',
+        'vintage cards supplier',
+        'floral stationery distributor',
+        'Laura Ashley gift bags trade',
+        'Laura Ashley wrapping paper supplier',
+        'Cath Kidston A6 cards',
+        'vintage-inspired greeting cards',
+        'floral stationery wholesale',
+        'Laura Ashley display solutions',
+        'Cath Kidston display solutions',
+        'vintage card racks',
+        'floral stationery supplier',
+        'Laura Ashley gift wrap trade',
+        'Laura Ashley stationery wholesale'
       ],
       openGraph: {
         title: baseTitle,
@@ -483,7 +531,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Ohh Deer A6 Greeting Card Spinners and Display Units'
+            alt: 'Ohh Deer - Laura Ashley & Cath Kidston Cards, Gift Wrap & Stationery'
           }
         ]
       },
@@ -1046,8 +1094,8 @@ function generateStructuredData(company: typeof companies[0]) {
       '@context': 'https://schema.org',
       '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
       '@id': `https://www.easalesltd.co.uk/companies/ohh-deer-wholesale#organization`,
-      'name': 'Ohh Deer Sales Agent - A6 Greeting Card Spinners & Displays',
-      'description': 'Official Ohh Deer sales agent and wholesale supplier in East Anglia. We supply A6 greeting card spinners, display units, and card racks to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+      'name': 'Ohh Deer Sales Agent - Laura Ashley & Cath Kidston Cards, Gift Wrap & Stationery',
+      'description': 'Official Ohh Deer sales agent and wholesale supplier in East Anglia. We supply Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards and stationery, and A6 greeting card spinners to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
       'url': 'https://www.easalesltd.co.uk/companies/ohh-deer-wholesale',
       'logo': {
         '@type': 'ImageObject',
@@ -1066,14 +1114,48 @@ function generateStructuredData(company: typeof companies[0]) {
       })),
       'hasOfferCatalog': {
         '@type': 'OfferCatalog',
-        'name': 'Ohh Deer Sales Agent - Card Display Solutions',
+        'name': 'Ohh Deer Sales Agent - Laura Ashley, Cath Kidston & Card Display Solutions',
         'itemListElement': [
           {
             '@type': 'Offer',
             'itemOffered': {
               '@type': 'Product',
-              'name': 'A6 Greeting Card Spinners',
-              'description': 'Official Ohh Deer sales agent providing high-quality A6 greeting card spinners and display units.',
+              'name': 'Laura Ashley Greeting Cards, Gift Bags & Wrapping Paper',
+              'description': 'Official Ohh Deer sales agent providing Laura Ashley greeting cards, gift bags, and wrapping paper featuring beautiful floral and traditional designs.',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'Laura Ashley'
+              },
+              'category': ['Greeting Cards', 'Gift Bags', 'Wrapping Paper', 'Floral Design', 'Traditional Design', 'Sales Agent Services']
+            },
+            'areaServed': counties.map(county => ({
+              '@type': 'State',
+              'name': county
+            }))
+          },
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'Cath Kidston Greeting Cards & Stationery',
+              'description': 'Official Ohh Deer sales agent providing Cath Kidston greeting cards and stationery featuring iconic floral and vintage-inspired designs.',
+              'brand': {
+                '@type': 'Brand',
+                'name': 'Cath Kidston'
+              },
+              'category': ['Greeting Cards', 'Stationery', 'Vintage Design', 'Floral Cards', 'Sales Agent Services']
+            },
+            'areaServed': counties.map(county => ({
+              '@type': 'State',
+              'name': county
+            }))
+          },
+          {
+            '@type': 'Offer',
+            'itemOffered': {
+              '@type': 'Product',
+              'name': 'A6 Greeting Card Spinners & Displays',
+              'description': 'Official Ohh Deer sales agent providing high-quality A6 greeting card spinners and display units for retail stores.',
               'brand': {
                 '@type': 'Brand',
                 'name': 'Ohh Deer'
