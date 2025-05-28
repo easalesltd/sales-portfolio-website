@@ -100,6 +100,15 @@ export const companies: Company[] = [
     websiteUrl: "https://peppermintgroveaustralia.com"
   },
   {
+    id: "real-and-exciting-designs",
+    name: "Real and Exciting Designs",
+    slug: "real-and-exciting-designs",
+    description: "Real and Exciting Designs offers unique and creative designs for various products, bringing innovation and style to the market.",
+    logoUrl: "/images/logos/real-&-exciting-logo.png",
+    catalogueUrl: "https://drive.google.com/file/d/1c3gVLBxXfuqV5i0fYdjRgvyCYYYFO4_x/view?usp=drive_link",
+    websiteUrl: ""
+  },
+  {
     id: "star-editions",
     name: "Star Editions",
     slug: "star-editions",
@@ -117,4 +126,4 @@ export const companies: Company[] = [
     catalogueUrl: "https://drive.google.com/drive/folders/1o-_e5Cf3dfwR_WyaoFQVkOwlGMMwZLT4?usp=drive_link",
     websiteUrl: "https://www.wplgifts.co.uk"
   }
-]; 
+].sort((a, b) => a.name.localeCompare(b.name)); 
