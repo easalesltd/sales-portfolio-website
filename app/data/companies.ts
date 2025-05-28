@@ -125,14 +125,5 @@ export const companies: Company[] = [
     logoUrl: "/images/logos/wpl-gifts-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1o-_e5Cf3dfwR_WyaoFQVkOwlGMMwZLT4?usp=drive_link",
     websiteUrl: "https://www.wplgifts.co.uk"
-  },
-  {
-    id: "va-cards-and-gifts",
-    name: "V&A Cards and Gifts",
-    slug: "va-cards-and-gifts",
-    description: "Official V&A Museum licensed products, featuring beautiful art-inspired greeting cards, stationery, and gifts. Each product showcases the museum's world-renowned collection of art and design.",
-    logoUrl: "/images/logos/va-cards-and-gifts-placeholder.png",
-    catalogueUrl: "https://drive.google.com/drive/folders/1YOuSwkFPAEHKGuj07oqmnr3MdR0Sv0i6?usp=drive_link",
-    websiteUrl: "https://www.vam.ac.uk/shop"
   }
 ].sort((a, b) => a.name.localeCompare(b.name)); 

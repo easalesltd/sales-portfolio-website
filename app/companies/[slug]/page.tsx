@@ -240,22 +240,25 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
 
   // Special handling for Museums and Galleries
   if (company.slug === 'museums-and-galleries') {
-    const baseTitle = `Museums and Galleries Sales Agent | Sale or Return Christmas Cards & Charity Cards Wholesale`;
-    const baseDescription = `Official Museums and Galleries sales agent and supplier in East Anglia. We supply charity Christmas cards, licensed art cards, and sale or return greeting cards to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Museums and Galleries Sales Agent | V&A Museum Cards & Sale or Return Christmas Cards | Wholesale Supplier`;
+    const baseDescription = `Official Museums and Galleries sales agent and supplier in East Anglia. We supply V&A Museum licensed art cards, charity Christmas cards, and sale or return greeting cards to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
     const locationMetadata = counties.map(county => ({
-      title: `Museums and Galleries Sales Agent ${county} | Sale or Return Cards & Charity Christmas Cards in ${county}`,
-      description: `Looking for a Museums and Galleries sales agent in ${county}? We are the official supplier of sale or return Christmas cards and licensed art cards in ${county}. Contact us for trade prices and local delivery.`,
+      title: `Museums and Galleries Sales Agent ${county} | V&A Museum Cards & Sale or Return Cards in ${county}`,
+      description: `Looking for a Museums and Galleries sales agent in ${county}? We are the official supplier of V&A Museum licensed art cards, sale or return Christmas cards, and licensed art cards in ${county}. Contact us for trade prices and local delivery.`,
       keywords: [
         `Museums and Galleries Sales Agent ${county}`,
         `Museums and Galleries Agent ${county}`,
         `Museums and Galleries ${county}`,
         `Museums and Galleries ${county} wholesaler`,
+        `V&A Museum cards ${county}`,
+        `V&A licensed art cards ${county}`,
         `sale or return Christmas cards ${county}`,
         `charity Christmas cards ${county}`,
         `licensed art cards ${county}`,
         `${county} Museums and Galleries distributor`,
         `Museums and Galleries local supplier ${county}`,
+        `V&A cards trade prices ${county}`,
         `sale or return cards trade prices ${county}`,
         `${county} wholesale Museums and Galleries`,
         `charity cards retailer supplier ${county}`,
@@ -266,6 +269,10 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         `Museums and Galleries trade account ${county}`,
         `sale or return greeting cards ${county}`,
         `charity Christmas cards wholesale ${county}`,
+        `V&A Museum licensed products ${county}`,
+        `art-inspired cards ${county}`,
+        `museum stationery ${county}`,
+        `V&A Museum gifts ${county}`,
         `licensed art Christmas cards ${county}`,
         `sale or return cards distributor ${county}`,
         `charity cards trade prices ${county}`,
@@ -282,16 +289,23 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'Museums and Galleries Sales Agent',
         'Museums and Galleries Agent East Anglia',
         'Museums and Galleries wholesale',
+        'V&A Museum cards wholesale',
+        'V&A licensed art cards supplier',
         'sale or return Christmas cards',
         'charity Christmas cards wholesale',
         'licensed art cards supplier',
         'Museums and Galleries distributor',
+        'V&A cards trade prices',
         'sale or return cards trade prices',
         'charity cards wholesale prices',
         'licensed greeting cards supplier',
         'East Anglia art cards wholesale',
         'East Anglian licensed art supplier',
         'local art cards wholesale supplier',
+        'V&A Museum licensed products',
+        'art-inspired cards supplier',
+        'museum stationery distributor',
+        'V&A Museum gifts supplier',
         'sale or return greeting cards',
         'charity Christmas cards supplier',
         'licensed art Christmas cards',
@@ -300,7 +314,10 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'sale or return cards supplier',
         'charity Christmas cards East Anglia',
         'sale or return cards UK',
-        'charity cards wholesale UK'
+        'charity cards wholesale UK',
+        'V&A Museum products wholesale',
+        'art-inspired stationery supplier',
+        'museum licensed products'
       ],
       openGraph: {
         title: baseTitle,
@@ -313,7 +330,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Museums and Galleries sale or return and charity Christmas cards'
+            alt: 'Museums and Galleries - V&A Museum Cards, Sale or Return & Charity Christmas Cards'
           }
         ]
       },
@@ -422,12 +439,12 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
 
   // Special handling for Ohh Deer wholesale
   if (company.slug === 'ohh-deer-wholesale') {
-    const baseTitle = `Ohh Deer Sales Agent | Laura Ashley & Cath Kidston Cards | Gift Wrap & Stationery`;
-    const baseDescription = `Official Ohh Deer sales agent and wholesale supplier in East Anglia. We supply Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards and stationery, and A6 greeting card spinners to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Ohh Deer Sales Agent | Laura Ashley, Cath Kidston & V&A Cards | Gift Wrap & Stationery`;
+    const baseDescription = `Official Ohh Deer sales agent and wholesale supplier in East Anglia. We supply Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards and stationery, V&A Museum licensed products, and A6 greeting card spinners to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
     const locationMetadata = counties.map(county => ({
-      title: `Ohh Deer Sales Agent ${county} | Laura Ashley & Cath Kidston Cards in ${county}`,
-      description: `Looking for an Ohh Deer sales agent in ${county}? We are the official supplier of Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards, stationery, and card display units in ${county}. Contact us for trade prices and local delivery.`,
+      title: `Ohh Deer Sales Agent ${county} | Laura Ashley, Cath Kidston & V&A Cards in ${county}`,
+      description: `Looking for an Ohh Deer sales agent in ${county}? We are the official supplier of Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards and stationery, V&A Museum licensed products, and card display units in ${county}. Contact us for trade prices and local delivery.`,
       keywords: [
         `Ohh Deer Sales Agent ${county}`,
         `Ohh Deer Agent ${county}`,
@@ -438,6 +455,8 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         `Laura Ashley wrapping paper ${county}`,
         `Cath Kidston cards ${county}`,
         `Cath Kidston stationery ${county}`,
+        `V&A Museum cards ${county}`,
+        `V&A licensed products ${county}`,
         `A6 greeting card spinners ${county}`,
         `card display units ${county}`,
         `greeting card racks ${county}`,
@@ -445,17 +464,21 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         `Ohh Deer local supplier ${county}`,
         `Laura Ashley trade prices ${county}`,
         `Cath Kidston trade prices ${county}`,
+        `V&A cards trade prices ${county}`,
         `${county} wholesale Ohh Deer`,
         `card display retailer supplier ${county}`,
         `${county} Ohh Deer wholesale prices`,
         `Laura Ashley greeting cards ${county}`,
         `Laura Ashley gift wrap ${county}`,
         `Cath Kidston greeting cards ${county}`,
+        `V&A Museum licensed art cards ${county}`,
         `vintage-inspired stationery ${county}`,
         `floral cards wholesale ${county}`,
+        `art-inspired cards ${county}`,
         `Ohh Deer trade account ${county}`,
         `Laura Ashley stationery ${county}`,
         `Cath Kidston A6 cards ${county}`,
+        `V&A Museum stationery ${county}`,
         `greeting card display solutions ${county}`,
         `card spinner wholesale ${county}`,
         `A6 display units distributor ${county}`,
