@@ -5,33 +5,71 @@ import OrderForm from '../[slug]/OrderForm'
 import VideoBackground from '../../components/VideoBackground'
 import ImageGallery from '../../components/ImageGallery'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const company = companies.find((c) => c.slug === 'real-and-exciting-designs')
-  if (!company) {
-    return {
-      title: 'Company Not Found',
-      description: 'The requested company could not be found.'
-    }
-  }
+const counties = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire']
 
-  const baseTitle = `${company.name} - Sales Agent & Wholesale Supplier in East Anglia`
-  const baseDescription = `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`
+function generateCompanyMetadata(company: typeof companies[0]): Metadata {
+  const baseTitle = `Real and Exciting Designs Sales Agent | Contemporary Fashion Led Greeting Cards & Gift Wrap | Wholesale Supplier`;
+  const baseDescription = `Official Real and Exciting Designs sales agent and wholesale supplier in East Anglia. We supply contemporary fashion led greeting cards, gift wrap, and notebooks to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+  
+  const locationMetadata = counties.map(county => ({
+    title: `Real and Exciting Designs Sales Agent ${county} | Contemporary Greeting Cards & Gift Wrap in ${county}`,
+    description: `Looking for a Real and Exciting Designs sales agent in ${county}? We are the official supplier of contemporary fashion led greeting cards, gift wrap, and notebooks in ${county}. Contact us for trade prices and local delivery.`,
+    keywords: [
+      `Real and Exciting Designs Sales Agent ${county}`,
+      `Real and Exciting Designs Agent ${county}`,
+      `Real and Exciting Designs ${county}`,
+      `Real and Exciting Designs ${county} wholesaler`,
+      `contemporary greeting cards ${county}`,
+      `fashion led cards ${county}`,
+      `gift wrap wholesale ${county}`,
+      `notebooks wholesale ${county}`,
+      `${county} Real and Exciting Designs distributor`,
+      `Real and Exciting Designs local supplier ${county}`,
+      `greeting cards trade prices ${county}`,
+      `${county} wholesale Real and Exciting Designs`,
+      `gift wrap retailer supplier ${county}`,
+      `${county} Real and Exciting Designs wholesale prices`,
+      `contemporary cards ${county}`,
+      `fashion led notebooks ${county}`,
+      `gift wrap wholesale ${county}`,
+      `Real and Exciting Designs trade account ${county}`,
+      `contemporary greeting cards wholesale ${county}`,
+      `fashion led gift wrap ${county}`,
+      `notebooks trade prices ${county}`,
+      `greeting cards supplier ${county}`,
+      `gift wrap supplier ${county}`,
+      `notebooks supplier ${county}`
+    ]
+  }));
 
   return {
     title: baseTitle,
     description: baseDescription,
     keywords: [
-      `${company.name} Sales Agent`,
-      `${company.name} Agent East Anglia`,
-      `${company.name} wholesale`,
-      `${company.name} supplier`,
-      `${company.name} distributor`,
-      `${company.name} trade prices`,
-      `${company.name} wholesale prices`,
-      `${company.name} retailer supplier`,
-      'East Anglia wholesale',
-      'East Anglian supplier',
-      'local wholesale supplier'
+      ...locationMetadata.flatMap(m => m.keywords),
+      'Real and Exciting Designs Sales Agent',
+      'Real and Exciting Designs Agent East Anglia',
+      'Real and Exciting Designs wholesale',
+      'contemporary greeting cards supplier',
+      'fashion led cards wholesale',
+      'gift wrap trade prices',
+      'Real and Exciting Designs distributor',
+      'greeting cards wholesale prices',
+      'gift wrap supplier',
+      'East Anglia notebooks wholesale',
+      'East Anglian greeting cards supplier',
+      'local gift wrap supplier',
+      'contemporary greeting cards wholesale',
+      'fashion led notebooks supplier',
+      'gift wrap wholesale',
+      'notebooks products',
+      'contemporary cards East Anglia',
+      'fashion led gift wrap UK',
+      'notebooks wholesale UK',
+      'Real and Exciting Designs greeting cards',
+      'contemporary fashion led cards',
+      'gift wrap wholesale',
+      'notebooks supplier'
     ],
     openGraph: {
       title: baseTitle,
@@ -44,18 +82,76 @@ export async function generateMetadata(): Promise<Metadata> {
           url: company.logoUrl,
           width: 800,
           height: 600,
-          alt: `${company.name} logo`
+          alt: 'Real and Exciting Designs - Contemporary Fashion Led Greeting Cards & Gift Wrap'
         }
       ]
     },
     alternates: {
-      canonical: `https://easalesltd.com/companies/${company.slug}`
+      canonical: `https://easalesltd.com/companies/real-and-exciting-designs`
     },
     robots: {
       index: true,
       follow: true
     }
+  };
+}
+
+function generateStructuredData(company: typeof companies[0]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
+    '@id': `https://www.easalesltd.co.uk/companies/real-and-exciting-designs#organization`,
+    'name': 'Real and Exciting Designs Sales Agent - Contemporary Fashion Led Greeting Cards & Gift Wrap',
+    'description': 'Official Real and Exciting Designs sales agent and wholesale supplier in East Anglia. We supply contemporary fashion led greeting cards, gift wrap, and notebooks to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+    'url': 'https://www.easalesltd.co.uk/companies/real-and-exciting-designs',
+    'logo': {
+      '@type': 'ImageObject',
+      'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
+      'width': '800',
+      'height': '600'
+    },
+    'areaServed': counties.map(county => ({
+      '@type': 'State',
+      'name': county,
+      'address': {
+        '@type': 'PostalAddress',
+        'addressRegion': county,
+        'addressCountry': 'GB'
+      }
+    })),
+    'hasOfferCatalog': {
+      '@type': 'OfferCatalog',
+      'name': 'Real and Exciting Designs Sales Agent - Product Catalog',
+      'itemListElement': {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Product',
+          'name': 'Real and Exciting Designs Products',
+          'description': 'Contemporary fashion led greeting cards, gift wrap, and notebooks designed and printed in England using FSC board.',
+          'brand': {
+            '@type': 'Brand',
+            'name': 'Real and Exciting Designs'
+          },
+          'category': ['Greeting Cards', 'Gift Wrap', 'Notebooks', 'Stationery', 'East Anglia Retail']
+        },
+        'areaServed': counties.map(county => ({
+          '@type': 'State',
+          'name': county
+        }))
+      }
+    }
+  };
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const company = companies.find((c) => c.slug === 'real-and-exciting-designs')
+  if (!company) {
+    return {
+      title: 'Company Not Found',
+      description: 'The requested company could not be found.'
+    }
   }
+  return generateCompanyMetadata(company)
 }
 
 export default async function CompanyPage() {
@@ -73,8 +169,16 @@ export default async function CompanyPage() {
     '/images/companies/Real & Exciting Designs/acaf8625-698f-43fe-b3ce-34247404bb5d.jpeg'
   ]
 
+  const structuredData = generateStructuredData(company)
+
   return (
     <main className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData)
+        }}
+      />
       <div className="relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
