@@ -64,6 +64,8 @@ export default async function CompanyPage() {
     return <div>Company not found</div>
   }
 
+  const detailedDescription = "Real and Exciting Designs was established in 1996 by textile designer Sarah Curedale-Raynor. Since then RED has gone on to create many ground-breaking ranges in the greeting card industry and is best known for its contemporary fashion led designs. All our products are designed and printed in England and use FSC board for cards & Envelopes. We sell extensively sold throughout the UK and exported worldwide to the USA, Australia, New Zealand, and Europe."
+
   const images = [
     '/images/companies/Real & Exciting Designs/a0ed6336-e2ad-4373-8cc7-a3631d177ceb.jpeg',
     '/images/companies/Real & Exciting Designs/c85f6dc5-1cb4-43f6-8eb5-fadd5bc56678.jpeg',
@@ -93,7 +95,7 @@ export default async function CompanyPage() {
                   {company.name}
                   <div className="h-1 w-20 bg-blue-600 mt-2" />
                 </h1>
-                <p className="text-xl leading-relaxed text-gray-600">{company.description}</p>
+                <p className="text-xl leading-relaxed text-gray-600">{detailedDescription}</p>
 
                 {/* Image Gallery */}
                 <div className="mt-12">

@@ -103,7 +103,7 @@ export const companies: Company[] = [
     id: "real-and-exciting-designs",
     name: "Real and Exciting Designs",
     slug: "real-and-exciting-designs",
-    description: "Real and Exciting Designs offers unique and creative designs for various products, bringing innovation and style to the market.",
+    description: "Real and Exciting Designs produces a trendy and sophisticated range of Everyday and Christmas Greetings Cards, as well as fabulous Foiled Gift wrap and Notebooks.",
     logoUrl: "/images/logos/real-&-exciting-logo.png",
     catalogueUrl: "https://drive.google.com/file/d/1c3gVLBxXfuqV5i0fYdjRgvyCYYYFO4_x/view?usp=drive_link",
     websiteUrl: ""
