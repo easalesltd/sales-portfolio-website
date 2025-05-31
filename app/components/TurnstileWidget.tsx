@@ -2,20 +2,16 @@
 
 import React, { useEffect } from 'react';
 import { Turnstile } from '@marsidev/react-turnstile';
-import { verifyTurnstileToken } from '../lib/turnstile';
 
 interface TurnstileWidgetProps {
-  onVerify?: (token: string) => void;
+  onVerify?: () => void;
   onError?: () => void;
 }
 
 const TurnstileWidget = ({ onVerify, onError }: TurnstileWidgetProps) => {
-  const handleVerify = async (token: string) => {
-    const isValid = await verifyTurnstileToken(token);
-    if (isValid && onVerify) {
-      onVerify(token);
-    } else if (!isValid && onError) {
-      onError();
+  const handleVerify = () => {
+    if (onVerify) {
+      onVerify();
     }
   };
 
