@@ -11,17 +11,11 @@ interface TurnstileWidgetProps {
 
 const TurnstileWidget = ({ onVerify, onError }: TurnstileWidgetProps) => {
   const handleVerify = async (token: string) => {
-    try {
-      const isValid = await verifyTurnstileToken(token);
-      if (isValid && onVerify) {
-        onVerify(token);
-      } else if (!isValid && onError) {
-        onError();
-      }
-    } catch {
-      if (onError) {
-        onError();
-      }
+    const isValid = await verifyTurnstileToken(token);
+    if (isValid && onVerify) {
+      onVerify(token);
+    } else if (!isValid && onError) {
+      onError();
     }
   };
 
