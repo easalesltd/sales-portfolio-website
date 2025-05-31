@@ -9,15 +9,14 @@ export async function verifyTurnstileToken(token: string): Promise<boolean> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        secret: TURNSTILE_SECRET_KEY,
+        secret: process.env.TURNSTILE_SECRET_KEY,
         response: token,
       }),
     });
 
     const data = await response.json();
-    return data.success === true;
-  } catch (error) {
-    console.error('Error verifying Turnstile token:', error);
+    return data.success;
+  } catch {
     return false;
   }
 } 

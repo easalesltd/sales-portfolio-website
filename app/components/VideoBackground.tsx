@@ -7,18 +7,15 @@ interface VideoBackgroundProps {
   videoUrl: string;
   children: React.ReactNode;
   fadeIn?: boolean;
-  fadeOut?: boolean;
 }
 
 export default function VideoBackground({ 
   videoUrl, 
   children,
-  fadeIn = true,
-  fadeOut = true
+  fadeIn = true
 }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -12,7 +12,7 @@ export default function BrandsDropdown() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const closeTimeout = useRef<NodeJS.Timeout | null>(null);
+  const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {

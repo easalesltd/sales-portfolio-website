@@ -1,13 +1,8 @@
 'use client';
 
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { useTurnstile } from '../contexts/TurnstileContext';
-
-interface TurnstileWidgetProps {
-  onVerify: (token: string) => void;
-  onError?: (error: any) => void;
-}
 
 const TurnstileWidget = () => {
   const { execute } = useTurnstile();
@@ -15,7 +10,7 @@ const TurnstileWidget = () => {
   const handleVerify = async () => {
     try {
       await execute();
-    } catch (error) {
+    } catch {
       // Handle error silently
     }
   };

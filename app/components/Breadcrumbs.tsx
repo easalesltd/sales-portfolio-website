@@ -62,12 +62,12 @@ export default function Breadcrumbs() {
       />
       <nav aria-label="Breadcrumb" className="bg-gray-50 py-3 px-4">
         <ol className="flex flex-wrap items-center space-x-2 text-sm text-gray-600">
-          {breadcrumbs.map((item, index) => (
+          {breadcrumbs.map((item) => (
             <li key={item.href} className="flex items-center">
-              {index > 0 && (
+              {item.href !== '/' && (
                 <span className="mx-2 text-gray-400">/</span>
               )}
-              {index === breadcrumbs.length - 1 ? (
+              {item.href === '/' ? (
                 <span className="text-gray-900 font-medium">{item.label}</span>
               ) : (
                 <Link

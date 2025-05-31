@@ -52,10 +52,10 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Welcome to EA Sales</h2>
           <p className="text-lg text-gray-700 mb-6">
-            We're your friendly supplier of quality Greeting Cards, Stationery, and Gifts across East Anglia. From charming Independent Shops to bustling Garden Centres, we help retailers create amazing displays that customers love.
+            We&apos;re your friendly supplier of quality Greeting Cards, Stationery, and Gifts across East Anglia. From charming Independent Shops to bustling Garden Centres, we help retailers create amazing displays that customers love.
           </p>
           <p className="text-lg text-gray-700 mb-8">
-            Based in Suffolk and covering Norfolk, Essex, and Cambridgeshire, we're here to help your business grow. Ready to explore our brands? Let's chat!
+            Based in Suffolk and covering Norfolk, Essex, and Cambridgeshire, we&apos;re here to help your business grow. Ready to explore our brands? Let&apos;s chat!
           </p>
           <div className="flex justify-center gap-6">
             <button

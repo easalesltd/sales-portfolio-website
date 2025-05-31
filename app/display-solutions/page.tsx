@@ -169,14 +169,14 @@ export default function DisplaySolutionsPage() {
           <div className="mb-12">
             <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
               Looking for professional display solutions at no cost? We offer FREE greeting card spinners and giftware displays to help showcase your products! 
-              From counter displays to wall units, we'll help you create eye-catching displays that your customers will love - all at no charge to you. 
+              From counter displays to wall units, we&apos;ll help you create eye-catching displays that your customers will love - all at no charge to you. 
               Take a look at our complimentary options below - just click on any section to see examples of what we can provide for free.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <DisplaySection 
                 title="Counter Display Units (CDU)"
-                description="Perfect for making the most of your counter space - these displays are great for catching your customer's eye right at the point of sale."
+                description="Perfect for making the most of your counter space - these displays are great for catching your customer&apos;s eye right at the point of sale."
                 images={cduImages}
                 features={[
                   'Custom-designed counter units',
@@ -246,7 +246,7 @@ export default function DisplaySolutionsPage() {
           <div className="bg-blue-50 rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Need Display Solutions?</h2>
             <p className="text-lg text-gray-700 mb-6">
-              Contact us to discuss your display requirements. We'll help you find the perfect solution for your retail space.
+              Contact us to discuss your display requirements. We&apos;ll help you find the perfect solution for your retail space.
             </p>
             <Link 
               href="/contact" 
