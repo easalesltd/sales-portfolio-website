@@ -4,6 +4,7 @@ import { companies } from '../../data/companies'
 import OrderForm from './OrderForm'
 import VideoBackground from '../../components/VideoBackground'
 import ImageGallery from '../../components/ImageGallery'
+import { Company } from '@/app/lib/types'
 
 // Add shuffle function at the top level
 function shuffleArray<T>(array: T[]): T[] {
@@ -21,65 +22,48 @@ interface Props {
   }
 }
 
-const counties = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
-type County = typeof counties[number];
-
 function generateCompanyMetadata(company: typeof companies[0]): Metadata {
   // Special handling for Global Journey
   if (company.slug === 'global-journey-gifts') {
-    const baseTitle = `Global Journey Sales Agent | Coin Dispensers & Retail Display Solutions for Tourist Attractions in East Anglia`;
-    const baseDescription = `Official Global Journey sales agent and wholesale supplier for gift shops, garden centres, museums, and tourist attractions in East Anglia. We provide high-quality coin dispenser machines, innovative retail display solutions, interactive gift products, and high-performance spinner units with local delivery and personal support across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Global Journey Sales Agent | Coin Dispensers & Retail Display Solutions | East Anglia`;
+    const baseDescription = `Official Global Journey sales agent and wholesale supplier in East Anglia. We supply coin dispenser machines, high-performance spinner units, and innovative retail display solutions for gift shops, garden centres, museums, and tourist attractions across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
-    const locationMetadata = counties.map(county => ({
-      title: `Global Journey Sales Agent ${county} | Coin Dispensers & Display Solutions for Tourist Attractions in ${county}`,
-      description: `Looking for a Global Journey sales agent in ${county}? We are the official supplier of coin dispenser machines, high-performance spinner units, and interactive gift solutions for gift shops, garden centres, museums, and tourist attractions in ${county}. Local sales agent with personal support and same-day delivery.`,
+    const locationMetadata = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+      title: `Global Journey Sales Agent ${county} | Coin Dispensers & Retail Display Solutions in ${county}`,
+      description: `Looking for a Global Journey sales agent in ${county}? We are the official supplier of coin dispenser machines, spinner units, and retail display solutions for gift shops, garden centres, and tourist attractions in ${county}. Contact us for trade prices and local delivery.`,
       keywords: [
         `Global Journey Sales Agent ${county}`,
         `Global Journey Agent ${county}`,
+        `Global Journey ${county}`,
+        `Global Journey ${county} wholesaler`,
         `coin dispenser machines ${county}`,
-        `coin dispensers ${county}`,
-        `coin machines ${county}`,
+        `retail display solutions ${county}`,
+        `spinner units ${county}`,
+        `gift shop supplier ${county}`,
+        `garden centre supplier ${county}`,
+        `museum supplier ${county}`,
+        `tourist attraction supplier ${county}`,
+        `coin dispensers wholesale ${county}`,
+        `display solutions ${county}`,
+        `spinner solutions ${county}`,
+        `gift shop solutions ${county}`,
+        `garden centre solutions ${county}`,
+        `museum solutions ${county}`,
+        `tourist attraction solutions ${county}`,
+        `coin dispensers trade prices ${county}`,
+        `display solutions trade prices ${county}`,
+        `spinner units trade prices ${county}`,
         `gift shop displays ${county}`,
         `garden centre displays ${county}`,
-        `museum shop solutions ${county}`,
+        `museum displays ${county}`,
         `tourist attraction displays ${county}`,
-        `visitor centre displays ${county}`,
-        `theme park retail ${county}`,
-        `greeting card shop displays ${county}`,
-        `retail spinner units ${county}`,
-        `interactive displays ${county}`,
-        `retail display support ${county}`,
-        `spinner solutions ${county}`,
-        `gift shop innovation ${county}`,
-        `retail technology ${county}`,
-        `customer engagement ${county}`,
-        `retail display quality ${county}`,
-        `interactive retail ${county}`,
-        `spinner performance ${county}`,
-        `retail innovation ${county}`,
-        `gift display solutions ${county}`,
-        `retail support ${county}`,
-        `${county} local supplier`,
-        `independent retailer support ${county}`,
-        `same day delivery ${county}`,
-        `personal retail support ${county}`,
-        `garden centre retail ${county}`,
-        `museum shop displays ${county}`,
-        `tourist attraction retail ${county}`,
-        `visitor centre solutions ${county}`,
-        `theme park displays ${county}`,
-        `coin machine supplier ${county}`,
-        `coin dispenser trade prices ${county}`,
-        `coin machine wholesale ${county}`,
-        `coin dispenser solutions ${county}`,
-        `East Anglia gift shops`,
-        `East Anglia garden centres`,
-        `East Anglia museums`,
-        `East Anglia tourist attractions`,
-        `East Anglia visitor centres`,
-        `East Anglia theme parks`,
-        `East Anglia greeting card shops`,
-        `East Anglia coin dispensers`
+        `coin dispensers supplier ${county}`,
+        `display solutions distributor ${county}`,
+        `spinner units local supplier ${county}`,
+        `gift shop local supplier ${county}`,
+        `garden centre local supplier ${county}`,
+        `museum local supplier ${county}`,
+        `tourist attraction local supplier ${county}`
       ]
     }));
 
@@ -90,51 +74,42 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         ...locationMetadata.flatMap(m => m.keywords),
         'Global Journey Sales Agent',
         'Global Journey Agent East Anglia',
-        'Global Journey East Anglia',
-        'coin dispenser machines East Anglia',
+        'Global Journey wholesale',
+        'coin dispenser machines supplier',
+        'retail display solutions wholesale',
+        'spinner units supplier',
+        'gift shop supplier',
+        'garden centre supplier',
+        'museum supplier',
+        'tourist attraction supplier',
         'coin dispensers wholesale',
-        'coin machines supplier',
-        'gift shop displays East Anglia',
-        'garden centre displays East Anglia',
-        'museum shop solutions East Anglia',
-        'tourist attraction displays East Anglia',
-        'visitor centre displays East Anglia',
-        'theme park retail East Anglia',
-        'greeting card shop displays East Anglia',
-        'retail spinner units East Anglia',
-        'interactive displays East Anglia',
-        'retail display support East Anglia',
-        'spinner solutions East Anglia',
-        'gift shop innovation East Anglia',
-        'retail technology East Anglia',
-        'customer engagement East Anglia',
-        'retail display quality East Anglia',
-        'interactive retail East Anglia',
-        'spinner performance East Anglia',
-        'retail innovation East Anglia',
-        'gift display solutions East Anglia',
-        'retail support East Anglia',
-        'local supplier East Anglia',
-        'independent retailer support East Anglia',
-        'same day delivery East Anglia',
-        'personal retail support East Anglia',
-        'garden centre retail East Anglia',
-        'museum shop displays East Anglia',
-        'tourist attraction retail East Anglia',
-        'visitor centre solutions East Anglia',
-        'theme park displays East Anglia',
-        'coin machine supplier East Anglia',
-        'coin dispenser trade prices',
-        'coin machine wholesale',
-        'coin dispenser solutions',
+        'display solutions',
+        'spinner solutions',
+        'gift shop solutions',
+        'garden centre solutions',
+        'museum solutions',
+        'tourist attraction solutions',
+        'coin dispensers trade prices',
+        'display solutions trade prices',
+        'spinner units trade prices',
+        'gift shop displays',
+        'garden centre displays',
+        'museum displays',
+        'tourist attraction displays',
+        'coin dispensers supplier',
+        'display solutions distributor',
+        'spinner units local supplier',
+        'gift shop local supplier',
+        'garden centre local supplier',
+        'museum local supplier',
+        'tourist attraction local supplier',
+        'East Anglia coin dispensers',
+        'East Anglia retail displays',
+        'East Anglia spinner units',
         'East Anglia gift shops',
         'East Anglia garden centres',
         'East Anglia museums',
-        'East Anglia tourist attractions',
-        'East Anglia visitor centres',
-        'East Anglia theme parks',
-        'East Anglia greeting card shops',
-        'East Anglia coin dispensers'
+        'East Anglia tourist attractions'
       ],
       openGraph: {
         title: baseTitle,
@@ -147,7 +122,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Global Journey - Coin Dispensers & Retail Display Solutions for Tourist Attractions in East Anglia'
+            alt: 'Global Journey - Coin Dispensers & Retail Display Solutions'
           }
         ]
       },
@@ -163,31 +138,40 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
 
   // Special handling for David Fischhoff
   if (company.slug === 'david-fischhoff') {
-    const baseTitle = `David Fischhoff Memorial & Graveside Supplier | East Anglian Sales LTD`;
-    const baseDescription = `Official David Fischhoff memorial and graveside supplier in East Anglia. We supply high-quality memorial vases, urns, and gravestone accessories to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `David Fischhoff Sales Agent | Memorial & Graveside Products | East Anglia`;
+    const baseDescription = `Official David Fischhoff sales agent and wholesale supplier in East Anglia. We supply high-quality memorial vases, urns, gravestone accessories, and graveside products to funeral directors, memorial masons, and retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
-    const locationMetadata = counties.map(county => ({
-      title: `David Fischhoff ${county} Memorial Supplier | Graveside Products in ${county}`,
-      description: `Looking for David Fischhoff memorial products in ${county}? We are the official supplier of memorial vases, urns, and gravestone accessories in ${county}. Contact us for trade prices and local delivery.`,
+    const locationMetadata = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+      title: `David Fischhoff Sales Agent ${county} | Memorial & Graveside Products in ${county}`,
+      description: `Looking for a David Fischhoff sales agent in ${county}? We are the official supplier of memorial vases, urns, and gravestone accessories to funeral directors and memorial masons in ${county}. Contact us for trade prices and local delivery.`,
       keywords: [
-        `David Fischhoff memorial ${county}`,
-        `David Fischhoff graveside ${county}`,
+        `David Fischhoff Sales Agent ${county}`,
+        `David Fischhoff Agent ${county}`,
+        `David Fischhoff ${county}`,
+        `David Fischhoff ${county} wholesaler`,
         `memorial vases ${county}`,
         `gravestone accessories ${county}`,
         `memorial urns ${county}`,
-        `${county} memorial supplier`,
-        `memorial wholesaler ${county}`,
         `graveside products ${county}`,
-        `memorial trade prices ${county}`,
-        `${county} memorial distributor`,
-        `memorial local supplier ${county}`,
-        `memorial retailer supplier ${county}`,
-        `memorial wholesale prices ${county}`,
-        `memorial trade account ${county}`,
-        `mum gravestones ${county}`,
-        `memorial vases wholesale ${county}`,
-        `memorial urns wholesale ${county}`,
-        `gravestone accessories wholesale ${county}`
+        `funeral director supplier ${county}`,
+        `memorial mason supplier ${county}`,
+        `memorial products wholesale ${county}`,
+        `gravestone solutions ${county}`,
+        `memorial solutions ${county}`,
+        `funeral director solutions ${county}`,
+        `memorial mason solutions ${county}`,
+        `memorial products trade prices ${county}`,
+        `gravestone accessories trade prices ${county}`,
+        `memorial urns trade prices ${county}`,
+        `graveside products wholesale ${county}`,
+        `funeral director displays ${county}`,
+        `memorial mason displays ${county}`,
+        `memorial products supplier ${county}`,
+        `gravestone accessories distributor ${county}`,
+        `memorial urns local supplier ${county}`,
+        `graveside products local supplier ${county}`,
+        `funeral director local supplier ${county}`,
+        `memorial mason local supplier ${county}`
       ]
     }));
 
@@ -196,22 +180,38 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
       description: baseDescription,
       keywords: [
         ...locationMetadata.flatMap(m => m.keywords),
-        'David Fischhoff memorial wholesale',
+        'David Fischhoff Sales Agent',
+        'David Fischhoff Agent East Anglia',
+        'David Fischhoff wholesale',
         'memorial vases supplier',
-        'graveside products distributor',
-        'memorial trade prices',
-        'memorial wholesale prices',
+        'gravestone accessories wholesale',
+        'memorial urns supplier',
+        'graveside products supplier',
+        'funeral director supplier',
+        'memorial mason supplier',
+        'memorial products wholesale',
+        'gravestone solutions',
+        'memorial solutions',
+        'funeral director solutions',
+        'memorial mason solutions',
+        'memorial products trade prices',
+        'gravestone accessories trade prices',
+        'memorial urns trade prices',
+        'graveside products wholesale',
+        'funeral director displays',
+        'memorial mason displays',
         'memorial products supplier',
-        'East Anglia memorial wholesale',
-        'East Anglian memorial supplier',
-        'local memorial supplier',
-        'mum gravestones wholesale',
-        'memorial vases trade prices',
-        'memorial urns wholesale',
-        'gravestone accessories trade',
-        'memorial products East Anglia',
-        'memorial wholesaler UK',
-        'graveside products supplier'
+        'gravestone accessories distributor',
+        'memorial urns local supplier',
+        'graveside products local supplier',
+        'funeral director local supplier',
+        'memorial mason local supplier',
+        'East Anglia memorial products',
+        'East Anglia gravestone accessories',
+        'East Anglia memorial urns',
+        'East Anglia graveside products',
+        'East Anglia funeral directors',
+        'East Anglia memorial masons'
       ],
       openGraph: {
         title: baseTitle,
@@ -224,7 +224,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'David Fischhoff memorial and graveside products'
+            alt: 'David Fischhoff - Memorial & Graveside Products'
           }
         ]
       },
@@ -240,44 +240,55 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
 
   // Special handling for Museums and Galleries
   if (company.slug === 'museums-and-galleries') {
-    const baseTitle = `Museums and Galleries Sales Agent | V&A Museum Cards & Sale or Return Christmas Cards | Wholesale Supplier`;
-    const baseDescription = `Official Museums and Galleries sales agent and supplier in East Anglia. We supply V&A Museum licensed art cards, charity Christmas cards, and sale or return greeting cards to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Museums and Galleries Sales Agent | Licensed Art Cards & Sale or Return Christmas Cards | East Anglia`;
+    const baseDescription = `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. We supply licensed art cards, charity Christmas cards, and sale or return greeting cards to gift shops, museums, galleries, and retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
-    const locationMetadata = counties.map(county => ({
-      title: `Museums and Galleries Sales Agent ${county} | V&A Museum Cards & Sale or Return Cards in ${county}`,
-      description: `Looking for a Museums and Galleries sales agent in ${county}? We are the official supplier of V&A Museum licensed art cards, sale or return Christmas cards, and licensed art cards in ${county}. Contact us for trade prices and local delivery.`,
+    const locationMetadata = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+      title: `Museums and Galleries Sales Agent ${county} | Licensed Art Cards & Sale or Return Cards in ${county}`,
+      description: `Looking for a Museums and Galleries sales agent in ${county}? We are the official supplier of licensed art cards, sale or return Christmas cards, and museum stationery to gift shops, museums, and galleries in ${county}. Contact us for trade prices and local delivery.`,
       keywords: [
         `Museums and Galleries Sales Agent ${county}`,
         `Museums and Galleries Agent ${county}`,
         `Museums and Galleries ${county}`,
         `Museums and Galleries ${county} wholesaler`,
-        `V&A Museum cards ${county}`,
-        `V&A licensed art cards ${county}`,
+        `licensed art cards ${county}`,
+        `museum stationery ${county}`,
         `sale or return Christmas cards ${county}`,
         `charity Christmas cards ${county}`,
-        `licensed art cards ${county}`,
-        `${county} Museums and Galleries distributor`,
-        `Museums and Galleries local supplier ${county}`,
-        `V&A cards trade prices ${county}`,
-        `sale or return cards trade prices ${county}`,
-        `${county} wholesale Museums and Galleries`,
-        `charity cards retailer supplier ${county}`,
-        `${county} Museums and Galleries wholesale prices`,
-        `licensed art greeting cards ${county}`,
-        `design-led stationery ${county}`,
+        `museum gift shop supplier ${county}`,
+        `gallery shop supplier ${county}`,
         `art cards wholesale ${county}`,
-        `Museums and Galleries trade account ${county}`,
-        `sale or return greeting cards ${county}`,
-        `charity Christmas cards wholesale ${county}`,
-        `V&A Museum licensed products ${county}`,
+        `museum shop solutions ${county}`,
+        `gallery shop solutions ${county}`,
+        `licensed products ${county}`,
+        `museum merchandise ${county}`,
+        `gallery merchandise ${county}`,
         `art-inspired cards ${county}`,
-        `museum stationery ${county}`,
-        `V&A Museum gifts ${county}`,
-        `licensed art Christmas cards ${county}`,
-        `sale or return cards distributor ${county}`,
-        `charity cards trade prices ${county}`,
-        `sale or return cards supplier ${county}`,
-        `charity Christmas cards supplier ${county}`
+        `museum shop displays ${county}`,
+        `gallery shop displays ${county}`,
+        `sale or return cards ${county}`,
+        `charity cards wholesale ${county}`,
+        `museum shop trade prices ${county}`,
+        `gallery shop trade prices ${county}`,
+        `licensed art trade prices ${county}`,
+        `museum shop supplier ${county}`,
+        `gallery shop supplier ${county}`,
+        `art cards trade prices ${county}`,
+        `museum shop wholesale ${county}`,
+        `gallery shop wholesale ${county}`,
+        `licensed products supplier ${county}`,
+        `museum merchandise wholesale ${county}`,
+        `gallery merchandise wholesale ${county}`,
+        `art-inspired stationery ${county}`,
+        `museum shop displays ${county}`,
+        `gallery shop displays ${county}`,
+        `sale or return solutions ${county}`,
+        `charity cards supplier ${county}`,
+        `museum shop distributor ${county}`,
+        `gallery shop distributor ${county}`,
+        `licensed art distributor ${county}`,
+        `museum shop local supplier ${county}`,
+        `gallery shop local supplier ${county}`
       ]
     }));
 
@@ -289,35 +300,54 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'Museums and Galleries Sales Agent',
         'Museums and Galleries Agent East Anglia',
         'Museums and Galleries wholesale',
-        'V&A Museum cards wholesale',
-        'V&A licensed art cards supplier',
+        'licensed art cards supplier',
+        'museum stationery wholesale',
         'sale or return Christmas cards',
         'charity Christmas cards wholesale',
-        'licensed art cards supplier',
-        'Museums and Galleries distributor',
-        'V&A cards trade prices',
-        'sale or return cards trade prices',
-        'charity cards wholesale prices',
-        'licensed greeting cards supplier',
-        'East Anglia art cards wholesale',
-        'East Anglian licensed art supplier',
-        'local art cards wholesale supplier',
-        'V&A Museum licensed products',
+        'museum gift shop supplier',
+        'gallery shop supplier',
+        'art cards wholesale',
+        'museum shop solutions',
+        'gallery shop solutions',
+        'licensed products supplier',
+        'museum merchandise wholesale',
+        'gallery merchandise wholesale',
         'art-inspired cards supplier',
-        'museum stationery distributor',
-        'V&A Museum gifts supplier',
-        'sale or return greeting cards',
-        'charity Christmas cards supplier',
-        'licensed art Christmas cards',
-        'sale or return cards distributor',
-        'charity cards trade prices',
+        'museum shop displays',
+        'gallery shop displays',
         'sale or return cards supplier',
-        'charity Christmas cards East Anglia',
-        'sale or return cards UK',
-        'charity cards wholesale UK',
-        'V&A Museum products wholesale',
-        'art-inspired stationery supplier',
-        'museum licensed products'
+        'charity cards wholesale',
+        'museum shop trade prices',
+        'gallery shop trade prices',
+        'licensed art trade prices',
+        'museum shop supplier',
+        'gallery shop supplier',
+        'art cards trade prices',
+        'museum shop wholesale',
+        'gallery shop wholesale',
+        'licensed products distributor',
+        'museum merchandise supplier',
+        'gallery merchandise supplier',
+        'art-inspired stationery',
+        'museum shop displays',
+        'gallery shop displays',
+        'sale or return solutions',
+        'charity cards supplier',
+        'museum shop distributor',
+        'gallery shop distributor',
+        'licensed art distributor',
+        'museum shop local supplier',
+        'gallery shop local supplier',
+        'East Anglia museum shops',
+        'East Anglia gallery shops',
+        'East Anglia licensed art',
+        'East Anglia museum merchandise',
+        'East Anglia gallery merchandise',
+        'East Anglia art cards',
+        'East Anglia museum stationery',
+        'East Anglia gallery stationery',
+        'East Anglia sale or return',
+        'East Anglia charity cards'
       ],
       openGraph: {
         title: baseTitle,
@@ -330,7 +360,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Museums and Galleries - V&A Museum Cards, Sale or Return & Charity Christmas Cards'
+            alt: 'Museums and Galleries - Licensed Art Cards & Sale or Return Christmas Cards'
           }
         ]
       },
@@ -349,7 +379,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
     const baseTitle = `Emotional Rescue Sales Agent | Alternative to Rosie Made A Thing | Wholesale Cards & Gifts`;
     const baseDescription = `Official Emotional Rescue sales agent and wholesale supplier in East Anglia. We supply unique, humorous greeting cards and gifts - a great alternative to Rosie Made A Thing. Available for retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
-    const locationMetadata = counties.map(county => ({
+    const locationMetadata = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
       title: `Emotional Rescue Sales Agent ${county} | Alternative to Rosie Made A Thing | Wholesale Cards in ${county}`,
       description: `Looking for an Emotional Rescue sales agent in ${county}? We are the official supplier of alternative greeting cards and gifts similar to Rosie Made A Thing. Contact us for trade prices and local delivery.`,
       keywords: [
@@ -442,54 +472,46 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
     const baseTitle = `Ohh Deer Sales Agent | Laura Ashley, Cath Kidston & V&A Cards | Gift Wrap & Stationery`;
     const baseDescription = `Official Ohh Deer sales agent and wholesale supplier in East Anglia. We supply Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards and stationery, V&A Museum licensed products, and A6 greeting card spinners to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
-    const locationMetadata = counties.map(county => ({
+    const locationMetadata = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
       title: `Ohh Deer Sales Agent ${county} | Laura Ashley, Cath Kidston & V&A Cards in ${county}`,
-      description: `Looking for an Ohh Deer sales agent in ${county}? We are the official supplier of Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards and stationery, V&A Museum licensed products, and card display units in ${county}. Contact us for trade prices and local delivery.`,
+      description: `Looking for an Ohh Deer sales agent in ${county}? We are the official supplier of Laura Ashley greeting cards, Cath Kidston stationery, V&A Museum licensed products, and card display solutions to gift shops and card shops in ${county}. Contact us for trade prices and local delivery.`,
       keywords: [
         `Ohh Deer Sales Agent ${county}`,
         `Ohh Deer Agent ${county}`,
         `Ohh Deer ${county}`,
         `Ohh Deer ${county} wholesaler`,
         `Laura Ashley cards ${county}`,
-        `Laura Ashley gift bags ${county}`,
-        `Laura Ashley wrapping paper ${county}`,
-        `Cath Kidston cards ${county}`,
         `Cath Kidston stationery ${county}`,
-        `V&A Museum cards ${county}`,
-        `V&A licensed products ${county}`,
-        `A6 greeting card spinners ${county}`,
-        `card display units ${county}`,
-        `greeting card racks ${county}`,
-        `${county} Ohh Deer distributor`,
-        `Ohh Deer local supplier ${county}`,
+        `V&A Museum products ${county}`,
+        `gift wrap ${county}`,
+        `greeting cards ${county}`,
+        `card spinners ${county}`,
+        `gift shop supplier ${county}`,
+        `card shop supplier ${county}`,
+        `Laura Ashley wholesale ${county}`,
+        `Cath Kidston wholesale ${county}`,
+        `V&A products wholesale ${county}`,
+        `gift wrap solutions ${county}`,
+        `greeting card solutions ${county}`,
+        `card spinner solutions ${county}`,
+        `gift shop solutions ${county}`,
+        `card shop solutions ${county}`,
         `Laura Ashley trade prices ${county}`,
         `Cath Kidston trade prices ${county}`,
-        `V&A cards trade prices ${county}`,
-        `${county} wholesale Ohh Deer`,
-        `card display retailer supplier ${county}`,
-        `${county} Ohh Deer wholesale prices`,
-        `Laura Ashley greeting cards ${county}`,
-        `Laura Ashley gift wrap ${county}`,
-        `Cath Kidston greeting cards ${county}`,
-        `V&A Museum licensed art cards ${county}`,
-        `vintage-inspired stationery ${county}`,
-        `floral cards wholesale ${county}`,
-        `art-inspired cards ${county}`,
-        `Ohh Deer trade account ${county}`,
-        `Laura Ashley stationery ${county}`,
-        `Cath Kidston A6 cards ${county}`,
-        `V&A Museum stationery ${county}`,
-        `greeting card display solutions ${county}`,
-        `card spinner wholesale ${county}`,
-        `A6 display units distributor ${county}`,
-        `card rack trade prices ${county}`,
-        `spinner display supplier ${county}`,
-        `Laura Ashley wholesale ${county}`,
-        `Cath Kidston stationery wholesale ${county}`,
-        `vintage cards supplier ${county}`,
-        `floral stationery distributor ${county}`,
-        `Laura Ashley gift bags wholesale ${county}`,
-        `Laura Ashley wrapping paper trade ${county}`
+        `V&A products trade prices ${county}`,
+        `gift wrap trade prices ${county}`,
+        `greeting cards trade prices ${county}`,
+        `card spinners trade prices ${county}`,
+        `gift shop displays ${county}`,
+        `card shop displays ${county}`,
+        `Laura Ashley supplier ${county}`,
+        `Cath Kidston distributor ${county}`,
+        `V&A products local supplier ${county}`,
+        `gift wrap local supplier ${county}`,
+        `greeting cards local supplier ${county}`,
+        `card spinners local supplier ${county}`,
+        `gift shop local supplier ${county}`,
+        `card shop local supplier ${county}`
       ]
     }));
 
@@ -501,47 +523,46 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'Ohh Deer Sales Agent',
         'Ohh Deer Agent East Anglia',
         'Ohh Deer wholesale',
-        'Laura Ashley cards wholesale',
-        'Laura Ashley gift bags supplier',
-        'Laura Ashley wrapping paper wholesale',
-        'Cath Kidston cards wholesale',
-        'Cath Kidston stationery supplier',
-        'A6 greeting card spinners',
-        'card display units wholesale',
-        'greeting card racks supplier',
-        'Ohh Deer distributor',
+        'Laura Ashley cards supplier',
+        'Cath Kidston stationery wholesale',
+        'V&A Museum products supplier',
+        'gift wrap supplier',
+        'greeting cards supplier',
+        'card spinners supplier',
+        'gift shop supplier',
+        'card shop supplier',
+        'Laura Ashley wholesale',
+        'Cath Kidston wholesale',
+        'V&A products wholesale',
+        'gift wrap solutions',
+        'greeting card solutions',
+        'card spinner solutions',
+        'gift shop solutions',
+        'card shop solutions',
         'Laura Ashley trade prices',
         'Cath Kidston trade prices',
-        'A6 display wholesale prices',
-        'greeting card spinners supplier',
-        'East Anglia card displays wholesale',
-        'East Anglian spinner supplier',
-        'local card display wholesale supplier',
-        'Laura Ashley greeting cards',
-        'Laura Ashley gift wrap wholesale',
-        'Laura Ashley stationery supplier',
-        'Cath Kidston greeting cards',
-        'vintage-inspired stationery',
-        'floral cards wholesale',
-        'A6 card spinner units',
-        'greeting card display solutions',
-        'card spinner wholesale',
-        'A6 display units wholesale',
-        'Laura Ashley wholesale supplier',
-        'Cath Kidston stationery wholesale',
-        'vintage cards supplier',
-        'floral stationery distributor',
-        'Laura Ashley gift bags trade',
-        'Laura Ashley wrapping paper supplier',
-        'Cath Kidston A6 cards',
-        'vintage-inspired greeting cards',
-        'floral stationery wholesale',
-        'Laura Ashley display solutions',
-        'Cath Kidston display solutions',
-        'vintage card racks',
-        'floral stationery supplier',
-        'Laura Ashley gift wrap trade',
-        'Laura Ashley stationery wholesale'
+        'V&A products trade prices',
+        'gift wrap trade prices',
+        'greeting cards trade prices',
+        'card spinners trade prices',
+        'gift shop displays',
+        'card shop displays',
+        'Laura Ashley supplier',
+        'Cath Kidston distributor',
+        'V&A products local supplier',
+        'gift wrap local supplier',
+        'greeting cards local supplier',
+        'card spinners local supplier',
+        'gift shop local supplier',
+        'card shop local supplier',
+        'East Anglia Laura Ashley',
+        'East Anglia Cath Kidston',
+        'East Anglia V&A products',
+        'East Anglia gift wrap',
+        'East Anglia greeting cards',
+        'East Anglia card spinners',
+        'East Anglia gift shops',
+        'East Anglia card shops'
       ],
       openGraph: {
         title: baseTitle,
@@ -554,7 +575,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Ohh Deer - Laura Ashley & Cath Kidston Cards, Gift Wrap & Stationery'
+            alt: 'Ohh Deer - Laura Ashley, Cath Kidston & V&A Cards, Gift Wrap & Stationery'
           }
         ]
       },
@@ -570,12 +591,12 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
 
   // Special handling for Peppermint Grove
   if (company.slug === 'peppermint-grove') {
-    const baseTitle = `Peppermint Grove Sales Agent | Luxury Candles & Diffusers | Home Fragrance Wholesale`;
-    const baseDescription = `Official Peppermint Grove sales agent and wholesale supplier in East Anglia. We supply luxury candles, diffusers, and home fragrance products to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+    const baseTitle = `Peppermint Grove Sales Agent | Luxury Candles, Diffusers & Home Fragrance | East Anglia`;
+    const baseDescription = `Official Peppermint Grove sales agent and wholesale supplier in East Anglia. We supply luxury candles, diffusers, room sprays, and premium home fragrance products to gift shops, homeware retailers, and spas across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
     
-    const locationMetadata = counties.map(county => ({
-      title: `Peppermint Grove Sales Agent ${county} | Luxury Candles & Diffusers in ${county}`,
-      description: `Looking for a Peppermint Grove sales agent in ${county}? We are the official supplier of luxury candles, diffusers, and home fragrance products in ${county}. Contact us for trade prices and local delivery.`,
+    const locationMetadata = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+      title: `Peppermint Grove Sales Agent ${county} | Luxury Candles & Home Fragrance in ${county}`,
+      description: `Looking for a Peppermint Grove sales agent in ${county}? We are the official supplier of luxury candles, diffusers, and premium home fragrance products to gift shops and homeware retailers in ${county}. Contact us for trade prices and local delivery.`,
       keywords: [
         `Peppermint Grove Sales Agent ${county}`,
         `Peppermint Grove Agent ${county}`,
@@ -583,24 +604,32 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         `Peppermint Grove ${county} wholesaler`,
         `luxury candles ${county}`,
         `home fragrance ${county}`,
-        `diffusers wholesale ${county}`,
-        `${county} Peppermint Grove distributor`,
-        `Peppermint Grove local supplier ${county}`,
-        `candles trade prices ${county}`,
-        `${county} wholesale Peppermint Grove`,
-        `diffusers retailer supplier ${county}`,
-        `${county} Peppermint Grove wholesale prices`,
-        `luxury home fragrance ${county}`,
+        `diffusers ${county}`,
         `room sprays ${county}`,
-        `candles wholesale ${county}`,
-        `Peppermint Grove trade account ${county}`,
-        `home fragrance products ${county}`,
+        `gift shop supplier ${county}`,
+        `homeware retailer supplier ${county}`,
+        `spa supplier ${county}`,
         `luxury candles wholesale ${county}`,
+        `home fragrance solutions ${county}`,
+        `diffuser solutions ${county}`,
+        `room spray solutions ${county}`,
+        `gift shop solutions ${county}`,
+        `homeware retailer solutions ${county}`,
+        `spa solutions ${county}`,
+        `luxury candles trade prices ${county}`,
+        `home fragrance trade prices ${county}`,
         `diffusers trade prices ${county}`,
-        `room sprays wholesale ${county}`,
-        `home fragrance supplier ${county}`,
+        `room sprays trade prices ${county}`,
+        `gift shop displays ${county}`,
+        `homeware retailer displays ${county}`,
+        `spa displays ${county}`,
         `luxury candles supplier ${county}`,
-        `diffusers supplier ${county}`
+        `home fragrance distributor ${county}`,
+        `diffusers local supplier ${county}`,
+        `room sprays local supplier ${county}`,
+        `gift shop local supplier ${county}`,
+        `homeware retailer local supplier ${county}`,
+        `spa local supplier ${county}`
       ]
     }));
 
@@ -614,24 +643,39 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
         'Peppermint Grove wholesale',
         'luxury candles supplier',
         'home fragrance wholesale',
-        'diffusers trade prices',
-        'Peppermint Grove distributor',
-        'candles wholesale prices',
-        'home fragrance supplier',
-        'East Anglia candles wholesale',
-        'East Anglian diffuser supplier',
-        'local home fragrance supplier',
-        'luxury candles wholesale',
         'diffusers supplier',
-        'room sprays wholesale',
-        'home fragrance products',
-        'luxury candles East Anglia',
-        'diffusers UK',
-        'home fragrance wholesale UK',
-        'Peppermint Grove candles',
-        'luxury home fragrance',
-        'diffusers wholesale',
-        'room sprays supplier'
+        'room sprays supplier',
+        'gift shop supplier',
+        'homeware retailer supplier',
+        'spa supplier',
+        'luxury candles wholesale',
+        'home fragrance solutions',
+        'diffuser solutions',
+        'room spray solutions',
+        'gift shop solutions',
+        'homeware retailer solutions',
+        'spa solutions',
+        'luxury candles trade prices',
+        'home fragrance trade prices',
+        'diffusers trade prices',
+        'room sprays trade prices',
+        'gift shop displays',
+        'homeware retailer displays',
+        'spa displays',
+        'luxury candles supplier',
+        'home fragrance distributor',
+        'diffusers local supplier',
+        'room sprays local supplier',
+        'gift shop local supplier',
+        'homeware retailer local supplier',
+        'spa local supplier',
+        'East Anglia luxury candles',
+        'East Anglia home fragrance',
+        'East Anglia diffusers',
+        'East Anglia room sprays',
+        'East Anglia gift shops',
+        'East Anglia homeware retailers',
+        'East Anglia spas'
       ],
       openGraph: {
         title: baseTitle,
@@ -644,7 +688,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
             url: company.logoUrl,
             width: 800,
             height: 600,
-            alt: 'Peppermint Grove luxury candles and diffusers'
+            alt: 'Peppermint Grove - Luxury Candles, Diffusers & Home Fragrance'
           }
         ]
       },
@@ -661,604 +705,6 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
   // Special handling for Star Editions
   if (company.slug === 'star-editions') {
     const baseTitle = `Star Editions Sales Agent | Richard Briggs & Dave Thompson Cards | Bespoke UK-Made Merchandise`;
-    const baseDescription = `Official Star Editions sales agent and wholesale supplier in East Anglia. We supply Richard Briggs and Dave Thompson greeting cards and gifts, along with bespoke merchandise and custom branding services. All products are UK-made with 5-day turnaround, available for retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
-    
-    const locationMetadata = counties.map(county => ({
-      title: `Star Editions Sales Agent ${county} | Richard Briggs & Dave Thompson Cards in ${county}`,
-      description: `Looking for a Star Editions sales agent in ${county}? We are the official supplier of Richard Briggs and Dave Thompson greeting cards and gifts, plus bespoke merchandise and custom branding services. Low minimum orders with local delivery in ${county}.`,
-      keywords: [
-        `Star Editions Sales Agent ${county}`,
-        `Star Editions Agent ${county}`,
-        `Star Editions ${county}`,
-        `Richard Briggs cards ${county}`,
-        `Dave Thompson cards ${county}`,
-        `Richard Briggs gifts ${county}`,
-        `Dave Thompson gifts ${county}`,
-        `bespoke merchandise ${county}`,
-        `custom branding ${county}`,
-        `UK made products ${county}`,
-        `low volume manufacturing ${county}`,
-        `quick turnaround ${county}`,
-        `5 day delivery ${county}`,
-        `custom products ${county}`,
-        `branded merchandise ${county}`,
-        `UK manufacturing ${county}`,
-        `small batch production ${county}`,
-        `custom design ${county}`,
-        `bespoke gifts ${county}`,
-        `branded gifts ${county}`,
-        `custom packaging ${county}`,
-        `local delivery ${county}`,
-        `trade supplier ${county}`,
-        `wholesale merchandise ${county}`,
-        `custom products supplier ${county}`,
-        `bespoke manufacturing ${county}`,
-        `UK made gifts ${county}`,
-        `quick production ${county}`,
-        `custom branding service ${county}`,
-        `bespoke product design ${county}`,
-        `Richard Briggs trade prices ${county}`,
-        `Dave Thompson trade prices ${county}`,
-        `humorous cards ${county}`,
-        `unique greeting cards ${county}`,
-        `Richard Briggs wholesale ${county}`,
-        `Dave Thompson wholesale ${county}`
-      ]
-    }));
-
-    return {
-      title: baseTitle,
-      description: baseDescription,
-      keywords: [
-        ...locationMetadata.flatMap(m => m.keywords),
-        'Star Editions Sales Agent',
-        'Star Editions Agent East Anglia',
-        'Star Editions wholesale',
-        'Richard Briggs cards wholesale',
-        'Dave Thompson cards wholesale',
-        'Richard Briggs gifts supplier',
-        'Dave Thompson gifts supplier',
-        'bespoke merchandise UK',
-        'custom branding service',
-        'UK made products',
-        'low volume manufacturing',
-        'quick turnaround manufacturing',
-        '5 day delivery UK',
-        'custom products supplier',
-        'branded merchandise wholesale',
-        'UK manufacturing service',
-        'small batch production',
-        'custom design service',
-        'bespoke gifts wholesale',
-        'branded gifts supplier',
-        'custom packaging service',
-        'local delivery East Anglia',
-        'trade supplier UK',
-        'wholesale merchandise',
-        'custom products East Anglia',
-        'bespoke manufacturing UK',
-        'UK made gifts wholesale',
-        'quick production service',
-        'custom branding East Anglia',
-        'Richard Briggs trade prices',
-        'Dave Thompson trade prices',
-        'humorous cards wholesale',
-        'unique greeting cards supplier',
-        'Richard Briggs wholesale prices',
-        'Dave Thompson wholesale prices',
-        'East Anglia Richard Briggs cards',
-        'East Anglia Dave Thompson cards',
-        'East Anglia bespoke merchandise',
-        'East Anglia custom branding'
-      ],
-      openGraph: {
-        title: baseTitle,
-        description: baseDescription,
-        type: 'website',
-        locale: 'en_GB',
-        siteName: 'East Anglian Sales LTD',
-        images: [
-          {
-            url: company.logoUrl,
-            width: 800,
-            height: 600,
-            alt: 'Star Editions - Richard Briggs & Dave Thompson Cards, Bespoke UK-Made Merchandise'
-          }
-        ]
-      },
-      alternates: {
-        canonical: `https://easalesltd.com/companies/star-editions`
-      },
-      robots: {
-        index: true,
-        follow: true
-      }
-    };
-  }
-
-  // Special handling for V&A Cards and Gifts
-  if (company.slug === 'va-cards-and-gifts') {
-    const baseTitle = `V&A Cards and Gifts Sales Agent | Licensed Museum Art Cards & Stationery | Wholesale Supplier`;
-    const baseDescription = `Official V&A Cards and Gifts sales agent and wholesale supplier in East Anglia. We supply licensed V&A Museum art cards, stationery, and gifts to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
-    
-    const locationMetadata = counties.map(county => ({
-      title: `V&A Cards and Gifts Sales Agent ${county} | Licensed Museum Art Cards & Stationery in ${county}`,
-      description: `Looking for a V&A Cards and Gifts sales agent in ${county}? We are the official supplier of licensed V&A Museum art cards, stationery, and gifts in ${county}. Contact us for trade prices and local delivery.`,
-      keywords: [
-        `V&A Cards and Gifts Sales Agent ${county}`,
-        `V&A Cards and Gifts Agent ${county}`,
-        `V&A Cards and Gifts ${county}`,
-        `V&A Cards and Gifts ${county} wholesaler`,
-        `V&A Museum cards ${county}`,
-        `licensed art cards ${county}`,
-        `museum stationery ${county}`,
-        `art-inspired gifts ${county}`,
-        `${county} V&A Cards and Gifts distributor`,
-        `V&A Cards and Gifts local supplier ${county}`,
-        `museum cards trade prices ${county}`,
-        `${county} wholesale V&A Cards and Gifts`,
-        `art cards retailer supplier ${county}`,
-        `${county} V&A Cards and Gifts wholesale prices`,
-        `licensed museum cards ${county}`,
-        `art stationery ${county}`,
-        `museum gifts wholesale ${county}`,
-        `V&A Cards and Gifts trade account ${county}`,
-        `licensed art greeting cards ${county}`,
-        `museum stationery wholesale ${county}`,
-        `art-inspired cards distributor ${county}`,
-        `museum cards trade prices ${county}`,
-        `licensed art cards supplier ${county}`,
-        `V&A Museum gifts supplier ${county}`
-      ]
-    }));
-
-    return {
-      title: baseTitle,
-      description: baseDescription,
-      keywords: [
-        ...locationMetadata.flatMap(m => m.keywords),
-        'V&A Cards and Gifts Sales Agent',
-        'V&A Cards and Gifts Agent East Anglia',
-        'V&A Cards and Gifts wholesale',
-        'V&A Museum cards wholesale',
-        'licensed art cards supplier',
-        'museum stationery wholesale',
-        'V&A Cards and Gifts distributor',
-        'museum cards trade prices',
-        'art cards wholesale prices',
-        'licensed greeting cards supplier',
-        'East Anglia museum cards wholesale',
-        'East Anglian licensed art supplier',
-        'local museum cards wholesale supplier',
-        'V&A Museum licensed products',
-        'art-inspired cards supplier',
-        'museum stationery distributor',
-        'licensed art cards trade prices',
-        'V&A Museum gifts supplier',
-        'museum cards East Anglia',
-        'licensed art cards UK',
-        'V&A Museum products wholesale UK'
-      ],
-      openGraph: {
-        title: baseTitle,
-        description: baseDescription,
-        type: 'website',
-        locale: 'en_GB',
-        siteName: 'East Anglian Sales LTD',
-        images: [
-          {
-            url: company.logoUrl,
-            width: 800,
-            height: 600,
-            alt: 'V&A Cards and Gifts - Licensed Museum Art Cards & Stationery'
-          }
-        ]
-      },
-      alternates: {
-        canonical: `https://easalesltd.com/companies/va-cards-and-gifts`
-      },
-      robots: {
-        index: true,
-        follow: true
-      }
-    };
-  }
-
-  // Default metadata generation for other companies
-  const baseTitle = `${company.name} Sales Agent | Wholesale Supplier | East Anglian Sales LTD`;
-  const baseDescription = `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`;
-  
-  // Generate location-specific metadata
-  const locationMetadata = counties.map(county => ({
-    title: `${company.name} Sales Agent ${county} | Local Supplier in ${county}`,
-    description: `Looking for a ${company.name} sales agent in ${county}? We are the official supplier of ${company.name.toLowerCase()} products to retailers across ${county}. ${company.description}`,
-    keywords: [
-      `${company.name} Sales Agent ${county}`,
-      `${company.name} Agent ${county}`,
-      `${company.name} ${county}`,
-      `${company.name} ${county} wholesaler`,
-      `${company.name} ${county} supplier`,
-      `${company.name} wholesale ${county}`,
-      `${county} ${company.name} distributor`,
-      `${company.name} local supplier ${county}`,
-      `${company.name} trade prices ${county}`,
-      `${county} wholesale ${company.name}`,
-      `${company.name} retailer supplier ${county}`,
-      `${county} ${company.name} wholesale prices`
-    ]
-  }));
-
-  return {
-    title: baseTitle,
-    description: baseDescription,
-    keywords: [
-      ...locationMetadata.flatMap(m => m.keywords),
-      `${company.name} Sales Agent`,
-      `${company.name} Agent East Anglia`,
-      `${company.name} wholesale`,
-      `${company.name} supplier`,
-      `${company.name} distributor`,
-      `${company.name} trade prices`,
-      `${company.name} wholesale prices`,
-      `${company.name} retailer supplier`,
-      'East Anglia wholesale',
-      'East Anglian supplier',
-      'local wholesale supplier'
-    ],
-    openGraph: {
-      title: baseTitle,
-      description: baseDescription,
-      type: 'website',
-      locale: 'en_GB',
-      siteName: 'East Anglian Sales LTD',
-      images: [
-        {
-          url: company.logoUrl,
-          width: 800,
-          height: 600,
-          alt: `${company.name} logo`
-        }
-      ]
-    },
-    alternates: {
-      canonical: `https://easalesltd.com/companies/${company.slug}`
-    },
-    robots: {
-      index: true,
-      follow: true
-    }
-  };
-}
-
-function generateStructuredData(company: typeof companies[0]) {
-  const counties = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'];
-  
-  // Special handling for Global Journey
-  if (company.slug === 'global-journey-gifts') {
-    return {
-      '@context': 'https://schema.org',
-      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
-      '@id': `https://www.easalesltd.co.uk/companies/global-journey-gifts#organization`,
-      'name': 'Global Journey Sales Agent - Retail Display Solutions for Tourist & Retail Attractions',
-      'description': 'Official Global Journey sales agent and wholesale supplier of innovative retail display solutions and interactive gift products for gift shops, garden centres, museums, and tourist attractions in East Anglia. We provide high-performance spinner units, local delivery, and personal support across Essex, Suffolk, Norfolk, and Cambridgeshire.',
-      'url': 'https://www.easalesltd.co.uk/companies/global-journey-gifts',
-      'logo': {
-        '@type': 'ImageObject',
-        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
-        'width': '800',
-        'height': '600'
-      },
-      'areaServed': counties.map(county => ({
-        '@type': 'State',
-        'name': county,
-        'address': {
-          '@type': 'PostalAddress',
-          'addressRegion': county,
-          'addressCountry': 'GB'
-        }
-      })),
-      'hasOfferCatalog': {
-        '@type': 'OfferCatalog',
-        'name': 'Global Journey Sales Agent - Retail Solutions for Tourist & Retail Attractions',
-        'itemListElement': [
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Gift Shop & Garden Centre Display Solutions',
-              'description': 'Official Global Journey sales agent providing high-performance spinner units and interactive display solutions for gift shops and garden centres in East Anglia. Includes local delivery and personal support.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Global Journey'
-              },
-              'category': ['Retail Technology', 'Display Solutions', 'Gift Shop Solutions', 'Garden Centre Retail', 'East Anglia Retail', 'Sales Agent Services'],
-              'offers': {
-                '@type': 'Offer',
-                'availability': 'https://schema.org/InStock',
-                'deliveryLeadTime': 'P1D',
-                'areaServed': counties.map(county => ({
-                  '@type': 'State',
-                  'name': county
-                }))
-              }
-            }
-          },
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Tourist Attraction & Museum Shop Solutions',
-              'description': 'Official Global Journey sales agent providing specialized display solutions for museums, visitor centres, theme parks, and tourist attractions in East Anglia. Includes local delivery and personal support.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Global Journey'
-              },
-              'category': ['Tourist Attraction Retail', 'Museum Shop Solutions', 'Visitor Centre Displays', 'Theme Park Retail', 'East Anglia Retail', 'Sales Agent Services'],
-              'offers': {
-                '@type': 'Offer',
-                'availability': 'https://schema.org/InStock',
-                'deliveryLeadTime': 'P1D',
-                'areaServed': counties.map(county => ({
-                  '@type': 'State',
-                  'name': county
-                }))
-              }
-            }
-          }
-        ]
-      }
-    };
-  }
-
-  // Special handling for Museums and Galleries
-  if (company.slug === 'museums-and-galleries') {
-    return {
-      '@context': 'https://schema.org',
-      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
-      '@id': `https://www.easalesltd.co.uk/companies/museums-and-galleries#organization`,
-      'name': 'Museums and Galleries Sales Agent - Sale or Return Christmas Cards',
-      'description': 'Official Museums and Galleries sales agent and supplier in East Anglia. We supply charity Christmas cards, licensed art cards, and sale or return greeting cards to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
-      'url': 'https://www.easalesltd.co.uk/companies/museums-and-galleries',
-      'logo': {
-        '@type': 'ImageObject',
-        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
-        'width': '800',
-        'height': '600'
-      },
-      'areaServed': counties.map(county => ({
-        '@type': 'State',
-        'name': county,
-        'address': {
-          '@type': 'PostalAddress',
-          'addressRegion': county,
-          'addressCountry': 'GB'
-        }
-      })),
-      'hasOfferCatalog': {
-        '@type': 'OfferCatalog',
-        'name': 'Museums and Galleries Sales Agent - Christmas Cards',
-        'itemListElement': [
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Sale or Return Christmas Cards',
-              'description': 'Official Museums and Galleries sales agent providing high-quality sale or return Christmas cards.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Museums and Galleries'
-              },
-              'category': ['Greeting Cards', 'Christmas Cards', 'Sale or Return', 'Licensed Products', 'Sales Agent Services']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
-          },
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Charity Christmas Cards',
-              'description': 'Official Museums and Galleries sales agent providing charity Christmas cards and licensed art cards.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Museums and Galleries'
-              },
-              'category': ['Greeting Cards', 'Christmas Cards', 'Charity Cards', 'Licensed Products', 'Sales Agent Services']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
-          }
-        ]
-      }
-    };
-  }
-
-  // Special handling for Emotional Rescue
-  if (company.slug === 'emotional-rescue') {
-    return {
-      '@context': 'https://schema.org',
-      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
-      '@id': `https://www.easalesltd.co.uk/companies/emotional-rescue#organization`,
-      'name': 'Emotional Rescue Sales Agent - Alternative to Rosie Made A Thing',
-      'description': 'Official Emotional Rescue sales agent and wholesale supplier in East Anglia. We supply unique, humorous greeting cards and gifts - a great alternative to Rosie Made A Thing. Available for retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
-      'url': 'https://www.easalesltd.co.uk/companies/emotional-rescue',
-      'logo': {
-        '@type': 'ImageObject',
-        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
-        'width': '800',
-        'height': '600'
-      },
-      'areaServed': counties.map(county => ({
-        '@type': 'State',
-        'name': county,
-        'address': {
-          '@type': 'PostalAddress',
-          'addressRegion': county,
-          'addressCountry': 'GB'
-        }
-      })),
-      'hasOfferCatalog': {
-        '@type': 'OfferCatalog',
-        'name': 'Emotional Rescue Sales Agent - Humorous Cards & Gifts',
-        'itemListElement': [
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Humorous Greeting Cards',
-              'description': 'Official Emotional Rescue sales agent providing unique and humorous greeting cards - a great alternative to Rosie Made A Thing.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Emotional Rescue'
-              },
-              'category': ['Greeting Cards', 'Humorous Cards', 'Alternative Cards', 'Gift Cards', 'Sales Agent Services']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
-          }
-        ]
-      }
-    };
-  }
-
-  // Special handling for Ohh Deer wholesale
-  if (company.slug === 'ohh-deer-wholesale') {
-    return {
-      '@context': 'https://schema.org',
-      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
-      '@id': `https://www.easalesltd.co.uk/companies/ohh-deer-wholesale#organization`,
-      'name': 'Ohh Deer Sales Agent - Laura Ashley & Cath Kidston Cards, Gift Wrap & Stationery',
-      'description': 'Official Ohh Deer sales agent and wholesale supplier in East Anglia. We supply Laura Ashley greeting cards, gift bags, and wrapping paper, Cath Kidston greeting cards and stationery, and A6 greeting card spinners to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
-      'url': 'https://www.easalesltd.co.uk/companies/ohh-deer-wholesale',
-      'logo': {
-        '@type': 'ImageObject',
-        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
-        'width': '800',
-        'height': '600'
-      },
-      'areaServed': counties.map(county => ({
-        '@type': 'State',
-        'name': county,
-        'address': {
-          '@type': 'PostalAddress',
-          'addressRegion': county,
-          'addressCountry': 'GB'
-        }
-      })),
-      'hasOfferCatalog': {
-        '@type': 'OfferCatalog',
-        'name': 'Ohh Deer Sales Agent - Laura Ashley, Cath Kidston & Card Display Solutions',
-        'itemListElement': [
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Laura Ashley Greeting Cards, Gift Bags & Wrapping Paper',
-              'description': 'Official Ohh Deer sales agent providing Laura Ashley greeting cards, gift bags, and wrapping paper featuring beautiful floral and traditional designs.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Laura Ashley'
-              },
-              'category': ['Greeting Cards', 'Gift Bags', 'Wrapping Paper', 'Floral Design', 'Traditional Design', 'Sales Agent Services']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
-          },
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Cath Kidston Greeting Cards & Stationery',
-              'description': 'Official Ohh Deer sales agent providing Cath Kidston greeting cards and stationery featuring iconic floral and vintage-inspired designs.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Cath Kidston'
-              },
-              'category': ['Greeting Cards', 'Stationery', 'Vintage Design', 'Floral Cards', 'Sales Agent Services']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
-          },
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'A6 Greeting Card Spinners & Displays',
-              'description': 'Official Ohh Deer sales agent providing high-quality A6 greeting card spinners and display units for retail stores.',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Ohh Deer'
-              },
-              'category': ['Retail Displays', 'Card Spinners', 'A6 Displays', 'Greeting Card Solutions', 'Sales Agent Services']
-            },
-            'areaServed': counties.map(county => ({
-              '@type': 'State',
-              'name': county
-            }))
-          }
-        ]
-      }
-    };
-  }
-
-  // Special handling for Peppermint Grove
-  if (company.slug === 'peppermint-grove') {
-    return {
-      '@context': 'https://schema.org',
-      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
-      '@id': `https://www.easalesltd.co.uk/companies/peppermint-grove#organization`,
-      'name': 'Peppermint Grove Sales Agent - Luxury Home Fragrance',
-      'description': 'Official Peppermint Grove sales agent and wholesale supplier in East Anglia. We supply luxury candles, diffusers, and home fragrance products to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
-      'url': 'https://www.easalesltd.co.uk/companies/peppermint-grove',
-      'logo': {
-        '@type': 'ImageObject',
-        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
-        'width': '800',
-        'height': '600'
-      },
-      'areaServed': counties.map(county => ({
-        '@type': 'State',
-        'name': county,
-        'address': {
-          '@type': 'PostalAddress',
-          'addressRegion': county,
-          'addressCountry': 'GB'
-        }
-      })),
-      'hasOfferCatalog': {
-        '@type': 'OfferCatalog',
-        'name': 'Peppermint Grove Sales Agent - Product Catalog',
-        'itemListElement': [
-          {
-            '@type': 'Offer',
-            'itemOffered': {
-              '@type': 'Product',
-              'name': 'Peppermint Grove Luxury Candles',
-              'description': 'Official Peppermint Grove sales agent providing high-quality luxury candles in various fragrances and sizes',
-              'brand': {
-                '@type': 'Brand',
-                'name': 'Peppermint Grove'
-              },
-              'category': ['Home Fragrance', 'Luxury Candles', 'Sales Agent Services']
-            }
-          }
-        ]
-      }
-    };
-  }
-
-  // Special handling for Star Editions
-  if (company.slug === 'star-editions') {
     return {
       '@context': 'https://schema.org',
       '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
@@ -1272,7 +718,7 @@ function generateStructuredData(company: typeof companies[0]) {
         'width': '800',
         'height': '600'
       },
-      'areaServed': counties.map(county => ({
+      'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
         '@type': 'State',
         'name': county,
         'address': {
@@ -1300,7 +746,7 @@ function generateStructuredData(company: typeof companies[0]) {
                 '@type': 'Offer',
                 'availability': 'https://schema.org/InStock',
                 'deliveryLeadTime': 'P5D',
-                'areaServed': counties.map(county => ({
+                'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
                   '@type': 'State',
                   'name': county
                 }))
@@ -1322,7 +768,7 @@ function generateStructuredData(company: typeof companies[0]) {
                 '@type': 'Offer',
                 'availability': 'https://schema.org/InStock',
                 'deliveryLeadTime': 'P5D',
-                'areaServed': counties.map(county => ({
+                'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
                   '@type': 'State',
                   'name': county
                 }))
@@ -1344,7 +790,7 @@ function generateStructuredData(company: typeof companies[0]) {
                 '@type': 'Offer',
                 'availability': 'https://schema.org/InStock',
                 'deliveryLeadTime': 'P5D',
-                'areaServed': counties.map(county => ({
+                'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
                   '@type': 'State',
                   'name': county
                 }))
@@ -1371,7 +817,7 @@ function generateStructuredData(company: typeof companies[0]) {
         'width': '800',
         'height': '600'
       },
-      'areaServed': counties.map(county => ({
+      'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
         '@type': 'State',
         'name': county,
         'address': {
@@ -1396,7 +842,7 @@ function generateStructuredData(company: typeof companies[0]) {
               },
               'category': ['Greeting Cards', 'Licensed Products', 'Museum Products', 'Art Cards', 'Sales Agent Services']
             },
-            'areaServed': counties.map(county => ({
+            'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
               '@type': 'State',
               'name': county
             }))
@@ -1413,7 +859,7 @@ function generateStructuredData(company: typeof companies[0]) {
               },
               'category': ['Stationery', 'Licensed Products', 'Museum Products', 'Art Gifts', 'Sales Agent Services']
             },
-            'areaServed': counties.map(county => ({
+            'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
               '@type': 'State',
               'name': county
             }))
@@ -1437,7 +883,7 @@ function generateStructuredData(company: typeof companies[0]) {
       'width': '800',
       'height': '600'
     },
-    'areaServed': counties.map(county => ({
+    'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
       '@type': 'State',
       'name': county,
       'address': {
@@ -1461,7 +907,7 @@ function generateStructuredData(company: typeof companies[0]) {
           },
           'category': ['Sales Agent Services', 'Wholesale Products', 'East Anglia Retail']
         },
-        'areaServed': counties.map(county => ({
+        'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
           '@type': 'State',
           'name': county
         }))
@@ -1470,15 +916,35 @@ function generateStructuredData(company: typeof companies[0]) {
   };
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const company = companies.find((c) => c.slug === params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const company = companies.find(c => c.slug === params.slug);
   if (!company) {
     return {
       title: 'Company Not Found',
       description: 'The requested company page could not be found.'
     };
   }
-  return generateCompanyMetadata(company);
+
+  // Generate metadata from company data if not present
+  const title = `${company.name} Sales Agent | Wholesale Supplier in East Anglia`;
+  const description = `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`;
+  const keywords = `${company.name}, sales agent, wholesale supplier, East Anglia, ${company.name.toLowerCase()} cards, ${company.name.toLowerCase()} gifts`;
+
+  return {
+    title,
+    description,
+    keywords,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    }
+  };
 }
 
 export async function generateStaticParams() {
@@ -1487,16 +953,14 @@ export async function generateStaticParams() {
   }))
 }
 
-export default async function CompanyPage({ params }: Props) {
-  const company = companies.find((c) => c.slug === params.slug)
-
+export default function CompanyPage({ params }: { params: { slug: string } }) {
+  const company = companies.find(c => c.slug === params.slug);
   if (!company) {
-    return <div>Company not found</div>
+    return <div>Company not found</div>;
   }
 
-  // Add structured data script
   const structuredData = generateStructuredData(company);
-
+  
   const hasVideoBackground = [
     'museums-and-galleries', 
     'paper-salad', 
@@ -1778,4 +1242,53 @@ export default async function CompanyPage({ params }: Props) {
   }
 
   return content;
+}
+
+function generateStructuredData(company: Company) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
+    '@id': `https://www.easalesltd.co.uk/companies/${company.slug}#organization`,
+    'name': `${company.name} Sales Agent - Wholesale Supplier in East Anglia`,
+    'description': `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`,
+    'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
+    'logo': {
+      '@type': 'ImageObject',
+      'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
+      'width': '800',
+      'height': '600'
+    },
+    'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+      '@type': 'State',
+      'name': county,
+      'address': {
+        '@type': 'PostalAddress',
+        'addressRegion': county,
+        'addressCountry': 'GB'
+      }
+    })),
+    'hasOfferCatalog': {
+      '@type': 'OfferCatalog',
+      'name': `${company.name} Sales Agent - Wholesale Products`,
+      'itemListElement': [
+        {
+          '@type': 'Offer',
+          'itemOffered': {
+            '@type': 'Product',
+            'name': `${company.name} Products`,
+            'description': company.description,
+            'brand': {
+              '@type': 'Brand',
+              'name': company.name
+            },
+            'category': ['Sales Agent Services', 'Wholesale Products', 'East Anglia Retail']
+          },
+          'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+            '@type': 'State',
+            'name': county
+          }))
+        }
+      ]
+    }
+  };
 }

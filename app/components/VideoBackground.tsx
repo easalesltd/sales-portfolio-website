@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 
 interface VideoBackgroundProps {
@@ -17,6 +18,7 @@ export default function VideoBackground({
 }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,19 +34,7 @@ export default function VideoBackground({
       setIsLoaded(true);
       // Attempt to play immediately when loaded
       video.play().catch(error => {
-        console.log('Initial playback failed:', error);
-        // If initial play fails, try again with user interaction
-        const playOnInteraction = async () => {
-          try {
-            await video.play();
-            document.removeEventListener('click', playOnInteraction);
-            document.removeEventListener('touchstart', playOnInteraction);
-          } catch (e) {
-            console.log('Interaction playback failed:', e);
-          }
-        };
-        document.addEventListener('click', playOnInteraction);
-        document.addEventListener('touchstart', playOnInteraction);
+        console.error('Error playing video:', error);
       });
     };
 
@@ -53,8 +43,6 @@ export default function VideoBackground({
     // Cleanup
     return () => {
       video.removeEventListener('loadeddata', handleLoadedData);
-      document.removeEventListener('click', handleLoadedData);
-      document.removeEventListener('touchstart', handleLoadedData);
     };
   }, []);
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FaStar, FaGoogle } from 'react-icons/fa';
+import { FaGoogle } from 'react-icons/fa';
 
 export default function GoogleReviews() {
   const [isHovered, setIsHovered] = useState(false);

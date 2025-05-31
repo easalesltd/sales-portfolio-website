@@ -15,13 +15,7 @@ const aboutImages = [
 ];
 
 export default function AboutPage() {
-  const [imageError, setImageError] = useState<{[key: string]: boolean}>({});
   const [selectedImage, setSelectedImage] = useState<{src: string; alt: string} | null>(null);
-
-  const handleImageError = (imagePath: string) => {
-    setImageError(prev => ({...prev, [imagePath]: true}));
-    console.error(`Failed to load image: ${imagePath}`);
-  };
 
   const handleImageClick = (src: string, alt: string) => {
     setSelectedImage({ src, alt });
@@ -54,7 +48,7 @@ export default function AboutPage() {
         {/* Mobile Photo Gallery */}
         <div className="block lg:hidden">
           <div className="overflow-x-auto flex gap-4 py-6 px-4 snap-x snap-mandatory">
-            {aboutImages.map((img, idx) => (
+            {aboutImages.map((img) => (
               <div
                 key={img.src}
                 className="relative min-w-[260px] h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer snap-center flex-shrink-0"
@@ -65,7 +59,6 @@ export default function AboutPage() {
                   alt={img.alt}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
-                  onError={() => handleImageError(img.src)}
                 />
               </div>
             ))}
@@ -82,13 +75,13 @@ export default function AboutPage() {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">A Message from your agent</h3>
                   <p className="text-xl text-gray-700 italic mb-4">
-                    "Hi, I'm Dave, a Sales Agent based in Ipswich, Suffolk. I've been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
+                    "Hi, I&apos;m Dave, a Sales Agent based in Ipswich, Suffolk. I&apos;ve been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
                   </p>
                 </div>
                 <div>
                   <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>
                   <p className="text-lg text-gray-700 mb-4">
-                    Our mission is simple: to connect quality brands with quality retailers. We believe in personal service, regular visits, and building lasting partnerships. Whether you're a small independent shop or a larger retail outlet, we're here to help you grow.
+                    I&apos;m committed to helping retailers find the perfect products for their customers. Whether you&apos;re looking for traditional greeting cards or modern gift items, I can help you build a successful product range.
                   </p>
                 </div>
                 <div>
@@ -110,12 +103,12 @@ export default function AboutPage() {
                 <div className="bg-blue-50 rounded-xl p-8 mb-8 shadow-lg">
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">A Message from your agent</h3>
                   <p className="text-xl text-gray-700 italic">
-                    "Hi, I'm Dave, a Sales Agent based in Ipswich, Suffolk. I've been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
+                    "Hi, I&apos;m Dave, a Sales Agent based in Ipswich, Suffolk. I&apos;ve been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
                   </p>
                 </div>
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>
                 <p className="text-lg text-gray-700 mb-6">
-                  Our mission is simple: to connect quality brands with quality retailers. We believe in personal service, regular visits, and building lasting partnerships. Whether you're a small independent shop or a larger retail outlet, we're here to help you grow.
+                  I&apos;m committed to helping retailers find the perfect products for their customers. Whether you&apos;re looking for traditional greeting cards or modern gift items, I can help you build a successful product range.
                 </p>
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Service Area</h2>
                 <p className="text-lg text-gray-700 mb-6">
@@ -145,7 +138,6 @@ export default function AboutPage() {
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
                     priority
-                    onError={() => handleImageError('/images/about/DSC07186.JPG')}
                   />
                 </div>
                 {/* Family Photo 1 */}
@@ -158,7 +150,6 @@ export default function AboutPage() {
                     alt="Dave with family"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
-                    onError={() => handleImageError('/images/about/PXL_20240810_193137220_1.jpg')}
                   />
                 </div>
               </div>
@@ -174,7 +165,6 @@ export default function AboutPage() {
                     alt="Recent photo"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
-                    onError={() => handleImageError('/images/about/20240420_103516.jpg')}
                   />
                 </div>
                 {/* Family Photo 2 */}
@@ -187,7 +177,6 @@ export default function AboutPage() {
                     alt="Family moment"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
-                    onError={() => handleImageError('/images/about/IMG-20230810-WA0046.jpg')}
                   />
                 </div>
               </div>
@@ -203,7 +192,6 @@ export default function AboutPage() {
                     alt="Family at Legoland"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
-                    onError={() => handleImageError('/images/about/IMG-20240923-WA0018.jpg')}
                   />
                 </div>
                 {/* Latest Photo */}
@@ -216,7 +204,6 @@ export default function AboutPage() {
                     alt="Latest photo"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
-                    onError={() => handleImageError('/images/about/20250526_145646.jpg')}
                   />
                 </div>
               </div>

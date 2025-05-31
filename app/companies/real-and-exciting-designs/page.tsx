@@ -1,6 +1,9 @@
-import { Metadata } from 'next'
-import Image from 'next/image'
-import { companies } from '../../data/companies'
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { FaArrowLeft, FaExternalLinkAlt } from 'react-icons/fa';
+import { Metadata } from 'next';
+import { companies } from '@/app/data/companies';
 import OrderForm from '../[slug]/OrderForm'
 import VideoBackground from '../../components/VideoBackground'
 import ImageGallery from '../../components/ImageGallery'

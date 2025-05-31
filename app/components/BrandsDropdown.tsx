@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { companies } from '../data/companies';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';

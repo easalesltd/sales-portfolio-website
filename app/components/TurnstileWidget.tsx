@@ -1,24 +1,24 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
-import Script from 'next/script';
+import React, { useCallback, useEffect } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 interface TurnstileWidgetProps {
   onVerify: (token: string) => void;
-  onError?: (error: Error) => void;
+  onError?: (error: any) => void;
 }
 
 export default function TurnstileWidget({ onVerify, onError }: TurnstileWidgetProps) {
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-
-  if (!siteKey) {
-    console.warn('Turnstile site key not found in environment variables');
-    return null;
-  }
-
-  const handleCallback = useCallback((token: string) => {
+  const handleVerify = useCallback((token: string) => {
     onVerify(token);
   }, [onVerify]);
+
+  const handleError = useCallback((error: any) => {
+    if (onError) {
+      onError(error);
+    }
+    console.error('Turnstile error:', error);
+  }, [onError]);
 
   useEffect(() => {
     // Cleanup function to remove the widget when component unmounts
@@ -36,19 +36,10 @@ export default function TurnstileWidget({ onVerify, onError }: TurnstileWidgetPr
 
   return (
     <>
-      <Script
-        id="cf-turnstile-script"
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer
-      />
-      <div
-        className="cf-turnstile"
-        data-sitekey={siteKey}
-        data-callback={handleCallback}
-        data-error={onError}
-        data-theme="light"
-        data-action="form"
+      <Turnstile
+        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+        onSuccess={handleVerify}
+        onError={handleError}
       />
     </>
   );
