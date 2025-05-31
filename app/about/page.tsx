@@ -30,12 +30,12 @@ export default function AboutPage() {
       {/* Main Content */}
       <div className="bg-white">
         {/* Video Background Section */}
-        <div className="w-full h-[40vh] md:h-[70vh] relative overflow-hidden">
+        <div className="w-full h-[20vh] md:h-[30vh] relative overflow-hidden">
           <VideoBackground videoUrl="/videos/about/background.mp4">
             <div className="w-full h-full flex items-center justify-center bg-black/30">
               <div className="text-center px-4 max-w-3xl">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 drop-shadow-lg">Our Story</h2>
-                <p className="text-lg md:text-xl text-white drop-shadow-lg">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">Our Story</h2>
+                <p className="text-base md:text-lg text-white drop-shadow-lg">
                   East Anglian Sales Ltd was established in 2022, but our experience in the industry spans much further. 
                   We&apos;ve built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, 
                   understanding their unique needs and helping them succeed.
