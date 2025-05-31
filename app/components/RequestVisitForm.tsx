@@ -66,7 +66,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     }
 
     try {
-      const result = await emailjs.send(
+      await emailjs.send(
         'service_fvfxlgh',
         'template_35gndyb',
         {
@@ -81,8 +81,6 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
         },
         'bQOrMB40ft605dNrW'
       );
-
-      console.log('Email sent successfully:', result);
       setSubmitStatus('success');
       
       // Reset form after successful submission
@@ -101,7 +99,6 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
         setCompanies(companies.map(company => ({ ...company, checked: false })));
       }, 5000);
     } catch (error) {
-      console.error('Failed to send email:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -161,7 +158,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
             </path>
           </svg>
           <h3 className="text-2xl font-bold text-gray-800 mb-2 text-center">Thank you!</h3>
-          <p className="text-gray-600 text-center mb-6">Your request has been sent successfully.<br />We'll be in touch soon.</p>
+          <p className="text-gray-600 text-center mb-6">Your request has been sent successfully.<br />We&apos;ll be in touch soon.</p>
           <button
             onClick={onClose}
             className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"

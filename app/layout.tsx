@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { FaEnvelope, FaInstagram, FaLinkedin, FaPhone } from 'react-icons/fa';
+import { FaEnvelope, FaInstagram, FaPhone } from 'react-icons/fa';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';

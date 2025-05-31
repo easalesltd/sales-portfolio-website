@@ -33,8 +33,8 @@ export default function VideoBackground({
     const handleLoadedData = () => {
       setIsLoaded(true);
       // Attempt to play immediately when loaded
-      video.play().catch(error => {
-        console.error('Error playing video:', error);
+      video.play().catch(() => {
+        // Handle autoplay failure silently
       });
     };
 

@@ -2,23 +2,23 @@
 
 import React, { useCallback, useEffect } from 'react';
 import { Turnstile } from '@marsidev/react-turnstile';
+import { useTurnstile } from '../contexts/TurnstileContext';
 
 interface TurnstileWidgetProps {
   onVerify: (token: string) => void;
   onError?: (error: any) => void;
 }
 
-export default function TurnstileWidget({ onVerify, onError }: TurnstileWidgetProps) {
-  const handleVerify = useCallback((token: string) => {
-    onVerify(token);
-  }, [onVerify]);
+const TurnstileWidget = () => {
+  const { execute } = useTurnstile();
 
-  const handleError = useCallback((error: any) => {
-    if (onError) {
-      onError(error);
+  const handleVerify = async () => {
+    try {
+      await execute();
+    } catch (error) {
+      // Handle error silently
     }
-    console.error('Turnstile error:', error);
-  }, [onError]);
+  };
 
   useEffect(() => {
     // Cleanup function to remove the widget when component unmounts
@@ -39,8 +39,9 @@ export default function TurnstileWidget({ onVerify, onError }: TurnstileWidgetPr
       <Turnstile
         siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
         onSuccess={handleVerify}
-        onError={handleError}
       />
     </>
   );
-} 
+};
+
+export default TurnstileWidget; 

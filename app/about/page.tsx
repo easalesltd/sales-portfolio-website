@@ -37,7 +37,7 @@ export default function AboutPage() {
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 drop-shadow-lg">Our Story</h2>
                 <p className="text-lg md:text-xl text-white drop-shadow-lg">
                   East Anglian Sales Ltd was established in 2022, but our experience in the industry spans much further. 
-                  We've built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, 
+                  We&apos;ve built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, 
                   understanding their unique needs and helping them succeed.
                 </p>
               </div>

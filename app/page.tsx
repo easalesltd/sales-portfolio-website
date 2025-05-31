@@ -10,30 +10,30 @@ import VideoBackground from "./components/VideoBackground";
 
 export default function Home() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
-  const [showBrandsVideo, setShowBrandsVideo] = useState(false);
   const brandsSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        const [entry] = entries;
-        setShowBrandsVideo(entry.isIntersecting);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const currentRef = brandsSectionRef.current;
+            if (currentRef) {
+              currentRef.classList.add('animate-fade-in');
+            }
+          }
+        });
       },
-      {
-        threshold: 0.5, // Trigger when 50% of the section is visible
-        rootMargin: '-100px 0px', // Add some margin to make the transition smoother
-      }
+      { threshold: 0.1 }
     );
 
-    if (brandsSectionRef.current) {
-      observer.observe(brandsSectionRef.current);
+    const currentRef = brandsSectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+      return () => {
+        observer.unobserve(currentRef);
+      };
     }
-
-    return () => {
-      if (brandsSectionRef.current) {
-        observer.unobserve(brandsSectionRef.current);
-      }
-    };
   }, []);
 
   return (
