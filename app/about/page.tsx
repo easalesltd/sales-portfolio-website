@@ -72,9 +72,9 @@ export default function AboutPage() {
             <div className="space-y-8">
               {/* Mobile: Only text, no interleaved images */}
               <div className="block lg:hidden space-y-8">
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">A Message from your agent</h3>
-                  <p className="text-xl text-gray-700 italic mb-4">
+                <div className="bg-blue-50 rounded-lg p-4 mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">A Message from your agent</h3>
+                  <p className="text-base text-gray-700 italic">
                     &quot;Hi, I&apos;m Dave, a Sales Agent based in Ipswich, Suffolk. I&apos;ve been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops.&quot;
                   </p>
                 </div>
@@ -100,9 +100,9 @@ export default function AboutPage() {
 
               {/* Desktop: Original text content only */}
               <div className="hidden lg:block">
-                <div className="bg-blue-50 rounded-xl p-8 mb-8 shadow-lg">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">A Message from your agent</h3>
-                  <p className="text-xl text-gray-700 italic">
+                <div className="bg-blue-50 rounded-lg p-4 mb-6 shadow-sm">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">A Message from your agent</h3>
+                  <p className="text-base text-gray-700 italic">
                     &quot;Hi, I&apos;m Dave, a Sales Agent based in Ipswich, Suffolk. I&apos;ve been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops.&quot;
                   </p>
                 </div>
