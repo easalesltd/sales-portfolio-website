@@ -31,7 +31,7 @@ export default function AboutPage() {
       <div className="bg-white">
         {/* Video Background Section */}
         <div className="w-full h-[20vh] md:h-[30vh] relative overflow-hidden">
-          <VideoBackground videoUrl="/videos/about/background.mp4">
+          <VideoBackground videoUrl="/videos/About/background.mp4">
             <div className="w-full h-full flex items-center justify-center bg-black/30">
               <div className="text-center px-4 max-w-3xl">
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg">Our Story</h2>
