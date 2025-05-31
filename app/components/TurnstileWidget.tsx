@@ -2,16 +2,26 @@
 
 import React, { useEffect } from 'react';
 import { Turnstile } from '@marsidev/react-turnstile';
-import { useTurnstile } from '../contexts/TurnstileContext';
+import { verifyTurnstileToken } from '../lib/turnstile';
 
-const TurnstileWidget = () => {
-  const { execute } = useTurnstile();
+interface TurnstileWidgetProps {
+  onVerify?: (token: string) => void;
+  onError?: () => void;
+}
 
-  const handleVerify = async () => {
+const TurnstileWidget = ({ onVerify, onError }: TurnstileWidgetProps) => {
+  const handleVerify = async (token: string) => {
     try {
-      await execute();
+      const isValid = await verifyTurnstileToken(token);
+      if (isValid && onVerify) {
+        onVerify(token);
+      } else if (!isValid && onError) {
+        onError();
+      }
     } catch {
-      // Handle error silently
+      if (onError) {
+        onError();
+      }
     }
   };
 
@@ -34,6 +44,7 @@ const TurnstileWidget = () => {
       <Turnstile
         siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
         onSuccess={handleVerify}
+        onError={onError}
       />
     </>
   );
