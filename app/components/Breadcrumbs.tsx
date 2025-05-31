@@ -20,7 +20,7 @@ export default function Breadcrumbs() {
     ];
 
     let currentPath = '';
-    paths.forEach((path, index) => {
+    paths.forEach((path) => {
       currentPath += `/${path}`;
       // Convert path to readable label
       const label = path
