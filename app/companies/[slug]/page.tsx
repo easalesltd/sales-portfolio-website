@@ -25,6 +25,46 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
+  // Special case for Museums and Galleries
+  if (params.slug === 'museums-and-galleries') {
+    const title = 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia';
+    const description = `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. ${company.description}`;
+    const keywords = [
+      'museums and galleries sales agent',
+      'museums and galleries agent',
+      'museums and galleries wholesale supplier',
+      'museums and galleries East Anglia',
+      'museums and galleries cards',
+      'museums and galleries gifts',
+      'museums and galleries stationery',
+      'art cards wholesale',
+      'design-led cards supplier',
+      'licensed art cards',
+      'gift stationery wholesale',
+      'East Anglia museums and galleries agent',
+      'Suffolk museums and galleries supplier',
+      'Norfolk museums and galleries agent',
+      'Essex museums and galleries supplier',
+      'Cambridgeshire museums and galleries agent'
+    ].join(', ');
+
+    return {
+      title,
+      description,
+      keywords,
+      openGraph: {
+        title,
+        description,
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+      }
+    };
+  }
+
   // Generate metadata from company data if not present
   const title = `${company.name} Sales Agent | Wholesale Supplier in East Anglia`;
   const description = `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`;
@@ -345,6 +385,54 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
 }
 
 function generateStructuredData(company: Company) {
+  // Special case for Museums and Galleries
+  if (company.slug === 'museums-and-galleries') {
+    return {
+      '@context': 'https://schema.org',
+      '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
+      '@id': `https://www.easalesltd.co.uk/companies/${company.slug}#organization`,
+      'name': 'Museums and Galleries Sales Agent - Official Wholesale Supplier in East Anglia',
+      'description': `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. ${company.description}`,
+      'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
+      'logo': {
+        '@type': 'ImageObject',
+        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
+        'width': '800',
+        'height': '600'
+      },
+      'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+        '@type': 'State',
+        'name': county,
+        'address': {
+          '@type': 'PostalAddress',
+          'addressRegion': county,
+          'addressCountry': 'GB'
+        }
+      })),
+      'hasOfferCatalog': {
+        '@type': 'OfferCatalog',
+        'name': 'Museums and Galleries Sales Agent - Product Catalog',
+        'itemListElement': {
+          '@type': 'Offer',
+          'itemOffered': {
+            '@type': 'Product',
+            'name': 'Museums and Galleries Products',
+            'description': 'Licensed art and design-led greetings cards and gift stationery from the UK\'s leading publisher.',
+            'brand': {
+              '@type': 'Brand',
+              'name': 'Museums and Galleries'
+            },
+            'category': ['Greeting Cards', 'Gift Stationery', 'Art Cards', 'Design-led Cards', 'East Anglia Retail']
+          },
+          'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
+            '@type': 'State',
+            'name': county
+          }))
+        }
+      }
+    };
+  }
+
   return {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
