@@ -227,24 +227,6 @@ export default function DisplaySolutionsPage() {
             </div>
           </div>
 
-          <div className="bg-blue-50 rounded-xl p-8 mt-12">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4 text-center">Why Choose Our Display Solutions?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Quality Materials</h3>
-                <p className="text-gray-700">Built to last with premium materials and expert craftsmanship</p>
-              </div>
-              <div className="text-center">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Custom Design</h3>
-                <p className="text-gray-700">Tailored solutions to match your space and product needs</p>
-              </div>
-              <div className="text-center">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Support</h3>
-                <p className="text-gray-700">Professional installation and ongoing maintenance support</p>
-              </div>
-            </div>
-          </div>
-
           <div className="bg-blue-50 rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Need Display Solutions?</h2>
             <p className="text-lg text-gray-700 mb-6">
