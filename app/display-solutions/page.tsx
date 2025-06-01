@@ -212,14 +212,16 @@ export default function DisplaySolutionsPage() {
               />
 
               <DisplaySection 
-                title="Specialized Display Solutions"
-                description="Looking for something specific? We offer custom display solutions tailored to your unique needs and space requirements."
+                title="Coin Dispenser Machines"
+                description="Add a convenient and profitable service to your store with our coin dispenser machines. Perfect for providing change to customers while generating additional revenue."
                 images={coinDispenserImages}
                 features={[
-                  'Custom-designed displays',
-                  'Specialized product presentation',
-                  'Space optimization',
-                  'Brand-specific solutions'
+                  'Generate passive income for your business',
+                  'Provide convenient change service to customers',
+                  'Low maintenance and reliable operation',
+                  'Compact design fits in most retail spaces',
+                  'Secure and tamper-proof construction',
+                  'Easy to install and service'
                 ]}
               />
             </div>
