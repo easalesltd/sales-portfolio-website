@@ -12,7 +12,7 @@ interface VideoBackgroundProps {
 export default function VideoBackground({ 
   videoUrl, 
   children,
-  fadeIn = true
+  fadeIn = false
 }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -27,12 +27,13 @@ export default function VideoBackground({
     video.playsInline = true;
     video.load();
 
+    // Attempt to play immediately
+    video.play().catch(() => {
+      // Handle autoplay failure silently
+    });
+
     const handleLoadedData = () => {
       setIsLoaded(true);
-      // Attempt to play immediately when loaded
-      video.play().catch(() => {
-        // Handle autoplay failure silently
-      });
     };
 
     video.addEventListener('loadeddata', handleLoadedData);
@@ -49,15 +50,14 @@ export default function VideoBackground({
       <div className="absolute inset-0 bg-black/20">
         <video
           ref={videoRef}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${
-            isLoaded ? 'opacity-20' : 'opacity-0'
-          }`}
+          className={`w-full h-full object-cover ${isLoaded ? 'opacity-20' : 'opacity-0'}`}
           style={{
             transition: fadeIn ? 'opacity 1s ease-in' : 'none'
           }}
           muted
           playsInline
           loop
+          autoPlay
           preload="auto"
           x-webkit-airplay="deny"
           disablePictureInPicture
