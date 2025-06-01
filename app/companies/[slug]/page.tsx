@@ -25,6 +25,245 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
+  // Special cases for each company
+  const companyMetadata = {
+    'museums-and-galleries': {
+      title: 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'museums and galleries sales agent',
+        'museums and galleries agent',
+        'museums and galleries wholesale supplier',
+        'museums and galleries East Anglia',
+        'museums and galleries cards',
+        'museums and galleries gifts',
+        'museums and galleries stationery',
+        'art cards wholesale',
+        'design-led cards supplier',
+        'licensed art cards',
+        'gift stationery wholesale',
+        'East Anglia museums and galleries agent',
+        'Suffolk museums and galleries supplier',
+        'Norfolk museums and galleries agent',
+        'Essex museums and galleries supplier',
+        'Cambridgeshire museums and galleries agent'
+      ]
+    },
+    'paper-salad': {
+      title: 'Paper Salad Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'paper salad sales agent',
+        'paper salad agent',
+        'paper salad wholesale supplier',
+        'paper salad East Anglia',
+        'paper salad cards',
+        'paper salad gifts',
+        'paper salad stationery',
+        'greeting cards wholesale',
+        'design-led cards supplier',
+        'East Anglia paper salad agent',
+        'Suffolk paper salad supplier',
+        'Norfolk paper salad agent',
+        'Essex paper salad supplier',
+        'Cambridgeshire paper salad agent'
+      ]
+    },
+    'ohh-deer-wholesale': {
+      title: 'Ohh Deer Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'ohh deer sales agent',
+        'ohh deer agent',
+        'ohh deer wholesale supplier',
+        'ohh deer East Anglia',
+        'ohh deer cards',
+        'ohh deer gifts',
+        'ohh deer stationery',
+        'art cards wholesale',
+        'design-led cards supplier',
+        'East Anglia ohh deer agent',
+        'Suffolk ohh deer supplier',
+        'Norfolk ohh deer agent',
+        'Essex ohh deer supplier',
+        'Cambridgeshire ohh deer agent'
+      ]
+    },
+    'gnaw-chocolate': {
+      title: 'Gnaw Chocolate Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'gnaw chocolate sales agent',
+        'gnaw chocolate agent',
+        'gnaw chocolate wholesale supplier',
+        'gnaw chocolate East Anglia',
+        'artisanal chocolate wholesale',
+        'norfolk chocolate supplier',
+        'chocolate gifts wholesale',
+        'sweet treats supplier',
+        'East Anglia gnaw chocolate agent',
+        'Suffolk gnaw chocolate supplier',
+        'Norfolk gnaw chocolate agent',
+        'Essex gnaw chocolate supplier',
+        'Cambridgeshire gnaw chocolate agent'
+      ]
+    },
+    'mint-publishing': {
+      title: 'Mint Publishing Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'mint publishing sales agent',
+        'mint publishing agent',
+        'mint publishing wholesale supplier',
+        'mint publishing East Anglia',
+        'mint publishing cards',
+        'funny cards wholesale',
+        'birthday cards supplier',
+        'blank cards wholesale',
+        'East Anglia mint publishing agent',
+        'Suffolk mint publishing supplier',
+        'Norfolk mint publishing agent',
+        'Essex mint publishing supplier',
+        'Cambridgeshire mint publishing agent'
+      ]
+    },
+    'wpl-gifts': {
+      title: 'WPL Gifts Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'wpl gifts sales agent',
+        'wpl sales agent',
+        'wpl gifts agent',
+        'wpl gifts wholesale supplier',
+        'wpl gifts East Anglia',
+        'wpl gifts wholesale',
+        'giftware supplier',
+        'retail gifts wholesale',
+        'East Anglia wpl gifts agent',
+        'Suffolk wpl gifts supplier',
+        'Norfolk wpl gifts agent',
+        'Essex wpl gifts supplier',
+        'Cambridgeshire wpl gifts agent'
+      ]
+    },
+    'global-journey-gifts': {
+      title: 'Global Journey Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'global journey sales agent',
+        'global journey agent',
+        'global journey wholesale supplier',
+        'global journey East Anglia',
+        'global journey gifts',
+        'tourist gifts wholesale',
+        'museum gifts supplier',
+        'visitor centre gifts',
+        'East Anglia global journey agent',
+        'Suffolk global journey supplier',
+        'Norfolk global journey agent',
+        'Essex global journey supplier',
+        'Cambridgeshire global journey agent'
+      ]
+    },
+    'david-fischhoff': {
+      title: 'David Fischhoff Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'david fischhoff sales agent',
+        'david fischhoff agent',
+        'david fischhoff wholesale supplier',
+        'david fischhoff East Anglia',
+        'david fischhoff cards',
+        'art cards wholesale',
+        'design cards supplier',
+        'East Anglia david fischhoff agent',
+        'Suffolk david fischhoff supplier',
+        'Norfolk david fischhoff agent',
+        'Essex david fischhoff supplier',
+        'Cambridgeshire david fischhoff agent'
+      ]
+    },
+    'emotional-rescue': {
+      title: 'Emotional Rescue Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'emotional rescue sales agent',
+        'emotional rescue agent',
+        'emotional rescue wholesale supplier',
+        'emotional rescue East Anglia',
+        'emotional rescue cards',
+        'greeting cards wholesale',
+        'card supplier',
+        'East Anglia emotional rescue agent',
+        'Suffolk emotional rescue supplier',
+        'Norfolk emotional rescue agent',
+        'Essex emotional rescue supplier',
+        'Cambridgeshire emotional rescue agent'
+      ]
+    },
+    'boxer-gifts': {
+      title: 'Boxer Gifts Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'boxer gifts sales agent',
+        'boxer gifts agent',
+        'boxer gifts wholesale supplier',
+        'boxer gifts East Anglia',
+        'boxer gifts wholesale',
+        'giftware supplier',
+        'retail gifts wholesale',
+        'East Anglia boxer gifts agent',
+        'Suffolk boxer gifts supplier',
+        'Norfolk boxer gifts agent',
+        'Essex boxer gifts supplier',
+        'Cambridgeshire boxer gifts agent'
+      ]
+    },
+    'peppermint-grove': {
+      title: 'Peppermint Grove Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'peppermint grove sales agent',
+        'peppermint grove agent',
+        'peppermint grove wholesale supplier',
+        'peppermint grove East Anglia',
+        'peppermint grove candles',
+        'peppermint grove diffusers',
+        'home fragrance wholesale',
+        'East Anglia peppermint grove agent',
+        'Suffolk peppermint grove supplier',
+        'Norfolk peppermint grove agent',
+        'Essex peppermint grove supplier',
+        'Cambridgeshire peppermint grove agent'
+      ]
+    },
+    'star-editions': {
+      title: 'Star Editions Sales Agent | Official Wholesale Supplier in East Anglia',
+      keywords: [
+        'star editions sales agent',
+        'star editions agent',
+        'star editions wholesale supplier',
+        'star editions East Anglia',
+        'star editions cards',
+        'star editions gifts',
+        'licensed cards wholesale',
+        'East Anglia star editions agent',
+        'Suffolk star editions supplier',
+        'Norfolk star editions agent',
+        'Essex star editions supplier',
+        'Cambridgeshire star editions agent'
+      ]
+    }
+  };
+
+  const metadata = companyMetadata[params.slug as keyof typeof companyMetadata];
+  if (metadata) {
+    return {
+      title: metadata.title,
+      description: `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`,
+      keywords: metadata.keywords.join(', '),
+      openGraph: {
+        title: metadata.title,
+        description: `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`,
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: metadata.title,
+        description: `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`,
+      }
+    };
+  }
+
   // Special case for Museums and Galleries
   if (params.slug === 'museums-and-galleries') {
     const title = 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia';
@@ -385,14 +624,77 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
 }
 
 function generateStructuredData(company: Company) {
-  // Special case for Museums and Galleries
-  if (company.slug === 'museums-and-galleries') {
+  const companyStructuredData = {
+    'museums-and-galleries': {
+      name: 'Museums and Galleries Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Licensed art and design-led greetings cards and gift stationery from the UK\'s leading publisher.',
+      categories: ['Greeting Cards', 'Gift Stationery', 'Art Cards', 'Design-led Cards', 'East Anglia Retail']
+    },
+    'paper-salad': {
+      name: 'Paper Salad Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Contemporary greeting cards and stationery with unique designs.',
+      categories: ['Greeting Cards', 'Stationery', 'Design-led Cards', 'East Anglia Retail']
+    },
+    'ohh-deer-wholesale': {
+      name: 'Ohh Deer Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Fun and quirky greeting cards, stationery, and gifts with unique illustrations.',
+      categories: ['Greeting Cards', 'Stationery', 'Gifts', 'Art Cards', 'East Anglia Retail']
+    },
+    'gnaw-chocolate': {
+      name: 'Gnaw Chocolate Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Artisanal chocolate creations and sweet treats from Norfolk.',
+      categories: ['Chocolate', 'Sweet Treats', 'Gifts', 'East Anglia Retail']
+    },
+    'mint-publishing': {
+      name: 'Mint Publishing Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Funny and refreshingly different birthday, blank, and captioned greetings cards.',
+      categories: ['Greeting Cards', 'Birthday Cards', 'Blank Cards', 'East Anglia Retail']
+    },
+    'wpl-gifts': {
+      name: 'WPL Gifts Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Quality giftware and retail solutions for your store.',
+      categories: ['Giftware', 'Retail Solutions', 'East Anglia Retail']
+    },
+    'global-journey-gifts': {
+      name: 'Global Journey Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Unique and original gift ranges with customised displays for tourist attractions, museums, and visitor centres.',
+      categories: ['Gifts', 'Tourist Attractions', 'Museum Gifts', 'Retail Solutions', 'East Anglia Retail']
+    },
+    'david-fischhoff': {
+      name: 'David Fischhoff Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Artistic greeting cards and designs.',
+      categories: ['Greeting Cards', 'Art Cards', 'Design-led Cards', 'East Anglia Retail']
+    },
+    'emotional-rescue': {
+      name: 'Emotional Rescue Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Contemporary greeting cards and stationery.',
+      categories: ['Greeting Cards', 'Stationery', 'East Anglia Retail']
+    },
+    'boxer-gifts': {
+      name: 'Boxer Gifts Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Quality giftware and retail solutions.',
+      categories: ['Giftware', 'Retail Solutions', 'East Anglia Retail']
+    },
+    'peppermint-grove': {
+      name: 'Peppermint Grove Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Luxury home fragrance including candles and diffusers.',
+      categories: ['Home Fragrance', 'Candles', 'Diffusers', 'East Anglia Retail']
+    },
+    'star-editions': {
+      name: 'Star Editions Sales Agent - Official Wholesale Supplier in East Anglia',
+      description: 'Licensed greeting cards and gifts.',
+      categories: ['Greeting Cards', 'Licensed Products', 'Gifts', 'East Anglia Retail']
+    }
+  };
+
+  const data = companyStructuredData[company.slug as keyof typeof companyStructuredData];
+  if (data) {
     return {
       '@context': 'https://schema.org',
       '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
       '@id': `https://www.easalesltd.co.uk/companies/${company.slug}#organization`,
-      'name': 'Museums and Galleries Sales Agent - Official Wholesale Supplier in East Anglia',
-      'description': `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. ${company.description}`,
+      'name': data.name,
+      'description': `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${data.description}`,
       'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
       'logo': {
         '@type': 'ImageObject',
@@ -411,18 +713,18 @@ function generateStructuredData(company: Company) {
       })),
       'hasOfferCatalog': {
         '@type': 'OfferCatalog',
-        'name': 'Museums and Galleries Sales Agent - Product Catalog',
+        'name': `${company.name} Sales Agent - Product Catalog`,
         'itemListElement': {
           '@type': 'Offer',
           'itemOffered': {
             '@type': 'Product',
-            'name': 'Museums and Galleries Products',
-            'description': 'Licensed art and design-led greetings cards and gift stationery from the UK\'s leading publisher.',
+            'name': `${company.name} Products`,
+            'description': data.description,
             'brand': {
               '@type': 'Brand',
-              'name': 'Museums and Galleries'
+              'name': company.name
             },
-            'category': ['Greeting Cards', 'Gift Stationery', 'Art Cards', 'Design-led Cards', 'East Anglia Retail']
+            'category': data.categories
           },
           'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'].map(county => ({
             '@type': 'State',
@@ -433,6 +735,7 @@ function generateStructuredData(company: Company) {
     };
   }
 
+  // Fallback to default structured data if no specific case exists
   return {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
