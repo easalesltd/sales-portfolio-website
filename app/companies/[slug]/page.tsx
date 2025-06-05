@@ -113,22 +113,40 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       ]
     },
     'ohh-deer-wholesale': {
-      title: 'Ohh Deer Sales Agent | Official Wholesale Supplier in East Anglia',
+      title: 'Ohh Deer Sales Agent | Official Supplier in East Anglia',
       keywords: [
         'ohh deer sales agent',
         'ohh deer agent',
-        'ohh deer wholesale supplier',
+        'ohh deer supplier',
         'ohh deer East Anglia',
         'ohh deer cards',
         'ohh deer gifts',
         'ohh deer stationery',
-        'art cards wholesale',
+        'cath kidston cards',
+        'laura ashley cards',
+        'art cards supplier',
         'design-led cards supplier',
+        'illustrated cards supplier',
+        'greeting cards supplier',
+        'stationery supplier',
+        'gift wrap supplier',
         'East Anglia ohh deer agent',
         'Suffolk ohh deer supplier',
         'Norfolk ohh deer agent',
         'Essex ohh deer supplier',
-        'Cambridgeshire ohh deer agent'
+        'Cambridgeshire ohh deer agent',
+        'ohh deer cath kidston',
+        'ohh deer laura ashley',
+        'ohh deer illustrated cards',
+        'ohh deer stationery range',
+        'ohh deer gift wrap',
+        'ohh deer notebooks',
+        'ohh deer planners',
+        'ohh deer art cards',
+        'ohh deer design cards',
+        'ohh deer greeting cards',
+        'ohh deer gift bags',
+        'ohh deer wrapping paper'
       ]
     },
     'gnaw-chocolate': {
@@ -726,9 +744,9 @@ function generateStructuredData(company: Company) {
       categories: ['Greeting Cards', 'Stationery', 'Design-led Cards', 'East Anglia Retail']
     },
     'ohh-deer-wholesale': {
-      name: 'Ohh Deer Sales Agent - Official Wholesale Supplier in East Anglia',
-      description: 'Fun and quirky greeting cards, stationery, and gifts with unique illustrations.',
-      categories: ['Greeting Cards', 'Stationery', 'Gifts', 'Art Cards', 'East Anglia Retail']
+      name: 'Ohh Deer Sales Agent - Official Supplier in East Anglia',
+      description: 'Fun and quirky greeting cards, stationery, and gifts with unique illustrations. Official supplier of Cath Kidston and Laura Ashley greeting cards and stationery.',
+      categories: ['Greeting Cards', 'Stationery', 'Gifts', 'Art Cards', 'Design-led Cards', 'East Anglia Retail', 'Cath Kidston', 'Laura Ashley']
     },
     'gnaw-chocolate': {
       name: 'Gnaw Chocolate Sales Agent - Official Wholesale Supplier in East Anglia',
