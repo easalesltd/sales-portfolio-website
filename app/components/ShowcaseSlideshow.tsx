@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 const TRANSITION_DURATION = 1000; // 1 second for a smoother fade transition
@@ -48,6 +48,13 @@ export default function ShowcaseSlideshow() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [imageError, setImageError] = useState<boolean[]>(new Array(showcaseImages.length).fill(false));
   const [shuffledImages, setShuffledImages] = useState<string[]>([]);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
 
   // Function to shuffle array using Fisher-Yates algorithm
   const shuffleArray = (array: string[]) => {
@@ -65,7 +72,7 @@ export default function ShowcaseSlideshow() {
   }, []);
 
   useEffect(() => {
-    if (shuffledImages.length === 0) return;
+    if (shuffledImages.length === 0 || !isAutoPlaying) return;
 
     const timer = setInterval(() => {
       setNextIndex((currentIndex + 1) % shuffledImages.length);
@@ -78,7 +85,58 @@ export default function ShowcaseSlideshow() {
     }, SLIDE_DURATION);
 
     return () => clearInterval(timer);
-  }, [currentIndex, shuffledImages.length]);
+  }, [currentIndex, shuffledImages.length, isAutoPlaying]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsAutoPlaying(false);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      // Swipe left - go to next image
+      const nextIdx = (currentIndex + 1) % shuffledImages.length;
+      setNextIndex(nextIdx);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex(nextIdx);
+        setIsTransitioning(false);
+      }, TRANSITION_DURATION);
+    } else if (isRightSwipe) {
+      // Swipe right - go to previous image
+      const prevIdx = (currentIndex - 1 + shuffledImages.length) % shuffledImages.length;
+      setNextIndex(prevIdx);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex(prevIdx);
+        setIsTransitioning(false);
+      }, TRANSITION_DURATION);
+    }
+
+    // Resume auto-play after 5 seconds of inactivity
+    setTimeout(() => {
+      setIsAutoPlaying(true);
+    }, 5000);
+  };
+
+  const handleMouseEnter = () => {
+    setIsAutoPlaying(false);
+  };
+
+  const handleMouseLeave = () => {
+    setIsAutoPlaying(true);
+  };
 
   const handleImageError = (index: number) => {
     setImageError(prev => {
@@ -114,19 +172,32 @@ export default function ShowcaseSlideshow() {
     if (index === currentIndex) return;
     setNextIndex(index);
     setIsTransitioning(true);
+    setIsAutoPlaying(false);
     setTimeout(() => {
       setCurrentIndex(index);
       setIsTransitioning(false);
+      // Resume auto-play after 5 seconds of inactivity
+      setTimeout(() => {
+        setIsAutoPlaying(true);
+      }, 5000);
     }, TRANSITION_DURATION);
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div 
+      ref={containerRef}
+      className="relative w-full h-full"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {/* Images Container */}
       <div className="relative w-full h-full">
         {/* Current Image */}
         <div 
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
           style={{ 
             opacity: isTransitioning ? 0 : 1, 
             transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
@@ -137,17 +208,18 @@ export default function ShowcaseSlideshow() {
             src={shuffledImages[currentIndex]}
             alt={`Showcase image ${currentIndex + 1}`}
             fill
-            className="object-cover"
+            className="object-cover select-none"
             priority={currentIndex === 0}
             onError={() => handleImageError(currentIndex)}
             sizes="100vw"
             quality={90}
+            draggable={false}
           />
         </div>
 
         {/* Next Image */}
         <div 
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
           style={{ 
             opacity: isTransitioning ? 1 : 0, 
             transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
@@ -158,11 +230,12 @@ export default function ShowcaseSlideshow() {
             src={shuffledImages[nextIndex]}
             alt={`Showcase image ${nextIndex + 1}`}
             fill
-            className="object-cover"
+            className="object-cover select-none"
             priority
             onError={() => handleImageError(nextIndex)}
             sizes="100vw"
             quality={90}
+            draggable={false}
           />
         </div>
       </div>
@@ -184,6 +257,22 @@ export default function ShowcaseSlideshow() {
           )
         ))}
       </div>
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={() => goToSlide((currentIndex - 1 + shuffledImages.length) % shuffledImages.length)}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300"
+        aria-label="Previous image"
+      >
+        ←
+      </button>
+      <button
+        onClick={() => goToSlide((currentIndex + 1) % shuffledImages.length)}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300"
+        aria-label="Next image"
+      >
+        →
+      </button>
     </div>
   );
 } 
