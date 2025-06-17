@@ -1,41 +1,14 @@
-'use client';
-
 import Image from "next/image";
 import Link from "next/link";
 import { companies } from "./data/companies";
 import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
 import RequestVisitForm from "./components/RequestVisitForm";
-import { useState, useEffect, useRef } from "react";
 import VideoBackground from "./components/VideoBackground";
+import { metadata } from "./metadata";
+
+export { metadata };
 
 export default function Home() {
-  const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
-  const brandsSectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const currentRef = brandsSectionRef.current;
-            if (currentRef) {
-              currentRef.classList.add('animate-fade-in');
-            }
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const currentRef = brandsSectionRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-      return () => {
-        observer.unobserve(currentRef);
-      };
-    }
-  }, []);
-
   return (
     <main className="min-h-screen">
       {/* Hero Section with Background Video */}
@@ -58,12 +31,12 @@ export default function Home() {
             Based in Suffolk and covering Norfolk, Essex, and Cambridgeshire, we&apos;re here to help your business grow. Ready to explore our brands? Let&apos;s chat!
           </p>
           <div className="flex justify-center gap-6">
-            <button
-              onClick={() => setIsRequestFormOpen(true)}
+            <Link 
+              href="/contact" 
               className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
             >
               Request an Agent Visit
-            </button>
+            </Link>
             <Link 
               href="/about" 
               className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -81,7 +54,7 @@ export default function Home() {
       </div>
 
       {/* Brands Grid */}
-      <div id="partner-brands" ref={brandsSectionRef} className="relative min-h-screen">
+      <div id="partner-brands" className="relative min-h-screen">
         <VideoBackground videoUrl="/videos/brands-background.mp4">
           <div className="py-20">
             <div className="max-w-7xl mx-auto px-4">
@@ -113,12 +86,6 @@ export default function Home() {
           </div>
         </VideoBackground>
       </div>
-
-      {/* Request Visit Form Modal */}
-      <RequestVisitForm 
-        isOpen={isRequestFormOpen} 
-        onClose={() => setIsRequestFormOpen(false)} 
-      />
     </main>
   );
 }
