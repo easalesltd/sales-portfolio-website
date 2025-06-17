@@ -8,10 +8,10 @@ import VideoBackground from "../components/VideoBackground";
 const aboutImages = [
   { src: '/images/about/DSC07186.JPG', alt: 'Dave with his guitar' },
   { src: '/images/about/PXL_20240810_193137220_1.jpg', alt: 'Dave with family' },
-  { src: '/images/about/20240420_103516.jpg', alt: 'Recent photo' },
+  { src: '/images/about/20240420_103516 portrait.jpg', alt: 'Recent photo' },
   { src: '/images/about/IMG-20230810-WA0046.jpg', alt: 'Family moment' },
   { src: '/images/about/IMG-20240923-WA0018.jpg', alt: 'Family at Legoland' },
-  { src: '/images/about/20250526_145646.jpg', alt: 'Latest photo' },
+  { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
 ];
 
 export default function AboutPage() {
@@ -158,10 +158,10 @@ export default function AboutPage() {
                 {/* Recent Photo */}
                 <div 
                   className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/20240420_103516.jpg', 'Recent photo')}
+                  onClick={() => handleImageClick('/images/about/20240420_103516 portrait.jpg', 'Recent photo')}
                 >
                   <Image
-                    src="/images/about/20240420_103516.jpg"
+                    src="/images/about/20240420_103516 portrait.jpg"
                     alt="Recent photo"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
@@ -197,10 +197,10 @@ export default function AboutPage() {
                 {/* Latest Photo */}
                 <div 
                   className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/20250526_145646.jpg', 'Latest photo')}
+                  onClick={() => handleImageClick('/images/about/20250526_145646 portrait.jpg', 'Latest photo')}
                 >
                   <Image
-                    src="/images/about/20250526_145646.jpg"
+                    src="/images/about/20250526_145646 portrait.jpg"
                     alt="Latest photo"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
