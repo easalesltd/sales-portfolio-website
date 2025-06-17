@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { companies } from "./data/companies";
 import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
-import RequestVisitForm from "./components/RequestVisitForm";
 import VideoBackground from "./components/VideoBackground";
 import { metadata } from "./metadata";
 
