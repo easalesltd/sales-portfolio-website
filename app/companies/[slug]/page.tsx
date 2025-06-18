@@ -995,9 +995,9 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   ] : [];
 
   const mintPublishingBaseImages = params.slug === 'mint-publishing' ? [
-    '/images/companies/mint-publishing/Katie%20.png',
-    '/images/companies/mint-publishing/Lost%20The%20Plot.png',
-    '/images/companies/mint-publishing/1-1-25%20(1).jpeg',
+    '/images/companies/mint-publishing/Katie .png',
+    '/images/companies/mint-publishing/Lost The Plot.png',
+    '/images/companies/mint-publishing/1-1-25 (1).jpeg',
     '/images/companies/mint-publishing/1-1-27.jpeg',
     '/images/companies/mint-publishing/1-1-26.jpeg',
     '/images/companies/mint-publishing/1-1-29.jpeg',
