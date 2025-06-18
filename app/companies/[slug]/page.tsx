@@ -1027,7 +1027,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   const ohhDeerImages = shuffleArray(ohhDeerBaseImages);
   const globalJourneyImages = shuffleArray(globalJourneyBaseImages);
   const wplGiftsImages = shuffleArray(wplGiftsBaseImages);
-  const mintPublishingImages = shuffleArray(mintPublishingBaseImages);
+  const mintPublishingImages = mintPublishingBaseImages;
   const gnawChocolateImages = shuffleArray(gnawChocolateBaseImages);
 
   const content = (
