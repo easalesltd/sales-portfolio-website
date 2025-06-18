@@ -366,6 +366,25 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     'mint-publishing': {
       title: 'Mint Publishing Greeting Cards | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
+        // Katie Abey SEO
+        'Katie Abey Greeting Cards',
+        'Buy Katie Abey Greeting Cards',
+        'Katie Abey Cards',
+        'Katie Abey Cards Supplier',
+        'Katie Abey Cards Agent',
+        'Katie Abey Cards East Anglia',
+        'Katie Abey Cards Hertfordshire',
+        'Katie Abey Cards Cambridgeshire',
+        'Katie Abey Cards Suffolk',
+        'Katie Abey Cards Norfolk',
+        'Katie Abey Cards Essex',
+        'Katie Abey Cards Wholesale',
+        'Katie Abey Cards Trade',
+        'Katie Abey Cards Retail',
+        'Katie Abey Cards Business',
+        'Katie Abey Cards Distributor',
+        'Katie Abey Cards UK',
+        // Existing keywords
         'mint publishing sales agent',
         'mint publishing agent',
         'mint publishing supplier',
@@ -976,6 +995,9 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   ] : [];
 
   const mintPublishingBaseImages = params.slug === 'mint-publishing' ? [
+    '/images/companies/mint-publishing/Katie%20.png',
+    '/images/companies/mint-publishing/Lost%20The%20Plot.png',
+    '/images/companies/mint-publishing/1-1-25%20(1).jpeg',
     '/images/companies/mint-publishing/1-1-27.jpeg',
     '/images/companies/mint-publishing/1-1-26.jpeg',
     '/images/companies/mint-publishing/1-1-29.jpeg',

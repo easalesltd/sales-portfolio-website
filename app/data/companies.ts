@@ -58,7 +58,7 @@ export const companies: Company[] = [
     id: "mint-publishing",
     name: "Mint Publishing",
     slug: "mint-publishing",
-    description: "M!NT is your fully refreshed and refreshingly different publisher of (mostly funny) birthday, blank and captioned greetings cards.",
+    description: "M!NT is your fully refreshed and refreshingly different publisher of (mostly funny) birthday, blank and captioned greetings cards. We are proud to supply the official Katie Abey Greeting Cards range – you can buy Katie Abey Greeting Cards directly from Dave Langdon at East Anglian Sales LTD.",
     logoUrl: "/images/logos/MINT-PUBLISHING-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1oUU_899INjpAiD-gu9Zf2Vo9AEjLe-2y?usp=drive_link",
     websiteUrl: "https://www.mintpublishing.co.uk"
