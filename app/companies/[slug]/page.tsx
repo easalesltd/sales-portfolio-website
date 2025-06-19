@@ -772,10 +772,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     const title = 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia';
     const description = `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. ${company.description}`;
     const keywords = [
+      // General terms
       'museums and galleries sales agent',
       'museums and galleries agent',
       'museums and galleries wholesale supplier',
-      'museums and galleries East Anglia',
       'museums and galleries cards',
       'museums and galleries gifts',
       'museums and galleries stationery',
@@ -783,12 +783,34 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       'design-led cards supplier',
       'licensed art cards',
       'gift stationery wholesale',
-      'East Anglia museums and galleries agent',
-      'Suffolk museums and galleries supplier',
-      'Norfolk museums and galleries agent',
-      'Essex museums and galleries supplier',
-      'Cambridgeshire museums and galleries agent',
       
+      // Location-specific terms
+      'East Anglia museums and galleries agent',
+      'Suffolk museums and galleries agent',
+      'Norfolk museums and galleries agent',
+      'Essex museums and galleries agent',
+      'Cambridgeshire museums and galleries agent',
+      'Hertfordshire museums and galleries agent',
+      'East Anglia museums and galleries supplier',
+      'Suffolk museums and galleries supplier',
+      'Norfolk museums and galleries supplier',
+      'Essex museums and galleries supplier',
+      'Cambridgeshire museums and galleries supplier',
+      'Hertfordshire museums and galleries supplier',
+      'East Anglia museums and galleries distributor',
+      'Suffolk museums and galleries distributor',
+      'Norfolk museums and galleries distributor',
+      'Essex museums and galleries distributor',
+      'Cambridgeshire museums and galleries distributor',
+      'Hertfordshire museums and galleries distributor',
+      'East Anglia museums and galleries sales representative',
+      'Suffolk museums and galleries sales representative',
+      'Norfolk museums and galleries sales representative',
+      'Essex museums and galleries sales representative',
+      'Cambridgeshire museums and galleries sales representative',
+      'Hertfordshire museums and galleries sales representative',
+      
+      // Christmas and charity cards
       'museum Christmas cards wholesale',
       'gallery Christmas cards supplier',
       'art Christmas cards East Anglia',
@@ -1058,6 +1080,43 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                   <div className="h-1 w-20 bg-blue-600 mt-2" />
                 </h1>
                 <p className="text-xl leading-relaxed text-gray-600">{company.description}</p>
+                
+                {/* Enhanced content for Museums and Galleries */}
+                {params.slug === 'museums-and-galleries' && (
+                  <div className="mt-6 space-y-4">
+                    <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-600">
+                      <h3 className="text-lg font-semibold text-blue-900 mb-3">
+                        Museums and Galleries Sales Agent Services
+                      </h3>
+                      <p className="text-blue-800 mb-3">
+                        As your dedicated <strong>Museums and Galleries sales agent</strong> in East Anglia, I provide comprehensive wholesale services to retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire. My role as a <strong>Museums and Galleries agent</strong> includes:
+                      </p>
+                      <ul className="text-blue-800 space-y-2 ml-4">
+                        <li>• Personal visits to discuss your <strong>Museums and Galleries</strong> product requirements</li>
+                        <li>• Expert guidance on the latest art and design-led greeting cards</li>
+                        <li>• Competitive wholesale pricing for <strong>Museums and Galleries</strong> products</li>
+                        <li>• Local delivery service across East Anglia</li>
+                        <li>• Ongoing support as your trusted <strong>Museums and Galleries sales representative</strong></li>
+                      </ul>
+                    </div>
+                    
+                    <div className="bg-gray-50 p-6 rounded-lg">
+                      <h4 className="text-lg font-semibold text-gray-900 mb-3">
+                        Why Choose Me as Your Museums and Galleries Sales Agent?
+                      </h4>
+                      <p className="text-gray-700 mb-3">
+                        With over a decade of experience as a <strong>sales agent</strong> in East Anglia, I understand the unique needs of retailers stocking <strong>Museums and Galleries</strong> products. As your local <strong>Museums and Galleries agent</strong>, I offer:
+                      </p>
+                      <ul className="text-gray-700 space-y-2 ml-4">
+                        <li>• Deep knowledge of art and design-led greeting cards</li>
+                        <li>• Strong relationships with the <strong>Museums and Galleries</strong> brand</li>
+                        <li>• Flexible ordering and delivery options</li>
+                        <li>• Competitive trade prices for wholesale customers</li>
+                        <li>• Dedicated support as your <strong>Museums and Galleries distributor</strong></li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="mt-12">
                   {params.slug === 'paper-salad' && (
