@@ -37,7 +37,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     { name: 'Gnaw Chocolate', checked: false },
     { name: 'Mint Publishing', checked: false },
     { name: 'Museums & Galleries', checked: false },
-    { name: 'Ohh Deer Wholesale', checked: false },
+    { name: 'Ohh Deer', checked: false },
     { name: 'Paper Salad', checked: false },
     { name: 'Peppermint Grove', checked: false },
     { name: 'Star Editions', checked: false },

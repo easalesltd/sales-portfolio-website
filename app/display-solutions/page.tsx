@@ -48,7 +48,7 @@ export default function DisplaySolutionsPage() {
     'Museums and Galleries Stationary FSDU.png',
     'Museums and Galleries Card FSDU.png',
     'Ohh Deer Gouda FSDU.png',
-    'Ohh Deer Wholesale Journal and Art Print FSDU.png'
+    'Ohh Deer Journal and Art Print FSDU.png'
   ];
 
   const wallDisplayImages = [

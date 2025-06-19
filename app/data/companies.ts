@@ -73,9 +73,9 @@ export const companies: Company[] = [
     websiteUrl: "https://www.museums.co.uk"
   },
   {
-    id: "ohh-deer-wholesale",
-    name: "Ohh Deer Wholesale",
-    slug: "ohh-deer-wholesale",
+    id: "ohh-deer",
+    name: "Ohh Deer",
+    slug: "ohh-deer",
     description: "Ohh Deer is a UK-based company founded in 2011 by Jamie Mitchell and Mark Callaby, known for its playful, artistic, and inclusive greeting cards, stationery, and gifts. We are proud to supply the official Cath Kidston greeting cards and stationery range, featuring their iconic floral and vintage-inspired designs, as well as the beautiful Laura Ashley collection of greeting cards, gift bags, and wrapping paper.",
     logoUrl: "/images/logos/ohh-deer-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1FWnmKaHf8tmhV-RSeZYaSfx3fG0aDuk6?usp=drive_link",
