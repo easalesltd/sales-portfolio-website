@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://easalesltd.com/sitemap.xml
+Sitemap: https://easalesltd.co.uk/sitemap.xml
 
 # Prevent crawling of admin or private areas
 Disallow: /api/
