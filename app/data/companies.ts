@@ -33,7 +33,7 @@ export const companies: Company[] = [
     slug: "emotional-rescue",
     description: "Creators of unique and innovative greeting cards, bringing emotion and creativity to every occasion.",
     logoUrl: "/images/companies/emotional-rescue/Screenshot 2025-05-16 at 17.22.49.png",
-    catalogueUrl: "https://drive.google.com/file/d/1XavX6DTBI7xIHcII3nNxR66viohl0gig/view?usp=drive_link",
+    catalogueUrl: "https://drive.google.com/drive/folders/1UANnjMXxYW3x8NLDsgcHARVrMsiUxmYa?usp=drive_link",
     websiteUrl: "https://www.emotional-rescue.co.uk"
   },
   {

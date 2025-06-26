@@ -693,7 +693,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+        <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50 pt-4">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
@@ -725,7 +725,7 @@ export default function RootLayout({
           </nav>
         </header>
         <Breadcrumbs />
-        <main className="pt-16 min-h-screen bg-white">
+        <main className="pt-20 min-h-screen bg-white">
           {children}
         </main>
 

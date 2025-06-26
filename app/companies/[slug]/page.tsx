@@ -217,7 +217,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         'Valentine\'s Day greeting cards'
       ]
     },
-    'ohh-deer': {
+    'ohh-deer-wholesale': {
       title: 'Ohh Deer Greeting Cards | Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'ohh deer sales agent',
@@ -366,25 +366,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     'mint-publishing': {
       title: 'Mint Publishing Greeting Cards | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
-        // Katie Abey SEO
-        'Katie Abey Greeting Cards',
-        'Buy Katie Abey Greeting Cards',
-        'Katie Abey Cards',
-        'Katie Abey Cards Supplier',
-        'Katie Abey Cards Agent',
-        'Katie Abey Cards East Anglia',
-        'Katie Abey Cards Hertfordshire',
-        'Katie Abey Cards Cambridgeshire',
-        'Katie Abey Cards Suffolk',
-        'Katie Abey Cards Norfolk',
-        'Katie Abey Cards Essex',
-        'Katie Abey Cards Wholesale',
-        'Katie Abey Cards Trade',
-        'Katie Abey Cards Retail',
-        'Katie Abey Cards Business',
-        'Katie Abey Cards Distributor',
-        'Katie Abey Cards UK',
-        // Existing keywords
         'mint publishing sales agent',
         'mint publishing agent',
         'mint publishing supplier',
@@ -772,10 +753,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     const title = 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia';
     const description = `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. ${company.description}`;
     const keywords = [
-      // General terms
       'museums and galleries sales agent',
       'museums and galleries agent',
       'museums and galleries wholesale supplier',
+      'museums and galleries East Anglia',
       'museums and galleries cards',
       'museums and galleries gifts',
       'museums and galleries stationery',
@@ -783,34 +764,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       'design-led cards supplier',
       'licensed art cards',
       'gift stationery wholesale',
-      
-      // Location-specific terms
       'East Anglia museums and galleries agent',
-      'Suffolk museums and galleries agent',
-      'Norfolk museums and galleries agent',
-      'Essex museums and galleries agent',
-      'Cambridgeshire museums and galleries agent',
-      'Hertfordshire museums and galleries agent',
-      'East Anglia museums and galleries supplier',
       'Suffolk museums and galleries supplier',
-      'Norfolk museums and galleries supplier',
+      'Norfolk museums and galleries agent',
       'Essex museums and galleries supplier',
-      'Cambridgeshire museums and galleries supplier',
-      'Hertfordshire museums and galleries supplier',
-      'East Anglia museums and galleries distributor',
-      'Suffolk museums and galleries distributor',
-      'Norfolk museums and galleries distributor',
-      'Essex museums and galleries distributor',
-      'Cambridgeshire museums and galleries distributor',
-      'Hertfordshire museums and galleries distributor',
-      'East Anglia museums and galleries sales representative',
-      'Suffolk museums and galleries sales representative',
-      'Norfolk museums and galleries sales representative',
-      'Essex museums and galleries sales representative',
-      'Cambridgeshire museums and galleries sales representative',
-      'Hertfordshire museums and galleries sales representative',
+      'Cambridgeshire museums and galleries agent',
       
-      // Christmas and charity cards
       'museum Christmas cards wholesale',
       'gallery Christmas cards supplier',
       'art Christmas cards East Anglia',
@@ -913,7 +872,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   const hasVideoBackground = [
     'museums-and-galleries', 
     'paper-salad', 
-    'ohh-deer',
+    'ohh-deer-wholesale',
     'boxer-gifts',
     'emotional-rescue',
     'peppermint-grove',
@@ -993,12 +952,12 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/david-fischhoff/67.jpeg'
   ] : [];
 
-  const ohhDeerBaseImages = params.slug === 'ohh-deer' ? [
-    '/images/companies/ohh-deer/Tiny-Notebooks-Web-Square.jpg',
-    '/images/companies/ohh-deer/Cath-Kidston-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer/Beth-Evans-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer/Daily-Planners-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer/Laura-Ashley-Web-Asset-Square.jpg'
+  const ohhDeerBaseImages = params.slug === 'ohh-deer-wholesale' ? [
+    '/images/companies/ohh-deer-wholesale/Tiny-Notebooks-Web-Square.jpg',
+    '/images/companies/ohh-deer-wholesale/Cath-Kidston-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer-wholesale/Beth-Evans-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer-wholesale/Daily-Planners-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer-wholesale/Laura-Ashley-Web-Asset-Square.jpg'
   ] : [];
 
   const globalJourneyBaseImages = params.slug === 'global-journey-gifts' ? [
@@ -1017,9 +976,6 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   ] : [];
 
   const mintPublishingBaseImages = params.slug === 'mint-publishing' ? [
-    '/images/companies/mint-publishing/Katie.png',
-    '/images/companies/mint-publishing/Lost-The-Plot.png',
-    '/images/companies/mint-publishing/1-1-25 (1).jpeg',
     '/images/companies/mint-publishing/1-1-27.jpeg',
     '/images/companies/mint-publishing/1-1-26.jpeg',
     '/images/companies/mint-publishing/1-1-29.jpeg',
@@ -1049,7 +1005,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   const ohhDeerImages = shuffleArray(ohhDeerBaseImages);
   const globalJourneyImages = shuffleArray(globalJourneyBaseImages);
   const wplGiftsImages = shuffleArray(wplGiftsBaseImages);
-  const mintPublishingImages = mintPublishingBaseImages;
+  const mintPublishingImages = shuffleArray(mintPublishingBaseImages);
   const gnawChocolateImages = shuffleArray(gnawChocolateBaseImages);
 
   const content = (
@@ -1117,7 +1073,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                       <ImageGallery images={davidFischhoffImages} interval={5000} />
                     </div>
                   )}
-                  {params.slug === 'ohh-deer' && (
+                  {params.slug === 'ohh-deer-wholesale' && (
                     <div className="mb-8">
                       <ImageGallery images={ohhDeerImages} interval={5500} />
                     </div>
@@ -1184,10 +1140,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   );
 
   if (hasVideoBackground) {
-    // Handle special case for Ohh Deer video path
-    const videoPath = params.slug === 'ohh-deer' 
-      ? '/videos/companies/ohh-deer/background.mp4'
-      : `/videos/companies/${params.slug}/background.mp4`;
+    const videoPath = `/videos/companies/${params.slug}/background.mp4`;
     
     return (
       <VideoBackground videoUrl={videoPath}>
@@ -1263,7 +1216,7 @@ function generateStructuredData(company: Company) {
         'Cambridgeshire Retail'
       ]
     },
-    'ohh-deer': {
+    'ohh-deer-wholesale': {
       name: 'Ohh Deer Greeting Cards - Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
       description: 'Fun and quirky greeting cards, stationery, and gifts with unique illustrations. Official supplier of Cath Kidston and Laura Ashley greeting cards and stationery.',
       categories: [
