@@ -217,7 +217,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         'Valentine\'s Day greeting cards'
       ]
     },
-    'ohh-deer-wholesale': {
+    'ohh-deer': {
       title: 'Ohh Deer Greeting Cards | Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'ohh deer sales agent',
@@ -872,7 +872,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   const hasVideoBackground = [
     'museums-and-galleries', 
     'paper-salad', 
-    'ohh-deer-wholesale',
+    'ohh-deer',
     'boxer-gifts',
     'emotional-rescue',
     'peppermint-grove',
@@ -952,12 +952,12 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/david-fischhoff/67.jpeg'
   ] : [];
 
-  const ohhDeerBaseImages = params.slug === 'ohh-deer-wholesale' ? [
-    '/images/companies/ohh-deer-wholesale/Tiny-Notebooks-Web-Square.jpg',
-    '/images/companies/ohh-deer-wholesale/Cath-Kidston-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer-wholesale/Beth-Evans-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer-wholesale/Daily-Planners-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer-wholesale/Laura-Ashley-Web-Asset-Square.jpg'
+  const ohhDeerBaseImages = params.slug === 'ohh-deer' ? [
+    '/images/companies/ohh-deer/Tiny-Notebooks-Web-Square.jpg',
+    '/images/companies/ohh-deer/Cath-Kidston-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer/Beth-Evans-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer/Daily-Planners-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer/Laura-Ashley-Web-Asset-Square.jpg'
   ] : [];
 
   const globalJourneyBaseImages = params.slug === 'global-journey-gifts' ? [
@@ -1073,7 +1073,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                       <ImageGallery images={davidFischhoffImages} interval={5000} />
                     </div>
                   )}
-                  {params.slug === 'ohh-deer-wholesale' && (
+                  {params.slug === 'ohh-deer' && (
                     <div className="mb-8">
                       <ImageGallery images={ohhDeerImages} interval={5500} />
                     </div>
@@ -1216,7 +1216,7 @@ function generateStructuredData(company: Company) {
         'Cambridgeshire Retail'
       ]
     },
-    'ohh-deer-wholesale': {
+    'ohh-deer': {
       name: 'Ohh Deer Greeting Cards - Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
       description: 'Fun and quirky greeting cards, stationery, and gifts with unique illustrations. Official supplier of Cath Kidston and Laura Ashley greeting cards and stationery.',
       categories: [
