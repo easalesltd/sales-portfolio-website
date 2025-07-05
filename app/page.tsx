@@ -27,7 +27,7 @@ export default function Home() {
             Hi, I&apos;m Dave, A Sales Agent based in Ipswich and supplier of quality Greeting Cards, Stationery, and Gifts across East Anglia. From charming Independent Shops to bustling Garden Centres, I endeavour to help retailers create amazing displays that customers love.
           </p>
           <p className="text-lg text-gray-700 mb-8">
-            Based in Suffolk and covering Norfolk, Essex, and Cambridgeshire, I&apos;m here to help your business grow. Ready to explore our brands? Let&apos;s chat!
+            Based in Suffolk and covering Norfolk, Essex, and Cambridgeshire, I&apos;m here to help your business grow. Ready to explore the great brands I work with, keep scrolling down!
           </p>
           <div className="flex justify-center gap-6">
             <Link 
