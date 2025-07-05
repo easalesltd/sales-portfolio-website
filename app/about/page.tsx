@@ -85,9 +85,9 @@ export default function AboutPage() {
                   </p>
                 </div>
                 <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Service Area</h2>
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
                   <p className="text-lg text-gray-700 mb-4">
-                    We proudly serve retailers across East Anglia, including:
+                    I proudly serve retailers across East Anglia, including:
                   </p>
                   <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
                     <li>Suffolk</li>
@@ -110,9 +110,9 @@ export default function AboutPage() {
                 <p className="text-lg text-gray-700 mb-6">
                   I&apos;m committed to helping retailers find the perfect products for their customers. Whether you&apos;re looking for traditional greeting cards or modern gift items, I can help you build a successful product range.
                 </p>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Service Area</h2>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
                 <p className="text-lg text-gray-700 mb-6">
-                  We proudly serve retailers across East Anglia, including:
+                  I proudly serve retailers across East Anglia, including:
                 </p>
                 <ul className="text-lg text-gray-700 list-disc list-inside mb-8">
                   <li>Suffolk</li>
