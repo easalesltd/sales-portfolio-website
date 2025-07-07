@@ -9,6 +9,7 @@ const SLIDE_DURATION = 5000; // 5 seconds per slide for better viewing
 
 // Using all available showcase images
 const showcaseImages = [
+  '/images/showcase/Screenshot 2025-07-07 at 09.31.03-optimized.png',
   '/images/showcase/showcase1.jpeg',
   '/images/showcase/showcase2.jpeg',
   '/images/showcase/showcase3.jpeg',
