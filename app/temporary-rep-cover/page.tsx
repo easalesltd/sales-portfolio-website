@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import VideoBackground from '../components/VideoBackground';
@@ -75,11 +74,11 @@ export default function TemporaryRepCoverPage() {
           {/* Introduction Section */}
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-6">
-              When Life Happens, We've Got You Covered
+              When Life Happens, We&apos;ve Got You Covered
             </h2>
             <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
               Losing a sales representative can be stressful and disruptive to your business. 
-              Whether it's planned leave, unexpected departure, or extended absence, 
+              Whether it&apos;s planned leave, unexpected departure, or extended absence, 
               I provide seamless temporary coverage to ensure your customers continue to receive 
               the same high-quality service and attention they expect.
             </p>
@@ -105,7 +104,7 @@ export default function TemporaryRepCoverPage() {
               Fully Trained on All Major Sales Platforms
             </h2>
             <p className="text-lg text-gray-700 text-center mb-12 max-w-3xl mx-auto">
-              I'm proficient in the leading sales applications used in the greeting card and gift industry. 
+              I&apos;m proficient in the leading sales applications used in the greeting card and gift industry. 
               This means I can hit the ground running with your existing systems and processes.
             </p>
             
@@ -163,7 +162,7 @@ export default function TemporaryRepCoverPage() {
                 ))}
               </div>
               <p className="text-center text-gray-600 mt-6">
-                Additional areas can be covered by arrangement. I'm flexible and can adapt to your specific needs.
+                Additional areas can be covered by arrangement. I&apos;m flexible and can adapt to your specific needs.
               </p>
             </div>
           </div>
@@ -190,7 +189,7 @@ export default function TemporaryRepCoverPage() {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Quick Setup</h3>
                 <p className="text-gray-600">
-                  I'll get up to speed quickly with your systems, customers, and processes to minimize disruption.
+                  I&apos;ll get up to speed quickly with your systems, customers, and processes to minimize disruption.
                 </p>
               </div>
               
@@ -209,12 +208,12 @@ export default function TemporaryRepCoverPage() {
           {/* Call to Action */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg p-8 text-center text-white">
             <h2 className="text-3xl font-bold mb-4">
-              Don't Let a Gap Become a Problem
+              Don&apos;t Let a Gap Become a Problem
             </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Get in touch today to discuss your temporary cover needs. 
-              I'm here to help keep your business running smoothly.
-            </p>
+                          <p className="text-xl mb-8 opacity-90">
+                Get in touch today to discuss your temporary cover needs. 
+                I&apos;m here to help keep your business running smoothly.
+              </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 href="/contact" 
