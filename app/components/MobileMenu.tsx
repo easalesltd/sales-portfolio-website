@@ -9,6 +9,7 @@ export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+  const [isBrandsExpanded, setIsBrandsExpanded] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -108,13 +109,26 @@ export default function MobileMenu() {
               
               {/* Brands Section */}
               <div className="py-6">
-                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Our Partner Brands</h3>
-                <div className="space-y-3">
+                <button
+                  onClick={() => setIsBrandsExpanded(!isBrandsExpanded)}
+                  className="flex items-center justify-between w-full text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 hover:text-gray-600 transition-colors"
+                >
+                  Our Partner Brands
+                  <svg 
+                    className={`w-4 h-4 transform transition-transform ${isBrandsExpanded ? 'rotate-180' : ''}`} 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div className={`space-y-3 overflow-hidden transition-all duration-300 ${isBrandsExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
                   {companies.map((company) => (
                     <Link
                       key={company.id}
                       href={`/companies/${company.slug}`}
-                      className="block text-gray-600 hover:text-blue-600 transition-colors"
+                      className="block text-gray-600 hover:text-blue-600 transition-colors pl-4"
                       onClick={() => setIsOpen(false)}
                     >
                       {company.name}
@@ -129,6 +143,14 @@ export default function MobileMenu() {
                 onClick={() => setIsOpen(false)}
               >
                 Display Solutions
+              </Link>
+              
+              <Link 
+                href="/temporary-rep-cover" 
+                className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
+                onClick={() => setIsOpen(false)}
+              >
+                Temporary Rep Cover
               </Link>
               
               <Link 

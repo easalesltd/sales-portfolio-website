@@ -714,6 +714,7 @@ export default function RootLayout({
                 <Link href="/about" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">About</Link>
                 <BrandsDropdown />
                 <Link href="/display-solutions" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Display Solutions</Link>
+                <Link href="/temporary-rep-cover" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Temporary Rep Cover</Link>
                 <Link href="/contact" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
                 <ClientButton />
               </div>
