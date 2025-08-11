@@ -22,10 +22,10 @@ console.log('------------------------');
 const expectedLogos = [
   'sales-pak.png', 
   'blue-alligator.png',
-  'pixsell.png',
+  'Pixsell.png',
   'card-manager.png',
-  'shopify.png',
-  'inzant.png'
+  'Shopify.png',
+  'Inzant.png'
 ];
 
 expectedLogos.forEach(logo => {

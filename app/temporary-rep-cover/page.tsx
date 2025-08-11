@@ -16,7 +16,7 @@ export default function TemporaryRepCoverPage() {
     },
     {
       name: 'Pixsell',
-      logoPath: '/images/sales-apps/pixsell.png'
+      logoPath: '/images/sales-apps/Pixsell.png'
     },
     {
       name: 'Card Manager',
@@ -24,11 +24,11 @@ export default function TemporaryRepCoverPage() {
     },
     {
       name: 'Shopify',
-      logoPath: '/images/sales-apps/shopify.png'
+      logoPath: '/images/sales-apps/Shopify.png'
     },
     {
       name: 'Inzant',
-      logoPath: '/images/sales-apps/inzant.png'
+      logoPath: '/images/sales-apps/Inzant.png'
     }
   ];
 
