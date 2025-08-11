@@ -487,7 +487,7 @@ export const metadata: Metadata = {
     description: "Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire.",
   },
   alternates: {
-    canonical: "https://easalesltd.com"
+    canonical: "https://www.easalesltd.co.uk"
   },
   robots: {
     index: true,

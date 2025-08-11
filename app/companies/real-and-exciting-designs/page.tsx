@@ -87,7 +87,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
       ]
     },
     alternates: {
-      canonical: `https://easalesltd.com/companies/real-and-exciting-designs`
+              canonical: `https://www.easalesltd.co.uk/companies/real-and-exciting-designs`
     },
     robots: {
       index: true,

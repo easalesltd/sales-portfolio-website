@@ -133,9 +133,9 @@ export const metadata: Metadata = {
     title: 'Temporary Sales Rep Cover | Emergency Sales Agent Cover East Anglia | EA Sales',
     description: 'Professional temporary sales representative cover across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves.',
   },
-  alternates: {
-    canonical: 'https://easalesltd.com/temporary-rep-cover'
-  },
+                alternates: {
+                canonical: 'https://www.easalesltd.co.uk/temporary-rep-cover'
+              },
   robots: {
     index: true,
     follow: true
