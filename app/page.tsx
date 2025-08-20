@@ -12,7 +12,7 @@ export default function Home() {
     <main className="min-h-screen">
       {/* Hero Section with Background Video */}
       <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden">
-        <VideoBackground videoUrl="/videos/background.mp4">
+        <VideoBackground videoUrl="/videos/brands-background.mp4">
           <div className="w-full h-full">
             <ShowcaseSlideshow />
           </div>
