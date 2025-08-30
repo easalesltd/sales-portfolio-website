@@ -12,6 +12,8 @@ const aboutImages = [
   { src: '/images/about/IMG-20230810-WA0046.jpg', alt: 'Family moment' },
   { src: '/images/about/IMG-20240923-WA0018.jpg', alt: 'Family at Legoland' },
   { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
+  { src: '/images/about/IMG_0545.JPG', alt: 'Dave portrait' },
+  { src: '/images/about/IMG_0562.JPG', alt: 'Dave portrait' },
 ];
 
 export default function AboutPage() {

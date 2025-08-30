@@ -41,7 +41,8 @@ const showcaseImages = [
   '/images/companies/Real & Exciting Designs/a0ed6336-e2ad-4373-8cc7-a3631d177ceb.jpeg',
   '/images/companies/Real & Exciting Designs/c85f6dc5-1cb4-43f6-8eb5-fadd5bc56678.jpeg',
   '/images/companies/Real & Exciting Designs/6fa30e7a-4206-4982-afb3-228eee448a16.jpeg',
-  '/images/companies/Real & Exciting Designs/acaf8625-698f-43fe-b3ce-34247404bb5d.jpeg'
+  '/images/companies/Real & Exciting Designs/acaf8625-698f-43fe-b3ce-34247404bb5d.jpeg',
+  '/images/showcase/PXL_20250220_142258543.jpg'
 ];
 
 export default function ShowcaseSlideshow() {
