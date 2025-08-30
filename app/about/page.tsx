@@ -14,6 +14,8 @@ const aboutImages = [
   { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
   { src: '/images/about/PXL_20250817_093614452.jpg', alt: 'Dave portrait' },
   { src: '/images/about/Screenshot 2025-08-30 at 17.41.48.png', alt: 'Dave portrait' },
+  { src: '/images/about/IMG_0545.JPG', alt: 'Dave portrait' },
+  { src: '/images/about/IMG_0562.JPG', alt: 'Dave portrait' },
 ];
 
 export default function AboutPage() {
@@ -230,6 +232,33 @@ export default function AboutPage() {
                 >
                   <Image
                     src="/images/about/Screenshot 2025-08-30 at 17.41.48.png"
+                    alt="Dave portrait"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+              {/* Fifth Row - 2 Additional Photos */}
+              <div className="grid grid-cols-2 gap-6">
+                {/* Additional Portrait Photo 1 */}
+                <div 
+                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() => handleImageClick('/images/about/IMG_0545.JPG', 'Dave portrait')}
+                >
+                  <Image
+                    src="/images/about/IMG_0545.JPG"
+                    alt="Dave portrait"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                {/* Additional Portrait Photo 2 */}
+                <div 
+                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() => handleImageClick('/images/about/IMG_0562.JPG', 'Dave portrait')}
+                >
+                  <Image
+                    src="/images/about/IMG_0562.JPG"
                     alt="Dave portrait"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
