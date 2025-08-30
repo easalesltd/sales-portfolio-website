@@ -12,8 +12,8 @@ const aboutImages = [
   { src: '/images/about/IMG-20230810-WA0046.jpg', alt: 'Family moment' },
   { src: '/images/about/IMG-20240923-WA0018.jpg', alt: 'Family at Legoland' },
   { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
-  { src: '/images/about/IMG_0545.JPG', alt: 'Dave portrait' },
-  { src: '/images/about/IMG_0562.JPG', alt: 'Dave portrait' },
+  { src: '/images/about/PXL_20250817_093614452.jpg', alt: 'Dave portrait' },
+  { src: '/images/about/Screenshot 2025-08-30 at 17.41.48.png', alt: 'Dave portrait' },
 ];
 
 export default function AboutPage() {
@@ -214,10 +214,10 @@ export default function AboutPage() {
                 {/* New Portrait Photo 1 */}
                 <div 
                   className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/IMG_0545.JPG', 'Dave portrait')}
+                  onClick={() => handleImageClick('/images/about/PXL_20250817_093614452.jpg', 'Dave portrait')}
                 >
                   <Image
-                    src="/images/about/IMG_0545.JPG"
+                    src="/images/about/PXL_20250817_093614452.jpg"
                     alt="Dave portrait"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
@@ -226,10 +226,10 @@ export default function AboutPage() {
                 {/* New Portrait Photo 2 */}
                 <div 
                   className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/IMG_0562.JPG', 'Dave portrait')}
+                  onClick={() => handleImageClick('/images/about/Screenshot 2025-08-30 at 17.41.48.png', 'Dave portrait')}
                 >
                   <Image
-                    src="/images/about/IMG_0562.JPG"
+                    src="/images/about/Screenshot 2025-08-30 at 17.41.48.png"
                     alt="Dave portrait"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
