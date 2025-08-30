@@ -209,6 +209,33 @@ export default function AboutPage() {
                   />
                 </div>
               </div>
+              {/* Fourth Row - 2 New Photos */}
+              <div className="grid grid-cols-2 gap-6">
+                {/* New Portrait Photo 1 */}
+                <div 
+                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() => handleImageClick('/images/about/IMG_0545.JPG', 'Dave portrait')}
+                >
+                  <Image
+                    src="/images/about/IMG_0545.JPG"
+                    alt="Dave portrait"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                {/* New Portrait Photo 2 */}
+                <div 
+                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() => handleImageClick('/images/about/IMG_0562.JPG', 'Dave portrait')}
+                >
+                  <Image
+                    src="/images/about/IMG_0562.JPG"
+                    alt="Dave portrait"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
