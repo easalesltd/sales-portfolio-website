@@ -10,13 +10,11 @@ export { metadata };
 export default function Home() {
   return (
     <main className="min-h-screen">
-      {/* Hero Section with Background Video */}
-      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden">
-        <VideoBackground videoUrl="/videos/brands-background.mp4">
-          <div className="w-full h-full">
-            <ShowcaseSlideshow />
-          </div>
-        </VideoBackground>
+      {/* Hero Section with Showcase Slideshow */}
+      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="w-full h-full">
+          <ShowcaseSlideshow />
+        </div>
       </div>
 
       {/* About Section */}
