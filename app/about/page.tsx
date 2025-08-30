@@ -6,16 +6,14 @@ import ImageModal from "../components/ImageModal";
 import VideoBackground from "../components/VideoBackground";
 
 const aboutImages = [
-  { src: '/images/about/DSC07186.JPG', alt: 'Dave with his guitar' },
-  { src: '/images/about/PXL_20240810_193137220_1.jpg', alt: 'Dave with family' },
   { src: '/images/about/20240420_103516 portrait.jpg', alt: 'Recent photo' },
+  { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
+  { src: '/images/about/DSC07186.JPG', alt: 'Dave with his guitar' },
   { src: '/images/about/IMG-20230810-WA0046.jpg', alt: 'Family moment' },
   { src: '/images/about/IMG-20240923-WA0018.jpg', alt: 'Family at Legoland' },
-  { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
+  { src: '/images/about/PXL_20240810_193137220_1.jpg', alt: 'Dave with family' },
   { src: '/images/about/PXL_20250817_093614452.jpg', alt: 'Dave portrait' },
   { src: '/images/about/Screenshot 2025-08-30 at 17.41.48.png', alt: 'Dave portrait' },
-  { src: '/images/about/IMG_0545.JPG', alt: 'Dave portrait' },
-  { src: '/images/about/IMG_0562.JPG', alt: 'Dave portrait' },
 ];
 
 export default function AboutPage() {
@@ -129,37 +127,8 @@ export default function AboutPage() {
 
             {/* Right Column - Photo Grid (Desktop Only) */}
             <div className="space-y-6 hidden lg:block">
-              {/* Top Row - 2 Photos */}
+              {/* Row 1 - 2 Photos */}
               <div className="grid grid-cols-2 gap-6">
-                {/* Guitar Photo */}
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/DSC07186.JPG', 'Dave with his guitar')}
-                >
-                  <Image
-                    src="/images/about/DSC07186.JPG"
-                    alt="Dave with his guitar"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                    priority
-                  />
-                </div>
-                {/* Family Photo 1 */}
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/PXL_20240810_193137220_1.jpg', 'Dave with family')}
-                >
-                  <Image
-                    src="/images/about/PXL_20240810_193137220_1.jpg"
-                    alt="Dave with family"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-              {/* Middle Row - 2 Photos */}
-              <div className="grid grid-cols-2 gap-6">
-                {/* Recent Photo */}
                 <div 
                   className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
                   onClick={() => handleImageClick('/images/about/20240420_103516 portrait.jpg', 'Recent photo')}
@@ -169,36 +138,9 @@ export default function AboutPage() {
                     alt="Recent photo"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
+                    priority
                   />
                 </div>
-                {/* Family Photo 2 */}
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/IMG-20230810-WA0046.jpg', 'Family moment')}
-                >
-                  <Image
-                    src="/images/about/IMG-20230810-WA0046.jpg"
-                    alt="Family moment"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-              {/* Bottom Row - 2 Photos */}
-              <div className="grid grid-cols-2 gap-6">
-                {/* Legoland Photo */}
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/IMG-20240923-WA0018.jpg', 'Family at Legoland')}
-                >
-                  <Image
-                    src="/images/about/IMG-20240923-WA0018.jpg"
-                    alt="Family at Legoland"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                {/* Latest Photo */}
                 <div 
                   className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
                   onClick={() => handleImageClick('/images/about/20250526_145646 portrait.jpg', 'Latest photo')}
@@ -211,9 +153,58 @@ export default function AboutPage() {
                   />
                 </div>
               </div>
-              {/* Fourth Row - 2 New Photos */}
+              {/* Row 2 - 2 Photos */}
               <div className="grid grid-cols-2 gap-6">
-                {/* New Portrait Photo 1 */}
+                <div 
+                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() => handleImageClick('/images/about/DSC07186.JPG', 'Dave with his guitar')}
+                >
+                  <Image
+                    src="/images/about/DSC07186.JPG"
+                    alt="Dave with his guitar"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div 
+                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() => handleImageClick('/images/about/IMG-20230810-WA0046.jpg', 'Family moment')}
+                >
+                  <Image
+                    src="/images/about/IMG-20230810-WA0046.jpg"
+                    alt="Family moment"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+              {/* Row 3 - 2 Photos */}
+              <div className="grid grid-cols-2 gap-6">
+                <div 
+                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() => handleImageClick('/images/about/IMG-20240923-WA0018.jpg', 'Family at Legoland')}
+                >
+                  <Image
+                    src="/images/about/IMG-20240923-WA0018.jpg"
+                    alt="Family at Legoland"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div 
+                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  onClick={() => handleImageClick('/images/about/PXL_20240810_193137220_1.jpg', 'Dave with family')}
+                >
+                  <Image
+                    src="/images/about/PXL_20240810_193137220_1.jpg"
+                    alt="Dave with family"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+              {/* Row 4 - 2 Photos */}
+              <div className="grid grid-cols-2 gap-6">
                 <div 
                   className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
                   onClick={() => handleImageClick('/images/about/PXL_20250817_093614452.jpg', 'Dave portrait')}
@@ -225,40 +216,12 @@ export default function AboutPage() {
                     className="object-cover hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                {/* New Portrait Photo 2 */}
                 <div 
                   className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
                   onClick={() => handleImageClick('/images/about/Screenshot 2025-08-30 at 17.41.48.png', 'Dave portrait')}
                 >
                   <Image
                     src="/images/about/Screenshot 2025-08-30 at 17.41.48.png"
-                    alt="Dave portrait"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-              {/* Fifth Row - 2 Additional Photos */}
-              <div className="grid grid-cols-2 gap-6">
-                {/* Additional Portrait Photo 1 */}
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/IMG_0545.JPG', 'Dave portrait')}
-                >
-                  <Image
-                    src="/images/about/IMG_0545.JPG"
-                    alt="Dave portrait"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                {/* Additional Portrait Photo 2 */}
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/IMG_0562.JPG', 'Dave portrait')}
-                >
-                  <Image
-                    src="/images/about/IMG_0562.JPG"
                     alt="Dave portrait"
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-300"
