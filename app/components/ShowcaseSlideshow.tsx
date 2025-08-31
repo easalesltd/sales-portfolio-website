@@ -7,23 +7,17 @@ import Image from 'next/image';
 const TRANSITION_DURATION = 1000; // 1 second for a smoother fade transition
 const SLIDE_DURATION = 5000; // 5 seconds per slide for better viewing
 
-// Using showcase images from the showcase folder
+// Using showcase images from the showcase folder - only including existing images
 const showcaseImages = [
   '/images/showcase/1-1-25.jpeg',
-  '/images/showcase/1-1-26.jpeg',
   '/images/showcase/1066f4f9-50ba-4dfb-8f5d-703151fd119e.jpeg',
   '/images/showcase/4003f792-f399-4cc5-8802-e2bfcd93c330.jpeg',
   '/images/showcase/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
-  '/images/showcase/740dde85-43e1-4049-b4d6-44f3c9844c25.jpeg',
   '/images/showcase/901d0ddb-3e10-4a3d-aeee-c2d207eba557.jpeg',
-  '/images/showcase/394317ab-f7e6-4896-a346-2c041850a748.jpeg',
   '/images/showcase/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
   '/images/showcase/PGA_Gift_Set_Web_Banner_2bb5540a-8eb3-446a-9bf0-53b3250f4c37.jpeg',
-  '/images/showcase/PXL_20250220_142258543.jpg',
   '/images/showcase/Screenshot 2025-05-18 at 09.16.46.png',
   '/images/showcase/Screenshot 2025-05-18 at 09.18.07.png',
-  '/images/showcase/Screenshot 2025-05-18 at 09.18.13.png',
-  '/images/showcase/Screenshot 2025-05-18 at 09.18.44.png',
   '/images/showcase/Screenshot 2025-06-03 at 21.45.03.png',
   '/images/showcase/Screenshot 2025-06-03 at 21.45.27.png',
   '/images/showcase/Screenshot 2025-06-03 at 21.45.58.png',
