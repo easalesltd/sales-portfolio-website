@@ -47,12 +47,12 @@ export default function AboutPage() {
           </VideoBackground>
         </div>
 
-        {/* Mobile Photo Gallery */}
-        <div className="block lg:hidden">
-          <div className="overflow-x-auto flex gap-4 py-6 px-4 snap-x snap-mandatory">
-            {aboutImages.map((img) => (
+        {/* Mobile Photo Gallery - COMPLETELY REWRITTEN */}
+        <div className="block lg:hidden py-6">
+          <div className="overflow-x-auto flex gap-4 px-4 snap-x snap-mandatory">
+            {aboutImages.map((img, index) => (
               <div
-                key={img.src}
+                key={`mobile-${index}`}
                 className="relative min-w-[260px] h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer snap-center flex-shrink-0"
                 onClick={() => handleImageClick(img.src, img.alt)}
               >
@@ -61,6 +61,7 @@ export default function AboutPage() {
                   alt={img.alt}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
+                  sizes="260px"
                 />
               </div>
             ))}
@@ -70,7 +71,7 @@ export default function AboutPage() {
         {/* Rest of the content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Left column - Text content (Desktop) */}
+            {/* Left column - Text content */}
             <div className="space-y-8">
               {/* Mobile: Only text, no interleaved images */}
               <div className="block lg:hidden space-y-8">
@@ -129,76 +130,84 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Right Column - Photo Grid (Desktop Only) */}
-            <div className="space-y-6 hidden lg:block">
-              {/* Row 1 - 2 Photos */}
-              <div className="grid grid-cols-2 gap-6">
-                {aboutImages.slice(0, 2).map((img) => (
-                  <div
-                    key={img.src}
-                    className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                    onClick={() => handleImageClick(img.src, img.alt)}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                      priority={img.src.includes('20240420')}
-                    />
-                  </div>
-                ))}
-              </div>
-              {/* Row 2 - 2 Photos */}
-              <div className="grid grid-cols-2 gap-6">
-                {aboutImages.slice(2, 4).map((img) => (
-                  <div
-                    key={img.src}
-                    className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                    onClick={() => handleImageClick(img.src, img.alt)}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
-              {/* Row 3 - 2 Photos */}
-              <div className="grid grid-cols-2 gap-6">
-                {aboutImages.slice(4, 6).map((img) => (
-                  <div
-                    key={img.src}
-                    className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                    onClick={() => handleImageClick(img.src, img.alt)}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
-              {/* Row 4 - 2 Photos */}
-              <div className="grid grid-cols-2 gap-6">
-                {aboutImages.slice(6, 8).map((img) => (
-                  <div
-                    key={img.src}
-                    className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                    onClick={() => handleImageClick(img.src, img.alt)}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                ))}
+            {/* Right Column - Desktop Photo Grid - COMPLETELY REWRITTEN */}
+            <div className="hidden lg:block">
+              <div className="space-y-6">
+                {/* Row 1 */}
+                <div className="grid grid-cols-2 gap-6">
+                  {aboutImages.slice(0, 2).map((img, index) => (
+                    <div
+                      key={`desktop-row1-${index}`}
+                      className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                      onClick={() => handleImageClick(img.src, img.alt)}
+                    >
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        fill
+                        className="object-cover hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Row 2 */}
+                <div className="grid grid-cols-2 gap-6">
+                  {aboutImages.slice(2, 4).map((img, index) => (
+                    <div
+                      key={`desktop-row2-${index}`}
+                      className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                      onClick={() => handleImageClick(img.src, img.alt)}
+                    >
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        fill
+                        className="object-cover hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Row 3 */}
+                <div className="grid grid-cols-2 gap-6">
+                  {aboutImages.slice(4, 6).map((img, index) => (
+                    <div
+                      key={`desktop-row3-${index}`}
+                      className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                      onClick={() => handleImageClick(img.src, img.alt)}
+                    >
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        fill
+                        className="object-cover hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Row 4 */}
+                <div className="grid grid-cols-2 gap-6">
+                  {aboutImages.slice(6, 8).map((img, index) => (
+                    <div
+                      key={`desktop-row4-${index}`}
+                      className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                      onClick={() => handleImageClick(img.src, img.alt)}
+                    >
+                      <Image
+                        src={img.src}
+                        alt={img.alt}
+                        fill
+                        className="object-cover hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
