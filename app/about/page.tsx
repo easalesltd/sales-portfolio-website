@@ -130,15 +130,15 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Right Column - Desktop Photo Grid - COMPLETELY REWRITTEN */}
+            {/* Right Column - Desktop Photo Grid - Perfectly aligned with text */}
             <div className="hidden lg:block">
-              <div className="space-y-6">
-                {/* Row 1 */}
-                <div className="grid grid-cols-2 gap-6">
-                  {aboutImages.slice(0, 2).map((img, index) => (
+              <div className="space-y-3 mt-4">
+                {/* Row 1 - 4 images starting at exact top of text */}
+                <div className="grid grid-cols-4 gap-3">
+                  {aboutImages.slice(0, 4).map((img, index) => (
                     <div
                       key={`desktop-row1-${index}`}
-                      className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                      className="relative h-56 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                       onClick={() => handleImageClick(img.src, img.alt)}
                     >
                       <Image
@@ -146,18 +146,18 @@ export default function AboutPage() {
                         alt={img.alt}
                         fill
                         className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes="(max-width: 768px) 100vw, 25vw"
                       />
                     </div>
                   ))}
                 </div>
                 
-                {/* Row 2 */}
-                <div className="grid grid-cols-2 gap-6">
-                  {aboutImages.slice(2, 4).map((img, index) => (
+                {/* Row 2 - 4 images extending to bottom of text */}
+                <div className="grid grid-cols-4 gap-3">
+                  {aboutImages.slice(4, 8).map((img, index) => (
                     <div
                       key={`desktop-row2-${index}`}
-                      className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                      className="relative h-56 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                       onClick={() => handleImageClick(img.src, img.alt)}
                     >
                       <Image
@@ -165,45 +165,7 @@ export default function AboutPage() {
                         alt={img.alt}
                         fill
                         className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Row 3 */}
-                <div className="grid grid-cols-2 gap-6">
-                  {aboutImages.slice(4, 6).map((img, index) => (
-                    <div
-                      key={`desktop-row3-${index}`}
-                      className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                      onClick={() => handleImageClick(img.src, img.alt)}
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Row 4 */}
-                <div className="grid grid-cols-2 gap-6">
-                  {aboutImages.slice(6, 8).map((img, index) => (
-                    <div
-                      key={`desktop-row4-${index}`}
-                      className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                      onClick={() => handleImageClick(img.src, img.alt)}
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes="(max-width: 768px) 100vw, 25vw"
                       />
                     </div>
                   ))}
