@@ -1,9 +1,45 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
-  description: "Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
+  title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
+  description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, and more. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
   keywords: [
+    // Dave Langdon - Personal Brand Keywords
+    "Dave Langdon",
+    "David Langdon",
+    "Dave Langdon Sales Agent",
+    "David Langdon Sales Agent",
+    "Dave Langdon Paper Salad",
+    "Dave Langdon Ohh Deer",
+    "Dave Langdon Museums and Galleries",
+    "Dave Langdon Mint Publishing",
+    "Dave Langdon Star Editions",
+    "Dave Langdon Gnaw Chocolate",
+    "Dave Langdon Boxer Gifts",
+    "Dave Langdon WPL Gifts",
+    "Dave Langdon Global Journey",
+    "Dave Langdon Peppermint Grove",
+    "Dave Langdon Emotional Rescue",
+    "Dave Langdon David Fischhoff",
+    "Dave Langdon East Anglia",
+    "Dave Langdon Suffolk",
+    "Dave Langdon Norfolk",
+    "Dave Langdon Essex",
+    "Dave Langdon Cambridgeshire",
+    "Dave Langdon Hertfordshire",
+    "Paper Salad Sales Agent Dave Langdon",
+    "Ohh Deer Sales Agent Dave Langdon",
+    "Museums and Galleries Sales Agent Dave Langdon",
+    "Mint Publishing Sales Agent Dave Langdon",
+    "Star Editions Sales Agent Dave Langdon",
+    "Gnaw Chocolate Sales Agent Dave Langdon",
+    "Boxer Gifts Sales Agent Dave Langdon",
+    "WPL Gifts Sales Agent Dave Langdon",
+    "Global Journey Sales Agent Dave Langdon",
+    "Peppermint Grove Sales Agent Dave Langdon",
+    "Emotional Rescue Sales Agent Dave Langdon",
+    "David Fischhoff Sales Agent Dave Langdon",
+    
     // Company-specific Sales Agent Keywords
     "Ohh Deer Sales Agent",
     "Ohh Deer Agent", 
@@ -467,8 +503,8 @@ export const metadata: Metadata = {
     "sales process maintenance"
   ].join(', '),
   openGraph: {
-    title: "Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
-    description: "Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
+    title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
+    description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, and more.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -483,8 +519,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
-    description: "Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire.",
+    title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
+    description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, and more.",
   },
   alternates: {
     canonical: "https://www.easalesltd.co.uk"

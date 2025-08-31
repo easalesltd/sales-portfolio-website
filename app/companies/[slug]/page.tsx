@@ -28,8 +28,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   // Special cases for each company
   const companyMetadata = {
     'museums-and-galleries': {
-      title: 'Museums and Galleries Greeting Cards | Art & Design-led Cards Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Dave Langdon - Museums and Galleries Sales Agent | Art & Design-led Cards Supplier in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
+        'Dave Langdon Museums and Galleries',
+        'Dave Langdon Museums and Galleries Sales Agent',
+        'Museums and Galleries Sales Agent Dave Langdon',
         'museums and galleries sales agent',
         'museums and galleries agent',
         'museums and galleries supplier',
@@ -152,8 +155,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       ]
     },
     'paper-salad': {
-      title: 'Paper Salad Greeting Cards | Contemporary Design-led Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Dave Langdon - Paper Salad Sales Agent | Contemporary Design-led Cards in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
+        'Dave Langdon Paper Salad',
+        'Dave Langdon Paper Salad Sales Agent',
+        'Paper Salad Sales Agent Dave Langdon',
         'paper salad sales agent',
         'paper salad agent',
         'paper salad supplier',
@@ -218,8 +224,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       ]
     },
     'ohh-deer': {
-      title: 'Ohh Deer Greeting Cards | Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Dave Langdon - Ohh Deer Sales Agent | Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
+        'Dave Langdon Ohh Deer',
+        'Dave Langdon Ohh Deer Sales Agent',
+        'Ohh Deer Sales Agent Dave Langdon',
         'ohh deer sales agent',
         'ohh deer agent',
         'ohh deer supplier',
@@ -343,8 +352,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       ]
     },
     'gnaw-chocolate': {
-      title: 'Gnaw Chocolate Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Dave Langdon - Gnaw Chocolate Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
+        'Dave Langdon Gnaw Chocolate',
+        'Dave Langdon Gnaw Chocolate Sales Agent',
+        'Gnaw Chocolate Sales Agent Dave Langdon',
         'gnaw chocolate sales agent',
         'gnaw chocolate agent',
         'gnaw chocolate supplier',
@@ -364,8 +376,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       ]
     },
     'mint-publishing': {
-      title: 'Mint Publishing Greeting Cards | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Dave Langdon - Mint Publishing Sales Agent | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
+        'Dave Langdon Mint Publishing',
+        'Dave Langdon Mint Publishing Sales Agent',
+        'Mint Publishing Sales Agent Dave Langdon',
         'mint publishing sales agent',
         'mint publishing agent',
         'mint publishing supplier',
@@ -645,8 +660,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       ]
     },
     'star-editions': {
-      title: 'Star Editions Greeting Cards | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Dave Langdon - Star Editions Sales Agent | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
+        'Dave Langdon Star Editions',
+        'Dave Langdon Star Editions Sales Agent',
+        'Star Editions Sales Agent Dave Langdon',
         'star editions sales agent',
         'star editions agent',
         'star editions supplier',
