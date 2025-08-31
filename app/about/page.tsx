@@ -108,20 +108,24 @@ export default function AboutPage() {
                     &quot;Hi, I&apos;m Dave, a Sales Agent based in Ipswich, Suffolk. I&apos;ve been a professional Middle Man in East Anglia for over a decade. Roaming town to town, Monday to Friday, matching brilliant brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops.&quot;
                   </p>
                 </div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>
-                <p className="text-lg text-gray-700 mb-6">
-                  I&apos;m committed to helping retailers find the perfect products for their customers. Whether you&apos;re looking for traditional greeting cards or modern gift items, I can help you build a successful product range.
-                </p>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
-                <p className="text-lg text-gray-700 mb-6">
-                  I proudly serve retailers across East Anglia, including:
-                </p>
-                <ul className="text-lg text-gray-700 list-disc list-inside mb-8">
-                  <li>Suffolk</li>
-                  <li>Norfolk</li>
-                  <li>Essex</li>
-                  <li>Cambridgeshire</li>
-                </ul>
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>
+                  <p className="text-lg text-gray-700 mb-4">
+                    I&apos;m committed to helping retailers find the perfect products for their customers. Whether you&apos;re looking for traditional greeting cards or modern gift items, I can help you build a successful product range.
+                  </p>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
+                  <p className="text-lg text-gray-700 mb-4">
+                    I proudly serve retailers across East Anglia, including:
+                  </p>
+                  <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
+                    <li>Suffolk</li>
+                    <li>Norfolk</li>
+                    <li>Essex</li>
+                    <li>Cambridgeshire</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
@@ -129,104 +133,72 @@ export default function AboutPage() {
             <div className="space-y-6 hidden lg:block">
               {/* Row 1 - 2 Photos */}
               <div className="grid grid-cols-2 gap-6">
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/20240420_103516 portrait.jpg', 'Recent photo')}
-                >
-                  <Image
-                    src="/images/about/20240420_103516 portrait.jpg"
-                    alt="Recent photo"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                    priority
-                  />
-                </div>
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/20250526_145646 portrait.jpg', 'Latest photo')}
-                >
-                  <Image
-                    src="/images/about/20250526_145646 portrait.jpg"
-                    alt="Latest photo"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                {aboutImages.slice(0, 2).map((img) => (
+                  <div
+                    key={img.src}
+                    className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                    onClick={() => handleImageClick(img.src, img.alt)}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      priority={img.src.includes('20240420')}
+                    />
+                  </div>
+                ))}
               </div>
               {/* Row 2 - 2 Photos */}
               <div className="grid grid-cols-2 gap-6">
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/DSC07186.JPG', 'Dave with his guitar')}
-                >
-                  <Image
-                    src="/images/about/DSC07186.JPG"
-                    alt="Dave with his guitar"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/IMG-20230810-WA0046.jpg', 'Family moment')}
-                >
-                  <Image
-                    src="/images/about/IMG-20230810-WA0046.jpg"
-                    alt="Family moment"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                {aboutImages.slice(2, 4).map((img) => (
+                  <div
+                    key={img.src}
+                    className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                    onClick={() => handleImageClick(img.src, img.alt)}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                ))}
               </div>
               {/* Row 3 - 2 Photos */}
               <div className="grid grid-cols-2 gap-6">
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/IMG-20240923-WA0018.jpg', 'Family at Legoland')}
-                >
-                  <Image
-                    src="/images/about/IMG-20240923-WA0018.jpg"
-                    alt="Family at Legoland"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/PXL_20240810_193137220_1.jpg', 'Dave with family')}
-                >
-                  <Image
-                    src="/images/about/PXL_20240810_193137220_1.jpg"
-                    alt="Dave with family"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                {aboutImages.slice(4, 6).map((img) => (
+                  <div
+                    key={img.src}
+                    className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                    onClick={() => handleImageClick(img.src, img.alt)}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                ))}
               </div>
               {/* Row 4 - 2 Photos */}
               <div className="grid grid-cols-2 gap-6">
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/PXL_20250817_093614452.jpg', 'Dave portrait')}
-                >
-                  <Image
-                    src="/images/about/PXL_20250817_093614452.jpg"
-                    alt="Dave portrait"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <div 
-                  className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                  onClick={() => handleImageClick('/images/about/Screenshot 2025-08-30 at 17.41.48.png', 'Dave portrait')}
-                >
-                  <Image
-                    src="/images/about/Screenshot 2025-08-30 at 17.41.48.png"
-                    alt="Dave portrait"
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
+                {aboutImages.slice(6, 8).map((img) => (
+                  <div
+                    key={img.src}
+                    className="relative h-80 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                    onClick={() => handleImageClick(img.src, img.alt)}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
