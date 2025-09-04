@@ -19,14 +19,26 @@ const aboutImages = [
 ];
 
 export default function AboutPage() {
-  const [selectedImage, setSelectedImage] = useState<{src: string; alt: string} | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
-  const handleImageClick = (src: string, alt: string) => {
-    setSelectedImage({ src, alt });
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
   };
 
   const closeModal = () => {
-    setSelectedImage(null);
+    setSelectedImageIndex(null);
+  };
+
+  const goToPrevious = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(selectedImageIndex === 0 ? aboutImages.length - 1 : selectedImageIndex - 1);
+    }
+  };
+
+  const goToNext = () => {
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex(selectedImageIndex === aboutImages.length - 1 ? 0 : selectedImageIndex + 1);
+    }
   };
 
   return (
@@ -56,7 +68,7 @@ export default function AboutPage() {
               <div
                 key={`mobile-${index}`}
                 className="relative min-w-[260px] h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer snap-center flex-shrink-0"
-                onClick={() => handleImageClick(img.src, img.alt)}
+                onClick={() => handleImageClick(index)}
               >
                 <Image
                   src={img.src}
@@ -141,7 +153,7 @@ export default function AboutPage() {
                     <div
                       key={`desktop-row1-${index}`}
                       className="relative h-44 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                      onClick={() => handleImageClick(img.src, img.alt)}
+                      onClick={() => handleImageClick(index)}
                     >
                       <Image
                         src={img.src}
@@ -160,7 +172,7 @@ export default function AboutPage() {
                     <div
                       key={`desktop-row2-${index}`}
                       className="relative h-44 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                      onClick={() => handleImageClick(img.src, img.alt)}
+                      onClick={() => handleImageClick(index + 5)}
                     >
                       <Image
                         src={img.src}
@@ -177,12 +189,16 @@ export default function AboutPage() {
           </div>
 
           {/* Image Modal */}
-          {selectedImage && (
+          {selectedImageIndex !== null && (
             <ImageModal
-              isOpen={!!selectedImage}
+              isOpen={selectedImageIndex !== null}
               onClose={closeModal}
-              imageSrc={selectedImage.src}
-              alt={selectedImage.alt}
+              imageSrc={aboutImages[selectedImageIndex].src}
+              alt={aboutImages[selectedImageIndex].alt}
+              onPrevious={goToPrevious}
+              onNext={goToNext}
+              currentIndex={selectedImageIndex}
+              totalImages={aboutImages.length}
             />
           )}
         </div>
