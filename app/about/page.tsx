@@ -8,6 +8,7 @@ import VideoBackground from "../components/VideoBackground";
 const aboutImages = [
   { src: '/images/about/IMG-20230520-WA0021.jpg', alt: 'Dave portrait' },
   { src: '/images/about/Underline_The_Sky_(3_of_21) (1).jpg', alt: 'Dave professional photo' },
+  { src: '/images/about/Screenshot-2025-08-30-at-17-41-48.png', alt: 'Dave portrait' },
   { src: '/images/about/20240420_103516 portrait.jpg', alt: 'Recent photo' },
   { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
   { src: '/images/about/DSC07186.JPG', alt: 'Dave with his guitar' },
@@ -15,7 +16,6 @@ const aboutImages = [
   { src: '/images/about/IMG-20240923-WA0018.jpg', alt: 'Family at Legoland' },
   { src: '/images/about/PXL_20240810_193137220_1.jpg', alt: 'Dave with family' },
   { src: '/images/about/PXL_20250817_093614452.jpg', alt: 'Dave portrait' },
-  { src: '/images/about/Screenshot-2025-08-30-at-17-41-48.png', alt: 'Dave portrait' },
 ];
 
 export default function AboutPage() {
