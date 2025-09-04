@@ -135,12 +135,12 @@ export default function AboutPage() {
             {/* Right Column - Desktop Photo Grid - Perfectly aligned with text */}
             <div className="hidden lg:block">
               <div className="space-y-3 mt-4">
-                {/* Row 1 - 4 images starting at exact top of text */}
-                <div className="grid grid-cols-4 gap-3">
-                  {aboutImages.slice(0, 4).map((img, index) => (
+                {/* Row 1 - 5 images starting at exact top of text */}
+                <div className="grid grid-cols-5 gap-2">
+                  {aboutImages.slice(0, 5).map((img, index) => (
                     <div
                       key={`desktop-row1-${index}`}
-                      className="relative h-56 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                      className="relative h-44 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                       onClick={() => handleImageClick(img.src, img.alt)}
                     >
                       <Image
@@ -148,18 +148,18 @@ export default function AboutPage() {
                         alt={img.alt}
                         fill
                         className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 25vw"
+                        sizes="(max-width: 768px) 100vw, 20vw"
                       />
                     </div>
                   ))}
                 </div>
                 
-                {/* Row 2 - 4 images extending to bottom of text */}
-                <div className="grid grid-cols-4 gap-3">
-                  {aboutImages.slice(4, 8).map((img, index) => (
+                {/* Row 2 - 5 images extending to bottom of text */}
+                <div className="grid grid-cols-5 gap-2">
+                  {aboutImages.slice(5, 10).map((img, index) => (
                     <div
                       key={`desktop-row2-${index}`}
-                      className="relative h-56 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                      className="relative h-44 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                       onClick={() => handleImageClick(img.src, img.alt)}
                     >
                       <Image
@@ -167,7 +167,7 @@ export default function AboutPage() {
                         alt={img.alt}
                         fill
                         className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 25vw"
+                        sizes="(max-width: 768px) 100vw, 20vw"
                       />
                     </div>
                   ))}
