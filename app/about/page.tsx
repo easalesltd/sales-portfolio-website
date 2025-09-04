@@ -6,6 +6,8 @@ import ImageModal from "../components/ImageModal";
 import VideoBackground from "../components/VideoBackground";
 
 const aboutImages = [
+  { src: '/images/about/IMG-20230520-WA0021.jpg', alt: 'Dave portrait' },
+  { src: '/images/about/Underline_The_Sky_(3_of_21) (1).jpg', alt: 'Dave professional photo' },
   { src: '/images/about/20240420_103516 portrait.jpg', alt: 'Recent photo' },
   { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
   { src: '/images/about/DSC07186.JPG', alt: 'Dave with his guitar' },
