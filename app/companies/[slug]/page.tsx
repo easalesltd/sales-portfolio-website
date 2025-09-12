@@ -660,20 +660,43 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       ]
     },
     'cgb-giftware': {
-      title: 'Dave Langdon - CGB Giftware Sales Agent | Bespoke Giftware & Artisan Collections in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Dave Langdon - CGB Giftware Sales Agent | Container Group Gifts & Bespoke Giftware in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'Dave Langdon CGB Giftware',
         'Dave Langdon CGB Giftware Sales Agent',
+        'Dave Langdon Container Group',
+        'Dave Langdon Container Group Sales Agent',
+        'Dave Langdon Container Group Gifts',
         'CGB Giftware Sales Agent Dave Langdon',
+        'Container Group Sales Agent Dave Langdon',
+        'Container Group Gifts Sales Agent Dave Langdon',
         'cgb giftware sales agent',
         'cgb giftware agent',
         'cgb giftware supplier',
+        'container group sales agent',
+        'container group agent',
+        'container group supplier',
+        'container group gifts sales agent',
+        'container group gifts agent',
+        'container group gifts supplier',
         'cgb giftware East Anglia',
         'cgb giftware Hertfordshire',
         'cgb giftware Cambridgeshire',
         'cgb giftware Suffolk',
         'cgb giftware Norfolk',
         'cgb giftware Essex',
+        'container group East Anglia',
+        'container group Hertfordshire',
+        'container group Cambridgeshire',
+        'container group Suffolk',
+        'container group Norfolk',
+        'container group Essex',
+        'container group gifts East Anglia',
+        'container group gifts Hertfordshire',
+        'container group gifts Cambridgeshire',
+        'container group gifts Suffolk',
+        'container group gifts Norfolk',
+        'container group gifts Essex',
         'bespoke giftware supplier',
         'artisan giftware supplier',
         'unique giftware supplier',
@@ -1256,7 +1279,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                       </div>
                       <div className="mb-8">
                         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Showroom Tour</h3>
-                        <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
+                        <div className="relative max-w-md mx-auto aspect-[9/16] rounded-lg overflow-hidden shadow-lg">
                           <video
                             controls
                             className="w-full h-full object-cover"
@@ -1634,10 +1657,13 @@ function generateStructuredData(company: Company) {
       ]
     },
     'cgb-giftware': {
-      name: 'CGB Giftware Sales Agent - Bespoke Giftware & Artisan Collections in East Anglia, Hertfordshire & Cambridgeshire',
-      description: 'Beautiful, high-quality giftware and bespoke gift solutions. Specializing in artisan glass collections, enchanted emporium ranges, and unique distinctive gifts.',
+      name: 'CGB Giftware (Container Group) Sales Agent - Bespoke Giftware & Artisan Collections in East Anglia, Hertfordshire & Cambridgeshire',
+      description: 'Beautiful, high-quality giftware and bespoke gift solutions from Container Group. Specializing in artisan glass collections, enchanted emporium ranges, and unique distinctive gifts.',
       categories: [
         'Giftware',
+        'Container Group Gifts',
+        'Container Group Giftware',
+        'CGB Giftware',
         'Bespoke Giftware',
         'Artisan Giftware',
         'Unique Giftware',

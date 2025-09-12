@@ -130,7 +130,7 @@ export const companies: Company[] = [
     id: "cgb-giftware",
     name: "CGB Giftware",
     slug: "cgb-giftware",
-    description: "CGB Giftware specializes in beautiful, high-quality giftware and bespoke gift solutions. From artisan glass collections to enchanted emporium ranges, we offer unique and distinctive gifts that delight customers and drive retail success.",
+    description: "CGB Giftware (Container Group) specializes in beautiful, high-quality giftware and bespoke gift solutions. From artisan glass collections to enchanted emporium ranges, we offer unique and distinctive gifts that delight customers and drive retail success.",
     logoUrl: "/images/logos/cgb-giftware.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1CGB-Giftware-placeholder",
     websiteUrl: "https://www.cgbgiftware.co.uk"
