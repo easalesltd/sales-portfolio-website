@@ -1250,9 +1250,27 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                     </div>
                   )}
                   {params.slug === 'cgb-giftware' && (
-                    <div className="mb-8">
-                      <ImageGallery images={cgbGiftwareImages} interval={5500} />
-                    </div>
+                    <>
+                      <div className="mb-8">
+                        <ImageGallery images={cgbGiftwareImages} interval={5500} />
+                      </div>
+                      <div className="mb-8">
+                        <h3 className="text-2xl font-semibold text-gray-900 mb-4">Showroom Tour</h3>
+                        <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg">
+                          <video
+                            controls
+                            className="w-full h-full object-cover"
+                            poster="/images/companies/CGB-Giftware/CGB Bespoke-01.jpg"
+                          >
+                            <source src="/images/companies/CGB-Giftware/Showroom Tour.mp4" type="video/mp4" />
+                            Your browser does not support the video tag.
+                          </video>
+                        </div>
+                        <p className="text-sm text-gray-600 mt-2 italic">
+                          Take a virtual tour of our showroom to see our beautiful giftware collections in detail.
+                        </p>
+                      </div>
+                    </>
                   )}
                 </div>
 
