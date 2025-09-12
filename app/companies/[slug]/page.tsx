@@ -1284,6 +1284,31 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                             controls
                             className="w-full h-full object-cover"
                             poster="/images/companies/CGB-Giftware/CGB Bespoke-01.jpg"
+                            onPlay={() => {
+                              // Pause background video when showroom tour starts
+                              const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
+                              if (backgroundVideo) {
+                                backgroundVideo.pause();
+                              }
+                            }}
+                            onPause={() => {
+                              // Resume background video when showroom tour is paused
+                              const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
+                              if (backgroundVideo) {
+                                backgroundVideo.play().catch(() => {
+                                  // Handle play failure silently
+                                });
+                              }
+                            }}
+                            onEnded={() => {
+                              // Resume background video when showroom tour ends
+                              const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
+                              if (backgroundVideo) {
+                                backgroundVideo.play().catch(() => {
+                                  // Handle play failure silently
+                                });
+                              }
+                            }}
                           >
                             <source src="/images/companies/CGB-Giftware/Showroom Tour.mp4" type="video/mp4" />
                             Your browser does not support the video tag.
