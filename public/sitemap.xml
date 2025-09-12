@@ -132,6 +132,13 @@
     <priority>0.7</priority>
   </url>
 
+  <url>
+    <loc>https://www.easalesltd.co.uk/companies/cgb-giftware</loc>
+    <lastmod>2025-01-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Logo Test Page -->
   <url>
     <loc>https://www.easalesltd.co.uk/logo-test</loc>
