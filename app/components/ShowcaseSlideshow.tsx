@@ -7,10 +7,13 @@ import Image from 'next/image';
 const TRANSITION_DURATION = 1000; // 1 second for a smoother fade transition
 const SLIDE_DURATION = 5000; // 5 seconds per slide for better viewing
 
-// Using showcase images from the showcase folder - only including existing images
+// Using showcase images from the showcase folder - including all existing images
 const showcaseImages = [
   '/images/showcase/1-1-25.jpeg',
   '/images/showcase/1066f4f9-50ba-4dfb-8f5d-703151fd119e.jpeg',
+  '/images/showcase/1755180639574003.jpg',
+  '/images/showcase/1755245031292398.jpg',
+  '/images/showcase/1755253128244036.jpg',
   '/images/showcase/4003f792-f399-4cc5-8802-e2bfcd93c330.jpeg',
   '/images/showcase/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
   '/images/showcase/901d0ddb-3e10-4a3d-aeee-c2d207eba557.jpeg',
