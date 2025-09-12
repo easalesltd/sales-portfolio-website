@@ -4,6 +4,7 @@ import { companies } from '../../data/companies'
 import OrderForm from './OrderForm'
 import VideoBackground from '../../components/VideoBackground'
 import ImageGallery from '../../components/ImageGallery'
+import ShowroomVideo from '../../components/ShowroomVideo'
 import { Company } from '@/app/lib/types'
 
 // Add shuffle function at the top level
@@ -1279,41 +1280,10 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                       </div>
                       <div className="mb-8">
                         <h3 className="text-2xl font-semibold text-gray-900 mb-4">Showroom Tour</h3>
-                        <div className="relative max-w-md mx-auto aspect-[9/16] rounded-lg overflow-hidden shadow-lg">
-                          <video
-                            controls
-                            className="w-full h-full object-cover"
-                            poster="/images/companies/CGB-Giftware/CGB Bespoke-01.jpg"
-                            onPlay={() => {
-                              // Pause background video when showroom tour starts
-                              const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
-                              if (backgroundVideo) {
-                                backgroundVideo.pause();
-                              }
-                            }}
-                            onPause={() => {
-                              // Resume background video when showroom tour is paused
-                              const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
-                              if (backgroundVideo) {
-                                backgroundVideo.play().catch(() => {
-                                  // Handle play failure silently
-                                });
-                              }
-                            }}
-                            onEnded={() => {
-                              // Resume background video when showroom tour ends
-                              const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
-                              if (backgroundVideo) {
-                                backgroundVideo.play().catch(() => {
-                                  // Handle play failure silently
-                                });
-                              }
-                            }}
-                          >
-                            <source src="/images/companies/CGB-Giftware/Showroom Tour.mp4" type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
-                        </div>
+                        <ShowroomVideo 
+                          videoSrc="/images/companies/CGB-Giftware/Showroom Tour.mp4"
+                          posterSrc="/images/companies/CGB-Giftware/CGB Bespoke-01.jpg"
+                        />
                         <p className="text-sm text-gray-600 mt-2 italic">
                           Take a virtual tour of our showroom to see our beautiful giftware collections in detail.
                         </p>
