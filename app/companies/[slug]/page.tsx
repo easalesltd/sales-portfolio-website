@@ -659,6 +659,118 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         'Essex peppermint grove supplier'
       ]
     },
+    'cgb-giftware': {
+      title: 'Dave Langdon - CGB Giftware Sales Agent | Bespoke Giftware & Artisan Collections in East Anglia, Hertfordshire & Cambridgeshire',
+      keywords: [
+        'Dave Langdon CGB Giftware',
+        'Dave Langdon CGB Giftware Sales Agent',
+        'CGB Giftware Sales Agent Dave Langdon',
+        'cgb giftware sales agent',
+        'cgb giftware agent',
+        'cgb giftware supplier',
+        'cgb giftware East Anglia',
+        'cgb giftware Hertfordshire',
+        'cgb giftware Cambridgeshire',
+        'cgb giftware Suffolk',
+        'cgb giftware Norfolk',
+        'cgb giftware Essex',
+        'bespoke giftware supplier',
+        'artisan giftware supplier',
+        'unique giftware supplier',
+        'distinctive giftware supplier',
+        'quality giftware supplier',
+        'premium giftware supplier',
+        'luxury giftware supplier',
+        'high-end giftware supplier',
+        'boutique giftware supplier',
+        'specialist giftware supplier',
+        'exclusive giftware supplier',
+        'designer giftware supplier',
+        'contemporary giftware supplier',
+        'modern giftware supplier',
+        'stylish giftware supplier',
+        'elegant giftware supplier',
+        'sophisticated giftware supplier',
+        'refined giftware supplier',
+        'artisan glass collections',
+        'enchanted emporium gifts',
+        'bramble farm collection',
+        'glossary and glow gifts',
+        'winter robin collection',
+        'best teacher gifts',
+        'bespoke gift solutions',
+        'custom giftware',
+        'personalized gifts',
+        'tailored gift solutions',
+        'wholesale giftware',
+        'trade giftware',
+        'retail giftware',
+        'gift shop supplies',
+        'gift store products',
+        'gift boutique items',
+        'gift emporium products',
+        'gift gallery items',
+        'gift showroom products',
+        'gift warehouse supplies',
+        'gift distribution',
+        'gift wholesale',
+        'gift trade',
+        'gift retail',
+        'gift business',
+        'gift industry',
+        'gift market',
+        'gift sector',
+        'gift category',
+        'gift range',
+        'gift collection',
+        'gift selection',
+        'gift assortment',
+        'gift variety',
+        'gift diversity',
+        'gift options',
+        'gift choices',
+        'gift alternatives',
+        'gift solutions',
+        'gift ideas',
+        'gift inspiration',
+        'gift concepts',
+        'gift themes',
+        'gift styles',
+        'gift designs',
+        'gift patterns',
+        'gift motifs',
+        'gift decorations',
+        'gift ornaments',
+        'gift accessories',
+        'gift items',
+        'gift products',
+        'gift merchandise',
+        'gift goods',
+        'gift wares',
+        'gift articles',
+        'gift pieces',
+        'gift objects',
+        'gift treasures',
+        'gift keepsakes',
+        'gift mementos',
+        'gift souvenirs',
+        'gift tokens',
+        'gift presents',
+        'gift offerings',
+        'East Anglia giftware agent',
+        'Hertfordshire giftware agent',
+        'Cambridgeshire giftware agent',
+        'Suffolk giftware supplier',
+        'Norfolk giftware agent',
+        'Essex giftware supplier',
+        'East Anglia bespoke gifts',
+        'Hertfordshire bespoke gifts',
+        'Cambridgeshire bespoke gifts',
+        'Suffolk bespoke gifts',
+        'Norfolk bespoke gifts',
+        'Essex bespoke gifts'
+      ]
+    },
     'star-editions': {
       title: 'Dave Langdon - Star Editions Sales Agent | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
@@ -894,7 +1006,8 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     'boxer-gifts',
     'emotional-rescue',
     'peppermint-grove',
-    'mint-publishing'
+    'mint-publishing',
+    'cgb-giftware'
   ].includes(params.slug);
 
   // Define base image arrays
@@ -1012,6 +1125,25 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/gnaw-chocolate/GNAW-Caramel-Chocolate-Buttons-GPN0067-CBG-02.png'
   ] : [];
 
+  const cgbGiftwareBaseImages = params.slug === 'cgb-giftware' ? [
+    '/images/companies/CGB-Giftware/ArtisanGlass-01.jpg',
+    '/images/companies/CGB-Giftware/Best Teacher Ever_03.jpg',
+    '/images/companies/CGB-Giftware/BRAMBLE FARM-02.jpg',
+    '/images/companies/CGB-Giftware/CGB Bespoke-01.jpg',
+    '/images/companies/CGB-Giftware/CGB Bespoke-02.jpg',
+    '/images/companies/CGB-Giftware/ENCHANTED EMPORIUM1.jpg',
+    '/images/companies/CGB-Giftware/Glossary & Glow_04.jpg',
+    '/images/companies/CGB-Giftware/WhatsApp Image 2025-09-12 at 13.27.40 (1).jpeg',
+    '/images/companies/CGB-Giftware/WhatsApp Image 2025-09-12 at 13.27.40 (2).jpeg',
+    '/images/companies/CGB-Giftware/WhatsApp Image 2025-09-12 at 13.27.40 (3).jpeg',
+    '/images/companies/CGB-Giftware/WhatsApp Image 2025-09-12 at 13.27.40.jpeg',
+    '/images/companies/CGB-Giftware/WhatsApp Image 2025-09-12 at 13.27.41 (1).jpeg',
+    '/images/companies/CGB-Giftware/WhatsApp Image 2025-09-12 at 13.27.41.jpeg',
+    '/images/companies/CGB-Giftware/WhatsApp Image 2025-09-12 at 13.27.42.jpeg',
+    '/images/companies/CGB-Giftware/WhatsApp Image 2025-09-12 at 13.27.46.jpeg',
+    '/images/companies/CGB-Giftware/WINTERROBIN12.jpg'
+  ] : [];
+
   // Shuffle all image arrays
   const paperSaladImages = shuffleArray(paperSaladBaseImages);
   const emotionalRescueImages = shuffleArray(emotionalRescueBaseImages);
@@ -1025,6 +1157,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   const wplGiftsImages = shuffleArray(wplGiftsBaseImages);
   const mintPublishingImages = shuffleArray(mintPublishingBaseImages);
   const gnawChocolateImages = shuffleArray(gnawChocolateBaseImages);
+  const cgbGiftwareImages = shuffleArray(cgbGiftwareBaseImages);
 
   const content = (
     <>
@@ -1114,6 +1247,11 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                   {params.slug === 'gnaw-chocolate' && (
                     <div className="mb-8">
                       <ImageGallery images={gnawChocolateImages} interval={5000} />
+                    </div>
+                  )}
+                  {params.slug === 'cgb-giftware' && (
+                    <div className="mb-8">
+                      <ImageGallery images={cgbGiftwareImages} interval={5500} />
                     </div>
                   )}
                 </div>
@@ -1472,6 +1610,53 @@ function generateStructuredData(company: Company) {
         'Custom Cards',
         'Personalized Cards',
         'Tailored Cards',
+        'East Anglia Retail',
+        'Hertfordshire Retail',
+        'Cambridgeshire Retail'
+      ]
+    },
+    'cgb-giftware': {
+      name: 'CGB Giftware Sales Agent - Bespoke Giftware & Artisan Collections in East Anglia, Hertfordshire & Cambridgeshire',
+      description: 'Beautiful, high-quality giftware and bespoke gift solutions. Specializing in artisan glass collections, enchanted emporium ranges, and unique distinctive gifts.',
+      categories: [
+        'Giftware',
+        'Bespoke Giftware',
+        'Artisan Giftware',
+        'Unique Giftware',
+        'Distinctive Giftware',
+        'Quality Giftware',
+        'Premium Giftware',
+        'Luxury Giftware',
+        'High-end Giftware',
+        'Boutique Giftware',
+        'Specialist Giftware',
+        'Exclusive Giftware',
+        'Designer Giftware',
+        'Contemporary Giftware',
+        'Modern Giftware',
+        'Stylish Giftware',
+        'Elegant Giftware',
+        'Sophisticated Giftware',
+        'Refined Giftware',
+        'Artisan Glass Collections',
+        'Enchanted Emporium Gifts',
+        'Bramble Farm Collection',
+        'Glossary and Glow Gifts',
+        'Winter Robin Collection',
+        'Best Teacher Gifts',
+        'Bespoke Gift Solutions',
+        'Custom Giftware',
+        'Personalized Gifts',
+        'Tailored Gift Solutions',
+        'Wholesale Giftware',
+        'Trade Giftware',
+        'Retail Giftware',
+        'Gift Shop Supplies',
+        'Gift Store Products',
+        'Gift Boutique Items',
+        'Gift Emporium Products',
+        'Gift Gallery Items',
+        'Gift Showroom Products',
         'East Anglia Retail',
         'Hertfordshire Retail',
         'Cambridgeshire Retail'

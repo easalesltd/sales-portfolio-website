@@ -125,5 +125,14 @@ export const companies: Company[] = [
     logoUrl: "/images/logos/wpl-gifts-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1o-_e5Cf3dfwR_WyaoFQVkOwlGMMwZLT4?usp=drive_link",
     websiteUrl: "https://www.wplgifts.co.uk"
+  },
+  {
+    id: "cgb-giftware",
+    name: "CGB Giftware",
+    slug: "cgb-giftware",
+    description: "CGB Giftware specializes in beautiful, high-quality giftware and bespoke gift solutions. From artisan glass collections to enchanted emporium ranges, we offer unique and distinctive gifts that delight customers and drive retail success.",
+    logoUrl: "/images/logos/cgb-giftware.png",
+    catalogueUrl: "https://drive.google.com/drive/folders/1CGB-Giftware-placeholder",
+    websiteUrl: "https://www.cgbgiftware.co.uk"
   }
 ].sort((a, b) => a.name.localeCompare(b.name)); 
