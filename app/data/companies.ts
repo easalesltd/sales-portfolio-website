@@ -132,7 +132,7 @@ export const companies: Company[] = [
     slug: "cgb-giftware",
     description: "CGB Giftware (Container Group) specializes in beautiful, high-quality giftware and bespoke gift solutions. From artisan glass collections to enchanted emporium ranges, we offer unique and distinctive gifts that delight customers and drive retail success.",
     logoUrl: "/images/logos/cgb-giftware.png",
-    catalogueUrl: "https://drive.google.com/drive/folders/1CGB-Giftware-placeholder",
+    catalogueUrl: "https://drive.google.com/drive/folders/1zT5aoUgVQ3408BZl8GaRVt6iFkLNOB5U?usp=drive_link",
     websiteUrl: "https://www.cgbgiftware.co.uk"
   }
 ].sort((a, b) => a.name.localeCompare(b.name)); 
