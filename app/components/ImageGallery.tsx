@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 
 interface ImageGalleryProps {
@@ -11,6 +11,9 @@ interface ImageGalleryProps {
 export default function ImageGallery({ images, interval = 5000 }: ImageGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (images.length <= 1) return
@@ -26,10 +29,49 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
     setCurrentIndex(index)
   }
 
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length)
+  }
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
+  }
+
+  // Touch handlers for swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null) // Reset touchEnd
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe && images.length > 1) {
+      goToNext()
+    }
+    if (isRightSwipe && images.length > 1) {
+      goToPrevious()
+    }
+  }
+
   if (!images.length) return null
 
   return (
-    <div className="relative w-full h-[400px] overflow-hidden rounded-xl">
+    <div 
+      ref={containerRef}
+      className="relative w-full h-[400px] overflow-hidden rounded-xl touch-pan-y"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Loading Skeleton */}
       {isLoading && (
         <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-xl" />
@@ -80,14 +122,14 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
 
       {/* Navigation Arrows */}
       <button
-        onClick={() => goToSlide((currentIndex - 1 + images.length) % images.length)}
+        onClick={goToPrevious}
         className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300"
         aria-label="Previous image"
       >
         ←
       </button>
       <button
-        onClick={() => goToSlide((currentIndex + 1) % images.length)}
+        onClick={goToNext}
         className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300"
         aria-label="Next image"
       >
