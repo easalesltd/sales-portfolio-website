@@ -1362,9 +1362,10 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
 
   if (hasVideoBackground) {
     const videoPath = `/videos/companies/${params.slug}/background.mp4`;
+    const playbackRate = params.slug === 'cgb-giftware' ? 0.5 : 1.0; // Slow down CGB Giftware video to half speed
     
     return (
-      <VideoBackground videoUrl={videoPath}>
+      <VideoBackground videoUrl={videoPath} playbackRate={playbackRate}>
         {content}
       </VideoBackground>
     );

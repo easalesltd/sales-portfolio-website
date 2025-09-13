@@ -7,12 +7,14 @@ interface VideoBackgroundProps {
   videoUrl: string;
   children: React.ReactNode;
   fadeIn?: boolean;
+  playbackRate?: number; // Speed multiplier (0.5 = half speed, 2 = double speed)
 }
 
 export default function VideoBackground({ 
   videoUrl, 
   children,
-  fadeIn = false
+  fadeIn = false,
+  playbackRate = 1.0
 }: VideoBackgroundProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -25,6 +27,7 @@ export default function VideoBackground({
     // Initial setup
     video.muted = true;
     video.playsInline = true;
+    video.playbackRate = playbackRate;
     video.load();
 
     // Attempt to play immediately
