@@ -88,11 +88,9 @@ export const companies: Company[] = [
     logoUrl: "/images/logos/ohh-deer-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1FWnmKaHf8tmhV-RSeZYaSfx3fG0aDuk6?usp=drive_link",
     websiteUrl: "https://wholesale.ohhdeer.com",
-    videos: ["/videos/companies/ohh-deer/trade-show.mp4"],
+    videos: ["/videos/companies/ohh-deer/trade show.mp4"],
     brandLogos: [
-      "/images/companies/ohh-deer/brand-logos/cath-kidston.png",
-      "/images/companies/ohh-deer/brand-logos/laura-ashley.png",
-      "/images/companies/ohh-deer/brand-logos/ohh-deer.png"
+      "/images/logos/ohh-deer-placeholder.png"
     ]
   },
   {
