@@ -1263,25 +1263,6 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                           </p>
                         </div>
                       )}
-                      {company.brandLogos && company.brandLogos.length > 0 && (
-                        <div className="mb-8">
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Brand Logos</h3>
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {company.brandLogos.map((logo, index) => (
-                              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-                                <div className="h-20 relative">
-                                  <Image
-                                    src={logo}
-                                    alt={`Brand logo ${index + 1}`}
-                                    fill
-                                    className="object-contain"
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
                     </>
                   )}
                   {params.slug === 'emotional-rescue' && (
@@ -1308,25 +1289,6 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                           <p className="text-sm text-gray-600 mt-2 italic">
                             Watch our latest trade show presentations and product showcases.
                           </p>
-                        </div>
-                      )}
-                      {company.brandLogos && company.brandLogos.length > 0 && (
-                        <div className="mb-8">
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Brand Logos</h3>
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {company.brandLogos.map((logo, index) => (
-                              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-                                <div className="h-20 relative">
-                                  <Image
-                                    src={logo}
-                                    alt={`Brand logo ${index + 1}`}
-                                    fill
-                                    className="object-contain"
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
                         </div>
                       )}
                     </>
@@ -1372,25 +1334,6 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                           </p>
                         </div>
                       )}
-                      {company.brandLogos && company.brandLogos.length > 0 && (
-                        <div className="mb-8">
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Brand Logos</h3>
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {company.brandLogos.map((logo, index) => (
-                              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-                                <div className="h-20 relative">
-                                  <Image
-                                    src={logo}
-                                    alt={`Brand logo ${index + 1}`}
-                                    fill
-                                    className="object-contain"
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
                     </>
                   )}
                   {params.slug === 'global-journey-gifts' && (
@@ -1422,25 +1365,6 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                           <p className="text-sm text-gray-600 mt-2 italic">
                             Watch our latest trade show presentations and product showcases.
                           </p>
-                        </div>
-                      )}
-                      {company.brandLogos && company.brandLogos.length > 0 && (
-                        <div className="mb-8">
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Brand Logos</h3>
-                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            {company.brandLogos.map((logo, index) => (
-                              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-                                <div className="h-20 relative">
-                                  <Image
-                                    src={logo}
-                                    alt={`Brand logo ${index + 1}`}
-                                    fill
-                                    className="object-contain"
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
                         </div>
                       )}
                     </>
