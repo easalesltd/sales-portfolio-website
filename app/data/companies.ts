@@ -102,7 +102,11 @@ export const companies: Company[] = [
     description: "The home of neon bright greeting cards & stationery! Our designs are painted by hand and creatively pieced together to create quirky cards at our Cheshire studio, all printed by specialist UK printers.",
     logoUrl: "/images/logos/paper-salad-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1vd-GDkbzhaByJoC9FOy1UEgDhcZ3-TR4?usp=drive_link",
-    websiteUrl: "https://www.papersalad.co.uk"
+    websiteUrl: "https://www.papersalad.co.uk",
+    videos: ["/videos/companies/paper-salad/trade-show.mp4"],
+    brandLogos: [
+      "/images/logos/paper-salad-placeholder.png"
+    ]
   },
   {
     id: "peppermint-grove",

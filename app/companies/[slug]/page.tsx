@@ -1243,9 +1243,46 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                 
                 <div className="mt-12">
                   {params.slug === 'paper-salad' && (
-                    <div className="mb-8">
-                      <ImageGallery images={paperSaladImages} interval={6000} />
-                    </div>
+                    <>
+                      <div className="mb-8">
+                        <ImageGallery images={paperSaladImages} interval={6000} />
+                      </div>
+                      {company.videos && company.videos.length > 0 && (
+                        <div className="mb-8">
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Trade Show Videos</h3>
+                          {company.videos.map((video, index) => (
+                            <div key={index} className="mb-4">
+                              <ShowroomVideo 
+                                videoSrc={video}
+                                posterSrc={company.logoUrl}
+                              />
+                            </div>
+                          ))}
+                          <p className="text-sm text-gray-600 mt-2 italic">
+                            Watch our latest trade show presentations and product showcases.
+                          </p>
+                        </div>
+                      )}
+                      {company.brandLogos && company.brandLogos.length > 0 && (
+                        <div className="mb-8">
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Brand Logos</h3>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {company.brandLogos.map((logo, index) => (
+                              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+                                <div className="h-20 relative">
+                                  <Image
+                                    src={logo}
+                                    alt={`Brand logo ${index + 1}`}
+                                    fill
+                                    className="object-contain"
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                   {params.slug === 'emotional-rescue' && (
                     <div className="mb-8">
