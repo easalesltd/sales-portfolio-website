@@ -1264,7 +1264,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                             <div key={index} className="mb-4">
                               <ShowroomVideo 
                                 videoSrc={video}
-                                posterSrc="/images/companies/museums-and-galleries/7d55e712-89d5-448b-aa75-f4cec8b7cf87.jpeg"
+                                posterSrc={company.logoUrl}
                               />
                             </div>
                           ))}
@@ -1326,7 +1326,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                             <div key={index} className="mb-4">
                               <ShowroomVideo 
                                 videoSrc={video}
-                                posterSrc="/images/companies/ohh-deer/Tiny-Notebooks-Web-Square.jpg"
+                                posterSrc={company.logoUrl}
                               />
                             </div>
                           ))}
@@ -1378,7 +1378,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                             <div key={index} className="mb-4">
                               <ShowroomVideo 
                                 videoSrc={video}
-                                posterSrc="/images/companies/mint-publishing/1-1-27.jpeg"
+                                posterSrc={company.logoUrl}
                               />
                             </div>
                           ))}
