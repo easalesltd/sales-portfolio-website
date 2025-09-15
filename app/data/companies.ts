@@ -6,6 +6,8 @@ export interface Company {
   logoUrl: string;
   catalogueUrl: string;
   websiteUrl: string;
+  videos?: string[]; // Array of video URLs for Trade Show Videos
+  brandLogos?: string[]; // Array of brand logo URLs
 }
 
 export const companies: Company[] = [
