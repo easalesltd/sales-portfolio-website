@@ -45,6 +45,10 @@ export default function ShowroomVideo({ videoSrc, posterSrc }: ShowroomVideoProp
         onPlay={handlePlay}
         onPause={handlePause}
         onEnded={handleEnded}
+        style={{
+          objectFit: 'contain',
+          backgroundColor: '#f8f9fa'
+        }}
       >
         <source src={videoSrc} type="video/mp4" />
         Your browser does not support the video tag.
