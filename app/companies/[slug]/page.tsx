@@ -1253,9 +1253,46 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                     </div>
                   )}
                   {params.slug === 'museums-and-galleries' && (
-                    <div className="mb-8">
-                      <ImageGallery images={museumsAndGalleriesImages} interval={5500} />
-                    </div>
+                    <>
+                      <div className="mb-8">
+                        <ImageGallery images={museumsAndGalleriesImages} interval={5500} />
+                      </div>
+                      {company.videos && company.videos.length > 0 && (
+                        <div className="mb-8">
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Trade Show Videos</h3>
+                          {company.videos.map((video, index) => (
+                            <div key={index} className="mb-4">
+                              <ShowroomVideo 
+                                videoSrc={video}
+                                posterSrc="/images/companies/museums-and-galleries/7d55e712-89d5-448b-aa75-f4cec8b7cf87.jpeg"
+                              />
+                            </div>
+                          ))}
+                          <p className="text-sm text-gray-600 mt-2 italic">
+                            Watch our latest trade show presentations and product showcases.
+                          </p>
+                        </div>
+                      )}
+                      {company.brandLogos && company.brandLogos.length > 0 && (
+                        <div className="mb-8">
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Brand Logos</h3>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {company.brandLogos.map((logo, index) => (
+                              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+                                <div className="h-20 relative">
+                                  <Image
+                                    src={logo}
+                                    alt={`Brand logo ${index + 1}`}
+                                    fill
+                                    className="object-contain"
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                   {params.slug === 'star-editions' && (
                     <div className="mb-8">
@@ -1278,9 +1315,46 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                     </div>
                   )}
                   {params.slug === 'ohh-deer' && (
-                    <div className="mb-8">
-                      <ImageGallery images={ohhDeerImages} interval={5500} />
-                    </div>
+                    <>
+                      <div className="mb-8">
+                        <ImageGallery images={ohhDeerImages} interval={5500} />
+                      </div>
+                      {company.videos && company.videos.length > 0 && (
+                        <div className="mb-8">
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Trade Show Videos</h3>
+                          {company.videos.map((video, index) => (
+                            <div key={index} className="mb-4">
+                              <ShowroomVideo 
+                                videoSrc={video}
+                                posterSrc="/images/companies/ohh-deer/Tiny-Notebooks-Web-Square.jpg"
+                              />
+                            </div>
+                          ))}
+                          <p className="text-sm text-gray-600 mt-2 italic">
+                            Watch our latest trade show presentations and product showcases.
+                          </p>
+                        </div>
+                      )}
+                      {company.brandLogos && company.brandLogos.length > 0 && (
+                        <div className="mb-8">
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Brand Logos</h3>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {company.brandLogos.map((logo, index) => (
+                              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+                                <div className="h-20 relative">
+                                  <Image
+                                    src={logo}
+                                    alt={`Brand logo ${index + 1}`}
+                                    fill
+                                    className="object-contain"
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                   {params.slug === 'global-journey-gifts' && (
                     <div className="mb-8">
@@ -1293,9 +1367,46 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                     </div>
                   )}
                   {params.slug === 'mint-publishing' && (
-                    <div className="mb-8">
-                      <ImageGallery images={mintPublishingImages} interval={5000} />
-                    </div>
+                    <>
+                      <div className="mb-8">
+                        <ImageGallery images={mintPublishingImages} interval={5000} />
+                      </div>
+                      {company.videos && company.videos.length > 0 && (
+                        <div className="mb-8">
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Trade Show Videos</h3>
+                          {company.videos.map((video, index) => (
+                            <div key={index} className="mb-4">
+                              <ShowroomVideo 
+                                videoSrc={video}
+                                posterSrc="/images/companies/mint-publishing/1-1-27.jpeg"
+                              />
+                            </div>
+                          ))}
+                          <p className="text-sm text-gray-600 mt-2 italic">
+                            Watch our latest trade show presentations and product showcases.
+                          </p>
+                        </div>
+                      )}
+                      {company.brandLogos && company.brandLogos.length > 0 && (
+                        <div className="mb-8">
+                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Brand Logos</h3>
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            {company.brandLogos.map((logo, index) => (
+                              <div key={index} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+                                <div className="h-20 relative">
+                                  <Image
+                                    src={logo}
+                                    alt={`Brand logo ${index + 1}`}
+                                    fill
+                                    className="object-contain"
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
                   )}
                   {params.slug === 'gnaw-chocolate' && (
                     <div className="mb-8">

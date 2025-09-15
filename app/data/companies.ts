@@ -61,7 +61,12 @@ export const companies: Company[] = [
     description: "M!NT is your fully refreshed and refreshingly different publisher of (mostly funny) birthday, blank and captioned greetings cards. We are proud to supply the official Katie Abey Greeting Cards range.",
     logoUrl: "/images/logos/MINT-PUBLISHING-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1oUU_899INjpAiD-gu9Zf2Vo9AEjLe-2y?usp=drive_link",
-    websiteUrl: "https://www.mintpublishing.co.uk"
+    websiteUrl: "https://www.mintpublishing.co.uk",
+    videos: ["/videos/companies/mint-publishing/trade-show.mp4"],
+    brandLogos: [
+      "/images/companies/mint-publishing/brand-logos/katie-abey.png",
+      "/images/companies/mint-publishing/brand-logos/mint-logo.png"
+    ]
   },
   {
     id: "museums-and-galleries",
@@ -70,7 +75,13 @@ export const companies: Company[] = [
     description: "Home of the finest arts brands. We are the UK's leading publisher of licensed art and design-led greetings cards and gift stationery.",
     logoUrl: "/images/logos/museums-galleries-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/13GUXPjjXh3uMshpbwZCOGBL7B2pIZ-AJ?usp=drive_link",
-    websiteUrl: "https://www.museums.co.uk"
+    websiteUrl: "https://www.museums.co.uk",
+    videos: ["/videos/companies/museums-and-galleries/trade-show.mp4"],
+    brandLogos: [
+      "/images/companies/museums-and-galleries/brand-logos/national-gallery.png",
+      "/images/companies/museums-and-galleries/brand-logos/tate.png",
+      "/images/companies/museums-and-galleries/brand-logos/v-and-a.png"
+    ]
   },
   {
     id: "ohh-deer",
@@ -79,7 +90,13 @@ export const companies: Company[] = [
     description: "Ohh Deer is a UK-based company founded in 2011 by Jamie Mitchell and Mark Callaby, known for its playful, artistic, and inclusive greeting cards, stationery, and gifts. We are proud to supply the official Cath Kidston greeting cards and stationery range, featuring their iconic floral and vintage-inspired designs, as well as the beautiful Laura Ashley collection of greeting cards, gift bags, and wrapping paper.",
     logoUrl: "/images/logos/ohh-deer-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1FWnmKaHf8tmhV-RSeZYaSfx3fG0aDuk6?usp=drive_link",
-    websiteUrl: "https://wholesale.ohhdeer.com"
+    websiteUrl: "https://wholesale.ohhdeer.com",
+    videos: ["/videos/companies/ohh-deer/trade-show.mp4"],
+    brandLogos: [
+      "/images/companies/ohh-deer/brand-logos/cath-kidston.png",
+      "/images/companies/ohh-deer/brand-logos/laura-ashley.png",
+      "/images/companies/ohh-deer/brand-logos/ohh-deer.png"
+    ]
   },
   {
     id: "paper-salad",
