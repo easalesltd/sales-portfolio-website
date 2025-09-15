@@ -62,10 +62,9 @@ export const companies: Company[] = [
     logoUrl: "/images/logos/MINT-PUBLISHING-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1oUU_899INjpAiD-gu9Zf2Vo9AEjLe-2y?usp=drive_link",
     websiteUrl: "https://www.mintpublishing.co.uk",
-    videos: ["/videos/companies/mint-publishing/trade-show.mp4"],
+    videos: ["/videos/companies/mint-publishing/trade show.mov"],
     brandLogos: [
-      "/images/companies/mint-publishing/brand-logos/katie-abey.png",
-      "/images/companies/mint-publishing/brand-logos/mint-logo.png"
+      "/images/logos/MINT-PUBLISHING-placeholder.png"
     ]
   },
   {
