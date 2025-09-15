@@ -78,9 +78,7 @@ export const companies: Company[] = [
     websiteUrl: "https://www.museums.co.uk",
     videos: ["/videos/companies/museums-and-galleries/trade-show.mov"],
     brandLogos: [
-      "/images/companies/museums-and-galleries/brand-logos/national-gallery.png",
-      "/images/companies/museums-and-galleries/brand-logos/tate.png",
-      "/images/companies/museums-and-galleries/brand-logos/v-and-a.png"
+      "/images/logos/museums-galleries-placeholder.png"
     ]
   },
   {
