@@ -40,6 +40,7 @@ export default function ShowroomVideo({ videoSrc, posterSrc }: ShowroomVideoProp
     <div className="relative max-w-md mx-auto aspect-[9/16] rounded-lg overflow-hidden shadow-lg">
       <video
         controls
+        preload="none"
         className="w-full h-full object-cover"
         poster={posterSrc}
         onPlay={handlePlay}
