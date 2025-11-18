@@ -97,7 +97,8 @@ export const metadata: Metadata = {
     
     // General Sales Agent Terms (Non-Location Specific)
     "Greeting Card Sales Agent",
-    "Gift Sales Agent", 
+    "Gift Sales Agent",
+    "Giftware Sales Agent", 
     "Greeting Card Agent",
     "Gift Agent",
     "Greeting Card Sales Representative",
