@@ -50,7 +50,7 @@ export default function AboutPage() {
           <VideoBackground videoUrl="/videos/About/background.mp4">
             <div className="w-full h-full flex items-center justify-center bg-black/30">
               <div className="text-center px-4 max-w-3xl">
-                <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">Dave Langdon - Your Greeting Card Sales Agent</h1>
+                <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">Dave Langdon - Your Greeting Card and Gift Sales Agent</h1>
                 <p className="text-base md:text-lg text-white drop-shadow-lg">
                   Dave Langdon established East Anglian Sales Ltd in 2022, bringing over a decade of experience in greeting cards and gifts across East Anglia. 
                   Dave has built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, 

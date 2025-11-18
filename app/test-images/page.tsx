@@ -7,10 +7,10 @@ export default function TestImagesPage() {
       
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <h2 className="text-lg font-semibold mb-2">PXL_20250817_093614452.jpg</h2>
+          <h2 className="text-lg font-semibold mb-2">dave-portrait-2025.jpg</h2>
           <div className="relative h-64 w-full">
             <Image
-              src="/images/about/PXL_20250817_093614452.jpg"
+              src="/images/about/dave-portrait-2025.jpg"
               alt="Test PXL image"
               fill
               className="object-cover"
