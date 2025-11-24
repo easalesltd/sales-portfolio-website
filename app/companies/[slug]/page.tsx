@@ -1112,7 +1112,10 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/ohh-deer/Cath-Kidston-Web-Asset-Square.jpg',
     '/images/companies/ohh-deer/Beth-Evans-Web-Asset-Square.jpg',
     '/images/companies/ohh-deer/Daily-Planners-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer/Laura-Ashley-Web-Asset-Square.jpg'
+    '/images/companies/ohh-deer/Laura-Ashley-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.16.png',
+    '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.22.png',
+    '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.27.png'
   ] : [];
 
   const globalJourneyBaseImages = params.slug === 'global-journey-gifts' ? [
