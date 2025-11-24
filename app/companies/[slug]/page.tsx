@@ -1115,7 +1115,8 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/ohh-deer/Laura-Ashley-Web-Asset-Square.jpg',
     '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.16.png',
     '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.22.png',
-    '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.27.png'
+    '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.27.png',
+    '/images/companies/ohh-deer/ODFK13957-Frank-The-Frog-WEB (1).jpg'
   ] : [];
 
   const globalJourneyBaseImages = params.slug === 'global-journey-gifts' ? [

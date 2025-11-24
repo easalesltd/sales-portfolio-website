@@ -27,6 +27,7 @@ const showcaseImages = [
   '/images/showcase/Screenshot 2025-07-07 at 09.31.03-optimized.png',
   '/images/showcase/Screenshot 2025-08-30 at 17.42.49.png',
   '/images/showcase/Screenshot 2025-11-24 at 12.17.52.png',
+  '/images/showcase/Screenshot 2025-11-24 at 12.30.52.png',
   '/images/showcase/bd66610d-a7c2-4835-9657-9e4248cf7400.jpeg',
   '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg',
   '/images/showcase/d40a6860-3952-4308-b87b-770c946035a3.jpeg',
