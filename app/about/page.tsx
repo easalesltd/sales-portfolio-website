@@ -52,7 +52,7 @@ export default function AboutPage() {
               <div className="text-center px-4 max-w-3xl">
                 <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">Dave Langdon - Your Greeting Card Sales Agent</h1>
                 <p className="text-sm md:text-lg text-white drop-shadow-lg leading-relaxed">
-                  As a professional greeting card sales agent, Dave Langdon established East Anglian Sales Ltd in 2022, bringing over a decade of experience as a greeting card sales agent in East Anglia. 
+                  As a professional greeting card and gift sales agent, Dave Langdon established East Anglian Sales Ltd in 2022, bringing over a decade of experience as a rep in East Anglia. 
                   Dave has built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, 
                   understanding their unique needs and helping them succeed with expert greeting card sales representation.
                 </p>
