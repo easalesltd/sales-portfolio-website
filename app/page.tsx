@@ -4,6 +4,7 @@ import { companies } from "./data/companies";
 import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
 import VideoBackground from "./components/VideoBackground";
 import { metadata } from "./metadata";
+import FadeInOnScroll from "./components/FadeInOnScroll";
 
 export { metadata };
 
@@ -20,34 +21,44 @@ export default function Home() {
       {/* About Section */}
       <div className="bg-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">Dave Langdon - Greeting Card & Gift Sales Agent</h1>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Serving Retailers Across East Anglia</h2>
-          <p className="text-lg text-gray-700 mb-6">
-            Hi, I&apos;m Dave Langdon, a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience in the industry, I supply quality greeting cards, stationery, and gifts to retailers across East Anglia. From charming independent shops to bustling garden centres, I help retailers create amazing displays that customers love.
-          </p>
-          <p className="text-lg text-gray-700 mb-8">
-            I cover Suffolk, Norfolk, Essex, and Cambridgeshire. Whether you need wholesale supply, display solutions, or expert advice, I&apos;m here to help your business grow with the best greeting card and gift brands in the industry.
-          </p>
-          <div className="flex justify-center gap-6">
-            <Link 
-              href="/contact" 
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              Request an Agent Visit
-            </Link>
-            <Link 
-              href="/about" 
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              About Us
-            </Link>
-            <Link 
-              href="/contact" 
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            >
-              Get In Touch
-            </Link>
-          </div>
+          <FadeInOnScroll>
+            <h1 className="text-4xl font-bold text-gray-900 mb-6">Dave Langdon - Greeting Card & Gift Sales Agent</h1>
+          </FadeInOnScroll>
+          <FadeInOnScroll delay={0.2}>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Serving Retailers Across East Anglia</h2>
+          </FadeInOnScroll>
+          <FadeInOnScroll delay={0.3}>
+            <p className="text-lg text-gray-700 mb-6">
+              Hi, I&apos;m Dave Langdon, a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience in the industry, I supply quality greeting cards, stationery, and gifts to retailers across East Anglia. From charming independent shops to bustling garden centres, I help retailers create amazing displays that customers love.
+            </p>
+          </FadeInOnScroll>
+          <FadeInOnScroll delay={0.4}>
+            <p className="text-lg text-gray-700 mb-8">
+              I cover Suffolk, Norfolk, Essex, and Cambridgeshire. Whether you need wholesale supply, display solutions, or expert advice, I&apos;m here to help your business grow with the best greeting card and gift brands in the industry.
+            </p>
+          </FadeInOnScroll>
+          <FadeInOnScroll delay={0.5}>
+            <div className="flex justify-center gap-6">
+              <Link 
+                href="/contact" 
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                Request an Agent Visit
+              </Link>
+              <Link 
+                href="/about" 
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                About Us
+              </Link>
+              <Link 
+                href="/contact" 
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                Get In Touch
+              </Link>
+            </div>
+          </FadeInOnScroll>
         </div>
       </div>
 
@@ -56,28 +67,33 @@ export default function Home() {
         <VideoBackground videoUrl="/videos/brands-background.mp4">
           <div className="py-20">
             <div className="max-w-7xl mx-auto px-4">
-              <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Our Partner Brands</h2>
-              <h3 className="text-xl text-center mb-12 text-gray-700">Quality Products from Leading Suppliers</h3>
+              <FadeInOnScroll>
+                <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Our Partner Brands</h2>
+              </FadeInOnScroll>
+              <FadeInOnScroll delay={0.2}>
+                <h3 className="text-xl text-center mb-12 text-gray-700">Quality Products from Leading Suppliers</h3>
+              </FadeInOnScroll>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {companies.map((company) => (
-                  <Link 
-                    key={company.id}
-                    href={`/companies/${company.slug}`}
-                    className="group block bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-                  >
-                    <div className="aspect-[3/2] relative">
-                      <Image
-                        src={company.logoUrl}
-                        alt={`${company.name} logo`}
-                        fill
-                        className="object-contain p-6 group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <div className="p-6 bg-white/90 backdrop-blur-sm">
-                      <h3 className="text-xl font-semibold text-center text-gray-900">{company.name}</h3>
-                      <p className="text-gray-700 text-center mt-2">{company.description}</p>
-                    </div>
-                  </Link>
+                {companies.map((company, index) => (
+                  <FadeInOnScroll key={company.id} delay={0.1 * (index % 6)}>
+                    <Link 
+                      href={`/companies/${company.slug}`}
+                      className="group flex flex-col bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full"
+                    >
+                      <div className="aspect-[3/2] relative flex-shrink-0">
+                        <Image
+                          src={company.logoUrl}
+                          alt={`${company.name} logo`}
+                          fill
+                          className="object-contain p-6 group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="p-6 bg-white/90 backdrop-blur-sm flex-grow flex flex-col justify-start min-h-[140px]">
+                        <h3 className="text-xl font-semibold text-center text-gray-900 mb-2">{company.name}</h3>
+                        <p className="text-gray-700 text-center text-sm leading-relaxed">{company.description}</p>
+                      </div>
+                    </Link>
+                  </FadeInOnScroll>
                 ))}
               </div>
             </div>
