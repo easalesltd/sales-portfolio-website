@@ -21,18 +21,17 @@ export default function RecipesPage() {
         'Rice flour (for dusting)'
       ],
       instructions: [
-        'Mix the starter and warm water in a large bowl until combined.',
-        'Add the flour and salt, mix until a shaggy dough forms.',
-        'Cover and let rest for 30 minutes.',
-        'Perform 4-6 sets of stretch and folds, 30 minutes apart.',
-        'Cover and bulk ferment for 4-6 hours at room temperature, or overnight in the fridge.',
+        'Mix the starter and warm water in a large bowl until combined. Add the flour, mix until a shaggy dough forms. Cover and let rest for 1hr.',
+        'Add the salt and 10ml of water, and perform the first stretch and fold.',
+        'Perform 3 additional sets of stretch and folds, 30 minutes apart.',
+        'Cover and bulk ferment for at least 1 hour at room temperature, or overnight in the fridge. You can also leave it in the oven with the light on if your house is cold.',
         'Shape the dough into a round or oval boule.',
         'Place seam-side up in a floured banneton or bowl.',
         'Cover and refrigerate for 12-24 hours (cold proof).',
         'Preheat oven to 250°C (230°C fan) with a Dutch oven inside.',
         'Score the dough with a sharp knife or razor.',
-        'Bake covered for 20 minutes, then uncovered at 230°C for 25-30 minutes.',
-        'Cool completely on a wire rack before slicing.'
+        'Bake covered for 30 minutes, then uncovered at 220°C for 5 minutes until brown.',
+        'Cool completely on a wire rack before slicing. Minimum 90 minutes or it\'ll be a stodgy mess.'
       ],
       tips: [
         'Feed your starter 4-8 hours before mixing for best results.',
