@@ -100,25 +100,7 @@ export default function MobileMenu() {
                 Home
               </Link>
               
-              {/* About Section */}
-              <div>
-                <Link 
-                  href="/about" 
-                  className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
-                  onClick={() => setIsOpen(false)}
-                >
-                  About Dave
-                </Link>
-                <Link 
-                  href="/recipes" 
-                  className="block text-sm text-gray-500 hover:text-blue-600 transition-colors mt-1 ml-4" 
-                  onClick={() => setIsOpen(false)}
-                >
-                  Recipes
-                </Link>
-              </div>
-              
-              {/* Brands Section */}
+              {/* Brands Section - Most Important */}
               <div>
                 <button
                   onClick={() => setIsBrandsExpanded(!isBrandsExpanded)}
@@ -171,6 +153,24 @@ export default function MobileMenu() {
               >
                 Contact
               </Link>
+              
+              {/* About Section - At Bottom */}
+              <div className="pt-4 border-t border-gray-200">
+                <Link 
+                  href="/about" 
+                  className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  About Dave
+                </Link>
+                <Link 
+                  href="/recipes" 
+                  className="block text-sm text-gray-500 hover:text-blue-600 transition-colors mt-1 ml-4" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  Recipes
+                </Link>
+              </div>
             </div>
           </nav>
         </div>
