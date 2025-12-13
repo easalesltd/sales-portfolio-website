@@ -17,8 +17,9 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const company = companies.find(c => c.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> | { slug: string } }): Promise<Metadata> {
+  const resolvedParams = await Promise.resolve(params);
+  const company = companies.find(c => c.slug === resolvedParams.slug);
   if (!company) {
     return {
       title: 'Company Not Found',
@@ -883,7 +884,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     }
   };
 
-  const metadata = companyMetadata[params.slug as keyof typeof companyMetadata];
+  const metadata = companyMetadata[resolvedParams.slug as keyof typeof companyMetadata];
   if (metadata) {
     return {
       title: metadata.title,
@@ -903,7 +904,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   // Special case for Museums and Galleries
-  if (params.slug === 'museums-and-galleries') {
+  if (resolvedParams.slug === 'museums-and-galleries') {
     const title = 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia';
     const description = `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. ${company.description}`;
     const keywords = [
@@ -1015,8 +1016,9 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function CompanyPage({ params }: { params: { slug: string } }) {
-  const company = companies.find(c => c.slug === params.slug);
+export default async function CompanyPage({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
+  const resolvedParams = await Promise.resolve(params);
+  const company = companies.find(c => c.slug === resolvedParams.slug);
   if (!company) {
     return <div>Company not found</div>;
   }
@@ -1032,16 +1034,16 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     'peppermint-grove',
     'mint-publishing',
     'cgb-giftware'
-  ].includes(params.slug);
+  ].includes(resolvedParams.slug);
 
   // Define base image arrays
-  const paperSaladBaseImages = params.slug === 'paper-salad' ? [
+  const paperSaladBaseImages = resolvedParams.slug === 'paper-salad' ? [
     '/images/companies/paper-salad/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
     '/images/companies/paper-salad/43a8e5ac-f223-4213-a4ca-c0c7d53aed48_1500x.jpeg',
     '/images/companies/paper-salad/Birthday_Collection_copy_1500x.jpeg'
   ] : [];
 
-  const emotionalRescueBaseImages = params.slug === 'emotional-rescue' ? [
+  const emotionalRescueBaseImages = resolvedParams.slug === 'emotional-rescue' ? [
     '/images/companies/emotional-rescue/336207-IMG_3646-copy.jpeg',
     '/images/companies/emotional-rescue/emo_web.jpeg',
     '/images/companies/emotional-rescue/81J8YSOEzoL.jpeg',
@@ -1051,7 +1053,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/emotional-rescue/EMZFPW11770_600x.jpeg'
   ] : [];
 
-  const museumsAndGalleriesBaseImages = params.slug === 'museums-and-galleries' ? [
+  const museumsAndGalleriesBaseImages = resolvedParams.slug === 'museums-and-galleries' ? [
     '/images/companies/museums-and-galleries/7d55e712-89d5-448b-aa75-f4cec8b7cf87.jpeg',
     '/images/companies/museums-and-galleries/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
     '/images/companies/museums-and-galleries/cc0ff00f-b373-4a7f-ae5c-fa1e61f846fa.jpeg',
@@ -1062,7 +1064,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/museums-and-galleries/59a26b7f-162c-454e-9efd-c483fae2ecfa.jpeg'
   ] : [];
 
-  const starEditionsBaseImages = params.slug === 'star-editions' ? [
+  const starEditionsBaseImages = resolvedParams.slug === 'star-editions' ? [
     '/images/companies/star-editions/E6EDAD48-3745-4C0D-B057-1C2EB79CF436.JPG',
     '/images/companies/star-editions/IMG_0562.jpg',
     '/images/companies/star-editions/IMG_0558.jpeg',
@@ -1079,7 +1081,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/star-editions/BRIGGS_DESKTOP.jpeg'
   ] : [];
 
-  const peppermintGroveBaseImages = params.slug === 'peppermint-grove' ? [
+  const peppermintGroveBaseImages = resolvedParams.slug === 'peppermint-grove' ? [
     '/images/companies/peppermint-grove/PGA_Uk_Diffuser_Category_d8e301ee-42b8-4ef0-9d68-5221f68c83b3.jpeg',
     '/images/companies/peppermint-grove/PGA_Uk_Candle_engraving_14e985bb-cf2d-43af-917f-773eea41e718.jpeg',
     '/images/companies/peppermint-grove/PGA_UK_Bath_Category_8c6ce571-33e1-42dc-b009-dd680a331094.jpeg',
@@ -1091,7 +1093,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/peppermint-grove/New_Arrivals_65e95d71-0d66-43a3-abf2-f1eff2913b3f.jpg'
   ] : [];
 
-  const boxerGiftsBaseImages = params.slug === 'boxer-gifts' ? [
+  const boxerGiftsBaseImages = resolvedParams.slug === 'boxer-gifts' ? [
     '/images/companies/boxer-gifts/OT2075_a70b.webp',
     '/images/companies/boxer-gifts/CO1012___MR_GOOD_LOOKIN__APRON___34_49a0.webp',
     '/images/companies/boxer-gifts/MU3131_4d24.webp',
@@ -1099,7 +1101,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/boxer-gifts/Untitled_550_550_px_4_.png'
   ] : [];
 
-  const davidFischhoffBaseImages = params.slug === 'david-fischhoff' ? [
+  const davidFischhoffBaseImages = resolvedParams.slug === 'david-fischhoff' ? [
     '/images/companies/david-fischhoff/36.jpeg',
     '/images/companies/david-fischhoff/695.jpeg',
     '/images/companies/david-fischhoff/68.jpeg',
@@ -1107,7 +1109,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/david-fischhoff/67.jpeg'
   ] : [];
 
-  const ohhDeerBaseImages = params.slug === 'ohh-deer' ? [
+  const ohhDeerBaseImages = resolvedParams.slug === 'ohh-deer' ? [
     '/images/companies/ohh-deer/Tiny-Notebooks-Web-Square.jpg',
     '/images/companies/ohh-deer/Cath-Kidston-Web-Asset-Square.jpg',
     '/images/companies/ohh-deer/Beth-Evans-Web-Asset-Square.jpg',
@@ -1119,7 +1121,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/ohh-deer/ODFK13957-Frank-The-Frog-WEB (1).jpg'
   ] : [];
 
-  const globalJourneyBaseImages = params.slug === 'global-journey-gifts' ? [
+  const globalJourneyBaseImages = resolvedParams.slug === 'global-journey-gifts' ? [
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.34.04.png',
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.54.png',
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.48.png',
@@ -1128,13 +1130,13 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.00.png'
   ] : [];
 
-  const wplGiftsBaseImages = params.slug === 'wpl-gifts' ? [
+  const wplGiftsBaseImages = resolvedParams.slug === 'wpl-gifts' ? [
     '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.34.png',
     '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.28.png',
     '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.21.png'
   ] : [];
 
-  const mintPublishingBaseImages = params.slug === 'mint-publishing' ? [
+  const mintPublishingBaseImages = resolvedParams.slug === 'mint-publishing' ? [
     '/images/companies/mint-publishing/1-1-27.jpeg',
     '/images/companies/mint-publishing/1-1-26.jpeg',
     '/images/companies/mint-publishing/1-1-29.jpeg',
@@ -1143,7 +1145,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/mint-publishing/1-30.jpeg'
   ] : [];
 
-  const gnawChocolateBaseImages = params.slug === 'gnaw-chocolate' ? [
+  const gnawChocolateBaseImages = resolvedParams.slug === 'gnaw-chocolate' ? [
     '/images/companies/gnaw-chocolate/gnaw-milk-peppermint-chocolate-bar-002-gpn0005-1024x1024-72dpi.jpeg',
     '/images/companies/gnaw-chocolate/GNAW-Popcorn_Peanut-Snack-Bar-GPN0028-CBG-02.jpeg',
     '/images/companies/gnaw-chocolate/GNAW-Milk-Chocolate-Buttons-GPN0066-CBG-02.jpeg',
@@ -1153,7 +1155,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
     '/images/companies/gnaw-chocolate/GNAW-Caramel-Chocolate-Buttons-GPN0067-CBG-02.png'
   ] : [];
 
-  const cgbGiftwareBaseImages = params.slug === 'cgb-giftware' ? [
+  const cgbGiftwareBaseImages = resolvedParams.slug === 'cgb-giftware' ? [
     '/images/companies/CGB-Giftware/ArtisanGlass-01.jpg',
     '/images/companies/CGB-Giftware/Best Teacher Ever_03.jpg',
     '/images/companies/CGB-Giftware/BRAMBLE FARM-02.jpg',
@@ -1210,7 +1212,7 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                 <p className="text-xl leading-relaxed text-gray-600">{company.description}</p>
                 
                 <div className="mt-12">
-                  {params.slug === 'paper-salad' && (
+                  {resolvedParams.slug === 'paper-salad' && (
                     <>
                       <div className="mb-8">
                         <ImageGallery images={paperSaladImages} interval={6000} />
@@ -1233,12 +1235,12 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                       )}
                     </>
                   )}
-                  {params.slug === 'emotional-rescue' && (
+                  {resolvedParams.slug === 'emotional-rescue' && (
                     <div className="mb-8">
                       <ImageGallery images={emotionalRescueImages} interval={5000} />
                     </div>
                   )}
-                  {params.slug === 'museums-and-galleries' && (
+                  {resolvedParams.slug === 'museums-and-galleries' && (
                     <>
                       <div className="mb-8">
                         <ImageGallery images={museumsAndGalleriesImages} interval={5500} />
@@ -1261,27 +1263,27 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                       )}
                     </>
                   )}
-                  {params.slug === 'star-editions' && (
+                  {resolvedParams.slug === 'star-editions' && (
                     <div className="mb-8">
                       <ImageGallery images={starEditionsImages} interval={5000} />
                     </div>
                   )}
-                  {params.slug === 'peppermint-grove' && (
+                  {resolvedParams.slug === 'peppermint-grove' && (
                     <div className="mb-8">
                       <ImageGallery images={peppermintGroveImages} interval={5500} />
                     </div>
                   )}
-                  {params.slug === 'boxer-gifts' && (
+                  {resolvedParams.slug === 'boxer-gifts' && (
                     <div className="mb-8">
                       <ImageGallery images={boxerGiftsImages} interval={5000} />
                     </div>
                   )}
-                  {params.slug === 'david-fischhoff' && (
+                  {resolvedParams.slug === 'david-fischhoff' && (
                     <div className="mb-8">
                       <ImageGallery images={davidFischhoffImages} interval={5000} />
                     </div>
                   )}
-                  {params.slug === 'ohh-deer' && (
+                  {resolvedParams.slug === 'ohh-deer' && (
                     <>
                       <div className="mb-8">
                         <ImageGallery images={ohhDeerImages} interval={5500} />
@@ -1304,17 +1306,17 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                       )}
                     </>
                   )}
-                  {params.slug === 'global-journey-gifts' && (
+                  {resolvedParams.slug === 'global-journey-gifts' && (
                     <div className="mb-8">
                       <ImageGallery images={globalJourneyImages} interval={5500} />
                     </div>
                   )}
-                  {params.slug === 'wpl-gifts' && (
+                  {resolvedParams.slug === 'wpl-gifts' && (
                     <div className="mb-8">
                       <ImageGallery images={wplGiftsImages} interval={5000} />
                     </div>
                   )}
-                  {params.slug === 'mint-publishing' && (
+                  {resolvedParams.slug === 'mint-publishing' && (
                     <>
                       <div className="mb-8">
                         <ImageGallery images={mintPublishingImages} interval={5000} />
@@ -1337,12 +1339,12 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
                       )}
                     </>
                   )}
-                  {params.slug === 'gnaw-chocolate' && (
+                  {resolvedParams.slug === 'gnaw-chocolate' && (
                     <div className="mb-8">
                       <ImageGallery images={gnawChocolateImages} interval={5000} />
                     </div>
                   )}
-                  {params.slug === 'cgb-giftware' && (
+                  {resolvedParams.slug === 'cgb-giftware' && (
                     <>
                       <div className="mb-8">
                         <ImageGallery images={cgbGiftwareImages} interval={5500} />
@@ -1401,8 +1403,8 @@ export default function CompanyPage({ params }: { params: { slug: string } }) {
   );
 
   if (hasVideoBackground) {
-    const videoPath = `/videos/companies/${params.slug}/background.mp4`;
-    const playbackRate = params.slug === 'cgb-giftware' ? 0.5 : 1.0; // Slow down CGB Giftware video to half speed
+    const videoPath = `/videos/companies/${resolvedParams.slug}/background.mp4`;
+    const playbackRate = resolvedParams.slug === 'cgb-giftware' ? 0.5 : 1.0; // Slow down CGB Giftware video to half speed
     
     return (
       <VideoBackground videoUrl={videoPath} playbackRate={playbackRate}>
