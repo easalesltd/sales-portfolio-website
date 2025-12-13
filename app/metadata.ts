@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
-  description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
+  title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
+  description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
   keywords: [
     // Dave Langdon - Personal Brand Keywords
     "Dave Langdon",
@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     "Dave Langdon Peppermint Grove",
     "Dave Langdon Emotional Rescue",
     "Dave Langdon David Fischhoff",
+    "Dave Langdon East of England",
     "Dave Langdon East Anglia",
     "Dave Langdon Suffolk",
     "Dave Langdon Norfolk",
@@ -276,12 +277,14 @@ export const metadata: Metadata = {
     "Gift Sales Tailored Quality",
     
     // General Sales Agent - Location Specific
+    "Sales Agent East of England",
     "Sales Agent East Anglia",
     "Sales Agent Essex",
     "Sales Agent Suffolk",
     "Sales Agent Norfolk", 
     "Sales Agent Cambridgeshire",
     "Sales Agent Hertfordshire",
+    "Local Sales Agent East of England",
     "Local Sales Agent East Anglia",
     "Local Sales Agent Essex",
     "Local Sales Agent Suffolk",
@@ -290,6 +293,7 @@ export const metadata: Metadata = {
     "Local Sales Agent Hertfordshire",
     
     // Greeting Card Sales Agent - Location Specific
+    "Greeting Card Sales Agent East of England",
     "Greeting Card Sales Agent East Anglia",
     "Greeting Card Sales Agent Essex",
     "Greeting Card Sales Agent Suffolk",
@@ -310,6 +314,7 @@ export const metadata: Metadata = {
     "Greeting Card Sales Representative Hertfordshire",
     
     // Gift Sales Agent - Location Specific
+    "Gift Sales Agent East of England",
     "Gift Sales Agent East Anglia",
     "Gift Sales Agent Essex",
     "Gift Sales Agent Suffolk",
@@ -523,8 +528,8 @@ export const metadata: Metadata = {
     "sales process maintenance"
   ].join(', '),
   openGraph: {
-    title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
-    description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more.",
+    title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
+    description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -539,8 +544,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
-    description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more.",
+    title: "Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
+    description: "Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more.",
   },
   alternates: {
     canonical: "https://www.easalesltd.co.uk"
