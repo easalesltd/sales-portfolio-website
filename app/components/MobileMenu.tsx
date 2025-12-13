@@ -111,7 +111,7 @@ export default function MobileMenu() {
                 </Link>
                 <Link 
                   href="/recipes" 
-                  className="block text-base text-gray-600 hover:text-blue-600 transition-colors mt-2 ml-4" 
+                  className="block text-sm text-gray-500 hover:text-blue-600 transition-colors mt-1 ml-4" 
                   onClick={() => setIsOpen(false)}
                 >
                   Recipes
@@ -119,14 +119,14 @@ export default function MobileMenu() {
               </div>
               
               {/* Brands Section */}
-              <div className="py-6">
+              <div>
                 <button
                   onClick={() => setIsBrandsExpanded(!isBrandsExpanded)}
-                  className="flex items-center justify-between w-full text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 hover:text-gray-600 transition-colors"
+                  className="flex items-center justify-between w-full text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors mb-2"
                 >
                   Our Partner Brands
                   <svg 
-                    className={`w-4 h-4 transform transition-transform ${isBrandsExpanded ? 'rotate-180' : ''}`} 
+                    className={`w-5 h-5 transform transition-transform ${isBrandsExpanded ? 'rotate-180' : ''}`} 
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
@@ -134,7 +134,7 @@ export default function MobileMenu() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div className={`space-y-3 overflow-hidden transition-all duration-300 ${isBrandsExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className={`space-y-3 overflow-hidden transition-all duration-300 ${isBrandsExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} mt-2`}>
                   {companies.map((company) => (
                     <Link
                       key={company.id}
