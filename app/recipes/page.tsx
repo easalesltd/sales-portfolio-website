@@ -244,9 +244,7 @@ export default function RecipesPage() {
             Baking for Business
           </h3>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            I love sharing my baking with customers as a way to build relationships and show appreciation. 
-            These recipes are my go-to favourites - they&apos;re reliable, delicious, and always well-received! 
-            Whether it&apos;s a fresh loaf of sourdough or festive mince pies, a homemade gift goes a long way.
+            I love sharing my baking with customers as a way to show appreciation for their custom. These recipes are my go-to favourites!
           </p>
         </div>
       </div>
