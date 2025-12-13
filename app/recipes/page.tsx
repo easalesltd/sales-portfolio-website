@@ -43,7 +43,7 @@ export default function RecipesPage() {
     },
     'mince-pies': {
       title: 'Orange Juice Pastry Mince Pies',
-      description: 'Delightful mince pies with a unique orange juice pastry that adds a citrusy twist to this Christmas classic. Perfect for gifting to customers during the festive season!',
+      description: 'My secret weapon during Christmas visits! Originally inspired by Josceline Dimbleby and upgraded by my Mum, the orange juice pastry is incredibly Flakey with a lovely citrus note, plus there\'s a cream cheese surprise that makes them absolute slappers.',
       prepTime: '30 minutes',
       cookTime: '15-20 minutes',
       yield: '12-15 pies',
