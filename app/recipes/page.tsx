@@ -49,19 +49,21 @@ export default function RecipesPage() {
       yield: '12-15 pies',
       ingredients: [
         '225g plain flour',
-        '115g cold butter, cubed',
+        'Cold butter and lard (mixed)',
         '1/2 tsp salt',
+        'Orange zest',
         '2-3 tbsp orange juice (freshly squeezed)',
         '1 jar (400g) good quality mincemeat',
-        '1 egg, beaten (for glazing)',
-        'Icing sugar, for dusting'
+        'Cream cheese whipped with icing sugar',
+        'Milk (for dipping tops)',
+        'Golden caster sugar (for sprinkling)',
+        'Rice flour (for dusting when rolling)'
       ],
       instructions: [
-        'Mix flour and salt in a large bowl.',
-        'Rub in the cold butter until the mixture resembles breadcrumbs.',
-        'Add orange juice gradually, mixing with a knife until a dough forms (you may not need all the juice).',
+        'Mix flour, butter and lard together until they resemble breadcrumbs. I use a Magimix (someone\'s doing well) - a wedding gift from my sister. If you\'re going to use a food processor, make sure you don\'t overdo it, as any excess heat will melt the fats.',
+        'Add the orange zest, mix, and then add the orange juice. Mix until the dough is just combined. DON\'T OVERWORK IT.',
         'Wrap the pastry in clingfilm and chill for 30 minutes.',
-        'Preheat oven to 200°C (180°C fan).',
+        'Preheat oven to 220°C.',
         'Roll out pastry on a floured surface to 3mm thick. I use rice flour here, as it\'s gluten-free, so aids non-stick.',
         'Cut 12 circles for bases and 12 smaller circles for tops.',
         'Line muffin tin with larger circles, fill with mincemeat and a dollop of cream cheese whipped with icing sugar.',
