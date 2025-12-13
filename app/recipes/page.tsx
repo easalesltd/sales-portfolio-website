@@ -62,16 +62,12 @@ export default function RecipesPage() {
         'Add orange juice gradually, mixing with a knife until a dough forms (you may not need all the juice).',
         'Wrap the pastry in clingfilm and chill for 30 minutes.',
         'Preheat oven to 200°C (180°C fan).',
-        'Roll out the pastry on a floured surface to about 3mm thick.',
-        'Cut out circles for the bases (using a tart tin or cutter) and place in greased tart tins.',
-        'Fill each base with mincemeat (don\'t overfill).',
-        'Cut out slightly smaller circles or stars for the lids.',
-        'Brush the edges with beaten egg and place lids on top.',
-        'Press edges together and brush tops with beaten egg.',
-        'Make a small slit in the top of each pie.',
-        'Bake for 15-20 minutes until golden brown.',
-        'Cool slightly in the tins, then transfer to a wire rack.',
-        'Dust with icing sugar while still warm.'
+        'Roll out pastry on a floured surface to 3mm thick. I use rice flour here, as it\'s gluten-free, so aids non-stick.',
+        'Cut 12 circles for bases and 12 smaller circles for tops.',
+        'Line muffin tin with larger circles, fill with mincemeat and a dollop of cream cheese whipped with icing sugar.',
+        'I cheat here, and dip the whole top in milk, as it\'s way quicker than brushing and helps seal the top and bottom. Give them a shake so they\'re not too wet. Sprinkle with a little golden caster sugar and stab the lid to allow steam to escape.',
+        'Bake for 14 minutes until golden brown.',
+        'Cool in tin for 5 minutes, then transfer to wire rack.'
       ],
       tips: [
         'The orange juice gives the pastry a lovely citrus note - perfect with the spiced mincemeat.',
