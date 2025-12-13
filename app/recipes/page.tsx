@@ -243,9 +243,14 @@ export default function RecipesPage() {
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">
             Baking for Business
           </h3>
-          <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            I love sharing my baking with customers as a way to show appreciation for their custom. These recipes are my go-to favourites! Also buy some greeting cards or gifts, I&apos;ve got so many kids.
-          </p>
+          <div className="text-lg text-gray-700 max-w-2xl mx-auto">
+            <p>
+              I love sharing my baking with customers as a way to show appreciation for their custom. These recipes are my go-to favourites!
+            </p>
+            <p className="mt-4">
+              Also buy some greeting cards or gifts, I&apos;ve got so many kids.
+            </p>
+          </div>
         </div>
       </div>
     </div>
