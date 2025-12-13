@@ -3,6 +3,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import FadeInOnScroll from '../components/FadeInOnScroll';
+import { metadata } from './metadata';
+
+export { metadata };
 
 const recipes = [
   {
@@ -82,7 +85,75 @@ export default function RecipesPage() {
   const [selectedRecipe, setSelectedRecipe] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
+    <>
+      {/* Hidden SEO Content */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "Recipe",
+              "name": "Josceline Dimbleby Orange Juice Pastry Mince Pies with Cream Cheese",
+              "author": {
+                "@type": "Person",
+                "name": "Dave Langdon"
+              },
+              "description": "Orange juice pastry mince pies inspired by Josceline Dimbleby, upgraded with cream cheese surprise filling. Perfect Christmas treats.",
+              "keywords": "Josceline Dimbleby, orange juice pastry, mince pies, cream cheese, Christmas baking",
+              "recipeCategory": "Dessert",
+              "recipeCuisine": "British",
+              "prepTime": "PT45M",
+              "cookTime": "PT14M",
+              "recipeYield": "12 mince pies",
+              "recipeIngredient": [
+                "400g plain white flour",
+                "200g butter",
+                "100g lard",
+                "Juice and rind from 1 large orange",
+                "1 tub of cream cheese",
+                "300g good quality mincemeat"
+              ],
+              "image": "/images/recipes/20251208_205320.jpg"
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Recipe",
+              "name": "Dave's Go-To Sourdough Recipe",
+              "author": {
+                "@type": "Person",
+                "name": "Dave Langdon"
+              },
+              "description": "Classic sourdough bread recipe using 4-year-old starter from Bristol. Perfect for sharing with customers.",
+              "keywords": "sourdough bread, sourdough starter, homemade bread, artisan bread",
+              "recipeCategory": "Bread",
+              "recipeCuisine": "International",
+              "prepTime": "PT24H",
+              "cookTime": "PT35M",
+              "recipeYield": "1 large loaf",
+              "recipeIngredient": [
+                "500g strong white bread flour",
+                "340ml lukewarm water",
+                "150g active sourdough starter",
+                "11g fine sea salt"
+              ],
+              "image": "/images/recipes/20251125_083621.jpg"
+            }
+          ])
+        }}
+      />
+      
+      {/* Hidden keyword content for SEO */}
+      <div style={{ display: 'none' }} aria-hidden="true">
+        <span>Josceline Dimbleby Orange Juice Pastry Mince Pies</span>
+        <span>Orange Mince Pies with Cream Cheese</span>
+        <span>Josceline Dimbleby mince pie recipe</span>
+        <span>Orange juice pastry recipe Josceline Dimbleby</span>
+        <span>Cream cheese mince pies orange pastry</span>
+        <span>Dave Langdon Josceline Dimbleby recipe</span>
+      </div>
+
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-amber-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-orange-600 to-amber-600 text-white py-12 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -284,5 +355,6 @@ export default function RecipesPage() {
         </FadeInOnScroll>
       </div>
     </div>
+    </>
   );
 }
