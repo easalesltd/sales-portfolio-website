@@ -14,10 +14,10 @@ export default function RecipesPage() {
       cookTime: '45-50 minutes',
       yield: '1 large loaf',
       ingredients: [
-        '100g active sourdough starter',
-        '375g warm water',
+        '150g active sourdough starter',
+        '340g warm water',
         '500g strong white bread flour',
-        '10g fine sea salt',
+        '11g fine sea salt + 10ml more water',
         'Rice flour (for dusting)'
       ],
       instructions: [
