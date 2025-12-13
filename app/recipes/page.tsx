@@ -8,7 +8,7 @@ const recipes = [
   {
     id: 1,
     title: "Dave's Go-To Sourdough Recipe",
-    description: "A classic sourdough that I've been refining for years. Great for sharing with customers! I'm using a sourdough starter sent through the post from a friend in Bristol 4 years ago!",
+    description: "A classic sourdough that I&apos;ve been refining for years. Great for sharing with customers! I&apos;m using a sourdough starter sent through the post from a friend in Bristol 4 years ago!",
     difficulty: "Intermediate",
     time: "24 hours (including fermentation)",
     servings: "1 large loaf",
@@ -30,7 +30,7 @@ const recipes = [
       "Cold ferment in the fridge for 12-24 hours covered loosely (I use disposable shower nets, lol).",
       "Preheat Dutch oven to 250°C. Score the dough and bake covered for 30 minutes with a couple ice cubes. I reduce the oven to 220°C once the loaf goes in.",
       "Remove lid, and bake for 5 minutes until golden brown.",
-      "Cool completely before slicing (at least 2 hours). If you cut it too quick it'll be stodgy and you're going to have a bad time."
+      "Cool completely before slicing (at least 2 hours). If you cut it too quick it&apos;ll be stodgy and you&apos;re going to have a bad time."
     ],
     tips: [
       "The longer fermentation develops better flavor",
@@ -42,7 +42,7 @@ const recipes = [
   {
     id: 2,
     title: "Orange Juice Pastry Mince Pies",
-    description: "My secret weapon during Christmas visits! Originally inspired by Josceline Dimbleby and upgraded by my Mum, the orange juice pastry is incredibly tender with a lovely citrus note, plus there's a cream cheese surprise that makes them absolute slappers.",
+    description: "My secret weapon during Christmas visits! Originally inspired by Josceline Dimbleby and upgraded by my Mum, the orange juice pastry is incredibly tender with a lovely citrus note, plus there&apos;s a cream cheese surprise that makes them absolute slappers.",
     difficulty: "Easy",
     time: "45 minutes",
     servings: "12 mince pies",
@@ -66,7 +66,7 @@ const recipes = [
       "Roll out pastry on a floured surface to 3mm thick. I use rice flour here, as it's gluten free, so aids non-stick.",
       "Cut 12 circles for bases and 12 smaller circles for tops.",
       "Line muffin tin with larger circles, fill with mincemeat and a dollop of cream cheese whipped with icing sugar.",
-      "I cheat here, and dip the whole top in milk, as it's way quicker than brushing and helps seal the bottom and wash the top. Give them a shake so they're not too wet and seal the pies however you like. Sprinkle with a little golden caster sugar and stab the lid to allow steam to escape.",
+      "I cheat here, and dip the whole top in milk, as it&apos;s way quicker than brushing and helps seal the bottom and wash the top. Give them a shake so they&apos;re not too wet and seal the pies however you like. Sprinkle with a little golden caster sugar and stab the lid to allow steam to escape.",
       "Bake for 14 minutes until golden brown.",
       "Cool in tin for 5 minutes, then transfer to wire rack."
     ],
@@ -220,11 +220,11 @@ export default function RecipesPage() {
                             sizes="(max-width: 768px) 100vw, 50vw"
                           />
                         </div>
-                        <p className="text-sm text-gray-600 text-center font-medium">Criss cross score because it's the easiest and looks cool</p>
+                        <p className="text-sm text-gray-600 text-center font-medium">Criss cross score because it&apos;s the easiest and looks cool</p>
                       </div>
                     </div>
                     <p className="text-sm text-gray-500 mt-4 text-center italic">
-                      "24 hours of love and patience - worth every minute when you see them slice it open and it isn't crap inside (hahaha)!"
+                      "                      &quot;24 hours of love and patience - worth every minute when you see them slice it open and it isn&apos;t crap inside (hahaha)!&quot;"
                     </p>
                   </div>
                 )}
@@ -259,7 +259,7 @@ export default function RecipesPage() {
                       </div>
                     </div>
                     <p className="text-sm text-gray-500 mt-4 text-center italic">
-                      "Super quick to make, especially if you pre make the pastry ready in the fridge!"
+                      "                      &quot;Super quick to make, especially if you pre make the pastry ready in the fridge!&quot;"
                     </p>
                   </div>
                 )}

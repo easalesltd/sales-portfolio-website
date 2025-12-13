@@ -3,13 +3,12 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export default function AboutDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const router = useRouter();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
 
   const aboutItems = [
