@@ -14,7 +14,7 @@ export default function ClientButton() {
   if (!mounted) {
     return (
       <button
-        className="px-4 py-2 bg-blue-600 text-white rounded-md"
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
       >
         Request an Agent Visit
       </button>
@@ -25,7 +25,7 @@ export default function ClientButton() {
     <>
       <button
         onClick={() => setIsRequestFormOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md"
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
       >
         Request an Agent Visit
       </button>

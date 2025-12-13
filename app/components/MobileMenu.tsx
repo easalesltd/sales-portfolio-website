@@ -99,13 +99,24 @@ export default function MobileMenu() {
               >
                 Home
               </Link>
-              <Link 
-                href="/about" 
-                className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
-                onClick={() => setIsOpen(false)}
-              >
-                About
-              </Link>
+              
+              {/* About Section */}
+              <div>
+                <Link 
+                  href="/about" 
+                  className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  About Dave
+                </Link>
+                <Link 
+                  href="/recipes" 
+                  className="block text-base text-gray-600 hover:text-blue-600 transition-colors mt-2 ml-4" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  Recipes
+                </Link>
+              </div>
               
               {/* Brands Section */}
               <div className="py-6">

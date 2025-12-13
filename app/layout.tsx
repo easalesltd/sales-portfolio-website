@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { companies, type Company } from './data/companies';
 import Breadcrumbs from './components/Breadcrumbs';
 import MobileRequestButton from './components/MobileRequestButton';
+import AboutDropdown from './components/AboutDropdown';
 
 // Optimize font loading with display swap and preload
 const inter = Inter({ 
@@ -816,13 +817,13 @@ export default function RootLayout({
                   />
                 </Link>
               </div>
-              <div className="hidden md:flex items-center space-x-8">
-                <Link href="/" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Home</Link>
-                <Link href="/about" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">About</Link>
+              <div className="hidden md:flex items-center space-x-6">
+                <Link href="/" prefetch className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50">Home</Link>
+                <AboutDropdown />
                 <BrandsDropdown />
-                <Link href="/display-solutions" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Display Solutions</Link>
-                <Link href="/temporary-rep-cover" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Temporary Rep Cover</Link>
-                <Link href="/contact" prefetch className="text-gray-700 hover:text-blue-600 transition-colors">Contact</Link>
+                <Link href="/display-solutions" prefetch className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50">Display Solutions</Link>
+                <Link href="/temporary-rep-cover" prefetch className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50">Temporary Rep Cover</Link>
+                <Link href="/contact" prefetch className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50">Contact</Link>
                 <ClientButton />
               </div>
               <div className="flex items-center md:hidden gap-2">

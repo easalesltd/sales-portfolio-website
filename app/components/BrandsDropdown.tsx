@@ -78,7 +78,7 @@ export default function BrandsDropdown() {
       onMouseLeave={() => {
         closeTimeout.current = setTimeout(() => {
           setIsOpen(false);
-        }, 200); // 200ms delay
+        }, 50); // Faster close to prevent overlap
       }}
     >
       <button
