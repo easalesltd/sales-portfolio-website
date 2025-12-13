@@ -1,0 +1,13 @@
+import { Metadata } from "next";
+import { metadata as homeMetadata } from "../metadata";
+
+export const metadata: Metadata = homeMetadata;
+
+export default function HomeLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
+}
+

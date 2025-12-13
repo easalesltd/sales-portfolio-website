@@ -1,14 +1,16 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
-import { companies } from "./data/companies";
-import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
-import VideoBackground from "./components/VideoBackground";
-import { metadata } from "./metadata";
-import FadeInOnScroll from "./components/FadeInOnScroll";
-
-export { metadata };
+import { useState } from "react";
+import { companies } from "../data/companies";
+import ShowcaseSlideshow from "../components/ShowcaseSlideshow";
+import VideoBackground from "../components/VideoBackground";
+import FadeInOnScroll from "../components/FadeInOnScroll";
+import RequestVisitForm from "../components/RequestVisitForm";
 
 export default function Home() {
+  const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
   return (
     <main className="min-h-screen">
       {/* Hero Section with Showcase Slideshow */}
@@ -39,21 +41,21 @@ export default function Home() {
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.5}>
             <div className="flex justify-center gap-6">
-              <Link 
-                href="/contact" 
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              <button 
+                onClick={() => setIsRequestFormOpen(true)}
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
                 Request an Agent Visit
-              </Link>
+              </button>
               <Link 
                 href="/about" 
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
                 About Us
               </Link>
               <Link 
                 href="/contact" 
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
                 Get In Touch
               </Link>
@@ -100,6 +102,12 @@ export default function Home() {
           </div>
         </VideoBackground>
       </div>
+
+      {/* Request Visit Form Modal */}
+      <RequestVisitForm 
+        isOpen={isRequestFormOpen} 
+        onClose={() => setIsRequestFormOpen(false)} 
+      />
     </main>
   );
 }
