@@ -3,9 +3,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import FadeInOnScroll from '../components/FadeInOnScroll';
-import { metadata } from './metadata';
-
-export { metadata };
 
 const recipes = [
   {
