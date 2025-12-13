@@ -55,7 +55,7 @@ export default function RecipesPage() {
         '1 jar (400g) good quality mincemeat',
         'Cream cheese whipped with icing sugar',
         'Milk (for dipping tops)',
-        'Golden caster sugar (for sprinkling)',
+        'Golden caster sugar (for whatever sugar you have, I don\'t really care)',
         'Rice flour (for dusting when rolling)'
       ],
       instructions: [
