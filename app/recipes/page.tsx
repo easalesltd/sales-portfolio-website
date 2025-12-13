@@ -244,7 +244,7 @@ export default function RecipesPage() {
             Baking for Business
           </h3>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            I love sharing my baking with customers as a way to show appreciation for their custom. These recipes are my go-to favourites!
+            I love sharing my baking with customers as a way to show appreciation for their custom. These recipes are my go-to favourites! Also buy some greeting cards or gifts, I&apos;ve got so many kids.
           </p>
         </div>
       </div>
