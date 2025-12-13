@@ -59,7 +59,7 @@ export default function RecipesPage() {
         'Rice flour (for dusting when rolling)'
       ],
       instructions: [
-        'Mix flour, butter and lard together until they resemble breadcrumbs. I use a Magimix (someone\'s doing well) - a wedding gift from my sister. If you\'re going to use a food processor, make sure you don\'t overdo it, as any excess heat will melt the fats.',
+        'Mix flour, butter and lard together until they resemble breadcrumbs. I use a Magimix (someone\'s doing well / a wedding gift from my sister). If you\'re going to use a food processor, make sure you don\'t overdo it, as any excess heat will melt the fats.',
         'Add the orange zest, mix, and then add the orange juice. Mix until the dough is just combined. DON\'T OVERWORK IT.',
         'Wrap the pastry in clingfilm and chill for 30 minutes.',
         'Preheat oven to 220°C.',
