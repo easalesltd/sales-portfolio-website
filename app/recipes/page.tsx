@@ -8,7 +8,7 @@ const recipes = [
   {
     id: 1,
     title: "Dave's Go-To Sourdough Recipe",
-    description: "A classic sourdough that I&apos;ve been refining for years. Great for sharing with customers! I&apos;m using a sourdough starter sent through the post from a friend in Bristol 4 years ago!",
+    description: "A classic sourdough that I've been refining for years. Great for sharing with customers! I'm using a sourdough starter sent through the post from a friend in Bristol 4 years ago!",
     difficulty: "Intermediate",
     time: "24 hours (including fermentation)",
     servings: "1 large loaf",
@@ -30,7 +30,7 @@ const recipes = [
       "Cold ferment in the fridge for 12-24 hours covered loosely (I use disposable shower nets, lol).",
       "Preheat Dutch oven to 250°C. Score the dough and bake covered for 30 minutes with a couple ice cubes. I reduce the oven to 220°C once the loaf goes in.",
       "Remove lid, and bake for 5 minutes until golden brown.",
-      "Cool completely before slicing (at least 2 hours). If you cut it too quick it&apos;ll be stodgy and you&apos;re going to have a bad time."
+      "Cool completely before slicing (at least 2 hours). If you cut it too quick it'll be stodgy and you're going to have a bad time."
     ],
     tips: [
       "The longer fermentation develops better flavor",
@@ -42,7 +42,7 @@ const recipes = [
   {
     id: 2,
     title: "Orange Juice Pastry Mince Pies",
-    description: "My secret weapon during Christmas visits! Originally inspired by Josceline Dimbleby and upgraded by my Mum, the orange juice pastry is incredibly tender with a lovely citrus note, plus there&apos;s a cream cheese surprise that makes them absolute slappers.",
+    description: "My secret weapon during Christmas visits! Originally inspired by Josceline Dimbleby and upgraded by my Mum, the orange juice pastry is incredibly tender with a lovely citrus note, plus there's a cream cheese surprise that makes them absolute slappers.",
     difficulty: "Easy",
     time: "45 minutes",
     servings: "12 mince pies",
@@ -66,7 +66,7 @@ const recipes = [
       "Roll out pastry on a floured surface to 3mm thick. I use rice flour here, as it's gluten free, so aids non-stick.",
       "Cut 12 circles for bases and 12 smaller circles for tops.",
       "Line muffin tin with larger circles, fill with mincemeat and a dollop of cream cheese whipped with icing sugar.",
-      "I cheat here, and dip the whole top in milk, as it&apos;s way quicker than brushing and helps seal the bottom and wash the top. Give them a shake so they&apos;re not too wet and seal the pies however you like. Sprinkle with a little golden caster sugar and stab the lid to allow steam to escape.",
+      "I cheat here, and dip the whole top in milk, as it's way quicker than brushing and helps seal the bottom and wash the top. Give them a shake so they're not too wet and seal the pies however you like. Sprinkle with a little golden caster sugar and stab the lid to allow steam to escape.",
       "Bake for 14 minutes until golden brown.",
       "Cool in tin for 5 minutes, then transfer to wire rack."
     ],
@@ -175,21 +175,21 @@ export default function RecipesPage() {
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 md:mb-12 text-gray-800">My Signature Recipes</h2>
         </FadeInOnScroll>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
           {recipes.map((recipe, index) => (
             <FadeInOnScroll key={recipe.id} delay={0.2 * index}>
               <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 {/* Recipe Header */}
-                <div className="relative min-h-[280px] sm:h-64 bg-gradient-to-br from-orange-200 to-amber-200">
+                <div className="relative min-h-[240px] sm:min-h-[280px] md:h-64 bg-gradient-to-br from-orange-200 to-amber-200">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center p-4 sm:p-6 max-w-full">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center mb-3 sm:mb-4 mx-auto shadow-lg">
-                        <span className="text-2xl sm:text-3xl">
+                    <div className="text-center p-3 sm:p-4 md:p-6 max-w-full">
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center mb-2 sm:mb-3 md:mb-4 mx-auto shadow-lg">
+                        <span className="text-lg sm:text-2xl md:text-3xl">
                           {recipe.id === 1 ? '🍞' : '🥧'}
                         </span>
                       </div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2 leading-tight">{recipe.title}</h3>
-                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{recipe.description}</p>
+                      <h3 className="text-base sm:text-xl md:text-2xl font-bold text-gray-800 mb-1 sm:mb-2 leading-tight">{recipe.title}</h3>
+                      <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed">{recipe.description}</p>
                     </div>
                   </div>
                 </div>
@@ -220,11 +220,11 @@ export default function RecipesPage() {
                             sizes="(max-width: 768px) 100vw, 50vw"
                           />
                         </div>
-                        <p className="text-sm text-gray-600 text-center font-medium">Criss cross score because it&apos;s the easiest and looks cool</p>
+                        <p className="text-sm text-gray-600 text-center font-medium">Criss cross score because it's the easiest and looks cool</p>
                       </div>
                     </div>
                     <p className="text-sm text-gray-500 mt-4 text-center italic">
-                      "                      &quot;24 hours of love and patience - worth every minute when you see them slice it open and it isn&apos;t crap inside (hahaha)!&quot;"
+                      "24 hours of love and patience - worth every minute when you see them slice it open and it isn't crap inside (hahaha)!"
                     </p>
                   </div>
                 )}
@@ -259,28 +259,28 @@ export default function RecipesPage() {
                       </div>
                     </div>
                     <p className="text-sm text-gray-500 mt-4 text-center italic">
-                      "                      &quot;Super quick to make, especially if you pre make the pastry ready in the fridge!&quot;"
+                      "Super quick to make, especially if you pre make the pastry ready in the fridge!"
                     </p>
                   </div>
                 )}
 
                 {/* Recipe Info */}
-                <div className="p-4 sm:p-6">
-                  <div className="flex flex-wrap gap-2 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm">
-                    <span className="bg-orange-100 text-orange-800 px-2 sm:px-3 py-1 rounded-full">
+                <div className="p-3 sm:p-4 md:p-6">
+                  <div className="flex flex-wrap gap-1 sm:gap-2 md:gap-4 mb-3 sm:mb-4 md:mb-6 text-xs">
+                    <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-xs">
                       ⏱️ {recipe.time}
                     </span>
-                    <span className="bg-amber-100 text-amber-800 px-2 sm:px-3 py-1 rounded-full">
+                    <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded-full text-xs">
                       👥 {recipe.servings}
                     </span>
-                    <span className="bg-green-100 text-green-800 px-2 sm:px-3 py-1 rounded-full">
+                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
                       📊 {recipe.difficulty}
                     </span>
                   </div>
 
                   <button
                     onClick={() => setSelectedRecipe(selectedRecipe === recipe.id ? null : recipe.id)}
-                    className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-3 px-4 sm:px-6 rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all duration-300 font-semibold text-sm sm:text-base"
+                    className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-2 sm:py-3 px-3 sm:px-4 md:px-6 rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all duration-300 font-semibold text-xs sm:text-sm md:text-base"
                   >
                     {selectedRecipe === recipe.id ? 'Hide Recipe' : 'View Full Recipe'}
                   </button>

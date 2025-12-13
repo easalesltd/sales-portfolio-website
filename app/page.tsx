@@ -29,12 +29,12 @@ export default function Home() {
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.3}>
             <p className="text-lg text-gray-700 mb-6">
-              Hi, I&apos;m Dave Langdon, a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience in the industry, I supply quality greeting cards, stationery, and gifts to retailers across East Anglia. From charming independent shops to bustling garden centres, I help retailers create amazing displays that customers love.
+              Hi, I'm Dave Langdon, a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience in the industry, I supply quality greeting cards, stationery, and gifts to retailers across East Anglia. From charming independent shops to bustling garden centres, I help retailers create amazing displays that customers love.
             </p>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.4}>
             <p className="text-lg text-gray-700 mb-8">
-              I cover Suffolk, Norfolk, Essex, and Cambridgeshire. Whether you need wholesale supply, display solutions, or expert advice, I&apos;m here to help your business grow with the best greeting card and gift brands in the industry.
+              I cover Suffolk, Norfolk, Essex, and Cambridgeshire. Whether you need wholesale supply, display solutions, or expert advice, I'm here to help your business grow with the best greeting card and gift brands in the industry.
             </p>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.5}>
