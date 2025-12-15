@@ -76,6 +76,41 @@ export default function RecipesPage() {
         'These freeze beautifully - bake from frozen, adding 5 minutes to cooking time.',
         'Perfect for gifting - wrap in cellophane bags tied with ribbon!'
       ]
+    },
+    'chocolate-puddings': {
+      title: 'Mini Chocolate Christmas Puddings',
+      description: 'A festive no-bake treat perfect for Christmas visits! These mini chocolate puddings look like traditional Christmas puddings but are made with chocolate, biscuits, and dried fruit - a delightful alternative that customers love.',
+      prepTime: '30 minutes active, plus 1½ hours chilling',
+      cookTime: '8-13 minutes',
+      yield: '30 mini puddings',
+      ingredients: [
+        '100g butter, diced',
+        '2 tbsp golden syrup',
+        '1 tbsp milk',
+        '150g plain chocolate',
+        '225g digestive biscuits, crushed',
+        '50g raisins',
+        '50g glacé cherries',
+        '40g shelled hazelnuts, chopped',
+        '50g white chocolate',
+        '5 glacé cherries, cut into small pieces (for decoration)',
+        'Angelica (for decoration)'
+      ],
+      instructions: [
+        'Place the butter, syrup and milk in a large, heat-proof bowl over a saucepan of simmering water and heat for 3-5 minutes, stirring until melted and smooth. Remove from the heat.',
+        'Melt the plain chocolate in a bowl over a pan of boiling water, then add it to the butter, syrup and milk mixture.',
+        'Add the crushed biscuits, raisins, glacé cherries and chopped hazelnuts. Mix until well combined.',
+        'With a teaspoon, shape the mixture into rounds, repeating until you have used up the mixture and made approximately 30 rounds. Place on a baking tray lined with parchment paper.',
+        'Chill for 1 hour or until firm.',
+        'Melt the white chocolate (as above) and spread a little on the top of each round. Then decorate each round with a cherry piece and a piece of angelica cut into a leaf shape.',
+        'Chill for a further 30 minutes or until the chocolate has set, then serve as petit fours.'
+      ],
+      tips: [
+        'These are perfect for Christmas gifting - they look festive and taste delicious!',
+        'Make sure the chocolate is fully melted before mixing to avoid lumps.',
+        'You can substitute the hazelnuts with other nuts if preferred.',
+        'Store in the fridge until ready to serve or gift.'
+      ]
     }
   };
 
@@ -101,7 +136,7 @@ export default function RecipesPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8 text-center">
           <p className="text-lg text-gray-700">
-            As part of my business, I love sharing the things I bake with my customers. Here are my two go-to recipes that always go down well!
+            As part of my business, I love sharing the things I bake with my customers. Here are my go-to recipes that always go down well!
           </p>
         </div>
 
@@ -147,6 +182,28 @@ export default function RecipesPage() {
               <div className="flex items-center justify-between text-sm text-gray-600">
                 <span>⏱️ {recipes['mince-pies'].prepTime}</span>
                 <span>🍴 {recipes['mince-pies'].yield}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Chocolate Puddings Card */}
+          <div 
+            className={`bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl ${
+              activeRecipe === 'chocolate-puddings' ? 'ring-4 ring-blue-500' : ''
+            }`}
+            onClick={() => setActiveRecipe(activeRecipe === 'chocolate-puddings' ? null : 'chocolate-puddings')}
+          >
+            <div className="h-64 bg-gradient-to-br from-brown-100 to-amber-200 flex items-center justify-center">
+              <div className="text-center">
+                <span className="text-6xl">🍫</span>
+                <h2 className="text-2xl font-bold text-gray-900 mt-4">Mini Chocolate Christmas Puddings</h2>
+              </div>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-700 mb-4">{recipes['chocolate-puddings'].description}</p>
+              <div className="flex items-center justify-between text-sm text-gray-600">
+                <span>⏱️ {recipes['chocolate-puddings'].prepTime}</span>
+                <span>🍴 {recipes['chocolate-puddings'].yield}</span>
               </div>
             </div>
           </div>
