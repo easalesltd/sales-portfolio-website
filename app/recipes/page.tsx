@@ -432,16 +432,14 @@ export default function RecipesPage() {
                       <span className="text-4xl mr-4 flex-shrink-0">{testimonial.icon}</span>
                       {testimonial.multiline ? (
                         <div className="text-gray-700 italic text-lg leading-relaxed">
-                          {testimonial.text.split('\n').map((line, i) => (
-                            <p key={i} className={i === 0 ? 'mb-2' : i < testimonial.text.split('\n').length - 1 ? 'mb-2' : ''}>
-                              {i === 0 ? `"${line}` : i === testimonial.text.split('\n').length - 1 ? `${line}"` : line}
-                            </p>
+                          <p className="mb-2">&quot;{testimonial.parts[0]}</p>
+                          {testimonial.parts.slice(1).map((part, i) => (
+                            <p key={i} className={i < testimonial.parts.length - 2 ? 'mb-2' : ''} dangerouslySetInnerHTML={{ __html: part }} />
                           ))}
+                          <p>&quot;</p>
                         </div>
                       ) : (
-                        <p className="text-gray-700 italic text-lg leading-relaxed">
-                          &quot;{testimonial.text}&quot;
-                        </p>
+                        <p className="text-gray-700 italic text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: `&quot;${testimonial.parts[0]}&quot;` }} />
                       )}
                     </div>
                   </div>
