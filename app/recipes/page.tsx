@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Script from 'next/script';
 import VideoBackground from '../components/VideoBackground';
 
 export default function RecipesPage() {
   const [activeRecipe, setActiveRecipe] = useState<'sourdough' | 'mince-pies' | 'chocolate-puddings' | null>(null);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
   const recipes = {
     sourdough: {
@@ -87,7 +88,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '8-13 minutes (melting time)',
       yield: '30 mini puddings',
-      image: '/images/recipes/Use this one?.jpg',
+      image: '/images/recipes/chocolate-puddings.jpg',
     ingredients: [
         '100g butter, diced',
         '2 tbsp golden syrup',
@@ -411,46 +412,57 @@ export default function RecipesPage() {
                     </div>
                   )}
 
-        {/* Customer Testimonials Section */}
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-8 mb-8">
-          <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+        {/* Customer Testimonials Section - Rolling Banner */}
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-8 mb-8 overflow-hidden">
+          <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">
             What Customers Say
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
-              <div className="flex items-start mb-4">
-                <span className="text-3xl mr-3">⭐</span>
-                <p className="text-gray-700 italic text-lg leading-relaxed">
-                  &quot;Also those mince pies are <strong>THE BEST</strong> ive ever eaten!!! Thank you so much!!&quot;
-                </p>
-              </div>
-            </div>
-            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
-              <div className="flex items-start mb-4">
-                <span className="text-3xl mr-3">⭐</span>
-                <div className="text-gray-700 italic text-lg leading-relaxed">
-                  <p className="mb-2">&quot;Hi Dave</p>
-                  <p className="mb-2">A big <strong>THANK YOU</strong> from all the staff – they loved your mince pies and are intrigued by the secret ingredients!</p>
-                  <p className="mb-2">Have a wonderful Christmas and a Happy New Year!</p>
-                  <p>See you at Harrogate, when it starts all over again!&quot;</p>
+          <div className="relative max-w-3xl mx-auto">
+            {/* Testimonial Display */}
+            <div className="relative h-48 overflow-hidden">
+              {testimonials.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className={`absolute inset-0 transition-opacity duration-500 ${
+                    index === currentTestimonial ? 'opacity-100' : 'opacity-0'
+                  }`}
+                >
+                  <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500 h-full flex items-center">
+                    <div className="flex items-start w-full">
+                      <span className="text-4xl mr-4 flex-shrink-0">{testimonial.icon}</span>
+                      {testimonial.multiline ? (
+                        <div className="text-gray-700 italic text-lg leading-relaxed">
+                          {testimonial.text.split('\n').map((line, i) => (
+                            <p key={i} className={i === 0 ? 'mb-2' : i < testimonial.text.split('\n').length - 1 ? 'mb-2' : ''}>
+                              {i === 0 ? `"${line}` : i === testimonial.text.split('\n').length - 1 ? `${line}"` : line}
+                            </p>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-gray-700 italic text-lg leading-relaxed">
+                          &quot;{testimonial.text}&quot;
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
-              <div className="flex items-start mb-4">
-                <span className="text-3xl mr-3">🍞</span>
-                <p className="text-gray-700 italic text-lg leading-relaxed">
-                  &quot;Omg that <strong>bread</strong> taste <strong>amazing</strong> .. thank you&quot;
-                </p>
-              </div>
-            </div>
-            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
-              <div className="flex items-start mb-4">
-                <span className="text-3xl mr-3">🍞</span>
-                <p className="text-gray-700 italic text-lg leading-relaxed">
-                  &quot;The decision of this house is 👍 the <strong>bread</strong> is <strong>amazing</strong> they are addicted to it &quot;<strong>best bread ever</strong>&quot; thank you so much Dave xx&quot;
-                </p>
-              </div>
+
+            {/* Navigation Dots */}
+            <div className="flex justify-center mt-6 gap-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentTestimonial(index)}
+                  className={`h-2 rounded-full transition-all ${
+                    index === currentTestimonial
+                      ? 'w-8 bg-amber-500'
+                      : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
             </div>
           </div>
         </div>
