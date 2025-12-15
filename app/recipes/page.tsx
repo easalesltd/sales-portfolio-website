@@ -93,8 +93,7 @@ export default function RecipesPage() {
         '50g glacé cherries',
         '40g shelled hazelnuts, chopped',
         '50g white chocolate',
-        '5 glacé cherries, cut into small pieces (for decoration)',
-        'Angelica (for decoration)'
+        '5 glacé cherries, cut into small pieces (for decoration)'
       ],
       instructions: [
         'Place the butter, syrup and milk in a large, heat-proof bowl over a saucepan of simmering water and heat for 3-5 minutes, stirring until melted and smooth. Remove from the heat.',
