@@ -90,7 +90,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '8-13 minutes (melting time)',
       yield: '30 mini puddings',
-      image: '/images/recipes/mini-chocolate-puddings.svg',
+      image: '/images/recipes/mini-chocolate-puddings-v2.svg',
     ingredients: [
         '100g butter, diced',
         '2 tbsp golden syrup',
