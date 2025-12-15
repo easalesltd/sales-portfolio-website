@@ -168,6 +168,13 @@ export default function RecipesPage() {
       parts: ["Also those mince pies are <strong>THE BEST</strong> ive ever eaten!!! Thank you so much!!"]
     },
     {
+      text: "Oscar (weekend staff) who was on the till had a mince pie on his break. When he returned he said it was the best mince pie I've ever had!",
+      icon: "⭐",
+      parts: [
+        "Oscar (weekend staff) who was on the till had a mince pie on his break. When he returned he exclaimed it was the <strong>best mince pie I&apos;ve ever had!</strong>"
+      ]
+    },
+    {
       text: "Hi Dave\nA big THANK YOU from all the staff – they loved your mince pies and are intrigued by the secret ingredients!\nHave a wonderful Christmas and a Happy New Year!\nSee you at Harrogate, when it starts all over again!",
       icon: "⭐",
       multiline: true,
