@@ -4,7 +4,7 @@ import { useState } from 'react';
 import VideoBackground from '../components/VideoBackground';
 
 export default function RecipesPage() {
-  const [activeRecipe, setActiveRecipe] = useState<'sourdough' | 'mince-pies' | null>(null);
+  const [activeRecipe, setActiveRecipe] = useState<'sourdough' | 'mince-pies' | 'chocolate-puddings' | null>(null);
 
   const recipes = {
     sourdough: {
@@ -106,7 +106,7 @@ export default function RecipesPage() {
         </div>
 
         {/* Recipe Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {/* Sourdough Bread Card */}
           <div 
             className={`bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl ${
