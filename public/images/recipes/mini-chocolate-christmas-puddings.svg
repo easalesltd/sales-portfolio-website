@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1600" height="1066" viewBox="0 0 1600 1066" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mini Chocolate Christmas Puddings">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="0.55" stop-color="#1f2937"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#f59e0b" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1066" fill="url(#bg)"/>
+  <rect width="1600" height="1066" fill="url(#glow)"/>
+
+  <!-- Simple pudding illustration -->
+  <g transform="translate(800 540)" filter="url(#shadow)">
+    <!-- Plate -->
+    <ellipse cx="0" cy="260" rx="360" ry="56" fill="#0b1220" opacity="0.55"/>
+    <ellipse cx="0" cy="250" rx="380" ry="64" fill="#111827"/>
+    <ellipse cx="0" cy="242" rx="320" ry="46" fill="#1f2937"/>
+
+    <!-- Pudding body -->
+    <path d="M-260 230C-280 120-250-40-170-120C-90-200 90-200 170-120C250-40 280 120 260 230C210 265 120 290 0 290C-120 290-210 265-260 230Z" fill="#3b2a1a"/>
+    <path d="M-220 210C-235 120-205 0-135-70C-65-140 65-140 135-70C205 0 235 120 220 210C175 240 105 258 0 258C-105 258-175 240-220 210Z" fill="#2f2115" opacity="0.65"/>
+
+    <!-- Fruit speckles -->
+    <g opacity="0.9">
+      <circle cx="-130" cy="40" r="10" fill="#ef4444"/>
+      <circle cx="-40" cy="-15" r="8" fill="#f59e0b"/>
+      <circle cx="90" cy="25" r="9" fill="#22c55e"/>
+      <circle cx="140" cy="120" r="7" fill="#ef4444"/>
+      <circle cx="-170" cy="140" r="7" fill="#22c55e"/>
+      <circle cx="10" cy="140" r="6" fill="#f59e0b"/>
+      <circle cx="-70" cy="95" r="6" fill="#ef4444"/>
+      <circle cx="60" cy="85" r="6" fill="#22c55e"/>
+    </g>
+
+    <!-- White chocolate / icing top -->
+    <path d="M-150 -70C-140 -120-80 -160 0 -160C80 -160 140 -120 150 -70C120 -40 70 -20 0 -20C-70 -20-120 -40-150 -70Z" fill="#f8fafc"/>
+    <path d="M-120 -65C-110 -102-60 -130 0 -130C60 -130 110 -102 120 -65C95 -42 55 -30 0 -30C-55 -30-95 -42-120 -65Z" fill="#e5e7eb" opacity="0.9"/>
+
+    <!-- Holly -->
+    <g transform="translate(0 -170)">
+      <circle cx="0" cy="0" r="18" fill="#ef4444"/>
+      <path d="M-10 -10C-75 -70-140 -55-180 -5C-130 30-70 20-10 -10Z" fill="#22c55e"/>
+      <path d="M10 -10C75 -70 140 -55 180 -5C130 30 70 20 10 -10Z" fill="#22c55e"/>
+      <path d="M-6 -18C-70 -50-110 -38-140 -6" stroke="#16a34a" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+      <path d="M6 -18C70 -50 110 -38 140 -6" stroke="#16a34a" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+    </g>
+  </g>
+
+  <!-- Text -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" text-anchor="middle">
+    <text x="800" y="140" font-size="56" font-weight="800" fill="#ffffff">Mini Chocolate Christmas Puddings</text>
+    <text x="800" y="200" font-size="26" font-weight="500" fill="#cbd5e1">Image placeholder (missing asset in repo)</text>
+    <text x="800" y="980" font-size="20" font-weight="500" fill="#94a3b8">Path: /images/recipes/mini-chocolate-christmas-puddings.svg</text>
+  </g>
+</svg>
