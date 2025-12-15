@@ -324,11 +324,16 @@ export default function RecipesPage() {
             }`}
             onClick={() => setActiveRecipe(activeRecipe === 'chocolate-puddings' ? null : 'chocolate-puddings')}
           >
-            <div className="h-64 relative overflow-hidden">
+            <div className="h-64 relative overflow-hidden bg-gray-200">
               <img
-                src={recipes['chocolate-puddings'].image}
+                src="/images/recipes/Mini%20Chocolate%20Christmas%20Puddings%20Photo.png"
                 alt="Mini Chocolate Christmas Puddings"
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback to JPG if PNG fails
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/images/recipes/chocolate-puddings.jpg';
+                }}
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
