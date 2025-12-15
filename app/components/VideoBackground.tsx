@@ -61,7 +61,7 @@ export default function VideoBackground({
           playsInline
           loop
           autoPlay
-          preload="auto"
+          preload="metadata"
           x-webkit-airplay="deny"
           disablePictureInPicture
           controlsList="nodownload noplaybackrate"

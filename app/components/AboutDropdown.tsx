@@ -67,6 +67,7 @@ export default function AboutDropdown() {
             <Link
               key={item.name}
               href={item.href}
+              prefetch
               className={`block px-4 py-2 text-sm transition-colors ${
                 pathname === item.href
                   ? 'text-blue-600 bg-blue-50'

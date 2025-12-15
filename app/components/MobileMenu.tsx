@@ -165,6 +165,7 @@ export default function MobileMenu() {
                 </Link>
                 <Link 
                   href="/recipes" 
+                  prefetch
                   className="block text-sm text-gray-500 hover:text-blue-600 transition-colors mt-1 ml-4" 
                   onClick={() => setIsOpen(false)}
                 >
