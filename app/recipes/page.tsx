@@ -486,7 +486,7 @@ export default function RecipesPage() {
           <div className="relative max-w-3xl mx-auto px-4">
             {/* Testimonial Display */}
             <div 
-              className="relative h-40 md:h-44 overflow-hidden touch-pan-y"
+              className="relative h-52 md:h-44 overflow-hidden touch-pan-y"
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
@@ -498,7 +498,7 @@ export default function RecipesPage() {
                     index === currentTestimonial ? 'opacity-100' : 'opacity-0'
                   }`}
                 >
-                  <div className="bg-white rounded-lg shadow-md p-4 md:p-5 border-l-4 border-amber-500 h-full flex items-center">
+                  <div className="bg-white rounded-lg shadow-md p-4 md:p-5 border-l-4 border-amber-500 h-full flex items-start">
                     <div className="flex items-start w-full">
                       <span className="text-2xl md:text-3xl mr-2 md:mr-3 flex-shrink-0">{testimonial.icon}</span>
                       {testimonial.multiline ? (
