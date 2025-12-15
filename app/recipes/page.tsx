@@ -353,13 +353,10 @@ export default function RecipesPage() {
             onClick={() => setActiveRecipe(activeRecipe === 'chocolate-puddings' ? null : 'chocolate-puddings')}
           >
             <div className="h-64 relative overflow-hidden">
-              <Image
-                src={recipes['chocolate-puddings'].image}
+              <img
+                src="/images/recipes/mini chocolate xmas puds.jpg"
                 alt="Mini Chocolate Christmas Puddings"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                unoptimized
+                className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
