@@ -37,12 +37,12 @@ export default function RecipesPage() {
         'Feed your starter 4-8 hours before mixing for best results.',
         'The longer the cold proof, the more sour the flavour.',
         'Don\'t skip the preheat time - your Dutch oven needs to be very hot!',
-        'Steam is crucial for a good crust - keep the lid on for the first 20 minutes.'
+        'Steam is crucial for a good crust - keep the lid on for the first 30 minutes.'
       ]
     },
     'mince-pies': {
       title: 'Orange Juice Pastry Mince Pies',
-      description: 'My secret weapon during Christmas visits! Originally inspired by Josceline Dimbleby and upgraded by my Mum, the orange juice pastry is incredibly Flakey with a lovely citrus note, plus there\'s a cream cheese surprise that makes them absolute slappers.',
+      description: 'My secret weapon during Christmas visits! Originally inspired by Josceline Dimbleby and upgraded by my Mum, the orange juice pastry is incredibly flaky with a lovely citrus note, plus there\'s a cream cheese surprise that makes them absolute slappers.',
       prepTime: '30 minutes',
       cookTime: '15-20 minutes',
       yield: '12-15 pies',
@@ -58,7 +58,7 @@ export default function RecipesPage() {
         'Rice flour (for dusting when rolling)'
       ],
       instructions: [
-        'Mix flour, butter and lard together until they resemble breadcrumbs. I use a Magimix (someone\'s doing well / a wedding gift from my sister). If you\'re going to use a food processor, make sure you don\'t overdo it, as any excess heat will melt the fats.',
+        'Mix flour, butter and lard/trex together until they resemble breadcrumbs. I use a Magimix (someone\'s doing well / a wedding gift from my sister). If you\'re going to use a food processor, make sure you don\'t overdo it, as any excess heat will melt the fats.',
         'Add the orange zest, mix, and then add the orange juice. Mix until the dough is just combined. DON\'T OVERWORK IT.',
         'Wrap the pastry in clingfilm and chill for 30 minutes.',
         'Preheat oven to 220°C.',
