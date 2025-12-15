@@ -248,7 +248,7 @@ export default function RecipesPage() {
 
       {/* Hidden SEO Text - Screen reader only, not visible but indexed by Google */}
       <div className="sr-only">
-        <h2>Baking Recipes</h2>
+        <h2>Favourite Recipes</h2>
         <p>
           Sourdough bread recipe, sourdough starter recipe, homemade sourdough bread, sourdough bread recipe UK, 
           easy sourdough bread recipe, sourdough bread recipe no knead, sourdough bread recipe beginner, 
@@ -270,7 +270,7 @@ export default function RecipesPage() {
           <div className="w-full h-full flex items-center justify-center bg-black/40">
             <div className="text-center px-4 max-w-3xl">
               <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                Dave&apos;s Baking Recipes
+                Dave&apos;s Favourite Recipes
               </h1>
               <p className="text-base md:text-xl text-white drop-shadow-lg">
                 Sharing my favourite recipes for gifting to customers. From classic sourdough to festive treats!

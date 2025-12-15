@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dave's Baking Recipes | Sourdough Bread, Mince Pies & Chocolate Christmas Puddings | East Anglian Sales",
+  title: "Dave's Favourite Recipes | Sourdough Bread, Mince Pies & Chocolate Christmas Puddings | East Anglian Sales",
   description: "Dave Langdon shares his favourite baking recipes for gifting to customers. Learn how to make classic sourdough bread, delicious orange juice pastry mince pies, and mini chocolate Christmas puddings. Perfect for building business relationships with homemade treats!",
   keywords: [
     "sourdough bread recipe",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     "festive baking recipes"
   ],
   openGraph: {
-    title: "Dave's Baking Recipes | Sourdough & Mince Pies",
+    title: "Dave's Favourite Recipes | Sourdough & Mince Pies",
     description: "Share in Dave's passion for baking with these two go-to recipes perfect for gifting to customers.",
     type: "website",
     locale: "en_GB",
