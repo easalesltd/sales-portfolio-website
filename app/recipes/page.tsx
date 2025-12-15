@@ -118,8 +118,76 @@ export default function RecipesPage() {
     }
   };
 
+  // Generate Recipe Schema for SEO
+  const generateRecipeSchema = (recipe: typeof recipes[keyof typeof recipes]) => {
+    const instructions = recipe.instructions.map((inst, idx) => ({
+      '@type': 'HowToStep',
+      position: idx + 1,
+      text: inst
+    }));
+
+    const prepTimeMatch = recipe.prepTime.match(/\d+/);
+    const cookTimeMatch = recipe.cookTime.match(/\d+/);
+    
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Recipe',
+      name: recipe.title,
+      description: recipe.description,
+      image: `https://www.easalesltd.co.uk${recipe.image}`,
+      prepTime: prepTimeMatch ? `PT${prepTimeMatch[0]}M` : 'PT30M',
+      cookTime: cookTimeMatch ? `PT${cookTimeMatch[0]}M` : 'PT15M',
+      recipeYield: recipe.yield,
+      recipeIngredient: recipe.ingredients,
+      recipeInstructions: instructions,
+      author: {
+        '@type': 'Person',
+        name: 'Dave Langdon'
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'East Anglian Sales LTD',
+        url: 'https://www.easalesltd.co.uk'
+      }
+    };
+  };
+
+  const recipeSchemas = [
+    generateRecipeSchema(recipes.sourdough),
+    generateRecipeSchema(recipes['mince-pies']),
+    generateRecipeSchema(recipes['chocolate-puddings'])
+  ];
+
   return (
     <div className="min-h-screen">
+      {/* Recipe Schema Markup for SEO */}
+      <Script
+        id="recipe-schema"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(recipeSchemas)
+        }}
+      />
+
+      {/* Hidden SEO Text - Screen reader only, not visible but indexed by Google */}
+      <div className="sr-only">
+        <h2>Baking Recipes</h2>
+        <p>
+          Sourdough bread recipe, sourdough starter recipe, homemade sourdough bread, sourdough bread recipe UK, 
+          easy sourdough bread recipe, sourdough bread recipe no knead, sourdough bread recipe beginner, 
+          sourdough bread recipe with starter, sourdough bread recipe step by step, sourdough bread recipe video,
+          Orange juice pastry mince pies recipe, mince pies recipe, Christmas mince pies recipe, 
+          orange juice pastry recipe, homemade mince pies recipe, mince pies recipe UK, easy mince pies recipe,
+          mince pies recipe with orange juice, mince pies recipe cream cheese, mince pies recipe Christmas,
+          Mini chocolate Christmas puddings recipe, chocolate Christmas puddings recipe, mini Christmas puddings recipe,
+          no bake Christmas puddings recipe, chocolate puddings recipe, Christmas pudding recipe chocolate,
+          mini chocolate puddings recipe UK, easy chocolate Christmas puddings recipe, chocolate Christmas puddings recipe no bake,
+          Dave Langdon recipes, Dave Langdon baking recipes, East Anglian Sales recipes, business baking recipes,
+          customer gift recipes, homemade gift recipes, Christmas baking recipes, festive baking recipes
+        </p>
+      </div>
+
       {/* Hero Section */}
       <div className="w-full h-[30vh] md:h-[40vh] relative overflow-hidden">
         <VideoBackground videoUrl="/videos/About/background.mp4">
