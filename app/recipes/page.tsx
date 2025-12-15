@@ -411,6 +411,34 @@ export default function RecipesPage() {
                     </div>
                   )}
 
+        {/* Customer Testimonials Section */}
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-8 mb-8">
+          <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            What Customers Say
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
+              <div className="flex items-start mb-4">
+                <span className="text-3xl mr-3">⭐</span>
+                <p className="text-gray-700 italic text-lg leading-relaxed">
+                  &quot;Also those mince pies are <strong>THE BEST</strong> ive ever eaten!!! Thank you so much!!&quot;
+                </p>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
+              <div className="flex items-start mb-4">
+                <span className="text-3xl mr-3">⭐</span>
+                <div className="text-gray-700 italic text-lg leading-relaxed">
+                  <p className="mb-2">&quot;Hi Dave</p>
+                  <p className="mb-2">A big <strong>THANK YOU</strong> from all the staff – they loved your mince pies and are intrigued by the secret ingredients!</p>
+                  <p className="mb-2">Have a wonderful Christmas and a Happy New Year!</p>
+                  <p>See you at Harrogate, when it starts all over again!&quot;</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Note Section */}
         <div className="bg-blue-50 rounded-xl p-8 text-center">
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">
