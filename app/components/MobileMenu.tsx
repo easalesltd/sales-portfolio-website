@@ -122,7 +122,7 @@ export default function MobileMenu() {
                     <Link
                       key={company.id}
                       href={`/companies/${company.slug}`}
-                      prefetch
+                      prefetch={false}
                       className="block text-gray-600 hover:text-blue-600 transition-colors pl-4"
                       onClick={() => setIsOpen(false)}
                     >
