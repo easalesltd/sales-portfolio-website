@@ -10,7 +10,9 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // `eslint-config-next@14.x` doesn't provide `next/typescript`.
+  // Keep the core Next.js rules enabled without breaking lint execution.
+  ...compat.extends("next/core-web-vitals"),
 ];
 
 export default eslintConfig;
