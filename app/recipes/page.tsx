@@ -90,7 +90,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '8-13 minutes (melting time)',
       yield: '30 mini puddings',
-      image: '/images/recipes/mini chocolate xmas puds.jpg',
+      image: '/images/recipes/mini-chocolate-xmas-puds.jpg',
     ingredients: [
         '100g butter, diced',
         '2 tbsp golden syrup',
@@ -353,10 +353,13 @@ export default function RecipesPage() {
             onClick={() => setActiveRecipe(activeRecipe === 'chocolate-puddings' ? null : 'chocolate-puddings')}
           >
             <div className="h-64 relative overflow-hidden">
-              <img
-                src="/images/recipes/mini%20chocolate%20xmas%20puds.jpg"
+              <Image
+                src={recipes['chocolate-puddings'].image}
                 alt="Mini Chocolate Christmas Puddings"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                unoptimized
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
