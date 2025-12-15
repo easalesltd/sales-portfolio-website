@@ -87,7 +87,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '8-13 minutes (melting time)',
       yield: '30 mini puddings',
-      image: '/images/recipes/20251213_174349.jpg',
+      image: '/images/recipes/Use this one?.jpg',
     ingredients: [
         '100g butter, diced',
         '2 tbsp golden syrup',
