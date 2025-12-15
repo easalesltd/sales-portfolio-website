@@ -46,7 +46,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '15-20 minutes',
       yield: '12-15 pies',
-      ingredients: [
+    ingredients: [
         '400g plain flour',
         '200g salted butter',
         '100g Lard or Trex',
@@ -56,8 +56,8 @@ export default function RecipesPage() {
         'Milk (for dipping tops)',
         'Golden caster sugar (or whatever sugar you have, I don\'t really care)',
         'Rice flour (for dusting when rolling)'
-      ],
-      instructions: [
+    ],
+    instructions: [
         'Mix flour, butter and lard/trex together until they resemble breadcrumbs. I use a Magimix (someone\'s doing well / a wedding gift from my sister). If you\'re going to use a food processor, make sure you don\'t overdo it, as any excess heat will melt the fats.',
         'Add the orange zest, mix, and then add the orange juice. Mix until the dough is just combined. DON\'T OVERWORK IT.',
         'Wrap the pastry in clingfilm and chill for 30 minutes.',
@@ -69,8 +69,8 @@ export default function RecipesPage() {
         'I cheat here, and dip the whole top in milk, as it\'s way quicker than brushing and helps seal the top and bottom. Give them a shake so they\'re not too wet. Sprinkle with a little golden caster sugar and stab the lid to allow steam to escape.',
         'Bake for 14 minutes until golden brown.',
         'Cool in tin for 5 minutes, then transfer to wire rack.'
-      ],
-      tips: [
+    ],
+    tips: [
         'The orange juice gives the pastry a lovely citrus note - perfect with the spiced mincemeat.',
         'Don\'t overfill the pies or the filling will bubble over.',
         'These freeze beautifully - bake from frozen, adding 5 minutes to cooking time.',
@@ -83,7 +83,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '8-13 minutes (melting time)',
       yield: '30 mini puddings',
-      ingredients: [
+    ingredients: [
         '100g butter, diced',
         '2 tbsp golden syrup',
         '1 tbsp milk',
@@ -94,17 +94,17 @@ export default function RecipesPage() {
         '40g shelled hazelnuts, chopped',
         '50g white chocolate',
         '5 glacé cherries, cut into small pieces (for decoration)'
-      ],
-      instructions: [
+    ],
+    instructions: [
         'Place the butter, syrup and milk in a large, heat-proof bowl over a saucepan of simmering water and heat for 3-5 minutes, stirring until melted and smooth. Remove from the heat.',
         'Melt the plain chocolate in a bowl over a pan of boiling water, then add it to the butter, syrup and milk mixture.',
         'Add the crushed biscuits, raisins, glacé cherries and chopped hazelnuts. Mix until well combined.',
         'With a teaspoon, shape the mixture into rounds, repeating until you have used up the mixture and made approximately 30 rounds. Place on a baking tray lined with parchment paper.',
         'Chill for 1 hour or until firm.',
-        'Melt the white chocolate (as above) and spread a little on the top of each round. Then decorate each round with a cherry piece and a piece of angelica cut into a leaf shape.',
+        'Melt the white chocolate (as above) and spread a little on the top of each round. Then decorate each round with a cherry piece.',
         'Chill for a further 30 minutes or until the chocolate has set, then serve as petit fours.'
-      ],
-      tips: [
+    ],
+    tips: [
         'These are perfect for Christmas gifting - they look festive and taste delicious!',
         'Make sure the chocolate is fully melted before mixing to avoid lumps.',
         'You can substitute the hazelnuts with other nuts if preferred.',
@@ -127,7 +127,7 @@ export default function RecipesPage() {
                 Sharing my favourite recipes for gifting to customers. From classic sourdough to festive treats!
               </p>
             </div>
-          </div>
+        </div>
         </VideoBackground>
       </div>
 
@@ -153,15 +153,15 @@ export default function RecipesPage() {
                 <span className="text-6xl">🍞</span>
                 <h2 className="text-2xl font-bold text-gray-900 mt-4">Sourdough Bread</h2>
               </div>
-            </div>
+                      </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes.sourdough.description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
                 <span>⏱️ {recipes.sourdough.prepTime}</span>
                 <span>🍴 {recipes.sourdough.yield}</span>
-              </div>
-            </div>
-          </div>
+                    </div>
+                  </div>
+                </div>
 
           {/* Mince Pies Card */}
           <div 
@@ -174,16 +174,16 @@ export default function RecipesPage() {
               <div className="text-center">
                 <span className="text-6xl">🥧</span>
                 <h2 className="text-2xl font-bold text-gray-900 mt-4">Orange Juice Pastry Mince Pies</h2>
-              </div>
-            </div>
+                        </div>
+                      </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes['mince-pies'].description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
                 <span>⏱️ {recipes['mince-pies'].prepTime}</span>
                 <span>🍴 {recipes['mince-pies'].yield}</span>
-              </div>
-            </div>
-          </div>
+                        </div>
+                      </div>
+                    </div>
 
           {/* Chocolate Puddings Card */}
           <div 
@@ -196,17 +196,17 @@ export default function RecipesPage() {
               <div className="text-center">
                 <span className="text-6xl">🍫</span>
                 <h2 className="text-2xl font-bold text-gray-900 mt-4">Mini Chocolate Christmas Puddings</h2>
-              </div>
-            </div>
+                  </div>
+                        </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes['chocolate-puddings'].description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
                 <span>⏱️ {recipes['chocolate-puddings'].prepTime}</span>
                 <span>🍴 {recipes['chocolate-puddings'].yield}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+                      </div>
+                        </div>
+                      </div>
+                    </div>
 
         {/* Recipe Details */}
         {activeRecipe && (
@@ -228,59 +228,59 @@ export default function RecipesPage() {
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600">{recipes[activeRecipe].yield}</div>
                   <div className="text-sm text-gray-600 mt-1">Yield</div>
-                </div>
-              </div>
+                  </div>
+                  </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Ingredients */}
-                <div>
+                      {/* Ingredients */}
+                      <div>
                   <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
                     <span className="mr-2">📝</span>
                     Ingredients
                   </h3>
-                  <ul className="space-y-2">
+                        <ul className="space-y-2">
                     {recipes[activeRecipe].ingredients.map((ingredient, index) => (
                       <li key={index} className="flex items-start">
                         <span className="text-blue-600 mr-2">•</span>
-                        <span className="text-gray-700">{ingredient}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                              <span className="text-gray-700">{ingredient}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
 
-                {/* Instructions */}
-                <div>
+                      {/* Instructions */}
+                      <div>
                   <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
                     <span className="mr-2">👨‍🍳</span>
                     Instructions
                   </h3>
-                  <ol className="space-y-3">
+                        <ol className="space-y-3">
                     {recipes[activeRecipe].instructions.map((instruction, index) => (
                       <li key={index} className="flex items-start">
                         <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">
                           {index + 1}
-                        </span>
-                        <span className="text-gray-700">{instruction}</span>
-                      </li>
-                    ))}
-                  </ol>
+                              </span>
+                              <span className="text-gray-700">{instruction}</span>
+                            </li>
+                          ))}
+                        </ol>
                 </div>
-              </div>
+                      </div>
 
-              {/* Tips */}
+                      {/* Tips */}
               <div className="mt-8 p-6 bg-blue-50 rounded-lg">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                   <span className="mr-2">💡</span>
                   Pro Tips
                 </h3>
-                <ul className="space-y-2">
+                        <ul className="space-y-2">
                   {recipes[activeRecipe].tips.map((tip, index) => (
                     <li key={index} className="flex items-start text-gray-700">
                       <span className="text-blue-600 mr-2">✨</span>
                       {tip}
-                    </li>
-                  ))}
-                </ul>
+                            </li>
+                          ))}
+                        </ul>
               </div>
 
               <button
@@ -289,9 +289,9 @@ export default function RecipesPage() {
               >
                 Close Recipe
               </button>
-            </div>
-          </div>
-        )}
+                      </div>
+                    </div>
+                  )}
 
         {/* Note Section */}
         <div className="bg-blue-50 rounded-xl p-8 text-center">
