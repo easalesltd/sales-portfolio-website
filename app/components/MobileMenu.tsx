@@ -94,6 +94,7 @@ export default function MobileMenu() {
             <div className="space-y-6">
               <Link 
                 href="/" 
+                prefetch
                 className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
                 onClick={() => setIsOpen(false)}
               >
@@ -121,6 +122,7 @@ export default function MobileMenu() {
                     <Link
                       key={company.id}
                       href={`/companies/${company.slug}`}
+                      prefetch
                       className="block text-gray-600 hover:text-blue-600 transition-colors pl-4"
                       onClick={() => setIsOpen(false)}
                     >
@@ -132,6 +134,7 @@ export default function MobileMenu() {
 
               <Link 
                 href="/display-solutions" 
+                prefetch
                 className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
                 onClick={() => setIsOpen(false)}
               >
@@ -140,6 +143,7 @@ export default function MobileMenu() {
               
               <Link 
                 href="/temporary-rep-cover" 
+                prefetch
                 className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
                 onClick={() => setIsOpen(false)}
               >
@@ -148,6 +152,7 @@ export default function MobileMenu() {
               
               <Link 
                 href="/contact" 
+                prefetch
                 className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
                 onClick={() => setIsOpen(false)}
               >
@@ -158,6 +163,7 @@ export default function MobileMenu() {
               <div className="pt-4 border-t border-gray-200">
                 <Link 
                   href="/about" 
+                  prefetch
                   className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
                   onClick={() => setIsOpen(false)}
                 >
