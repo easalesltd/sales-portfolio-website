@@ -236,7 +236,7 @@ export default function RecipesPage() {
                   <h2 className="text-2xl font-bold text-white mt-4 drop-shadow-lg">Sourdough Bread</h2>
                 </div>
               </div>
-            </div>
+                      </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes.sourdough.description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
@@ -254,21 +254,21 @@ export default function RecipesPage() {
             onClick={() => setActiveRecipe(activeRecipe === 'mince-pies' ? null : 'mince-pies')}
           >
             <div className="h-64 relative overflow-hidden">
-              <Image
+                          <Image
                 src={recipes['mince-pies'].image}
                 alt="Orange Juice Pastry Mince Pies"
-                fill
-                className="object-cover"
+                            fill
+                            className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 unoptimized
-              />
+                          />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
                   <span className="text-6xl">🥧</span>
                   <h2 className="text-2xl font-bold text-white mt-4 drop-shadow-lg">Orange Juice Pastry Mince Pies</h2>
                 </div>
-              </div>
-            </div>
+                        </div>
+                      </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes['mince-pies'].description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
@@ -286,11 +286,11 @@ export default function RecipesPage() {
             onClick={() => setActiveRecipe(activeRecipe === 'chocolate-puddings' ? null : 'chocolate-puddings')}
           >
             <div className="h-64 relative overflow-hidden">
-              <Image
+                          <Image
                 src={recipes['chocolate-puddings'].image}
                 alt="Mini Chocolate Christmas Puddings"
-                fill
-                className="object-cover"
+                            fill
+                            className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 unoptimized
               />
@@ -300,7 +300,7 @@ export default function RecipesPage() {
                   <h2 className="text-2xl font-bold text-white mt-4 drop-shadow-lg">Mini Chocolate Christmas Puddings</h2>
                 </div>
               </div>
-            </div>
+                        </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes['chocolate-puddings'].description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
@@ -331,8 +331,8 @@ export default function RecipesPage() {
                     priority
                     unoptimized
                   />
-                </div>
-              )}
+                  </div>
+                )}
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-lg">
                 <div className="text-center">
@@ -416,7 +416,7 @@ export default function RecipesPage() {
           <h3 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             What Customers Say
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
               <div className="flex items-start mb-4">
                 <span className="text-3xl mr-3">⭐</span>
@@ -434,6 +434,22 @@ export default function RecipesPage() {
                   <p className="mb-2">Have a wonderful Christmas and a Happy New Year!</p>
                   <p>See you at Harrogate, when it starts all over again!&quot;</p>
                 </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
+              <div className="flex items-start mb-4">
+                <span className="text-3xl mr-3">🍞</span>
+                <p className="text-gray-700 italic text-lg leading-relaxed">
+                  &quot;Omg that <strong>bread</strong> taste <strong>amazing</strong> .. thank you&quot;
+                </p>
+              </div>
+            </div>
+            <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500">
+              <div className="flex items-start mb-4">
+                <span className="text-3xl mr-3">🍞</span>
+                <p className="text-gray-700 italic text-lg leading-relaxed">
+                  &quot;The decision of this house is 👍 the <strong>bread</strong> is <strong>amazing</strong> they are addicted to it &quot;<strong>best bread ever</strong>&quot; thank you so much Dave xx&quot;
+                </p>
               </div>
             </div>
           </div>
