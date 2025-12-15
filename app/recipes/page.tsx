@@ -49,7 +49,7 @@ export default function RecipesPage() {
       ingredients: [
         '400g plain flour',
         '200g salted butter',
-        '100g lard (if you don\'t f*** with lard, use more butter)',
+        '100g Lard or Trex',
         '1 large orange, juice and zest',
         '1 jar (400g) good quality mincemeat',
         'Cream cheese whipped with icing sugar',
