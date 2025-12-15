@@ -354,7 +354,7 @@ export default function RecipesPage() {
           >
             <div className="h-64 relative overflow-hidden">
               <img
-                src="/images/recipes/mini chocolate xmas puds.jpg"
+                src="/images/recipes/mini%20chocolate%20xmas%20puds.jpg"
                 alt="Mini Chocolate Christmas Puddings"
                 className="w-full h-full object-cover"
               />
