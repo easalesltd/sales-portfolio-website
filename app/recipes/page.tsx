@@ -179,6 +179,15 @@ export default function RecipesPage() {
       ]
     },
     {
+      text: "Oscar (weekend staff) who was on the till just had his break and had a mince pie. When he returned he exclaimed 'that was the best mince pie I've ever had!'",
+      icon: "⭐",
+      multiline: true,
+      parts: [
+        "Oscar (weekend staff) who was on the till just had his break and had a mince pie.",
+        "When he returned he exclaimed '<strong>that was the best mince pie I've ever had!</strong>'"
+      ]
+    },
+    {
       text: "Omg that bread taste amazing .. thank you",
       icon: "🍞",
       parts: ["Omg that <strong>bread</strong> taste <strong>amazing</strong> .. thank you"]
@@ -486,7 +495,7 @@ export default function RecipesPage() {
           <div className="relative max-w-3xl mx-auto px-4">
             {/* Testimonial Display */}
             <div 
-              className="relative h-40 md:h-44 overflow-hidden touch-pan-y"
+              className="relative min-h-[160px] md:min-h-[176px] overflow-hidden touch-pan-y"
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
@@ -498,11 +507,11 @@ export default function RecipesPage() {
                     index === currentTestimonial ? 'opacity-100' : 'opacity-0'
                   }`}
                 >
-                  <div className="bg-white rounded-lg shadow-md p-4 md:p-5 border-l-4 border-amber-500 h-full flex items-center">
+                  <div className="bg-white rounded-lg shadow-md p-4 md:p-5 border-l-4 border-amber-500 min-h-[160px] md:min-h-[176px] flex items-center">
                     <div className="flex items-start w-full">
                       <span className="text-2xl md:text-3xl mr-2 md:mr-3 flex-shrink-0">{testimonial.icon}</span>
                       {testimonial.multiline ? (
-                        <div className="text-gray-700 italic text-sm md:text-base leading-relaxed">
+                        <div className="text-gray-700 italic text-sm md:text-base leading-relaxed flex-1">
                           <p className="mb-1">&quot;{testimonial.parts[0]}</p>
                           {testimonial.parts.slice(1).map((part, i) => (
                             <p key={i} className={i < testimonial.parts.length - 2 ? 'mb-1' : ''} dangerouslySetInnerHTML={{ __html: part }} />
@@ -510,7 +519,7 @@ export default function RecipesPage() {
                           <p>&quot;</p>
                         </div>
                       ) : (
-                        <p className="text-gray-700 italic text-sm md:text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: `&quot;${testimonial.parts[0]}&quot;` }} />
+                        <p className="text-gray-700 italic text-sm md:text-base leading-relaxed flex-1" dangerouslySetInnerHTML={{ __html: `&quot;${testimonial.parts[0]}&quot;` }} />
                       )}
                     </div>
                   </div>
