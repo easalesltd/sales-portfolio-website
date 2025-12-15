@@ -80,8 +80,8 @@ export default function RecipesPage() {
     'chocolate-puddings': {
       title: 'Mini Chocolate Christmas Puddings',
       description: 'A festive no-bake treat perfect for Christmas visits! These mini chocolate puddings look like traditional Christmas puddings but are made with chocolate, biscuits, and dried fruit - a delightful alternative that customers love.',
-      prepTime: '30 minutes active, plus 1½ hours chilling',
-      cookTime: '8-13 minutes',
+      prepTime: '30 minutes',
+      cookTime: '8-13 minutes (melting time)',
       yield: '30 mini puddings',
       ingredients: [
         '100g butter, diced',
