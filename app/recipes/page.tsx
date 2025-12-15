@@ -159,6 +159,44 @@ export default function RecipesPage() {
     generateRecipeSchema(recipes['chocolate-puddings'])
   ];
 
+  const testimonials = [
+    {
+      text: "Also those mince pies are THE BEST ive ever eaten!!! Thank you so much!!",
+      icon: "⭐",
+      parts: ["Also those mince pies are <strong>THE BEST</strong> ive ever eaten!!! Thank you so much!!"]
+    },
+    {
+      text: "Hi Dave\nA big THANK YOU from all the staff – they loved your mince pies and are intrigued by the secret ingredients!\nHave a wonderful Christmas and a Happy New Year!\nSee you at Harrogate, when it starts all over again!",
+      icon: "⭐",
+      multiline: true,
+      parts: [
+        "Hi Dave",
+        "A big <strong>THANK YOU</strong> from all the staff – they loved your mince pies and are intrigued by the secret ingredients!",
+        "Have a wonderful Christmas and a Happy New Year!",
+        "See you at Harrogate, when it starts all over again!"
+      ]
+    },
+    {
+      text: "Omg that bread taste amazing .. thank you",
+      icon: "🍞",
+      parts: ["Omg that <strong>bread</strong> taste <strong>amazing</strong> .. thank you"]
+    },
+    {
+      text: "The decision of this house is 👍 the bread is amazing they are addicted to it \"best bread ever\" thank you so much Dave xx",
+      icon: "🍞",
+      parts: ["The decision of this house is 👍 the <strong>bread</strong> is <strong>amazing</strong> they are addicted to it \"<strong>best bread ever</strong>\" thank you so much Dave xx"]
+    }
+  ];
+
+  // Auto-rotate testimonials
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000); // Change every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [testimonials.length]);
+
   return (
     <div className="min-h-screen">
       {/* Recipe Schema Markup for SEO */}
@@ -445,7 +483,7 @@ export default function RecipesPage() {
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
 
             {/* Navigation Dots */}
             <div className="flex justify-center mt-6 gap-2">
