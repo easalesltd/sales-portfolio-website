@@ -18,7 +18,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes active, 24-48 hours total',
       cookTime: '45-50 minutes',
       yield: '1 large loaf',
-      image: '/images/recipes/sourdough-bread.svg',
+      image: '/images/recipes/20251125_083621.jpg',
       ingredients: [
         '150g active sourdough starter',
         '340g warm water',
@@ -52,7 +52,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '15-20 minutes',
       yield: '12-15 pies',
-      image: '/images/recipes/orange-juice-mince-pies.svg',
+      image: '/images/recipes/20251208_205320.jpg',
     ingredients: [
         '400g plain flour',
         '200g salted butter',
@@ -90,7 +90,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '8-13 minutes (melting time)',
       yield: '30 mini puddings',
-      image: '/images/recipes/mini-chocolate-puddings-v2.svg',
+      image: '/images/recipes/mini-chocolate-puddings.jpg',
     ingredients: [
         '100g butter, diced',
         '2 tbsp golden syrup',
