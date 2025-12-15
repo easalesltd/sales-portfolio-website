@@ -221,6 +221,7 @@ export default function RecipesPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                unoptimized
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
@@ -257,6 +258,7 @@ export default function RecipesPage() {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 768px"
                     priority
+                    unoptimized
                   />
                 </div>
               )}
