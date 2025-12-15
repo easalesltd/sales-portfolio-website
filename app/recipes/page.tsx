@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import VideoBackground from '../components/VideoBackground';
 
 export default function RecipesPage() {
@@ -13,6 +14,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes active, 24-48 hours total',
       cookTime: '45-50 minutes',
       yield: '1 large loaf',
+      image: '/images/recipes/20251125_083621.jpg',
       ingredients: [
         '150g active sourdough starter',
         '340g warm water',
@@ -46,6 +48,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '15-20 minutes',
       yield: '12-15 pies',
+      image: '/images/recipes/20251208_205320.jpg',
     ingredients: [
         '400g plain flour',
         '200g salted butter',
@@ -83,6 +86,7 @@ export default function RecipesPage() {
       prepTime: '30 minutes',
       cookTime: '8-13 minutes (melting time)',
       yield: '30 mini puddings',
+      image: '/images/recipes/20251213_174349.jpg',
     ingredients: [
         '100g butter, diced',
         '2 tbsp golden syrup',
@@ -148,12 +152,21 @@ export default function RecipesPage() {
             }`}
             onClick={() => setActiveRecipe(activeRecipe === 'sourdough' ? null : 'sourdough')}
           >
-            <div className="h-64 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center">
-              <div className="text-center">
-                <span className="text-6xl">🍞</span>
-                <h2 className="text-2xl font-bold text-gray-900 mt-4">Sourdough Bread</h2>
+            <div className="h-64 relative overflow-hidden">
+              <Image
+                src={recipes.sourdough.image}
+                alt="Sourdough Bread"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="text-center">
+                  <span className="text-6xl">🍞</span>
+                  <h2 className="text-2xl font-bold text-white mt-4 drop-shadow-lg">Sourdough Bread</h2>
+                </div>
               </div>
-                      </div>
+            </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes.sourdough.description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
@@ -170,12 +183,21 @@ export default function RecipesPage() {
             }`}
             onClick={() => setActiveRecipe(activeRecipe === 'mince-pies' ? null : 'mince-pies')}
           >
-            <div className="h-64 bg-gradient-to-br from-red-100 to-pink-200 flex items-center justify-center">
-              <div className="text-center">
-                <span className="text-6xl">🥧</span>
-                <h2 className="text-2xl font-bold text-gray-900 mt-4">Orange Juice Pastry Mince Pies</h2>
-                        </div>
-                      </div>
+            <div className="h-64 relative overflow-hidden">
+              <Image
+                src={recipes['mince-pies'].image}
+                alt="Orange Juice Pastry Mince Pies"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="text-center">
+                  <span className="text-6xl">🥧</span>
+                  <h2 className="text-2xl font-bold text-white mt-4 drop-shadow-lg">Orange Juice Pastry Mince Pies</h2>
+                </div>
+              </div>
+            </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes['mince-pies'].description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
@@ -192,12 +214,21 @@ export default function RecipesPage() {
             }`}
             onClick={() => setActiveRecipe(activeRecipe === 'chocolate-puddings' ? null : 'chocolate-puddings')}
           >
-            <div className="h-64 bg-gradient-to-br from-brown-100 to-amber-200 flex items-center justify-center">
-              <div className="text-center">
-                <span className="text-6xl">🍫</span>
-                <h2 className="text-2xl font-bold text-gray-900 mt-4">Mini Chocolate Christmas Puddings</h2>
-                  </div>
-                        </div>
+            <div className="h-64 relative overflow-hidden">
+              <Image
+                src={recipes['chocolate-puddings'].image}
+                alt="Mini Chocolate Christmas Puddings"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="text-center">
+                  <span className="text-6xl">🍫</span>
+                  <h2 className="text-2xl font-bold text-white mt-4 drop-shadow-lg">Mini Chocolate Christmas Puddings</h2>
+                </div>
+              </div>
+            </div>
             <div className="p-6">
               <p className="text-gray-700 mb-4">{recipes['chocolate-puddings'].description}</p>
               <div className="flex items-center justify-between text-sm text-gray-600">
