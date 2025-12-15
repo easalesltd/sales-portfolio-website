@@ -304,7 +304,8 @@ export default function RecipesPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                unoptimized
+                priority
+                quality={85}
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
@@ -330,14 +331,14 @@ export default function RecipesPage() {
             onClick={() => setActiveRecipe(activeRecipe === 'mince-pies' ? null : 'mince-pies')}
           >
             <div className="h-64 relative overflow-hidden">
-                          <Image
+              <Image
                 src={recipes['mince-pies'].image}
                 alt="Orange Juice Pastry Mince Pies"
-                            fill
-                            className="object-cover"
+                fill
+                className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                unoptimized
-                          />
+                quality={85}
+              />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
                   <span className="text-6xl">🥧</span>
@@ -368,7 +369,7 @@ export default function RecipesPage() {
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                unoptimized
+                quality={85}
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
@@ -405,7 +406,7 @@ export default function RecipesPage() {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 768px"
                     priority
-                    unoptimized
+                    quality={85}
                   />
                   </div>
                 )}

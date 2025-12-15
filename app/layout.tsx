@@ -807,13 +807,13 @@ export default function RootLayout({
               <div className="flex items-center">
                 <Link href="/" className="flex items-center">
                   <Image
-                    src="/images/logo.svg.png?v=2"
+                    src="/images/logo.svg.png"
                     alt="East Anglian Sales LTD Logo"
                     width={100}
                     height={67}
                     className="object-contain brightness-0"
                     priority
-                    unoptimized
+                    quality={90}
                   />
                 </Link>
               </div>
