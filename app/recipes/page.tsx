@@ -8,6 +8,8 @@ import VideoBackground from '../components/VideoBackground';
 export default function RecipesPage() {
   const [activeRecipe, setActiveRecipe] = useState<'sourdough' | 'mince-pies' | 'chocolate-puddings' | null>(null);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const recipes = {
     sourdough: {
@@ -197,6 +199,32 @@ export default function RecipesPage() {
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
+  // Swipe handlers for mobile
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    } else if (isRightSwipe) {
+      setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    }
+  };
+
   return (
     <div className="min-h-screen">
       {/* Recipe Schema Markup for SEO */}
@@ -325,10 +353,13 @@ export default function RecipesPage() {
             onClick={() => setActiveRecipe(activeRecipe === 'chocolate-puddings' ? null : 'chocolate-puddings')}
           >
             <div className="h-64 relative overflow-hidden">
-              <img
-                src="/images/recipes/christmas%20puds.png"
+              <Image
+                src={recipes['chocolate-puddings'].image}
                 alt="Mini Chocolate Christmas Puddings"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                unoptimized
               />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                 <div className="text-center">
@@ -452,9 +483,14 @@ export default function RecipesPage() {
           <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
             What Customers Say
           </h3>
-          <div className="relative max-w-3xl mx-auto">
+          <div className="relative max-w-3xl mx-auto px-4">
             {/* Testimonial Display */}
-            <div className="relative h-40 overflow-hidden">
+            <div 
+              className="relative h-40 md:h-44 overflow-hidden touch-pan-y"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
               {testimonials.map((testimonial, index) => (
                 <div
                   key={index}
@@ -462,11 +498,11 @@ export default function RecipesPage() {
                     index === currentTestimonial ? 'opacity-100' : 'opacity-0'
                   }`}
                 >
-                  <div className="bg-white rounded-lg shadow-md p-5 border-l-4 border-amber-500 h-full flex items-center">
+                  <div className="bg-white rounded-lg shadow-md p-4 md:p-5 border-l-4 border-amber-500 h-full flex items-center">
                     <div className="flex items-start w-full">
-                      <span className="text-3xl mr-3 flex-shrink-0">{testimonial.icon}</span>
+                      <span className="text-2xl md:text-3xl mr-2 md:mr-3 flex-shrink-0">{testimonial.icon}</span>
                       {testimonial.multiline ? (
-                        <div className="text-gray-700 italic text-base leading-relaxed">
+                        <div className="text-gray-700 italic text-sm md:text-base leading-relaxed">
                           <p className="mb-1">&quot;{testimonial.parts[0]}</p>
                           {testimonial.parts.slice(1).map((part, i) => (
                             <p key={i} className={i < testimonial.parts.length - 2 ? 'mb-1' : ''} dangerouslySetInnerHTML={{ __html: part }} />
@@ -474,7 +510,7 @@ export default function RecipesPage() {
                           <p>&quot;</p>
                         </div>
                       ) : (
-                        <p className="text-gray-700 italic text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: `&quot;${testimonial.parts[0]}&quot;` }} />
+                        <p className="text-gray-700 italic text-sm md:text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: `&quot;${testimonial.parts[0]}&quot;` }} />
                       )}
                     </div>
                   </div>
