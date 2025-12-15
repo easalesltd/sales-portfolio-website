@@ -451,13 +451,13 @@ export default function RecipesPage() {
                   )}
 
         {/* Customer Testimonials Section - Rolling Banner */}
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-8 mb-8 overflow-hidden">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 mb-8 overflow-hidden">
+          <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
             What Customers Say
           </h3>
           <div className="relative max-w-3xl mx-auto">
             {/* Testimonial Display */}
-            <div className="relative h-48 overflow-hidden">
+            <div className="relative h-40 overflow-hidden">
               {testimonials.map((testimonial, index) => (
                 <div
                   key={index}
@@ -465,19 +465,19 @@ export default function RecipesPage() {
                     index === currentTestimonial ? 'opacity-100' : 'opacity-0'
                   }`}
                 >
-                  <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-amber-500 h-full flex items-center">
+                  <div className="bg-white rounded-lg shadow-md p-5 border-l-4 border-amber-500 h-full flex items-center">
                     <div className="flex items-start w-full">
-                      <span className="text-4xl mr-4 flex-shrink-0">{testimonial.icon}</span>
+                      <span className="text-3xl mr-3 flex-shrink-0">{testimonial.icon}</span>
                       {testimonial.multiline ? (
-                        <div className="text-gray-700 italic text-lg leading-relaxed">
-                          <p className="mb-2">&quot;{testimonial.parts[0]}</p>
+                        <div className="text-gray-700 italic text-base leading-relaxed">
+                          <p className="mb-1">&quot;{testimonial.parts[0]}</p>
                           {testimonial.parts.slice(1).map((part, i) => (
-                            <p key={i} className={i < testimonial.parts.length - 2 ? 'mb-2' : ''} dangerouslySetInnerHTML={{ __html: part }} />
+                            <p key={i} className={i < testimonial.parts.length - 2 ? 'mb-1' : ''} dangerouslySetInnerHTML={{ __html: part }} />
                           ))}
                           <p>&quot;</p>
                         </div>
                       ) : (
-                        <p className="text-gray-700 italic text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: `&quot;${testimonial.parts[0]}&quot;` }} />
+                        <p className="text-gray-700 italic text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: `&quot;${testimonial.parts[0]}&quot;` }} />
                       )}
                     </div>
                   </div>
@@ -486,7 +486,7 @@ export default function RecipesPage() {
               </div>
 
             {/* Navigation Dots */}
-            <div className="flex justify-center mt-6 gap-2">
+            <div className="flex justify-center mt-4 gap-2">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
