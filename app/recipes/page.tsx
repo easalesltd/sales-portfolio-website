@@ -247,6 +247,20 @@ export default function RecipesPage() {
                 {recipes[activeRecipe].title}
               </h2>
 
+              {/* Recipe Image */}
+              {recipes[activeRecipe].image && (
+                <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
+                  <Image
+                    src={recipes[activeRecipe].image}
+                    alt={recipes[activeRecipe].title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 768px"
+                    priority
+                  />
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-lg">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600">{recipes[activeRecipe].prepTime.split(',')[0]}</div>
