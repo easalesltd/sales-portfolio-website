@@ -20,7 +20,7 @@ export default function RecipesPage() {
       yield: '1 large loaf',
       image: '/images/recipes/20251125_083621.jpg',
       ingredients: [
-        '150g active sourdough starter',
+        '150g active sourdough starter (I can give you this if you need it)',
         '340g warm water',
         '500g strong white bread flour',
         '11g fine sea salt + 10ml more water',
@@ -265,7 +265,7 @@ export default function RecipesPage() {
       </div>
 
       {/* Hero Section */}
-      <div className="w-full h-[30vh] md:h-[40vh] relative overflow-hidden">
+      <div className="w-full h-[30vh] md:h-[40vh] relative overflow-hidden no-print-hero">
         <VideoBackground videoUrl="/videos/About/background.mp4">
           <div className="w-full h-full flex items-center justify-center bg-black/40">
             <div className="text-center px-4 max-w-3xl">
@@ -281,7 +281,7 @@ export default function RecipesPage() {
       </div>
 
       {/* Recipes Section */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 recipes-page-content">
         <div className="mb-8 text-center">
           <p className="text-lg text-gray-700">
             As part of my business, I love sharing the things I bake with my customers. Here are my go-to recipes that always go down well!
@@ -289,7 +289,7 @@ export default function RecipesPage() {
         </div>
 
         {/* Recipe Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 no-print-cards">
           {/* Sourdough Bread Card */}
           <div 
             className={`bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl ${
@@ -390,11 +390,69 @@ export default function RecipesPage() {
 
         {/* Recipe Details */}
         {activeRecipe && (
-          <div className="bg-white rounded-xl shadow-xl p-8 mb-8 animate-in fade-in duration-300">
+          <div className="bg-white rounded-xl shadow-xl p-8 mb-8 animate-in fade-in duration-300 recipe-print-content">
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">
-                {recipes[activeRecipe].title}
-              </h2>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4 no-print">
+                <h2 className="text-3xl font-bold text-gray-900 text-center md:text-left">
+                  {recipes[activeRecipe].title}
+                </h2>
+                <div className="flex flex-wrap justify-center md:justify-end gap-2">
+                  {/* Print/PDF Button */}
+                  <button
+                    onClick={() => window.print()}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium flex items-center gap-2"
+                    aria-label="Print recipe"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print/Save PDF
+                  </button>
+                  {/* Share Buttons */}
+                  <button
+                    onClick={() => {
+                      const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+                      window.open(url, '_blank', 'width=600,height=400');
+                    }}
+                    className="px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 transition-colors text-sm font-medium"
+                    aria-label="Share on Facebook"
+                  >
+                    Facebook
+                  </button>
+                  <button
+                    onClick={() => {
+                      const text = `Check out this recipe: ${recipes[activeRecipe].title}`;
+                      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
+                      window.open(url, '_blank', 'width=600,height=400');
+                    }}
+                    className="px-4 py-2 bg-sky-500 text-white rounded-md hover:bg-sky-600 transition-colors text-sm font-medium"
+                    aria-label="Share on Twitter"
+                  >
+                    Twitter
+                  </button>
+                  <button
+                    onClick={() => {
+                      const url = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(`https://www.easalesltd.co.uk${recipes[activeRecipe].image}`)}&description=${encodeURIComponent(recipes[activeRecipe].title)}`;
+                      window.open(url, '_blank', 'width=600,height=400');
+                    }}
+                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm font-medium"
+                    aria-label="Share on Pinterest"
+                  >
+                    Pinterest
+                  </button>
+                  <button
+                    onClick={() => {
+                      const subject = encodeURIComponent(`Recipe: ${recipes[activeRecipe].title}`);
+                      const body = encodeURIComponent(`Check out this recipe:\n${window.location.href}`);
+                      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+                    }}
+                    className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors text-sm font-medium"
+                    aria-label="Share via email"
+                  >
+                    Email
+                  </button>
+                </div>
+              </div>
 
               {/* Recipe Image */}
               {recipes[activeRecipe].image && (
@@ -478,18 +536,29 @@ export default function RecipesPage() {
                         </ul>
               </div>
 
-              <button
-                onClick={() => setActiveRecipe(null)}
-                className="mt-6 w-full md:w-auto px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                Close Recipe
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-6 no-print">
+                <button
+                  onClick={() => setActiveRecipe(null)}
+                  className="w-full sm:w-auto px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+                >
+                  Close Recipe
+                </button>
+                <button
+                  onClick={() => window.print()}
+                  className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                  </svg>
+                  Print or Save as PDF
+                </button>
+              </div>
                       </div>
                     </div>
                   )}
 
         {/* Customer Testimonials Section - Rolling Banner */}
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 mb-8 overflow-hidden">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-6 mb-8 overflow-hidden no-print-testimonials">
           <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
             What Customers Say
           </h3>
@@ -547,7 +616,7 @@ export default function RecipesPage() {
         </div>
 
         {/* Note Section */}
-        <div className="bg-blue-50 rounded-xl p-8 text-center">
+        <div className="bg-blue-50 rounded-xl p-8 text-center no-print-notes">
           <h3 className="text-2xl font-semibold text-gray-900 mb-4">
             Baking for Business
           </h3>

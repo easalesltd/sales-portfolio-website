@@ -46,11 +46,13 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [validationError, setValidationError] = useState<string>('');
 
   const successModalRef = useRef<HTMLDivElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError('');
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
@@ -60,7 +62,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
       .join(', ');
 
     if (!selectedCompanies) {
-      alert('Please select at least one company you are interested in');
+      setValidationError('Please select at least one company you are interested in');
       setIsSubmitting(false);
       return;
     }
@@ -189,6 +191,12 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
 
             <div className="p-6 overflow-y-auto max-h-[calc(100vh-8rem)]">
               <form onSubmit={handleSubmit} className="space-y-6">
+                {validationError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md" role="alert">
+                    <p className="font-medium">Please correct the following:</p>
+                    <p className="text-sm mt-1">{validationError}</p>
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Your Name</label>
                   <input

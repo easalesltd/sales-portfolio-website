@@ -524,7 +524,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en-GB">
       <head>
         {/* Google tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-7HWXWDZG4F"></script>
@@ -906,7 +906,7 @@ export default function RootLayout({
           </nav>
         </header>
         <Breadcrumbs />
-        <main className="pt-20 min-h-screen bg-white">
+        <main id="main-content" className="pt-20 min-h-screen bg-white">
           {children}
         </main>
 

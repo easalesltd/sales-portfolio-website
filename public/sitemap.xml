@@ -139,11 +139,4 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Logo Test Page -->
-  <url>
-    <loc>https://www.easalesltd.co.uk/logo-test</loc>
-    <lastmod>2025-01-07</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
 </urlset> 
