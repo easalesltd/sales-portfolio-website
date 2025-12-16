@@ -636,15 +636,77 @@ export default function RootLayout({
                 ],
                 "areaServed": [
                   {
+                    "@type": "State",
+                    "name": "Suffolk",
+                    "address": {
+                      "@type": "PostalAddress",
+                      "addressRegion": "Suffolk",
+                      "addressCountry": "GB"
+                    }
+                  },
+                  {
+                    "@type": "State",
+                    "name": "Norfolk",
+                    "address": {
+                      "@type": "PostalAddress",
+                      "addressRegion": "Norfolk",
+                      "addressCountry": "GB"
+                    }
+                  },
+                  {
+                    "@type": "State",
+                    "name": "Essex",
+                    "address": {
+                      "@type": "PostalAddress",
+                      "addressRegion": "Essex",
+                      "addressCountry": "GB"
+                    }
+                  },
+                  {
+                    "@type": "State",
+                    "name": "Cambridgeshire",
+                    "address": {
+                      "@type": "PostalAddress",
+                      "addressRegion": "Cambridgeshire",
+                      "addressCountry": "GB"
+                    }
+                  },
+                  {
+                    "@type": "State",
+                    "name": "Hertfordshire",
+                    "address": {
+                      "@type": "PostalAddress",
+                      "addressRegion": "Hertfordshire",
+                      "addressCountry": "GB"
+                    }
+                  },
+                  {
                     "@type": "GeoCircle",
                     "geoMidpoint": {
                       "@type": "GeoCoordinates",
                       "latitude": "52.2333",
                       "longitude": "0.7167"
                     },
-                    "geoRadius": "100000"
+                    "geoRadius": {
+                      "@type": "Distance",
+                      "value": "100",
+                      "unitCode": "KMT"
+                    }
                   }
                 ],
+                "serviceArea": {
+                  "@type": "GeoCircle",
+                  "geoMidpoint": {
+                    "@type": "GeoCoordinates",
+                    "latitude": "52.2333",
+                    "longitude": "0.7167"
+                  },
+                  "geoRadius": {
+                    "@type": "Distance",
+                    "value": "100",
+                    "unitCode": "KMT"
+                  }
+                },
                 "priceRange": "££",
                 "vatID": "481 2602 07",
                 "foundingDate": "2022",
@@ -664,8 +726,18 @@ export default function RootLayout({
                   "description": "Professional Greeting Card Sales Agent and Giftware Sales Agent with over a decade of experience in East Anglia"
                 },
                 "openingHours": "Mo-Fr 09:00-17:00",
+                "openingHoursSpecification": [
+                  {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                    "opens": "09:00",
+                    "closes": "17:00"
+                  }
+                ],
                 "paymentAccepted": ["Credit Card", "Debit Card", "Bank Transfer"],
                 "currenciesAccepted": "GBP",
+                "telephone": "07709197915",
+                "email": "dave@easalesltd.co.uk",
                 "hasOfferCatalog": {
                   "@type": "OfferCatalog",
                   "name": "Product Catalog",

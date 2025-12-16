@@ -42,5 +42,11 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://www.easalesltd.co.uk/about"
+  },
+  other: {
+    'geo.region': 'GB-ENG',
+    'geo.placename': 'Ipswich, Suffolk',
+    'geo.position': '52.2333;0.7167',
+    'ICBM': '52.2333, 0.7167'
   }
 }; 
