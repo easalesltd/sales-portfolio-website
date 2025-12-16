@@ -68,7 +68,7 @@ body {
     padding-top: 0 !important;
   }
   
-  /* Hide all non-recipe elements on recipes page */
+  /* Hide all non-recipe elements on recipes index page */
   .no-print-hero,
   .no-print-cards,
   .no-print-testimonials,
@@ -78,15 +78,22 @@ body {
     display: none !important;
   }
   
-  /* Show only the recipe print content container */
+  /* Show only the recipe print content container on index page */
   .recipes-page-content {
     max-width: 100% !important;
     padding: 0 !important;
   }
   
-  /* Make sure recipe print content is visible */
-  .recipe-print-content {
-    margin: 0 auto !important;
+  /* For individual recipe pages - hide container padding and back link */
+  main > div[class*="max-w-4xl"] {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+  
+  /* Hide back to recipes link */
+  main a[href="/recipes"] {
+    display: none !important;
   }
   
   /* Show recipe print content */
@@ -96,11 +103,16 @@ body {
     opacity: 1 !important;
     max-width: 100% !important;
     padding: 20px !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     box-shadow: none !important;
     background: white !important;
     page-break-inside: avoid;
     position: relative !important;
+  }
+  
+  /* Ensure recipe content wrapper shows */
+  .recipe-print-content > div {
+    max-width: 100% !important;
   }
   
   /* Ensure all content inside recipe is visible */
@@ -118,12 +130,42 @@ body {
     display: block !important;
   }
   
-  .recipe-print-content img {
-    display: block !important;
-    visibility: visible !important;
-    position: relative !important;
-    width: 100% !important;
-    height: auto !important;
+  /* Hide images when printing - cleaner layout */
+  .recipe-print-content img,
+  img[src*="recipes"],
+  .recipe-print-content picture,
+  .no-print-image,
+  .print-hidden,
+  .recipe-print-content .no-print-image,
+  .recipe-print-content .print-hidden {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    width: 0 !important;
+    visibility: hidden !important;
+    line-height: 0 !important;
+    font-size: 0 !important;
+  }
+  
+  /* Remove ALL spacing from hidden image containers */
+  .recipe-print-content .print-hidden,
+  .recipe-print-content .no-print-image {
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+  }
+  
+  /* Remove top margin from elements immediately after hidden images */
+  .recipe-print-content .print-hidden + *,
+  .recipe-print-content .no-print-image + * {
+    margin-top: 0 !important;
   }
   
   /* Fix grid layouts for print */
@@ -136,10 +178,7 @@ body {
     margin-bottom: 1em !important;
   }
   
-  /* Hide recipe image overlay elements, but keep the image */
-  .recipe-print-content .absolute {
-    position: relative !important;
-  }
+  /* All image-related elements should be hidden in print */
   
   /* Style text for print */
   h1, h2, h3, h4, h5, h6 {

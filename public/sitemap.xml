@@ -139,4 +139,30 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Recipes Pages -->
+  <url>
+    <loc>https://www.easalesltd.co.uk/recipes</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.easalesltd.co.uk/recipes/sourdough-bread</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easalesltd.co.uk/recipes/orange-juice-pastry-mince-pies</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.easalesltd.co.uk/recipes/mini-chocolate-christmas-puddings</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset> 
