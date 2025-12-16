@@ -23,6 +23,24 @@ export const metadata: Metadata = {
     description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Personal service from Dave Langdon in Suffolk, Norfolk, Essex, and Cambridgeshire.",
     type: "website",
     locale: "en_GB",
-    siteName: "East Anglian Sales LTD"
+    siteName: "East Anglian Sales LTD",
+    url: "https://www.easalesltd.co.uk/about",
+    images: [
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "East Anglian Sales LTD - Wholesale Cards & Gifts"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About East Anglian Sales LTD | Your Local Wholesale Partner",
+    description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia.",
+    images: ["https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg"]
+  },
+  alternates: {
+    canonical: "https://www.easalesltd.co.uk/about"
   }
 }; 

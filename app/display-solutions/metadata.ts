@@ -60,11 +60,24 @@ export const metadata: Metadata = {
     description: "Professional greeting card display solutions including FREE greeting card spinners, affordable display units, and bespoke wall displays. Expert retail solutions for greeting cards serving Suffolk, Norfolk, Essex, and Cambridgeshire.",
     type: "website",
     locale: "en_GB",
-    siteName: "East Anglian Sales LTD"
+    siteName: "East Anglian Sales LTD",
+    url: "https://www.easalesltd.co.uk/display-solutions",
+    images: [
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Greeting Card Display Solutions"
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: "Greeting Card Display Solutions | Free Spinners & Bespoke Wall Displays",
     description: "Professional greeting card display solutions including FREE greeting card spinners, affordable display units, and bespoke wall displays. Expert retail solutions for greeting cards serving East Anglia.",
+    images: ["https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg"]
+  },
+  alternates: {
+    canonical: "https://www.easalesltd.co.uk/display-solutions"
   }
 }; 

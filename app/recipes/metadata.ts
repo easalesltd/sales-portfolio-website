@@ -48,6 +48,24 @@ export const metadata: Metadata = {
     description: "Share in Dave's passion for baking with these two go-to recipes perfect for gifting to customers.",
     type: "website",
     locale: "en_GB",
-    siteName: "East Anglian Sales LTD"
+    siteName: "East Anglian Sales LTD",
+    url: "https://www.easalesltd.co.uk/recipes",
+    images: [
+      {
+        url: "https://www.easalesltd.co.uk/images/recipes/20251125_083621.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Dave's Favourite Baking Recipes"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dave's Favourite Recipes | Sourdough & Mince Pies",
+    description: "Share in Dave's passion for baking with these go-to recipes perfect for gifting to customers.",
+    images: ["https://www.easalesltd.co.uk/images/recipes/20251125_083621.jpg"]
+  },
+  alternates: {
+    canonical: "https://www.easalesltd.co.uk/recipes"
   }
 };

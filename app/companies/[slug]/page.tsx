@@ -979,11 +979,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         title,
         description,
         type: 'website',
+        url: `https://www.easalesltd.co.uk/companies/${company.slug}`,
+        images: company.logoUrl ? [
+          {
+            url: `https://www.easalesltd.co.uk${company.logoUrl}`,
+            width: 1200,
+            height: 630,
+            alt: `${company.name} Sales Agent`
+          }
+        ] : undefined,
       },
       twitter: {
         card: 'summary_large_image',
         title,
         description,
+        images: company.logoUrl ? [`https://www.easalesltd.co.uk${company.logoUrl}`] : undefined,
+      },
+      alternates: {
+        canonical: `https://www.easalesltd.co.uk/companies/${company.slug}`
       }
     };
   }
@@ -1001,11 +1014,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title,
       description,
       type: 'website',
+      url: `https://www.easalesltd.co.uk/companies/${company.slug}`,
+      images: company.logoUrl ? [
+        {
+          url: `https://www.easalesltd.co.uk${company.logoUrl}`,
+          width: 1200,
+          height: 630,
+          alt: `${company.name} Sales Agent`
+        }
+      ] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: company.logoUrl ? [`https://www.easalesltd.co.uk${company.logoUrl}`] : undefined,
+    },
+    alternates: {
+      canonical: `https://www.easalesltd.co.uk/companies/${company.slug}`
     }
   };
 }
