@@ -76,7 +76,7 @@ export const recipes: Record<string, Recipe> = {
       'Preheat oven to 220°C.',
       'Roll out pastry on a floured surface to 3mm thick. I use rice flour here, as it\'s gluten-free, so aids non-stick.',
       'Cut 12 circles for bases and 12 smaller circles for tops.',
-      'Grease the muffin tin with butter and greaseproof paper.',
+      'Grease the muffin tin with butter. I use greaseproof paper to apply the butter.',
       'Line muffin tin with larger circles, fill with mincemeat and a dollop of cream cheese whipped with icing sugar.',
       'I cheat here, and dip the whole top in milk, as it\'s way quicker than brushing and helps seal the top and bottom. Give them a shake so they\'re not too wet. Sprinkle with a little golden caster sugar and stab the lid to allow steam to escape.',
       'Bake for 14 minutes until golden brown.',
