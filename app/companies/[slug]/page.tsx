@@ -153,7 +153,233 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'Easter greeting cards',
         'Mother\'s Day greeting cards',
         'Father\'s Day greeting cards',
-        'Valentine\'s Day greeting cards'
+        'Valentine\'s Day greeting cards',
+        
+        // Angela Harding SEO
+        'Angela Harding Greeting Cards',
+        'Angela Harding Wholesale Cards',
+        'Angela Harding Christmas Cards',
+        'Angela Harding Advent',
+        'Angela Harding greeting cards wholesale',
+        'Angela Harding cards supplier',
+        'Angela Harding greeting cards East Anglia',
+        'Angela Harding Christmas cards wholesale',
+        'Angela Harding advent calendars',
+        'Angela Harding advent cards',
+        'Angela Harding cards sales agent',
+        
+        // V&A SEO
+        'V&A greeting cards',
+        'V&A cards wholesale',
+        'V&A gift stationery',
+        'Victoria and Albert Museum cards',
+        'V&A greeting cards supplier',
+        'V&A cards sales agent',
+        'V&A greeting cards East Anglia',
+        'V&A Christmas cards',
+        
+        // TATE SEO
+        'TATE greeting cards',
+        'TATE cards wholesale',
+        'TATE gift stationery',
+        'Tate Gallery cards',
+        'TATE greeting cards supplier',
+        'TATE cards sales agent',
+        'TATE greeting cards East Anglia',
+        'TATE Christmas cards',
+        
+        // Natural History Museum SEO
+        'Natural History Museum greeting cards',
+        'Natural History Museum cards wholesale',
+        'Natural History Museum gift stationery',
+        'Natural History Museum cards supplier',
+        'Natural History Museum cards sales agent',
+        'Natural History Museum greeting cards East Anglia',
+        'Natural History Museum Christmas cards',
+        
+        // Wildlife Photographer of the Year SEO
+        'Wildlife Photographer of the Year greeting cards',
+        'Wildlife Photographer of the Year cards wholesale',
+        'Wildlife Photographer of the Year cards supplier',
+        'Wildlife Photographer of the Year cards sales agent',
+        'Wildlife Photographer of the Year greeting cards East Anglia',
+        
+        // The British Museum SEO
+        'British Museum greeting cards',
+        'British Museum cards wholesale',
+        'British Museum gift stationery',
+        'British Museum cards supplier',
+        'British Museum cards sales agent',
+        'British Museum greeting cards East Anglia',
+        'British Museum Christmas cards',
+        
+        // British Library SEO
+        'British Library greeting cards',
+        'British Library cards wholesale',
+        'British Library gift stationery',
+        'British Library cards supplier',
+        'British Library cards sales agent',
+        'British Library greeting cards East Anglia',
+        'British Library Christmas cards',
+        
+        // Mary Katrantzou SEO
+        'Mary Katrantzou greeting cards',
+        'Mary Katrantzou cards wholesale',
+        'Mary Katrantzou cards supplier',
+        'Mary Katrantzou cards sales agent',
+        'Mary Katrantzou greeting cards East Anglia',
+        
+        // Matthew Williamson SEO
+        'Matthew Williamson greeting cards',
+        'Matthew Williamson cards wholesale',
+        'Matthew Williamson gift stationery',
+        'Matthew Williamson cards supplier',
+        'Matthew Williamson cards sales agent',
+        'Matthew Williamson greeting cards East Anglia',
+        
+        // Sarah Campbell SEO
+        'Sarah Campbell greeting cards',
+        'Sarah Campbell Designs greeting cards',
+        'Sarah Campbell cards wholesale',
+        'Sarah Campbell cards supplier',
+        'Sarah Campbell cards sales agent',
+        'Sarah Campbell greeting cards East Anglia',
+        
+        // Emma Frances Grant SEO
+        'Emma Frances Grant greeting cards',
+        'Emma Frances Grant cards wholesale',
+        'Emma Frances Grant cards supplier',
+        'Emma Frances Grant cards sales agent',
+        'Emma Frances Grant greeting cards East Anglia',
+        
+        // Catherine Rowe SEO
+        'Catherine Rowe greeting cards',
+        'Catherine Rowe cards wholesale',
+        'Catherine Rowe gift stationery',
+        'Catherine Rowe cards supplier',
+        'Catherine Rowe cards sales agent',
+        'Catherine Rowe greeting cards East Anglia',
+        
+        // Emily Burningham SEO
+        'Emily Burningham greeting cards',
+        'Emily Burningham cards wholesale',
+        'Emily Burningham cards supplier',
+        'Emily Burningham cards sales agent',
+        'Emily Burningham greeting cards East Anglia',
+        
+        // Wild Press SEO
+        'Wild Press greeting cards',
+        'Wild Press cards wholesale',
+        'Wild Press cards supplier',
+        'Wild Press cards sales agent',
+        'Wild Press greeting cards East Anglia',
+        
+        // Brambly Hedge SEO
+        'Brambly Hedge greeting cards',
+        'Brambly Hedge by Jill Barklem greeting cards',
+        'Brambly Hedge cards wholesale',
+        'Brambly Hedge cards supplier',
+        'Brambly Hedge cards sales agent',
+        'Brambly Hedge greeting cards East Anglia',
+        'Jill Barklem greeting cards',
+        
+        // Roald Dahl SEO
+        'Roald Dahl greeting cards',
+        'Roald Dahl cards wholesale',
+        'Roald Dahl gift stationery',
+        'Roald Dahl cards supplier',
+        'Roald Dahl cards sales agent',
+        'Roald Dahl greeting cards East Anglia',
+        'Roald Dahl Christmas cards',
+        
+        // Chris Dunn SEO
+        'Chris Dunn greeting cards',
+        'Chris Dunn cards wholesale',
+        'Chris Dunn cards supplier',
+        'Chris Dunn cards sales agent',
+        'Chris Dunn greeting cards East Anglia',
+        
+        // Paddington Bear SEO
+        'Paddington Bear greeting cards',
+        'Paddington greeting cards',
+        'Paddington Bear cards wholesale',
+        'Paddington Bear gift stationery',
+        'Paddington Bear cards supplier',
+        'Paddington Bear cards sales agent',
+        'Paddington Bear greeting cards East Anglia',
+        'Paddington Bear Christmas cards',
+        
+        // Guess How Much I Love You SEO
+        'Guess How Much I Love You greeting cards',
+        'Guess How Much I Love You cards wholesale',
+        'Guess How Much I Love You cards supplier',
+        'Guess How Much I Love You cards sales agent',
+        'Guess How Much I Love You greeting cards East Anglia',
+        
+        // The Tiger Who came to Tea SEO
+        'Tiger Who came to Tea greeting cards',
+        'Tiger Who came to Tea cards wholesale',
+        'Tiger Who came to Tea gift stationery',
+        'Tiger Who came to Tea cards supplier',
+        'Tiger Who came to Tea cards sales agent',
+        'Tiger Who came to Tea greeting cards East Anglia',
+        
+        // Percy The Park Keeper SEO
+        'Percy The Park Keeper greeting cards',
+        'Percy The Park Keeper cards wholesale',
+        'Percy The Park Keeper cards supplier',
+        'Percy The Park Keeper cards sales agent',
+        'Percy The Park Keeper greeting cards East Anglia',
+        
+        // Transport for London SEO
+        'Transport for London greeting cards',
+        'TFL Collection greeting cards',
+        'TFL greeting cards',
+        'Transport for London cards wholesale',
+        'Transport for London cards supplier',
+        'Transport for London cards sales agent',
+        'Transport for London greeting cards East Anglia',
+        'Museums & Galleries TFL Collection',
+        
+        // Coast & Country SEO
+        'Coast & Country greeting cards',
+        'Coast and Country greeting cards',
+        'Coast & Country cards wholesale',
+        'Coast & Country cards supplier',
+        'Coast & Country cards sales agent',
+        'Coast & Country greeting cards East Anglia',
+        
+        // Dee Hardwicke SEO
+        'Dee Hardwicke greeting cards',
+        'Dee Hardwicke cards wholesale',
+        'Dee Hardwicke gift stationery',
+        'Dee Hardwicke cards supplier',
+        'Dee Hardwicke cards sales agent',
+        'Dee Hardwicke greeting cards East Anglia',
+        
+        // Cressida Bell SEO
+        'Cressida Bell greeting cards',
+        'Cressida Bell cards wholesale',
+        'Cressida Bell gift stationery',
+        'Cressida Bell cards supplier',
+        'Cressida Bell cards sales agent',
+        'Cressida Bell greeting cards East Anglia',
+        
+        // Aardman SEO
+        'Aardman greeting cards',
+        'Aardman cards wholesale',
+        'Aardman gift stationery',
+        'Aardman cards supplier',
+        'Aardman cards sales agent',
+        'Aardman greeting cards East Anglia',
+        'Aardman Christmas cards',
+        
+        // Robin Robin SEO
+        'Robin Robin greeting cards',
+        'Robin Robin cards wholesale',
+        'Robin Robin cards supplier',
+        'Robin Robin cards sales agent',
+        'Robin Robin greeting cards East Anglia'
       ]
     },
     'paper-salad': {
