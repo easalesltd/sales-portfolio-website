@@ -48,6 +48,25 @@ export default function RecipesPage() {
       text: "The decision of this house is 👍 the bread is amazing they are addicted to it \"best bread ever\" thank you so much Dave xx",
       icon: "🍞",
       parts: ["The decision of this house is 👍 the <strong>bread</strong> is <strong>amazing</strong> they are addicted to it \"<strong>best bread ever</strong>\" thank you so much Dave xx"]
+    },
+    {
+      text: "Hi Dave,\n\nMince pie was 10/10! Thank you!",
+      icon: "⭐",
+      multiline: true,
+      parts: [
+        "Hi Dave,",
+        "Mince pie was <strong>10/10!</strong> Thank you!"
+      ]
+    },
+    {
+      text: "Your bread was absolutely amazing! Thank you so so much for treating us! It was so good!!!!!!!!!",
+      icon: "🍞",
+      parts: ["Your <strong>bread</strong> was <strong>absolutely amazing!</strong> Thank you so so much for treating us! It was so good!!!!!!!!!"]
+    },
+    {
+      text: "Hello lovely, i forgot to say thank you for the lovely bread before you left yesterday. It was very lovely 🤤 I scoffed some for my lunch x",
+      icon: "🍞",
+      parts: ["Hello lovely, i forgot to say thank you for the <strong>lovely bread</strong> before you left yesterday. It was <strong>very lovely</strong> 🤤 I scoffed some for my lunch x"]
     }
   ];
 
