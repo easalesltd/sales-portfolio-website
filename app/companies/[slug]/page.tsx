@@ -1415,7 +1415,10 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     '/images/companies/museums-and-galleries/4a44abec-ce62-4e46-878b-8cbad6b03da2.jpeg',
     '/images/companies/museums-and-galleries/f13f19a1-1349-4e84-89d5-e6ffe231f308.jpeg',
     '/images/companies/museums-and-galleries/1b4833b0-54b9-4457-95fb-7b94df0b0389.jpeg',
-    '/images/companies/museums-and-galleries/59a26b7f-162c-454e-9efd-c483fae2ecfa.jpeg'
+    '/images/companies/museums-and-galleries/59a26b7f-162c-454e-9efd-c483fae2ecfa.jpeg',
+    '/images/companies/museums-and-galleries/Screenshot 2025-12-19 at 23.19.11.png',
+    '/images/companies/museums-and-galleries/Screenshot 2025-12-19 at 23.20.13.png',
+    '/images/companies/museums-and-galleries/Screenshot 2025-12-19 at 23.20.30.png'
   ] : [];
 
   const starEditionsBaseImages = resolvedParams.slug === 'star-editions' ? [
