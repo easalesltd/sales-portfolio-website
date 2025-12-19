@@ -73,7 +73,7 @@ export const companies: Company[] = [
     id: "museums-and-galleries",
     name: "Museums and Galleries",
     slug: "museums-and-galleries",
-    description: "Home of the finest arts brands. We are the UK's leading publisher of licensed art and design-led greetings cards and gift stationery.",
+    description: "Home of the finest arts brands. We are the UK's leading publisher of licensed art and design-led greetings cards and gift stationery. And in 2026, we're delighted to welcome Angela Harding, Peter Rabbit and Henry Fraser to our greeting card ranges.",
     logoUrl: "/images/logos/museums-galleries-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/13GUXPjjXh3uMshpbwZCOGBL7B2pIZ-AJ?usp=drive_link",
     websiteUrl: "https://www.museums.co.uk",
