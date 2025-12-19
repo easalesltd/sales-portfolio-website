@@ -7,18 +7,16 @@ import Image from 'next/image';
 const TRANSITION_DURATION = 1000; // 1 second for a smoother fade transition
 const SLIDE_DURATION = 5000; // 5 seconds per slide for better viewing
 
-// Using showcase images from the showcase folder - including all existing images
+// Showcase images from the showcase folder
 const showcaseImages = [
   '/images/showcase/1-1-25.jpeg',
   '/images/showcase/1066f4f9-50ba-4dfb-8f5d-703151fd119e.jpeg',
-  '/images/showcase/1755180639574003.jpg',
   '/images/showcase/1755245031292398.jpg',
   '/images/showcase/1755253128244036.jpg',
   '/images/showcase/4003f792-f399-4cc5-8802-e2bfcd93c330.jpeg',
   '/images/showcase/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
   '/images/showcase/901d0ddb-3e10-4a3d-aeee-c2d207eba557.jpeg',
   '/images/showcase/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
-  '/images/showcase/PGA_Gift_Set_Web_Banner_2bb5540a-8eb3-446a-9bf0-53b3250f4c37.jpeg',
   '/images/showcase/Screenshot 2025-05-18 at 09.16.46.png',
   '/images/showcase/Screenshot 2025-05-18 at 09.18.07.png',
   '/images/showcase/Screenshot 2025-06-03 at 21.45.03.png',
@@ -28,17 +26,29 @@ const showcaseImages = [
   '/images/showcase/Screenshot 2025-08-30 at 17.42.49.png',
   '/images/showcase/Screenshot 2025-11-24 at 12.17.52.png',
   '/images/showcase/Screenshot 2025-11-24 at 12.30.52.png',
-  '/images/showcase/bd66610d-a7c2-4835-9657-9e4248cf7400.jpeg',
+  '/images/showcase/Screenshot 2025-12-19 at 20.39.30.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.40.04.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.40.59.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.41.18.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.42.26.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.42.49.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.43.00.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.43.31.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.43.40.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.44.30.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.44.45.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.44.58.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.45.04.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.46.04.png',
+  '/images/showcase/Screenshot 2025-12-19 at 20.46.18.png',
   '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg',
+  '/images/showcase/bd66610d-a7c2-4835-9657-9e4248cf7400.jpeg',
   '/images/showcase/d40a6860-3952-4308-b87b-770c946035a3.jpeg',
   '/images/showcase/image (17).png',
   '/images/showcase/showcase1.jpeg',
+  '/images/showcase/showcase13.jpeg',
   '/images/showcase/showcase2.jpeg',
-  '/images/showcase/showcase3.jpeg',
-  '/images/showcase/showcase4.jpeg',
-  '/images/showcase/showcase6.jpeg',
-  '/images/showcase/showcase9.jpeg',
-  '/images/showcase/showcase13.jpeg'
+  '/images/showcase/showcase4.jpeg'
 ];
 
 export default function ShowcaseSlideshow() {
