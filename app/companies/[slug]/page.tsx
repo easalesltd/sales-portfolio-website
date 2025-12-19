@@ -796,7 +796,110 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'Easter greeting cards',
         'Mother\'s Day greeting cards',
         'Father\'s Day greeting cards',
-        'Valentine\'s Day greeting cards'
+        'Valentine\'s Day greeting cards',
+        
+        // Katie Abey SEO
+        'Katie Abey greeting cards',
+        'Katie Abey cards',
+        'Katie Abey bookmarks',
+        'Katie Abey greeting cards wholesale',
+        'Katie Abey cards wholesale',
+        'Katie Abey bookmarks wholesale',
+        'Katie Abey greeting cards supplier',
+        'Katie Abey cards supplier',
+        'Katie Abey bookmarks supplier',
+        'Katie Abey greeting cards sales agent',
+        'Katie Abey cards sales agent',
+        'Katie Abey bookmarks sales agent',
+        'Katie Abey greeting cards East Anglia',
+        'Katie Abey cards East Anglia',
+        'Katie Abey bookmarks East Anglia',
+        'Katie Abey official greeting cards',
+        'Katie Abey official cards',
+        'Katie Abey official bookmarks',
+        
+        // To Be Frank Cards SEO
+        'To Be Frank Cards',
+        'To Be Frank greeting cards',
+        'To Be Frank cards wholesale',
+        'To Be Frank cards supplier',
+        'To Be Frank cards sales agent',
+        'To Be Frank cards East Anglia',
+        
+        // Magnetic Notepads SEO
+        'magnetic notepads',
+        'magnetic notepads wholesale',
+        'magnetic notepads supplier',
+        'magnetic notepads sales agent',
+        'magnetic notepads East Anglia',
+        'magnetic notepad wholesale',
+        'magnetic notepad supplier',
+        'magnetic notepad sales agent',
+        
+        // Journals SEO
+        'journals wholesale',
+        'journals supplier',
+        'journals sales agent',
+        'journals East Anglia',
+        'journal wholesale',
+        'journal supplier',
+        'journal sales agent',
+        'notebooks wholesale',
+        'notebooks supplier',
+        'notebooks sales agent',
+        
+        // Magnets SEO
+        'magnets wholesale',
+        'magnets supplier',
+        'magnets sales agent',
+        'magnets East Anglia',
+        'magnet wholesale',
+        'magnet supplier',
+        'magnet sales agent',
+        'fridge magnets wholesale',
+        'fridge magnets supplier',
+        'fridge magnets sales agent',
+        
+        // Keyrings SEO
+        'keyrings wholesale',
+        'keyrings supplier',
+        'keyrings sales agent',
+        'keyrings East Anglia',
+        'keyring wholesale',
+        'keyring supplier',
+        'keyring sales agent',
+        'key rings wholesale',
+        'key rings supplier',
+        'key rings sales agent',
+        
+        // Bookmarks SEO
+        'bookmarks wholesale',
+        'bookmarks supplier',
+        'bookmarks sales agent',
+        'bookmarks East Anglia',
+        'bookmark wholesale',
+        'bookmark supplier',
+        'bookmark sales agent',
+        
+        // Humorous/Rude Bookmarks SEO
+        'humorous bookmarks',
+        'humorous bookmarks wholesale',
+        'humorous bookmarks supplier',
+        'humorous bookmarks sales agent',
+        'humorous bookmarks East Anglia',
+        'funny bookmarks',
+        'funny bookmarks wholesale',
+        'funny bookmarks supplier',
+        'funny bookmarks sales agent',
+        'funny bookmarks East Anglia',
+        'rude bookmarks',
+        'rude bookmarks wholesale',
+        'rude bookmarks supplier',
+        'rude bookmarks sales agent',
+        'rude bookmarks East Anglia',
+        'humorous bookmark wholesale',
+        'funny bookmark wholesale',
+        'rude bookmark wholesale'
       ]
     },
     'wpl-gifts': {
@@ -1499,7 +1602,18 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     '/images/companies/mint-publishing/1-1-29.jpeg',
     '/images/companies/mint-publishing/1-1-25.jpeg',
     '/images/companies/mint-publishing/1-19.jpeg',
-    '/images/companies/mint-publishing/1-30.jpeg'
+    '/images/companies/mint-publishing/1-30.jpeg',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.23.28.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.23.32.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.23.44.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.23.50.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.24.26.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.24.39.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.24.50.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.25.00.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.27.07.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.28.57.png',
+    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.29.11.png'
   ] : [];
 
   const gnawChocolateBaseImages = resolvedParams.slug === 'gnaw-chocolate' ? [
