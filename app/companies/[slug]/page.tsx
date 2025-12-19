@@ -387,7 +387,101 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'Robin Robin cards wholesale',
         'Robin Robin cards supplier',
         'Robin Robin cards sales agent',
-        'Robin Robin greeting cards East Anglia'
+        'Robin Robin greeting cards East Anglia',
+        
+        // Henry Fraser Art SEO
+        'Henry Fraser Art greeting cards',
+        'Henry Fraser greeting cards',
+        'Henry Fraser Art cards wholesale',
+        'Henry Fraser Art cards supplier',
+        'Henry Fraser Art cards sales agent',
+        'Henry Fraser Art greeting cards East Anglia',
+        
+        // The Illustrators SEO
+        'Illustrators greeting cards',
+        'The Illustrators greeting cards',
+        'Illustrators cards wholesale',
+        'The Illustrators cards wholesale',
+        'Illustrators cards supplier',
+        'The Illustrators cards supplier',
+        'Illustrators cards sales agent',
+        'The Illustrators cards sales agent',
+        'Illustrators greeting cards East Anglia',
+        'The Illustrators greeting cards East Anglia',
+        
+        // Mezzanine SEO
+        'Mezzanine greeting cards',
+        'Mezzanine cards wholesale',
+        'Mezzanine cards supplier',
+        'Mezzanine cards sales agent',
+        'Mezzanine greeting cards East Anglia',
+        
+        // The Art of Print SEO
+        'Art of Print greeting cards',
+        'The Art of Print greeting cards',
+        'Art of Print cards wholesale',
+        'The Art of Print cards wholesale',
+        'Art of Print cards supplier',
+        'The Art of Print cards supplier',
+        'Art of Print cards sales agent',
+        'The Art of Print cards sales agent',
+        'Art of Print greeting cards East Anglia',
+        'The Art of Print greeting cards East Anglia',
+        
+        // Classics Collection SEO
+        'Classics greeting cards',
+        'Classics collection greeting cards',
+        'Classics cards wholesale',
+        'Classics collection cards wholesale',
+        'Classics cards supplier',
+        'Classics collection cards supplier',
+        'Classics cards sales agent',
+        'Classics collection cards sales agent',
+        'Classics greeting cards East Anglia',
+        'Classics collection greeting cards East Anglia',
+        
+        // V&A Collection Formats SEO
+        'V&A Curio Format greeting cards',
+        'V&A Luxury Format greeting cards',
+        'V&A Classic Format greeting cards',
+        'V&A 5x7 Format greeting cards',
+        'V&A Curio Format cards wholesale',
+        'V&A Luxury Format cards wholesale',
+        'V&A Classic Format cards wholesale',
+        'V&A 5x7 Format cards wholesale',
+        
+        // TATE Contemporary SEO
+        'TATE Contemporary greeting cards',
+        'TATE Contemporary cards wholesale',
+        'TATE Contemporary cards supplier',
+        'TATE Contemporary cards sales agent',
+        'TATE Contemporary greeting cards East Anglia',
+        
+        // Natural History Museum Formats SEO
+        'Natural History Museum Square greeting cards',
+        'Natural History Museum Rectangle greeting cards',
+        'Natural History Museum Square cards wholesale',
+        'Natural History Museum Rectangle cards wholesale',
+        
+        // Matthew Williamson Collections SEO
+        'Matthew Williamson DNA Collection greeting cards',
+        'Matthew Williamson Design Collection greeting cards',
+        'Matthew Williamson DNA Collection cards wholesale',
+        'Matthew Williamson Design Collection cards wholesale',
+        
+        // Wild Press by Helen Ahpornsiri SEO
+        'Wild Press Helen Ahpornsiri greeting cards',
+        'Wild Press by Helen Ahpornsiri greeting cards',
+        'Helen Ahpornsiri greeting cards',
+        'Wild Press Helen Ahpornsiri cards wholesale',
+        'Wild Press by Helen Ahpornsiri cards wholesale',
+        
+        // Coast and Country by Lucy Grossmith SEO
+        'Coast and Country Lucy Grossmith greeting cards',
+        'Coast and Country by Lucy Grossmith greeting cards',
+        'Lucy Grossmith greeting cards',
+        'Coast and Country Lucy Grossmith cards wholesale',
+        'Coast and Country by Lucy Grossmith cards wholesale'
       ]
     },
     'paper-salad': {
