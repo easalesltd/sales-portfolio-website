@@ -168,6 +168,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'Angela Harding advent cards',
         'Angela Harding cards sales agent',
         
+        // Angela Harding transition SEO (now available via Museums & Galleries)
+        'Angela Harding now available Museums and Galleries',
+        'Angela Harding moved to Museums and Galleries',
+        'Angela Harding now Museums and Galleries',
+        'Angela Harding available Museums and Galleries',
+        'Angela Harding greeting cards now Museums and Galleries',
+        'Angela Harding wholesale now Museums and Galleries',
+        
         // V&A SEO
         'V&A greeting cards',
         'V&A cards wholesale',
