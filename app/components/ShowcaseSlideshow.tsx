@@ -203,7 +203,7 @@ export default function ShowcaseSlideshow() {
       onMouseLeave={handleMouseLeave}
     >
       {/* Images Container */}
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full bg-white md:bg-transparent">
         {/* Current Image */}
         <div 
           className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
