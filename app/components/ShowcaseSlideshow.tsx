@@ -217,7 +217,7 @@ export default function ShowcaseSlideshow() {
             src={shuffledImages[currentIndex]}
             alt={`Showcase image ${currentIndex + 1}`}
             fill
-            className="object-contain md:object-cover select-none"
+            className="object-cover select-none"
             priority={currentIndex === 0}
             onError={() => handleImageError(currentIndex)}
             sizes="100vw"
@@ -239,7 +239,7 @@ export default function ShowcaseSlideshow() {
             src={shuffledImages[nextIndex]}
             alt={`Showcase image ${nextIndex + 1}`}
             fill
-            className="object-contain md:object-cover select-none"
+            className="object-cover select-none"
             priority
             onError={() => handleImageError(nextIndex)}
             sizes="100vw"
