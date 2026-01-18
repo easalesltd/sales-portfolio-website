@@ -44,7 +44,7 @@ const showcaseImages = [
   '/images/showcase/Screenshot 2025-12-19 at 20.44.58.png',
   '/images/showcase/Screenshot 2025-12-19 at 20.45.04.png',
   '/images/showcase/Screenshot 2025-12-19 at 20.46.04.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.46.18.png',
+  '/images/showcase/Screenshot 2026-01-18 at 13.06.13.png',
   '/images/showcase/showcase1.jpeg',
   '/images/showcase/showcase13.jpeg',
   '/images/showcase/showcase2.jpeg',
