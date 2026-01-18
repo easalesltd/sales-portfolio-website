@@ -513,9 +513,6 @@ export const metadata: Metadata = {
     index: true,
     follow: true
   },
-  alternates: {
-            canonical: "https://www.easalesltd.co.uk"
-  },
   authors: [{ name: "Dave Langdon" }, { name: "David Langdon" }],
   metadataBase: new URL("https://www.easalesltd.co.uk"),
   generator: "Next.js",
