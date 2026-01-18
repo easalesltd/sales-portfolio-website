@@ -653,13 +653,5 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true
-  },
-  images: [
-    {
-      url: "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
-      width: 1200,
-      height: 630,
-      alt: "David Langdon & Dave Langdon - Greeting Card Sales Agent"
-    }
-  ]
+  }
 }; 

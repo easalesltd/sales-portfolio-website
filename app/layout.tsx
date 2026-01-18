@@ -518,14 +518,6 @@ export const metadata: Metadata = {
   },
   authors: [{ name: "Dave Langdon" }, { name: "David Langdon" }],
   metadataBase: new URL("https://www.easalesltd.co.uk"),
-  images: [
-    {
-      url: "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
-      width: 1200,
-      height: 630,
-      alt: "East Anglian Sales LTD - Greeting Cards & Gifts Display"
-    }
-  ],
   generator: "Next.js",
   applicationName: "East Anglian Sales LTD",
   referrer: "origin-when-cross-origin",
