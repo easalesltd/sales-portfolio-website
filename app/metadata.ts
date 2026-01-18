@@ -616,12 +616,25 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
+    url: "https://www.easalesltd.co.uk",
     images: [
       {
-        url: "/images/logo.svg.png",
-        width: 800,
-        height: 600,
-        alt: "East Anglian Sales LTD - Greeting Card Sales Agent & Gift Sales Agent"
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "David Langdon & Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent"
+      },
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "East Anglian Sales LTD - Professional Greeting Card & Gift Sales Agent"
+      },
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase4.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Greeting Card & Gift Sales Agent - East Anglia"
       }
     ]
   },
@@ -629,6 +642,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "David Langdon & Dave Langdon - Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
     description: "David Langdon and Dave Langdon - Professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more.",
+    images: [
+      "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+      "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"
+    ],
   },
   alternates: {
     canonical: "https://www.easalesltd.co.uk"
@@ -636,5 +653,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true
-  }
+  },
+  images: [
+    {
+      url: "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+      width: 1200,
+      height: 630,
+      alt: "David Langdon & Dave Langdon - Greeting Card Sales Agent"
+    }
+  ]
 }; 

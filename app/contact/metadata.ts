@@ -41,6 +41,12 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "Contact East Anglian Sales LTD"
+      },
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Contact Dave Langdon & David Langdon - Sales Agent"
       }
     ]
   },
@@ -48,7 +54,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Contact East Anglian Sales LTD | David Langdon & Dave Langdon - Request a Visit",
     description: "Get in touch with David Langdon and Dave Langdon, your local wholesale agent in East Anglia. Request a visit or place an order.",
-    images: ["https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg"]
+    images: [
+      "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+      "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"
+    ]
   },
   alternates: {
     canonical: "https://www.easalesltd.co.uk/contact"

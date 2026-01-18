@@ -486,7 +486,28 @@ export const metadata: Metadata = {
     description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Personal service from Dave Langdon in Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.",
     type: "website",
     locale: "en_GB",
-    siteName: "East Anglian Sales LTD"
+    siteName: "East Anglian Sales LTD",
+    url: "https://www.easalesltd.co.uk",
+    images: [
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "East Anglian Sales LTD - Greeting Cards & Gifts Display"
+      },
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "East Anglian Sales LTD - Wholesale Cards & Gifts"
+      },
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase4.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "East Anglian Sales LTD - Greeting Card Sales Agent"
+      }
+    ]
   },
   robots: {
     index: true,
@@ -497,6 +518,14 @@ export const metadata: Metadata = {
   },
   authors: [{ name: "Dave Langdon" }, { name: "David Langdon" }],
   metadataBase: new URL("https://www.easalesltd.co.uk"),
+  images: [
+    {
+      url: "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+      width: 1200,
+      height: 630,
+      alt: "East Anglian Sales LTD - Greeting Cards & Gifts Display"
+    }
+  ],
   generator: "Next.js",
   applicationName: "East Anglian Sales LTD",
   referrer: "origin-when-cross-origin",
@@ -514,7 +543,10 @@ export const metadata: Metadata = {
     description: 'Leading wholesaler of greeting cards, gifts, and more in East Anglia. Serving retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.',
     site: '@eastangliansalesltd',
     creator: '@DaveLangdon',
-    images: ['/images/og-image.jpg'],
+    images: [
+      'https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg',
+      'https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg'
+    ],
   },
 };
 
@@ -605,7 +637,29 @@ export default function RootLayout({
                   "width": "100",
                   "height": "67"
                 },
-                "image": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+                "image": [
+                  {
+                    "@type": "ImageObject",
+                    "url": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+                    "width": 1200,
+                    "height": 630,
+                    "caption": "East Anglian Sales LTD - Greeting Cards & Gifts Display"
+                  },
+                  {
+                    "@type": "ImageObject",
+                    "url": "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg",
+                    "width": 1200,
+                    "height": 630,
+                    "caption": "East Anglian Sales LTD - Wholesale Cards & Gifts"
+                  },
+                  {
+                    "@type": "ImageObject",
+                    "url": "https://www.easalesltd.co.uk/images/showcase/showcase4.jpeg",
+                    "width": 1200,
+                    "height": 630,
+                    "caption": "East Anglian Sales LTD - Greeting Card Sales Agent"
+                  }
+                ],
                 "address": {
                   "@type": "PostalAddress",
                   "streetAddress": "Office 2, Paragon House, 35 Lower Brook Street",

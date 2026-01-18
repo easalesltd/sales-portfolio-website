@@ -123,12 +123,19 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_GB',
     siteName: 'East Anglian Sales LTD',
+    url: 'https://www.easalesltd.co.uk/temporary-rep-cover',
     images: [
       {
-        url: '/images/logo.svg.png',
-        width: 800,
-        height: 600,
+        url: 'https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg',
+        width: 1200,
+        height: 630,
         alt: 'EA Sales - Temporary Sales Rep Cover Services'
+      },
+      {
+        url: 'https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg',
+        width: 1200,
+        height: 630,
+        alt: 'Temporary Sales Rep Cover - East Anglia'
       }
     ]
   },
@@ -136,6 +143,10 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
     description: 'Professional temporary sales representative cover from Dave Langdon and David Langdon across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves.',
+    images: [
+      'https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg',
+      'https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg'
+    ]
   },
                 alternates: {
                 canonical: 'https://www.easalesltd.co.uk/temporary-rep-cover'

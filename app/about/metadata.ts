@@ -38,6 +38,12 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: "East Anglian Sales LTD - Wholesale Cards & Gifts"
+      },
+      {
+        url: "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "About East Anglian Sales LTD - Greeting Card Sales Agent"
       }
     ]
   },
@@ -45,7 +51,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "About East Anglian Sales LTD | Your Local Wholesale Partner",
     description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia.",
-    images: ["https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg"]
+    images: [
+      "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+      "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"
+    ]
   },
   alternates: {
     canonical: "https://www.easalesltd.co.uk/about"
