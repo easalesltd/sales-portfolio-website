@@ -136,15 +136,6 @@ export const companies: Company[] = [
     websiteUrl: "https://www.stareditions.com"
   },
   {
-    id: "wpl-gifts",
-    name: "WPL Gifts",
-    slug: "wpl-gifts",
-    description: "Here at WPL Gifts, we design all of our products in-house here in the UK, offering you contemporary and unique gifts at competitive wholesale, trade-only prices.",
-    logoUrl: "/images/logos/wpl-gifts-placeholder.png",
-    catalogueUrl: "https://drive.google.com/drive/folders/1o-_e5Cf3dfwR_WyaoFQVkOwlGMMwZLT4?usp=drive_link",
-    websiteUrl: "https://www.wplgifts.co.uk"
-  },
-  {
     id: "cgb-giftware",
     name: "CGB Giftware",
     slug: "cgb-giftware",

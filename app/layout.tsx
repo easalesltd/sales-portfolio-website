@@ -907,7 +907,7 @@ export default function RootLayout({
                   "name": "What brands does the Greeting Card Sales Agent represent?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Dave Langdon, also known as David Langdon, as a Greeting Card Sales Agent and Giftware Sales Agent, represents multiple brands including Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, Star Editions, Gnaw Chocolate, Boxer Gifts, WPL Gifts, Global Journey, Peppermint Grove, Emotional Rescue, David Fischhoff, Real & Exciting Designs, and CGB Giftware."
+                    "text": "Dave Langdon, also known as David Langdon, as a Greeting Card Sales Agent and Giftware Sales Agent, represents multiple brands including Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, Star Editions, Gnaw Chocolate, Boxer Gifts, Global Journey, Peppermint Grove, Emotional Rescue, David Fischhoff, Real & Exciting Designs, and CGB Giftware."
                   }
                 },
                 {

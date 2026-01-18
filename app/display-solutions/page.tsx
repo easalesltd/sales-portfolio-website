@@ -33,7 +33,6 @@ export default function DisplaySolutionsPage() {
     'Museums and Galleries CDU.png',
     'Ohh Deer Art Print CDU.png',
     'Ohh Deer Kaliedo CDU.png',
-    'WPL Gifts CDU.png',
     'Ohh Deer CDU.png'
   ];
 

@@ -41,7 +41,6 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     { name: 'Paper Salad', checked: false },
     { name: 'Peppermint Grove', checked: false },
     { name: 'Star Editions', checked: false },
-    { name: 'WPL Gifts', checked: false }
   ]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);

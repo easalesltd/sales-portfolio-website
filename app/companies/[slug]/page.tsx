@@ -985,27 +985,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'rude bookmark wholesale'
       ]
     },
-    'wpl-gifts': {
-      title: 'WPL Gifts Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
-      keywords: [
-        'wpl gifts sales agent',
-        'wpl sales agent',
-        'wpl gifts agent',
-        'wpl gifts supplier',
-        'wpl gifts East Anglia',
-        'wpl gifts Hertfordshire',
-        'wpl gifts Cambridgeshire',
-        'wpl gifts supplier',
-        'giftware supplier',
-        'retail gifts supplier',
-        'East Anglia wpl gifts agent',
-        'Hertfordshire wpl gifts agent',
-        'Cambridgeshire wpl gifts agent',
-        'Suffolk wpl gifts supplier',
-        'Norfolk wpl gifts agent',
-        'Essex wpl gifts supplier'
-      ]
-    },
     'global-journey-gifts': {
       title: 'Global Journey Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
@@ -1684,11 +1663,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.00.png'
   ] : [];
 
-  const wplGiftsBaseImages = resolvedParams.slug === 'wpl-gifts' ? [
-    '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.34.png',
-    '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.28.png',
-    '/images/companies/wpl-gifts/Screenshot 2025-05-17 at 08.36.21.png'
-  ] : [];
 
   const mintPublishingBaseImages = resolvedParams.slug === 'mint-publishing' ? [
     '/images/companies/mint-publishing/1-1-27.jpeg',
@@ -1742,7 +1716,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const davidFischhoffImages = shuffleArray(davidFischhoffBaseImages);
   const ohhDeerImages = shuffleArray(ohhDeerBaseImages);
   const globalJourneyImages = shuffleArray(globalJourneyBaseImages);
-  const wplGiftsImages = shuffleArray(wplGiftsBaseImages);
   const mintPublishingImages = shuffleArray(mintPublishingBaseImages);
   const gnawChocolateImages = shuffleArray(gnawChocolateBaseImages);
   const cgbGiftwareImages = shuffleArray(cgbGiftwareBaseImages);
@@ -1874,11 +1847,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                   {resolvedParams.slug === 'global-journey-gifts' && (
                     <div className="mb-8">
                       <ImageGallery images={globalJourneyImages} interval={5500} />
-                    </div>
-                  )}
-                  {resolvedParams.slug === 'wpl-gifts' && (
-                    <div className="mb-8">
-                      <ImageGallery images={wplGiftsImages} interval={5000} />
                     </div>
                   )}
                   {resolvedParams.slug === 'mint-publishing' && (
@@ -2160,11 +2128,6 @@ function generateStructuredData(company: Company) {
         'Hertfordshire Retail',
         'Cambridgeshire Retail'
       ]
-    },
-    'wpl-gifts': {
-      name: 'WPL Gifts Sales Agent - Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
-      description: 'Quality giftware and retail solutions for your store.',
-      categories: ['Giftware', 'Retail Solutions', 'East Anglia Retail', 'Hertfordshire Retail', 'Cambridgeshire Retail']
     },
     'global-journey-gifts': {
       name: 'Global Journey Sales Agent - Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
