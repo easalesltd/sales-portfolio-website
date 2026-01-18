@@ -30,11 +30,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Special cases for each company
   const companyMetadata = {
     'museums-and-galleries': {
-      title: 'Dave Langdon - Museums and Galleries Sales Agent | Art & Design-led Cards Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'David Langdon & Dave Langdon - Museums and Galleries Sales Agent | Art & Design-led Cards Supplier in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'Dave Langdon Museums and Galleries',
+        'David Langdon Museums and Galleries',
         'Dave Langdon Museums and Galleries Sales Agent',
+        'David Langdon Museums and Galleries Sales Agent',
         'Museums and Galleries Sales Agent Dave Langdon',
+        'Museums and Galleries Sales Agent David Langdon',
         'museums and galleries sales agent',
         'museums and galleries agent',
         'museums and galleries supplier',
@@ -485,11 +488,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ]
     },
     'paper-salad': {
-      title: 'Dave Langdon - Paper Salad Sales Agent | Contemporary Design-led Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'David Langdon & Dave Langdon - Paper Salad Sales Agent | Contemporary Design-led Cards in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'Dave Langdon Paper Salad',
+        'David Langdon Paper Salad',
         'Dave Langdon Paper Salad Sales Agent',
+        'David Langdon Paper Salad Sales Agent',
         'Paper Salad Sales Agent Dave Langdon',
+        'Paper Salad Sales Agent David Langdon',
         'paper salad sales agent',
         'paper salad agent',
         'paper salad supplier',
@@ -554,11 +560,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ]
     },
     'ohh-deer': {
-      title: 'Dave Langdon - Ohh Deer Sales Agent | Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'David Langdon & Dave Langdon - Ohh Deer Sales Agent | Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'Dave Langdon Ohh Deer',
+        'David Langdon Ohh Deer',
         'Dave Langdon Ohh Deer Sales Agent',
+        'David Langdon Ohh Deer Sales Agent',
         'Ohh Deer Sales Agent Dave Langdon',
+        'Ohh Deer Sales Agent David Langdon',
         'ohh deer sales agent',
         'ohh deer agent',
         'ohh deer supplier',
@@ -682,11 +691,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ]
     },
     'gnaw-chocolate': {
-      title: 'Dave Langdon - Gnaw Chocolate Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'David Langdon & Dave Langdon - Gnaw Chocolate Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'Dave Langdon Gnaw Chocolate',
+        'David Langdon Gnaw Chocolate',
         'Dave Langdon Gnaw Chocolate Sales Agent',
+        'David Langdon Gnaw Chocolate Sales Agent',
         'Gnaw Chocolate Sales Agent Dave Langdon',
+        'Gnaw Chocolate Sales Agent David Langdon',
         'gnaw chocolate sales agent',
         'gnaw chocolate agent',
         'gnaw chocolate supplier',
@@ -706,11 +718,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ]
     },
     'mint-publishing': {
-      title: 'Dave Langdon - Mint Publishing Sales Agent | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'David Langdon & Dave Langdon - Mint Publishing Sales Agent | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'Dave Langdon Mint Publishing',
+        'David Langdon Mint Publishing',
         'Dave Langdon Mint Publishing Sales Agent',
+        'David Langdon Mint Publishing Sales Agent',
         'Mint Publishing Sales Agent Dave Langdon',
+        'Mint Publishing Sales Agent David Langdon',
         'mint publishing sales agent',
         'mint publishing agent',
         'mint publishing supplier',
@@ -1093,16 +1108,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ]
     },
     'cgb-giftware': {
-      title: 'Dave Langdon - CGB Giftware Sales Agent | Container Group Gifts & Bespoke Giftware in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'David Langdon & Dave Langdon - CGB Giftware Sales Agent | Container Group Gifts & Bespoke Giftware in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'Dave Langdon CGB Giftware',
+        'David Langdon CGB Giftware',
         'Dave Langdon CGB Giftware Sales Agent',
+        'David Langdon CGB Giftware Sales Agent',
         'Dave Langdon Container Group',
+        'David Langdon Container Group',
         'Dave Langdon Container Group Sales Agent',
+        'David Langdon Container Group Sales Agent',
         'Dave Langdon Container Group Gifts',
+        'David Langdon Container Group Gifts',
         'CGB Giftware Sales Agent Dave Langdon',
+        'CGB Giftware Sales Agent David Langdon',
         'Container Group Sales Agent Dave Langdon',
+        'Container Group Sales Agent David Langdon',
         'Container Group Gifts Sales Agent Dave Langdon',
+        'Container Group Gifts Sales Agent David Langdon',
         'cgb giftware sales agent',
         'cgb giftware agent',
         'cgb giftware supplier',
@@ -1228,11 +1251,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ]
     },
     'star-editions': {
-      title: 'Dave Langdon - Star Editions Sales Agent | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'David Langdon & Dave Langdon - Star Editions Sales Agent | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
         'Dave Langdon Star Editions',
+        'David Langdon Star Editions',
         'Dave Langdon Star Editions Sales Agent',
+        'David Langdon Star Editions Sales Agent',
         'Star Editions Sales Agent Dave Langdon',
+        'Star Editions Sales Agent David Langdon',
         'star editions sales agent',
         'star editions agent',
         'star editions supplier',

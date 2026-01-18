@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Greeting Card Display Solutions | Free Spinners & Bespoke Wall Displays | East Anglian Sales LTD",
-  description: "Professional greeting card display solutions including FREE greeting card spinners, affordable display units, and bespoke wall displays. Expert retail solutions for greeting cards serving Suffolk, Norfolk, Essex, and Cambridgeshire.",
+  title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays | East Anglian Sales LTD",
+  description: "Professional greeting card display solutions from Dave Langdon and David Langdon including FREE greeting card spinners, affordable display units, and bespoke wall displays. Expert retail solutions for greeting cards serving Suffolk, Norfolk, Essex, and Cambridgeshire.",
   keywords: [
+    "Dave Langdon display solutions",
+    "David Langdon display solutions",
+    "Dave Langdon card displays",
+    "David Langdon card displays",
     // Free Solutions
     "free greeting card spinners East Anglia",
     "complimentary card displays Suffolk",
@@ -56,8 +60,8 @@ export const metadata: Metadata = {
     "retail card displays East Anglia"
   ],
   openGraph: {
-    title: "Greeting Card Display Solutions | Free Spinners & Bespoke Wall Displays | East Anglian Sales LTD",
-    description: "Professional greeting card display solutions including FREE greeting card spinners, affordable display units, and bespoke wall displays. Expert retail solutions for greeting cards serving Suffolk, Norfolk, Essex, and Cambridgeshire.",
+    title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays | East Anglian Sales LTD",
+    description: "Professional greeting card display solutions from Dave Langdon and David Langdon including FREE greeting card spinners, affordable display units, and bespoke wall displays. Expert retail solutions for greeting cards serving Suffolk, Norfolk, Essex, and Cambridgeshire.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -73,8 +77,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Greeting Card Display Solutions | Free Spinners & Bespoke Wall Displays",
-    description: "Professional greeting card display solutions including FREE greeting card spinners, affordable display units, and bespoke wall displays. Expert retail solutions for greeting cards serving East Anglia.",
+    title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays",
+    description: "Professional greeting card display solutions from Dave Langdon and David Langdon including FREE greeting card spinners, affordable display units, and bespoke wall displays. Expert retail solutions for greeting cards serving East Anglia.",
     images: ["https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg"]
   },
   alternates: {

@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About East Anglian Sales LTD | Wholesale Cards & Gifts Supplier in East Anglia",
-  description: "Meet Dave Langdon and East Anglian Sales LTD, your trusted wholesale supplier of greeting cards, gifts, and display solutions in Suffolk, Norfolk, Essex, and Cambridgeshire. Family-run business with personal service.",
+  title: "About East Anglian Sales LTD | David Langdon & Dave Langdon - Wholesale Cards & Gifts Supplier in East Anglia",
+  description: "Meet David Langdon and Dave Langdon at East Anglian Sales LTD, your trusted wholesale supplier of greeting cards, gifts, and display solutions in Suffolk, Norfolk, Essex, and Cambridgeshire. Family-run business with personal service.",
   keywords: [
     "East Anglian Sales LTD",
     "Dave Langdon wholesale",
+    "David Langdon wholesale",
+    "Dave Langdon about",
+    "David Langdon about",
+    "Dave Langdon background",
+    "David Langdon background",
+    "Dave Langdon experience",
+    "David Langdon experience",
     "East Anglia greeting cards",
     "wholesale gifts Suffolk",
     "card supplier Norfolk",
@@ -19,8 +26,8 @@ export const metadata: Metadata = {
     "Cambridgeshire retail supplier"
   ],
   openGraph: {
-    title: "About East Anglian Sales LTD | Your Local Wholesale Partner in East Anglia",
-    description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Personal service from Dave Langdon in Suffolk, Norfolk, Essex, and Cambridgeshire.",
+    title: "About East Anglian Sales LTD | David Langdon & Dave Langdon - Your Local Wholesale Partner in East Anglia",
+    description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Personal service from David Langdon and Dave Langdon in Suffolk, Norfolk, Essex, and Cambridgeshire.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",

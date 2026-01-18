@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dave's Favourite Recipes | Sourdough Bread, Mince Pies & Chocolate Christmas Puddings | East Anglian Sales",
-  description: "Dave Langdon shares his favourite baking recipes for gifting to customers. Learn how to make classic sourdough bread, delicious orange juice pastry mince pies, and mini chocolate Christmas puddings. Perfect for building business relationships with homemade treats!",
+  title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough Bread, Mince Pies & Chocolate Christmas Puddings | East Anglian Sales",
+  description: "Dave Langdon and David Langdon share their favourite baking recipes for gifting to customers. Learn how to make classic sourdough bread, delicious orange juice pastry mince pies, and mini chocolate Christmas puddings. Perfect for building business relationships with homemade treats!",
   keywords: [
     "sourdough bread recipe",
     "sourdough starter recipe",
@@ -38,14 +38,22 @@ export const metadata: Metadata = {
     "business baking",
     "customer gifts",
     "Dave Langdon recipes",
+    "David Langdon recipes",
     "Dave Langdon baking recipes",
+    "David Langdon baking recipes",
+    "Dave Langdon sourdough",
+    "David Langdon sourdough",
+    "Dave Langdon mince pies",
+    "David Langdon mince pies",
+    "Dave Langdon Christmas puddings",
+    "David Langdon Christmas puddings",
     "East Anglian Sales recipes",
     "Christmas baking recipes",
     "festive baking recipes"
   ],
   openGraph: {
-    title: "Dave's Favourite Recipes | Sourdough & Mince Pies",
-    description: "Share in Dave's passion for baking with these two go-to recipes perfect for gifting to customers.",
+    title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough & Mince Pies",
+    description: "Share in Dave Langdon and David Langdon's passion for baking with these two go-to recipes perfect for gifting to customers.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -61,8 +69,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dave's Favourite Recipes | Sourdough & Mince Pies",
-    description: "Share in Dave's passion for baking with these go-to recipes perfect for gifting to customers.",
+    title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough & Mince Pies",
+    description: "Share in Dave Langdon and David Langdon's passion for baking with these go-to recipes perfect for gifting to customers.",
     images: ["https://www.easalesltd.co.uk/images/recipes/20251125_083621.jpg"]
   },
   alternates: {

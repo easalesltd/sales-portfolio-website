@@ -1,9 +1,13 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Temporary Sales Rep Cover | Emergency Sales Agent Cover East Anglia | EA Sales',
-  description: 'Professional temporary sales representative cover across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves. Fully trained on Sales Pak, Blue Alligator, Pixsell, Card Manager, Shopify and Inzant. Covering Suffolk, Norfolk, Essex, Cambridgeshire.',
+  title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
+  description: 'Professional temporary sales representative cover from Dave Langdon and David Langdon across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves. Fully trained on Sales Pak, Blue Alligator, Pixsell, Card Manager, Shopify and Inzant. Covering Suffolk, Norfolk, Essex, Cambridgeshire.',
   keywords: [
+    "Dave Langdon temporary rep cover",
+    "David Langdon temporary rep cover",
+    "Dave Langdon sales rep cover",
+    "David Langdon sales rep cover",
     // Core Service Terms
     'temporary rep cover',
     'temporary sales rep cover',
@@ -114,8 +118,8 @@ export const metadata: Metadata = {
     'sales process maintenance'
   ].join(', '),
   openGraph: {
-    title: 'Temporary Sales Rep Cover | Emergency Sales Agent Cover East Anglia | EA Sales',
-    description: 'Professional temporary sales representative cover across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves. Fully trained on all major sales platforms.',
+    title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
+    description: 'Professional temporary sales representative cover from Dave Langdon and David Langdon across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves. Fully trained on all major sales platforms.',
     type: 'website',
     locale: 'en_GB',
     siteName: 'East Anglian Sales LTD',
@@ -130,8 +134,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Temporary Sales Rep Cover | Emergency Sales Agent Cover East Anglia | EA Sales',
-    description: 'Professional temporary sales representative cover across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves.',
+    title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
+    description: 'Professional temporary sales representative cover from Dave Langdon and David Langdon across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves.',
   },
                 alternates: {
                 canonical: 'https://www.easalesltd.co.uk/temporary-rep-cover'
