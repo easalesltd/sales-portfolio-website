@@ -104,6 +104,27 @@ export default function RecipesPage() {
     }
   ];
 
+  // Generate Review schema for testimonials
+  const reviewSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    '@id': 'https://www.easalesltd.co.uk/recipes#reviews',
+    'itemReviewed': {
+      '@type': 'Recipe',
+      'name': "Dave's Favourite Recipes"
+    },
+    'reviewBody': testimonials.map(t => t.text).join(' '),
+    'author': {
+      '@type': 'Person',
+      'name': 'Customer Reviews'
+    },
+    'reviewRating': {
+      '@type': 'Rating',
+      'ratingValue': '5',
+      'bestRating': '5'
+    }
+  };
+
   // Auto-rotate testimonials
   useEffect(() => {
     const interval = setInterval(() => {
