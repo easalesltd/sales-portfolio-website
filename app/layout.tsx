@@ -625,17 +625,18 @@ export default function RootLayout({
                   "url": "https://www.easalesltd.co.uk",
                   "name": "East Anglian Sales LTD"
                 },
-                "about": {
-                  "@id": "https://www.easalesltd.co.uk/#organization"
-                },
                 "primaryImageOfPage": {
                   "@type": "ImageObject",
                   "url": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+                  "contentUrl": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
                   "width": 1200,
                   "height": 630
                 },
                 "breadcrumb": {
                   "@id": "https://www.easalesltd.co.uk/#breadcrumb"
+                },
+                "about": {
+                  "@id": "https://www.easalesltd.co.uk/#organization"
                 },
                 "mainEntity": {
                   "@id": "https://www.easalesltd.co.uk/#organization"
@@ -652,13 +653,15 @@ export default function RootLayout({
                 "logo": {
                   "@type": "ImageObject",
                   "url": "https://www.easalesltd.co.uk/images/logo.svg.png",
-                  "width": "100",
-                  "height": "67"
+                  "contentUrl": "https://www.easalesltd.co.uk/images/logo.svg.png",
+                  "width": 100,
+                  "height": 67
                 },
                 "image": [
                   {
                     "@type": "ImageObject",
                     "url": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
+                    "contentUrl": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
                     "width": 1200,
                     "height": 630,
                     "caption": "East Anglian Sales LTD - Greeting Cards & Gifts Display"
@@ -666,6 +669,7 @@ export default function RootLayout({
                   {
                     "@type": "ImageObject",
                     "url": "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg",
+                    "contentUrl": "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg",
                     "width": 1200,
                     "height": 630,
                     "caption": "East Anglian Sales LTD - Wholesale Cards & Gifts"
@@ -673,6 +677,7 @@ export default function RootLayout({
                   {
                     "@type": "ImageObject",
                     "url": "https://www.easalesltd.co.uk/images/showcase/showcase4.jpeg",
+                    "contentUrl": "https://www.easalesltd.co.uk/images/showcase/showcase4.jpeg",
                     "width": 1200,
                     "height": 630,
                     "caption": "East Anglian Sales LTD - Greeting Card Sales Agent"
@@ -688,8 +693,8 @@ export default function RootLayout({
                 },
                 "geo": {
                   "@type": "GeoCoordinates",
-                  "latitude": "52.2333",
-                  "longitude": "0.7167"
+                  "latitude": 52.2333,
+                  "longitude": 0.7167
                 },
                 "contactPoint": [
                   {
@@ -856,14 +861,13 @@ export default function RootLayout({
                   "name": "Greeting Card Sales Agent",
                   "occupationLocation": {
                     "@type": "City",
-                    "name": "Ipswich",
-                    "addressRegion": "Suffolk",
-                    "addressCountry": "GB"
-                  },
-                  "skills": ["Greeting Card Sales", "Giftware Sales", "Retail Supplier", "Wholesale Agent", "Gift Sales Representative"]
+                    "name": "Ipswich"
+                  }
                 },
+                "knowsAbout": ["Greeting Card Sales", "Giftware Sales", "Retail Supplier", "Wholesale Agent", "Gift Sales Representative"],
                 "worksFor": {
                   "@type": "Organization",
+                  "@id": "https://www.easalesltd.co.uk/#organization",
                   "name": "East Anglian Sales LTD"
                 },
                 "address": {
@@ -872,28 +876,6 @@ export default function RootLayout({
                   "addressRegion": "Suffolk",
                   "addressCountry": "GB"
                 },
-                "areaServed": [
-                  {
-                    "@type": "State",
-                    "name": "Suffolk"
-                  },
-                  {
-                    "@type": "State",
-                    "name": "Norfolk"
-                  },
-                  {
-                    "@type": "State",
-                    "name": "Essex"
-                  },
-                  {
-                    "@type": "State",
-                    "name": "Cambridgeshire"
-                  },
-                  {
-                    "@type": "State",
-                    "name": "Hertfordshire"
-                  }
-                ],
                 "description": "Dave Langdon, also known as David Langdon, is a professional Greeting Card Sales Agent and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience, Dave serves retailers across East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
               },
               {
