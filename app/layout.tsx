@@ -815,26 +815,7 @@ export default function RootLayout({
                 "paymentAccepted": ["Credit Card", "Debit Card", "Bank Transfer"],
                 "currenciesAccepted": "GBP",
                 "telephone": "07709197915",
-                "email": "dave@easalesltd.co.uk",
-                "hasOfferCatalog": {
-                  "@type": "OfferCatalog",
-                  "name": "Product Catalog",
-                  "itemListElement": [
-                    {
-                      "@type": "OfferCatalog",
-                      "name": "Greeting Cards",
-                      "itemListElement": companies.map((company: Company) => ({
-                        "@type": "Offer",
-                        "itemOffered": {
-                          "@type": "Product",
-                          "name": company.name,
-                          "description": company.description,
-                          "url": `https://www.easalesltd.co.uk/companies/${company.slug}`
-                        }
-                      }))
-                    }
-                  ]
-                }
+                "email": "dave@easalesltd.co.uk"
               },
               {
                 "@context": "https://schema.org",
