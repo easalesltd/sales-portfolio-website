@@ -62,13 +62,6 @@ export default function AboutPage() {
       '@id': 'https://www.easalesltd.co.uk/#organization',
       'name': 'East Anglian Sales LTD'
     },
-    'areaServed': [
-      { '@type': 'State', 'name': 'Suffolk' },
-      { '@type': 'State', 'name': 'Norfolk' },
-      { '@type': 'State', 'name': 'Essex' },
-      { '@type': 'State', 'name': 'Cambridgeshire' },
-      { '@type': 'State', 'name': 'Hertfordshire' }
-    ],
     'contactPoint': {
       '@type': 'ContactPoint',
       'telephone': '07709197915',
