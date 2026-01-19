@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import Script from 'next/script';
 import { getRecipeBySlug, getAllRecipeSlugs, Recipe } from '../../data/recipes';
 import type { Metadata } from 'next';
 import RecipeActions from './RecipeActions';
@@ -138,13 +137,13 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
 
   return (
     <>
-      <Script
+      <script
         id={`recipe-schema-${recipe.slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(recipeSchema)
         }}
-      />
+      ></script>
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back to Recipes Link */}

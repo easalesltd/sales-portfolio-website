@@ -13,6 +13,40 @@ export default function RecipesPage() {
   
   const recipes = getAllRecipes();
 
+  // Generate structured data for recipes collection
+  const collectionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': 'https://www.easalesltd.co.uk/recipes#collectionpage',
+    'name': "Dave's Favourite Recipes",
+    'description': 'Dave Langdon\'s favourite baking recipes for gifting to customers. Includes sourdough bread, orange juice pastry mince pies, and mini chocolate Christmas puddings.',
+    'url': 'https://www.easalesltd.co.uk/recipes',
+    'mainEntity': {
+      '@type': 'ItemList',
+      'itemListElement': recipes.map((recipe, index) => ({
+        '@type': 'ListItem',
+        'position': index + 1,
+        'item': {
+          '@type': 'Recipe',
+          '@id': `https://www.easalesltd.co.uk/recipes/${recipe.slug}`,
+          'name': recipe.title,
+          'description': recipe.description,
+          'image': `https://www.easalesltd.co.uk${recipe.image}`,
+          'url': `https://www.easalesltd.co.uk/recipes/${recipe.slug}`
+        }
+      }))
+    },
+    'author': {
+      '@type': 'Person',
+      'name': 'Dave Langdon'
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'East Anglian Sales LTD',
+      'url': 'https://www.easalesltd.co.uk'
+    }
+  };
+
   const testimonials = [
     {
       text: "Also those mince pies are THE BEST ive ever eaten!!! Thank you so much!!",
@@ -114,6 +148,18 @@ export default function RecipesPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(collectionSchema)
+        }}
+      ></script>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(reviewSchema)
+        }}
+      ></script>
       {/* Hidden SEO text */}
       <div className="sr-only">
         <p>

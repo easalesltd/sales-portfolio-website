@@ -1555,6 +1555,31 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
 
   const structuredData = generateStructuredData(company);
   
+  // Generate VideoObject schemas for company videos
+  const videoSchemas = company.videos && company.videos.length > 0 
+    ? company.videos.map((video, index) => ({
+        '@context': 'https://schema.org',
+        '@type': 'VideoObject',
+        '@id': `https://www.easalesltd.co.uk/companies/${company.slug}#video-${index + 1}`,
+        'name': `${company.name} Trade Show Video`,
+        'description': `Trade show presentation and product showcase for ${company.name}`,
+        'thumbnailUrl': `https://www.easalesltd.co.uk${company.logoUrl}`,
+        'uploadDate': '2024-01-01', // Update with actual date if available
+        'contentUrl': `https://www.easalesltd.co.uk${video}`,
+        'embedUrl': `https://www.easalesltd.co.uk${video}`,
+        'publisher': {
+          '@type': 'Organization',
+          'name': 'East Anglian Sales LTD',
+          'logo': {
+            '@type': 'ImageObject',
+            'url': 'https://www.easalesltd.co.uk/images/logo.svg.png'
+          }
+        }
+      }))
+    : [];
+
+  const allSchemas = [structuredData, ...videoSchemas];
+
   const hasVideoBackground = [
     'museums-and-galleries', 
     'paper-salad', 
@@ -1722,12 +1747,15 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
 
   const content = (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData)
-        }}
-      />
+      {allSchemas.map((schema, index) => (
+        <script
+          key={`schema-${index}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schema)
+          }}
+        />
+      ))}
       <div className="min-h-screen py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

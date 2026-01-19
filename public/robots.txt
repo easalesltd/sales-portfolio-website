@@ -7,7 +7,10 @@ Sitemap: https://www.easalesltd.co.uk/sitemap.xml
 
 # Prevent crawling of admin or private areas
 Disallow: /api/
-Disallow: /_next/
+# Allow Next.js image optimization (needed for images to display properly)
+Allow: /_next/image
+# Block Next.js static chunks (build artifacts, not needed for indexing)
+Disallow: /_next/static/
 Disallow: /admin/
 
 # Crawl-delay for all bots

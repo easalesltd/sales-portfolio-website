@@ -8,8 +8,45 @@ import RequestVisitForm from '../components/RequestVisitForm';
 export default function ContactPage() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
 
+  // Generate structured data for Contact page
+  const contactSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': 'https://www.easalesltd.co.uk/contact#contactpage',
+    'name': 'Contact East Anglian Sales LTD',
+    'description': 'Contact Dave Langdon, your Greeting Card and Giftware Sales Agent. Get in touch via phone, email, or request an agent visit.',
+    'url': 'https://www.easalesltd.co.uk/contact',
+    'mainEntity': {
+      '@type': 'Organization',
+      '@id': 'https://www.easalesltd.co.uk/#organization',
+      'name': 'East Anglian Sales LTD',
+      'contactPoint': [
+        {
+          '@type': 'ContactPoint',
+          'telephone': '07709197915',
+          'email': 'dave@easalesltd.co.uk',
+          'contactType': 'sales',
+          'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire', 'Hertfordshire'],
+          'availableLanguage': 'English'
+        }
+      ],
+      'sameAs': [
+        'https://www.instagram.com/eastangliansalesltd/',
+        'https://www.linkedin.com/in/dave-langdon-709a8547',
+        'https://www.facebook.com/eastangliansalesltd'
+      ]
+    }
+  };
+
   return (
-    <div className="min-h-screen py-12">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(contactSchema)
+        }}
+      ></script>
+      <div className="min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Contact Us</h1>
         
@@ -83,5 +120,6 @@ export default function ContactPage() {
         onClose={() => setIsRequestFormOpen(false)} 
       />
     </div>
+    </>
   );
 } 
