@@ -58,10 +58,10 @@ const BrandsDropdown = dynamic(() => import('./components/BrandsDropdown'), {
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | EA Sales - Wholesale Cards & Gifts',
-    default: 'EA Sales | Wholesale Cards & Gifts in East Anglia',
+    template: '%s | Greeting Card & Gift Sales Agent',
+    default: 'Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia',
   },
-  description: 'Family-run wholesale supplier of greeting cards and gifts in East Anglia. Personal service from Dave Langdon, serving retailers across Suffolk, Norfolk, Essex, and Cambridgeshire.',
+  description: 'Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Dave Langdon provides personal service to retailers across Suffolk, Norfolk, Essex, and Cambridgeshire.',
   icons: {
     icon: [
       { url: '/favicons/favicon.ico', sizes: 'any' },
@@ -482,8 +482,8 @@ export const metadata: Metadata = {
     "East Anglia business supplier"
   ],
   openGraph: {
-    title: "East Anglian Sales LTD | Wholesale Cards, Gifts & Display Solutions",
-    description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Personal service from Dave Langdon in Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.",
+    title: "Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia",
+    description: "Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Dave Langdon provides personal service to retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -528,8 +528,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'East Anglian Sales LTD | Wholesale Gifts & Cards',
-    description: 'Leading wholesaler of greeting cards, gifts, and more in East Anglia. Serving retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.',
+    title: 'Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia',
+    description: 'Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Serving retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.',
     site: '@eastangliansalesltd',
     creator: '@DaveLangdon',
     images: [
@@ -616,8 +616,8 @@ export default function RootLayout({
                 "@type": "WebPage",
                 "@id": "https://www.easalesltd.co.uk/#webpage",
                 "url": "https://www.easalesltd.co.uk",
-                "name": "Dave Langdon - Greeting Card & Gift Sales Agent | East Anglian Sales LTD",
-                "description": "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Professional sales agent covering Suffolk, Norfolk, Essex, and Cambridgeshire.",
+                "name": "Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia",
+                "description": "Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Dave Langdon provides personal service to retailers across Suffolk, Norfolk, Essex, and Cambridgeshire.",
                 "inLanguage": "en-GB",
                 "isPartOf": {
                   "@type": "WebSite",
@@ -648,7 +648,7 @@ export default function RootLayout({
                 "@id": "https://www.easalesltd.co.uk/#organization",
                 "name": "East Anglian Sales LTD",
                 "alternateName": ["EA Sales", "East Anglian Sales"],
-                "description": "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia.",
+                "description": "Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Providing personal service to retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.",
                 "url": "https://www.easalesltd.co.uk",
                 "logo": {
                   "@type": "ImageObject",
