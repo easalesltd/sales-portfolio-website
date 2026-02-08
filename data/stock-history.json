@@ -1,0 +1,62 @@
+{
+  "https://widdlegifts.com/product/christmas-tree-wish-pearl-and-pendant-necklace/": {
+    "productUrl": "https://widdlegifts.com/product/christmas-tree-wish-pearl-and-pendant-necklace/",
+    "snapshots": [
+      {
+        "productUrl": "https://widdlegifts.com/product/christmas-tree-wish-pearl-and-pendant-necklace/",
+        "productName": "Christmas Tree Wish Pearl and Pendant Necklace",
+        "timestamp": "2025-12-22T17:50:50.730Z",
+        "stockStatus": "out_of_stock",
+        "stockQuantity": 160
+      }
+    ]
+  },
+  "https://widdlegifts.com/product/santa-christmas-wish-pearl-and-pendant-necklace/": {
+    "productUrl": "https://widdlegifts.com/product/santa-christmas-wish-pearl-and-pendant-necklace/",
+    "snapshots": [
+      {
+        "productUrl": "https://widdlegifts.com/product/santa-christmas-wish-pearl-and-pendant-necklace/",
+        "productName": "Santa Christmas Wish Pearl and Pendant Necklace",
+        "timestamp": "2025-12-22T17:50:50.716Z",
+        "stockStatus": "out_of_stock",
+        "stockQuantity": 180
+      }
+    ]
+  },
+  "https://widdlegifts.com/product/snowman-christmas-wish-pearl-and-pendant-necklace/": {
+    "productUrl": "https://widdlegifts.com/product/snowman-christmas-wish-pearl-and-pendant-necklace/",
+    "snapshots": [
+      {
+        "productUrl": "https://widdlegifts.com/product/snowman-christmas-wish-pearl-and-pendant-necklace/",
+        "productName": "Snowman Christmas Wish Pearl and Pendant Necklace",
+        "timestamp": "2025-12-22T17:50:50.723Z",
+        "stockStatus": "out_of_stock",
+        "stockQuantity": 164
+      }
+    ]
+  },
+  "https://widdlegifts.com/product/penguin-christmas-wish-pearl-and-pendant-necklace/": {
+    "productUrl": "https://widdlegifts.com/product/penguin-christmas-wish-pearl-and-pendant-necklace/",
+    "snapshots": [
+      {
+        "productUrl": "https://widdlegifts.com/product/penguin-christmas-wish-pearl-and-pendant-necklace/",
+        "productName": "Penguin Christmas Wish Pearl and Pendant Necklace",
+        "timestamp": "2025-12-22T17:50:50.727Z",
+        "stockStatus": "out_of_stock",
+        "stockQuantity": 181
+      }
+    ]
+  },
+  "https://widdlegifts.com/product/reindeer-christmas-wish-pearl-and-pendant-necklace/": {
+    "productUrl": "https://widdlegifts.com/product/reindeer-christmas-wish-pearl-and-pendant-necklace/",
+    "snapshots": [
+      {
+        "productUrl": "https://widdlegifts.com/product/reindeer-christmas-wish-pearl-and-pendant-necklace/",
+        "productName": "Reindeer Christmas Wish Pearl and Pendant Necklace",
+        "timestamp": "2025-12-22T17:50:50.720Z",
+        "stockStatus": "out_of_stock",
+        "stockQuantity": 182
+      }
+    ]
+  }
+}

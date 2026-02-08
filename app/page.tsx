@@ -24,14 +24,14 @@ export default function Home() {
       <div className="bg-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <FadeInOnScroll>
-            <h1 className="text-4xl font-bold text-gray-900 mb-6">Dave Langdon - Greeting Card & Gift Sales Agent</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-6">Dave Langdon - Serving Retailers Across East Anglia</h1>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.2}>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Serving Retailers Across East Anglia</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Greeting Cards & Gifts for the Wholesale Trade</h2>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.3}>
             <p className="text-lg text-gray-700 mb-6">
-              Hi, I'm Dave Langdon, a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience in the industry, I supply quality greeting cards, stationery, and gifts to retailers across East Anglia. From charming independent shops to bustling garden centres, I help retailers create amazing displays that customers love.
+              Based in Ipswich, Suffolk, I've spent over a decade supplying quality greeting cards, stationery, and gifts to retailers across East Anglia. From charming independent shops to bustling garden centres, I help retailers create amazing displays that customers love.
             </p>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.4}>

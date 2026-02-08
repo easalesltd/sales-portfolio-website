@@ -90,9 +90,9 @@ export default function AboutPage() {
           <VideoBackground videoUrl="/videos/About/background.mp4">
             <div className="w-full h-full flex items-center justify-center bg-black/30 py-8 md:py-0">
               <div className="text-center px-4 max-w-3xl">
-                <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">Dave Langdon - Your Greeting Card Sales Agent</h1>
+                <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">Meet Dave</h1>
                 <p className="text-sm md:text-lg text-white drop-shadow-lg leading-relaxed">
-                  As a professional greeting card and gift sales agent, Dave Langdon established East Anglian Sales Ltd in 2022, bringing over a decade of experience as a rep in East Anglia. 
+                  Dave established East Anglian Sales Ltd in 2022, bringing over a decade of experience as a rep in East Anglia. 
                   Dave has built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, 
                   understanding their unique needs and helping them succeed with expert greeting card sales representation.
                 </p>
@@ -132,7 +132,7 @@ export default function AboutPage() {
                 <div className="bg-blue-50 rounded-lg p-4 mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 mb-2">A Message from Dave</h2>
                   <p className="text-base text-gray-700 italic">
-                    "Hi, I'm Dave Langdon, a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. I've been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
+                    "Hi, I'm Dave Langdon, based in Ipswich, Suffolk. I've been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
                   </p>
                 </div>
                 <div>
@@ -160,7 +160,7 @@ export default function AboutPage() {
                 <div className="bg-blue-50 rounded-lg p-4 mb-6 shadow-sm">
                   <h2 className="text-lg font-semibold text-gray-900 mb-2">A Message from Dave</h2>
                   <p className="text-base text-gray-700 italic">
-                    "Hi, I'm Dave Langdon, a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. I&apos;ve been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
+                    "Hi, I'm Dave Langdon, based in Ipswich, Suffolk. I&apos;ve been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
                   </p>
                 </div>
                 <div>
