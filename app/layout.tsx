@@ -967,8 +967,10 @@ export default function RootLayout({
             </div>
           </nav>
         </header>
+        {/* Fixed gap below header - stays visible when scrolling so content doesn't touch header */}
+        <div className="fixed top-20 left-0 right-0 h-4 bg-white z-40" aria-hidden="true" />
         <Breadcrumbs />
-        <main id="main-content" className="pt-28 min-h-screen bg-white">
+        <main id="main-content" className="pt-24 min-h-screen bg-white">
           {children}
         </main>
 
