@@ -968,7 +968,7 @@ export default function RootLayout({
           </nav>
         </header>
         <Breadcrumbs />
-        <main id="main-content" className="pt-20 min-h-screen bg-white">
+        <main id="main-content" className="pt-28 min-h-screen bg-white">
           {children}
         </main>
 
