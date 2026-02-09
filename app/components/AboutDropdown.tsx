@@ -46,7 +46,9 @@ export default function AboutDropdown() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <button
+      <Link
+        href="/about"
+        prefetch
         className={`flex items-center px-3 py-2 rounded-md transition-colors ${
           isActive 
             ? 'text-blue-600 bg-blue-50' 
@@ -59,7 +61,7 @@ export default function AboutDropdown() {
             isOpen ? 'rotate-180' : ''
           }`} 
         />
-      </button>
+      </Link>
 
       {isOpen && (
         <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50">
