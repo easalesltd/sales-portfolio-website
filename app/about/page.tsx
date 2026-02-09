@@ -9,16 +9,18 @@ const aboutImages = [
   { src: '/images/about/IMG-20230520-WA0021.jpg', alt: 'Dave portrait' },
   { src: '/images/about/Underline_The_Sky_(3_of_21) (1).jpg', alt: 'Dave professional photo' },
   { src: '/images/about/Screenshot%202026-02-08%20at%2019.24.09.png', alt: 'Magazine article' },
-  { src: '/images/about/Screenshot-2025-08-30-at-17-41-48.png', alt: 'Dave portrait' },
   { src: '/images/about/20240420_103516 portrait.jpg', alt: 'Recent photo' },
-  { src: '/images/about/Screenshot%202026-02-08%20at%2019.26.09.png', alt: 'Magazine article' },
+  { src: '/images/about/20251201_135658.jpg', alt: 'Dave photo' },
   { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
   { src: '/images/about/DSC07186.JPG', alt: 'Dave with his guitar' },
-  { src: '/images/about/Screenshot%202026-02-08%20at%2019.28.01.png', alt: 'Magazine article' },
+  { src: '/images/about/Screenshot-2025-08-30-at-17-41-48.png', alt: 'Magazine article' },
   { src: '/images/about/IMG-20230810-WA0046.jpg', alt: 'Family moment' },
+  { src: '/images/about/20251205_105843.jpg', alt: 'Dave photo' },
+  { src: '/images/about/Screenshot%202026-02-08%20at%2019.26.09.png', alt: 'Magazine article' },
   { src: '/images/about/IMG-20240923-WA0018.jpg', alt: 'Family at Legoland' },
   { src: '/images/about/PXL_20240810_193137220_1.jpg', alt: 'Dave with family' },
   { src: '/images/about/dave-portrait-2025.jpg', alt: 'Dave portrait' },
+  { src: '/images/about/Screenshot%202026-02-08%20at%2019.28.01.png', alt: 'Magazine article' },
 ];
 
 export default function AboutPage() {
@@ -228,9 +230,9 @@ export default function AboutPage() {
                   ))}
                 </div>
                 
-                {/* Row 3 - 3 images */}
+                {/* Row 3 - 5 images */}
                 <div className="grid grid-cols-5 gap-2">
-                  {aboutImages.slice(10, 13).map((img, index) => (
+                  {aboutImages.slice(10, 15).map((img, index) => (
                     <div
                       key={`desktop-row3-${index}`}
                       className="relative h-44 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
