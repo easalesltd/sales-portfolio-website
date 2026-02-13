@@ -699,7 +699,7 @@ export default function RootLayout({
                 "contactPoint": [
                   {
                     "@type": "ContactPoint",
-                    "telephone": "07803631430",
+                    "telephone": "07709197915",
                     "email": "dave@easalesltd.co.uk",
                     "contactType": "sales",
                     "areaServed": ["Suffolk", "Norfolk", "Essex", "Cambridgeshire", "Hertfordshire"],
@@ -814,7 +814,7 @@ export default function RootLayout({
                 ],
                 "paymentAccepted": ["Credit Card", "Debit Card", "Bank Transfer"],
                 "currenciesAccepted": "GBP",
-                "telephone": "07803631430",
+                "telephone": "07709197915",
                 "email": "dave@easalesltd.co.uk"
               },
               {
@@ -893,7 +893,7 @@ export default function RootLayout({
                   "name": "How do I contact a Greeting Card Sales Agent?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Contact Dave Langdon by phone at 07803631430 or email at dave@easalesltd.co.uk. Available Monday to Friday to discuss greeting card and giftware needs."
+                    "text": "Contact Dave Langdon by phone at 07709197915 or email at dave@easalesltd.co.uk. Available Monday to Friday to discuss greeting card and giftware needs."
                   }
                 },
                 {
@@ -987,7 +987,7 @@ export default function RootLayout({
               <div className="mt-6 space-y-4">
                 <div className="flex justify-center space-x-6">
                   <a 
-                    href="tel:07803631430" 
+                    href="tel:07709197915" 
                     className="text-gray-600 hover:text-green-600 transition-colors"
                     aria-label="Phone"
                   >
