@@ -69,7 +69,7 @@ export default function AboutPage() {
     },
     'contactPoint': {
       '@type': 'ContactPoint',
-      'telephone': '07709197915',
+      'telephone': '07803631430',
       'email': 'dave@easalesltd.co.uk',
       'contactType': 'sales'
     },

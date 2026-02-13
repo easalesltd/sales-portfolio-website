@@ -23,7 +23,7 @@ export default function ContactPage() {
       'contactPoint': [
         {
           '@type': 'ContactPoint',
-          'telephone': '07709197915',
+          'telephone': '07803631430',
           'email': 'dave@easalesltd.co.uk',
           'contactType': 'sales',
           'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire', 'Hertfordshire'],
@@ -67,10 +67,10 @@ export default function ContactPage() {
             <div className="flex items-center space-x-4">
               <FaPhone className="text-2xl text-gray-600" />
               <a 
-                href="tel:07709197915"
+                href="tel:07803631430"
                 className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
               >
-                07709 197915
+                07803 631430
               </a>
             </div>
 
