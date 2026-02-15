@@ -122,13 +122,12 @@ export default function WhatIsASalesAgentPage() {
             Benefits of working with a sales agent
           </h2>
           <ul className="list-disc pl-6 space-y-2">
-            <li>One visit can cover multiple brands and product categories</li>
-            <li>Personal advice on what sells and how to display it</li>
-            <li>Ongoing relationship and support rather than one-off transactions</li>
-            <li>Trade terms and ordering through someone who knows your business</li>
-            <li>Sales agents typically offer 30 days terms on commission</li>
             <li>Companies save money by not having to cover any of the sales agent&apos;s expenses, car costs, travel, national insurance, pension, and so on</li>
+            <li>Sales agents typically offer 30 days terms on commission</li>
             <li>Display solutions and merchandising help</li>
+            <li>Ongoing relationship and support rather than one-off transactions</li>
+            <li>Personal advice on what sells and how to display it</li>
+            <li>Trade terms and ordering through someone who knows your business</li>
           </ul>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
