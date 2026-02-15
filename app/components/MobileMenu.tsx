@@ -112,6 +112,14 @@ export default function MobileMenu() {
                   About Dave
                 </Link>
                 <Link 
+                  href="/what-is-a-sales-agent" 
+                  prefetch
+                  className="block text-sm text-gray-500 hover:text-blue-600 transition-colors mt-1 ml-4" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  What is a Sales Agent?
+                </Link>
+                <Link 
                   href="/recipes" 
                   prefetch
                   className="block text-sm text-gray-500 hover:text-blue-600 transition-colors mt-1 ml-4" 

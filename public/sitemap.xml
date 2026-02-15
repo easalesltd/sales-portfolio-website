@@ -16,6 +16,14 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- What is a Sales Agent Page -->
+  <url>
+    <loc>https://www.easalesltd.co.uk/what-is-a-sales-agent</loc>
+    <lastmod>2025-01-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Temporary Rep Cover Page -->
   <url>
     <loc>https://www.easalesltd.co.uk/temporary-rep-cover</loc>
