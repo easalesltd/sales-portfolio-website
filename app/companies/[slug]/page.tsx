@@ -758,33 +758,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'Valentine\'s Day greeting cards'
       ]
     },
-    'gnaw-chocolate': {
-      title: 'David Langdon & Dave Langdon - Gnaw Chocolate Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
-      keywords: [
-        'Dave Langdon Gnaw Chocolate',
-        'David Langdon Gnaw Chocolate',
-        'Dave Langdon Gnaw Chocolate Sales Agent',
-        'David Langdon Gnaw Chocolate Sales Agent',
-        'Gnaw Chocolate Sales Agent Dave Langdon',
-        'Gnaw Chocolate Sales Agent David Langdon',
-        'gnaw chocolate sales agent',
-        'gnaw chocolate agent',
-        'gnaw chocolate supplier',
-        'gnaw chocolate East Anglia',
-        'gnaw chocolate Hertfordshire',
-        'gnaw chocolate Cambridgeshire',
-        'artisanal chocolate supplier',
-        'norfolk chocolate supplier',
-        'chocolate gifts supplier',
-        'sweet treats supplier',
-        'East Anglia gnaw chocolate agent',
-        'Hertfordshire gnaw chocolate agent',
-        'Cambridgeshire gnaw chocolate agent',
-        'Suffolk gnaw chocolate supplier',
-        'Norfolk gnaw chocolate agent',
-        'Essex gnaw chocolate supplier'
-      ]
-    },
     'mint-publishing': {
       title: 'David Langdon & Dave Langdon - Mint Publishing Sales Agent | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
@@ -1709,16 +1682,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.29.11.png'
   ] : [];
 
-  const gnawChocolateBaseImages = resolvedParams.slug === 'gnaw-chocolate' ? [
-    '/images/companies/gnaw-chocolate/gnaw-milk-peppermint-chocolate-bar-002-gpn0005-1024x1024-72dpi.jpeg',
-    '/images/companies/gnaw-chocolate/GNAW-Popcorn_Peanut-Snack-Bar-GPN0028-CBG-02.jpeg',
-    '/images/companies/gnaw-chocolate/GNAW-Milk-Chocolate-Buttons-GPN0066-CBG-02.jpeg',
-    '/images/companies/gnaw-chocolate/GNAW-Easter-Egg-Chocolate-Curls-GPN0069.png',
-    '/images/companies/gnaw-chocolate/gnaw-mochamelt-salted-caramel-cbg-01.jpeg',
-    '/images/companies/gnaw-chocolate/gnaw-taste-adventure-hot-choc-spoon-gift-gpn0052-lfs-01.jpeg',
-    '/images/companies/gnaw-chocolate/GNAW-Caramel-Chocolate-Buttons-GPN0067-CBG-02.png'
-  ] : [];
-
   const cgbGiftwareBaseImages = resolvedParams.slug === 'cgb-giftware' ? [
     '/images/companies/CGB-Giftware/ArtisanGlass-01.jpg',
     '/images/companies/CGB-Giftware/Best Teacher Ever_03.jpg',
@@ -1742,7 +1705,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const ohhDeerImages = shuffleArray(ohhDeerBaseImages);
   const globalJourneyImages = shuffleArray(globalJourneyBaseImages);
   const mintPublishingImages = shuffleArray(mintPublishingBaseImages);
-  const gnawChocolateImages = shuffleArray(gnawChocolateBaseImages);
   const cgbGiftwareImages = shuffleArray(cgbGiftwareBaseImages);
 
   const content = (
@@ -1899,11 +1861,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                         </div>
                       )}
                     </>
-                  )}
-                  {resolvedParams.slug === 'gnaw-chocolate' && (
-                    <div className="mb-8">
-                      <ImageGallery images={gnawChocolateImages} interval={5000} />
-                    </div>
                   )}
                   {resolvedParams.slug === 'cgb-giftware' && (
                     <>
@@ -2096,11 +2053,6 @@ function generateStructuredData(company: Company) {
         'Hertfordshire Retail',
         'Cambridgeshire Retail'
       ]
-    },
-    'gnaw-chocolate': {
-      name: 'Gnaw Chocolate Sales Agent - Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
-      description: 'Artisanal chocolate creations and sweet treats from Norfolk.',
-      categories: ['Chocolate', 'Sweet Treats', 'Gifts', 'East Anglia Retail', 'Hertfordshire Retail', 'Cambridgeshire Retail']
     },
     'mint-publishing': {
       name: 'Mint Publishing Greeting Cards - Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',

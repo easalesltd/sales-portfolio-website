@@ -48,15 +48,6 @@ export const companies: Company[] = [
     websiteUrl: "https://www.globaljourney.com"
   },
   {
-    id: "gnaw-chocolate",
-    name: "Gnaw Chocolate",
-    slug: "gnaw-chocolate",
-    description: "Artisanal chocolate creations and sweet treats from Norfolk",
-    logoUrl: "/images/logos/gnaw-chocolate-placeholder.png",
-    catalogueUrl: "https://drive.google.com/drive/folders/1vhmuakJ9UqQeGdV79cDSLmN8Jd79vz2b?usp=drive_link",
-    websiteUrl: "https://www.gnawchocolate.co.uk"
-  },
-  {
     id: "mint-publishing",
     name: "Mint Publishing",
     slug: "mint-publishing",

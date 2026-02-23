@@ -34,7 +34,6 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     { name: 'David Fischhoff', checked: false },
     { name: 'Emotional Rescue', checked: false },
     { name: 'Global Journey Gifts', checked: false },
-    { name: 'Gnaw Chocolate', checked: false },
     { name: 'Mint Publishing', checked: false },
     { name: 'Museums & Galleries', checked: false },
     { name: 'Ohh Deer', checked: false },
