@@ -857,7 +857,7 @@ export default function RootLayout({
                   "addressRegion": "Suffolk",
                   "addressCountry": "GB"
                 },
-                "description": "Dave Langdon, also known as David Langdon, is a professional Greeting Card Sales Agent and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience, Dave serves retailers across East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
+                "description": "Dave Langdon, also known as David Langdon, is a UK-based professional Greeting Card Sales Agent and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience, Dave serves retailers across East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
               },
               {
                 "@context": "https://schema.org",
@@ -869,7 +869,7 @@ export default function RootLayout({
                   "name": "What is a Greeting Card Sales Agent?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "A Greeting Card Sales Agent is a professional intermediary between greeting card manufacturers and retailers. Dave Langdon serves as a Greeting Card and Giftware Sales Agent for East Anglian Sales LTD, helping retailers across East Anglia find perfect greeting cards and gifts."
+                    "text": "A Greeting Card Sales Agent is a professional intermediary between greeting card manufacturers and retailers. Dave Langdon is a UK-based Greeting Card and Giftware Sales Agent for East Anglian Sales LTD, helping retailers across East Anglia find perfect greeting cards and gifts."
                   }
                 },
                 {
@@ -909,7 +909,7 @@ export default function RootLayout({
                   "name": "Who is David Langdon?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "David Langdon (Dave Langdon) is a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. He works for East Anglian Sales LTD, serving retailers across East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
+                    "text": "David Langdon (Dave Langdon) is a UK-based professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. He works for East Anglian Sales LTD, serving retailers across East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
                   }
                 },
                 {

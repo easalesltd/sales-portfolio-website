@@ -24,7 +24,7 @@ export default function Home() {
       <div className="bg-white py-20">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <FadeInOnScroll>
-            <h1 className="text-4xl font-bold text-gray-900 mb-6">Dave Langdon - Serving Retailers Across East Anglia</h1>
+            <h1 className="text-4xl font-bold text-gray-900 mb-6">Dave Langdon - UK Greeting Card & Gift Sales Agent, Serving Retailers Across East Anglia</h1>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.2}>
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">Greeting Cards & Gifts for the Wholesale Trade</h2>

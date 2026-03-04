@@ -54,7 +54,7 @@ export default function AboutPage() {
     'name': 'Dave Langdon',
     'alternateName': 'David Langdon',
     'jobTitle': ['Greeting Card Sales Agent', 'Giftware Sales Agent', 'Sales Agent'],
-    'description': 'Dave Langdon is a professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience, Dave serves retailers across East Anglia.',
+    'description': 'Dave Langdon is a UK-based professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience, Dave serves retailers across East Anglia.',
     'url': 'https://www.easalesltd.co.uk/about',
     'address': {
       '@type': 'PostalAddress',
