@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "David Langdon & Dave Langdon - UK Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, Hertfordshire",
+  title: "Dave Langdon | Greeting Card and Gift Sales Agent East Anglia | East Anglian Sales Ltd",
   description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
   keywords: [
     // Dave Langdon & David Langdon - Personal Brand Keywords (Comprehensive)
@@ -108,6 +108,17 @@ export const metadata: Metadata = {
     "East Anglian Sales UK",
     "Dave Langdon UK",
     "David Langdon UK sales agent",
+    "greeting card rep",
+    "greeting card rep UK",
+    "greeting card suppliers trade",
+    "greeting card supplier Norfolk",
+    "greeting card wholesaler Suffolk",
+    "greeting card wholesaler Norfolk",
+    "greeting card wholesaler Essex",
+    "greeting cards for shops Essex",
+    "greeting cards for shops Suffolk",
+    "greeting cards for shops Norfolk",
+    "greeting cards for shops Cambridgeshire",
     
     // Search Variations - Dave Langdon
     "who is Dave Langdon",
