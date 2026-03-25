@@ -39,6 +39,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     { name: 'Ohh Deer', checked: false },
     { name: 'Paper Salad', checked: false },
     { name: 'Peppermint Grove', checked: false },
+    { name: 'The Cambridge Confectionery Company', checked: false },
     { name: 'Star Editions', checked: false },
   ]);
 

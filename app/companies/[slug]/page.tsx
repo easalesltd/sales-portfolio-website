@@ -1270,6 +1270,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'Essex bespoke gifts'
       ]
     },
+    'cambridge-confectionery-company': {
+      title: 'The Cambridge Confectionery Company Sales Agent | Sweet Treats Supplier in East Anglia & Cambridgeshire',
+      keywords: [
+        'cambridge confectionery company sales agent',
+        'cambridge confectionery company agent',
+        'cambridge confectionery company supplier',
+        'cambridge confectionery company East Anglia',
+        'cambridgeshire confectionery supplier',
+        'cambridgeshire sweet treats supplier',
+        'sweet treats supplier',
+        'confectionery sales agent',
+        'confectionery agent',
+        'sweet treats agent',
+        'retail confectionery supplier',
+        'East Anglia sweet treats supplier',
+        'Cambridgeshire retail supplier'
+      ]
+    },
     'star-editions': {
       title: 'David Langdon & Dave Langdon - Star Editions Sales Agent | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
       keywords: [
@@ -1694,6 +1712,21 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     '/images/companies/CGB-Giftware/ENCHANTED EMPORIUM1.jpg'
   ] : [];
 
+  const cambridgeConfectioneryCompanyBaseImages = resolvedParams.slug === 'cambridge-confectionery-company' ? [
+    '/images/companies/the-cambridge-confectionery-company/Celebration-bar-600x600.png',
+    '/images/companies/the-cambridge-confectionery-company/Fudge-Sundae-main-tile-600x600.jpeg',
+    '/images/companies/the-cambridge-confectionery-company/Heart-Chocolates-600x600 (1).png',
+    '/images/companies/the-cambridge-confectionery-company/Honeycomb-fudge-600x600.png',
+    '/images/companies/the-cambridge-confectionery-company/IMG_7711-600x600.jpeg',
+    '/images/companies/the-cambridge-confectionery-company/IMG_8071-600x600.jpeg',
+    '/images/companies/the-cambridge-confectionery-company/Rocky-Road-fud-600x600.png',
+    '/images/companies/the-cambridge-confectionery-company/Salted-Caramel-Product-683x600 (1).png',
+    '/images/companies/the-cambridge-confectionery-company/Salted-Caramel-Product-683x600.png',
+    '/images/companies/the-cambridge-confectionery-company/Salty-Sweet-nutty-treats-600x600.png',
+    '/images/companies/the-cambridge-confectionery-company/Thank-you-Bar-600x600.png',
+    '/images/companies/the-cambridge-confectionery-company/Toffe-Crunch-600x600.png'
+  ] : [];
+
   // Shuffle all image arrays
   const paperSaladImages = shuffleArray(paperSaladBaseImages);
   const emotionalRescueImages = shuffleArray(emotionalRescueBaseImages);
@@ -1706,6 +1739,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const globalJourneyImages = shuffleArray(globalJourneyBaseImages);
   const mintPublishingImages = shuffleArray(mintPublishingBaseImages);
   const cgbGiftwareImages = shuffleArray(cgbGiftwareBaseImages);
+  const cambridgeConfectioneryCompanyImages = shuffleArray(cambridgeConfectioneryCompanyBaseImages);
 
   const content = (
     <>
@@ -1879,15 +1913,21 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       </div>
                     </>
                   )}
+                  {resolvedParams.slug === 'cambridge-confectionery-company' && (
+                    <div className="mb-8">
+                      <ImageGallery images={cambridgeConfectioneryCompanyImages} interval={5000} />
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap gap-4 mt-8">
-                  <a
-                    href={company.catalogueUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-                  >
+                  {company.catalogueUrl && company.catalogueUrl.trim() !== '' && (
+                    <a
+                      href={company.catalogueUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                    >
                     <svg 
                       className="mr-2 -ml-1 h-5 w-5" 
                       xmlns="http://www.w3.org/2000/svg" 
@@ -1901,7 +1941,8 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       />
                     </svg>
                     Download Catalogue
-                  </a>
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -2278,6 +2319,18 @@ function generateStructuredData(company: Company) {
         'Gift Showroom Products',
         'East Anglia Retail',
         'Hertfordshire Retail',
+        'Cambridgeshire Retail'
+      ]
+    },
+    'cambridge-confectionery-company': {
+      name: 'The Cambridge Confectionery Company Sales Agent - Sweet Treats Supplier in Cambridgeshire & East Anglia',
+      description: 'Sweet treats and confectionery supplied to retail businesses. Helping retailers build strong, high-performing confectionery ranges.',
+      categories: [
+        'Confectionery',
+        'Sweet Treats',
+        'Gifts',
+        'Confectionery Products',
+        'East Anglia Retail',
         'Cambridgeshire Retail'
       ]
     }

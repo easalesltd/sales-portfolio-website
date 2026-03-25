@@ -134,5 +134,14 @@ export const companies: Company[] = [
     logoUrl: "/images/logos/cgb-giftware.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1zT5aoUgVQ3408BZl8GaRVt6iFkLNOB5U?usp=drive_link",
     websiteUrl: "https://www.cgbgiftware.co.uk"
+  },
+  {
+    id: "cambridge-confectionery-company",
+    name: "The Cambridge Confectionery Company",
+    slug: "cambridge-confectionery-company",
+    description: "The Cambridge Confectionery Company supplies sweet treats and confectionery to retail businesses across the region.",
+    logoUrl: "/images/logos/cambridge-confectionery-company.png",
+    catalogueUrl: "",
+    websiteUrl: ""
   }
 ].sort((a, b) => a.name.localeCompare(b.name)); 
