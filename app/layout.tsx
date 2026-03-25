@@ -901,7 +901,7 @@ export default function RootLayout({
                   "name": "What brands does the Greeting Card Sales Agent represent?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Dave Langdon represents brands including Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, Star Editions, Boxer Gifts, Global Journey, Peppermint Grove, Emotional Rescue, David Fischhoff, Real & Exciting Designs, and CGB Giftware."
+                    "text": "Dave Langdon represents brands including Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, Star Editions, Boxer Gifts, Global Journey, Peppermint Grove, Emotional Rescue, David Fischhoff, Real & Exciting Designs, CGB Giftware, The Cambridge Confectionery Company (also known as Calico Cottage), and more."
                   }
                 },
                 {

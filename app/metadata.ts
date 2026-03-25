@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Dave Langdon | Greeting Card and Gift Sales Agent East Anglia | East Anglian Sales Ltd",
-  description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
+  description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, The Cambridge Confectionery Company (Calico Cottage), wholesale confectionery, and more. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
   keywords: [
     // Dave Langdon & David Langdon - Personal Brand Keywords (Comprehensive)
     "Dave Langdon",
@@ -48,6 +48,8 @@ export const metadata: Metadata = {
     "Dave Langdon Peppermint Grove",
     "Dave Langdon Emotional Rescue",
     "Dave Langdon David Fischhoff",
+    "Dave Langdon The Cambridge Confectionery Company",
+    "Dave Langdon Calico Cottage",
     "Dave Langdon East of England",
     "Dave Langdon East Anglia",
     "Dave Langdon Suffolk",
@@ -73,6 +75,8 @@ export const metadata: Metadata = {
     "Peppermint Grove Sales Agent Dave Langdon",
     "Emotional Rescue Sales Agent Dave Langdon",
     "David Fischhoff Sales Agent Dave Langdon",
+    "The Cambridge Confectionery Company Sales Agent Dave Langdon",
+    "Calico Cottage Sales Agent Dave Langdon",
     "Paper Salad Sales Agent David Langdon",
     "Ohh Deer Sales Agent David Langdon",
     "Silly Beans Sales Agent David Langdon",
@@ -83,12 +87,20 @@ export const metadata: Metadata = {
     "Global Journey Sales Agent David Langdon",
     "Peppermint Grove Sales Agent David Langdon",
     "Emotional Rescue Sales Agent David Langdon",
+    "David Fischhoff Sales Agent David Langdon",
+    "The Cambridge Confectionery Company Sales Agent David Langdon",
+    "Calico Cottage Sales Agent David Langdon",
     "CGB Giftware Sales Agent Dave Langdon",
     "Container Group Sales Agent Dave Langdon",
     "Real and Exciting Designs Sales Agent Dave Langdon",
     "CGB Giftware Sales Agent David Langdon",
     "Container Group Sales Agent David Langdon",
     "Real and Exciting Designs Sales Agent David Langdon",
+    "Cambridge Confectionery wholesale East Anglia",
+    "Calico Cottage wholesale East Anglia",
+    "wholesale Cambridge Confectionery sales agent",
+    "wholesale Cambridge Confectionery Company",
+    "Calico Cottage confectionery sales agent",
     
     // UK / National (Broad) - adds discoverability for non-regional queries
     "UK greeting card sales agent",
@@ -181,6 +193,12 @@ export const metadata: Metadata = {
     "David Fischhoff Agent",
     "Real and Exciting Designs Sales Agent",
     "Real and Exciting Designs Agent",
+    "The Cambridge Confectionery Company Sales Agent",
+    "The Cambridge Confectionery Company Agent",
+    "Calico Cottage Sales Agent",
+    "Calico Cottage Agent",
+    "Calico Cottage Wholesale",
+    "Cambridge Confectionery wholesale",
     
     // Location-specific Company Sales Agent Keywords
     "Ohh Deer Sales Agent East Anglia",
@@ -218,6 +236,18 @@ export const metadata: Metadata = {
     "Star Editions Sales Agent Suffolk",
     "Star Editions Sales Agent Norfolk",
     "Star Editions Sales Agent Cambridgeshire",
+    "The Cambridge Confectionery Company Sales Agent East Anglia",
+    "The Cambridge Confectionery Company Sales Agent Essex",
+    "The Cambridge Confectionery Company Sales Agent Suffolk",
+    "The Cambridge Confectionery Company Sales Agent Norfolk",
+    "The Cambridge Confectionery Company Sales Agent Cambridgeshire",
+    "The Cambridge Confectionery Company Sales Agent Hertfordshire",
+    "Calico Cottage Sales Agent East Anglia",
+    "Calico Cottage Sales Agent Essex",
+    "Calico Cottage Sales Agent Suffolk",
+    "Calico Cottage Sales Agent Norfolk",
+    "Calico Cottage Sales Agent Cambridgeshire",
+    "Calico Cottage Sales Agent Hertfordshire",
     
     // General Sales Agent Terms (Non-Location Specific)
     "Greeting Card Sales Agent",
@@ -633,7 +663,7 @@ export const metadata: Metadata = {
   ].join(', '),
   openGraph: {
     title: "David Langdon & Dave Langdon - UK Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia",
-    description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, and more.",
+    description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, The Cambridge Confectionery Company (Calico Cottage), wholesale confectionery, and more.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -662,7 +692,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "David Langdon & Dave Langdon - UK Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia",
-    description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia. Official sales agent for Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, and more.",
+    description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia. Official sales agent for Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, The Cambridge Confectionery Company (Calico Cottage), and more.",
     images: [
       "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
       "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"
