@@ -144,4 +144,11 @@ export const companies: Company[] = [
     catalogueUrl: "",
     websiteUrl: ""
   }
-].sort((a, b) => a.name.localeCompare(b.name)); 
+].sort((a, b) => {
+  // Alphabetical order, ignoring a leading "The" (e.g. "The Cambridge..." under "C").
+  const normalize = (name: string) => name.replace(/^\s*the\s+/i, "").trim().toLowerCase();
+  const an = normalize(a.name);
+  const bn = normalize(b.name);
+  const cmp = an.localeCompare(bn);
+  return cmp !== 0 ? cmp : a.name.localeCompare(b.name);
+});  
