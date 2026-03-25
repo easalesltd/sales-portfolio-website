@@ -2324,7 +2324,7 @@ function generateStructuredData(company: Company) {
     },
     'cambridge-confectionery-company': {
       name: 'The Cambridge Confectionery Company Sales Agent - Sweet Treats Supplier in Cambridgeshire & East Anglia',
-      description: 'Sweet treats and confectionery supplied to retail businesses. Helping retailers build strong, high-performing confectionery ranges.',
+      description: 'Chocolate, made to be seen. Family-owned and proudly independent, we create generously topped bars, beautifully boxed gift collections and signature giant buttons, finished by hand so every piece looks as good as it tastes.',
       categories: [
         'Confectionery',
         'Sweet Treats',

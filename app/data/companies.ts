@@ -139,7 +139,7 @@ export const companies: Company[] = [
     id: "cambridge-confectionery-company",
     name: "The Cambridge Confectionery Company",
     slug: "cambridge-confectionery-company",
-    description: "The Cambridge Confectionery Company supplies sweet treats and confectionery to retail businesses across the region.",
+    description: "Chocolate, made to be seen. Family-owned and proudly independent, we create generously topped bars, beautifully boxed gift collections and signature giant buttons, finished by hand so every piece looks as good as it tastes.",
     logoUrl: "/images/logos/cambridge-confectionery-company.png",
     catalogueUrl: "",
     websiteUrl: ""
