@@ -141,7 +141,7 @@ export const companies: Company[] = [
     slug: "cambridge-confectionery-company",
     description: "Chocolate, made to be seen. Family-owned and proudly independent, we create generously topped bars, beautifully boxed gift collections and signature giant buttons, finished by hand so every piece looks as good as it tastes.",
     logoUrl: "/images/logos/cambridge-confectionery-company.png",
-    catalogueUrl: "",
+    catalogueUrl: "https://drive.google.com/drive/folders/1nWAKl870bAJTOQo_Sn-qNSje4RmbRiwy?usp=drive_link",
     websiteUrl: ""
   }
 ].sort((a, b) => {
