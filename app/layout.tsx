@@ -968,7 +968,7 @@ export default function RootLayout({
         ></script>
       </head>
       <body className={inter.className}>
-        <header className="fixed top-0 left-0 right-0 bg-white z-50 pt-4">
+        <header className="fixed top-0 left-0 right-0 bg-white dark:bg-neutral-950 z-50 pt-4 border-b border-transparent dark:border-neutral-800 transition-colors duration-300">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
@@ -978,19 +978,19 @@ export default function RootLayout({
                     alt="East Anglian Sales LTD Logo"
                     width={100}
                     height={67}
-                    className="object-contain brightness-0"
+                    className="object-contain brightness-0 dark:invert"
                     priority
                     quality={90}
                   />
                 </Link>
               </div>
               <div className="hidden md:flex items-center space-x-6">
-                <Link href="/" prefetch className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50">Home</Link>
+                <Link href="/" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Home</Link>
                 <AboutDropdown />
                 <BrandsDropdown />
-                <Link href="/display-solutions" prefetch className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50">Display Solutions</Link>
-                <Link href="/temporary-rep-cover" prefetch className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50">Temporary Rep Cover</Link>
-                <Link href="/contact" prefetch className="text-gray-700 hover:text-blue-600 transition-colors px-3 py-2 rounded-md hover:bg-gray-50">Contact</Link>
+                <Link href="/display-solutions" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Display Solutions</Link>
+                <Link href="/temporary-rep-cover" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Temporary Rep Cover</Link>
+                <Link href="/contact" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Contact</Link>
                 <ClientButton />
               </div>
               <div className="flex items-center md:hidden gap-2">
@@ -1001,17 +1001,17 @@ export default function RootLayout({
           </nav>
         </header>
         {/* Fixed gap below header - stays visible when scrolling so content doesn't touch header */}
-        <div className="fixed top-20 left-0 right-0 h-2 bg-white z-40" aria-hidden="true" />
+        <div className="fixed top-20 left-0 right-0 h-2 bg-white dark:bg-neutral-950 z-40 transition-colors duration-300" aria-hidden="true" />
         <Breadcrumbs />
-        <main id="main-content" className="pt-[88px] min-h-screen bg-white">
+        <main id="main-content" className="pt-[88px] min-h-screen bg-white dark:bg-neutral-950 transition-colors duration-300">
           {children}
         </main>
 
-        <footer className="bg-gray-50">
+        <footer className="bg-gray-50 dark:bg-neutral-950 dark:border-t dark:border-neutral-800 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">East Anglian Sales LTD</h3>
-              <div className="space-y-2 text-gray-600">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100 mb-4">East Anglian Sales LTD</h3>
+              <div className="space-y-2 text-gray-600 dark:text-neutral-400">
                 <p>Registered office: Office 2, Paragon House,</p>
                 <p>35 Lower Brook Street, Ipswich, England, IP4 1AQ</p>
                 <p>Company Registration No: 14725288</p>
@@ -1021,14 +1021,14 @@ export default function RootLayout({
                 <div className="flex justify-center space-x-6">
                   <a 
                     href="tel:07709197915" 
-                    className="text-gray-600 hover:text-green-600 transition-colors"
+                    className="text-gray-600 dark:text-neutral-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
                     aria-label="Phone"
                   >
                     <FaPhone className="h-6 w-6" />
                   </a>
                   <a 
                     href="mailto:dave@easalesltd.co.uk" 
-                    className="text-gray-600 hover:text-blue-600 transition-colors"
+                    className="text-gray-600 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                     aria-label="Email"
                   >
                     <FaEnvelope className="h-6 w-6" />
@@ -1037,7 +1037,7 @@ export default function RootLayout({
                     href="https://www.instagram.com/eastangliansalesltd/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-pink-600 transition-colors"
+                    className="text-gray-600 dark:text-neutral-400 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
                     aria-label="Instagram"
                   >
                     <FaInstagram className="h-6 w-6" />

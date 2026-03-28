@@ -52,8 +52,8 @@ export default function AboutDropdown() {
         prefetch
         className={`flex items-center px-3 py-2 rounded-md transition-colors ${
           isActive 
-            ? 'text-blue-600 bg-blue-50' 
-            : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+            ? 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950/50' 
+            : 'text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-neutral-900'
         }`}
       >
         About
@@ -65,7 +65,7 @@ export default function AboutDropdown() {
       </Link>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 z-50">
+        <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-neutral-900 rounded-md shadow-lg border border-gray-200 dark:border-neutral-700 py-1 z-50">
           {aboutItems.map((item) => (
             <Link
               key={item.name}
@@ -73,8 +73,8 @@ export default function AboutDropdown() {
               prefetch
               className={`block px-4 py-2 text-sm transition-colors ${
                 pathname === item.href
-                  ? 'text-blue-600 bg-blue-50'
-                  : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                  ? 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950/40'
+                  : 'text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-neutral-800'
               }`}
             >
               {item.name}

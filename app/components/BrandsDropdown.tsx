@@ -46,7 +46,7 @@ export default function BrandsDropdown() {
   if (!mounted) {
     return (
       <div className="relative">
-        <button className="text-gray-700 px-3 py-2 rounded-md hover:bg-gray-50 flex items-center">
+        <button className="text-gray-700 dark:text-neutral-200 px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900 flex items-center">
           Our Partner Brands
           <svg
             className="ml-2 h-5 w-5"
@@ -83,7 +83,7 @@ export default function BrandsDropdown() {
     >
       <button
         onClick={handleClick}
-        className="text-gray-700 px-3 py-2 rounded-md hover:bg-gray-50 flex items-center"
+        className="text-gray-700 dark:text-neutral-200 px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900 flex items-center"
       >
         Our Partner Brands
         <ChevronDownIcon
@@ -95,16 +95,16 @@ export default function BrandsDropdown() {
       {isOpen && (
         <div className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
           <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-            <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+            <div className="relative grid gap-6 bg-white dark:bg-neutral-900 px-5 py-6 sm:gap-8 sm:p-8">
               <div className="-m-3">
-                <h3 className="text-base font-medium text-gray-900">Our Partner Brands</h3>
+                <h3 className="text-base font-medium text-gray-900 dark:text-neutral-100">Our Partner Brands</h3>
                 <div className="mt-2 space-y-2">
                   {companies.map((company) => (
                     <Link
                       key={company.id}
                       href={`/companies/${company.slug}`}
                       prefetch={false}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block px-4 py-2 text-sm text-gray-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-800"
                       role="menuitem"
                     >
                       {company.name}

@@ -60,19 +60,19 @@ export default function Breadcrumbs() {
           __html: JSON.stringify(breadcrumbSchema)
         }}
       />
-      <nav aria-label="Breadcrumb" className="bg-gray-50 py-3 px-4">
-        <ol className="flex flex-wrap items-center space-x-2 text-sm text-gray-600">
+      <nav aria-label="Breadcrumb" className="bg-gray-50 dark:bg-neutral-900 dark:border-b dark:border-neutral-800 py-3 px-4 transition-colors duration-300">
+        <ol className="flex flex-wrap items-center space-x-2 text-sm text-gray-600 dark:text-neutral-400">
           {breadcrumbs.map((item) => (
             <li key={item.href} className="flex items-center">
               {item.href !== '/' && (
-                <span className="mx-2 text-gray-400">/</span>
+                <span className="mx-2 text-gray-400 dark:text-neutral-600">/</span>
               )}
               {item.href === '/' ? (
-                <span className="text-gray-900 font-medium">{item.label}</span>
+                <span className="text-gray-900 dark:text-neutral-100 font-medium">{item.label}</span>
               ) : (
                 <Link
                   href={item.href}
-                  className="hover:text-blue-600 transition-colors"
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 >
                   {item.label}
                 </Link>

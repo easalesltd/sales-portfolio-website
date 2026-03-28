@@ -25,9 +25,30 @@
   --background-rgb: 255, 255, 255;
 }
 
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  --foreground-rgb: 245, 245, 245;
+  --background-rgb: 9, 9, 11;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
+}
+
+/* Company pages in dark mode (html.dark): form fields inside main — avoids styling modals in the header */
+.dark main input[type='text'],
+.dark main input[type='email'],
+.dark main input[type='number'],
+.dark main textarea {
+  @apply bg-neutral-950 border-neutral-600 text-neutral-100 placeholder:text-neutral-500;
+}
+
+.dark main .divide-gray-200 {
+  @apply divide-neutral-700;
 }
 
 /* Print styles for recipes - only print the recipe content */

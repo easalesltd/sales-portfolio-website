@@ -74,7 +74,7 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
     >
       {/* Loading Skeleton */}
       {isLoading && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-xl" />
+        <div className="absolute inset-0 bg-gray-200 dark:bg-neutral-700 animate-pulse rounded-xl" />
       )}
       
       {/* Main Image */}

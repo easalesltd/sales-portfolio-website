@@ -150,7 +150,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
           gravity={0.2}
         />
         <div
-          className="bg-white rounded-xl shadow-2xl p-8 max-w-sm w-full flex flex-col items-center relative animate-fade-in-up"
+          className="bg-white dark:bg-neutral-900 dark:border dark:border-neutral-700 rounded-xl shadow-2xl p-8 max-w-sm w-full flex flex-col items-center relative animate-fade-in-up"
           onClick={e => e.stopPropagation()}
         >
           {/* Animated Checkmark SVG */}
@@ -169,8 +169,8 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
               <animate attributeName="stroke-dashoffset" from="48" to="0" dur="0.5s" fill="freeze" />
             </path>
           </svg>
-          <h3 className="text-2xl font-bold text-gray-800 mb-2 text-center">Thank you!</h3>
-          <p className="text-gray-600 text-center mb-6">Your order request has been sent successfully.<br />We'll be in touch soon.</p>
+          <h3 className="text-2xl font-bold text-gray-800 dark:text-neutral-100 mb-2 text-center">Thank you!</h3>
+          <p className="text-gray-600 dark:text-neutral-400 text-center mb-6">Your order request has been sent successfully.<br />We'll be in touch soon.</p>
           <button
             onClick={() => setStatus('idle')}
             className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
@@ -186,11 +186,11 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
     <>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Contact Information Section */}
-        <div className="bg-gray-50 p-6 rounded-lg mb-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
+        <div className="bg-gray-50 dark:bg-neutral-900/90 dark:border dark:border-neutral-800 p-6 rounded-lg mb-6">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-neutral-100 mb-4">Contact Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">Company Name *</label>
+              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Company Name *</label>
               <input
                 type="text"
                 id="companyName"
@@ -201,7 +201,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
               />
             </div>
             <div>
-              <label htmlFor="contactPerson" className="block text-sm font-medium text-gray-700">Contact Person *</label>
+              <label htmlFor="contactPerson" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Contact Person *</label>
               <input
                 type="text"
                 id="contactPerson"
@@ -212,7 +212,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
               />
             </div>
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700">Delivery Address *</label>
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Delivery Address *</label>
               <textarea
                 id="address"
                 required
@@ -224,7 +224,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
             </div>
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <label htmlFor="contactDetails" className="block text-sm font-medium text-gray-700">Contact Details (Phone)</label>
+                <label htmlFor="contactDetails" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Contact Details (Phone)</label>
                 <input
                   type="text"
                   id="contactDetails"
@@ -234,7 +234,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                 />
               </div>
               <div>
-                <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700">Email Address *</label>
+                <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Email Address *</label>
                 <input
                   type="email"
                   id="emailAddress"
@@ -250,15 +250,15 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
 
         {/* Peppermint Grove Order Lines (reverted to original (start of day) –– using a text input for product code and a number input for quantity) */}
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+            <thead className="bg-gray-50 dark:bg-neutral-800">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Code</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Product Code</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Quantity</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Action</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-neutral-900 divide-y divide-gray-200 dark:divide-neutral-700">
               {orderLines.map((line, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -286,7 +286,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                     <button
                       type="button"
                       onClick={() => handleRemoveLine(index)}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                     >
                       Remove
                     </button>
@@ -302,14 +302,14 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
             type="button"
             onClick={handleAddLine}
             disabled={orderLines.length >= 200}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-neutral-200 bg-white dark:bg-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-neutral-900 disabled:opacity-50"
           >
             Add Product Line {orderLines.length}/200
           </button>
         </div>
 
         <div>
-          <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Additional Notes</label>
+          <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Additional Notes</label>
           <textarea
             id="notes"
             rows={4}
@@ -461,7 +461,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
           gravity={0.2}
         />
         <div
-          className="bg-white rounded-xl shadow-2xl p-8 max-w-sm w-full flex flex-col items-center relative animate-fade-in-up"
+          className="bg-white dark:bg-neutral-900 dark:border dark:border-neutral-700 rounded-xl shadow-2xl p-8 max-w-sm w-full flex flex-col items-center relative animate-fade-in-up"
           onClick={e => e.stopPropagation()}
         >
           {/* Animated Checkmark SVG */}
@@ -480,8 +480,8 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
               <animate attributeName="stroke-dashoffset" from="48" to="0" dur="0.5s" fill="freeze" />
             </path>
           </svg>
-          <h3 className="text-2xl font-bold text-gray-800 mb-2 text-center">Thank you!</h3>
-          <p className="text-gray-600 text-center mb-6">Your order request has been sent successfully.<br />We'll be in touch soon.</p>
+          <h3 className="text-2xl font-bold text-gray-800 dark:text-neutral-100 mb-2 text-center">Thank you!</h3>
+          <p className="text-gray-600 dark:text-neutral-400 text-center mb-6">Your order request has been sent successfully.<br />We'll be in touch soon.</p>
           <button
             onClick={() => setStatus('idle')}
             className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
@@ -497,11 +497,11 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
     <>
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Contact Information Section */}
-        <div className="bg-gray-50 p-6 rounded-lg mb-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
+        <div className="bg-gray-50 dark:bg-neutral-900/90 dark:border dark:border-neutral-800 p-6 rounded-lg mb-6">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-neutral-100 mb-4">Contact Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">Company Name *</label>
+              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Company Name *</label>
               <input
                 type="text"
                 id="companyName"
@@ -512,7 +512,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
               />
             </div>
             <div>
-              <label htmlFor="contactPerson" className="block text-sm font-medium text-gray-700">Contact Person *</label>
+              <label htmlFor="contactPerson" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Contact Person *</label>
               <input
                 type="text"
                 id="contactPerson"
@@ -523,7 +523,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
               />
             </div>
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700">Delivery Address *</label>
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Delivery Address *</label>
               <textarea
                 id="address"
                 required
@@ -535,7 +535,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
             </div>
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <label htmlFor="contactDetails" className="block text-sm font-medium text-gray-700">Contact Details (Phone)</label>
+                <label htmlFor="contactDetails" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Contact Details (Phone)</label>
                 <input
                   type="text"
                   id="contactDetails"
@@ -545,7 +545,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                 />
               </div>
               <div>
-                <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700">Email Address *</label>
+                <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Email Address *</label>
                 <input
                   type="email"
                   id="emailAddress"
@@ -561,15 +561,15 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
 
         {/* Peppermint Grove Order Lines (mirroring your Excel order form) */}
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+            <thead className="bg-gray-50 dark:bg-neutral-800">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product Code</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Product Code</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Quantity</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Action</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-neutral-900 divide-y divide-gray-200 dark:divide-neutral-700">
               {orderLines.map((line, index) => (
                 <tr key={index}>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -597,7 +597,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                     <button
                       type="button"
                       onClick={() => handleRemoveLine(index)}
-                      className="text-red-600 hover:text-red-900"
+                      className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                     >
                       Remove
                     </button>
@@ -613,14 +613,14 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
             type="button"
             onClick={handleAddLine}
             disabled={orderLines.length >= 200}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-neutral-200 bg-white dark:bg-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-neutral-900 disabled:opacity-50"
           >
             Add Product Line {orderLines.length}/200
           </button>
         </div>
 
         <div>
-          <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Additional Notes</label>
+          <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Additional Notes</label>
           <textarea
             id="notes"
             rows={4}

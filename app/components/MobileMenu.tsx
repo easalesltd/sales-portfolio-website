@@ -19,7 +19,7 @@ export default function MobileMenu() {
     return (
       <div className="md:hidden">
         <button 
-          className="text-gray-500 hover:text-gray-700 p-2"
+          className="text-gray-500 dark:text-neutral-300 hover:text-gray-700 dark:hover:text-white p-2"
           aria-label="Open menu"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -35,7 +35,7 @@ export default function MobileMenu() {
       {/* Burger Button */}
       <button 
         onClick={() => setIsOpen(true)}
-        className="text-gray-500 hover:text-gray-700 p-2"
+        className="text-gray-500 dark:text-neutral-300 hover:text-gray-700 dark:hover:text-white p-2"
         aria-label="Open menu"
       >
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

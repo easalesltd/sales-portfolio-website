@@ -1786,6 +1786,9 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const cgbGiftwareImages = shuffleArray(cgbGiftwareBaseImages);
   const cambridgeConfectioneryCompanyImages = shuffleArray(cambridgeConfectioneryCompanyBaseImages);
 
+  const companyPageLogoSrc = company.logoUrlDark ?? company.logoUrl;
+  const useLightMarkOnDark = Boolean(company.logoUrlDark);
+
   const content = (
     <>
       {allSchemas.map((schema, index) => (
@@ -1797,26 +1800,42 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
           }}
         />
       ))}
-      <div className="min-h-screen py-12">
+      <div className="min-h-screen py-12 dark:bg-neutral-950 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Company Information */}
-            <div className={`${hasVideoBackground ? 'bg-white/90 backdrop-blur-md' : ''} rounded-xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl`}>
-              <div className="h-60 relative mb-8 group">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-50/10 group-hover:to-gray-50/20 transition-all duration-300" />
+            <div
+              className={`${hasVideoBackground ? 'bg-white/90 backdrop-blur-md dark:bg-neutral-900/90' : 'dark:bg-neutral-900 dark:border dark:border-neutral-800'} rounded-xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl`}
+            >
+              <div
+                className={`h-60 relative mb-8 group rounded-lg overflow-hidden ${
+                  /* Always paint a dark field for logoUrlDark assets — not `dark:bg-*` only, or SSR/first paint is white-on-white (invisible) until JS adds html.dark */
+                  useLightMarkOnDark ? 'bg-black' : ''
+                }`}
+              >
+                {!useLightMarkOnDark && (
+                  <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent to-gray-50/10 group-hover:to-gray-50/20 dark:to-transparent dark:group-hover:to-white/5 transition-all duration-300 pointer-events-none" />
+                )}
                 <Image
-                  src={company.logoUrl}
+                  src={companyPageLogoSrc}
                   alt={`${company.name} logo`}
                   fill
-                  className="object-contain transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                  className={`object-contain p-6 z-10 transition-transform duration-300 group-hover:scale-105 ${
+                    /* logoUrlDark file is black artwork on transparent — invert so it reads as white on bg-black */
+                    useLightMarkOnDark
+                      ? 'invert'
+                      : 'dark:brightness-0 dark:invert'
+                  }`}
                 />
               </div>
               <div className="space-y-6">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4 relative">
+                <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 relative">
                   {company.name}
-                  <div className="h-1 w-20 bg-blue-600 mt-2" />
+                  <div className="h-1 w-20 bg-blue-600 dark:bg-blue-500 mt-2" />
                 </h1>
-                <p className="text-xl leading-relaxed text-gray-600">{company.description}</p>
+                <p className="text-xl leading-relaxed text-gray-600 dark:text-neutral-300">{company.description}</p>
                 
                 <div className="mt-12">
                   {resolvedParams.slug === 'paper-salad' && (
@@ -1826,7 +1845,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       </div>
                       {company.videos && company.videos.length > 0 && (
                         <div className="mb-8">
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Trade Show Videos</h3>
+                          <h3 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">Trade Show Videos</h3>
                           {company.videos.map((video, index) => (
                             <div key={index} className="mb-4">
                               <ShowroomVideo 
@@ -1835,7 +1854,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                               />
                             </div>
                           ))}
-                          <p className="text-sm text-gray-600 mt-2 italic">
+                          <p className="text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">
                             Watch our latest trade show presentations and product showcases.
                           </p>
                         </div>
@@ -1854,7 +1873,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       </div>
                       {company.videos && company.videos.length > 0 && (
                         <div className="mb-8">
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Trade Show Videos</h3>
+                          <h3 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">Trade Show Videos</h3>
                           {company.videos.map((video, index) => (
                             <div key={index} className="mb-4">
                               <ShowroomVideo 
@@ -1863,7 +1882,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                               />
                             </div>
                           ))}
-                          <p className="text-sm text-gray-600 mt-2 italic">
+                          <p className="text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">
                             Watch our latest trade show presentations and product showcases.
                           </p>
                         </div>
@@ -1897,7 +1916,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       </div>
                       {company.videos && company.videos.length > 0 && (
                         <div className="mb-8">
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Trade Show Videos</h3>
+                          <h3 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">Trade Show Videos</h3>
                           {company.videos.map((video, index) => (
                             <div key={index} className="mb-4">
                               <ShowroomVideo 
@@ -1906,7 +1925,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                               />
                             </div>
                           ))}
-                          <p className="text-sm text-gray-600 mt-2 italic">
+                          <p className="text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">
                             Watch our latest trade show presentations and product showcases.
                           </p>
                         </div>
@@ -1925,7 +1944,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       </div>
                       {company.videos && company.videos.length > 0 && (
                         <div className="mb-8">
-                          <h3 className="text-2xl font-semibold text-gray-900 mb-4">Trade Show Videos</h3>
+                          <h3 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">Trade Show Videos</h3>
                           {company.videos.map((video, index) => (
                             <div key={index} className="mb-4">
                               <ShowroomVideo 
@@ -1934,7 +1953,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                               />
                             </div>
                           ))}
-                          <p className="text-sm text-gray-600 mt-2 italic">
+                          <p className="text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">
                             Watch our latest trade show presentations and product showcases.
                           </p>
                         </div>
@@ -1947,12 +1966,12 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                         <ImageGallery images={cgbGiftwareImages} interval={5500} />
                       </div>
                       <div className="mb-8">
-                        <h3 className="text-2xl font-semibold text-gray-900 mb-4">Showroom Tour</h3>
+                        <h3 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">Showroom Tour</h3>
                         <ShowroomVideo 
                           videoSrc="/images/companies/CGB-Giftware/Showroom Tour.mp4"
                           posterSrc="/images/companies/CGB-Giftware/CGB Bespoke-01.jpg"
                         />
-                        <p className="text-sm text-gray-600 mt-2 italic">
+                        <p className="text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">
                           Take a virtual tour of our showroom to see our beautiful giftware collections in detail.
                         </p>
                       </div>
@@ -1993,10 +2012,12 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
             </div>
 
             {/* Order Form */}
-            <div className={`${hasVideoBackground ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'} rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl`}>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6 relative">
+            <div
+              className={`${hasVideoBackground ? 'bg-white/80 backdrop-blur-sm dark:bg-neutral-900/90' : 'bg-white dark:bg-neutral-900'} rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl dark:border dark:border-neutral-800`}
+            >
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-6 relative">
                 Place an Order
-                <div className="h-1 w-16 bg-blue-600 mt-2" />
+                <div className="h-1 w-16 bg-blue-600 dark:bg-blue-500 mt-2" />
               </h2>
               <OrderForm companyName={company.name} />
             </div>

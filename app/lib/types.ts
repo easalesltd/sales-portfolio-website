@@ -13,6 +13,7 @@ export interface Company {
   slug: string;
   description: string;
   logoUrl: string;
+  logoUrlDark?: string;
   catalogueUrl: string;
   websiteUrl: string;
   videos?: string[]; // Array of video URLs for Trade Show Videos
