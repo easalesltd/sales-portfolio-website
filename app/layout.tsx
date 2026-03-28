@@ -8,7 +8,6 @@ import Script from 'next/script';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { companies, type Company } from './data/companies';
-import Breadcrumbs from './components/Breadcrumbs';
 import MobileRequestButton from './components/MobileRequestButton';
 import AboutDropdown from './components/AboutDropdown';
 
@@ -1002,7 +1001,6 @@ export default function RootLayout({
         </header>
         {/* Fixed gap below header - stays visible when scrolling so content doesn't touch header */}
         <div className="fixed top-20 left-0 right-0 h-2 bg-white dark:bg-neutral-950 z-40 transition-colors duration-300" aria-hidden="true" />
-        <Breadcrumbs />
         <main id="main-content" className="pt-[88px] min-h-screen bg-white dark:bg-neutral-950 transition-colors duration-300">
           {children}
         </main>
