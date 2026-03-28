@@ -132,60 +132,29 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left column - Text content */}
             <div className="space-y-8">
-              {/* Mobile: Only text, no interleaved images */}
-              <div className="block lg:hidden space-y-8">
-                <div className="bg-blue-50 rounded-lg p-4 mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-2">A Message from Dave</h2>
-                  <p className="text-base text-gray-700 italic">
-                    "Hi, I'm Dave Langdon, based in Ipswich, Suffolk. I've been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
-                  </p>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">Why Choose Dave Langdon?</h2>
-                  <p className="text-lg text-gray-700 mb-4">
-                    I'm committed to helping retailers find the perfect products for their customers. Whether you're looking for traditional greeting cards or modern gift items, I can help you build a successful product range with expert knowledge and personal service.
-                  </p>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
-                  <p className="text-lg text-gray-700 mb-4">
-                    I proudly serve retailers across East Anglia, including:
-                  </p>
-                  <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
-                    <li>Suffolk</li>
-                    <li>Norfolk</li>
-                    <li>Essex</li>
-                    <li>Cambridgeshire</li>
-                  </ul>
-                </div>
+              <div className="bg-blue-50 rounded-lg p-4 mb-4 lg:mb-6 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-900 mb-2">A Message from Dave</h2>
+                <p className="text-base text-gray-700 italic">
+                  &quot;Hi, I&apos;m Dave Langdon, based in Ipswich, Suffolk. I&apos;ve been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops.&quot;
+                </p>
               </div>
-
-              {/* Desktop: Original text content only */}
-              <div className="hidden lg:block">
-                <div className="bg-blue-50 rounded-lg p-4 mb-6 shadow-sm">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-2">A Message from Dave</h2>
-                  <p className="text-base text-gray-700 italic">
-                    "Hi, I'm Dave Langdon, based in Ipswich, Suffolk. I&apos;ve been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops."
-                  </p>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">Why Choose Dave Langdon?</h2>
-                  <p className="text-lg text-gray-700 mb-4">
-                    I'm committed to helping retailers find the perfect products for their customers. Whether you're looking for traditional greeting cards or modern gift items, I can help you build a successful product range with expert knowledge and personal service.
-                  </p>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
-                  <p className="text-lg text-gray-700 mb-4">
-                    I proudly serve retailers across East Anglia, including:
-                  </p>
-                  <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
-                    <li>Suffolk</li>
-                    <li>Norfolk</li>
-                    <li>Essex</li>
-                    <li>Cambridgeshire</li>
-                  </ul>
-                </div>
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Why Choose Dave Langdon?</h2>
+                <p className="text-lg text-gray-700 mb-4">
+                  I&apos;m committed to helping retailers find the perfect products for their customers. Whether you&apos;re looking for traditional greeting cards or modern gift items, I can help you build a successful product range with expert knowledge and personal service.
+                </p>
+              </div>
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
+                <p className="text-lg text-gray-700 mb-4">
+                  I proudly serve retailers across East Anglia, including:
+                </p>
+                <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
+                  <li>Suffolk</li>
+                  <li>Norfolk</li>
+                  <li>Essex</li>
+                  <li>Cambridgeshire</li>
+                </ul>
               </div>
             </div>
 
