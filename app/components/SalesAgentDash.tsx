@@ -314,22 +314,25 @@ function fillTextCenterAtBaselineClamped(
   ctx.fillText(text, cx, baselineY);
 }
 
-/** 8-bit style snake: rows top→bottom, chars = palette keys (see drawSnake8bit). */
+/**
+ * 8-bit side-view snake: tail left → head right (toward the player), belly below.
+ * Chars: _ empty, # outline, G/g/l body, o/O eyes, r tongue, t tail tip.
+ */
 const SNAKE_PIXEL_ROWS = [
-  '______________________________',
-  '__________######______________',
-  '_______##############_________',
-  '_____####################_____',
-  '___########################___',
-  '__##########oOo##oOo########__',
-  '_##############################',
-  '_##########################___',
-  '__###########################__',
-  '___#########################___',
-  '_____####################______',
-  '_______##############_________',
-  '__________########____________',
-  '____________####______________',
+  '____________________________________',
+  '____________________________________',
+  '______________________________oOo___',
+  '____________________________GGGGGG__',
+  '__________________________GGGGGGGGGG',
+  '_gggGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',
+  '_gggGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGr',
+  '_gggGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',
+  '____GGGGGGGGGGGGGGGGGGGGGGGGGG______',
+  '______GGGGGGGGGGGGGGGGGGGGGG________',
+  '__________GGGGGGGGGGGGGGGG__________',
+  '______________GGGGGGGGGG____________',
+  '__________________GGGG______________',
+  '____________________tt______________',
 ] as const;
 
 function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
@@ -341,6 +344,8 @@ function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w:
     l: '#4ade80',
     o: '#fef9c3',
     O: '#0f172a',
+    r: '#dc2626',
+    t: '#166534',
   };
   const rows = SNAKE_PIXEL_ROWS;
   const cols = rows[0]!.length;
