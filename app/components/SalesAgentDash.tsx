@@ -173,8 +173,8 @@ function fillTextCenterAtBaseline(
 ) {
   const w = weight === 'bold' ? 'bold ' : '';
   ctx.font = `${w}${px}px system-ui, sans-serif`;
-  const tw = ctx.measureText(text).width;
-  ctx.fillText(text, cx - tw / 2, baselineY);
+  ctx.textAlign = 'center';
+  ctx.fillText(text, cx, baselineY);
 }
 
 /** Same as fillTextCenterAtBaseline but never exceeds maxWidth (safety net for long strings). */
@@ -195,8 +195,8 @@ function fillTextCenterAtBaselineClamped(
     if (ctx.measureText(text).width <= maxWidth) break;
     p -= 0.5;
   }
-  const tw = ctx.measureText(text).width;
-  ctx.fillText(text, cx - tw / 2, baselineY);
+  ctx.textAlign = 'center';
+  ctx.fillText(text, cx, baselineY);
 }
 
 function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
