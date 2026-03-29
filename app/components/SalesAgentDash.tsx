@@ -64,17 +64,20 @@ function drawBillboard(
   ctx: CanvasRenderingContext2D,
   b: Billboard,
   groundY: number,
+  canvasH: number,
   canvasW: number,
   logos: Map<string, HTMLImageElement>
 ) {
   const c = companies[b.companyIndex];
   if (!c) return;
 
-  const boardW = Math.min(118, Math.max(72, canvasW * 0.28));
-  const boardH = boardW * 0.62;
-  const poleW = Math.max(8, boardW * 0.09);
+  // Tall portrait board; bottom edge sits well above tallest obstacles (~64px) plus gap.
+  const boardW = Math.min(132, Math.max(82, canvasW * 0.29));
+  const boardH = Math.max(boardW * 1.42, canvasH * 0.26);
+  const poleW = Math.max(9, boardW * 0.085);
   const x = b.x;
-  const boardBottom = groundY - 10;
+  const clearanceAboveRoad = Math.max(96, Math.min(groundY * 0.14, 130));
+  const boardBottom = groundY - clearanceAboveRoad;
   const boardTop = boardBottom - boardH;
   const url = c.logoUrlDark ?? c.logoUrl;
 
@@ -659,7 +662,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.fill();
 
       for (const bb of billboardsRef.current) {
-        drawBillboard(ctx, bb, groundY, W, logoImagesRef.current);
+        drawBillboard(ctx, bb, groundY, H, W, logoImagesRef.current);
       }
 
       for (const o of obstaclesRef.current) {
@@ -966,7 +969,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
       billboardsRef.current = billboardsRef.current.filter((bb) => {
         bb.x -= scroll;
-        return bb.x + 130 > -60;
+        return bb.x + 160 > -80;
       });
 
       vyRef.current += GRAVITY;
