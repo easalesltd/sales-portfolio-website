@@ -71,10 +71,15 @@ function drawBillboard(
   const c = companies[b.companyIndex];
   if (!c) return;
 
-  // Tall portrait board; bottom edge sits well above tallest obstacles (~64px) plus gap.
-  const boardW = Math.min(132, Math.max(82, canvasW * 0.29));
-  const boardH = Math.max(boardW * 1.42, canvasH * 0.26);
-  const poleW = Math.max(9, boardW * 0.085);
+  // Landscape (width > height); vertical span similar to before; bottom edge above obstacles.
+  const aspect = 1.82;
+  let boardH = Math.max(86, Math.min(canvasH * 0.21, 142));
+  let boardW = Math.min(boardH * aspect, canvasW * 0.48, 200);
+  if (boardW <= boardH) {
+    boardW = Math.min(canvasW * 0.5, 200);
+    boardH = Math.min(boardH, boardW / aspect);
+  }
+  const poleW = Math.max(9, boardW * 0.065);
   const x = b.x;
   const clearanceAboveRoad = Math.max(96, Math.min(groundY * 0.14, 130));
   const boardBottom = groundY - clearanceAboveRoad;
@@ -969,7 +974,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
       billboardsRef.current = billboardsRef.current.filter((bb) => {
         bb.x -= scroll;
-        return bb.x + 160 > -80;
+        return bb.x + 210 > -100;
       });
 
       vyRef.current += GRAVITY;
