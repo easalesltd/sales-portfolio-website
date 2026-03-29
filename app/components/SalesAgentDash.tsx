@@ -227,21 +227,25 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       ctx.strokeStyle = '#006854';
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.fillStyle = '#ffffff';
-      fillTextScaledCenter(ctx, 'HMRC', hx, top + 30, inner, 15, 10, 'bold');
-      ctx.fillStyle = 'rgba(255,255,255,0.9)';
-      fillTextScaledCenter(ctx, 'Return /', hx, top + 42, inner, 9, 6, '');
-      fillTextScaledCenter(ctx, 'payment', hx, top + 52, inner, 9, 6, '');
+
+      const alertX = x + 11;
+      const alertY = top + 11;
       ctx.fillStyle = '#fecaca';
       ctx.beginPath();
-      ctx.arc(x + w - 16, top + 18, 9, 0, Math.PI * 2);
+      ctx.arc(alertX, alertY, 5, 0, Math.PI * 2);
       ctx.fill();
       ctx.strokeStyle = '#b91c1c';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1;
       ctx.stroke();
       ctx.fillStyle = '#991b1b';
-      ctx.font = 'bold 10px system-ui, sans-serif';
-      ctx.fillText('!', x + w - 19, top + 22);
+      ctx.font = 'bold 7px system-ui, sans-serif';
+      ctx.fillText('!', alertX - 2.5, alertY + 3);
+
+      ctx.fillStyle = '#ffffff';
+      fillTextScaledCenter(ctx, 'HMRC', hx, top + 32, inner, 15, 10, 'bold');
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      fillTextScaledCenter(ctx, 'Return /', hx, top + 44, inner, 9, 6, '');
+      fillTextScaledCenter(ctx, 'payment', hx, top + 54, inner, 9, 6, '');
       break;
     }
     case 'broken_car': {
@@ -275,30 +279,30 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       break;
     }
     case 'sales_target': {
-      ctx.fillStyle = '#fce7f3';
+      ctx.fillStyle = '#fef2f2';
       roundRectPath(ctx, x, top, w, h, 4);
       ctx.fill();
       ctx.strokeStyle = '#be185d';
       ctx.stroke();
       const cx = x + w / 2;
-      const cy = top + h * 0.42;
-      const r = Math.min(w, h) * 0.28;
-      for (let i = 3; i >= 1; i--) {
-        ctx.strokeStyle = i === 1 ? '#dc2626' : '#9ca3af';
-        ctx.lineWidth = i === 1 ? 3 : 2;
-        ctx.beginPath();
-        ctx.arc(cx, cy, (r * i) / 3, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      ctx.fillStyle = '#16a34a';
-      ctx.font = 'bold 10px system-ui, sans-serif';
-      ctx.fillText('TARGET', x + 6, top + h - 10);
-      ctx.strokeStyle = '#059669';
+      const cy = top + h * 0.36;
+      const r = Math.min(w, h) * 0.24;
+      ctx.strokeStyle = '#b91c1c';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.stroke();
+      const k = r * 0.72;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(x + 8, top + h - 22);
-      ctx.lineTo(x + w - 8, top + 14);
+      ctx.moveTo(cx - k, cy - k);
+      ctx.lineTo(cx + k, cy + k);
+      ctx.moveTo(cx + k, cy - k);
+      ctx.lineTo(cx - k, cy + k);
       ctx.stroke();
+      ctx.fillStyle = '#991b1b';
+      fillTextScaledCenter(ctx, 'Sales', cx, top + h - 20, w - 10, 9, 7, 'bold');
+      fillTextScaledCenter(ctx, 'Targets', cx, top + h - 8, w - 10, 9, 7, 'bold');
       break;
     }
     case 'speed_camera': {
@@ -727,7 +731,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           {screen === 'menu' && (
             <div className="py-8 text-center text-neutral-200">
               <p className="mb-2 text-lg">
-                Endless run: dodge Gatso cameras, PCNs, pro forma invoices, rivals on iPads, knackered cars, sales targets, and HMRC.
+                Endless run: dodge Speed cameras, PCNs, pro forma invoices, Broken down cars, sales targets, and HMRC.
               </p>
               <p className="mb-2 text-sm text-neutral-400">
                 Score ticks up the longer you survive — speed ramps up. Beat your personal best (saved on this device).
