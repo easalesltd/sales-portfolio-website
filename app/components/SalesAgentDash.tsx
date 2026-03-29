@@ -19,22 +19,17 @@ function countyForScore(score: number): (typeof COUNTIES)[number] {
 
 const LOSE_PHRASES = [
   'Why are you still playing this?',
-  'The regional manager will hear about this.',
   "That's coming out of your mileage allowance.",
   'Did you try jumping? Revolutionary concept.',
   'Your sample bag survived. You did not.',
-  'HMRC thanks you for the entertainment.',
+  'HMRC IS WATCHING.',
   'The PCN was fake. Your pride is not.',
-  'Sales target: breathing. You: needs work.',
   'Flannel does not count as armour.',
   'Flip-flops were a bold choice for parkour.',
   'Another rep already cleared this postcode.',
   'Pro forma: game over. Actual forma: also over.',
   'The speed camera only judges you a little.',
-  'East Anglia says: skill issue.',
   'Try again — the A-road has faith in you. Barely.',
-  'A van rep is laughing in a lay-by somewhere.',
-  'That obstacle was in the CRM as “won”.',
 ] as const;
 
 function randomLosePhrase(): string {
