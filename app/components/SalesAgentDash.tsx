@@ -710,6 +710,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     } else {
       h = Math.min(400, Math.floor(w * 0.52));
     }
+    // Avoid resetting canvas backing store unless dimensions change — on mobile,
+    // ResizeObserver + resize can fire in bursts; each width/height assignment clears the buffer and janks.
+    if (c.width === w && c.height === h) return;
     c.width = w;
     c.height = h;
     if (lostDuringRunRef.current) {
@@ -722,13 +725,24 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (screen !== 'game') return;
     const parent = canvasRef.current?.parentElement;
     if (!parent) return;
+
+    let rafId = 0;
+    const scheduleResize = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        resizeCanvas();
+      });
+    };
+
     resizeCanvas();
-    const ro = new ResizeObserver(() => resizeCanvas());
+    const ro = new ResizeObserver(scheduleResize);
     ro.observe(parent);
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('resize', scheduleResize);
     return () => {
+      cancelAnimationFrame(rafId);
       ro.disconnect();
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', scheduleResize);
     };
   }, [screen, resizeCanvas]);
 
@@ -773,14 +787,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     const touch: AddEventListenerOptions = { passive: false };
     canvas.addEventListener('touchstart', blockDefault, touch);
     canvas.addEventListener('gesturestart', blockDefault);
-    canvas.addEventListener('gesturechange', blockDefault);
-    canvas.addEventListener('gestureend', blockDefault);
 
     return () => {
       canvas.removeEventListener('touchstart', blockDefault, touch);
       canvas.removeEventListener('gesturestart', blockDefault);
-      canvas.removeEventListener('gesturechange', blockDefault);
-      canvas.removeEventListener('gestureend', blockDefault);
     };
   }, [screen]);
 
@@ -915,14 +925,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     const touch: AddEventListenerOptions = { passive: false };
     el.addEventListener('touchstart', blockDefault, touch);
     el.addEventListener('gesturestart', blockDefault);
-    el.addEventListener('gesturechange', blockDefault);
-    el.addEventListener('gestureend', blockDefault);
 
     return () => {
       el.removeEventListener('touchstart', blockDefault, touch);
       el.removeEventListener('gesturestart', blockDefault);
-      el.removeEventListener('gesturechange', blockDefault);
-      el.removeEventListener('gestureend', blockDefault);
     };
   }, [playing]);
 
