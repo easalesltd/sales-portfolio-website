@@ -11,16 +11,13 @@ const BASE_SCROLL = 4.2;
 const BASE_OBSTACLE_INTERVAL = 88;
 
 const OBSTACLE_KINDS = [
-  'parking_ticket',
+  'speed_camera',
+  'pcn',
+  'pro_forma_invoice',
+  'other_agent',
   'broken_car',
   'sales_target',
-  'competitor_agent',
-  'coffee_spill',
-  'spreadsheet',
-  'cone_zone',
-  'sample_trolley',
-  'speed_camera',
-  'inbox_zero',
+  'hmrc',
 ] as const;
 
 type ObstacleKind = (typeof OBSTACLE_KINDS)[number];
@@ -34,28 +31,20 @@ interface Obstacle {
 
 function dimsFor(kind: ObstacleKind): { w: number; h: number } {
   switch (kind) {
-    case 'parking_ticket':
+    case 'speed_camera':
+      return { w: 52, h: 64 };
+    case 'pcn':
       return { w: 42, h: 56 };
+    case 'pro_forma_invoice':
+      return { w: 50, h: 56 };
+    case 'other_agent':
+      return { w: 48, h: 62 };
     case 'broken_car':
       return { w: 78, h: 48 };
     case 'sales_target':
       return { w: 50, h: 62 };
-    case 'competitor_agent':
-      return { w: 46, h: 58 };
-    case 'coffee_spill':
-      return { w: 52, h: 26 };
-    case 'spreadsheet':
-      return { w: 58, h: 50 };
-    case 'cone_zone':
-      return { w: 62, h: 46 };
-    case 'sample_trolley':
-      return { w: 64, h: 54 };
-    case 'speed_camera':
-      return { w: 52, h: 64 };
-    case 'inbox_zero':
-      return { w: 56, h: 44 };
-    default:
-      return { w: 50, h: 50 };
+    case 'hmrc':
+      return { w: 54, h: 58 };
   }
 }
 
@@ -81,11 +70,11 @@ function roundRectPath(
   ctx.closePath();
 }
 
-function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number, groundY: number) {
+function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
   const { x, w, h, kind } = o;
 
   switch (kind) {
-    case 'parking_ticket': {
+    case 'pcn': {
       ctx.fillStyle = '#fef3c7';
       roundRectPath(ctx, x, top, w, h, 4);
       ctx.fill();
@@ -94,13 +83,116 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number, g
       ctx.stroke();
       ctx.fillStyle = '#dc2626';
       ctx.font = 'bold 11px system-ui, sans-serif';
-      ctx.fillText('PCN', x + 8, top + 18);
+      ctx.fillText('PCN', x + 8, top + 16);
       ctx.fillStyle = '#1c1917';
+      ctx.font = '8px system-ui, sans-serif';
+      ctx.fillText('Penalty Charge', x + 8, top + 28);
       ctx.font = '10px system-ui, sans-serif';
-      ctx.fillText('£60', x + 8, top + 34);
+      ctx.fillText('£60', x + 8, top + 40);
       ctx.fillRect(x + 6, top + h - 12, w - 12, 2);
       ctx.fillStyle = '#78716c';
       for (let i = 0; i < 6; i++) ctx.fillRect(x + 8 + i * 6, top + h - 8, 3, 4);
+      break;
+    }
+    case 'pro_forma_invoice': {
+      ctx.fillStyle = '#fafaf9';
+      roundRectPath(ctx, x + 1, top + 2, w - 2, h - 4, 3);
+      ctx.fill();
+      ctx.strokeStyle = '#a8a29e';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#44403c';
+      ctx.font = '8px system-ui, sans-serif';
+      ctx.fillText('PRO FORMA', x + 8, top + 16);
+      ctx.fillStyle = '#b91c1c';
+      ctx.font = 'bold 11px system-ui, sans-serif';
+      ctx.fillText('INVOICE', x + 8, top + 30);
+      ctx.fillStyle = '#78716c';
+      ctx.fillRect(x + 8, top + 36, w - 24, 2);
+      ctx.fillRect(x + 8, top + 42, w - 16, 2);
+      ctx.fillRect(x + 8, top + 48, w - 30, 2);
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([3, 2]);
+      roundRectPath(ctx, x + 6, top + h - 18, w - 12, 14, 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#b91c1c';
+      ctx.font = 'bold 7px system-ui, sans-serif';
+      ctx.fillText('NOT A TAX INVOICE', x + 10, top + h - 10);
+      break;
+    }
+    case 'other_agent': {
+      const cx = x + w / 2;
+      ctx.fillStyle = '#e2e8f0';
+      roundRectPath(ctx, x + 6, top, w - 12, h - 6, 4);
+      ctx.fill();
+      ctx.strokeStyle = '#94a3b8';
+      ctx.stroke();
+      ctx.fillStyle = '#4b5563';
+      ctx.fillRect(x + 12, top + 40, w - 24, 20);
+      ctx.fillStyle = '#374151';
+      ctx.fillRect(x + 14, top + 34, w - 28, 10);
+      ctx.fillStyle = '#fdba74';
+      ctx.beginPath();
+      ctx.arc(cx, top + 20, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#292524';
+      ctx.fillRect(cx - 9, top + 10, 18, 6);
+      const padX = cx - 13;
+      const padY = top + 30;
+      ctx.fillStyle = '#94a3b8';
+      roundRectPath(ctx, padX - 1, padY - 1, 28, 34, 3);
+      ctx.fill();
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(padX + 2, padY + 2, 22, 28);
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      ctx.lineWidth = 1;
+      for (let r = 0; r < 4; r++) {
+        ctx.beginPath();
+        ctx.moveTo(padX + 4, padY + 6 + r * 7);
+        ctx.lineTo(padX + 24, padY + 6 + r * 7);
+        ctx.stroke();
+      }
+      for (let c = 0; c < 3; c++) {
+        ctx.beginPath();
+        ctx.moveTo(padX + 6 + c * 7, padY + 4);
+        ctx.lineTo(padX + 6 + c * 7, padY + 28);
+        ctx.stroke();
+      }
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(padX + 8, padY + 8, 8, 6);
+      ctx.fillStyle = '#fdba74';
+      ctx.fillRect(x + 4, padY + 14, 8, 12);
+      ctx.fillRect(x + w - 12, padY + 14, 8, 12);
+      ctx.fillStyle = '#334155';
+      ctx.font = '7px system-ui, sans-serif';
+      ctx.fillText('Other rep', x + 8, top + h - 10);
+      break;
+    }
+    case 'hmrc': {
+      ctx.fillStyle = '#008670';
+      roundRectPath(ctx, x + 2, top + 4, w - 4, h - 8, 5);
+      ctx.fill();
+      ctx.strokeStyle = '#006854';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 15px system-ui, sans-serif';
+      ctx.fillText('HMRC', x + 12, top + 30);
+      ctx.font = '9px system-ui, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
+      ctx.fillText('Return / payment', x + 12, top + 44);
+      ctx.fillStyle = '#fecaca';
+      ctx.beginPath();
+      ctx.arc(x + w - 16, top + 18, 9, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#b91c1c';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.fillStyle = '#991b1b';
+      ctx.font = 'bold 11px system-ui, sans-serif';
+      ctx.fillText('!', x + w - 20, top + 23);
       break;
     }
     case 'broken_car': {
@@ -160,133 +252,6 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number, g
       ctx.stroke();
       break;
     }
-    case 'competitor_agent': {
-      ctx.fillStyle = '#e2e8f0';
-      roundRectPath(ctx, x + 10, top, w - 20, h - 8, 4);
-      ctx.fill();
-      ctx.strokeStyle = '#64748b';
-      ctx.stroke();
-      ctx.fillStyle = '#1e3a5f';
-      ctx.fillRect(x + 16, top + 38, w - 32, 22);
-      ctx.fillStyle = '#fca5a5';
-      ctx.beginPath();
-      ctx.arc(x + w / 2, top + 18, 11, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#7f1d1d';
-      ctx.fillRect(x + w / 2 - 7, top + 10, 14, 6);
-      ctx.fillStyle = '#dc2626';
-      ctx.fillRect(x + w / 2 - 2, top + 28, 4, 10);
-      ctx.fillStyle = '#451a03';
-      ctx.fillRect(x + 6, top + 44, 10, 14);
-      ctx.fillRect(x + w - 16, top + 44, 10, 14);
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(x + w - 14, top + 52, 12, 10);
-      ctx.font = '8px system-ui, sans-serif';
-      ctx.fillStyle = '#334155';
-      ctx.fillText('“We’ll', x + 8, top + h - 18);
-      ctx.fillText('match it”', x + 8, top + h - 8);
-      break;
-    }
-    case 'coffee_spill': {
-      ctx.fillStyle = '#78350f';
-      ctx.beginPath();
-      ctx.ellipse(x + w * 0.35, top + h * 0.55, w * 0.32, h * 0.35, 0.2, 0, Math.PI * 2);
-      ctx.ellipse(x + w * 0.65, top + h * 0.5, w * 0.28, h * 0.4, -0.3, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#92400e';
-      ctx.beginPath();
-      ctx.ellipse(x + w / 2, top + h * 0.45, w * 0.4, h * 0.35, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#fff7ed';
-      ctx.fillRect(x + w * 0.42, top + 2, 10, 14);
-      ctx.strokeStyle = '#d6d3d1';
-      ctx.strokeRect(x + w * 0.42, top + 2, 10, 14);
-      ctx.fillStyle = '#64748b';
-      ctx.fillRect(x + w * 0.44, top + 6, 8, 4);
-      break;
-    }
-    case 'spreadsheet': {
-      ctx.fillStyle = '#f8fafc';
-      ctx.fillRect(x, top, w, h);
-      ctx.strokeStyle = '#cbd5e1';
-      ctx.strokeRect(x, top, w, h);
-      ctx.strokeStyle = '#86efac';
-      ctx.lineWidth = 1;
-      for (let r = 0; r < 5; r++) {
-        ctx.beginPath();
-        ctx.moveTo(x, top + 10 + r * 8);
-        ctx.lineTo(x + w, top + 10 + r * 8);
-        ctx.stroke();
-      }
-      ctx.strokeStyle = '#86efac';
-      for (let c = 0; c < 6; c++) {
-        ctx.beginPath();
-        ctx.moveTo(x + 8 + c * 9, top);
-        ctx.lineTo(x + 8 + c * 9, top + h);
-        ctx.stroke();
-      }
-      ctx.fillStyle = '#1e293b';
-      ctx.font = 'bold 9px monospace';
-      ctx.fillText('Q4 vLOOKUP', x + 4, top + h - 8);
-      ctx.fillStyle = '#b91c1c';
-      ctx.font = 'bold 14px monospace';
-      ctx.fillText('#REF!', x + w - 36, top + 20);
-      break;
-    }
-    case 'cone_zone': {
-      ctx.fillStyle = '#ea580c';
-      const w1 = w * 0.28;
-      ctx.beginPath();
-      ctx.moveTo(x + 10, groundY);
-      ctx.lineTo(x + 10 + w1 / 2, top);
-      ctx.lineTo(x + 10 + w1, groundY);
-      ctx.closePath();
-      ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(x + w / 2 - w1 / 2, groundY);
-      ctx.lineTo(x + w / 2, top + 6);
-      ctx.lineTo(x + w / 2 + w1 / 2, groundY);
-      ctx.closePath();
-      ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(x + w - 10 - w1, groundY);
-      ctx.lineTo(x + w - 10 - w1 / 2, top + 4);
-      ctx.lineTo(x + w - 10, groundY);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = '#fcd34d';
-      ctx.lineWidth = 3;
-      ctx.setLineDash([6, 4]);
-      ctx.beginPath();
-      ctx.moveTo(x + 6, top + h * 0.35);
-      ctx.lineTo(x + w - 6, top + h * 0.45);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle = '#1e293b';
-      ctx.font = '8px system-ui, sans-serif';
-      ctx.fillText('DO NOT STACK', x + 8, top + h * 0.75);
-      break;
-    }
-    case 'sample_trolley': {
-      ctx.strokeStyle = '#64748b';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(x + 12, top + 16, w - 24, h - 26);
-      ctx.fillStyle = '#94a3b8';
-      ctx.fillRect(x + 14, top + 18, w - 28, 6);
-      ctx.fillStyle = '#ef4444';
-      for (let i = 0; i < 4; i++) {
-        ctx.fillRect(x + 18 + i * 12, top + 26, 6, 8);
-      }
-      ctx.fillStyle = '#1e293b';
-      ctx.beginPath();
-      ctx.arc(x + 22, top + h - 4, 6, 0, Math.PI * 2);
-      ctx.arc(x + w - 22, top + h - 4, 6, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#0f172a';
-      ctx.font = '8px system-ui, sans-serif';
-      ctx.fillText('HEAVY', x + w / 2 - 14, top + 12);
-      break;
-    }
     case 'speed_camera': {
       const pad = 3;
       const boxW = w - pad * 2 - 6;
@@ -328,24 +293,6 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number, g
       ctx.fillStyle = '#6b7280';
       ctx.fillRect(postX - 2, boxY + boxH - 1, postW + 4, 5);
       ctx.fillRect(postX, boxY + boxH + 3, postW, bottomY - (boxY + boxH + 3));
-      break;
-    }
-    case 'inbox_zero': {
-      ctx.fillStyle = '#fefce8';
-      roundRectPath(ctx, x, top, w, h, 6);
-      ctx.fill();
-      ctx.strokeStyle = '#eab308';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.fillStyle = '#ca8a04';
-      ctx.font = 'bold 11px system-ui, sans-serif';
-      ctx.fillText('999+', x + 8, top + 22);
-      ctx.fillStyle = '#1c1917';
-      ctx.font = '9px system-ui, sans-serif';
-      ctx.fillText('unread', x + 8, top + 36);
-      ctx.fillStyle = '#b91c1c';
-      ctx.font = '8px system-ui, sans-serif';
-      ctx.fillText('ASAP!!!', x + 8, top + h - 8);
       break;
     }
   }
@@ -659,7 +606,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       for (const o of obstaclesRef.current) {
         const top = groundY - o.h;
-        drawObstacle(ctx, o, top, groundY);
+        drawObstacle(ctx, o, top);
       }
 
       const yTop = groundY + pyRef.current - ph;
@@ -727,7 +674,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         <div className="flex min-h-0 flex-1 flex-col items-center p-3 sm:p-4">
           {screen === 'menu' && (
             <div className="py-8 text-center text-neutral-200">
-              <p className="mb-2 text-lg">Endless run: dodge parking tickets, knackered cars, targets, rivals, and sales-life hazards.</p>
+              <p className="mb-2 text-lg">
+                Endless run: dodge Gatso cameras, PCNs, pro forma invoices, rivals on iPads, knackered cars, sales targets, and HMRC.
+              </p>
               <p className="mb-2 text-sm text-neutral-400">
                 Score ticks up the longer you survive — speed ramps up. Beat your personal best (saved on this device).
               </p>
