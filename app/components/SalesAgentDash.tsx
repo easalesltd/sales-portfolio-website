@@ -53,6 +53,8 @@ const LOSE_PHRASES = [
   'Your sample bag survived. You did not.',
   'Flannel does not count as armour.',
   'Flip-flops were a bold choice for parkour.',
+  'Call that a journey plan?',
+  "No one tell my companies i've made this please",
 ] as const;
 
 function randomLosePhrase(): string {
