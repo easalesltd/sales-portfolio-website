@@ -537,6 +537,8 @@ function readHighScore(): number {
 export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const shellRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  /** Touch target below canvas (mobile): same non-passive touch handling as canvas. */
+  const tapBelowRef = useRef<HTMLDivElement>(null);
   const [screen, setScreen] = useState<'menu' | 'game'>('menu');
   const [outcome, setOutcome] = useState<null | 'lost'>(null);
   const [highScore, setHighScore] = useState(() => readHighScore());
@@ -901,6 +903,29 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
   const playing = screen === 'game' && outcome === null;
 
+  useEffect(() => {
+    if (!playing) return;
+    const el = tapBelowRef.current;
+    if (!el) return;
+
+    const blockDefault = (e: Event) => {
+      e.preventDefault();
+    };
+
+    const touch: AddEventListenerOptions = { passive: false };
+    el.addEventListener('touchstart', blockDefault, touch);
+    el.addEventListener('gesturestart', blockDefault);
+    el.addEventListener('gesturechange', blockDefault);
+    el.addEventListener('gestureend', blockDefault);
+
+    return () => {
+      el.removeEventListener('touchstart', blockDefault, touch);
+      el.removeEventListener('gesturestart', blockDefault);
+      el.removeEventListener('gesturechange', blockDefault);
+      el.removeEventListener('gestureend', blockDefault);
+    };
+  }, [playing]);
+
   return (
     <div
       ref={shellRef}
@@ -973,6 +998,36 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   }
                 />
               </div>
+              {playing ? (
+                <div
+                  ref={tapBelowRef}
+                  className="mt-2 w-full max-w-2xl min-h-[min(36dvh,240px)] shrink-0 touch-none select-none sm:min-h-20"
+                  style={{
+                    userSelect: 'none',
+                    WebkitUserSelect: 'none',
+                    WebkitTouchCallout: 'none',
+                    touchAction: 'none',
+                  }}
+                  aria-label="Tap to jump"
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === ' ' || e.key === 'Enter') {
+                      e.preventDefault();
+                      jump();
+                    }
+                  }}
+                  onTouchStart={(e) => {
+                    e.preventDefault();
+                    jump();
+                  }}
+                  onMouseDown={(e) => {
+                    if (e.button !== 0) return;
+                    e.preventDefault();
+                    jump();
+                  }}
+                />
+              ) : null}
               {outcome === 'lost' && lastRunScore !== null && (
                 <div className="mt-4 space-y-2 text-center">
                   <p className="text-lg font-medium text-neutral-100">
