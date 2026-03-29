@@ -1236,7 +1236,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         </div>
 
         <p className="shrink-0 border-t border-neutral-800 px-4 py-2 text-center text-xs text-neutral-500">
-          Easter egg: double-click the logo in the header (two quick clicks before you navigate home).
+          <span className="sm:hidden">Touch screen to jump</span>
+          <span className="hidden sm:inline">Click or press Space to jump</span>
         </p>
       </div>
     </div>
