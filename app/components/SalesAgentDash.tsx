@@ -5,11 +5,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 const STORAGE_KEY = 'sales-agent-dash-high-score';
 
 const GROUND_RATIO = 0.78;
-const GRAVITY = 0.72;
-const JUMP_V = -13;
-const BASE_SCROLL = 4.2;
+const GRAVITY = 0.68;
+const JUMP_V = -13.5;
+const BASE_SCROLL = 3.9;
 /** World pixels travelled between obstacle spawns (keeps density as scroll speed ramps up). */
-const OBSTACLE_SPAWN_GAP_PX = 430;
+const OBSTACLE_SPAWN_GAP_PX = 465;
 
 const COUNTIES = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
 
@@ -22,14 +22,9 @@ const LOSE_PHRASES = [
   "That's coming out of your mileage allowance.",
   'Did you try jumping? Revolutionary concept.',
   'Your sample bag survived. You did not.',
-  'HMRC IS WATCHING.',
-  'The PCN was fake. Your pride is not.',
   'Flannel does not count as armour.',
   'Flip-flops were a bold choice for parkour.',
   'Another rep already cleared this postcode.',
-  'Pro forma: game over. Actual forma: also over.',
-  'The speed camera only judges you a little.',
-  'Try again — the A-road has faith in you. Barely.',
 ] as const;
 
 function randomLosePhrase(): string {
@@ -138,23 +133,34 @@ function fillTextScaledCenter(
   ctx.fillText(text, cx - tw / 2, y);
 }
 
-/** Shrinks font until the string fits within maxWidth or hardMin is reached (county banner). */
+/**
+ * Shrinks font until the string fits within maxWidth.
+ * Uses `>=` so the size at hardMinPx is actually measured; if it still overflows, continues down to absoluteMinPx.
+ */
 function measureFitFontPxHard(
   ctx: CanvasRenderingContext2D,
   text: string,
   maxWidth: number,
   maxPx: number,
   hardMinPx: number,
-  weight: '' | 'bold' = ''
+  weight: '' | 'bold' = '',
+  absoluteMinPx = 4.5
 ): number {
   let px = maxPx;
   const w = weight === 'bold' ? 'bold ' : '';
-  while (px > hardMinPx) {
+  while (px >= hardMinPx) {
     ctx.font = `${w}${px}px system-ui, sans-serif`;
-    if (ctx.measureText(text).width <= maxWidth) break;
+    if (ctx.measureText(text).width <= maxWidth) return px;
     px -= 0.5;
   }
-  return Math.max(hardMinPx, px);
+  px = hardMinPx - 0.5;
+  while (px >= absoluteMinPx) {
+    ctx.font = `${w}${px}px system-ui, sans-serif`;
+    if (ctx.measureText(text).width <= maxWidth) return px;
+    px -= 0.5;
+  }
+  ctx.font = `${w}${absoluteMinPx}px system-ui, sans-serif`;
+  return absoluteMinPx;
 }
 
 function fillTextCenterAtBaseline(
@@ -167,6 +173,28 @@ function fillTextCenterAtBaseline(
 ) {
   const w = weight === 'bold' ? 'bold ' : '';
   ctx.font = `${w}${px}px system-ui, sans-serif`;
+  const tw = ctx.measureText(text).width;
+  ctx.fillText(text, cx - tw / 2, baselineY);
+}
+
+/** Same as fillTextCenterAtBaseline but never exceeds maxWidth (safety net for long strings). */
+function fillTextCenterAtBaselineClamped(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  cx: number,
+  baselineY: number,
+  px: number,
+  maxWidth: number,
+  weight: '' | 'bold',
+  absoluteMinPx = 4
+) {
+  const w = weight === 'bold' ? 'bold ' : '';
+  let p = px;
+  while (p >= absoluteMinPx) {
+    ctx.font = `${w}${p}px system-ui, sans-serif`;
+    if (ctx.measureText(text).width <= maxWidth) break;
+    p -= 0.5;
+  }
   const tw = ctx.measureText(text).width;
   ctx.fillText(text, cx - tw / 2, baselineY);
 }
@@ -593,15 +621,16 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       if (banner.frames > 0) {
         const fade = Math.min(1, banner.frames / 28);
         const isCompact = W < 420;
-        const outerPad = Math.max(10, Math.floor(W * 0.032));
+        // Tighter horizontal padding on narrow canvases so long county names get more width.
+        const outerPad = isCompact ? Math.max(6, Math.floor(W * 0.022)) : Math.max(10, Math.floor(W * 0.032));
         const innerPad = Math.max(6, Math.floor(W * 0.022));
-        const maxTextW = Math.max(80, W - outerPad * 2 - 8);
+        const maxTextW = Math.max(64, W - outerPad * 2 - 4);
         const line1Max = isCompact ? Math.min(15, W * 0.046) : Math.min(14, W * 0.028);
-        const line2Max = isCompact ? Math.min(27, W * 0.08) : Math.min(24, W * 0.05);
+        const line2Max = isCompact ? Math.min(26, W * 0.095) : Math.min(24, W * 0.05);
         const line3Max = isCompact ? Math.min(12, W * 0.036) : Math.min(11, W * 0.026);
 
         const panelTop = H * 0.23;
-        const panelH = Math.min(108, Math.max(74, Math.floor(H * 0.3)));
+        const panelH = Math.min(118, Math.max(isCompact ? 80 : 74, Math.floor(H * 0.32)));
 
         ctx.save();
         ctx.fillStyle = `rgba(15,23,42,${0.82 * fade})`;
@@ -615,19 +644,22 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         const innerMid = (innerTop + innerBot) / 2;
 
         const px1 = measureFitFontPxHard(ctx, 'Now entering', maxTextW, line1Max, 7, '');
-        const px2 = measureFitFontPxHard(ctx, banner.name, maxTextW, line2Max, 7, 'bold');
+        const px2 = measureFitFontPxHard(ctx, banner.name, maxTextW, line2Max, 6, 'bold', 4);
         const px3 = measureFitFontPxHard(ctx, 'East Anglia route', maxTextW, line3Max, 6, '');
         const gap12 = Math.max(4, Math.round(Math.min(px1, px2) * 0.16));
         const gap23 = Math.max(3, Math.round(Math.min(px2, px3) * 0.14));
         const span1 = px1 * 1.08 + gap12 * 0.35;
         const span2 = px2 * 1.08 + gap23 * 0.35;
         const span3 = px3 * 0.92;
-        const blockH = span1 + span2 + span3;
+        ctx.font = `bold ${px2}px system-ui, sans-serif`;
+        const countyDesc =
+          ctx.measureText(banner.name).actualBoundingBoxDescent ?? px2 * 0.24;
+        const blockH = span1 + span2 + span3 + countyDesc * 0.35;
         let b1 = innerMid - blockH / 2 + px1 * 0.78;
         let b2 = b1 + span1;
-        let b3 = b2 + span2;
+        let b3 = b2 + span2 + countyDesc * 0.35;
         const minBaselineTop = innerTop + px1 + 2;
-        const maxBaselineBot = innerBot - px3 * 0.25 - 2;
+        const maxBaselineBot = innerBot - Math.max(px3 * 0.28, (px3 * 0.85) / 3) - 3;
         if (b1 < minBaselineTop) {
           const s = minBaselineTop - b1;
           b1 += s;
@@ -643,10 +675,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
-        fillTextCenterAtBaseline(ctx, 'Now entering', W / 2, b1, px1, '');
-        fillTextCenterAtBaseline(ctx, banner.name, W / 2, b2, px2, 'bold');
+        fillTextCenterAtBaselineClamped(ctx, 'Now entering', W / 2, b1, px1, maxTextW, '');
+        fillTextCenterAtBaselineClamped(ctx, banner.name, W / 2, b2, px2, maxTextW, 'bold', 4);
         ctx.fillStyle = 'rgba(255,255,255,0.85)';
-        fillTextCenterAtBaseline(ctx, 'East Anglia route', W / 2, b3, px3, '');
+        fillTextCenterAtBaselineClamped(ctx, 'East Anglia route', W / 2, b3, px3, maxTextW, '', 4);
         ctx.textAlign = 'left';
         ctx.restore();
         if (advanceCountyBanner) {
@@ -742,7 +774,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const ph = 52;
       const px = W * 0.18;
 
-      const difficulty = 1 + Math.min(2.2, scoreRef.current / 3500);
+      const difficulty = 1 + Math.min(2, scoreRef.current / 4000);
       const scroll = BASE_SCROLL * difficulty;
       scoreRef.current += scroll * 0.35;
 
