@@ -17,6 +17,23 @@ const OBSTACLE_SPAWN_GAP_PX = 465;
 /** Scenic billboards (no collision); spaced apart from obstacle cadence. */
 const BILLBOARD_SPAWN_GAP_PX = 820;
 
+/** No disco below this floor score. */
+const DISCO_MIN_SCORE = 3000;
+/** First disco block: `DISCO_MIN_SCORE`..`DISCO_MIN_SCORE + DISCO_DURATION_SCORE - 1`. */
+const DISCO_DURATION_SCORE = 1000;
+/** After the first block, repeating cycle: this many normal, then `DISCO_DURATION_SCORE` disco. */
+const DISCO_REPEAT_NORMAL_SCORE = 2000;
+const DISCO_REPEAT_CYCLE = DISCO_REPEAT_NORMAL_SCORE + DISCO_DURATION_SCORE;
+
+function isDiscoScore(score: number): boolean {
+  const s = Math.floor(score);
+  if (s < DISCO_MIN_SCORE) return false;
+  if (s < DISCO_MIN_SCORE + DISCO_DURATION_SCORE) return true;
+  const v = s - (DISCO_MIN_SCORE + DISCO_DURATION_SCORE);
+  const pos = v % DISCO_REPEAT_CYCLE;
+  return pos >= DISCO_REPEAT_NORMAL_SCORE;
+}
+
 const COUNTIES = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
 /** "Now entering" overlay only for the first four county transitions per run (one lap). */
 const COUNTY_BANNER_MAX_SHOWS = 4;
@@ -622,6 +639,72 @@ function drawPlayer(ctx: CanvasRenderingContext2D, px: number, yTop: number, pw:
   ctx.stroke();
 }
 
+function drawDiscoFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, groundY: number) {
+  const t = performance.now() * 0.0035;
+  const beat = Math.sin(t * 4.2) * 0.5 + 0.5;
+  const n = 6;
+  for (let i = 0; i < n; i++) {
+    const hue = (t * 90 + i * (360 / n)) % 360;
+    const x = (W / n) * i - 1;
+    ctx.fillStyle = `hsla(${hue}, 88%, 52%, ${0.06 + beat * 0.1})`;
+    ctx.fillRect(x, 0, W / n + 3, groundY + 14);
+  }
+  ctx.fillStyle = `rgba(255,255,255,${0.04 + beat * 0.07})`;
+  ctx.fillRect(0, 0, W, groundY + 10);
+  if (Math.floor(t * 10) % 2 === 0) {
+    ctx.fillStyle = 'rgba(250, 204, 21, 0.07)';
+    ctx.fillRect(0, groundY - 6, W, H - groundY + 6);
+  }
+}
+
+function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: number) {
+  const cx = W / 2;
+  const ballR = Math.min(24, Math.max(16, W * 0.055));
+  const mountY = 2;
+  const targetBallCy = ballR + 32;
+  const startCy = -ballR - 20;
+  const ballCy = startCy + (targetBallCy - startCy) * dropProgress;
+  const spin = performance.now() * 0.0022;
+
+  ctx.strokeStyle = 'rgba(51,65,85,0.95)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx, mountY);
+  ctx.lineTo(cx, Math.max(mountY + 4, ballCy - ballR));
+  ctx.stroke();
+
+  const spark = ctx.createRadialGradient(
+    cx - ballR * 0.4,
+    ballCy - ballR * 0.4,
+    ballR * 0.1,
+    cx,
+    ballCy,
+    ballR
+  );
+  spark.addColorStop(0, '#f8fafc');
+  spark.addColorStop(0.4, '#94a3b8');
+  spark.addColorStop(0.75, '#475569');
+  spark.addColorStop(1, '#1e293b');
+  ctx.fillStyle = spark;
+  ctx.beginPath();
+  ctx.arc(cx, ballCy, ballR, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+
+  const facets = 10;
+  for (let i = 0; i < facets; i++) {
+    const a = (i / facets) * Math.PI * 2 + spin;
+    const hx = cx + Math.cos(a) * ballR * 0.52;
+    const hy = ballCy + Math.sin(a) * ballR * 0.52;
+    const sz = 2.5 + (i % 3) * 0.9;
+    const hue = (i * 41 + spin * 180) % 360;
+    ctx.fillStyle = `hsla(${hue}, 92%, ${48 + 22 * Math.sin(spin * 3 + i)}%, 0.88)`;
+    ctx.fillRect(hx - sz / 2, hy - sz / 2, sz, sz);
+  }
+}
+
 function readHighScore(): number {
   if (typeof window === 'undefined') return 0;
   const v = window.localStorage.getItem(STORAGE_KEY);
@@ -656,6 +739,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const countyBannerRef = useRef({ frames: 0, name: '' as string });
   /** Set synchronously on collision so resize (canvas bitmap clear) can repaint before React commits `outcome`. */
   const lostDuringRunRef = useRef(false);
+  const discoWasActiveRef = useRef(false);
+  /** 0 → 1 while disco segment runs; eases the ball down from above. */
+  const discoBallDropRef = useRef(0);
 
   useEffect(() => {
     trackSalesAgentDashOpen();
@@ -685,6 +771,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, W, H);
 
+      const disco = isDiscoScore(scoreRef.current);
+      if (disco) {
+        drawDiscoFlashes(ctx, W, H, groundY);
+      }
+
       ctx.fillStyle = '#6B5344';
       ctx.fillRect(0, groundY, W, H - groundY);
       ctx.fillStyle = '#8B7355';
@@ -709,6 +800,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       const yTop = groundY + pyRef.current - ph;
       drawPlayer(ctx, px, yTop, pw, ph);
+
+      if (disco) {
+        drawDiscoBall(ctx, W, discoBallDropRef.current);
+      }
 
       const displayScore = Math.floor(scoreRef.current);
       const countyLabel = countyForScore(scoreRef.current);
@@ -877,6 +972,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     countyBannerShowsCountRef.current = 0;
     countyBannerRef.current = { frames: 0, name: '' };
     lostDuringRunRef.current = false;
+    discoWasActiveRef.current = false;
+    discoBallDropRef.current = 0;
     billboardsRef.current = [];
     billboardSpawnCarryRef.current = 0;
     billboardCompanyDeckRef.current = [];
@@ -970,6 +1067,17 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const difficulty = 1 + Math.min(2, scoreRef.current / 4000);
       const scroll = BASE_SCROLL * difficulty;
       scoreRef.current += scroll * 0.35;
+
+      const sFloor = Math.floor(scoreRef.current);
+      const inDisco = isDiscoScore(sFloor);
+      if (inDisco) {
+        if (!discoWasActiveRef.current) discoBallDropRef.current = 0;
+        discoBallDropRef.current = Math.min(1, discoBallDropRef.current + 0.052);
+        discoWasActiveRef.current = true;
+      } else {
+        discoWasActiveRef.current = false;
+        discoBallDropRef.current = 0;
+      }
 
       const scoreBucket = Math.floor(scoreRef.current / 500);
       if (scoreBucket > lastCountyBucketRef.current) {
