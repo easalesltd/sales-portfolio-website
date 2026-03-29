@@ -1,63 +1,70 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
+
+export type FadeInDirection = 'up' | 'down' | 'left' | 'right';
 
 interface FadeInOnScrollProps {
   children: React.ReactNode;
   delay?: number;
   duration?: number;
   className?: string;
+  /** Scroll entrance direction (default: up) */
+  direction?: FadeInDirection;
 }
 
-export default function FadeInOnScroll({ 
-  children, 
-  delay = 0, 
-  duration = 0.6,
-  className = '' 
+const distance = 28;
+
+const getVariants = (direction: FadeInDirection) => {
+  switch (direction) {
+    case 'down':
+      return {
+        hidden: { opacity: 0, y: -distance },
+        visible: { opacity: 1, y: 0 },
+      };
+    case 'left':
+      return {
+        hidden: { opacity: 0, x: distance },
+        visible: { opacity: 1, x: 0 },
+      };
+    case 'right':
+      return {
+        hidden: { opacity: 0, x: -distance },
+        visible: { opacity: 1, x: 0 },
+      };
+    case 'up':
+    default:
+      return {
+        hidden: { opacity: 0, y: distance },
+        visible: { opacity: 1, y: 0 },
+      };
+  }
+};
+
+export default function FadeInOnScroll({
+  children,
+  delay = 0,
+  duration = 0.55,
+  className = '',
+  direction = 'up',
 }: FadeInOnScrollProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            // Once visible, stop observing
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.1, // Trigger when 10% of element is visible
-        rootMargin: '0px 0px -50px 0px' // Start animation slightly before element enters viewport
-      }
-    );
-
-    const currentElement = elementRef.current;
-    if (currentElement) {
-      observer.observe(currentElement);
-    }
-
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-    };
-  }, []);
+  const variants = getVariants(direction);
 
   return (
-    <div
-      ref={elementRef}
+    <motion.div
       className={className}
-      style={{
-        opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-        transition: `opacity ${duration}s ease-out ${delay}s, transform ${duration}s ease-out ${delay}s`,
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.12, margin: '0px 0px -48px 0px' }}
+      variants={variants}
+      transition={{
+        duration,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
       }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

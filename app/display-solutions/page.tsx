@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import FadeInOnScroll from '../components/FadeInOnScroll';
 
 export default function DisplaySolutionsPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -69,7 +70,7 @@ export default function DisplaySolutionsPage() {
     features: string[] 
   }) => (
     <div 
-      className={`bg-white rounded-lg shadow-lg p-6 transition-all duration-300 h-full ${
+      className={`bg-white rounded-lg shadow-lg p-6 transition-all duration-300 h-full hover:-translate-y-0.5 ${
         expandedSection === title ? 'ring-2 ring-blue-500' : 'hover:shadow-xl'
       }`}
       onClick={() => setExpandedSection(expandedSection === title ? null : title)}
@@ -221,17 +222,24 @@ export default function DisplaySolutionsPage() {
       />
       <div className="min-h-screen py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Free Display Solutions</h1>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">Complimentary Retail Display Solutions for Your Business</h2>
+          <FadeInOnScroll>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Free Display Solutions</h1>
+          </FadeInOnScroll>
+          <FadeInOnScroll delay={0.08}>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">Complimentary Retail Display Solutions for Your Business</h2>
+          </FadeInOnScroll>
           
           <div className="mb-12">
-            <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
-              Looking for professional display solutions at no cost? We offer FREE greeting card spinners and giftware displays to help showcase your products! 
-              From counter displays to wall units, we&apos;ll help you create eye-catching displays that your customers will love - all at no charge to you. 
-              Take a look at our complimentary options below - just click on any section to see examples of what we can provide for free.
-            </p>
+            <FadeInOnScroll delay={0.1}>
+              <p className="text-lg text-gray-700 leading-relaxed mb-8 text-center">
+                Looking for professional display solutions at no cost? We offer FREE greeting card spinners and giftware displays to help showcase your products! 
+                From counter displays to wall units, we&apos;ll help you create eye-catching displays that your customers will love - all at no charge to you. 
+                Take a look at our complimentary options below - just click on any section to see examples of what we can provide for free.
+              </p>
+            </FadeInOnScroll>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FadeInOnScroll delay={0.05}>
               <DisplaySection 
                 title="Counter Display Units (CDU)"
                 description="Perfect for making the most of your counter space - these displays are great for catching your customer&apos;s eye right at the point of sale."
@@ -243,7 +251,9 @@ export default function DisplaySolutionsPage() {
                   'Flexible configurations'
                 ]}
               />
+              </FadeInOnScroll>
 
+              <FadeInOnScroll delay={0.12} direction="right">
               <DisplaySection 
                 title="Floor Standing Display Units (FSDU)"
                 description="Want to make a big impact? Our floor-standing displays are real attention-grabbers, perfect for high-traffic areas in your shop."
@@ -256,7 +266,9 @@ export default function DisplaySolutionsPage() {
                   'Various size options available'
                 ]}
               />
+              </FadeInOnScroll>
 
+              <FadeInOnScroll delay={0.08} direction="left">
               <DisplaySection 
                 title="Wall Mounted Displays"
                 description="Make the most of your wall space with our range of wall-mounted display solutions, perfect for showcasing products at eye level."
@@ -268,7 +280,9 @@ export default function DisplaySolutionsPage() {
                   'Easy installation'
                 ]}
               />
+              </FadeInOnScroll>
 
+              <FadeInOnScroll delay={0.14} direction="right">
               <DisplaySection 
                 title="Coin Dispenser Machines"
                 description="Add a convenient and profitable service to your store with our coin dispenser machines. Perfect for providing change to customers while generating additional revenue."
@@ -282,21 +296,24 @@ export default function DisplaySolutionsPage() {
                   'Easy to install and service'
                 ]}
               />
+              </FadeInOnScroll>
             </div>
           </div>
 
-          <div className="bg-blue-50 rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Need Display Solutions?</h2>
-            <p className="text-lg text-gray-700 mb-6">
-              Contact us to discuss your display requirements. We&apos;ll help you find the perfect solution for your retail space.
-            </p>
-            <Link 
-              href="/contact" 
-              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Get in Touch
-            </Link>
-          </div>
+          <FadeInOnScroll delay={0.1} direction="up">
+            <div className="bg-blue-50 rounded-lg shadow-lg p-8 transition-shadow duration-300 hover:shadow-xl">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Need Display Solutions?</h2>
+              <p className="text-lg text-gray-700 mb-6">
+                Contact us to discuss your display requirements. We&apos;ll help you find the perfect solution for your retail space.
+              </p>
+              <Link 
+                href="/contact" 
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+              >
+                Get in Touch
+              </Link>
+            </div>
+          </FadeInOnScroll>
         </div>
 
         {/* Image Modal */}

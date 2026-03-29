@@ -15,8 +15,8 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section with Showcase Slideshow */}
-      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden bg-white md:bg-gradient-to-br md:from-blue-50 md:to-indigo-100">
-        <div className="w-full h-full">
+      <div className="group/hero h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden bg-white md:bg-gradient-to-br md:from-blue-50 md:to-indigo-100 transition-shadow duration-500 md:hover:shadow-2xl">
+        <div className="w-full h-full origin-center transition-transform duration-700 ease-out md:group-hover/hero:scale-[1.02]">
           <ShowcaseSlideshow />
         </div>
       </div>
@@ -62,19 +62,19 @@ export default function Home() {
             <div className="flex justify-center gap-6">
               <button 
                 onClick={() => setIsRequestFormOpen(true)}
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
               >
                 Request an Agent Visit
               </button>
               <Link 
                 href="/about" 
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
               >
                 About Us
               </Link>
               <Link 
                 href="/contact" 
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
               >
                 Get In Touch
               </Link>
@@ -126,7 +126,7 @@ export default function Home() {
                   <FadeInOnScroll key={company.id} delay={0.1 * (index % 6)}>
                     <Link 
                       href={`/companies/${company.slug}`}
-                      className="group flex flex-col bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full"
+                      className="group flex flex-col bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full hover:-translate-y-1"
                     >
                       <div className="aspect-[3/2] relative flex-shrink-0">
                         <Image

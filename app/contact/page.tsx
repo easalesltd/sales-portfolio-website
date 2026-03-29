@@ -4,6 +4,7 @@ import React from 'react';
 import { FaEnvelope, FaInstagram, FaLinkedin, FaCalendarCheck, FaPhone } from 'react-icons/fa';
 import { useState } from 'react';
 import RequestVisitForm from '../components/RequestVisitForm';
+import FadeInOnScroll from '../components/FadeInOnScroll';
 
 export default function ContactPage() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
@@ -48,70 +49,74 @@ export default function ContactPage() {
       ></script>
       <div className="min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Contact Us</h1>
+        <FadeInOnScroll>
+          <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Contact Us</h1>
+        </FadeInOnScroll>
         
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="space-y-6">
-            {/* Request an Agent Visit */}
-            <div className="flex items-center space-x-4">
-              <FaCalendarCheck className="text-2xl text-gray-600" />
-              <button
-                onClick={() => setIsRequestFormOpen(true)}
-                className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                Request an Agent Visit
-              </button>
-            </div>
+        <FadeInOnScroll delay={0.12} direction="up">
+          <div className="bg-white rounded-lg shadow-lg p-8 transition-shadow duration-300 hover:shadow-xl">
+            <div className="space-y-6">
+              {/* Request an Agent Visit */}
+              <div className="flex items-center space-x-4 transition-transform duration-200 hover:translate-x-1">
+                <FaCalendarCheck className="text-2xl text-gray-600" />
+                <button
+                  onClick={() => setIsRequestFormOpen(true)}
+                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  Request an Agent Visit
+                </button>
+              </div>
 
-            {/* Phone */}
-            <div className="flex items-center space-x-4">
-              <FaPhone className="text-2xl text-gray-600" />
-              <a 
-                href="tel:07709197915"
-                className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                07709 197915
-              </a>
-            </div>
+              {/* Phone */}
+              <div className="flex items-center space-x-4 transition-transform duration-200 hover:translate-x-1">
+                <FaPhone className="text-2xl text-gray-600" />
+                <a 
+                  href="tel:07709197915"
+                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  07709 197915
+                </a>
+              </div>
 
-            {/* Email */}
-            <div className="flex items-center space-x-4">
-              <FaEnvelope className="text-2xl text-gray-600" />
-              <a 
-                href="mailto:dave@easalesltd.co.uk"
-                className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                dave@easalesltd.co.uk
-              </a>
-            </div>
+              {/* Email */}
+              <div className="flex items-center space-x-4 transition-transform duration-200 hover:translate-x-1">
+                <FaEnvelope className="text-2xl text-gray-600" />
+                <a 
+                  href="mailto:dave@easalesltd.co.uk"
+                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  dave@easalesltd.co.uk
+                </a>
+              </div>
 
-            {/* Instagram */}
-            <div className="flex items-center space-x-4">
-              <FaInstagram className="text-2xl text-gray-600" />
-              <a 
-                href="https://www.instagram.com/eastangliansalesltd/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                @eastangliansalesltd
-              </a>
-            </div>
+              {/* Instagram */}
+              <div className="flex items-center space-x-4 transition-transform duration-200 hover:translate-x-1">
+                <FaInstagram className="text-2xl text-gray-600" />
+                <a 
+                  href="https://www.instagram.com/eastangliansalesltd/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  @eastangliansalesltd
+                </a>
+              </div>
 
-            {/* LinkedIn */}
-            <div className="flex items-center space-x-4">
-              <FaLinkedin className="text-2xl text-gray-600" />
-              <a 
-                href="https://www.linkedin.com/in/dave-langdon-709a8547"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                Dave Langdon
-              </a>
+              {/* LinkedIn */}
+              <div className="flex items-center space-x-4 transition-transform duration-200 hover:translate-x-1">
+                <FaLinkedin className="text-2xl text-gray-600" />
+                <a 
+                  href="https://www.linkedin.com/in/dave-langdon-709a8547"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  Dave Langdon
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        </FadeInOnScroll>
       </div>
 
       {/* Request Visit Form Modal */}

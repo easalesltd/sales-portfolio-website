@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import ImageModal from "../components/ImageModal";
 import VideoBackground from "../components/VideoBackground";
+import FadeInOnScroll from "../components/FadeInOnScroll";
 
 const aboutImages = [
   { src: '/images/about/IMG-20230520-WA0021.jpg', alt: 'Dave portrait' },
@@ -94,20 +95,20 @@ export default function AboutPage() {
         <div className="w-full min-h-[30vh] md:h-[30vh] relative overflow-hidden">
           <VideoBackground videoUrl="/videos/About/background.mp4">
             <div className="w-full h-full flex items-center justify-center bg-black/30 py-8 md:py-0">
-              <div className="text-center px-4 max-w-3xl">
+              <FadeInOnScroll className="text-center px-4 max-w-3xl" direction="up" delay={0.1}>
                 <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">Meet Dave</h1>
                 <p className="text-sm md:text-lg text-white drop-shadow-lg leading-relaxed">
                   Dave established East Anglian Sales Ltd in 2022, bringing over a decade of experience as a rep in East Anglia. 
                   Dave has built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, 
                   understanding their unique needs and helping them succeed with expert greeting card sales representation.
                 </p>
-              </div>
+              </FadeInOnScroll>
             </div>
           </VideoBackground>
         </div>
 
         {/* Mobile Photo Gallery - COMPLETELY REWRITTEN */}
-        <div className="block lg:hidden py-6">
+        <FadeInOnScroll className="block lg:hidden py-6" direction="up">
           <div className="overflow-x-auto flex gap-4 px-4 snap-x snap-mandatory">
             {aboutImages.map((img, index) => (
               <div
@@ -125,41 +126,47 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-        </div>
+        </FadeInOnScroll>
 
         {/* Rest of the content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left column - Text content */}
             <div className="space-y-8">
-              <div className="bg-blue-50 rounded-lg p-4 mb-4 lg:mb-6 shadow-sm">
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">A Message from Dave</h2>
-                <p className="text-base text-gray-700 italic">
-                  &quot;Hi, I&apos;m Dave Langdon, based in Ipswich, Suffolk. I&apos;ve been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops.&quot;
-                </p>
-              </div>
-              <div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Why Choose Dave Langdon?</h2>
-                <p className="text-lg text-gray-700 mb-4">
-                  I&apos;m committed to helping retailers find the perfect products for their customers. Whether you&apos;re looking for traditional greeting cards or modern gift items, I can help you build a successful product range with expert knowledge and personal service.
-                </p>
-              </div>
-              <div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
-                <p className="text-lg text-gray-700 mb-4">
-                  I proudly serve retailers across East Anglia, including:
-                </p>
-                <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
-                  <li>Suffolk</li>
-                  <li>Norfolk</li>
-                  <li>Essex</li>
-                  <li>Cambridgeshire</li>
-                </ul>
-              </div>
+              <FadeInOnScroll direction="right" delay={0.05}>
+                <div className="bg-blue-50 rounded-lg p-4 mb-4 lg:mb-6 shadow-sm">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-2">A Message from Dave</h2>
+                  <p className="text-base text-gray-700 italic">
+                    &quot;Hi, I&apos;m Dave Langdon, based in Ipswich, Suffolk. I&apos;ve been working in East Anglia for over a decade, roaming town to town, Monday to Friday, matching brilliant greeting card and gift brands with brilliant retailers. In the summer, I may be spotted in shorts. I apologise in advance for the legs. And Flip Flops.&quot;
+                  </p>
+                </div>
+              </FadeInOnScroll>
+              <FadeInOnScroll direction="up" delay={0.1}>
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">Why Choose Dave Langdon?</h2>
+                  <p className="text-lg text-gray-700 mb-4">
+                    I&apos;m committed to helping retailers find the perfect products for their customers. Whether you&apos;re looking for traditional greeting cards or modern gift items, I can help you build a successful product range with expert knowledge and personal service.
+                  </p>
+                </div>
+              </FadeInOnScroll>
+              <FadeInOnScroll direction="left" delay={0.15}>
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">My Service Area</h2>
+                  <p className="text-lg text-gray-700 mb-4">
+                    I proudly serve retailers across East Anglia, including:
+                  </p>
+                  <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
+                    <li>Suffolk</li>
+                    <li>Norfolk</li>
+                    <li>Essex</li>
+                    <li>Cambridgeshire</li>
+                  </ul>
+                </div>
+              </FadeInOnScroll>
             </div>
 
             {/* Right Column - Desktop Photo Grid - Magazine article pictures spread out */}
-            <div className="hidden lg:block">
+            <FadeInOnScroll className="hidden lg:block" direction="left" delay={0.1}>
               <div className="space-y-3 mt-4">
                 {/* Row 1 - 5 images */}
                 <div className="grid grid-cols-5 gap-2">
@@ -218,7 +225,7 @@ export default function AboutPage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </FadeInOnScroll>
           </div>
 
           {/* Image Modal */}
