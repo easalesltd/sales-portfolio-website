@@ -97,19 +97,28 @@ export default function Home() {
                 <h3 className="text-xl text-center mb-12 text-gray-700">Quality Products from Leading Suppliers</h3>
               </FadeInOnScroll>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {companies.map((company, index) => (
+                {companies.map((company, index) => {
+                  const useLightMarkOnDarkTile = Boolean(company.logoUrlDark);
+                  const logoSrc = company.logoUrlDark ?? company.logoUrl;
+                  return (
                   <FadeInOnScroll key={company.id} delay={0.1 * (index % 6)}>
                     <Link 
                       href={`/companies/${company.slug}`}
                       className="group flex flex-col bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full hover:-translate-y-1"
                     >
-                      <div className="aspect-[3/2] relative flex-shrink-0">
+                      <div
+                        className={`aspect-[3/2] relative flex-shrink-0 ${
+                          useLightMarkOnDarkTile ? 'bg-black' : ''
+                        }`}
+                      >
                         <Image
-                          src={company.logoUrl}
+                          src={logoSrc}
                           alt={`${company.name} logo`}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 320px"
-                          className="object-contain p-6 group-hover:scale-105 transition-transform duration-300"
+                          className={`object-contain p-6 group-hover:scale-105 transition-transform duration-300 ${
+                            useLightMarkOnDarkTile ? 'invert' : ''
+                          }`}
                           quality={75}
                         />
                       </div>
@@ -119,7 +128,8 @@ export default function Home() {
                       </div>
                     </Link>
                   </FadeInOnScroll>
-                ))}
+                );
+                })}
               </div>
             </div>
           </div>

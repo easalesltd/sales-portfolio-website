@@ -4,7 +4,7 @@ export interface Company {
   slug: string;
   description: string;
   logoUrl: string;
-  /** Optional: logo tuned for dark company page (often black on transparent; CSS inverts to white on black). Homepage/grids keep using logoUrl. */
+  /** Optional: black-on-transparent asset; shown inverted on black (company page + homepage grid when set). */
   logoUrlDark?: string;
   catalogueUrl: string;
   websiteUrl: string;
