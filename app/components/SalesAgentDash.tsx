@@ -36,7 +36,7 @@ function dimsFor(kind: ObstacleKind): { w: number; h: number } {
     case 'pcn':
       return { w: 42, h: 56 };
     case 'pro_forma_invoice':
-      return { w: 50, h: 56 };
+      return { w: 50, h: 60 };
     case 'other_agent':
       return { w: 48, h: 62 };
     case 'broken_car':
@@ -70,11 +70,58 @@ function roundRectPath(
   ctx.closePath();
 }
 
+function fillTextScaled(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  maxWidth: number,
+  maxPx: number,
+  minPx: number,
+  weight: '' | 'bold' = ''
+) {
+  let px = maxPx;
+  const w = weight === 'bold' ? 'bold ' : '';
+  while (px > minPx) {
+    ctx.font = `${w}${px}px system-ui, sans-serif`;
+    if (ctx.measureText(text).width <= maxWidth) break;
+    px -= 0.5;
+  }
+  px = Math.max(minPx, px);
+  ctx.font = `${w}${px}px system-ui, sans-serif`;
+  ctx.fillText(text, x, y);
+}
+
+function fillTextScaledCenter(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  cx: number,
+  y: number,
+  maxWidth: number,
+  maxPx: number,
+  minPx: number,
+  weight: '' | 'bold' = ''
+) {
+  let px = maxPx;
+  const w = weight === 'bold' ? 'bold ' : '';
+  while (px > minPx) {
+    ctx.font = `${w}${px}px system-ui, sans-serif`;
+    if (ctx.measureText(text).width <= maxWidth) break;
+    px -= 0.5;
+  }
+  px = Math.max(minPx, px);
+  ctx.font = `${w}${px}px system-ui, sans-serif`;
+  const tw = ctx.measureText(text).width;
+  ctx.fillText(text, cx - tw / 2, y);
+}
+
 function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
   const { x, w, h, kind } = o;
 
   switch (kind) {
     case 'pcn': {
+      const pad = 6;
+      const tw = w - pad * 2;
       ctx.fillStyle = '#fef3c7';
       roundRectPath(ctx, x, top, w, h, 4);
       ctx.fill();
@@ -82,19 +129,21 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.fillStyle = '#dc2626';
-      ctx.font = 'bold 11px system-ui, sans-serif';
-      ctx.fillText('PCN', x + 8, top + 16);
+      fillTextScaled(ctx, 'PCN', x + pad, top + 15, tw, 11, 8, 'bold');
       ctx.fillStyle = '#1c1917';
-      ctx.font = '8px system-ui, sans-serif';
-      ctx.fillText('Penalty Charge', x + 8, top + 28);
-      ctx.font = '10px system-ui, sans-serif';
-      ctx.fillText('£60', x + 8, top + 40);
+      fillTextScaled(ctx, 'Penalty', x + pad, top + 26, tw, 8, 6, '');
+      fillTextScaled(ctx, 'charge', x + pad, top + 35, tw, 8, 6, '');
+      fillTextScaled(ctx, '£60', x + pad, top + 45, tw, 10, 7, '');
       ctx.fillRect(x + 6, top + h - 12, w - 12, 2);
       ctx.fillStyle = '#78716c';
-      for (let i = 0; i < 6; i++) ctx.fillRect(x + 8 + i * 6, top + h - 8, 3, 4);
+      const tickCount = Math.min(6, Math.floor((w - 16) / 6));
+      for (let i = 0; i < tickCount; i++) ctx.fillRect(x + 8 + i * 6, top + h - 8, 3, 4);
       break;
     }
     case 'pro_forma_invoice': {
+      const innerPad = 6;
+      const textW = w - innerPad * 2;
+      const cx = x + w / 2;
       ctx.fillStyle = '#fafaf9';
       roundRectPath(ctx, x + 1, top + 2, w - 2, h - 4, 3);
       ctx.fill();
@@ -102,24 +151,24 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.fillStyle = '#44403c';
-      ctx.font = '8px system-ui, sans-serif';
-      ctx.fillText('PRO FORMA', x + 8, top + 16);
+      fillTextScaled(ctx, 'PRO FORMA', x + innerPad, top + 14, textW, 8, 6, '');
       ctx.fillStyle = '#b91c1c';
-      ctx.font = 'bold 11px system-ui, sans-serif';
-      ctx.fillText('INVOICE', x + 8, top + 30);
+      fillTextScaled(ctx, 'INVOICE', x + innerPad, top + 25, textW, 11, 8, 'bold');
       ctx.fillStyle = '#78716c';
-      ctx.fillRect(x + 8, top + 36, w - 24, 2);
-      ctx.fillRect(x + 8, top + 42, w - 16, 2);
-      ctx.fillRect(x + 8, top + 48, w - 30, 2);
+      ctx.fillRect(x + innerPad, top + 30, Math.min(w - 24, textW * 0.85), 2);
+      ctx.fillRect(x + innerPad, top + 34, Math.min(w - 16, textW), 2);
+      const stampH = 15;
+      const stampY = top + h - stampH - 4;
       ctx.strokeStyle = '#dc2626';
       ctx.lineWidth = 2;
       ctx.setLineDash([3, 2]);
-      roundRectPath(ctx, x + 6, top + h - 18, w - 12, 14, 2);
+      roundRectPath(ctx, x + 5, stampY, w - 10, stampH, 2);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.fillStyle = '#b91c1c';
-      ctx.font = 'bold 7px system-ui, sans-serif';
-      ctx.fillText('NOT A TAX INVOICE', x + 10, top + h - 10);
+      const stampInner = w - 14;
+      fillTextScaledCenter(ctx, 'NOT A TAX', cx, stampY + 7, stampInner, 6, 4, 'bold');
+      fillTextScaledCenter(ctx, 'INVOICE', cx, stampY + 13, stampInner, 6, 4, 'bold');
       break;
     }
     case 'other_agent': {
@@ -166,11 +215,12 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       ctx.fillRect(x + 4, padY + 14, 8, 12);
       ctx.fillRect(x + w - 12, padY + 14, 8, 12);
       ctx.fillStyle = '#334155';
-      ctx.font = '7px system-ui, sans-serif';
-      ctx.fillText('Other rep', x + 8, top + h - 10);
+      fillTextScaledCenter(ctx, 'Other agent', x + w / 2, top + h - 8, w - 12, 7, 5, '');
       break;
     }
     case 'hmrc': {
+      const hx = x + w / 2;
+      const inner = w - 12;
       ctx.fillStyle = '#008670';
       roundRectPath(ctx, x + 2, top + 4, w - 4, h - 8, 5);
       ctx.fill();
@@ -178,11 +228,10 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       ctx.lineWidth = 2;
       ctx.stroke();
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 15px system-ui, sans-serif';
-      ctx.fillText('HMRC', x + 12, top + 30);
-      ctx.font = '9px system-ui, sans-serif';
+      fillTextScaledCenter(ctx, 'HMRC', hx, top + 30, inner, 15, 10, 'bold');
       ctx.fillStyle = 'rgba(255,255,255,0.9)';
-      ctx.fillText('Return / payment', x + 12, top + 44);
+      fillTextScaledCenter(ctx, 'Return /', hx, top + 42, inner, 9, 6, '');
+      fillTextScaledCenter(ctx, 'payment', hx, top + 52, inner, 9, 6, '');
       ctx.fillStyle = '#fecaca';
       ctx.beginPath();
       ctx.arc(x + w - 16, top + 18, 9, 0, Math.PI * 2);
@@ -191,8 +240,8 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.fillStyle = '#991b1b';
-      ctx.font = 'bold 11px system-ui, sans-serif';
-      ctx.fillText('!', x + w - 20, top + 23);
+      ctx.font = 'bold 10px system-ui, sans-serif';
+      ctx.fillText('!', x + w - 19, top + 22);
       break;
     }
     case 'broken_car': {
@@ -274,8 +323,11 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       ctx.fillStyle = '#a8a29e';
       ctx.fillRect(boxX + boxW, boxY, 5, boxH);
       ctx.fillStyle = '#171717';
-      ctx.font = 'bold 9px system-ui, sans-serif';
-      ctx.fillText('21', boxX + boxW + 1, boxY + boxH * 0.52);
+      ctx.font = 'bold 7px system-ui, sans-serif';
+      const numX = boxX + boxW + 2;
+      const numCy = boxY + boxH * 0.48;
+      ctx.fillText('2', numX, numCy - 4);
+      ctx.fillText('1', numX, numCy + 4);
 
       ctx.fillStyle = '#0f172a';
       ctx.fillRect(boxX + 5, boxY + 5, 7, 6);
