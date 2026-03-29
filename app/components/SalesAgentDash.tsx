@@ -86,6 +86,7 @@ const OBSTACLE_KINDS = [
   'sales_target',
   'hmrc',
   'snake',
+  'traffic_warden',
 ] as const;
 
 type ObstacleKind = (typeof OBSTACLE_KINDS)[number];
@@ -178,6 +179,8 @@ function dimsFor(kind: ObstacleKind): { w: number; h: number } {
       return { w: 54, h: 58 };
     case 'snake':
       return { w: 86, h: 44 };
+    case 'traffic_warden':
+      return { w: 56, h: 72 };
   }
 }
 
@@ -335,19 +338,80 @@ const SNAKE_PIXEL_ROWS = [
   '____________________tt______________',
 ] as const;
 
-function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
-  const palette: Record<string, string | undefined> = {
-    _: 'transparent',
-    '#': '#14532d',
-    G: '#15803d',
-    g: '#22c55e',
-    l: '#4ade80',
-    o: '#fef9c3',
-    O: '#0f172a',
-    r: '#dc2626',
-    t: '#166534',
-  };
-  const rows = SNAKE_PIXEL_ROWS;
+const SNAKE_PALETTE: Record<string, string | undefined> = {
+  _: 'transparent',
+  '#': '#14532d',
+  G: '#15803d',
+  g: '#22c55e',
+  l: '#4ade80',
+  o: '#fef9c3',
+  O: '#0f172a',
+  r: '#dc2626',
+  t: '#166534',
+};
+
+/**
+ * UK-style traffic warden / CEO: hi-vis yellow jacket, reflective stripes, cap, ticket pad.
+ * Chars: _ empty, # outline, B cap, s skin, o/O eyes, Y/y jacket, w reflective, D/d trousers, P/p boots, C/c pad.
+ */
+const TRAFFIC_WARDEN_PIXEL_ROWS = [
+  '________________________________',
+  '_______________BBBBBBBB_________',
+  '______________BBBBBBBBBB________',
+  '______________BBssssssBB________',
+  '______________BoossooBB_________',
+  '______________BBBBBBBB__________',
+  '_____________YYwwwwwwYY_________',
+  '_____________YYYYYYYYYY_________',
+  '_____________YYwwwwwwYY_________',
+  '_____________YYYYYYYYYY_________',
+  '_____________YYYYYYYYYY_________',
+  '_____________YYYYYYYYYY_________',
+  '____________YYYYYYYYYYYY________',
+  '____________YYYYYYYYYYYY________',
+  '____________DDDDDDDDDDDD________',
+  '____________DDDDDDDDDDDD________',
+  '____________DDDDDDDDDDDD________',
+  '____________DDDDDDDDDDDD________',
+  '____________DDDDDDDDDDDD________',
+  '____________DDDDDDDDDDDD________',
+  '____________BB________BB________',
+  '____________BB________BB________',
+  '____________BB__CCC__BB_________',
+  '____________BB__ccc__BB_________',
+  '____________PP________PP________',
+  '____________PP________PP________',
+  '____________PP________PP________',
+  '____________PP________PP________',
+] as const;
+
+const TRAFFIC_WARDEN_PALETTE: Record<string, string | undefined> = {
+  _: 'transparent',
+  '#': '#171717',
+  B: '#1e3a5f',
+  s: '#fdba74',
+  o: '#fef9c3',
+  O: '#0f172a',
+  Y: '#eab308',
+  y: '#fde047',
+  w: '#e2e8f0',
+  D: '#1e293b',
+  d: '#0f172a',
+  P: '#171717',
+  p: '#404040',
+  C: '#57534e',
+  c: '#fafaf9',
+};
+
+function drawPixelSprite8bit(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  top: number,
+  w: number,
+  h: number,
+  rows: readonly string[],
+  palette: Record<string, string | undefined>
+) {
   const cols = rows[0]!.length;
   const rowCount = rows.length;
   const scale = Math.min(w / cols, h / rowCount);
@@ -368,6 +432,14 @@ function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w:
   }
 }
 
+function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
+  drawPixelSprite8bit(ctx, x, top, w, h, SNAKE_PIXEL_ROWS, SNAKE_PALETTE);
+}
+
+function drawTrafficWarden8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
+  drawPixelSprite8bit(ctx, x, top, w, h, TRAFFIC_WARDEN_PIXEL_ROWS, TRAFFIC_WARDEN_PALETTE);
+}
+
 function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
   const { x, w, h, kind } = o;
 
@@ -376,6 +448,12 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       ctx.fillStyle = '#292524';
       ctx.fillRect(x, top + h - 4, w, 4);
       drawSnake8bit(ctx, x, top, w, h - 4);
+      break;
+    }
+    case 'traffic_warden': {
+      ctx.fillStyle = '#292524';
+      ctx.fillRect(x, top + h - 5, w, 5);
+      drawTrafficWarden8bit(ctx, x, top, w, h - 5);
       break;
     }
     case 'pcn': {
@@ -1296,12 +1374,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto overflow-x-hidden p-3 sm:p-4">
           {screen === 'menu' && (
             <div className="py-8 text-center text-neutral-200">
-              <p className="mb-2 text-lg">
-                Endless run: dodge Speed cameras, PCNs, pro forma invoices, Broken down cars, sales targets, and HMRC.
-              </p>
-              <p className="mb-2 text-sm text-neutral-400">
-                Score ticks up the longer you survive — speed ramps up. Every 500 points you move to the next county
-                (Suffolk → Norfolk → Essex → Cambridgeshire → …). Beat your personal best (saved on this device).
+              <p className="mb-6 max-w-md mx-auto text-lg leading-relaxed">
+                Join Dave on the road, as he navigates East Anglia, avoiding peril.
               </p>
               <p className="mb-6 text-sm font-medium text-teal-400">
                 High score: {highScore.toLocaleString()}
