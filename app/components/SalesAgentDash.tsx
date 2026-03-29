@@ -1,6 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { companies } from '../data/companies';
+
+const BRAND_LOGO_URLS = [...new Set(companies.map((c) => c.logoUrl))];
+
+type LogoEntry = HTMLImageElement | 'bad';
 
 const GROUND_RATIO = 0.78;
 const GRAVITY = 0.72;
@@ -13,10 +18,80 @@ interface Obstacle {
   x: number;
   w: number;
   h: number;
+  logoSrc: string;
 }
 
-export default function PostmanGame({ onClose }: { onClose: () => void }) {
+function roundRectPath(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number
+) {
+  const rad = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rad, y);
+  ctx.lineTo(x + w - rad, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + rad);
+  ctx.lineTo(x + w, y + h - rad);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - rad, y + h);
+  ctx.lineTo(x + rad, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - rad);
+  ctx.lineTo(x, y + rad);
+  ctx.quadraticCurveTo(x, y, x + rad, y);
+  ctx.closePath();
+}
+
+function drawPlayer(ctx: CanvasRenderingContext2D, px: number, yTop: number, pw: number, ph: number) {
+  const skin = '#e0ac8d';
+  const shirt = '#14b8a6';
+  const shorts = '#475569';
+  const flop = '#fb923c';
+  const flopStrap = '#ea580c';
+
+  ctx.fillStyle = skin;
+  ctx.beginPath();
+  ctx.arc(px + pw / 2, yTop + 13, 10, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(px + 7, yTop + 9, 16, 4);
+
+  ctx.fillStyle = shirt;
+  roundRectPath(ctx, px + 5, yTop + 21, pw - 10, 15, 3);
+  ctx.fill();
+
+  ctx.fillStyle = skin;
+  ctx.fillRect(px + 1, yTop + 23, 5, 12);
+  ctx.fillRect(px + pw - 6, yTop + 23, 5, 12);
+
+  ctx.fillStyle = shorts;
+  ctx.fillRect(px + 4, yTop + 34, pw - 8, 11);
+
+  ctx.fillStyle = skin;
+  ctx.fillRect(px + 7, yTop + 43, 5, 12);
+  ctx.fillRect(px + pw - 12, yTop + 43, 5, 12);
+
+  ctx.fillStyle = flop;
+  ctx.fillRect(px + 4, yTop + ph - 7, 14, 5);
+  ctx.fillRect(px + pw - 18, yTop + ph - 7, 14, 5);
+
+  ctx.strokeStyle = flopStrap;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(px + 7, yTop + ph - 6);
+  ctx.quadraticCurveTo(px + 11, yTop + ph - 11, px + 15, yTop + ph - 6);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(px + pw - 15, yTop + ph - 6);
+  ctx.quadraticCurveTo(px + pw - 11, yTop + ph - 11, px + pw - 7, yTop + ph - 6);
+  ctx.stroke();
+}
+
+export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const logoCacheRef = useRef<Map<string, LogoEntry>>(new Map());
   const [screen, setScreen] = useState<'menu' | 'game'>('menu');
   const [outcome, setOutcome] = useState<null | 'won' | 'lost'>(null);
 
@@ -25,6 +100,19 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
   const pyRef = useRef(0);
   const vyRef = useRef(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
+
+  useEffect(() => {
+    BRAND_LOGO_URLS.forEach((src) => {
+      const im = new Image();
+      im.decoding = 'async';
+      im.onload = () => {
+        if (im.naturalWidth > 0) logoCacheRef.current.set(src, im);
+        else logoCacheRef.current.set(src, 'bad');
+      };
+      im.onerror = () => logoCacheRef.current.set(src, 'bad');
+      im.src = src;
+    });
+  }, []);
 
   const resizeCanvas = useCallback(() => {
     const c = canvasRef.current;
@@ -97,19 +185,27 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
       }
 
       const groundY = H * GROUND_RATIO;
-      const pw = 34;
-      const ph = 48;
+      const pw = 36;
+      const ph = 50;
       const px = W * 0.18;
 
       frameRef.current += 1;
       distanceRef.current += SCROLL;
 
       if (frameRef.current % OBSTACLE_INTERVAL_FRAMES === 0) {
-        const h = 36 + Math.random() * 52;
+        const logoSrc = BRAND_LOGO_URLS[Math.floor(Math.random() * BRAND_LOGO_URLS.length)];
+        const cached = logoCacheRef.current.get(logoSrc);
+        let obsW = 50 + Math.floor(Math.random() * 12);
+        let obsH = 52 + Math.floor(Math.random() * 16);
+        if (cached && cached !== 'bad' && cached.complete && cached.naturalWidth > 0) {
+          const ar = cached.naturalHeight / cached.naturalWidth;
+          obsH = Math.min(92, Math.max(46, Math.floor(obsW * ar)));
+        }
         obstaclesRef.current.push({
           x: W + 20,
-          w: 28 + Math.floor(Math.random() * 18),
-          h,
+          w: obsW,
+          h: obsH,
+          logoSrc,
         });
       }
 
@@ -160,31 +256,37 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
       ctx.arc(W - cloudShift + 88, 52, 20, 0, Math.PI * 2);
       ctx.fill();
 
+      const pad = 5;
       for (const o of obstaclesRef.current) {
-        ctx.fillStyle = '#4a3728';
-        ctx.fillRect(o.x, groundY - o.h, o.w, o.h);
-        ctx.fillStyle = '#2d2118';
-        ctx.fillRect(o.x + 4, groundY - o.h + 6, o.w - 8, 6);
+        const top = groundY - o.h;
+        const entry = logoCacheRef.current.get(o.logoSrc);
+        roundRectPath(ctx, o.x, top, o.w, o.h, 8);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.18)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        if (entry && entry !== 'bad' && entry.complete && entry.naturalWidth > 0) {
+          ctx.save();
+          ctx.beginPath();
+          roundRectPath(ctx, o.x + pad, top + pad, o.w - pad * 2, o.h - pad * 2, 5);
+          ctx.clip();
+          ctx.drawImage(entry, o.x + pad, top + pad, o.w - pad * 2, o.h - pad * 2);
+          ctx.restore();
+        } else {
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillRect(o.x + pad, top + pad, o.w - pad * 2, o.h - pad * 2);
+        }
       }
 
-      const y = groundY + pyRef.current - ph;
-      ctx.fillStyle = '#1e3a5f';
-      ctx.fillRect(px + 8, y + 18, 18, 26);
-      ctx.fillStyle = '#f4d0b5';
-      ctx.fillRect(px + 6, y + 4, 22, 18);
-      ctx.fillStyle = '#333';
-      ctx.fillRect(px + 10, y + 22, 12, 4);
-      ctx.fillStyle = '#b22222';
-      ctx.fillRect(px - 4, y + 24, 14, 18);
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(px + 24, y + 28, 14, 10);
-      ctx.strokeStyle = '#c9a227';
-      ctx.strokeRect(px + 24, y + 28, 14, 10);
+      const yTop = groundY + pyRef.current - ph;
+      drawPlayer(ctx, px, yTop, pw, ph);
 
       const pct = Math.min(99, Math.floor((distanceRef.current / WIN_DISTANCE) * 100));
       ctx.fillStyle = '#1a1a1a';
       ctx.font = 'bold 14px system-ui, sans-serif';
-      ctx.fillText(`Deliver the card: ${pct}%`, 12, 22);
+      ctx.fillText(`Round complete: ${pct}%`, 12, 22);
 
       raf = requestAnimationFrame(tick);
     };
@@ -213,14 +315,14 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-neutral-950/95 p-2 pt-[max(0.5rem,env(safe-area-inset-top))] pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:p-4"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="postman-game-title"
+      aria-labelledby="sales-agent-dash-title"
     >
       <div
         className={`flex w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl max-h-[96dvh] ${screen === 'game' ? 'min-h-[min(82dvh,96dvh)] sm:min-h-0' : ''}`}
       >
         <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-700 px-4 py-3">
-          <h2 id="postman-game-title" className="text-lg font-semibold text-white">
-            Special Delivery
+          <h2 id="sales-agent-dash-title" className="text-lg font-semibold text-white">
+            Sales Agent Dash
           </h2>
           <button
             type="button"
@@ -234,9 +336,9 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
         <div className="flex min-h-0 flex-1 flex-col items-center p-3 sm:p-4">
           {screen === 'menu' && (
             <div className="py-8 text-center text-neutral-200">
-              <p className="mb-2 text-lg">Jump over bins and letterboxes!</p>
+              <p className="mb-2 text-lg">Jump the brands you represent — shorts and flip-flops mode.</p>
               <p className="mb-6 text-sm text-neutral-400">
-                Space, ↑, or tap the game to jump. Fill the bar to 100% to deliver the greeting card.
+                Space, ↑, or tap to jump. Reach 100% to finish the round.
               </p>
               <button
                 type="button"
@@ -267,11 +369,13 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
               </div>
               {outcome === 'won' && (
                 <p className="mt-4 text-center text-lg font-medium text-green-400">
-                  Card delivered! Nice one, postie.
+                  Round cleared — that&apos;s a full territory!
                 </p>
               )}
               {outcome === 'lost' && (
-                <p className="mt-4 text-center text-lg font-medium text-red-400">Spilled the mail — try again!</p>
+                <p className="mt-4 text-center text-lg font-medium text-red-400">
+                  Caught out on the road — try again!
+                </p>
               )}
               {outcome !== null && (
                 <div className="mt-4 flex flex-wrap justify-center gap-3">

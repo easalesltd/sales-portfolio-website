@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const PostmanGame = dynamic(() => import('./PostmanGame'), { ssr: false });
+const SalesAgentDash = dynamic(() => import('./SalesAgentDash'), { ssr: false });
 
 const DOUBLE_CLICK_MS = 340;
 const NAV_DELAY_MS = 300;
@@ -69,7 +69,7 @@ export default function HeaderLogo() {
           draggable={false}
         />
       </Link>
-      {gameOpen ? <PostmanGame onClose={() => setGameOpen(false)} /> : null}
+      {gameOpen ? <SalesAgentDash onClose={() => setGameOpen(false)} /> : null}
     </>
   );
 }
