@@ -10,11 +10,16 @@ const JUMP_V = -13;
 const BASE_SCROLL = 4.2;
 const BASE_OBSTACLE_INTERVAL = 88;
 
+const COUNTIES = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
+
+function countyForScore(score: number): (typeof COUNTIES)[number] {
+  return COUNTIES[Math.floor(score / 500) % 4];
+}
+
 const OBSTACLE_KINDS = [
   'speed_camera',
   'pcn',
   'pro_forma_invoice',
-  'other_agent',
   'broken_car',
   'sales_target',
   'hmrc',
@@ -37,8 +42,6 @@ function dimsFor(kind: ObstacleKind): { w: number; h: number } {
       return { w: 42, h: 56 };
     case 'pro_forma_invoice':
       return { w: 50, h: 60 };
-    case 'other_agent':
-      return { w: 48, h: 62 };
     case 'broken_car':
       return { w: 78, h: 48 };
     case 'sales_target':
@@ -169,53 +172,6 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       const stampInner = w - 14;
       fillTextScaledCenter(ctx, 'NOT A TAX', cx, stampY + 7, stampInner, 6, 4, 'bold');
       fillTextScaledCenter(ctx, 'INVOICE', cx, stampY + 13, stampInner, 6, 4, 'bold');
-      break;
-    }
-    case 'other_agent': {
-      const cx = x + w / 2;
-      ctx.fillStyle = '#e2e8f0';
-      roundRectPath(ctx, x + 6, top, w - 12, h - 6, 4);
-      ctx.fill();
-      ctx.strokeStyle = '#94a3b8';
-      ctx.stroke();
-      ctx.fillStyle = '#4b5563';
-      ctx.fillRect(x + 12, top + 40, w - 24, 20);
-      ctx.fillStyle = '#374151';
-      ctx.fillRect(x + 14, top + 34, w - 28, 10);
-      ctx.fillStyle = '#fdba74';
-      ctx.beginPath();
-      ctx.arc(cx, top + 20, 10, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#292524';
-      ctx.fillRect(cx - 9, top + 10, 18, 6);
-      const padX = cx - 13;
-      const padY = top + 30;
-      ctx.fillStyle = '#94a3b8';
-      roundRectPath(ctx, padX - 1, padY - 1, 28, 34, 3);
-      ctx.fill();
-      ctx.fillStyle = '#38bdf8';
-      ctx.fillRect(padX + 2, padY + 2, 22, 28);
-      ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-      ctx.lineWidth = 1;
-      for (let r = 0; r < 4; r++) {
-        ctx.beginPath();
-        ctx.moveTo(padX + 4, padY + 6 + r * 7);
-        ctx.lineTo(padX + 24, padY + 6 + r * 7);
-        ctx.stroke();
-      }
-      for (let c = 0; c < 3; c++) {
-        ctx.beginPath();
-        ctx.moveTo(padX + 6 + c * 7, padY + 4);
-        ctx.lineTo(padX + 6 + c * 7, padY + 28);
-        ctx.stroke();
-      }
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(padX + 8, padY + 8, 8, 6);
-      ctx.fillStyle = '#fdba74';
-      ctx.fillRect(x + 4, padY + 14, 8, 12);
-      ctx.fillRect(x + w - 12, padY + 14, 8, 12);
-      ctx.fillStyle = '#334155';
-      fillTextScaledCenter(ctx, 'Other agent', x + w / 2, top + h - 8, w - 12, 7, 5, '');
       break;
     }
     case 'hmrc': {
@@ -510,6 +466,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const pyRef = useRef(0);
   const vyRef = useRef(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
+  const lastCountyBucketRef = useRef(0);
+  const countyBannerRef = useRef({ frames: 0, name: '' as string });
 
   const resizeCanvas = useCallback(() => {
     const c = canvasRef.current;
@@ -553,6 +511,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     pyRef.current = 0;
     vyRef.current = 0;
     obstaclesRef.current = [];
+    lastCountyBucketRef.current = 0;
+    countyBannerRef.current = { frames: 0, name: '' };
     setOutcome(null);
     setLastRunScore(null);
     setWasRecord(false);
@@ -592,6 +552,15 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const difficulty = 1 + Math.min(2.2, scoreRef.current / 3500);
       const scroll = BASE_SCROLL * difficulty;
       scoreRef.current += scroll * 0.35;
+
+      const scoreBucket = Math.floor(scoreRef.current / 500);
+      if (scoreBucket > lastCountyBucketRef.current) {
+        lastCountyBucketRef.current = scoreBucket;
+        countyBannerRef.current = {
+          frames: 120,
+          name: COUNTIES[scoreBucket % 4],
+        };
+      }
 
       const interval = Math.max(
         46,
@@ -641,9 +610,16 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       }
 
+      const ci = Math.floor(scoreRef.current / 500) % 4;
+      const skyPairs = [
+        ['#87CEEB', '#E0F4FF'],
+        ['#7dd3fc', '#e0f2fe'],
+        ['#93c5fd', '#f0f9ff'],
+        ['#a5b4fc', '#eef2ff'],
+      ];
       const grd = ctx.createLinearGradient(0, 0, 0, H);
-      grd.addColorStop(0, '#87CEEB');
-      grd.addColorStop(1, '#E0F4FF');
+      grd.addColorStop(0, skyPairs[ci][0]);
+      grd.addColorStop(1, skyPairs[ci][1]);
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, W, H);
 
@@ -669,18 +645,46 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       drawPlayer(ctx, px, yTop, pw, ph);
 
       const displayScore = Math.floor(scoreRef.current);
-      ctx.fillStyle = 'rgba(255,255,255,0.92)';
-      roundRectPath(ctx, 8, 8, 168, 44, 8);
+      const countyLabel = countyForScore(scoreRef.current);
+      const countyHue = ['#6d28d9', '#047857', '#b91c1c', '#0369a1'][ci];
+      ctx.fillStyle = 'rgba(255,255,255,0.94)';
+      roundRectPath(ctx, 8, 8, 216, 58, 8);
       ctx.fill();
       ctx.strokeStyle = 'rgba(15,23,42,0.12)';
       ctx.lineWidth = 1;
       ctx.stroke();
+      ctx.fillStyle = countyHue;
+      ctx.font = 'bold 12px system-ui, sans-serif';
+      ctx.fillText(countyLabel, 18, 24);
       ctx.fillStyle = '#1a1a1a';
-      ctx.font = 'bold 14px system-ui, sans-serif';
-      ctx.fillText(`Score ${displayScore.toLocaleString()}`, 18, 26);
+      ctx.font = 'bold 13px system-ui, sans-serif';
+      ctx.fillText(`Score ${displayScore.toLocaleString()}`, 18, 42);
       ctx.font = '11px system-ui, sans-serif';
       ctx.fillStyle = '#52525b';
-      ctx.fillText(`Best ${readHighScore().toLocaleString()}`, 18, 40);
+      ctx.fillText(`Best ${readHighScore().toLocaleString()}`, 18, 56);
+
+      const banner = countyBannerRef.current;
+      if (banner.frames > 0) {
+        const fade = Math.min(1, banner.frames / 28);
+        ctx.save();
+        ctx.fillStyle = `rgba(15,23,42,${0.82 * fade})`;
+        ctx.fillRect(0, H * 0.24, W, 102);
+        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(14, H * 0.24 + 10, W - 28, 82);
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.font = '600 17px system-ui, sans-serif';
+        ctx.fillText('Now entering', W / 2, H * 0.33);
+        ctx.font = 'bold 36px system-ui, sans-serif';
+        ctx.fillText(banner.name, W / 2, H * 0.44);
+        ctx.font = '13px system-ui, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.fillText('East Anglia route', W / 2, H * 0.52);
+        ctx.textAlign = 'left';
+        ctx.restore();
+        countyBannerRef.current = { ...banner, frames: banner.frames - 1 };
+      }
 
       raf = requestAnimationFrame(tick);
     };
@@ -734,7 +738,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 Endless run: dodge Speed cameras, PCNs, pro forma invoices, Broken down cars, sales targets, and HMRC.
               </p>
               <p className="mb-2 text-sm text-neutral-400">
-                Score ticks up the longer you survive — speed ramps up. Beat your personal best (saved on this device).
+                Score ticks up the longer you survive — speed ramps up. Every 500 points you move to the next county
+                (Suffolk → Norfolk → Essex → Cambridgeshire → …). Beat your personal best (saved on this device).
               </p>
               <p className="mb-6 text-sm font-medium text-teal-400">
                 High score: {highScore.toLocaleString()}
