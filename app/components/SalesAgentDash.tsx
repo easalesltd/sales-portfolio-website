@@ -861,10 +861,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-neutral-950/95 p-2 pt-[max(0.5rem,env(safe-area-inset-top))] pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:p-4"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-neutral-950/95 p-2 pt-[max(0.5rem,env(safe-area-inset-top))] pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:p-4 select-none [-webkit-touch-callout:none] [-webkit-user-select:none] [-webkit-tap-highlight-color:transparent]"
       role="dialog"
       aria-modal="true"
       aria-labelledby="sales-agent-dash-title"
+      onContextMenu={(e) => e.preventDefault()}
     >
       <div
         className={`flex w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl max-h-[96dvh] min-h-0 ${screen === 'game' ? 'min-h-[min(82dvh,96dvh)] sm:min-h-0' : ''}`}
@@ -907,11 +908,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
           {screen === 'game' && (
             <>
-              <div className="relative flex w-full shrink-0 items-stretch justify-center min-h-[min(52dvh,50svh)] max-h-[68dvh] sm:min-h-0 sm:max-h-none sm:flex-none">
+              <div className="relative flex w-full shrink-0 items-stretch justify-center min-h-[min(52dvh,50svh)] max-h-[68dvh] sm:min-h-0 sm:max-h-none sm:flex-none [-webkit-touch-callout:none]">
                 <canvas
                   ref={canvasRef}
-                  className={`block h-auto w-full max-w-2xl touch-none rounded-lg border border-neutral-700 sm:max-h-[400px] ${playing ? 'cursor-pointer' : ''}`}
+                  className={`block h-auto w-full max-w-2xl touch-none select-none rounded-lg border border-neutral-700 sm:max-h-[400px] [-webkit-touch-callout:none] [-webkit-user-select:none] ${playing ? 'cursor-pointer' : ''}`}
                   onMouseDown={playing ? jump : undefined}
+                  onContextMenu={(e) => e.preventDefault()}
                   onTouchStart={
                     playing
                       ? (e) => {
