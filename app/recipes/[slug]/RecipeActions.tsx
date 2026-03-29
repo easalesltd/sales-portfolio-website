@@ -37,7 +37,7 @@ export default function RecipeActions({ recipe }: RecipeActionsProps) {
           const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(window.location.href)}`;
           window.open(url, '_blank', 'width=600,height=400');
         }}
-        className="px-4 py-2 bg-sky-500 text-white rounded-md hover:bg-sky-600 transition-colors text-sm font-medium"
+        className="px-4 py-2 border border-neutral-950 bg-neutral-950 text-white rounded-md hover:bg-neutral-800 transition-colors text-sm font-medium dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
         aria-label="Share on Twitter"
       >
         Twitter

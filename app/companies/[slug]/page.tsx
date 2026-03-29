@@ -1836,11 +1836,8 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
               <div className="space-y-6">
                 <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 relative">
                   {company.name}
-                  <div
-                    className={`h-1 w-20 mt-2 ${
-                      isCambridgeDarkBrand ? 'bg-white' : 'bg-neutral-950 dark:bg-white'
-                    }`}
-                  />
+                  {/* Dark bar on light SSR; switches with dark: when html.dark (Cambridge route) hydrates — avoids white-on-white flash */}
+                  <div className="h-1 w-20 mt-2 bg-neutral-950 dark:bg-white" />
                 </h1>
                 <p className="text-xl leading-relaxed text-gray-600 dark:text-neutral-300">{company.description}</p>
                 
@@ -1999,7 +1996,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       rel="noopener noreferrer"
                       className={
                         isCambridgeDarkBrand
-                          ? 'inline-flex items-center px-6 py-3 border border-white text-base font-medium rounded-xl shadow-sm text-neutral-950 bg-white hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white dark:focus:ring-offset-neutral-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'
+                          ? 'inline-flex items-center px-6 py-3 border-2 border-neutral-950 text-base font-medium rounded-xl shadow-sm text-neutral-950 bg-white hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-950 dark:border-white dark:focus:ring-white dark:focus:ring-offset-neutral-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'
                           : 'inline-flex items-center px-6 py-3 border border-neutral-950 text-base font-medium rounded-xl shadow-sm text-white bg-neutral-950 hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-950 dark:focus:ring-offset-neutral-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'
                       }
                     >
@@ -2028,11 +2025,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
             >
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-6 relative">
                 Place an Order
-                <div
-                  className={`h-1 w-16 mt-2 ${
-                    isCambridgeDarkBrand ? 'bg-white' : 'bg-neutral-950 dark:bg-white'
-                  }`}
-                />
+                <div className="h-1 w-16 mt-2 bg-neutral-950 dark:bg-white" />
               </h2>
               <OrderForm companyName={company.name} invertedPrimaryButtons={isCambridgeDarkBrand} />
             </div>
