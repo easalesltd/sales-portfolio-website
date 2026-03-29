@@ -51,7 +51,7 @@ function dimsFor(kind: ObstacleKind): { w: number; h: number } {
     case 'sample_trolley':
       return { w: 64, h: 54 };
     case 'speed_camera':
-      return { w: 44, h: 60 };
+      return { w: 52, h: 64 };
     case 'inbox_zero':
       return { w: 56, h: 44 };
     default:
@@ -288,21 +288,46 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number, g
       break;
     }
     case 'speed_camera': {
-      ctx.fillStyle = '#57534e';
-      ctx.fillRect(x + w / 2 - 10, top + 12, 20, h - 12);
-      ctx.fillStyle = '#fbbf24';
-      ctx.beginPath();
-      ctx.arc(x + w / 2, top + 22, 18, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#1c1917';
-      ctx.beginPath();
-      ctx.arc(x + w / 2 - 6, top + 20, 6, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#44403c';
-      ctx.fillRect(x + w / 2 - 22, top + h - 8, 44, 8);
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 8px system-ui, sans-serif';
-      ctx.fillText('FLASH', x + w / 2 - 16, top + h - 2);
+      const pad = 3;
+      const boxW = w - pad * 2 - 6;
+      const boxH = Math.max(26, h * 0.36);
+      const boxX = x + pad + 3;
+      const boxY = top + 5;
+      const bottomY = top + h;
+      const postW = 10;
+      const postX = x + w / 2 - postW / 2;
+
+      ctx.fillStyle = '#9ca3af';
+      ctx.fillRect(boxX - 2, boxY - 4, boxW + 4, 4);
+
+      ctx.fillStyle = '#78716c';
+      ctx.fillRect(boxX - 5, boxY, 5, boxH);
+
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(boxX, boxY, boxW, boxH);
+
+      ctx.fillStyle = '#a8a29e';
+      ctx.fillRect(boxX + boxW, boxY, 5, boxH);
+      ctx.fillStyle = '#171717';
+      ctx.font = 'bold 9px system-ui, sans-serif';
+      ctx.fillText('21', boxX + boxW + 1, boxY + boxH * 0.52);
+
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(boxX + 5, boxY + 5, 7, 6);
+
+      ctx.fillStyle = '#d4d4d8';
+      ctx.fillRect(boxX + 6, boxY + boxH * 0.38, boxW - 12, Math.max(6, boxH * 0.16));
+      ctx.strokeStyle = 'rgba(15,23,42,0.15)';
+      ctx.strokeRect(boxX + 6, boxY + boxH * 0.38, boxW - 12, Math.max(6, boxH * 0.16));
+
+      ctx.fillStyle = '#171717';
+      ctx.fillRect(boxX + boxW - 17, boxY + boxH - 15, 13, 12);
+      ctx.fillStyle = '#27272a';
+      ctx.fillRect(boxX + boxW - 15, boxY + boxH - 13, 9, 4);
+
+      ctx.fillStyle = '#6b7280';
+      ctx.fillRect(postX - 2, boxY + boxH - 1, postW + 4, 5);
+      ctx.fillRect(postX, boxY + boxH + 3, postW, bottomY - (boxY + boxH + 3));
       break;
     }
     case 'inbox_zero': {
@@ -328,9 +353,8 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number, g
 
 function drawPlayer(ctx: CanvasRenderingContext2D, px: number, yTop: number, pw: number, ph: number) {
   const skin = '#d4a574';
-  const hair = '#3d2914';
-  const hairMid = '#5c3d24';
-  const hairHi = '#6b4423';
+  const quiff = '#4a3020';
+  const quiffHi = '#6b4423';
   const olive = '#5f6b47';
   const oliveDark = '#4a5336';
   const olivePocket = '#515f3d';
@@ -338,32 +362,28 @@ function drawPlayer(ctx: CanvasRenderingContext2D, px: number, yTop: number, pw:
   const flopStrap = '#ea580c';
   const cx = px + pw / 2;
 
-  ctx.fillStyle = hair;
-  ctx.beginPath();
-  ctx.ellipse(cx, yTop + 7, 14, 8, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = hairMid;
-  ctx.beginPath();
-  ctx.ellipse(cx, yTop + 11, 13, 10, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.fillStyle = hair;
-  ctx.fillRect(px, yTop + 10, 6, 14);
-  ctx.fillRect(px + pw - 6, yTop + 10, 6, 14);
-
   ctx.fillStyle = skin;
   ctx.beginPath();
   ctx.arc(cx, yTop + 17, 9, 0, Math.PI * 2);
   ctx.fill();
 
-  ctx.fillStyle = hairMid;
-  ctx.fillRect(px + 5, yTop + 8, pw - 10, 6);
-  ctx.fillStyle = hairHi;
-  ctx.fillRect(px + 8, yTop + 6, 4, 9);
-  ctx.fillRect(px + pw - 12, yTop + 7, 3, 8);
+  ctx.fillStyle = quiff;
+  ctx.beginPath();
+  ctx.moveTo(cx - 9, yTop + 13);
+  ctx.quadraticCurveTo(cx - 7, yTop + 4, cx, yTop + 2);
+  ctx.quadraticCurveTo(cx + 7, yTop + 4, cx + 9, yTop + 13);
+  ctx.quadraticCurveTo(cx + 5, yTop + 11, cx, yTop + 10);
+  ctx.quadraticCurveTo(cx - 5, yTop + 11, cx - 9, yTop + 13);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = quiffHi;
+  ctx.beginPath();
+  ctx.ellipse(cx, yTop + 7, 4, 3, 0, 0, Math.PI * 2);
+  ctx.fill();
 
   ctx.fillStyle = '#292524';
-  ctx.fillRect(cx - 6, yTop + 15, 2, 2);
-  ctx.fillRect(cx + 4, yTop + 15, 2, 2);
+  ctx.fillRect(cx - 6, yTop + 16, 2, 2);
+  ctx.fillRect(cx + 4, yTop + 16, 2, 2);
 
   const shirtY = yTop + 22;
   const shirtH = 15;
