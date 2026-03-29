@@ -327,75 +327,143 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number, g
 }
 
 function drawPlayer(ctx: CanvasRenderingContext2D, px: number, yTop: number, pw: number, ph: number) {
-  const skin = '#e0ac8d';
-  const shirt = '#14b8a6';
-  const hair = '#5d4037';
-  const hairHi = '#6d4c41';
-  const shorts = '#9ca88f';
-  const shortsShadow = '#7d8872';
+  const skin = '#d4a574';
+  const hair = '#3d2914';
+  const hairMid = '#5c3d24';
+  const hairHi = '#6b4423';
+  const olive = '#5f6b47';
+  const oliveDark = '#4a5336';
+  const olivePocket = '#515f3d';
   const flop = '#fb923c';
   const flopStrap = '#ea580c';
+  const cx = px + pw / 2;
 
   ctx.fillStyle = hair;
   ctx.beginPath();
-  ctx.ellipse(px + pw / 2, yTop + 10, 12, 10, 0, 0, Math.PI * 2);
+  ctx.ellipse(cx, yTop + 7, 14, 8, 0, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = hairHi;
-  ctx.fillRect(px + 3, yTop + 12, 4, 8);
-  ctx.fillRect(px + pw - 7, yTop + 12, 4, 8);
+  ctx.fillStyle = hairMid;
+  ctx.beginPath();
+  ctx.ellipse(cx, yTop + 11, 13, 10, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = hair;
+  ctx.fillRect(px, yTop + 10, 6, 14);
+  ctx.fillRect(px + pw - 6, yTop + 10, 6, 14);
 
   ctx.fillStyle = skin;
   ctx.beginPath();
-  ctx.arc(px + pw / 2, yTop + 15, 9, 0, Math.PI * 2);
+  ctx.arc(cx, yTop + 17, 9, 0, Math.PI * 2);
   ctx.fill();
 
-  ctx.fillStyle = '#0f172a';
-  ctx.fillRect(px + 7, yTop + 11, 16, 4);
+  ctx.fillStyle = hairMid;
+  ctx.fillRect(px + 5, yTop + 8, pw - 10, 6);
+  ctx.fillStyle = hairHi;
+  ctx.fillRect(px + 8, yTop + 6, 4, 9);
+  ctx.fillRect(px + pw - 12, yTop + 7, 3, 8);
 
-  ctx.fillStyle = shirt;
-  roundRectPath(ctx, px + 5, yTop + 21, pw - 10, 15, 3);
+  ctx.fillStyle = '#292524';
+  ctx.fillRect(cx - 6, yTop + 15, 2, 2);
+  ctx.fillRect(cx + 4, yTop + 15, 2, 2);
+
+  const shirtY = yTop + 22;
+  const shirtH = 15;
+  const shirtW = pw - 8;
+  const shirtX = px + 4;
+
+  ctx.save();
+  roundRectPath(ctx, shirtX, shirtY, shirtW, shirtH, 3);
+  ctx.clip();
+  ctx.fillStyle = '#c4b5a4';
+  ctx.fillRect(shirtX, shirtY, shirtW, shirtH);
+  ctx.strokeStyle = 'rgba(111, 47, 31, 0.55)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= shirtW; i += 4) {
+    ctx.beginPath();
+    ctx.moveTo(shirtX + i, shirtY);
+    ctx.lineTo(shirtX + i, shirtY + shirtH);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = 'rgba(41, 59, 82, 0.5)';
+  for (let j = 0; j <= shirtH; j += 4) {
+    ctx.beginPath();
+    ctx.moveTo(shirtX, shirtY + j);
+    ctx.lineTo(shirtX + shirtW, shirtY + j);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  ctx.fillStyle = '#a89f91';
+  ctx.beginPath();
+  ctx.moveTo(shirtX + 4, shirtY);
+  ctx.lineTo(shirtX + 14, shirtY - 6);
+  ctx.lineTo(cx - 3, shirtY);
+  ctx.closePath();
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(shirtX + shirtW - 4, shirtY);
+  ctx.lineTo(shirtX + shirtW - 14, shirtY - 6);
+  ctx.lineTo(cx + 3, shirtY);
+  ctx.closePath();
   ctx.fill();
 
-  ctx.fillStyle = skin;
-  ctx.fillRect(px + 1, yTop + 23, 5, 13);
-  ctx.fillRect(px + pw - 6, yTop + 23, 5, 13);
-
-  ctx.fillStyle = shorts;
-  roundRectPath(ctx, px + 3, yTop + 36, pw - 6, 11, 2);
-  ctx.fill();
-  ctx.strokeStyle = shortsShadow;
+  roundRectPath(ctx, shirtX, shirtY, shirtW, shirtH, 3);
+  ctx.strokeStyle = '#57534e';
   ctx.lineWidth = 1;
   ctx.stroke();
 
-  ctx.fillStyle = shortsShadow;
-  ctx.fillRect(px + 4, yTop + 38, 9, 7);
-  ctx.fillRect(px + pw - 13, yTop + 38, 9, 7);
-  ctx.strokeStyle = '#4b5445';
+  ctx.strokeStyle = '#44403c';
   ctx.lineWidth = 1;
-  ctx.strokeRect(px + 4, yTop + 38, 9, 7);
-  ctx.strokeRect(px + pw - 13, yTop + 38, 9, 7);
-  ctx.fillStyle = shorts;
-  ctx.fillRect(px + 5, yTop + 39, 7, 2);
-  ctx.fillRect(px + pw - 12, yTop + 39, 7, 2);
+  ctx.beginPath();
+  ctx.moveTo(cx, shirtY + 3);
+  ctx.lineTo(cx, shirtY + shirtH - 2);
+  ctx.stroke();
+  ctx.fillStyle = '#e7e5e4';
+  for (let b = 0; b < 3; b++) {
+    ctx.beginPath();
+    ctx.arc(cx, shirtY + 6 + b * 5, 1.3, 0, Math.PI * 2);
+    ctx.fill();
+  }
 
   ctx.fillStyle = skin;
-  ctx.fillRect(px + 7, yTop + 44, 5, 7);
-  ctx.fillRect(px + pw - 12, yTop + 44, 5, 7);
+  ctx.fillRect(px, yTop + 24, 6, 12);
+  ctx.fillRect(px + pw - 6, yTop + 24, 6, 12);
+
+  const shortsY = shirtY + shirtH;
+  ctx.fillStyle = olive;
+  roundRectPath(ctx, px + 3, shortsY, pw - 6, 10, 2);
+  ctx.fill();
+  ctx.strokeStyle = oliveDark;
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.fillStyle = olivePocket;
+  ctx.fillRect(px + 4, shortsY + 3, 10, 6);
+  ctx.fillRect(px + pw - 14, shortsY + 3, 10, 6);
+  ctx.strokeStyle = '#3d4530';
+  ctx.strokeRect(px + 4, shortsY + 3, 10, 6);
+  ctx.strokeRect(px + pw - 14, shortsY + 3, 10, 6);
+  ctx.fillStyle = olive;
+  ctx.fillRect(px + 5, shortsY + 4, 8, 2);
+  ctx.fillRect(px + pw - 13, shortsY + 4, 8, 2);
+
+  ctx.fillStyle = skin;
+  ctx.fillRect(px + 8, shortsY + 8, 5, 7);
+  ctx.fillRect(px + pw - 13, shortsY + 8, 5, 7);
 
   const footY = yTop + ph - 5;
   ctx.fillStyle = flop;
-  ctx.fillRect(px + 4, footY, 14, 5);
-  ctx.fillRect(px + pw - 18, footY, 14, 5);
+  ctx.fillRect(px + 4, footY, 15, 5);
+  ctx.fillRect(px + pw - 19, footY, 15, 5);
 
   ctx.strokeStyle = flopStrap;
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(px + 7, footY + 1);
-  ctx.quadraticCurveTo(px + 11, footY - 3, px + 15, footY + 1);
+  ctx.moveTo(px + 8, footY + 1);
+  ctx.quadraticCurveTo(px + 12, footY - 3, px + 16, footY + 1);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(px + pw - 15, footY + 1);
-  ctx.quadraticCurveTo(px + pw - 11, footY - 3, px + pw - 7, footY + 1);
+  ctx.moveTo(px + pw - 16, footY + 1);
+  ctx.quadraticCurveTo(px + pw - 12, footY - 3, px + pw - 8, footY + 1);
   ctx.stroke();
 }
 
@@ -493,7 +561,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
 
       const groundY = H * GROUND_RATIO;
-      const pw = 36;
+      const pw = 40;
       const ph = 52;
       const px = W * 0.18;
 
