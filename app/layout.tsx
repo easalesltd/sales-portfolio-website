@@ -6,9 +6,9 @@ import Link from "next/link";
 import { FaEnvelope, FaInstagram, FaPhone } from 'react-icons/fa';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import { companies, type Company } from './data/companies';
 import MobileRequestButton from './components/MobileRequestButton';
+import HeaderLogo from './components/HeaderLogo';
 import AboutDropdown from './components/AboutDropdown';
 
 // Optimize font loading with display swap and preload
@@ -969,18 +969,7 @@ export default function RootLayout({
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
-                <Link href="/" className="flex items-center">
-                  <Image
-                    src="/images/logo.webp"
-                    alt="East Anglian Sales LTD Logo"
-                    width={100}
-                    height={67}
-                    className="object-contain brightness-0 dark:invert"
-                    priority
-                    sizes="100px"
-                    quality={85}
-                  />
-                </Link>
+                <HeaderLogo />
               </div>
               <div className="hidden md:flex items-center space-x-6">
                 <Link href="/" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Home</Link>
