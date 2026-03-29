@@ -138,6 +138,39 @@ function fillTextScaledCenter(
   ctx.fillText(text, cx - tw / 2, y);
 }
 
+/** Shrinks font until the string fits within maxWidth or hardMin is reached (county banner). */
+function measureFitFontPxHard(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxWidth: number,
+  maxPx: number,
+  hardMinPx: number,
+  weight: '' | 'bold' = ''
+): number {
+  let px = maxPx;
+  const w = weight === 'bold' ? 'bold ' : '';
+  while (px > hardMinPx) {
+    ctx.font = `${w}${px}px system-ui, sans-serif`;
+    if (ctx.measureText(text).width <= maxWidth) break;
+    px -= 0.5;
+  }
+  return Math.max(hardMinPx, px);
+}
+
+function fillTextCenterAtBaseline(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  cx: number,
+  baselineY: number,
+  px: number,
+  weight: '' | 'bold'
+) {
+  const w = weight === 'bold' ? 'bold ' : '';
+  ctx.font = `${w}${px}px system-ui, sans-serif`;
+  const tw = ctx.measureText(text).width;
+  ctx.fillText(text, cx - tw / 2, baselineY);
+}
+
 function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
   const { x, w, h, kind } = o;
 
@@ -489,6 +522,140 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const obstaclesRef = useRef<Obstacle[]>([]);
   const lastCountyBucketRef = useRef(0);
   const countyBannerRef = useRef({ frames: 0, name: '' as string });
+  /** Set synchronously on collision so resize (canvas bitmap clear) can repaint before React commits `outcome`. */
+  const lostDuringRunRef = useRef(false);
+
+  const paintGameFrame = useCallback(
+    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, advanceCountyBanner: boolean) => {
+      const W = canvas.width;
+      const H = canvas.height;
+      if (W < 2 || H < 2) return;
+
+      const groundY = H * GROUND_RATIO;
+      const pw = 40;
+      const ph = 52;
+      const px = W * 0.18;
+
+      const ci = Math.floor(scoreRef.current / 500) % 4;
+      const skyPairs = [
+        ['#87CEEB', '#E0F4FF'],
+        ['#7dd3fc', '#e0f2fe'],
+        ['#93c5fd', '#f0f9ff'],
+        ['#a5b4fc', '#eef2ff'],
+      ];
+      const grd = ctx.createLinearGradient(0, 0, 0, H);
+      grd.addColorStop(0, skyPairs[ci][0]);
+      grd.addColorStop(1, skyPairs[ci][1]);
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.fillStyle = '#6B5344';
+      ctx.fillRect(0, groundY, W, H - groundY);
+      ctx.fillStyle = '#8B7355';
+      ctx.fillRect(0, groundY, W, 8);
+
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      const cloudShift = (scoreRef.current * 0.35) % (W + 120);
+      ctx.beginPath();
+      ctx.arc(W - cloudShift + 40, 52, 20, 0, Math.PI * 2);
+      ctx.arc(W - cloudShift + 62, 48, 26, 0, Math.PI * 2);
+      ctx.arc(W - cloudShift + 88, 52, 20, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (const o of obstaclesRef.current) {
+        const top = groundY - o.h;
+        drawObstacle(ctx, o, top);
+      }
+
+      const yTop = groundY + pyRef.current - ph;
+      drawPlayer(ctx, px, yTop, pw, ph);
+
+      const displayScore = Math.floor(scoreRef.current);
+      const countyLabel = countyForScore(scoreRef.current);
+      const countyHue = ['#6d28d9', '#047857', '#b91c1c', '#0369a1'][ci];
+      ctx.fillStyle = 'rgba(255,255,255,0.94)';
+      roundRectPath(ctx, 8, 8, 216, 58, 8);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(15,23,42,0.12)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = countyHue;
+      ctx.font = 'bold 12px system-ui, sans-serif';
+      ctx.fillText(countyLabel, 18, 24);
+      ctx.fillStyle = '#1a1a1a';
+      ctx.font = 'bold 13px system-ui, sans-serif';
+      ctx.fillText(`Score ${displayScore.toLocaleString()}`, 18, 42);
+      ctx.font = '11px system-ui, sans-serif';
+      ctx.fillStyle = '#52525b';
+      ctx.fillText(`Best ${readHighScore().toLocaleString()}`, 18, 56);
+
+      const banner = countyBannerRef.current;
+      if (banner.frames > 0) {
+        const fade = Math.min(1, banner.frames / 28);
+        const isCompact = W < 420;
+        const outerPad = Math.max(10, Math.floor(W * 0.032));
+        const innerPad = Math.max(6, Math.floor(W * 0.022));
+        const maxTextW = Math.max(80, W - outerPad * 2 - 8);
+        const line1Max = isCompact ? Math.min(15, W * 0.046) : Math.min(14, W * 0.028);
+        const line2Max = isCompact ? Math.min(27, W * 0.08) : Math.min(24, W * 0.05);
+        const line3Max = isCompact ? Math.min(12, W * 0.036) : Math.min(11, W * 0.026);
+
+        const panelTop = H * 0.23;
+        const panelH = Math.min(108, Math.max(74, Math.floor(H * 0.3)));
+
+        ctx.save();
+        ctx.fillStyle = `rgba(15,23,42,${0.82 * fade})`;
+        ctx.fillRect(0, panelTop, W, panelH);
+        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(outerPad, panelTop + innerPad, W - outerPad * 2, panelH - innerPad * 2);
+
+        const innerTop = panelTop + innerPad;
+        const innerBot = panelTop + panelH - innerPad;
+        const innerMid = (innerTop + innerBot) / 2;
+
+        const px1 = measureFitFontPxHard(ctx, 'Now entering', maxTextW, line1Max, 7, '');
+        const px2 = measureFitFontPxHard(ctx, banner.name, maxTextW, line2Max, 7, 'bold');
+        const px3 = measureFitFontPxHard(ctx, 'East Anglia route', maxTextW, line3Max, 6, '');
+        const gap12 = Math.max(4, Math.round(Math.min(px1, px2) * 0.16));
+        const gap23 = Math.max(3, Math.round(Math.min(px2, px3) * 0.14));
+        const span1 = px1 * 1.08 + gap12 * 0.35;
+        const span2 = px2 * 1.08 + gap23 * 0.35;
+        const span3 = px3 * 0.92;
+        const blockH = span1 + span2 + span3;
+        let b1 = innerMid - blockH / 2 + px1 * 0.78;
+        let b2 = b1 + span1;
+        let b3 = b2 + span2;
+        const minBaselineTop = innerTop + px1 + 2;
+        const maxBaselineBot = innerBot - px3 * 0.25 - 2;
+        if (b1 < minBaselineTop) {
+          const s = minBaselineTop - b1;
+          b1 += s;
+          b2 += s;
+          b3 += s;
+        }
+        if (b3 > maxBaselineBot) {
+          const s = b3 - maxBaselineBot;
+          b1 -= s;
+          b2 -= s;
+          b3 -= s;
+        }
+
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        fillTextCenterAtBaseline(ctx, 'Now entering', W / 2, b1, px1, '');
+        fillTextCenterAtBaseline(ctx, banner.name, W / 2, b2, px2, 'bold');
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        fillTextCenterAtBaseline(ctx, 'East Anglia route', W / 2, b3, px3, '');
+        ctx.textAlign = 'left';
+        ctx.restore();
+        if (advanceCountyBanner) {
+          countyBannerRef.current = { ...banner, frames: banner.frames - 1 };
+        }
+      }
+    },
+    []
+  );
 
   const resizeCanvas = useCallback(() => {
     const c = canvasRef.current;
@@ -510,7 +677,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
     c.width = w;
     c.height = h;
-  }, []);
+    if (lostDuringRunRef.current) {
+      const ctx = c.getContext('2d');
+      if (ctx) paintGameFrame(ctx, c, false);
+    }
+  }, [paintGameFrame]);
 
   useEffect(() => {
     if (screen !== 'game') return;
@@ -534,6 +705,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     obstaclesRef.current = [];
     lastCountyBucketRef.current = 0;
     countyBannerRef.current = { frames: 0, name: '' };
+    lostDuringRunRef.current = false;
     setOutcome(null);
     setLastRunScore(null);
     setWasRecord(false);
@@ -620,97 +792,25 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           if (typeof window !== 'undefined') {
             window.localStorage.setItem(STORAGE_KEY, String(nextHi));
           }
+          lostDuringRunRef.current = true;
           setHighScore(nextHi);
           setLastRunScore(final);
           setWasRecord(final > prevHi);
           setLosePhrase(randomLosePhrase());
+          paintGameFrame(ctx, canvas, false);
           setOutcome('lost');
           return;
         }
       }
 
-      const ci = Math.floor(scoreRef.current / 500) % 4;
-      const skyPairs = [
-        ['#87CEEB', '#E0F4FF'],
-        ['#7dd3fc', '#e0f2fe'],
-        ['#93c5fd', '#f0f9ff'],
-        ['#a5b4fc', '#eef2ff'],
-      ];
-      const grd = ctx.createLinearGradient(0, 0, 0, H);
-      grd.addColorStop(0, skyPairs[ci][0]);
-      grd.addColorStop(1, skyPairs[ci][1]);
-      ctx.fillStyle = grd;
-      ctx.fillRect(0, 0, W, H);
-
-      ctx.fillStyle = '#6B5344';
-      ctx.fillRect(0, groundY, W, H - groundY);
-      ctx.fillStyle = '#8B7355';
-      ctx.fillRect(0, groundY, W, 8);
-
-      ctx.fillStyle = 'rgba(255,255,255,0.85)';
-      const cloudShift = (scoreRef.current * 0.35) % (W + 120);
-      ctx.beginPath();
-      ctx.arc(W - cloudShift + 40, 52, 20, 0, Math.PI * 2);
-      ctx.arc(W - cloudShift + 62, 48, 26, 0, Math.PI * 2);
-      ctx.arc(W - cloudShift + 88, 52, 20, 0, Math.PI * 2);
-      ctx.fill();
-
-      for (const o of obstaclesRef.current) {
-        const top = groundY - o.h;
-        drawObstacle(ctx, o, top);
-      }
-
-      const yTop = groundY + pyRef.current - ph;
-      drawPlayer(ctx, px, yTop, pw, ph);
-
-      const displayScore = Math.floor(scoreRef.current);
-      const countyLabel = countyForScore(scoreRef.current);
-      const countyHue = ['#6d28d9', '#047857', '#b91c1c', '#0369a1'][ci];
-      ctx.fillStyle = 'rgba(255,255,255,0.94)';
-      roundRectPath(ctx, 8, 8, 216, 58, 8);
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(15,23,42,0.12)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      ctx.fillStyle = countyHue;
-      ctx.font = 'bold 12px system-ui, sans-serif';
-      ctx.fillText(countyLabel, 18, 24);
-      ctx.fillStyle = '#1a1a1a';
-      ctx.font = 'bold 13px system-ui, sans-serif';
-      ctx.fillText(`Score ${displayScore.toLocaleString()}`, 18, 42);
-      ctx.font = '11px system-ui, sans-serif';
-      ctx.fillStyle = '#52525b';
-      ctx.fillText(`Best ${readHighScore().toLocaleString()}`, 18, 56);
-
-      const banner = countyBannerRef.current;
-      if (banner.frames > 0) {
-        const fade = Math.min(1, banner.frames / 28);
-        ctx.save();
-        ctx.fillStyle = `rgba(15,23,42,${0.82 * fade})`;
-        ctx.fillRect(0, H * 0.24, W, 102);
-        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(14, H * 0.24 + 10, W - 28, 82);
-        ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.font = '600 17px system-ui, sans-serif';
-        ctx.fillText('Now entering', W / 2, H * 0.33);
-        ctx.font = 'bold 36px system-ui, sans-serif';
-        ctx.fillText(banner.name, W / 2, H * 0.44);
-        ctx.font = '13px system-ui, sans-serif';
-        ctx.fillStyle = 'rgba(255,255,255,0.85)';
-        ctx.fillText('East Anglia route', W / 2, H * 0.52);
-        ctx.textAlign = 'left';
-        ctx.restore();
-        countyBannerRef.current = { ...banner, frames: banner.frames - 1 };
-      }
+      paintGameFrame(ctx, canvas, true);
 
       raf = requestAnimationFrame(tick);
     };
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [screen, outcome]);
+  }, [screen, outcome, paintGameFrame]);
 
   useEffect(() => {
     if (screen !== 'game' || outcome !== null) return;
@@ -735,7 +835,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       aria-labelledby="sales-agent-dash-title"
     >
       <div
-        className={`flex w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl max-h-[96dvh] ${screen === 'game' ? 'min-h-[min(82dvh,96dvh)] sm:min-h-0' : ''}`}
+        className={`flex w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl max-h-[96dvh] min-h-0 ${screen === 'game' ? 'min-h-[min(82dvh,96dvh)] sm:min-h-0' : ''}`}
       >
         <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-700 px-4 py-3">
           <h2 id="sales-agent-dash-title" className="text-lg font-semibold text-white">
@@ -750,7 +850,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col items-center p-3 sm:p-4">
+        <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto overflow-x-hidden p-3 sm:p-4">
           {screen === 'menu' && (
             <div className="py-8 text-center text-neutral-200">
               <p className="mb-2 text-lg">
@@ -775,10 +875,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
           {screen === 'game' && (
             <>
-              <div className="relative flex w-full flex-1 items-stretch justify-center min-h-[52dvh] max-h-[68dvh] sm:min-h-0 sm:max-h-none sm:flex-none">
+              <div className="relative flex w-full shrink-0 items-stretch justify-center min-h-[min(52dvh,50svh)] max-h-[68dvh] sm:min-h-0 sm:max-h-none sm:flex-none">
                 <canvas
                   ref={canvasRef}
-                  className={`w-full max-w-2xl touch-none rounded-lg border border-neutral-700 sm:max-h-[400px] ${playing ? 'cursor-pointer' : ''}`}
+                  className={`block h-auto w-full max-w-2xl touch-none rounded-lg border border-neutral-700 sm:max-h-[400px] ${playing ? 'cursor-pointer' : ''}`}
                   onMouseDown={playing ? jump : undefined}
                   onTouchStart={
                     playing
