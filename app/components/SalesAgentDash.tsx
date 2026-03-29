@@ -8,7 +8,8 @@ const GROUND_RATIO = 0.78;
 const GRAVITY = 0.72;
 const JUMP_V = -13;
 const BASE_SCROLL = 4.2;
-const BASE_OBSTACLE_INTERVAL = 88;
+/** World pixels travelled between obstacle spawns (keeps density as scroll speed ramps up). */
+const OBSTACLE_SPAWN_GAP_PX = 430;
 
 const COUNTIES = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
 
@@ -462,7 +463,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const [wasRecord, setWasRecord] = useState(false);
 
   const scoreRef = useRef(0);
-  const frameRef = useRef(0);
+  const obstacleSpawnCarryRef = useRef(0);
   const pyRef = useRef(0);
   const vyRef = useRef(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
@@ -507,7 +508,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
   const startGame = useCallback(() => {
     scoreRef.current = 0;
-    frameRef.current = 0;
+    obstacleSpawnCarryRef.current = 0;
     pyRef.current = 0;
     vyRef.current = 0;
     obstaclesRef.current = [];
@@ -548,7 +549,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const ph = 52;
       const px = W * 0.18;
 
-      frameRef.current += 1;
       const difficulty = 1 + Math.min(2.2, scoreRef.current / 3500);
       const scroll = BASE_SCROLL * difficulty;
       scoreRef.current += scroll * 0.35;
@@ -562,12 +562,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         };
       }
 
-      const interval = Math.max(
-        46,
-        Math.floor(BASE_OBSTACLE_INTERVAL / Math.min(1.45, 0.65 + scoreRef.current / 8000))
-      );
-
-      if (frameRef.current % interval === 0) {
+      obstacleSpawnCarryRef.current += scroll;
+      while (obstacleSpawnCarryRef.current >= OBSTACLE_SPAWN_GAP_PX) {
+        obstacleSpawnCarryRef.current -= OBSTACLE_SPAWN_GAP_PX;
         const kind = OBSTACLE_KINDS[Math.floor(Math.random() * OBSTACLE_KINDS.length)];
         const { w: ow, h: oh } = dimsFor(kind);
         obstaclesRef.current.push({
