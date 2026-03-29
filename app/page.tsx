@@ -73,7 +73,7 @@ export default function Home() {
                 href="/about" 
                 className="w-full sm:w-auto inline-flex items-center justify-center text-center px-6 py-3 min-h-[3rem] rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-all duration-300 sm:hover:-translate-y-0.5 sm:hover:shadow-lg active:translate-y-0 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
               >
-                About Us
+                About Dave
               </Link>
               <Link 
                 href="/contact" 

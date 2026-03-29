@@ -40,7 +40,7 @@ export default function NotFound() {
             href="/about"
             className="px-6 py-3 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
           >
-            About Us
+            About Dave
           </Link>
           <Link
             href="/contact"

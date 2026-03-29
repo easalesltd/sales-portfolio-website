@@ -12,7 +12,7 @@ export default function AboutDropdown() {
   const pathname = usePathname();
 
   const aboutItems = [
-    { name: 'About Dave', href: '/about' },
+    { name: 'Meet Dave', href: '/about' },
     { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
     { name: 'Recipes', href: '/recipes' }
   ];
@@ -56,7 +56,7 @@ export default function AboutDropdown() {
             : 'text-gray-700 dark:text-neutral-200 hover:text-neutral-950 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-neutral-900'
         }`}
       >
-        About
+        About Dave
         <ChevronDownIcon 
           className={`ml-2 h-5 w-5 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
