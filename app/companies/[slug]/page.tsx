@@ -1688,11 +1688,13 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   ] : [];
 
   const boxerGiftsBaseImages = resolvedParams.slug === 'boxer-gifts' ? [
-    '/images/companies/boxer-gifts/OT2075_a70b.webp',
-    '/images/companies/boxer-gifts/CO1012___MR_GOOD_LOOKIN__APRON___34_49a0.webp',
-    '/images/companies/boxer-gifts/MU3131_4d24.webp',
-    '/images/companies/boxer-gifts/YHU0838_Grumpy_Git_9b56.webp',
-    '/images/companies/boxer-gifts/Untitled_550_550_px_4_.png'
+    '/images/companies/boxer-gifts/website_featured__1.jpeg',
+    '/images/companies/boxer-gifts/BB2228_Squeezy_peas_d441.webp',
+    '/images/companies/boxer-gifts/GA3174__33eb.webp',
+    '/images/companies/boxer-gifts/YME0101_i_love_you_mummy_4040.webp',
+    '/images/companies/boxer-gifts/Untitled_550_550_px_4_.png',
+    '/images/companies/boxer-gifts/Let_Us_Inspire_You_Images.png',
+    '/images/companies/boxer-gifts/Meet_The_Team_Block_-_Mobile.png'
   ] : [];
 
   const davidFischhoffBaseImages = resolvedParams.slug === 'david-fischhoff' ? [
