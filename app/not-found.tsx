@@ -9,13 +9,14 @@ export default function NotFound() {
         <div className="mb-8 flex justify-center">
           <Link href="/" className="flex items-center">
             <Image
-              src="/images/logo.svg.png"
+              src="/images/logo.webp"
               alt="East Anglian Sales LTD Logo"
               width={150}
               height={100}
               className="object-contain brightness-0"
               priority
-              quality={90}
+              sizes="150px"
+              quality={85}
             />
           </Link>
         </div>

@@ -2,13 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { FaInstagram } from "react-icons/fa";
 import { companies } from "./data/companies";
 import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
-import VideoBackground from "./components/VideoBackground";
 import FadeInOnScroll from "./components/FadeInOnScroll";
-import RequestVisitForm from "./components/RequestVisitForm";
+
+const VideoBackground = dynamic(() => import("./components/VideoBackground"));
+const RequestVisitForm = dynamic(() => import("./components/RequestVisitForm"));
 
 export default function Home() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
@@ -106,7 +108,9 @@ export default function Home() {
                           src={company.logoUrl}
                           alt={`${company.name} logo`}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 320px"
                           className="object-contain p-6 group-hover:scale-105 transition-transform duration-300"
+                          quality={75}
                         />
                       </div>
                       <div className="p-6 bg-white/90 backdrop-blur-sm flex-grow flex flex-col justify-start min-h-[140px]">

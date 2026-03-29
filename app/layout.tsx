@@ -579,26 +579,12 @@ export default function RootLayout({
   return (
     <html lang="en-GB">
       <head>
-        {/* Google tag (gtag.js) */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-7HWXWDZG4F"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}    
-              gtag('js', new Date());
-
-              gtag('config', 'G-7HWXWDZG4F');
-            `
-          }}
-        />
-        
         {/* Preload critical assets */}
         <link
           rel="preload"
-          href="/images/logo.svg.png"
+          href="/images/logo.webp"
           as="image"
-          type="image/png"
+          type="image/webp"
         />
         <link
           rel="preload"
@@ -684,8 +670,8 @@ export default function RootLayout({
                 "url": "https://www.easalesltd.co.uk",
                 "logo": {
                   "@type": "ImageObject",
-                  "url": "https://www.easalesltd.co.uk/images/logo.svg.png",
-                  "contentUrl": "https://www.easalesltd.co.uk/images/logo.svg.png",
+                  "url": "https://www.easalesltd.co.uk/images/logo.webp",
+                  "contentUrl": "https://www.easalesltd.co.uk/images/logo.webp",
                   "width": 100,
                   "height": 67
                 },
@@ -967,19 +953,32 @@ export default function RootLayout({
         ></script>
       </head>
       <body className={inter.className}>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-7HWXWDZG4F"
+          strategy="lazyOnload"
+        />
+        <Script id="google-analytics" strategy="lazyOnload">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-7HWXWDZG4F');
+          `}
+        </Script>
         <header className="fixed top-0 left-0 right-0 bg-white dark:bg-neutral-950 z-50 pt-4 border-b border-transparent dark:border-neutral-800 transition-colors duration-300">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               <div className="flex items-center">
                 <Link href="/" className="flex items-center">
                   <Image
-                    src="/images/logo.svg.png"
+                    src="/images/logo.webp"
                     alt="East Anglian Sales LTD Logo"
                     width={100}
                     height={67}
                     className="object-contain brightness-0 dark:invert"
                     priority
-                    quality={90}
+                    sizes="100px"
+                    quality={85}
                   />
                 </Link>
               </div>

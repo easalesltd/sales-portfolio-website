@@ -1608,7 +1608,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
           'name': 'East Anglian Sales LTD',
           'logo': {
             '@type': 'ImageObject',
-            'url': 'https://www.easalesltd.co.uk/images/logo.svg.png'
+            'url': 'https://www.easalesltd.co.uk/images/logo.webp'
           }
         }
       }))

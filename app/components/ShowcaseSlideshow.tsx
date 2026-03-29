@@ -51,7 +51,8 @@ export default function ShowcaseSlideshow() {
   const [nextIndex, setNextIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [imageError, setImageError] = useState<boolean[]>(new Array(showcaseImages.length).fill(false));
-  const [shuffledImages, setShuffledImages] = useState<string[]>([]);
+  /** Start with a full ordered list so SSR and first paint never show an empty/loading state. */
+  const [shuffledImages, setShuffledImages] = useState<string[]>(() => [...showcaseImages]);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -70,9 +71,10 @@ export default function ShowcaseSlideshow() {
     return shuffled;
   };
 
-  // Initialize shuffled images on component mount
+  // Shuffle after mount (client-only); keep the first slide so LCP and hydration stay stable.
   useEffect(() => {
-    setShuffledImages(shuffleArray(showcaseImages));
+    const [first, ...rest] = showcaseImages;
+    setShuffledImages([first, ...shuffleArray(rest)]);
   }, []);
 
   useEffect(() => {
@@ -150,25 +152,13 @@ export default function ShowcaseSlideshow() {
     });
   };
 
-  // If all images failed to load
-  if (imageError.every(Boolean)) {
+  // If every slide failed, show a neutral fallback (no loading copy for crawlers or users).
+  if (imageError.length > 0 && imageError.every(Boolean)) {
     return (
-      <div className="absolute inset-0 w-full h-full overflow-hidden bg-gray-900">
-        <div className="flex items-center justify-center h-full text-white text-lg">
-          Loading showcase images...
-        </div>
-      </div>
-    );
-  }
-
-  // If shuffled images are not ready yet
-  if (shuffledImages.length === 0) {
-    return (
-      <div className="absolute inset-0 w-full h-full overflow-hidden bg-gray-900">
-        <div className="flex items-center justify-center h-full text-white text-lg">
-          Preparing showcase images...
-        </div>
-      </div>
+      <div
+        className="absolute inset-0 w-full h-full overflow-hidden bg-gradient-to-br from-slate-200 via-slate-100 to-blue-50"
+        aria-hidden
+      />
     );
   }
 
@@ -216,7 +206,7 @@ export default function ShowcaseSlideshow() {
             priority={currentIndex === 0}
             onError={() => handleImageError(currentIndex)}
             sizes="100vw"
-            quality={90}
+            quality={75}
             draggable={false}
           />
         </div>
@@ -238,7 +228,7 @@ export default function ShowcaseSlideshow() {
             priority
             onError={() => handleImageError(nextIndex)}
             sizes="100vw"
-            quality={90}
+            quality={75}
             draggable={false}
           />
         </div>

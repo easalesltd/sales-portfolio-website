@@ -10,7 +10,7 @@ const sizes = {
 };
 
 async function generateFavicons() {
-  const sourceImage = path.join(__dirname, '../public/images/logo.svg.png');
+  const sourceImage = path.join(__dirname, '../public/images/logo.webp');
   const outputDir = path.join(__dirname, '../public/favicons');
 
   try {
