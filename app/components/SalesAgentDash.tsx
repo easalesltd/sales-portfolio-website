@@ -85,6 +85,7 @@ const OBSTACLE_KINDS = [
   'broken_car',
   'sales_target',
   'hmrc',
+  'snake',
 ] as const;
 
 type ObstacleKind = (typeof OBSTACLE_KINDS)[number];
@@ -175,6 +176,8 @@ function dimsFor(kind: ObstacleKind): { w: number; h: number } {
       return { w: 50, h: 62 };
     case 'hmrc':
       return { w: 54, h: 58 };
+    case 'snake':
+      return { w: 86, h: 44 };
   }
 }
 
@@ -311,10 +314,65 @@ function fillTextCenterAtBaselineClamped(
   ctx.fillText(text, cx, baselineY);
 }
 
+/** 8-bit style snake: rows top→bottom, chars = palette keys (see drawSnake8bit). */
+const SNAKE_PIXEL_ROWS = [
+  '______________________________',
+  '__________######______________',
+  '_______##############_________',
+  '_____####################_____',
+  '___########################___',
+  '__##########oOo##oOo########__',
+  '_##############################',
+  '_##########################___',
+  '__###########################__',
+  '___#########################___',
+  '_____####################______',
+  '_______##############_________',
+  '__________########____________',
+  '____________####______________',
+] as const;
+
+function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
+  const palette: Record<string, string | undefined> = {
+    _: 'transparent',
+    '#': '#14532d',
+    G: '#15803d',
+    g: '#22c55e',
+    l: '#4ade80',
+    o: '#fef9c3',
+    O: '#0f172a',
+  };
+  const rows = SNAKE_PIXEL_ROWS;
+  const cols = rows[0]!.length;
+  const rowCount = rows.length;
+  const scale = Math.min(w / cols, h / rowCount);
+  const drawW = cols * scale;
+  const drawH = rowCount * scale;
+  const ox = x + (w - drawW) / 2;
+  const oy = top + (h - drawH) / 2;
+
+  for (let ry = 0; ry < rowCount; ry++) {
+    const row = rows[ry]!;
+    for (let rx = 0; rx < cols; rx++) {
+      const ch = row[rx]!;
+      const color = palette[ch];
+      if (!color || color === 'transparent') continue;
+      ctx.fillStyle = color;
+      ctx.fillRect(ox + rx * scale, oy + ry * scale, Math.ceil(scale), Math.ceil(scale));
+    }
+  }
+}
+
 function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
   const { x, w, h, kind } = o;
 
   switch (kind) {
+    case 'snake': {
+      ctx.fillStyle = '#292524';
+      ctx.fillRect(x, top + h - 4, w, 4);
+      drawSnake8bit(ctx, x, top, w, h - 4);
+      break;
+    }
     case 'pcn': {
       const pad = 6;
       const tw = w - pad * 2;
