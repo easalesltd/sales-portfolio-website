@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { companies } from '@/app/data/companies';
 
 const STORAGE_KEY = 'sales-agent-dash-high-score';
 
@@ -13,6 +14,8 @@ const JUMP_V = -13.5;
 const BASE_SCROLL = 3.9;
 /** World pixels travelled between obstacle spawns (keeps density as scroll speed ramps up). */
 const OBSTACLE_SPAWN_GAP_PX = 465;
+/** Scenic billboards (no collision); spaced apart from obstacle cadence. */
+const BILLBOARD_SPAWN_GAP_PX = 820;
 
 const COUNTIES = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
 
@@ -49,6 +52,63 @@ interface Obstacle {
   w: number;
   h: number;
   kind: ObstacleKind;
+}
+
+interface Billboard {
+  x: number;
+  /** Index into `companies` */
+  companyIndex: number;
+}
+
+function drawBillboard(
+  ctx: CanvasRenderingContext2D,
+  b: Billboard,
+  groundY: number,
+  canvasW: number,
+  logos: Map<string, HTMLImageElement>
+) {
+  const c = companies[b.companyIndex];
+  if (!c) return;
+
+  const boardW = Math.min(118, Math.max(72, canvasW * 0.28));
+  const boardH = boardW * 0.62;
+  const poleW = Math.max(8, boardW * 0.09);
+  const x = b.x;
+  const boardBottom = groundY - 10;
+  const boardTop = boardBottom - boardH;
+  const url = c.logoUrlDark ?? c.logoUrl;
+
+  ctx.fillStyle = '#3f3f46';
+  ctx.fillRect(x + boardW / 2 - poleW / 2, boardBottom, poleW, groundY - boardBottom);
+
+  ctx.fillStyle = '#fafafa';
+  roundRectPath(ctx, x, boardTop, boardW, boardH, 5);
+  ctx.fill();
+  ctx.strokeStyle = '#27272a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  const pad = 7;
+  const innerW = boardW - pad * 2;
+  const innerH = boardH - pad * 2;
+  const img = logos.get(url);
+  if (img && img.complete && img.naturalWidth > 0) {
+    const scale = Math.min(innerW / img.naturalWidth, innerH / img.naturalHeight);
+    const dw = img.naturalWidth * scale;
+    const dh = img.naturalHeight * scale;
+    const dx = x + pad + (innerW - dw) / 2;
+    const dy = boardTop + pad + (innerH - dh) / 2;
+    ctx.drawImage(img, dx, dy, dw, dh);
+  } else {
+    ctx.fillStyle = '#e4e4e7';
+    roundRectPath(ctx, x + pad, boardTop + pad, innerW, innerH, 3);
+    ctx.fill();
+    ctx.fillStyle = '#71717a';
+    ctx.font = '600 11px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(c.name.split(' ')[0] ?? '…', x + boardW / 2, boardTop + pad + innerH / 2 + 4);
+    ctx.textAlign = 'left';
+  }
 }
 
 function dimsFor(kind: ObstacleKind): { w: number; h: number } {
@@ -553,6 +613,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const pyRef = useRef(0);
   const vyRef = useRef(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
+  const billboardsRef = useRef<Billboard[]>([]);
+  const billboardSpawnCarryRef = useRef(0);
+  const logoImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
   const lastCountyBucketRef = useRef(0);
   const countyBannerRef = useRef({ frames: 0, name: '' as string });
   /** Set synchronously on collision so resize (canvas bitmap clear) can repaint before React commits `outcome`. */
@@ -594,6 +657,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.arc(W - cloudShift + 62, 48, 26, 0, Math.PI * 2);
       ctx.arc(W - cloudShift + 88, 52, 20, 0, Math.PI * 2);
       ctx.fill();
+
+      for (const bb of billboardsRef.current) {
+        drawBillboard(ctx, bb, groundY, W, logoImagesRef.current);
+      }
 
       for (const o of obstaclesRef.current) {
         const top = groundY - o.h;
@@ -769,6 +836,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     lastCountyBucketRef.current = 0;
     countyBannerRef.current = { frames: 0, name: '' };
     lostDuringRunRef.current = false;
+    billboardsRef.current = [];
+    billboardSpawnCarryRef.current = 0;
     setOutcome(null);
     setLastRunScore(null);
     setWasRecord(false);
@@ -782,6 +851,19 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       vyRef.current = JUMP_V;
     }
   }, [outcome]);
+
+  useEffect(() => {
+    const map = new Map<string, HTMLImageElement>();
+    for (const comp of companies) {
+      const url = comp.logoUrlDark ?? comp.logoUrl;
+      if (map.has(url)) continue;
+      const img = new Image();
+      img.decoding = 'async';
+      img.src = url;
+      map.set(url, img);
+    }
+    logoImagesRef.current = map;
+  }, []);
 
   /**
    * React 17+ delegates touch with { passive: true } on mobile, so synthetic onTouchStart’s
@@ -871,6 +953,20 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       obstaclesRef.current = obstaclesRef.current.filter((o) => {
         o.x -= scroll;
         return o.x + o.w > -20;
+      });
+
+      const nCompanies = companies.length;
+      billboardSpawnCarryRef.current += scroll;
+      while (billboardSpawnCarryRef.current >= BILLBOARD_SPAWN_GAP_PX) {
+        billboardSpawnCarryRef.current -= BILLBOARD_SPAWN_GAP_PX;
+        billboardsRef.current.push({
+          x: W + 32 + Math.random() * 80,
+          companyIndex: Math.floor(Math.random() * nCompanies),
+        });
+      }
+      billboardsRef.current = billboardsRef.current.filter((bb) => {
+        bb.x -= scroll;
+        return bb.x + 130 > -60;
       });
 
       vyRef.current += GRAVITY;
