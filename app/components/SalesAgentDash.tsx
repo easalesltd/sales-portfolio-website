@@ -535,6 +535,7 @@ function readHighScore(): number {
 }
 
 export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
+  const shellRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [screen, setScreen] = useState<'menu' | 'game'>('menu');
   const [outcome, setOutcome] = useState<null | 'lost'>(null);
@@ -752,6 +753,47 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
   }, [outcome]);
 
+  /**
+   * React 17+ delegates touch with { passive: true } on mobile, so synthetic onTouchStart’s
+   * preventDefault won’t stop long-press / “copy image” on canvas. Use non-passive touchstart.
+   * We intentionally do NOT listen to touchmove with preventDefault — that runs every frame
+   * while the finger moves and can jank the main thread; touchstart is enough for callout UX.
+   */
+  useEffect(() => {
+    if (screen !== 'game') return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const blockDefault = (e: Event) => {
+      e.preventDefault();
+    };
+
+    const touch: AddEventListenerOptions = { passive: false };
+    canvas.addEventListener('touchstart', blockDefault, touch);
+    canvas.addEventListener('gesturestart', blockDefault);
+    canvas.addEventListener('gesturechange', blockDefault);
+    canvas.addEventListener('gestureend', blockDefault);
+
+    return () => {
+      canvas.removeEventListener('touchstart', blockDefault, touch);
+      canvas.removeEventListener('gesturestart', blockDefault);
+      canvas.removeEventListener('gesturechange', blockDefault);
+      canvas.removeEventListener('gestureend', blockDefault);
+    };
+  }, [screen]);
+
+  useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell) return;
+    const blockSelect = (e: Event) => e.preventDefault();
+    shell.addEventListener('selectstart', blockSelect);
+    shell.addEventListener('dragstart', blockSelect);
+    return () => {
+      shell.removeEventListener('selectstart', blockSelect);
+      shell.removeEventListener('dragstart', blockSelect);
+    };
+  }, []);
+
   useEffect(() => {
     if (screen !== 'game' || outcome !== null) return;
 
@@ -861,6 +903,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
   return (
     <div
+      ref={shellRef}
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-neutral-950/95 p-2 pt-[max(0.5rem,env(safe-area-inset-top))] pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:p-4 select-none [-webkit-touch-callout:none] [-webkit-user-select:none] [-webkit-tap-highlight-color:transparent]"
       role="dialog"
       aria-modal="true"
@@ -912,6 +955,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 <canvas
                   ref={canvasRef}
                   className={`block h-auto w-full max-w-2xl touch-none select-none rounded-lg border border-neutral-700 sm:max-h-[400px] [-webkit-touch-callout:none] [-webkit-user-select:none] ${playing ? 'cursor-pointer' : ''}`}
+                  style={{
+                    userSelect: 'none',
+                    WebkitUserSelect: 'none',
+                    WebkitTouchCallout: 'none',
+                    touchAction: 'none',
+                  }}
                   onMouseDown={playing ? jump : undefined}
                   onContextMenu={(e) => e.preventDefault()}
                   onTouchStart={
