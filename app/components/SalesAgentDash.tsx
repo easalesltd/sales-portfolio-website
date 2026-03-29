@@ -18,6 +18,8 @@ const OBSTACLE_SPAWN_GAP_PX = 465;
 const BILLBOARD_SPAWN_GAP_PX = 820;
 
 const COUNTIES = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
+/** "Now entering" overlay only for the first four county transitions per run (one lap). */
+const COUNTY_BANNER_MAX_SHOWS = 4;
 
 function countyForScore(score: number): (typeof COUNTIES)[number] {
   return COUNTIES[Math.floor(score / 500) % 4];
@@ -625,6 +627,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const billboardSpawnCarryRef = useRef(0);
   const logoImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
   const lastCountyBucketRef = useRef(0);
+  const countyBannerShowsCountRef = useRef(0);
   const countyBannerRef = useRef({ frames: 0, name: '' as string });
   /** Set synchronously on collision so resize (canvas bitmap clear) can repaint before React commits `outcome`. */
   const lostDuringRunRef = useRef(false);
@@ -842,6 +845,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     vyRef.current = 0;
     obstaclesRef.current = [];
     lastCountyBucketRef.current = 0;
+    countyBannerShowsCountRef.current = 0;
     countyBannerRef.current = { frames: 0, name: '' };
     lostDuringRunRef.current = false;
     billboardsRef.current = [];
@@ -939,10 +943,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const scoreBucket = Math.floor(scoreRef.current / 500);
       if (scoreBucket > lastCountyBucketRef.current) {
         lastCountyBucketRef.current = scoreBucket;
-        countyBannerRef.current = {
-          frames: 120,
-          name: COUNTIES[scoreBucket % 4],
-        };
+        if (countyBannerShowsCountRef.current < COUNTY_BANNER_MAX_SHOWS) {
+          countyBannerShowsCountRef.current += 1;
+          countyBannerRef.current = {
+            frames: 120,
+            name: COUNTIES[scoreBucket % 4],
+          };
+        }
       }
 
       obstacleSpawnCarryRef.current += scroll;
