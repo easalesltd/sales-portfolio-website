@@ -46,46 +46,73 @@ function roundRectPath(
 function drawPlayer(ctx: CanvasRenderingContext2D, px: number, yTop: number, pw: number, ph: number) {
   const skin = '#e0ac8d';
   const shirt = '#14b8a6';
-  const shorts = '#475569';
+  const hair = '#5d4037';
+  const hairHi = '#6d4c41';
+  const shorts = '#9ca88f';
+  const shortsShadow = '#7d8872';
   const flop = '#fb923c';
   const flopStrap = '#ea580c';
 
+  ctx.fillStyle = hair;
+  ctx.beginPath();
+  ctx.ellipse(px + pw / 2, yTop + 10, 12, 10, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = hairHi;
+  ctx.fillRect(px + 3, yTop + 12, 4, 8);
+  ctx.fillRect(px + pw - 7, yTop + 12, 4, 8);
+
   ctx.fillStyle = skin;
   ctx.beginPath();
-  ctx.arc(px + pw / 2, yTop + 13, 10, 0, Math.PI * 2);
+  ctx.arc(px + pw / 2, yTop + 15, 9, 0, Math.PI * 2);
   ctx.fill();
 
   ctx.fillStyle = '#0f172a';
-  ctx.fillRect(px + 7, yTop + 9, 16, 4);
+  ctx.fillRect(px + 7, yTop + 11, 16, 4);
 
   ctx.fillStyle = shirt;
   roundRectPath(ctx, px + 5, yTop + 21, pw - 10, 15, 3);
   ctx.fill();
 
   ctx.fillStyle = skin;
-  ctx.fillRect(px + 1, yTop + 23, 5, 12);
-  ctx.fillRect(px + pw - 6, yTop + 23, 5, 12);
+  ctx.fillRect(px + 1, yTop + 23, 5, 13);
+  ctx.fillRect(px + pw - 6, yTop + 23, 5, 13);
 
   ctx.fillStyle = shorts;
-  ctx.fillRect(px + 4, yTop + 34, pw - 8, 11);
+  roundRectPath(ctx, px + 3, yTop + 36, pw - 6, 11, 2);
+  ctx.fill();
+  ctx.strokeStyle = shortsShadow;
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.fillStyle = shortsShadow;
+  ctx.fillRect(px + 4, yTop + 38, 9, 7);
+  ctx.fillRect(px + pw - 13, yTop + 38, 9, 7);
+  ctx.strokeStyle = '#4b5445';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(px + 4, yTop + 38, 9, 7);
+  ctx.strokeRect(px + pw - 13, yTop + 38, 9, 7);
+  ctx.fillStyle = shorts;
+  ctx.fillRect(px + 5, yTop + 39, 7, 2);
+  ctx.fillRect(px + pw - 12, yTop + 39, 7, 2);
 
   ctx.fillStyle = skin;
-  ctx.fillRect(px + 7, yTop + 43, 5, 12);
-  ctx.fillRect(px + pw - 12, yTop + 43, 5, 12);
+  ctx.fillRect(px + 7, yTop + 44, 5, 7);
+  ctx.fillRect(px + pw - 12, yTop + 44, 5, 7);
 
+  const footY = yTop + ph - 5;
   ctx.fillStyle = flop;
-  ctx.fillRect(px + 4, yTop + ph - 7, 14, 5);
-  ctx.fillRect(px + pw - 18, yTop + ph - 7, 14, 5);
+  ctx.fillRect(px + 4, footY, 14, 5);
+  ctx.fillRect(px + pw - 18, footY, 14, 5);
 
   ctx.strokeStyle = flopStrap;
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(px + 7, yTop + ph - 6);
-  ctx.quadraticCurveTo(px + 11, yTop + ph - 11, px + 15, yTop + ph - 6);
+  ctx.moveTo(px + 7, footY + 1);
+  ctx.quadraticCurveTo(px + 11, footY - 3, px + 15, footY + 1);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(px + pw - 15, yTop + ph - 6);
-  ctx.quadraticCurveTo(px + pw - 11, yTop + ph - 11, px + pw - 7, yTop + ph - 6);
+  ctx.moveTo(px + pw - 15, footY + 1);
+  ctx.quadraticCurveTo(px + pw - 11, footY - 3, px + pw - 7, footY + 1);
   ctx.stroke();
 }
 
@@ -186,7 +213,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       const groundY = H * GROUND_RATIO;
       const pw = 36;
-      const ph = 50;
+      const ph = 52;
       const px = W * 0.18;
 
       frameRef.current += 1;
@@ -336,7 +363,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         <div className="flex min-h-0 flex-1 flex-col items-center p-3 sm:p-4">
           {screen === 'menu' && (
             <div className="py-8 text-center text-neutral-200">
-              <p className="mb-2 text-lg">Jump the brands you represent — shorts and flip-flops mode.</p>
+              <p className="mb-2 text-lg">Jump the brands you represent — cargo shorts and flip-flops mode.</p>
               <p className="mb-6 text-sm text-neutral-400">
                 Space, ↑, or tap to jump. Reach 100% to finish the round.
               </p>
