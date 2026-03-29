@@ -25,6 +25,27 @@ function countyForScore(score: number): (typeof COUNTIES)[number] {
   return COUNTIES[Math.floor(score / 500) % 4];
 }
 
+/** Shuffled 0..count-1 — each billboard uses the next index until the deck is exhausted, then reshuffle (fair, no immediate repeats). */
+function shuffleCompanyIndices(count: number): number[] {
+  const arr = Array.from({ length: count }, (_, i) => i);
+  for (let i = count - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+/** GA4 (`gtag` in root layout). Fires once when the hidden game opens — track in GA4 → Engagement → Events → `sales_agent_dash_open`. */
+function trackSalesAgentDashOpen() {
+  if (typeof window === 'undefined') return;
+  const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
+  if (typeof gtag === 'function') {
+    gtag('event', 'sales_agent_dash_open', {
+      engagement_type: 'easter_egg',
+    });
+  }
+}
+
 const LOSE_PHRASES = [
   'Why are you still playing this?',
   "That's coming out of your mileage allowance.",
@@ -625,12 +646,18 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const obstaclesRef = useRef<Obstacle[]>([]);
   const billboardsRef = useRef<Billboard[]>([]);
   const billboardSpawnCarryRef = useRef(0);
+  const billboardCompanyDeckRef = useRef<number[]>([]);
+  const billboardDeckIndexRef = useRef(0);
   const logoImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
   const lastCountyBucketRef = useRef(0);
   const countyBannerShowsCountRef = useRef(0);
   const countyBannerRef = useRef({ frames: 0, name: '' as string });
   /** Set synchronously on collision so resize (canvas bitmap clear) can repaint before React commits `outcome`. */
   const lostDuringRunRef = useRef(false);
+
+  useEffect(() => {
+    trackSalesAgentDashOpen();
+  }, []);
 
   const paintGameFrame = useCallback(
     (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, advanceCountyBanner: boolean) => {
@@ -850,6 +877,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     lostDuringRunRef.current = false;
     billboardsRef.current = [];
     billboardSpawnCarryRef.current = 0;
+    billboardCompanyDeckRef.current = [];
+    billboardDeckIndexRef.current = 0;
     setOutcome(null);
     setLastRunScore(null);
     setWasRecord(false);
@@ -971,13 +1000,22 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       });
 
       const nCompanies = companies.length;
-      billboardSpawnCarryRef.current += scroll;
-      while (billboardSpawnCarryRef.current >= BILLBOARD_SPAWN_GAP_PX) {
-        billboardSpawnCarryRef.current -= BILLBOARD_SPAWN_GAP_PX;
-        billboardsRef.current.push({
-          x: W + 32 + Math.random() * 80,
-          companyIndex: Math.floor(Math.random() * nCompanies),
-        });
+      if (nCompanies > 0) {
+        billboardSpawnCarryRef.current += scroll;
+        while (billboardSpawnCarryRef.current >= BILLBOARD_SPAWN_GAP_PX) {
+          billboardSpawnCarryRef.current -= BILLBOARD_SPAWN_GAP_PX;
+          if (billboardDeckIndexRef.current >= billboardCompanyDeckRef.current.length) {
+            billboardCompanyDeckRef.current = shuffleCompanyIndices(nCompanies);
+            billboardDeckIndexRef.current = 0;
+          }
+          const companyIndex =
+            billboardCompanyDeckRef.current[billboardDeckIndexRef.current]!;
+          billboardDeckIndexRef.current += 1;
+          billboardsRef.current.push({
+            x: W + 32 + Math.random() * 80,
+            companyIndex,
+          });
+        }
       }
       billboardsRef.current = billboardsRef.current.filter((bb) => {
         bb.x -= scroll;
