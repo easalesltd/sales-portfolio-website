@@ -52,8 +52,8 @@ export default function AboutDropdown() {
         prefetch
         className={`flex items-center px-3 py-2 rounded-md transition-colors ${
           isActive 
-            ? 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950/50' 
-            : 'text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-neutral-900'
+            ? 'text-neutral-950 bg-neutral-100 dark:text-white dark:bg-neutral-800' 
+            : 'text-gray-700 dark:text-neutral-200 hover:text-neutral-950 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-neutral-900'
         }`}
       >
         About
@@ -73,8 +73,8 @@ export default function AboutDropdown() {
               prefetch
               className={`block px-4 py-2 text-sm transition-colors ${
                 pathname === item.href
-                  ? 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-950/40'
-                  : 'text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-neutral-800'
+                  ? 'text-neutral-950 bg-neutral-100 dark:text-white dark:bg-neutral-800'
+                  : 'text-gray-700 dark:text-neutral-200 hover:text-neutral-950 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-neutral-800'
               }`}
             >
               {item.name}

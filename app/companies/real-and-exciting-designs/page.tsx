@@ -197,7 +197,7 @@ export default async function CompanyPage() {
               <div className="space-y-6">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4 relative">
                   {company.name}
-                  <div className="h-1 w-20 bg-blue-600 mt-2" />
+                  <div className="h-1 w-20 bg-neutral-950 dark:bg-white mt-2" />
                 </h1>
                 <p className="text-xl leading-relaxed text-gray-600">{detailedDescription}</p>
 
@@ -213,7 +213,7 @@ export default async function CompanyPage() {
                     href={company.catalogueUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                    className="inline-flex items-center px-6 py-3 border border-neutral-950 text-base font-medium rounded-xl shadow-sm text-white bg-neutral-950 hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-950 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 dark:focus:ring-white"
                   >
                     <svg 
                       className="mr-2 -ml-1 h-5 w-5" 
@@ -237,7 +237,7 @@ export default async function CompanyPage() {
             <div className="bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6 relative">
                 Place an Order
-                <div className="h-1 w-16 bg-blue-600 mt-2" />
+                <div className="h-1 w-16 bg-neutral-950 dark:bg-white mt-2" />
               </h2>
               <OrderForm companyName={company.name} />
             </div>

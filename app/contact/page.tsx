@@ -61,7 +61,7 @@ export default function ContactPage() {
                 <FaCalendarCheck className="text-2xl text-gray-600" />
                 <button
                   onClick={() => setIsRequestFormOpen(true)}
-                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-lg font-medium px-4 py-2 rounded-md border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
                 >
                   Request an Agent Visit
                 </button>
@@ -72,7 +72,7 @@ export default function ContactPage() {
                 <FaPhone className="text-2xl text-gray-600" />
                 <a 
                   href="tel:07709197915"
-                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                 >
                   07709 197915
                 </a>
@@ -83,7 +83,7 @@ export default function ContactPage() {
                 <FaEnvelope className="text-2xl text-gray-600" />
                 <a 
                   href="mailto:dave@easalesltd.co.uk"
-                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                 >
                   dave@easalesltd.co.uk
                 </a>
@@ -96,7 +96,7 @@ export default function ContactPage() {
                   href="https://www.instagram.com/eastangliansalesltd/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                 >
                   @eastangliansalesltd
                 </a>
@@ -109,7 +109,7 @@ export default function ContactPage() {
                   href="https://www.linkedin.com/in/dave-langdon-709a8547"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-lg text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                 >
                   Dave Langdon
                 </a>

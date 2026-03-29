@@ -11,6 +11,20 @@ const ReactConfetti = dynamic(() => import('react-confetti'), {
 
 interface OrderFormProps {
   companyName: string
+  /** Cambridge (dark brand page): white buttons with dark text */
+  invertedPrimaryButtons?: boolean
+}
+
+function primaryCtaColors(inverted: boolean) {
+  return inverted
+    ? 'border border-white bg-white text-neutral-950 hover:bg-neutral-200 focus:ring-white dark:focus:ring-offset-neutral-900'
+    : 'border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 focus:ring-neutral-950 dark:focus:ring-offset-neutral-900'
+}
+
+function secondaryOutlineClass(inverted: boolean) {
+  return inverted
+    ? 'inline-flex items-center px-4 py-2 border border-white shadow-sm text-sm font-medium rounded-md text-white bg-transparent hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white dark:focus:ring-offset-neutral-900 disabled:opacity-50'
+    : 'inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-neutral-200 bg-white dark:bg-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 dark:focus:ring-offset-neutral-900 disabled:opacity-50'
 }
 
 interface OrderLine {
@@ -27,7 +41,7 @@ interface ContactInfo {
 }
 
 // New Peppermint Grove Order Form Component (mirrors your Excel order form)
-function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
+function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false }: OrderFormProps) {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     companyName: '',
     contactPerson: '',
@@ -173,7 +187,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
           <p className="text-gray-600 dark:text-neutral-400 text-center mb-6">Your order request has been sent successfully.<br />We'll be in touch soon.</p>
           <button
             onClick={() => setStatus('idle')}
-            className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
+            className={`mt-2 px-6 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors ${primaryCtaColors(invertedPrimaryButtons)}`}
           >
             Close
           </button>
@@ -195,7 +209,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                 type="text"
                 id="companyName"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                 value={contactInfo.companyName}
                 onChange={(e) => handleContactInfoChange('companyName', e.target.value)}
               />
@@ -206,7 +220,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                 type="text"
                 id="contactPerson"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                 value={contactInfo.contactPerson}
                 onChange={(e) => handleContactInfoChange('contactPerson', e.target.value)}
               />
@@ -217,7 +231,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                 id="address"
                 required
                 rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                 value={contactInfo.address}
                 onChange={(e) => handleContactInfoChange('address', e.target.value)}
               />
@@ -228,7 +242,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                 <input
                   type="text"
                   id="contactDetails"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                   value={contactInfo.contactDetails}
                   onChange={(e) => handleContactInfoChange('contactDetails', e.target.value)}
                 />
@@ -239,7 +253,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                   type="email"
                   id="emailAddress"
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                   value={contactInfo.emailAddress}
                   onChange={(e) => handleContactInfoChange('emailAddress', e.target.value)}
                 />
@@ -265,7 +279,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                     <input
                       type="text"
                       required
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                       value={line.productCode}
                       onChange={(e) => handleLineChange(index, 'productCode', e.target.value)}
                       placeholder="Enter product code"
@@ -276,7 +290,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
                       type="number"
                       required
                       min="1"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                       value={line.quantity}
                       onChange={(e) => handleLineChange(index, 'quantity', e.target.value)}
                       placeholder="Enter quantity"
@@ -302,7 +316,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
             type="button"
             onClick={handleAddLine}
             disabled={orderLines.length >= 200}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-neutral-200 bg-white dark:bg-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-neutral-900 disabled:opacity-50"
+            className={secondaryOutlineClass(invertedPrimaryButtons)}
           >
             Add Product Line {orderLines.length}/200
           </button>
@@ -313,7 +327,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
           <textarea
             id="notes"
             rows={4}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
@@ -322,7 +336,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full rounded-md bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+          className={`w-full rounded-md px-4 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors ${primaryCtaColors(invertedPrimaryButtons)}`}
         >
           {status === 'loading' ? 'Sending...' : 'Submit Order'}
         </button>
@@ -338,7 +352,7 @@ function PeppermintGroveOrderForm({ companyName }: OrderFormProps) {
 }
 
 // Default (generic) Order Form Component (existing code)
-function DefaultOrderForm({ companyName }: OrderFormProps) {
+function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: OrderFormProps) {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     companyName: '',
     contactPerson: '',
@@ -484,7 +498,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
           <p className="text-gray-600 dark:text-neutral-400 text-center mb-6">Your order request has been sent successfully.<br />We'll be in touch soon.</p>
           <button
             onClick={() => setStatus('idle')}
-            className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
+            className={`mt-2 px-6 py-2 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors ${primaryCtaColors(invertedPrimaryButtons)}`}
           >
             Close
           </button>
@@ -506,7 +520,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                 type="text"
                 id="companyName"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                 value={contactInfo.companyName}
                 onChange={(e) => handleContactInfoChange('companyName', e.target.value)}
               />
@@ -517,7 +531,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                 type="text"
                 id="contactPerson"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                 value={contactInfo.contactPerson}
                 onChange={(e) => handleContactInfoChange('contactPerson', e.target.value)}
               />
@@ -528,7 +542,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                 id="address"
                 required
                 rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                 value={contactInfo.address}
                 onChange={(e) => handleContactInfoChange('address', e.target.value)}
               />
@@ -539,7 +553,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                 <input
                   type="text"
                   id="contactDetails"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                   value={contactInfo.contactDetails}
                   onChange={(e) => handleContactInfoChange('contactDetails', e.target.value)}
                 />
@@ -550,7 +564,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                   type="email"
                   id="emailAddress"
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                   value={contactInfo.emailAddress}
                   onChange={(e) => handleContactInfoChange('emailAddress', e.target.value)}
                 />
@@ -576,7 +590,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                     <input
                       type="text"
                       required
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                       value={line.productCode}
                       onChange={(e) => handleLineChange(index, 'productCode', e.target.value)}
                       placeholder="Enter product code"
@@ -587,7 +601,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
                       type="number"
                       required
                       min="1"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
                       value={line.quantity}
                       onChange={(e) => handleLineChange(index, 'quantity', e.target.value)}
                       placeholder="Enter quantity"
@@ -613,7 +627,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
             type="button"
             onClick={handleAddLine}
             disabled={orderLines.length >= 200}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-neutral-600 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-neutral-200 bg-white dark:bg-neutral-800 hover:bg-gray-50 dark:hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-neutral-900 disabled:opacity-50"
+            className={secondaryOutlineClass(invertedPrimaryButtons)}
           >
             Add Product Line {orderLines.length}/200
           </button>
@@ -624,7 +638,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
           <textarea
             id="notes"
             rows={4}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
@@ -633,7 +647,7 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full rounded-md bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+          className={`w-full rounded-md px-4 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 transition-colors ${primaryCtaColors(invertedPrimaryButtons)}`}
         >
           {status === 'loading' ? 'Sending...' : 'Submit Order'}
         </button>
@@ -649,10 +663,9 @@ function DefaultOrderForm({ companyName }: OrderFormProps) {
 }
 
 // Exported OrderForm (Conditional Render) –– if companyName is "Peppermint Grove" render PeppermintGroveOrderForm, otherwise render DefaultOrderForm
-export default function OrderForm({ companyName }: OrderFormProps) {
+export default function OrderForm({ companyName, invertedPrimaryButtons = false }: OrderFormProps) {
   if (companyName === "Peppermint Grove") {
-    return <PeppermintGroveOrderForm companyName={companyName} />;
-  } else {
-    return <DefaultOrderForm companyName={companyName} />;
+    return <PeppermintGroveOrderForm companyName={companyName} invertedPrimaryButtons={invertedPrimaryButtons} />;
   }
+  return <DefaultOrderForm companyName={companyName} invertedPrimaryButtons={invertedPrimaryButtons} />;
 } 

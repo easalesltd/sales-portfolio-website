@@ -23,8 +23,8 @@ export default function GoogleReviews() {
               href="https://g.page/r/REPLACE_WITH_YOUR_GOOGLE_REVIEW_LINK"
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors ${
-                isHovered ? 'ring-2 ring-offset-2 ring-blue-500' : ''
+              className={`inline-flex items-center px-6 py-3 border border-neutral-950 text-base font-medium rounded-md shadow-sm text-white bg-neutral-950 hover:bg-neutral-800 transition-colors dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 ${
+                isHovered ? 'ring-2 ring-offset-2 ring-neutral-950 dark:ring-white' : ''
               }`}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}

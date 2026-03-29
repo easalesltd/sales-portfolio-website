@@ -149,7 +149,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
         {/* Back to Recipes Link */}
         <Link 
           href="/recipes"
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6 transition-colors no-print"
+          className="inline-flex items-center text-neutral-900 hover:text-neutral-600 mb-6 transition-colors no-print dark:text-neutral-100 dark:hover:text-neutral-300"
         >
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -184,15 +184,15 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-gray-50 rounded-lg print-margin-top">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{recipe.prepTime.split(',')[0]}</div>
+                <div className="text-2xl font-bold text-neutral-950 dark:text-white">{recipe.prepTime.split(',')[0]}</div>
                 <div className="text-sm text-gray-600 mt-1">Prep Time</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{recipe.cookTime}</div>
+                <div className="text-2xl font-bold text-neutral-950 dark:text-white">{recipe.cookTime}</div>
                 <div className="text-sm text-gray-600 mt-1">Cook Time</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600">{recipe.yield}</div>
+                <div className="text-2xl font-bold text-neutral-950 dark:text-white">{recipe.yield}</div>
                 <div className="text-sm text-gray-600 mt-1">Yield</div>
               </div>
             </div>
@@ -207,7 +207,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                 <ul className="space-y-2">
                   {recipe.ingredients.map((ingredient, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="text-blue-600 mr-2">•</span>
+                      <span className="text-neutral-950 dark:text-white mr-2">•</span>
                       <span className="text-gray-700">{ingredient}</span>
                     </li>
                   ))}
@@ -223,7 +223,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                 <ol className="space-y-3">
                   {recipe.instructions.map((instruction, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5">
+                      <span className="flex-shrink-0 w-6 h-6 bg-neutral-950 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3 mt-0.5 dark:bg-white dark:text-neutral-950">
                         {index + 1}
                       </span>
                       <span className="text-gray-700">{instruction}</span>
@@ -234,7 +234,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
             </div>
 
             {/* Tips */}
-            <div className="mt-8 p-6 bg-blue-50 rounded-lg">
+            <div className="mt-8 p-6 bg-neutral-100 dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-700">
               <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                 <span className="mr-2">💡</span>
                 Pro Tips
@@ -242,7 +242,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
               <ul className="space-y-2">
                 {recipe.tips.map((tip, index) => (
                   <li key={index} className="flex items-start text-gray-700">
-                    <span className="text-blue-600 mr-2">✨</span>
+                    <span className="text-neutral-950 dark:text-white mr-2">✨</span>
                     {tip}
                   </li>
                 ))}
@@ -252,7 +252,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-6 no-print">
               <Link
                 href="/recipes"
-                className="w-full sm:w-auto px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors text-center"
+                className="w-full sm:w-auto px-6 py-3 rounded-lg border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors text-center dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
               >
                 Back to All Recipes
               </Link>

@@ -84,7 +84,7 @@ export default function MobileMenu() {
                   setIsOpen(false);
                   setIsRequestFormOpen(true);
                 }}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium text-center"
+                className="w-full px-4 py-2 rounded-md font-medium text-center border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition-colors"
               >
                 Request an Agent Visit
               </button>
@@ -95,7 +95,7 @@ export default function MobileMenu() {
               <Link 
                 href="/" 
                 prefetch
-                className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
+                className="block text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors" 
                 onClick={() => setIsOpen(false)}
               >
                 Home
@@ -106,7 +106,7 @@ export default function MobileMenu() {
                 <Link 
                   href="/about" 
                   prefetch
-                  className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
+                  className="block text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors" 
                   onClick={() => setIsOpen(false)}
                 >
                   About Dave
@@ -114,7 +114,7 @@ export default function MobileMenu() {
                 <Link 
                   href="/what-is-a-sales-agent" 
                   prefetch
-                  className="block text-sm text-gray-500 hover:text-blue-600 transition-colors mt-1 ml-4" 
+                  className="block text-sm text-gray-500 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mt-1 ml-4" 
                   onClick={() => setIsOpen(false)}
                 >
                   What is a Sales Agent?
@@ -122,7 +122,7 @@ export default function MobileMenu() {
                 <Link 
                   href="/recipes" 
                   prefetch
-                  className="block text-sm text-gray-500 hover:text-blue-600 transition-colors mt-1 ml-4" 
+                  className="block text-sm text-gray-500 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mt-1 ml-4" 
                   onClick={() => setIsOpen(false)}
                 >
                   Recipes
@@ -133,7 +133,7 @@ export default function MobileMenu() {
               <div>
                 <button
                   onClick={() => setIsBrandsExpanded(!isBrandsExpanded)}
-                  className="flex items-center justify-between w-full text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors mb-2"
+                  className="flex items-center justify-between w-full text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mb-2"
                 >
                   Our Partner Brands
                   <svg 
@@ -151,7 +151,7 @@ export default function MobileMenu() {
                       key={company.id}
                       href={`/companies/${company.slug}`}
                       prefetch={false}
-                      className="block text-gray-600 hover:text-blue-600 transition-colors pl-4"
+                      className="block text-gray-600 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors pl-4"
                       onClick={() => setIsOpen(false)}
                     >
                       {company.name}
@@ -163,7 +163,7 @@ export default function MobileMenu() {
               <Link 
                 href="/display-solutions" 
                 prefetch
-                className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
+                className="block text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors" 
                 onClick={() => setIsOpen(false)}
               >
                 Display Solutions
@@ -172,7 +172,7 @@ export default function MobileMenu() {
               <Link 
                 href="/temporary-rep-cover" 
                 prefetch
-                className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
+                className="block text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors" 
                 onClick={() => setIsOpen(false)}
               >
                 Temporary Rep Cover
@@ -181,7 +181,7 @@ export default function MobileMenu() {
               <Link 
                 href="/contact" 
                 prefetch
-                className="block text-lg font-medium text-gray-900 hover:text-blue-600 transition-colors" 
+                className="block text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors" 
                 onClick={() => setIsOpen(false)}
               >
                 Contact

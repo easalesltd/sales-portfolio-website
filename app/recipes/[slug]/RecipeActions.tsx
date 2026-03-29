@@ -12,7 +12,7 @@ export default function RecipeActions({ recipe }: RecipeActionsProps) {
       {/* Print/PDF Button */}
       <button
         onClick={() => window.print()}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium flex items-center gap-2"
+        className="px-4 py-2 border border-neutral-950 bg-neutral-950 text-white rounded-md hover:bg-neutral-800 transition-colors text-sm font-medium flex items-center gap-2 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
         aria-label="Print recipe"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -26,7 +26,7 @@ export default function RecipeActions({ recipe }: RecipeActionsProps) {
           const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
           window.open(url, '_blank', 'width=600,height=400');
         }}
-        className="px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 transition-colors text-sm font-medium"
+        className="px-4 py-2 border border-neutral-950 bg-neutral-950 text-white rounded-md hover:bg-neutral-800 transition-colors text-sm font-medium dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
         aria-label="Share on Facebook"
       >
         Facebook
@@ -47,7 +47,7 @@ export default function RecipeActions({ recipe }: RecipeActionsProps) {
           const url = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(`https://www.easalesltd.co.uk${recipe.image}`)}&description=${encodeURIComponent(recipe.title)}`;
           window.open(url, '_blank', 'width=600,height=400');
         }}
-        className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm font-medium"
+        className="px-4 py-2 border border-neutral-950 bg-neutral-950 text-white rounded-md hover:bg-neutral-800 transition-colors text-sm font-medium dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
         aria-label="Share on Pinterest"
       >
         Pinterest
@@ -58,7 +58,7 @@ export default function RecipeActions({ recipe }: RecipeActionsProps) {
           const body = encodeURIComponent(`Check out this recipe:\n${window.location.href}`);
           window.location.href = `mailto:?subject=${subject}&body=${body}`;
         }}
-        className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors text-sm font-medium"
+        className="px-4 py-2 border border-neutral-700 bg-neutral-700 text-white rounded-md hover:bg-neutral-800 transition-colors text-sm font-medium"
         aria-label="Share via email"
       >
         Email

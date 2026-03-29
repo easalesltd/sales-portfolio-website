@@ -64,19 +64,19 @@ export default function Home() {
             <div className="flex justify-center gap-6">
               <button 
                 onClick={() => setIsRequestFormOpen(true)}
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+                className="px-6 py-3 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
               >
                 Request an Agent Visit
               </button>
               <Link 
                 href="/about" 
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+                className="px-6 py-3 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
               >
                 About Us
               </Link>
               <Link 
                 href="/contact" 
-                className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+                className="px-6 py-3 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
               >
                 Get In Touch
               </Link>

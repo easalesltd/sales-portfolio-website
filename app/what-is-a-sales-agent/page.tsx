@@ -145,15 +145,15 @@ export default function WhatIsASalesAgentPage() {
             East Anglian Sales LTD
           </h2>
           <p>
-            <Link href="/about" className="text-blue-600 hover:text-blue-800 underline">Dave Langdon</Link> at 
+            <Link href="/about" className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline">Dave Langdon</Link> at 
             East Anglian Sales LTD is a self-employed sales agent for greeting card and gift brands across 
             East Anglia. If you run a shop in Suffolk, Norfolk, Essex, Cambridgeshire, or Hertfordshire and 
             want to stock greeting cards, stationery, or gifts from trusted brands, you can{' '}
-            <Link href="/contact" className="text-blue-600 hover:text-blue-800 underline">
+            <Link href="/contact" className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline">
               get in touch
             </Link>{' '}
             or{' '}
-            <Link href="/about" className="text-blue-600 hover:text-blue-800 underline">
+            <Link href="/about" className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline">
               find out more about Dave
             </Link>.
           </p>
@@ -162,7 +162,7 @@ export default function WhatIsASalesAgentPage() {
         <div className="mt-12 pt-8 border-t border-gray-200">
           <Link
             href="/about"
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 font-medium"
           >
             ← Back to About
           </Link>

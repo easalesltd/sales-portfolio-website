@@ -162,7 +162,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
           <p className="text-gray-600 text-center mb-6">Your request has been sent successfully.<br />We&apos;ll be in touch soon.</p>
           <button
             onClick={onClose}
-            className="mt-2 px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors"
+            className="mt-2 px-6 py-2 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors"
           >
             Close
           </button>
@@ -301,12 +301,12 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`px-6 py-2 rounded-md text-white font-medium ${
+                    className={`px-6 py-2 rounded-md font-medium ${
                       isSubmitting 
-                        ? 'bg-gray-400' 
+                        ? 'bg-gray-400 text-white' 
                         : submitStatus === 'error'
-                        ? 'bg-red-500'
-                        : 'bg-blue-600 hover:bg-blue-700'
+                        ? 'bg-red-500 text-white'
+                        : 'border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800'
                     }`}
                   >
                     {isSubmitting 

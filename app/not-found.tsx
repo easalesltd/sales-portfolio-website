@@ -32,19 +32,19 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/"
-            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
+            className="px-6 py-3 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
           >
             Go to Homepage
           </Link>
           <Link
             href="/about"
-            className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors font-medium"
+            className="px-6 py-3 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
           >
             About Us
           </Link>
           <Link
             href="/contact"
-            className="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors font-medium"
+            className="px-6 py-3 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
           >
             Contact Us
           </Link>
@@ -54,16 +54,16 @@ export default function NotFound() {
         <div className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-sm text-gray-500 mb-4">Popular pages:</p>
           <div className="flex flex-wrap justify-center gap-4 text-sm">
-            <Link href="/recipes" className="text-blue-600 hover:text-blue-800 hover:underline">
+            <Link href="/recipes" className="text-neutral-900 hover:text-neutral-600 hover:underline dark:text-neutral-100 dark:hover:text-neutral-300">
               Recipes
             </Link>
-            <Link href="/display-solutions" className="text-blue-600 hover:text-blue-800 hover:underline">
+            <Link href="/display-solutions" className="text-neutral-900 hover:text-neutral-600 hover:underline dark:text-neutral-100 dark:hover:text-neutral-300">
               Display Solutions
             </Link>
-            <Link href="/companies" className="text-blue-600 hover:text-blue-800 hover:underline">
+            <Link href="/companies" className="text-neutral-900 hover:text-neutral-600 hover:underline dark:text-neutral-100 dark:hover:text-neutral-300">
               Our Partner Brands
             </Link>
-            <Link href="/temporary-rep-cover" className="text-blue-600 hover:text-blue-800 hover:underline">
+            <Link href="/temporary-rep-cover" className="text-neutral-900 hover:text-neutral-600 hover:underline dark:text-neutral-100 dark:hover:text-neutral-300">
               Temporary Rep Cover
             </Link>
           </div>

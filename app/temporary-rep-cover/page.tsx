@@ -88,7 +88,7 @@ export default function TemporaryRepCoverPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
             {benefits.map((benefit, index) => (
               <div key={index} className="bg-gray-50 rounded-lg p-6 text-center hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 bg-neutral-950 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
@@ -112,7 +112,7 @@ export default function TemporaryRepCoverPage() {
               {salesApps.map((app, index) => (
                 <div 
                   key={index}
-                  className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-all duration-300 hover:border-blue-400 hover:scale-105"
+                  className="bg-white border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-all duration-300 hover:border-neutral-400 hover:scale-105"
                 >
                   <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                     <Image
@@ -130,7 +130,7 @@ export default function TemporaryRepCoverPage() {
                       }}
                     />
                     {/* Fallback generic icon */}
-                    <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center" style={{ display: 'none' }}>
+                    <div className="w-12 h-12 bg-neutral-950 rounded-lg flex items-center justify-center" style={{ display: 'none' }}>
                       <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -174,7 +174,7 @@ export default function TemporaryRepCoverPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-neutral-950 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-white">1</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Initial Contact</h3>
@@ -184,7 +184,7 @@ export default function TemporaryRepCoverPage() {
               </div>
               
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-neutral-950 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-white">2</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Quick Setup</h3>
@@ -194,7 +194,7 @@ export default function TemporaryRepCoverPage() {
               </div>
               
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-neutral-950 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl font-bold text-white">3</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">Seamless Coverage</h3>
@@ -206,7 +206,7 @@ export default function TemporaryRepCoverPage() {
           </div>
 
           {/* Call to Action */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg p-8 text-center text-white">
+          <div className="bg-neutral-950 rounded-lg p-8 text-center text-white dark:border dark:border-neutral-700">
             <h2 className="text-3xl font-bold mb-4">
               Don&apos;t Let a Gap Become a Problem
             </h2>
@@ -217,13 +217,13 @@ export default function TemporaryRepCoverPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
                 href="/contact" 
-                className="px-8 py-3 bg-white text-blue-600 rounded-md hover:bg-gray-100 transition-colors font-medium text-lg"
+                className="px-8 py-3 bg-white text-neutral-950 rounded-md hover:bg-neutral-200 transition-colors font-medium text-lg border border-white"
               >
                 Get in Touch
               </Link>
               <Link 
                 href="tel:+44" 
-                className="px-8 py-3 border-2 border-white text-white rounded-md hover:bg-white hover:text-blue-600 transition-colors font-medium text-lg"
+                className="px-8 py-3 border-2 border-white text-white rounded-md hover:bg-white hover:text-neutral-950 transition-colors font-medium text-lg"
               >
                 Call Now
               </Link>

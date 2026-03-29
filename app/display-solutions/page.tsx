@@ -308,7 +308,7 @@ export default function DisplaySolutionsPage() {
               </p>
               <Link 
                 href="/contact" 
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+                className="inline-flex items-center px-6 py-3 border border-neutral-950 text-base font-medium rounded-md shadow-sm text-white bg-neutral-950 hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-950 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 dark:focus:ring-white"
               >
                 Get in Touch
               </Link>

@@ -24,7 +24,7 @@ const inter = Inter({
 const ClientButton = dynamic(() => import('./components/ClientButton'), {
   ssr: true,
   loading: () => (
-    <div className="px-4 py-2 bg-blue-600/50 text-white rounded-md animate-pulse">
+    <div className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-200 text-neutral-500 animate-pulse dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
       Request an Agent Visit
     </div>
   )
@@ -983,12 +983,12 @@ export default function RootLayout({
                 </Link>
               </div>
               <div className="hidden md:flex items-center space-x-6">
-                <Link href="/" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Home</Link>
+                <Link href="/" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Home</Link>
                 <AboutDropdown />
                 <BrandsDropdown />
-                <Link href="/display-solutions" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Display Solutions</Link>
-                <Link href="/temporary-rep-cover" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Temporary Rep Cover</Link>
-                <Link href="/contact" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-blue-600 dark:hover:text-blue-400 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Contact</Link>
+                <Link href="/display-solutions" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Display Solutions</Link>
+                <Link href="/temporary-rep-cover" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Temporary Rep Cover</Link>
+                <Link href="/contact" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Contact</Link>
                 <ClientButton />
               </div>
               <div className="flex items-center md:hidden gap-2">
@@ -1025,7 +1025,7 @@ export default function RootLayout({
                   </a>
                   <a 
                     href="mailto:dave@easalesltd.co.uk" 
-                    className="text-gray-600 dark:text-neutral-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="text-gray-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
                     aria-label="Email"
                   >
                     <FaEnvelope className="h-6 w-6" />
