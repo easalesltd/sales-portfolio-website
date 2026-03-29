@@ -4,6 +4,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 const STORAGE_KEY = 'sales-agent-dash-high-score';
 
+/** Opaque backing store — slightly cheaper compositing than default alpha on many mobile GPUs. */
+const CTX_2D_OPTS: CanvasRenderingContext2DSettings = { alpha: false };
+
 const GROUND_RATIO = 0.78;
 const GRAVITY = 0.68;
 const JUMP_V = -13.5;
@@ -24,7 +27,6 @@ const LOSE_PHRASES = [
   'Your sample bag survived. You did not.',
   'Flannel does not count as armour.',
   'Flip-flops were a bold choice for parkour.',
-  'Another rep already cleared this postcode.',
 ] as const;
 
 function randomLosePhrase(): string {
@@ -716,7 +718,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     c.width = w;
     c.height = h;
     if (lostDuringRunRef.current) {
-      const ctx = c.getContext('2d');
+      const ctx = c.getContext('2d', CTX_2D_OPTS);
       if (ctx) paintGameFrame(ctx, c, false);
     }
   }, [paintGameFrame]);
@@ -727,12 +729,23 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (!parent) return;
 
     let rafId = 0;
+    let debounceId: ReturnType<typeof setTimeout> | undefined;
     const scheduleResize = () => {
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        rafId = 0;
-        resizeCanvas();
-      });
+      const narrow = typeof window !== 'undefined' && window.innerWidth < 640;
+      const run = () => {
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          rafId = 0;
+          resizeCanvas();
+        });
+      };
+      if (narrow) {
+        clearTimeout(debounceId);
+        debounceId = setTimeout(run, 100);
+      } else {
+        clearTimeout(debounceId);
+        run();
+      }
     };
 
     resizeCanvas();
@@ -740,6 +753,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     ro.observe(parent);
     window.addEventListener('resize', scheduleResize);
     return () => {
+      clearTimeout(debounceId);
       cancelAnimationFrame(rafId);
       ro.disconnect();
       window.removeEventListener('resize', scheduleResize);
@@ -812,7 +826,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     let raf = 0;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', CTX_2D_OPTS);
     if (!ctx) return;
 
     const tick = () => {
