@@ -28,18 +28,38 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
 
   const resizeCanvas = useCallback(() => {
     const c = canvasRef.current;
-    if (!c?.parentElement) return;
-    const w = Math.min(720, c.parentElement.clientWidth - 8);
-    const h = Math.min(400, Math.floor(w * 0.52));
+    if (!c?.parentElement || typeof window === 'undefined') return;
+    const parent = c.parentElement;
+    const w = Math.min(720, Math.max(260, parent.clientWidth - 8));
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const narrow = vw < 640;
+    let h: number;
+    if (narrow) {
+      const parentH = parent.clientHeight;
+      const fromLayout = parentH > 64 ? parentH - 8 : 0;
+      const target = fromLayout > 0 ? Math.min(fromLayout, vh * 0.62) : Math.min(vh * 0.58, 560);
+      h = Math.floor(Math.max(target, w * 0.58));
+      h = Math.min(h, Math.floor(vh * 0.68));
+    } else {
+      h = Math.min(400, Math.floor(w * 0.52));
+    }
     c.width = w;
     c.height = h;
   }, []);
 
   useEffect(() => {
     if (screen !== 'game') return;
+    const parent = canvasRef.current?.parentElement;
+    if (!parent) return;
     resizeCanvas();
+    const ro = new ResizeObserver(() => resizeCanvas());
+    ro.observe(parent);
     window.addEventListener('resize', resizeCanvas);
-    return () => window.removeEventListener('resize', resizeCanvas);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', resizeCanvas);
+    };
   }, [screen, resizeCanvas]);
 
   const startGame = useCallback(() => {
@@ -190,13 +210,15 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-neutral-950/95 p-4"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-neutral-950/95 p-2 pt-[max(0.5rem,env(safe-area-inset-top))] pb-[max(0.5rem,env(safe-area-inset-bottom))] sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="postman-game-title"
     >
-      <div className="w-full max-w-2xl rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl overflow-hidden">
-        <div className="flex items-center justify-between gap-2 border-b border-neutral-700 px-4 py-3">
+      <div
+        className={`flex w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl max-h-[96dvh] ${screen === 'game' ? 'min-h-[min(82dvh,96dvh)] sm:min-h-0' : ''}`}
+      >
+        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-700 px-4 py-3">
           <h2 id="postman-game-title" className="text-lg font-semibold text-white">
             Special Delivery
           </h2>
@@ -209,7 +231,7 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        <div className="flex flex-col items-center p-4">
+        <div className="flex min-h-0 flex-1 flex-col items-center p-3 sm:p-4">
           {screen === 'menu' && (
             <div className="py-8 text-center text-neutral-200">
               <p className="mb-2 text-lg">Jump over bins and letterboxes!</p>
@@ -228,10 +250,10 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
 
           {screen === 'game' && (
             <>
-              <div className="relative w-full flex justify-center">
+              <div className="relative flex w-full flex-1 items-stretch justify-center min-h-[52dvh] max-h-[68dvh] sm:min-h-0 sm:max-h-none sm:flex-none">
                 <canvas
                   ref={canvasRef}
-                  className={`max-h-[min(400px,50vh)] w-full max-w-2xl rounded-lg border border-neutral-700 touch-none ${playing ? 'cursor-pointer' : ''}`}
+                  className={`w-full max-w-2xl touch-none rounded-lg border border-neutral-700 sm:max-h-[400px] ${playing ? 'cursor-pointer' : ''}`}
                   onMouseDown={playing ? jump : undefined}
                   onTouchStart={
                     playing
@@ -273,7 +295,7 @@ export default function PostmanGame({ onClose }: { onClose: () => void }) {
           )}
         </div>
 
-        <p className="border-t border-neutral-800 px-4 py-2 text-center text-xs text-neutral-500">
+        <p className="shrink-0 border-t border-neutral-800 px-4 py-2 text-center text-xs text-neutral-500">
           Easter egg: double-click the logo in the header (two quick clicks before you navigate home).
         </p>
       </div>
