@@ -134,18 +134,17 @@ function drawBillboard(
   }
   const poleW = Math.max(9, boardW * 0.065);
   const x = b.x;
-  const clearanceAboveRoad = Math.max(96, Math.min(groundY * 0.14, 130));
+  // Keep billboards visually away from the "jump obstacle" lane (which tops out ~64px above ground).
+  // A larger clearance prevents any apparent touching when billboards scroll near obstacles.
+  const clearanceAboveRoad = Math.max(120, Math.min(groundY * 0.18, 160));
   const boardBottom = groundY - clearanceAboveRoad;
   const boardTop = boardBottom - boardH;
   const url = c.logoUrlDark ?? c.logoUrl;
 
   ctx.fillStyle = '#3f3f46';
-  // Keep the pole above the "jump-over" obstacle lane for visual clarity.
-  // Obstacles max height is currently ~64px; we leave extra padding.
-  const maxObstacleH = 64;
-  const poleBottomY = Math.max(boardBottom + 4, groundY - (maxObstacleH + 10));
-  const poleH = Math.max(0, poleBottomY - boardBottom);
-  ctx.fillRect(x + boardW / 2 - poleW / 2, boardBottom, poleW, poleH);
+  // Pole reaches the road/floor; the panel itself is already positioned higher
+  // via `clearanceAboveRoad`.
+  ctx.fillRect(x + boardW / 2 - poleW / 2, boardBottom, poleW, groundY - boardBottom);
 
   ctx.fillStyle = '#fafafa';
   roundRectPath(ctx, x, boardTop, boardW, boardH, 5);
