@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useId } from 'react'
 import emailjs from '@emailjs/browser'
 import dynamic from 'next/dynamic'
 
@@ -51,8 +51,10 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
   });
   const [orderLines, setOrderLines] = useState<OrderLine[]>([{ productCode: '', quantity: '' }]);
   const [notes, setNotes] = useState('');
+  const [honeypotWebsite, setHoneypotWebsite] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const successModalRef = useRef<HTMLDivElement>(null);
+  const hpId = useId();
 
   useEffect(() => {
     emailjs.init("bQOrMB40ft605dNrW");
@@ -82,6 +84,9 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypotWebsite.trim() !== '') {
+      return;
+    }
     setStatus('loading');
 
     // Filter out empty lines (i.e. lines with product code (or quantity) empty)
@@ -126,6 +131,7 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
       setOrderLines([{ productCode: '', quantity: '' }]);
       setNotes('');
       setContactInfo({ companyName: '', contactPerson: '', contactDetails: '', emailAddress: '', address: '' });
+      setHoneypotWebsite('');
     } catch (error) {
       setStatus('error');
     }
@@ -198,7 +204,21 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 relative">
+        <div
+          className="pointer-events-none absolute left-[max(-100vw,-9999px)] h-px w-px overflow-hidden opacity-0"
+          aria-hidden="true"
+        >
+          <label htmlFor={hpId}>Company website</label>
+          <input
+            id={hpId}
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypotWebsite}
+            onChange={(e) => setHoneypotWebsite(e.target.value)}
+          />
+        </div>
         {/* Contact Information Section */}
         <div className="bg-gray-50 dark:bg-neutral-900/90 dark:border dark:border-neutral-800 p-6 rounded-lg mb-6">
           <h3 className="text-lg font-medium text-gray-900 dark:text-neutral-100 mb-4">Contact Information</h3>
@@ -362,8 +382,10 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
   });
   const [orderLines, setOrderLines] = useState<OrderLine[]>([{ productCode: '', quantity: '' }]);
   const [notes, setNotes] = useState('');
+  const [honeypotWebsite, setHoneypotWebsite] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const successModalRef = useRef<HTMLDivElement>(null);
+  const hpId = useId();
 
   useEffect(() => {
     emailjs.init("bQOrMB40ft605dNrW");
@@ -393,6 +415,9 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypotWebsite.trim() !== '') {
+      return;
+    }
     setStatus('loading');
 
     // Filter out empty lines
@@ -437,6 +462,7 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
       setOrderLines([{ productCode: '', quantity: '' }]);
       setNotes('');
       setContactInfo({ companyName: '', contactPerson: '', contactDetails: '', emailAddress: '', address: '' });
+      setHoneypotWebsite('');
     } catch (error) {
       setStatus('error');
     }
@@ -509,7 +535,21 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 relative">
+        <div
+          className="pointer-events-none absolute left-[max(-100vw,-9999px)] h-px w-px overflow-hidden opacity-0"
+          aria-hidden="true"
+        >
+          <label htmlFor={hpId}>Company website</label>
+          <input
+            id={hpId}
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypotWebsite}
+            onChange={(e) => setHoneypotWebsite(e.target.value)}
+          />
+        </div>
         {/* Contact Information Section */}
         <div className="bg-gray-50 dark:bg-neutral-900/90 dark:border dark:border-neutral-800 p-6 rounded-lg mb-6">
           <h3 className="text-lg font-medium text-gray-900 dark:text-neutral-100 mb-4">Contact Information</h3>

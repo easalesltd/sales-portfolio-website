@@ -48,6 +48,8 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
   const [validationError, setValidationError] = useState<string>('');
   const [flow, setFlow] = useState<'form' | 'verify_sent'>('form');
   const [verifyEmail, setVerifyEmail] = useState('');
+  /** Honeypot — leave empty; bots often fill it so we skip sending. */
+  const [honeypotWebsite, setHoneypotWebsite] = useState('');
 
   const successModalRef = useRef<HTMLDivElement>(null);
   const emptyForm = {
@@ -67,6 +69,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     setSubmitStatus('idle');
     setValidationError('');
     setVerifyEmail('');
+    setHoneypotWebsite('');
   };
 
   const handleClose = () => {
@@ -95,6 +98,9 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError('');
+    if (honeypotWebsite.trim() !== '') {
+      return;
+    }
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
@@ -177,7 +183,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
       <div
         ref={successModalRef}
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity animate-fade-in"
-        onClick={onClose}
+        onClick={handleClose}
       >
         <ReactConfetti
           width={windowSize.width}
@@ -258,7 +264,21 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                 </div>
               ) : null}
               {flow === 'form' ? (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6 relative">
+                <div
+                  className="pointer-events-none absolute left-[max(-100vw,-9999px)] h-px w-px overflow-hidden opacity-0"
+                  aria-hidden="true"
+                >
+                  <label htmlFor="req-visit-company-website">Company website</label>
+                  <input
+                    id="req-visit-company-website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypotWebsite}
+                    onChange={(e) => setHoneypotWebsite(e.target.value)}
+                  />
+                </div>
                 {validationError && (
                   <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md" role="alert">
                     <p className="font-medium">Please correct the following:</p>
