@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { companies } from '@/app/data/companies';
 
 const STORAGE_KEY = 'sales-agent-dash-high-score';
+const AUDIO_ENABLED_KEY = 'sales-agent-dash-audio-enabled';
 
 /** Opaque backing store — slightly cheaper compositing than default alpha on many mobile GPUs. */
 const CTX_2D_OPTS: CanvasRenderingContext2DSettings = { alpha: false };
@@ -24,6 +25,15 @@ const DISCO_DURATION_SCORE = 1000;
 /** After the first block, repeating cycle: this many normal, then `DISCO_DURATION_SCORE` disco. */
 const DISCO_REPEAT_NORMAL_SCORE = 2000;
 const DISCO_REPEAT_CYCLE = DISCO_REPEAT_NORMAL_SCORE + DISCO_DURATION_SCORE;
+
+// Game audio lives under `public/` so it's served from the site root (`/Audio/...`).
+// Note: the folder name is capitalized in your project (`public/Audio`).
+const GAME_MUSIC_SRC = '/Audio/Game%20Audio.m4a';
+const DISCO_MUSIC_SRC = '/Audio/Disco%20Mode.m4a';
+const LAUGH_SRC = '/Audio/Laugh.m4a';
+const GAME_MUSIC_VOLUME = 0.35;
+const DISCO_MUSIC_VOLUME = 0.45;
+const LAUGH_VOLUME = 0.8;
 
 function isDiscoScore(score: number): boolean {
   const s = Math.floor(score);
@@ -130,7 +140,12 @@ function drawBillboard(
   const url = c.logoUrlDark ?? c.logoUrl;
 
   ctx.fillStyle = '#3f3f46';
-  ctx.fillRect(x + boardW / 2 - poleW / 2, boardBottom, poleW, groundY - boardBottom);
+  // Keep the pole above the "jump-over" obstacle lane for visual clarity.
+  // Obstacles max height is currently ~64px; we leave extra padding.
+  const maxObstacleH = 64;
+  const poleBottomY = Math.max(boardBottom + 4, groundY - (maxObstacleH + 10));
+  const poleH = Math.max(0, poleBottomY - boardBottom);
+  ctx.fillRect(x + boardW / 2 - poleW / 2, boardBottom, poleW, poleH);
 
   ctx.fillStyle = '#fafafa';
   roundRectPath(ctx, x, boardTop, boardW, boardH, 5);
@@ -798,8 +813,21 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const [lastRunScore, setLastRunScore] = useState<number | null>(null);
   const [wasRecord, setWasRecord] = useState(false);
   const [losePhrase, setLosePhrase] = useState<string | null>(null);
+  const [audioEnabled, setAudioEnabled] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    const v = window.localStorage.getItem(AUDIO_ENABLED_KEY);
+    return v ? v === 'true' : true;
+  });
 
   const scoreRef = useRef(0);
+  const audioEnabledRef = useRef(audioEnabled);
+
+  useEffect(() => {
+    audioEnabledRef.current = audioEnabled;
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem(AUDIO_ENABLED_KEY, String(audioEnabled));
+  }, [audioEnabled]);
+
   const obstacleSpawnCarryRef = useRef(0);
   const pyRef = useRef(0);
   const vyRef = useRef(0);
@@ -817,6 +845,108 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const discoWasActiveRef = useRef(false);
   /** 0 → 1 while disco segment runs; eases the ball down from above. */
   const discoBallDropRef = useRef(0);
+
+  // Audio: start normal music when the run starts; switch to disco during disco segments.
+  const gameMusicRef = useRef<HTMLAudioElement | null>(null);
+  const discoMusicRef = useRef<HTMLAudioElement | null>(null);
+  const musicModeRef = useRef<'none' | 'game' | 'disco'>('none');
+
+  const ensureMusicElements = useCallback(() => {
+    // Only create the elements on the client (this is a `use client` component).
+    if (!gameMusicRef.current) {
+      const a = new Audio(GAME_MUSIC_SRC);
+      a.loop = true;
+      a.preload = 'auto';
+      a.volume = GAME_MUSIC_VOLUME;
+      gameMusicRef.current = a;
+    }
+    if (!discoMusicRef.current) {
+      const a = new Audio(DISCO_MUSIC_SRC);
+      a.loop = true;
+      a.preload = 'auto';
+      a.volume = DISCO_MUSIC_VOLUME;
+      discoMusicRef.current = a;
+    }
+  }, []);
+
+  const setMusicMode = useCallback((mode: 'none' | 'game' | 'disco') => {
+    // No-op if we're already in the requested mode.
+    if (musicModeRef.current === mode) return;
+    musicModeRef.current = mode;
+
+    const gameAudio = gameMusicRef.current;
+    const discoAudio = discoMusicRef.current;
+
+    if (mode === 'none') {
+      gameAudio?.pause();
+      discoAudio?.pause();
+      return;
+    }
+
+    // For 'game'/'disco', ensure elements exist before attempting to play.
+    ensureMusicElements();
+
+    const gameAudio2 = gameMusicRef.current;
+    const discoAudio2 = discoMusicRef.current;
+    if (!gameAudio2 || !discoAudio2) return;
+
+    // Switch tracks: reset time so each disco segment feels like a fresh "drop in".
+    if (mode === 'game') {
+      discoAudio2.pause();
+      discoAudio2.currentTime = 0;
+      gameAudio2.currentTime = 0;
+      void gameAudio2.play().catch(() => {
+        // Autoplay policies can still block play() in some environments.
+        // If that happens, we'll just stay silent until the next user gesture.
+      });
+      return;
+    }
+
+    // mode === 'disco'
+    gameAudio2.pause();
+    gameAudio2.currentTime = 0;
+    discoAudio2.currentTime = 0;
+    void discoAudio2.play().catch(() => {});
+  }, [ensureMusicElements]);
+
+  const laughAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const ensureLaughElement = useCallback(() => {
+    if (laughAudioRef.current) return;
+    const a = new Audio(LAUGH_SRC);
+    a.preload = 'auto';
+    a.loop = false;
+    a.volume = LAUGH_VOLUME;
+    laughAudioRef.current = a;
+  }, []);
+
+  const playLaugh = useCallback(() => {
+    if (!audioEnabledRef.current) return;
+    ensureLaughElement();
+    const a = laughAudioRef.current;
+    if (!a) return;
+    a.pause();
+    a.currentTime = 0;
+    void a.play().catch(() => {});
+  }, [ensureLaughElement]);
+
+  useEffect(() => {
+    // If audio is turned off, stop any currently playing tracks immediately.
+    if (audioEnabled) return;
+    gameMusicRef.current?.pause();
+    discoMusicRef.current?.pause();
+    laughAudioRef.current?.pause();
+    musicModeRef.current = 'none';
+  }, [audioEnabled]);
+
+  useEffect(() => {
+    // Safety: stop audio if the component unmounts.
+    return () => {
+      gameMusicRef.current?.pause();
+      discoMusicRef.current?.pause();
+      laughAudioRef.current?.pause();
+    };
+  }, []);
 
   useEffect(() => {
     trackSalesAgentDashOpen();
@@ -1057,6 +1187,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     setLastRunScore(null);
     setWasRecord(false);
     setLosePhrase(null);
+    laughAudioRef.current?.pause();
+    if (laughAudioRef.current) laughAudioRef.current.currentTime = 0;
+    setMusicMode(audioEnabledRef.current ? 'game' : 'none');
     setScreen('game');
   }, []);
 
@@ -1145,6 +1278,18 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       const sFloor = Math.floor(scoreRef.current);
       const inDisco = isDiscoScore(sFloor);
+
+      // Audio mode switches only when the disco state flips, not every frame.
+      // This keeps play/pause calls from spamming.
+      const desiredMode: 'none' | 'game' | 'disco' = audioEnabledRef.current
+        ? inDisco
+          ? 'disco'
+          : 'game'
+        : 'none';
+      if (musicModeRef.current !== desiredMode) {
+        setMusicMode(desiredMode);
+      }
+
       if (inDisco) {
         if (!discoWasActiveRef.current) discoBallDropRef.current = 0;
         discoBallDropRef.current = Math.min(1, discoBallDropRef.current + 0.052);
@@ -1232,6 +1377,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           setWasRecord(final > prevHi);
           setLosePhrase(randomLosePhrase());
           paintGameFrame(ctx, canvas, false);
+          playLaugh();
           setOutcome('lost');
           return;
         }
@@ -1245,6 +1391,15 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [screen, outcome, paintGameFrame]);
+
+  useEffect(() => {
+    // Ensure music never plays in the menu state or after a loss.
+    if (screen !== 'game' || outcome !== null) {
+      gameMusicRef.current?.pause();
+      discoMusicRef.current?.pause();
+      musicModeRef.current = 'none';
+    }
+  }, [screen, outcome]);
 
   useEffect(() => {
     if (screen !== 'game' || outcome !== null) return;
@@ -1296,13 +1451,23 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           <h2 id="sales-agent-dash-title" className="text-lg font-semibold text-white">
             Sales Agent Dash
           </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-md border border-neutral-600 px-3 py-1.5 text-sm text-white hover:bg-neutral-800"
-          >
-            Close
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setAudioEnabled((v) => !v)}
+              aria-pressed={audioEnabled}
+              className="rounded-md border border-neutral-600 px-3 py-1.5 text-sm text-white hover:bg-neutral-800"
+            >
+              Audio: {audioEnabled ? 'On' : 'Off'}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-md border border-neutral-600 px-3 py-1.5 text-sm text-white hover:bg-neutral-800"
+            >
+              Close
+            </button>
+          </div>
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto overflow-x-hidden p-3 sm:p-4">
