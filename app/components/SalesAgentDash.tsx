@@ -817,6 +817,42 @@ function readHighScore(): number {
   return Number.isFinite(n) ? n : 0;
 }
 
+const LEADERBOARD_LOCAL_KEY = 'sales-agent-dash-leaderboard-local-v1';
+
+type LeaderboardRow = { name: string; score: number; at: number };
+
+function readLocalLeaderboard(): LeaderboardRow[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(LEADERBOARD_LOCAL_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as unknown;
+    return Array.isArray(parsed) ? (parsed as LeaderboardRow[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function pushLocalLeaderboard(name: string, score: number) {
+  const cur = readLocalLeaderboard();
+  cur.push({ name, score, at: Date.now() });
+  cur.sort((a, b) => b.score - a.score);
+  window.localStorage.setItem(LEADERBOARD_LOCAL_KEY, JSON.stringify(cur.slice(0, 50)));
+}
+
+function mergeLeaderboard(server: LeaderboardRow[], local: LeaderboardRow[]): LeaderboardRow[] {
+  const seen = new Set<string>();
+  const out: LeaderboardRow[] = [];
+  for (const row of [...server, ...local].sort((a, b) => b.score - a.score)) {
+    const k = `${row.name}\0${row.score}\0${row.at}`;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(row);
+    if (out.length >= 15) break;
+  }
+  return out;
+}
+
 export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const shellRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -828,6 +864,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const [lastRunScore, setLastRunScore] = useState<number | null>(null);
   const [wasRecord, setWasRecord] = useState(false);
   const [losePhrase, setLosePhrase] = useState<string | null>(null);
+  const [lbRows, setLbRows] = useState<LeaderboardRow[]>([]);
+  const [lbName, setLbName] = useState('');
+  const [lbSubmitting, setLbSubmitting] = useState(false);
+  const [lbSubmitted, setLbSubmitted] = useState(false);
+  const [lbServerOn, setLbServerOn] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(() => {
     if (typeof window === 'undefined') return true;
     const v = window.localStorage.getItem(AUDIO_ENABLED_KEY);
@@ -972,6 +1013,59 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     trackSalesAgentDashOpen();
   }, []);
+
+  useEffect(() => {
+    if (outcome !== 'lost' || lastRunScore === null) return;
+    setLbSubmitted(false);
+    setLbName('');
+    let cancelled = false;
+    (async () => {
+      let server: LeaderboardRow[] = [];
+      let serverOn = false;
+      try {
+        const r = await fetch('/api/game-leaderboard');
+        const j = (await r.json()) as { entries?: LeaderboardRow[]; server?: boolean };
+        server = Array.isArray(j.entries) ? j.entries : [];
+        serverOn = Boolean(j.server);
+      } catch {
+        /* offline or no server store */
+      }
+      if (cancelled) return;
+      setLbServerOn(serverOn);
+      setLbRows(mergeLeaderboard(server, readLocalLeaderboard()));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [outcome, lastRunScore]);
+
+  const submitLeaderboardEntry = useCallback(async () => {
+    if (lastRunScore === null || lbSubmitted) return;
+    const name = (lbName.trim() || 'Anonymous').slice(0, 24);
+    setLbSubmitting(true);
+    try {
+      await fetch('/api/game-leaderboard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, score: lastRunScore }),
+      });
+    } catch {
+      /* still record locally */
+    }
+    pushLocalLeaderboard(name, lastRunScore);
+    let server: LeaderboardRow[] = [];
+    try {
+      const r = await fetch('/api/game-leaderboard');
+      const j = (await r.json()) as { entries?: LeaderboardRow[]; server?: boolean };
+      server = Array.isArray(j.entries) ? j.entries : [];
+      setLbServerOn(Boolean(j.server));
+    } catch {
+      /* keep prior */
+    }
+    setLbRows(mergeLeaderboard(server, readLocalLeaderboard()));
+    setLbSubmitted(true);
+    setLbSubmitting(false);
+  }, [lastRunScore, lbName, lbSubmitted]);
 
   const paintGameFrame = useCallback(
     (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, advanceCountyBanner: boolean) => {
@@ -1581,6 +1675,51 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   <p className="text-sm italic text-red-400/95">
                     {losePhrase ?? 'Bumped into something — try again!'}
                   </p>
+                  <div className="mx-auto mt-4 max-w-md rounded-lg border border-neutral-700 bg-neutral-800/60 px-4 py-3 text-left">
+                    <p className="text-center text-xs font-semibold uppercase tracking-wide text-neutral-400">
+                      Leaderboard {lbServerOn ? '' : '(this device)'}
+                    </p>
+                    {lbRows.length > 0 ? (
+                      <ol className="mt-2 space-y-1 text-sm text-neutral-200">
+                        {lbRows.map((row, i) => (
+                          <li key={`${row.at}-${row.name}-${row.score}-${i}`} className="flex items-baseline justify-between gap-2 tabular-nums">
+                            <span className="w-6 shrink-0 text-neutral-500">{i + 1}.</span>
+                            <span className="min-w-0 flex-1 truncate">{row.name}</span>
+                            <span className="shrink-0 text-amber-300/95">{row.score.toLocaleString()}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    ) : (
+                      <p className="mt-2 text-center text-xs text-neutral-500">No scores yet — add yours below.</p>
+                    )}
+                    {!lbSubmitted ? (
+                      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
+                        <label className="sr-only" htmlFor="sales-dash-lb-name">
+                          Name for leaderboard (optional)
+                        </label>
+                        <input
+                          id="sales-dash-lb-name"
+                          type="text"
+                          maxLength={24}
+                          placeholder="Your name (optional)"
+                          autoComplete="nickname"
+                          value={lbName}
+                          onChange={(e) => setLbName(e.target.value)}
+                          className="w-full rounded-md border border-neutral-600 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-500 focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500 sm:flex-1"
+                        />
+                        <button
+                          type="button"
+                          disabled={lbSubmitting}
+                          onClick={() => void submitLeaderboardEntry()}
+                          className="shrink-0 rounded-md border border-teal-600 bg-teal-700/90 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600 disabled:opacity-50"
+                        >
+                          {lbSubmitting ? 'Saving…' : 'Add my score'}
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="mt-3 text-center text-xs text-teal-400/95">Thanks — you&apos;re on the board.</p>
+                    )}
+                  </div>
                 </div>
               )}
               {outcome !== null && (
