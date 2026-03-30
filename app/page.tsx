@@ -31,33 +31,17 @@ export default function Home() {
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.2}>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              I'm Dave Langdon, a UK greeting card and gift sales agent based in Ipswich, Suffolk. For over 11 years I've been helping retailers across East Anglia build strong greeting card and gift ranges that sell.
+              Him I'm Dave Langdon, a greeting card and gift sales agent based in Ipswich, Suffolk, and I've been helping retailers across East Anglia build ranges that actually sell for over 11 years.
             </p>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.3}>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              I work with a selection of established greeting card publishers and gift suppliers, bringing quality wholesale ranges to independent shops, garden centres, farm shops, and retail stores.
+              I work with a carefully chosen set of publishers and gift suppliers, and I cover Suffolk, Norfolk, Essex, and Cambridgeshire, visiting regularly, not just dropping off stock and disappearing. Whether you run an independent shop, garden centre, farm shop, or retail store, I can help you find the right ranges, get your display working harder, and keep things fresh with new designs as they come through.
             </p>
-          </FadeInOnScroll>
-          <FadeInOnScroll delay={0.35}>
-            <p className="text-lg text-gray-700 mb-4 leading-relaxed">As a local greeting card sales agent, I provide more than just supply. I help retailers with:</p>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.4}>
-            <ul className="text-lg text-gray-700 mb-6 list-disc pl-6 space-y-2 leading-relaxed [&>li]:pl-1">
-              <li>choosing the right ranges</li>
-              <li>creating attractive card displays</li>
-              <li>improving card sales and margins</li>
-              <li>keeping ranges fresh with new designs</li>
-            </ul>
-          </FadeInOnScroll>
-          <FadeInOnScroll delay={0.45}>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              I cover Suffolk, Norfolk, Essex, and Cambridgeshire, visiting retailers regularly and providing ongoing support.
-            </p>
-          </FadeInOnScroll>
-          <FadeInOnScroll delay={0.5}>
-            <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-              If you're looking for a greeting card agent in East Anglia, I'd be happy to arrange a visit and show you the latest ranges.
+              If you'd like a visit to see the latest ranges, I'd love to come and have a chat.
             </p>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.55}>

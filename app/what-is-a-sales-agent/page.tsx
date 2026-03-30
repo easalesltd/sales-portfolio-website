@@ -157,6 +157,10 @@ export default function WhatIsASalesAgentPage() {
               find out more about Dave
             </Link>.
           </p>
+
+          <p>
+            Want to see what a day on the road is like? Double click the <strong>Black East Anglia</strong> logo (top left).
+          </p>
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-200">

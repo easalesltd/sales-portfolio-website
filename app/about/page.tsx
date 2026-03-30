@@ -241,6 +241,10 @@ export default function AboutPage() {
               totalImages={aboutImages.length}
             />
           )}
+
+          <p className="mt-8 text-center text-sm text-gray-600">
+            Want to see what a day on the road is like? Double click the <strong>Black East Anglia</strong> logo (top left).
+          </p>
         </div>
       </div>
     </div>
