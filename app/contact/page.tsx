@@ -9,15 +9,26 @@ import FadeInOnScroll from '../components/FadeInOnScroll';
 export default function ContactPage() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
   const [visitNotice, setVisitNotice] = useState<'confirmed' | 'error' | null>(null);
+  const [orderNotice, setOrderNotice] = useState<'error' | null>(null);
 
   useEffect(() => {
-    const q = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('visit') : null;
-    if (q === 'confirmed') setVisitNotice('confirmed');
-    else if (q === 'error') setVisitNotice('error');
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const visit = params.get('visit');
+    if (visit === 'confirmed') setVisitNotice('confirmed');
+    else if (visit === 'error') setVisitNotice('error');
+    if (params.get('order') === 'error') setOrderNotice('error');
   }, []);
 
   const dismissVisitNotice = () => {
     setVisitNotice(null);
+    if (typeof window !== 'undefined') {
+      window.history.replaceState({}, '', '/contact');
+    }
+  };
+
+  const dismissOrderNotice = () => {
+    setOrderNotice(null);
     if (typeof window !== 'undefined') {
       window.history.replaceState({}, '', '/contact');
     }
@@ -94,6 +105,25 @@ export default function ContactPage() {
               <button
                 type="button"
                 onClick={dismissVisitNotice}
+                className="shrink-0 text-sm font-semibold underline underline-offset-2 hover:no-underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        ) : null}
+        {orderNotice === 'error' ? (
+          <div
+            className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900 dark:border-red-900 dark:bg-red-950/40 dark:text-red-100"
+            role="alert"
+          >
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm font-medium">
+                That order confirmation link was invalid or expired. Please go back to the company page and submit your order again.
+              </p>
+              <button
+                type="button"
+                onClick={dismissOrderNotice}
                 className="shrink-0 text-sm font-semibold underline underline-offset-2 hover:no-underline"
               >
                 Dismiss

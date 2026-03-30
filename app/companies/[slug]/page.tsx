@@ -2027,7 +2027,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                 Place an Order
                 <div className="h-1 w-16 mt-2 bg-neutral-950 dark:bg-white" />
               </h2>
-              <OrderForm companyName={company.name} invertedPrimaryButtons={isCambridgeDarkBrand} />
+              <OrderForm companyName={company.name} companySlug={company.slug} invertedPrimaryButtons={isCambridgeDarkBrand} />
             </div>
           </div>
         </div>

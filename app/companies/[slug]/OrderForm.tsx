@@ -11,6 +11,8 @@ const ReactConfetti = dynamic(() => import('react-confetti'), {
 
 interface OrderFormProps {
   companyName: string
+  /** Must match `app/data/companies` slug — used for verify flow and redirect. */
+  companySlug: string
   /** Cambridge (dark brand page): white buttons with dark text */
   invertedPrimaryButtons?: boolean
 }
@@ -40,8 +42,186 @@ interface ContactInfo {
   address: string;
 }
 
+type OrderVerifyApiResult = 'verify_sent' | 'legacy' | 'send_failed' | 'bad_request' | 'error';
+
+async function startOrderVerificationAPI(params: {
+  companySlug: string;
+  supplierCompany: string;
+  contactInfo: ContactInfo;
+  filledLines: OrderLine[];
+  notes: string;
+}): Promise<OrderVerifyApiResult> {
+  const res = await fetch('/api/order/start', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      companySlug: params.companySlug,
+      supplierCompany: params.supplierCompany,
+      contact: {
+        companyName: params.contactInfo.companyName,
+        contactPerson: params.contactInfo.contactPerson,
+        contactDetails: params.contactInfo.contactDetails,
+        emailAddress: params.contactInfo.emailAddress,
+        address: params.contactInfo.address,
+      },
+      orderLines: params.filledLines,
+      notes: params.notes,
+    }),
+  });
+  const data = (await res.json()) as { ok?: boolean; fallback?: boolean; error?: string };
+
+  if (res.ok && data.ok && !data.fallback) {
+    return 'verify_sent';
+  }
+  if (data.fallback) {
+    return 'legacy';
+  }
+  if (data.error === 'send_failed') {
+    return 'send_failed';
+  }
+  if (res.status === 400) {
+    return 'bad_request';
+  }
+  return 'error';
+}
+
+async function sendLegacyOrderEmail(
+  companyName: string,
+  contactInfo: ContactInfo,
+  formattedOrderLines: string,
+  notes: string,
+): Promise<void> {
+  const emailContent = {
+    template_params: {
+      to_name: 'Dave',
+      from_name: contactInfo.contactPerson,
+      supplier_company: companyName,
+      customer_company: contactInfo.companyName,
+      contact_person: contactInfo.contactPerson,
+      contact_phone: contactInfo.contactDetails || 'Not provided',
+      contact_email: contactInfo.emailAddress,
+      delivery_address: contactInfo.address,
+      order_list: formattedOrderLines,
+      notes: notes || 'No additional notes provided',
+      reply_to: contactInfo.emailAddress,
+    },
+    service_id: 'service_fvfxlgh',
+    template_id: 'template_1sz03e8',
+    user_id: 'bQOrMB40ft605dNrW',
+  };
+  await emailjs.send(
+    emailContent.service_id,
+    emailContent.template_id,
+    emailContent.template_params,
+    emailContent.user_id,
+  );
+}
+
+function OrderUrlConfirmationBanner() {
+  const [notice, setNotice] = useState<'confirmed' | 'error' | null>(null);
+
+  useEffect(() => {
+    const q = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('order') : null;
+    if (q === 'confirmed') setNotice('confirmed');
+    else if (q === 'error') setNotice('error');
+  }, []);
+
+  const dismiss = () => {
+    setNotice(null);
+    if (typeof window !== 'undefined') {
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  };
+
+  if (notice === 'confirmed') {
+    return (
+      <div
+        className="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100"
+        role="status"
+      >
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm font-medium">
+            Your email is verified and your order request has been sent. We&apos;ll be in touch soon.
+          </p>
+          <button
+            type="button"
+            onClick={dismiss}
+            className="shrink-0 text-sm font-semibold underline underline-offset-2 hover:no-underline"
+          >
+            Dismiss
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (notice === 'error') {
+    return (
+      <div
+        className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900 dark:border-red-900 dark:bg-red-950/40 dark:text-red-100"
+        role="alert"
+      >
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm font-medium">
+            That confirmation link was invalid or expired. Please submit the order form again.
+          </p>
+          <button
+            type="button"
+            onClick={dismiss}
+            className="shrink-0 text-sm font-semibold underline underline-offset-2 hover:no-underline"
+          >
+            Dismiss
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
+
+function OrderVerifySentPanel({
+  verifyEmail,
+  invertedPrimaryButtons,
+  onDismiss,
+}: {
+  verifyEmail: string;
+  invertedPrimaryButtons: boolean;
+  onDismiss: () => void;
+}) {
+  return (
+    <div className="mb-6 space-y-4 rounded-lg border border-neutral-200 bg-white px-4 py-6 text-center dark:border-neutral-700 dark:bg-neutral-900/50">
+      <div
+        className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full text-2xl font-bold ${
+          invertedPrimaryButtons ? 'bg-white/15 text-white' : 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-200'
+        }`}
+      >
+        ✉
+      </div>
+      <h3 className={`text-xl font-semibold ${invertedPrimaryButtons ? 'text-white' : 'text-gray-900 dark:text-neutral-100'}`}>
+        Check your email
+      </h3>
+      <p className={`mx-auto max-w-md text-sm leading-relaxed ${invertedPrimaryButtons ? 'text-white/85' : 'text-gray-600 dark:text-neutral-400'}`}>
+        We sent a confirmation link to{' '}
+        <span className={`font-medium ${invertedPrimaryButtons ? 'text-white' : 'text-gray-900 dark:text-neutral-100'}`}>{verifyEmail}</span>.
+        Open it to verify your address and send your order to East Anglian Sales LTD.
+      </p>
+      <p className={`text-xs ${invertedPrimaryButtons ? 'text-white/70' : 'text-gray-500 dark:text-neutral-500'}`}>
+        The link expires after 48 hours. You can leave this page and return later.
+      </p>
+      <button
+        type="button"
+        onClick={onDismiss}
+        className={`mt-2 rounded-md px-6 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors ${primaryCtaColors(invertedPrimaryButtons)}`}
+      >
+        Back to form
+      </button>
+    </div>
+  );
+}
+
 // New Peppermint Grove Order Form Component (mirrors your Excel order form)
-function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false }: OrderFormProps) {
+function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryButtons = false }: OrderFormProps) {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     companyName: '',
     contactPerson: '',
@@ -53,6 +233,9 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
   const [notes, setNotes] = useState('');
   const [honeypotWebsite, setHoneypotWebsite] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [flow, setFlow] = useState<'form' | 'verify_sent'>('form');
+  const [verifyEmail, setVerifyEmail] = useState('');
+  const [validationError, setValidationError] = useState('');
   const successModalRef = useRef<HTMLDivElement>(null);
   const hpId = useId();
 
@@ -82,58 +265,75 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
     setOrderLines(newLines);
   };
 
+  const resetAfterSuccessfulSend = () => {
+    setOrderLines([{ productCode: '', quantity: '' }]);
+    setNotes('');
+    setContactInfo({ companyName: '', contactPerson: '', contactDetails: '', emailAddress: '', address: '' });
+    setHoneypotWebsite('');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError('');
     if (honeypotWebsite.trim() !== '') {
       return;
     }
-    setStatus('loading');
 
-    // Filter out empty lines (i.e. lines with product code (or quantity) empty)
     const filledLines = orderLines.filter(line => line.productCode.trim() !== '' && line.quantity.trim() !== '');
     if (filledLines.length === 0) {
       alert('Please add at least one product to order');
-      setStatus('idle');
       return;
     }
 
     if (!contactInfo.companyName || !contactInfo.contactPerson || !contactInfo.emailAddress) {
       alert('Please fill in all required contact information');
-      setStatus('idle');
       return;
     }
 
+    setStatus('loading');
+
     try {
-      // Format order lines for better email readability (mirroring your Excel order form)
       const formattedOrderLines = filledLines.map(line => `• Product Code: ${line.productCode} – Quantity: ${line.quantity}`).join('\n');
 
-      const emailContent = {
-        template_params: {
-          to_name: 'Dave',
-          from_name: contactInfo.contactPerson,
-          supplier_company: companyName,
-          customer_company: contactInfo.companyName,
-          contact_person: contactInfo.contactPerson,
-          contact_phone: contactInfo.contactDetails || 'Not provided',
-          contact_email: contactInfo.emailAddress,
-          delivery_address: contactInfo.address,
-          order_list: formattedOrderLines,
-          notes: notes || 'No additional notes provided',
-          reply_to: contactInfo.emailAddress
-        },
-        service_id: 'service_fvfxlgh',
-        template_id: 'template_1sz03e8',
-        user_id: 'bQOrMB40ft605dNrW'
-      };
+      const apiResult = await startOrderVerificationAPI({
+        companySlug,
+        supplierCompany: companyName,
+        contactInfo,
+        filledLines,
+        notes,
+      });
 
-      await emailjs.send(emailContent.service_id, emailContent.template_id, emailContent.template_params, emailContent.user_id);
-      setStatus('success');
-      setOrderLines([{ productCode: '', quantity: '' }]);
-      setNotes('');
-      setContactInfo({ companyName: '', contactPerson: '', contactDetails: '', emailAddress: '', address: '' });
-      setHoneypotWebsite('');
-    } catch (error) {
+      if (apiResult === 'verify_sent') {
+        setVerifyEmail(contactInfo.emailAddress);
+        setFlow('verify_sent');
+        return;
+      }
+
+      if (apiResult === 'legacy') {
+        await sendLegacyOrderEmail(companyName, contactInfo, formattedOrderLines, notes);
+        setStatus('success');
+        resetAfterSuccessfulSend();
+        return;
+      }
+
+      if (apiResult === 'send_failed') {
+        setValidationError('Could not send the confirmation email. Check your connection or try again later.');
+        setStatus('error');
+        return;
+      }
+
+      if (apiResult === 'bad_request') {
+        setValidationError('Please check your order details and try again.');
+        setStatus('error');
+        return;
+      }
+
+      setValidationError('Something went wrong. Please try again.');
       setStatus('error');
+    } catch {
+      setStatus('error');
+    } finally {
+      setStatus((s) => (s === 'loading' ? 'idle' : s));
     }
   }
 
@@ -204,6 +404,18 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
 
   return (
     <>
+      {flow === 'verify_sent' ? (
+        <OrderVerifySentPanel
+          verifyEmail={verifyEmail}
+          invertedPrimaryButtons={invertedPrimaryButtons}
+          onDismiss={() => {
+            setFlow('form');
+            setVerifyEmail('');
+            setValidationError('');
+          }}
+        />
+      ) : null}
+      {flow === 'form' ? (
       <form onSubmit={handleSubmit} className="space-y-6 relative">
         {/* Bot trap: must stay empty. "Company website" label was tripping password managers / autofill. */}
         <div
@@ -227,6 +439,11 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
             onChange={(e) => setHoneypotWebsite(e.target.value)}
           />
         </div>
+        {(validationError || status === 'error') && (
+          <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-100" role="alert">
+            {validationError || 'Failed to send order request. Please try again.'}
+          </div>
+        )}
         {/* Contact Information Section */}
         <div className="bg-gray-50 dark:bg-neutral-900/90 dark:border dark:border-neutral-800 p-6 rounded-lg mb-6">
           <h3 className="text-lg font-medium text-gray-900 dark:text-neutral-100 mb-4">Contact Information</h3>
@@ -368,11 +585,8 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
         >
           {status === 'loading' ? 'Sending...' : 'Submit Order'}
         </button>
-
-        {status === 'error' && (
-          <p className="text-red-600 text-center">Failed to send order request. Please try again.</p>
-        )}
       </form>
+      ) : null}
       {/* Show success modal overlay if status is success */}
       {status === 'success' && <SuccessModal />}
     </>
@@ -380,7 +594,7 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
 }
 
 // Default (generic) Order Form Component (existing code)
-function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: OrderFormProps) {
+function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = false }: OrderFormProps) {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     companyName: '',
     contactPerson: '',
@@ -392,6 +606,9 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
   const [notes, setNotes] = useState('');
   const [honeypotWebsite, setHoneypotWebsite] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [flow, setFlow] = useState<'form' | 'verify_sent'>('form');
+  const [verifyEmail, setVerifyEmail] = useState('');
+  const [validationError, setValidationError] = useState('');
   const successModalRef = useRef<HTMLDivElement>(null);
   const hpId = useId();
 
@@ -421,58 +638,75 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
     setOrderLines(newLines);
   };
 
+  const resetAfterSuccessfulSend = () => {
+    setOrderLines([{ productCode: '', quantity: '' }]);
+    setNotes('');
+    setContactInfo({ companyName: '', contactPerson: '', contactDetails: '', emailAddress: '', address: '' });
+    setHoneypotWebsite('');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError('');
     if (honeypotWebsite.trim() !== '') {
       return;
     }
-    setStatus('loading');
 
-    // Filter out empty lines
     const filledLines = orderLines.filter(line => line.productCode.trim() !== '' && line.quantity.trim() !== '');
     if (filledLines.length === 0) {
       alert('Please add at least one product to order');
-      setStatus('idle');
       return;
     }
 
     if (!contactInfo.companyName || !contactInfo.contactPerson || !contactInfo.emailAddress) {
       alert('Please fill in all required contact information');
-      setStatus('idle');
       return;
     }
 
+    setStatus('loading');
+
     try {
-      // Format order lines for better email readability (mirroring your Excel order form)
       const formattedOrderLines = filledLines.map(line => `• Product Code: ${line.productCode} – Quantity: ${line.quantity}`).join('\n');
 
-      const emailContent = {
-        template_params: {
-          to_name: 'Dave',
-          from_name: contactInfo.contactPerson,
-          supplier_company: companyName,
-          customer_company: contactInfo.companyName,
-          contact_person: contactInfo.contactPerson,
-          contact_phone: contactInfo.contactDetails || 'Not provided',
-          contact_email: contactInfo.emailAddress,
-          delivery_address: contactInfo.address,
-          order_list: formattedOrderLines,
-          notes: notes || 'No additional notes provided',
-          reply_to: contactInfo.emailAddress
-        },
-        service_id: 'service_fvfxlgh',
-        template_id: 'template_1sz03e8',
-        user_id: 'bQOrMB40ft605dNrW'
-      };
+      const apiResult = await startOrderVerificationAPI({
+        companySlug,
+        supplierCompany: companyName,
+        contactInfo,
+        filledLines,
+        notes,
+      });
 
-      await emailjs.send(emailContent.service_id, emailContent.template_id, emailContent.template_params, emailContent.user_id);
-      setStatus('success');
-      setOrderLines([{ productCode: '', quantity: '' }]);
-      setNotes('');
-      setContactInfo({ companyName: '', contactPerson: '', contactDetails: '', emailAddress: '', address: '' });
-      setHoneypotWebsite('');
-    } catch (error) {
+      if (apiResult === 'verify_sent') {
+        setVerifyEmail(contactInfo.emailAddress);
+        setFlow('verify_sent');
+        return;
+      }
+
+      if (apiResult === 'legacy') {
+        await sendLegacyOrderEmail(companyName, contactInfo, formattedOrderLines, notes);
+        setStatus('success');
+        resetAfterSuccessfulSend();
+        return;
+      }
+
+      if (apiResult === 'send_failed') {
+        setValidationError('Could not send the confirmation email. Check your connection or try again later.');
+        setStatus('error');
+        return;
+      }
+
+      if (apiResult === 'bad_request') {
+        setValidationError('Please check your order details and try again.');
+        setStatus('error');
+        return;
+      }
+
+      setValidationError('Something went wrong. Please try again.');
       setStatus('error');
+    } catch {
+      setStatus('error');
+    } finally {
+      setStatus((s) => (s === 'loading' ? 'idle' : s));
     }
   }
 
@@ -543,6 +777,18 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
 
   return (
     <>
+      {flow === 'verify_sent' ? (
+        <OrderVerifySentPanel
+          verifyEmail={verifyEmail}
+          invertedPrimaryButtons={invertedPrimaryButtons}
+          onDismiss={() => {
+            setFlow('form');
+            setVerifyEmail('');
+            setValidationError('');
+          }}
+        />
+      ) : null}
+      {flow === 'form' ? (
       <form onSubmit={handleSubmit} className="space-y-6 relative">
         {/* Bot trap: must stay empty. "Company website" label was tripping password managers / autofill. */}
         <div
@@ -566,6 +812,11 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
             onChange={(e) => setHoneypotWebsite(e.target.value)}
           />
         </div>
+        {(validationError || status === 'error') && (
+          <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-100" role="alert">
+            {validationError || 'Failed to send order request. Please try again.'}
+          </div>
+        )}
         {/* Contact Information Section */}
         <div className="bg-gray-50 dark:bg-neutral-900/90 dark:border dark:border-neutral-800 p-6 rounded-lg mb-6">
           <h3 className="text-lg font-medium text-gray-900 dark:text-neutral-100 mb-4">Contact Information</h3>
@@ -707,11 +958,8 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
         >
           {status === 'loading' ? 'Sending...' : 'Submit Order'}
         </button>
-
-        {status === 'error' && (
-          <p className="text-red-600 text-center">Failed to send order request. Please try again.</p>
-        )}
       </form>
+      ) : null}
       {/* Show success modal overlay if status is success */}
       {status === 'success' && <SuccessModal />}
     </>
@@ -719,9 +967,15 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
 }
 
 // Exported OrderForm (Conditional Render) –– if companyName is "Peppermint Grove" render PeppermintGroveOrderForm, otherwise render DefaultOrderForm
-export default function OrderForm({ companyName, invertedPrimaryButtons = false }: OrderFormProps) {
-  if (companyName === "Peppermint Grove") {
-    return <PeppermintGroveOrderForm companyName={companyName} invertedPrimaryButtons={invertedPrimaryButtons} />;
-  }
-  return <DefaultOrderForm companyName={companyName} invertedPrimaryButtons={invertedPrimaryButtons} />;
-} 
+export default function OrderForm({ companyName, companySlug, invertedPrimaryButtons = false }: OrderFormProps) {
+  return (
+    <>
+      <OrderUrlConfirmationBanner />
+      {companyName === "Peppermint Grove" ? (
+        <PeppermintGroveOrderForm companyName={companyName} companySlug={companySlug} invertedPrimaryButtons={invertedPrimaryButtons} />
+      ) : (
+        <DefaultOrderForm companyName={companyName} companySlug={companySlug} invertedPrimaryButtons={invertedPrimaryButtons} />
+      )}
+    </>
+  );
+}

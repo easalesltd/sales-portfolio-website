@@ -239,7 +239,7 @@ export default async function CompanyPage() {
                 Place an Order
                 <div className="h-1 w-16 bg-neutral-950 dark:bg-white mt-2" />
               </h2>
-              <OrderForm companyName={company.name} />
+              <OrderForm companyName={company.name} companySlug={company.slug} />
             </div>
           </div>
         </div>

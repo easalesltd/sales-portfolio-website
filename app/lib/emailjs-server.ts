@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 
 const DEFAULT_SERVICE = 'service_fvfxlgh';
 const DEFAULT_TEMPLATE_VISIT = 'template_35gndyb';
+const DEFAULT_TEMPLATE_ORDER = 'template_1sz03e8';
 
 function publicKey(): string {
   return (
@@ -41,6 +42,15 @@ export function verificationEmailDeliveryConfigured(): boolean {
 /** After the visitor confirms, we can email you via Resend (simple mode) or EmailJS. */
 export function visitNotifyConfigured(): boolean {
   return resendSimpleVisitFlowConfigured() || emailJsKeysConfigured();
+}
+
+/** Same env as visit flow: Resend + notify inbox, or EmailJS keys. */
+export function orderNotifyConfigured(): boolean {
+  return visitNotifyConfigured();
+}
+
+export function resendSimpleOrderFlowConfigured(): boolean {
+  return resendSimpleVisitFlowConfigured();
 }
 
 function escapeHtml(s: string): string {
@@ -107,6 +117,68 @@ export async function sendVisitVerificationEmail(params: {
   );
 }
 
+async function sendOrderVerificationViaResend(params: {
+  toEmail: string;
+  confirmUrl: string;
+  fromName: string;
+  supplierCompany: string;
+}): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY!;
+  const from = process.env.RESEND_FROM!;
+  const resend = new Resend(apiKey);
+  const safeName = escapeHtml(params.fromName);
+  const safeSupplier = escapeHtml(params.supplierCompany);
+  const html = `
+<p>Hi ${safeName},</p>
+<p>Please confirm your email so we can receive your <strong>order request</strong> for <strong>${safeSupplier}</strong> (East Anglian Sales LTD).</p>
+<p><a href="${escapeHtml(params.confirmUrl)}">Confirm and send my order</a></p>
+<p style="font-size:12px;color:#555;">This link expires in 48 hours. If you did not request this, you can ignore this email.</p>
+`.trim();
+
+  const { error } = await resend.emails.send({
+    from,
+    to: params.toEmail,
+    subject: `Confirm your order — ${params.supplierCompany}`,
+    html,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+/** “Click to confirm” for wholesale order — same delivery options as the visit flow. */
+export async function sendOrderVerificationEmail(params: {
+  toEmail: string;
+  confirmUrl: string;
+  fromName: string;
+  supplierCompany: string;
+}): Promise<void> {
+  if (resendVerificationConfigured()) {
+    await sendOrderVerificationViaResend(params);
+    return;
+  }
+
+  const pk = publicKey();
+  const privateKey = process.env.EMAILJS_PRIVATE_KEY!;
+  const serviceId = process.env.EMAILJS_SERVICE_ID ?? DEFAULT_SERVICE;
+  const templateId = process.env.EMAILJS_TEMPLATE_VERIFY;
+  if (!templateId) {
+    throw new Error('Set RESEND_API_KEY and RESEND_FROM, or EMAILJS_TEMPLATE_VERIFY');
+  }
+  await emailjs.send(
+    serviceId,
+    templateId,
+    {
+      to_email: params.toEmail,
+      confirm_url: params.confirmUrl,
+      from_name: params.fromName,
+      request_kind: 'order',
+      supplier_company: params.supplierCompany,
+    },
+    { publicKey: pk, privateKey }
+  );
+}
+
 async function sendVisitNotificationViaResend(p: Record<string, string>): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY!;
   const from = process.env.RESEND_FROM!;
@@ -152,5 +224,53 @@ export async function sendVisitNotificationEmail(templateParams: Record<string, 
   const privateKey = process.env.EMAILJS_PRIVATE_KEY!;
   const serviceId = process.env.EMAILJS_SERVICE_ID ?? DEFAULT_SERVICE;
   const templateId = process.env.EMAILJS_TEMPLATE_VISIT ?? DEFAULT_TEMPLATE_VISIT;
+  await emailjs.send(serviceId, templateId, templateParams, { publicKey: pk, privateKey });
+}
+
+async function sendOrderNotificationViaResend(p: Record<string, string>): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY!;
+  const from = process.env.RESEND_FROM!;
+  const to = process.env.VISIT_REQUEST_NOTIFY_EMAIL!;
+  const resend = new Resend(apiKey);
+  const replyTo = p.reply_to || p.contact_email || undefined;
+  const rows = [
+    ['Supplier (brand)', p.supplier_company],
+    ['Customer company', p.customer_company],
+    ['Contact person', p.contact_person],
+    ['Phone', p.contact_phone],
+    ['Email', p.contact_email],
+    ['Delivery address', p.delivery_address],
+    ['Order lines', p.order_list],
+    ['Notes', p.notes],
+  ]
+    .map(([k, v]) => `<tr><td style="padding:6px 12px;border:1px solid #e5e5e5;"><strong>${escapeHtml(k)}</strong></td><td style="padding:6px 12px;border:1px solid #e5e5e5;">${escapeHtml(v)}</td></tr>`)
+    .join('');
+  const html = `
+<p>This <strong>order request</strong> was <strong>verified by email</strong> (the customer clicked the confirmation link).</p>
+<table style="border-collapse:collapse;max-width:640px;">${rows}</table>
+`.trim();
+
+  const { error } = await resend.emails.send({
+    from,
+    to,
+    replyTo: replyTo || undefined,
+    subject: `Verified order — ${escapeHtml(p.supplier_company)} / ${escapeHtml(p.customer_company)}`,
+    html,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function sendOrderNotificationEmail(templateParams: Record<string, string>): Promise<void> {
+  if (resendSimpleOrderFlowConfigured()) {
+    await sendOrderNotificationViaResend(templateParams);
+    return;
+  }
+
+  const pk = publicKey();
+  const privateKey = process.env.EMAILJS_PRIVATE_KEY!;
+  const serviceId = process.env.EMAILJS_SERVICE_ID ?? DEFAULT_SERVICE;
+  const templateId = process.env.EMAILJS_TEMPLATE_ORDER ?? DEFAULT_TEMPLATE_ORDER;
   await emailjs.send(serviceId, templateId, templateParams, { publicKey: pk, privateKey });
 }
