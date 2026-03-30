@@ -269,12 +269,19 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                   className="pointer-events-none absolute left-[max(-100vw,-9999px)] h-px w-px overflow-hidden opacity-0"
                   aria-hidden="true"
                 >
-                  <label htmlFor="req-visit-company-website">Company website</label>
                   <input
                     id="req-visit-company-website"
+                    name="_ea_trk"
                     type="text"
                     tabIndex={-1}
-                    autoComplete="off"
+                    autoComplete="new-password"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck={false}
+                    data-1p-ignore="true"
+                    data-lpignore="true"
+                    data-bwignore="true"
+                    aria-hidden="true"
                     value={honeypotWebsite}
                     onChange={(e) => setHoneypotWebsite(e.target.value)}
                   />

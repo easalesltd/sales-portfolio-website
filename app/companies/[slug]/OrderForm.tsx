@@ -205,16 +205,24 @@ function PeppermintGroveOrderForm({ companyName, invertedPrimaryButtons = false 
   return (
     <>
       <form onSubmit={handleSubmit} className="space-y-6 relative">
+        {/* Bot trap: must stay empty. "Company website" label was tripping password managers / autofill. */}
         <div
           className="pointer-events-none absolute left-[max(-100vw,-9999px)] h-px w-px overflow-hidden opacity-0"
           aria-hidden="true"
         >
-          <label htmlFor={hpId}>Company website</label>
           <input
             id={hpId}
+            name="_ea_trk"
             type="text"
             tabIndex={-1}
-            autoComplete="off"
+            autoComplete="new-password"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            data-1p-ignore="true"
+            data-lpignore="true"
+            data-bwignore="true"
+            aria-hidden="true"
             value={honeypotWebsite}
             onChange={(e) => setHoneypotWebsite(e.target.value)}
           />
@@ -536,16 +544,24 @@ function DefaultOrderForm({ companyName, invertedPrimaryButtons = false }: Order
   return (
     <>
       <form onSubmit={handleSubmit} className="space-y-6 relative">
+        {/* Bot trap: must stay empty. "Company website" label was tripping password managers / autofill. */}
         <div
           className="pointer-events-none absolute left-[max(-100vw,-9999px)] h-px w-px overflow-hidden opacity-0"
           aria-hidden="true"
         >
-          <label htmlFor={hpId}>Company website</label>
           <input
             id={hpId}
+            name="_ea_trk"
             type="text"
             tabIndex={-1}
-            autoComplete="off"
+            autoComplete="new-password"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            data-1p-ignore="true"
+            data-lpignore="true"
+            data-bwignore="true"
+            aria-hidden="true"
             value={honeypotWebsite}
             onChange={(e) => setHoneypotWebsite(e.target.value)}
           />
