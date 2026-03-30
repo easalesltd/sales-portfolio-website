@@ -33,13 +33,16 @@ git clone [repository-url]
 npm install
 ```
 
-3. Create a `.env` file in the root directory and add your environment variables:
+3. Create a `.env` file in the root directory and add your environment variables (see `.env.example`):
 ```env
-# EmailJS configuration
+# EmailJS configuration (browser forms)
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
 ```
+
+**Request an Agent Visit — confirm-by-email (reduces fake submissions):**  
+When `REQUEST_VISIT_TOKEN_SECRET` (16+ characters), `EMAILJS_PRIVATE_KEY`, and `EMAILJS_TEMPLATE_VERIFY` are set, visitors must click a link in their inbox before you receive the request. If those are missing, the form falls back to sending immediately from the browser. Set `NEXT_PUBLIC_SITE_URL` to your production domain so the link points to the right host. On Vercel, add the same variables under Project → Settings → Environment Variables and redeploy.
 
 4. Run the development server:
 ```bash

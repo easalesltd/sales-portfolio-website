@@ -2,12 +2,26 @@
 
 import React from 'react';
 import { FaEnvelope, FaInstagram, FaLinkedin, FaCalendarCheck, FaPhone } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RequestVisitForm from '../components/RequestVisitForm';
 import FadeInOnScroll from '../components/FadeInOnScroll';
 
 export default function ContactPage() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+  const [visitNotice, setVisitNotice] = useState<'confirmed' | 'error' | null>(null);
+
+  useEffect(() => {
+    const q = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('visit') : null;
+    if (q === 'confirmed') setVisitNotice('confirmed');
+    else if (q === 'error') setVisitNotice('error');
+  }, []);
+
+  const dismissVisitNotice = () => {
+    setVisitNotice(null);
+    if (typeof window !== 'undefined') {
+      window.history.replaceState({}, '', '/contact');
+    }
+  };
 
   // Generate structured data for Contact page
   const contactSchema = {
@@ -49,6 +63,44 @@ export default function ContactPage() {
       ></script>
       <div className="min-h-screen py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {visitNotice === 'confirmed' ? (
+          <div
+            className="mb-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100"
+            role="status"
+          >
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm font-medium">
+                Your email is verified and your agent visit request has been sent. We&apos;ll be in touch soon.
+              </p>
+              <button
+                type="button"
+                onClick={dismissVisitNotice}
+                className="shrink-0 text-sm font-semibold underline underline-offset-2 hover:no-underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        ) : null}
+        {visitNotice === 'error' ? (
+          <div
+            className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-900 dark:border-red-900 dark:bg-red-950/40 dark:text-red-100"
+            role="alert"
+          >
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm font-medium">
+                That confirmation link was invalid or expired. Please open Request an Agent Visit and try again.
+              </p>
+              <button
+                type="button"
+                onClick={dismissVisitNotice}
+                className="shrink-0 text-sm font-semibold underline underline-offset-2 hover:no-underline"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        ) : null}
         <FadeInOnScroll>
           <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Contact Us</h1>
         </FadeInOnScroll>

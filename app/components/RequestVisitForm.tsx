@@ -46,8 +46,51 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [validationError, setValidationError] = useState<string>('');
+  const [flow, setFlow] = useState<'form' | 'verify_sent'>('form');
+  const [verifyEmail, setVerifyEmail] = useState('');
 
   const successModalRef = useRef<HTMLDivElement>(null);
+  const emptyForm = {
+    name: '',
+    businessName: '',
+    businessAddress: '',
+    datesAvailable: '',
+    email: '',
+    phone: '',
+    notes: ''
+  };
+
+  const resetAll = () => {
+    setFormData(emptyForm);
+    setCompanies((prev) => prev.map((c) => ({ ...c, checked: false })));
+    setFlow('form');
+    setSubmitStatus('idle');
+    setValidationError('');
+    setVerifyEmail('');
+  };
+
+  const handleClose = () => {
+    resetAll();
+    onClose();
+  };
+
+  const sendLegacyEmail = async (selectedCompanies: string) => {
+    await emailjs.send(
+      'service_fvfxlgh',
+      'template_35gndyb',
+      {
+        from_name: formData.name,
+        business_name: formData.businessName,
+        business_address: formData.businessAddress,
+        dates_available: formData.datesAvailable,
+        email: formData.email,
+        phone: formData.phone,
+        interested_companies: selectedCompanies,
+        notes: formData.notes || 'No additional notes'
+      },
+      'bQOrMB40ft605dNrW'
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,10 +98,8 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    const selectedCompanies = companies
-      .filter(company => company.checked)
-      .map(company => company.name)
-      .join(', ');
+    const selectedList = companies.filter((company) => company.checked).map((company) => company.name);
+    const selectedCompanies = selectedList.join(', ');
 
     if (!selectedCompanies) {
       setValidationError('Please select at least one company you are interested in');
@@ -67,39 +108,46 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     }
 
     try {
-      await emailjs.send(
-        'service_fvfxlgh',
-        'template_35gndyb',
-        {
-          from_name: formData.name,
-          business_name: formData.businessName,
-          business_address: formData.businessAddress,
-          dates_available: formData.datesAvailable,
+      const res = await fetch('/api/request-visit/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          businessName: formData.businessName,
+          businessAddress: formData.businessAddress,
+          datesAvailable: formData.datesAvailable,
           email: formData.email,
           phone: formData.phone,
-          interested_companies: selectedCompanies,
-          notes: formData.notes || 'No additional notes'
-        },
-        'bQOrMB40ft605dNrW'
-      );
-      setSubmitStatus('success');
-      
-      // Reset form after successful submission
-      setTimeout(() => {
-        onClose();
-        setSubmitStatus('idle');
-        setFormData({
-          name: '',
-          businessName: '',
-          businessAddress: '',
-          datesAvailable: '',
-          email: '',
-          phone: '',
-          notes: ''
-        });
-        setCompanies(companies.map(company => ({ ...company, checked: false })));
-      }, 5000);
-    } catch (error) {
+          notes: formData.notes || 'No additional notes',
+          interestedCompanies: selectedList,
+        }),
+      });
+      const data = (await res.json()) as { ok?: boolean; fallback?: boolean; error?: string };
+
+      if (res.ok && data.ok && !data.fallback) {
+        setVerifyEmail(formData.email);
+        setFlow('verify_sent');
+        return;
+      }
+
+      if (data.fallback) {
+        await sendLegacyEmail(selectedCompanies);
+        setSubmitStatus('success');
+        setTimeout(() => {
+          handleClose();
+        }, 5000);
+        return;
+      }
+
+      if (data.error === 'send_failed') {
+        setValidationError('Could not send the confirmation email. Check your connection or try again later.');
+        setSubmitStatus('error');
+        return;
+      }
+
+      setValidationError('Something went wrong. Please try again.');
+      setSubmitStatus('error');
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -161,7 +209,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
           <h3 className="text-2xl font-bold text-gray-800 mb-2 text-center">Thank you!</h3>
           <p className="text-gray-600 text-center mb-6">Your request has been sent successfully.<br />We&apos;ll be in touch soon.</p>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="mt-2 px-6 py-2 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors"
           >
             Close
@@ -181,7 +229,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
             <div className="sticky top-0 bg-white rounded-t-lg border-b border-gray-200 p-4 flex justify-between items-center">
               <h2 className="text-2xl font-semibold text-gray-900">Request an Agent Visit</h2>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="text-gray-400 hover:text-gray-500 p-2"
               >
                 <span className="text-2xl">×</span>
@@ -189,6 +237,27 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
             </div>
 
             <div className="p-6 overflow-y-auto max-h-[calc(100vh-8rem)]">
+              {flow === 'verify_sent' ? (
+                <div className="space-y-4 text-center py-4">
+                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-teal-100 text-teal-700 text-2xl font-bold">
+                    ✉
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900">Check your email</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed max-w-md mx-auto">
+                    We sent a confirmation link to <span className="font-medium text-gray-900">{verifyEmail}</span>.
+                    Open it to verify your address and send your visit request to East Anglian Sales LTD.
+                  </p>
+                  <p className="text-xs text-gray-500">The link expires after 48 hours. You can close this window.</p>
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="mt-4 px-6 py-2 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : null}
+              {flow === 'form' ? (
               <form onSubmit={handleSubmit} className="space-y-6">
                 {validationError && (
                   <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md" role="alert">
@@ -317,6 +386,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                   </button>
                 </div>
               </form>
+              ) : null}
             </div>
           </div>
         </div>
