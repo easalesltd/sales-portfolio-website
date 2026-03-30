@@ -1027,12 +1027,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         drawDiscoBall(ctx, W, discoBallDropRef.current);
       }
 
-      // Final foreground pass: re-draw billboards so poles/panels are never
-      // occluded by jump obstacles (or any other sprites) due to layering.
-      for (const bb of billboardsRef.current) {
-        drawBillboard(ctx, bb, groundY, H, W, logoImagesRef.current);
-      }
-
       const displayScore = Math.floor(scoreRef.current);
       const countyLabel = countyForScore(scoreRef.current);
       const countyHue = ['#6d28d9', '#047857', '#b91c1c', '#0369a1'][ci];
