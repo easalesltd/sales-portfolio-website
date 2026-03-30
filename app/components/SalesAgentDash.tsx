@@ -142,12 +142,28 @@ function drawBillboard(
   const url = c.logoUrlDark ?? c.logoUrl;
 
   ctx.fillStyle = '#3f3f46';
-  // Pole reaches the road/floor; the panel itself is already positioned higher
-  // via `clearanceAboveRoad`.
-  ctx.fillRect(x + boardW / 2 - poleW / 2, boardBottom, poleW, groundY - boardBottom);
+  // Prevent the billboard panel from visually "climbing into" the scoreboard HUD,
+  // while still keeping it far above the tallest jump obstacles.
+  const maxObstacleH = 64;
+  const maxPanelBottom = groundY - (maxObstacleH + 8);
+  const minPanelTop = 70; // scoreboard background ends around y ~= 66
+
+  let panelTop = boardTop;
+  let panelBottom = boardBottom;
+  if (panelTop < minPanelTop) {
+    panelTop = minPanelTop;
+    panelBottom = panelTop + boardH;
+  }
+  if (panelBottom > maxPanelBottom) {
+    panelBottom = maxPanelBottom;
+    panelTop = panelBottom - boardH;
+  }
+
+  // Pole reaches the road/floor; the panel itself is positioned via `panelTop/panelBottom`.
+  ctx.fillRect(x + boardW / 2 - poleW / 2, panelBottom, poleW, groundY - panelBottom);
 
   ctx.fillStyle = '#fafafa';
-  roundRectPath(ctx, x, boardTop, boardW, boardH, 5);
+  roundRectPath(ctx, x, panelTop, boardW, boardH, 5);
   ctx.fill();
   ctx.strokeStyle = '#27272a';
   ctx.lineWidth = 2;
@@ -162,16 +178,16 @@ function drawBillboard(
     const dw = img.naturalWidth * scale;
     const dh = img.naturalHeight * scale;
     const dx = x + pad + (innerW - dw) / 2;
-    const dy = boardTop + pad + (innerH - dh) / 2;
+    const dy = panelTop + pad + (innerH - dh) / 2;
     ctx.drawImage(img, dx, dy, dw, dh);
   } else {
     ctx.fillStyle = '#e4e4e7';
-    roundRectPath(ctx, x + pad, boardTop + pad, innerW, innerH, 3);
+    roundRectPath(ctx, x + pad, panelTop + pad, innerW, innerH, 3);
     ctx.fill();
     ctx.fillStyle = '#71717a';
     ctx.font = '600 11px system-ui, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(c.name.split(' ')[0] ?? '…', x + boardW / 2, boardTop + pad + innerH / 2 + 4);
+    ctx.fillText(c.name.split(' ')[0] ?? '…', x + boardW / 2, panelTop + pad + innerH / 2 + 4);
     ctx.textAlign = 'left';
   }
 }
