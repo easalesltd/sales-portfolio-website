@@ -33,19 +33,13 @@ git clone [repository-url]
 npm install
 ```
 
-3. Create a `.env` file in the root directory and add your environment variables (see `.env.example`):
+3. Create a `.env` file in the root directory and add your environment variables:
 ```env
 # EmailJS configuration
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
-
-# Optional: global Sales Agent Dash leaderboard (Upstash Redis REST API)
-# Without these, the leaderboard is stored per browser only.
-UPSTASH_REDIS_REST_URL=https://xxxx.upstash.io
-UPSTASH_REDIS_REST_TOKEN=your_token
 ```
-On **Vercel**, add the `UPSTASH_*` variables under Project → Settings → Environment Variables (or create Redis under Storage and connect the project), then redeploy so the live site can read and write shared scores.
 
 4. Run the development server:
 ```bash
