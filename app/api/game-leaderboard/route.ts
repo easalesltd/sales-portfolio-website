@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getRedis } from '@/app/lib/upstash-redis';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const REDIS_KEY = 'sales-agent-dash:leaderboard-v1';
 const MAX_STORED = 200;

@@ -1023,7 +1023,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       let server: LeaderboardRow[] = [];
       let serverOn = false;
       try {
-        const r = await fetch('/api/game-leaderboard');
+        const r = await fetch('/api/game-leaderboard', { cache: 'no-store' });
+        if (!r.ok) throw new Error('leaderboard GET failed');
         const j = (await r.json()) as { entries?: LeaderboardRow[]; server?: boolean };
         server = Array.isArray(j.entries) ? j.entries : [];
         serverOn = Boolean(j.server);
@@ -1048,6 +1049,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, score: lastRunScore }),
+        cache: 'no-store',
       });
     } catch {
       /* still record locally */
@@ -1055,10 +1057,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     pushLocalLeaderboard(name, lastRunScore);
     let server: LeaderboardRow[] = [];
     try {
-      const r = await fetch('/api/game-leaderboard');
-      const j = (await r.json()) as { entries?: LeaderboardRow[]; server?: boolean };
-      server = Array.isArray(j.entries) ? j.entries : [];
-      setLbServerOn(Boolean(j.server));
+      const r = await fetch('/api/game-leaderboard', { cache: 'no-store' });
+      if (r.ok) {
+        const j = (await r.json()) as { entries?: LeaderboardRow[]; server?: boolean };
+        server = Array.isArray(j.entries) ? j.entries : [];
+        setLbServerOn(Boolean(j.server));
+      }
     } catch {
       /* keep prior */
     }
