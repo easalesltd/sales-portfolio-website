@@ -843,12 +843,18 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     window.localStorage.setItem(AUDIO_ENABLED_KEY, String(audioEnabled));
   }, [audioEnabled]);
 
-  const obstacleSpawnCarryRef = useRef(0);
+  // World-distance based spawning so we can align billboards between obstacles.
+  // `runDistanceRef` increases by `scroll` each tick; we spawn events when it passes
+  // their scheduled distances.
+  const runDistanceRef = useRef(0);
+  const nextObstacleAtRef = useRef(OBSTACLE_SPAWN_GAP_PX);
+  // First billboard is halfway between obstacle 1 and obstacle 2.
+  const nextBillboardAtRef = useRef(OBSTACLE_SPAWN_GAP_PX + OBSTACLE_SPAWN_GAP_PX / 2);
+
   const pyRef = useRef(0);
   const vyRef = useRef(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
   const billboardsRef = useRef<Billboard[]>([]);
-  const billboardSpawnCarryRef = useRef(0);
   const billboardCompanyDeckRef = useRef<number[]>([]);
   const billboardDeckIndexRef = useRef(0);
   const logoImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
@@ -1186,7 +1192,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
   const startGame = useCallback(() => {
     scoreRef.current = 0;
-    obstacleSpawnCarryRef.current = 0;
+    runDistanceRef.current = 0;
+    nextObstacleAtRef.current = OBSTACLE_SPAWN_GAP_PX;
+    nextBillboardAtRef.current = OBSTACLE_SPAWN_GAP_PX + OBSTACLE_SPAWN_GAP_PX / 2;
     pyRef.current = 0;
     vyRef.current = 0;
     obstaclesRef.current = [];
@@ -1197,7 +1205,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     discoWasActiveRef.current = false;
     discoBallDropRef.current = 0;
     billboardsRef.current = [];
-    billboardSpawnCarryRef.current = 0;
     billboardCompanyDeckRef.current = [];
     billboardDeckIndexRef.current = 0;
     setOutcome(null);
@@ -1328,9 +1335,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       }
 
-      obstacleSpawnCarryRef.current += scroll;
-      while (obstacleSpawnCarryRef.current >= OBSTACLE_SPAWN_GAP_PX) {
-        obstacleSpawnCarryRef.current -= OBSTACLE_SPAWN_GAP_PX;
+      runDistanceRef.current += scroll;
+      while (runDistanceRef.current >= nextObstacleAtRef.current) {
+        nextObstacleAtRef.current += OBSTACLE_SPAWN_GAP_PX;
         const kind = OBSTACLE_KINDS[Math.floor(Math.random() * OBSTACLE_KINDS.length)];
         const { w: ow, h: oh } = dimsFor(kind);
         obstaclesRef.current.push({
@@ -1348,9 +1355,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       const nCompanies = companies.length;
       if (nCompanies > 0) {
-        billboardSpawnCarryRef.current += scroll;
-        while (billboardSpawnCarryRef.current >= BILLBOARD_SPAWN_GAP_PX) {
-          billboardSpawnCarryRef.current -= BILLBOARD_SPAWN_GAP_PX;
+        while (runDistanceRef.current >= nextBillboardAtRef.current) {
+          nextBillboardAtRef.current += OBSTACLE_SPAWN_GAP_PX;
           if (billboardDeckIndexRef.current >= billboardCompanyDeckRef.current.length) {
             billboardCompanyDeckRef.current = shuffleCompanyIndices(nCompanies);
             billboardDeckIndexRef.current = 0;
@@ -1359,7 +1365,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
             billboardCompanyDeckRef.current[billboardDeckIndexRef.current]!;
           billboardDeckIndexRef.current += 1;
           billboardsRef.current.push({
-            x: W + 32 + Math.random() * 80,
+            // Align to obstacle lane; timing alignment places them between obstacles.
+            x: W + 24,
             companyIndex,
           });
         }
