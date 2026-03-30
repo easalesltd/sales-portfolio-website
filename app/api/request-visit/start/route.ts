@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { sealVisitPayload, type PendingVisitPayload } from '@/app/lib/request-visit-token';
 import {
   emailJsKeysConfigured,
+  resendSimpleVisitFlowConfigured,
   sendVisitVerificationEmail,
   verificationEmailDeliveryConfigured,
 } from '@/app/lib/emailjs-server';
@@ -28,6 +29,9 @@ function isVerificationFullyConfigured(): boolean {
   try {
     if (!process.env.REQUEST_VISIT_TOKEN_SECRET || process.env.REQUEST_VISIT_TOKEN_SECRET.length < 16) {
       return false;
+    }
+    if (resendSimpleVisitFlowConfigured()) {
+      return true;
     }
     return emailJsKeysConfigured() && verificationEmailDeliveryConfigured();
   } catch {

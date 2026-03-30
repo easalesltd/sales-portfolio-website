@@ -24,9 +24,23 @@ function resendVerificationConfigured(): boolean {
   return Boolean(process.env.RESEND_API_KEY && process.env.RESEND_FROM);
 }
 
+/** Easiest production setup: Resend only — verification + your copy of the request (no EmailJS server keys). */
+export function resendSimpleVisitFlowConfigured(): boolean {
+  return Boolean(
+    process.env.RESEND_API_KEY &&
+    process.env.RESEND_FROM &&
+    process.env.VISIT_REQUEST_NOTIFY_EMAIL
+  );
+}
+
 /** Visitor “click to confirm” email: Resend (no extra EmailJS template) or EmailJS template. */
 export function verificationEmailDeliveryConfigured(): boolean {
   return resendVerificationConfigured() || visitVerificationTemplateConfigured();
+}
+
+/** After the visitor confirms, we can email you via Resend (simple mode) or EmailJS. */
+export function visitNotifyConfigured(): boolean {
+  return resendSimpleVisitFlowConfigured() || emailJsKeysConfigured();
 }
 
 function escapeHtml(s: string): string {
@@ -93,7 +107,47 @@ export async function sendVisitVerificationEmail(params: {
   );
 }
 
+async function sendVisitNotificationViaResend(p: Record<string, string>): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY!;
+  const from = process.env.RESEND_FROM!;
+  const to = process.env.VISIT_REQUEST_NOTIFY_EMAIL!;
+  const resend = new Resend(apiKey);
+  const replyTo = p.email || undefined;
+  const rows = [
+    ['Name', p.from_name],
+    ['Business', p.business_name],
+    ['Address', p.business_address],
+    ['Dates', p.dates_available],
+    ['Email', p.email],
+    ['Phone', p.phone],
+    ['Interested in', p.interested_companies],
+    ['Notes', p.notes],
+  ]
+    .map(([k, v]) => `<tr><td style="padding:6px 12px;border:1px solid #e5e5e5;"><strong>${escapeHtml(k)}</strong></td><td style="padding:6px 12px;border:1px solid #e5e5e5;">${escapeHtml(v)}</td></tr>`)
+    .join('');
+  const html = `
+<p>This agent visit request was <strong>verified by email</strong> (the visitor clicked the confirmation link).</p>
+<table style="border-collapse:collapse;max-width:640px;">${rows}</table>
+`.trim();
+
+  const { error } = await resend.emails.send({
+    from,
+    to,
+    replyTo: replyTo || undefined,
+    subject: `Verified visit request — ${escapeHtml(p.business_name)}`,
+    html,
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function sendVisitNotificationEmail(templateParams: Record<string, string>): Promise<void> {
+  if (resendSimpleVisitFlowConfigured()) {
+    await sendVisitNotificationViaResend(templateParams);
+    return;
+  }
+
   const pk = publicKey();
   const privateKey = process.env.EMAILJS_PRIVATE_KEY!;
   const serviceId = process.env.EMAILJS_SERVICE_ID ?? DEFAULT_SERVICE;

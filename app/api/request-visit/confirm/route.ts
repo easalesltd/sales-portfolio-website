@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { openVisitPayload } from '@/app/lib/request-visit-token';
-import { emailJsKeysConfigured, sendVisitNotificationEmail } from '@/app/lib/emailjs-server';
+import { sendVisitNotificationEmail, visitNotifyConfigured } from '@/app/lib/emailjs-server';
 import { getSiteBaseUrl } from '@/app/lib/site-base-url';
 
 export const runtime = 'nodejs';
@@ -21,7 +21,7 @@ export async function GET(req: Request) {
     return redirectTo('error');
   }
 
-  if (!emailJsKeysConfigured()) {
+  if (!visitNotifyConfigured()) {
     return redirectTo('error');
   }
 
