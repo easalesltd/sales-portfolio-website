@@ -993,13 +993,15 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.arc(W - cloudShift + 88, 52, 20, 0, Math.PI * 2);
       ctx.fill();
 
-      for (const bb of billboardsRef.current) {
-        drawBillboard(ctx, bb, groundY, H, W, logoImagesRef.current);
-      }
-
       for (const o of obstaclesRef.current) {
         const top = groundY - o.h;
         drawObstacle(ctx, o, top);
+      }
+
+      // Draw billboards after obstacles so the poles don't appear "behind" the
+      // jump-over objects as they scroll.
+      for (const bb of billboardsRef.current) {
+        drawBillboard(ctx, bb, groundY, H, W, logoImagesRef.current);
       }
 
       const yTop = groundY + pyRef.current - ph;
