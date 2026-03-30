@@ -967,20 +967,22 @@ export default function RootLayout({
         </Script>
         <header className="fixed top-0 left-0 right-0 bg-white dark:bg-neutral-950 z-50 pt-4 border-b border-transparent dark:border-neutral-800 transition-colors duration-300">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center">
+            <div className="flex h-16 items-center justify-between md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-x-3 lg:gap-x-4">
+              <div className="flex min-w-0 items-center md:justify-self-start">
                 <HeaderLogo />
               </div>
-              <div className="hidden md:flex items-center space-x-6">
+              <div className="hidden min-w-0 flex-wrap items-center justify-center gap-x-3 gap-y-1 lg:gap-x-6 md:flex md:justify-self-center">
                 <Link href="/" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Home</Link>
                 <AboutDropdown />
                 <BrandsDropdown />
                 <Link href="/display-solutions" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Display Solutions</Link>
                 <Link href="/temporary-rep-cover" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Temporary Rep Cover</Link>
                 <Link href="/contact" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Contact</Link>
+              </div>
+              <div className="hidden items-center md:flex md:justify-self-end">
                 <ClientButton />
               </div>
-              <div className="flex items-center md:hidden gap-2">
+              <div className="flex shrink-0 items-center gap-2 md:hidden">
                 <MobileRequestButton />
                 <MobileMenu />
               </div>
