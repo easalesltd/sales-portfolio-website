@@ -3,7 +3,7 @@ import { sealVisitPayload, type PendingVisitPayload } from '@/app/lib/request-vi
 import {
   emailJsKeysConfigured,
   sendVisitVerificationEmail,
-  visitVerificationTemplateConfigured,
+  verificationEmailDeliveryConfigured,
 } from '@/app/lib/emailjs-server';
 import { getSiteBaseUrl } from '@/app/lib/site-base-url';
 
@@ -29,7 +29,7 @@ function isVerificationFullyConfigured(): boolean {
     if (!process.env.REQUEST_VISIT_TOKEN_SECRET || process.env.REQUEST_VISIT_TOKEN_SECRET.length < 16) {
       return false;
     }
-    return emailJsKeysConfigured() && visitVerificationTemplateConfigured();
+    return emailJsKeysConfigured() && verificationEmailDeliveryConfigured();
   } catch {
     return false;
   }
@@ -112,7 +112,7 @@ export async function POST(req: Request) {
       fromName: name,
     });
   } catch (e) {
-    console.error('[request-visit/start] EmailJS verify send failed', e);
+    console.error('[request-visit/start] Verification email send failed', e);
     return NextResponse.json({ ok: false, error: 'send_failed' }, { status: 502 });
   }
 

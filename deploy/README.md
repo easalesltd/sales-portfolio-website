@@ -21,7 +21,7 @@
 ## Environment Requirements
 - Node.js 18.x or later
 - NPM 8.x or later
-- For **email confirmation** on “Request an Agent Visit”, set server env vars per `.env.example` (`REQUEST_VISIT_TOKEN_SECRET`, `EMAILJS_PRIVATE_KEY`, `EMAILJS_TEMPLATE_VERIFY`, `NEXT_PUBLIC_SITE_URL`) and enable EmailJS non-browser API access.
+- For **email confirmation** on “Request an Agent Visit”, set env vars per `.env.example` — use **Resend** (`RESEND_API_KEY`, `RESEND_FROM`) or `EMAILJS_TEMPLATE_VERIFY`, plus `REQUEST_VISIT_TOKEN_SECRET`, `EMAILJS_PRIVATE_KEY`, `NEXT_PUBLIC_SITE_URL`. Enable EmailJS non-browser API access.
 
 ## Important Notes
 - The server must have Node.js installed

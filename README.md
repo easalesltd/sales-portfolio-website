@@ -42,7 +42,7 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
 ```
 
 **Request an Agent Visit — confirm-by-email (reduces fake submissions):**  
-When `REQUEST_VISIT_TOKEN_SECRET` (16+ characters), `EMAILJS_PRIVATE_KEY`, and `EMAILJS_TEMPLATE_VERIFY` are set, visitors must click a link in their inbox before you receive the request. If those are missing, the form falls back to sending immediately from the browser. Set `NEXT_PUBLIC_SITE_URL` to your production domain so the link points to the right host. On Vercel, add the same variables under Project → Settings → Environment Variables and redeploy.
+When `REQUEST_VISIT_TOKEN_SECRET` (16+ characters) and `EMAILJS_PRIVATE_KEY` are set, **and** you configure either **Resend** (`RESEND_API_KEY` + `RESEND_FROM` — no extra EmailJS template) **or** `EMAILJS_TEMPLATE_VERIFY`, visitors must click a link before you receive the request. Resend has a generous free tier if you have hit EmailJS template limits. If required env is missing, the form falls back to immediate browser EmailJS. Set `NEXT_PUBLIC_SITE_URL` to your production domain. On Vercel, add the same variables and redeploy.
 
 4. Run the development server:
 ```bash
