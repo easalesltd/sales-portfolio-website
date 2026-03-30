@@ -14,7 +14,8 @@ export default function ClientButton() {
   if (!mounted) {
     return (
       <button
-        className="px-4 py-2 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition-colors"
+        type="button"
+        className="whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium leading-tight sm:text-base border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition-colors"
       >
         Request an Agent Visit
       </button>
@@ -24,8 +25,9 @@ export default function ClientButton() {
   return (
     <>
       <button
+        type="button"
         onClick={() => setIsRequestFormOpen(true)}
-        className="px-4 py-2 rounded-md font-medium border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition-colors"
+        className="whitespace-nowrap px-4 py-2 text-sm font-medium leading-tight sm:text-base rounded-md border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition-colors"
       >
         Request an Agent Visit
       </button>
