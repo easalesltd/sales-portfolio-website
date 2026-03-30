@@ -31,7 +31,7 @@ export default function Home() {
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.2}>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              Him I'm Dave Langdon, a greeting card and gift sales agent based in Ipswich, Suffolk, and I've been helping retailers across East Anglia build ranges that actually sell for over 11 years.
+              Hi I'm Dave Langdon, a greeting card and gift sales agent based in Ipswich, Suffolk, and I've been helping retailers across East Anglia build ranges that actually sell for over 11 years.
             </p>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.3}>
