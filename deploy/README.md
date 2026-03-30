@@ -21,6 +21,7 @@
 ## Environment Requirements
 - Node.js 18.x or later
 - NPM 8.x or later
+- For a **global** Sales Agent Dash leaderboard: set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` (Upstash Redis REST API), or legacy `KV_REST_API_URL` / `KV_REST_API_TOKEN` if migrated from Vercel KV. Redeploy after changing env vars.
 
 ## Important Notes
 - The server must have Node.js installed

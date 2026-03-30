@@ -1677,7 +1677,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   </p>
                   <div className="mx-auto mt-4 max-w-md rounded-lg border border-neutral-700 bg-neutral-800/60 px-4 py-3 text-left">
                     <p className="text-center text-xs font-semibold uppercase tracking-wide text-neutral-400">
-                      Leaderboard {lbServerOn ? '' : '(this device)'}
+                      Leaderboard
+                    </p>
+                    <p className="mt-1 text-center text-[11px] leading-snug text-neutral-500">
+                      {lbServerOn
+                        ? 'Everyone playing online shares this list.'
+                        : 'Saved on this device only — not synced with other visitors yet.'}
                     </p>
                     {lbRows.length > 0 ? (
                       <ol className="mt-2 space-y-1 text-sm text-neutral-200">
