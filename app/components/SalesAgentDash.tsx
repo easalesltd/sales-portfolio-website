@@ -114,15 +114,20 @@ interface Billboard {
   companyIndex?: number;
   /** Copy line when `kind === "seasonal"` */
   message?: string;
+  seasonalTheme?: SeasonalTheme;
 }
 
-const SEASONAL_BILLBOARD_MESSAGES = [
-  'Have you ordered Xmas Cards yet? 🎄🎅✨',
-  "Valentine's Day stock sorted yet? 💘💝",
-  "Mother's Day cards: ready to go? 💐💖",
-  'Spring ranges in store yet? 🌸🌼',
-  'Easter cards and gifts ready? 🐣🌼',
-  'Need top-up stock for seasonal cards?',
+type SeasonalTheme = 'christmas' | 'valentines' | 'mothers_day' | 'fathers_day' | 'easter' | 'spring';
+type SeasonalMessage = { text: string; theme: SeasonalTheme };
+
+const SEASONAL_BILLBOARD_MESSAGES: readonly SeasonalMessage[] = [
+  { text: 'Have you ordered Xmas Cards yet? 🎄🎅✨', theme: 'christmas' },
+  { text: "Valentine's Day stock sorted yet? 💘💝", theme: 'valentines' },
+  { text: "Mother's Day cards: ready to go? 💐💖", theme: 'mothers_day' },
+  { text: "Father's Day cards: ready to go? 👔💙", theme: 'fathers_day' },
+  { text: 'Easter cards and gifts ready? 🐣🌼', theme: 'easter' },
+  { text: 'Spring ranges in store yet? 🌸🌼', theme: 'spring' },
+  { text: 'Need top-up stock for seasonal cards?', theme: 'spring' },
 ] as const;
 
 function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): string[] {
@@ -191,14 +196,24 @@ function drawBillboard(
   // Pole reaches the road/floor; the panel itself is positioned via `panelTop/panelBottom`.
   ctx.fillRect(x + boardW / 2 - poleW / 2, panelBottom, poleW, groundY - panelBottom);
 
+  const seasonalPalette: Record<SeasonalTheme, { outer: string; inner: string; text: string; stroke: string }> = {
+    christmas: { outer: '#fee2e2', inner: '#fecaca', text: '#14532d', stroke: '#b91c1c' }, // red + green
+    valentines: { outer: '#fee2e2', inner: '#fecaca', text: '#9f1239', stroke: '#be123c' }, // reddish
+    mothers_day: { outer: '#fce7f3', inner: '#fbcfe8', text: '#9d174d', stroke: '#db2777' }, // pink
+    fathers_day: { outer: '#dbeafe', inner: '#bfdbfe', text: '#1e3a8a', stroke: '#2563eb' }, // blue
+    easter: { outer: '#fef9c3', inner: '#fef3c7', text: '#854d0e', stroke: '#ca8a04' }, // yellow
+    spring: { outer: '#fef9c3', inner: '#fef3c7', text: '#854d0e', stroke: '#ca8a04' }, // yellow-ish
+  };
+  const seasonal = b.seasonalTheme ? seasonalPalette[b.seasonalTheme] : null;
+
   if (b.kind === 'seasonal') {
-    ctx.fillStyle = '#fef9c3';
+    ctx.fillStyle = seasonal?.outer ?? '#fef9c3';
   } else {
     ctx.fillStyle = '#fafafa';
   }
   roundRectPath(ctx, x, panelTop, boardW, boardH, 5);
   ctx.fill();
-  ctx.strokeStyle = b.kind === 'seasonal' ? '#a16207' : '#27272a';
+  ctx.strokeStyle = b.kind === 'seasonal' ? (seasonal?.stroke ?? '#a16207') : '#27272a';
   ctx.lineWidth = 2;
   ctx.stroke();
 
@@ -206,10 +221,10 @@ function drawBillboard(
   const innerW = boardW - pad * 2;
   const innerH = boardH - pad * 2;
   if (b.kind === 'seasonal') {
-    ctx.fillStyle = '#fef3c7';
+    ctx.fillStyle = seasonal?.inner ?? '#fef3c7';
     roundRectPath(ctx, x + pad, panelTop + pad, innerW, innerH, 3);
     ctx.fill();
-    ctx.fillStyle = '#854d0e';
+    ctx.fillStyle = seasonal?.text ?? '#854d0e';
     const seasonalText = b.message ?? 'Seasonal stock ready?';
     const lines = wrapWords(seasonalText, 22, 3);
     const cx = x + boardW / 2;
@@ -905,6 +920,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const billboardsRef = useRef<Billboard[]>([]);
   const billboardCompanyDeckRef = useRef<number[]>([]);
   const billboardDeckIndexRef = useRef(0);
+  const lastBillboardKindRef = useRef<'company' | 'seasonal'>('company');
   const logoImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
   const lastCountyBucketRef = useRef(0);
   const countyBannerShowsCountRef = useRef(0);
@@ -989,6 +1005,38 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     laughAudioRef.current = a;
   }, []);
 
+  /**
+   * Prime audio playback using a user gesture (e.g. Start run click).
+   * Some browsers only allow `HTMLAudioElement.play()` after a successful
+   * gesture-triggered play, so we play silently (volume 0) and immediately pause.
+   */
+  const primeLaughSilently = useCallback(async (attempt: boolean) => {
+    if (!attempt) return;
+    ensureLaughElement();
+    const a = laughAudioRef.current;
+    if (!a) return;
+
+    const prevMuted = a.muted;
+    const prevVol = a.volume;
+    try {
+      a.pause();
+      a.currentTime = 0;
+      a.muted = true;
+      a.volume = 0;
+      // This counts as an allowed play attempt in most browsers when called
+      // directly from a click/keypress handler.
+      await a.play();
+      a.pause();
+      a.currentTime = 0;
+    } catch {
+      // Ignore autoplay/permission failures; we'll still try to play later.
+    } finally {
+      a.muted = prevMuted;
+      a.volume = prevVol;
+      a.currentTime = 0;
+    }
+  }, [ensureLaughElement]);
+
   const playLaugh = useCallback(() => {
     if (!audioEnabledRef.current) return;
     ensureLaughElement();
@@ -996,7 +1044,20 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (!a) return;
     a.pause();
     a.currentTime = 0;
-    void a.play().catch(() => {});
+    const p = a.play();
+    // If the first attempt is rejected (rare race with permission/focus),
+    // retry once after a frame.
+    p.catch(() => {
+      requestAnimationFrame(() => {
+        try {
+          a.pause();
+          a.currentTime = 0;
+          void a.play().catch(() => {});
+        } catch {
+          // ignore
+        }
+      });
+    });
   }, [ensureLaughElement]);
 
   useEffect(() => {
@@ -1260,12 +1321,15 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     billboardsRef.current = [];
     billboardCompanyDeckRef.current = [];
     billboardDeckIndexRef.current = 0;
+    lastBillboardKindRef.current = 'company';
     setOutcome(null);
     setLastRunScore(null);
     setWasRecord(false);
     setLosePhrase(null);
     laughAudioRef.current?.pause();
     if (laughAudioRef.current) laughAudioRef.current.currentTime = 0;
+    // Attempt silent prime so the death sound is allowed later.
+    void primeLaughSilently(audioEnabledRef.current);
     setMusicMode(audioEnabledRef.current ? 'game' : 'none');
     setScreen('game');
   }, []);
@@ -1411,17 +1475,21 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         while (runDistanceRef.current >= nextBillboardAtRef.current) {
           nextBillboardAtRef.current += OBSTACLE_SPAWN_GAP_PX;
           const useSeasonal =
-            SEASONAL_BILLBOARD_MESSAGES.length > 0 && Math.random() < 0.4;
+            SEASONAL_BILLBOARD_MESSAGES.length > 0 &&
+            lastBillboardKindRef.current !== 'seasonal' &&
+            Math.random() < 0.4;
           if (useSeasonal) {
-            const msg =
+            const seasonal =
               SEASONAL_BILLBOARD_MESSAGES[
                 Math.floor(Math.random() * SEASONAL_BILLBOARD_MESSAGES.length)
               ];
             billboardsRef.current.push({
               x: W + 24,
               kind: 'seasonal',
-              message: msg,
+              message: seasonal.text,
+              seasonalTheme: seasonal.theme,
             });
+            lastBillboardKindRef.current = 'seasonal';
           } else {
             if (billboardDeckIndexRef.current >= billboardCompanyDeckRef.current.length) {
               billboardCompanyDeckRef.current = shuffleCompanyIndices(nCompanies);
@@ -1436,6 +1504,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
               kind: 'company',
               companyIndex,
             });
+            lastBillboardKindRef.current = 'company';
           }
         }
       }
@@ -1546,7 +1615,14 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => setAudioEnabled((v) => !v)}
+              onClick={() => {
+                setAudioEnabled((v) => {
+                  const next = !v;
+                  // When enabling audio, prime silently from this click gesture.
+                  if (next) void primeLaughSilently(true);
+                  return next;
+                });
+              }}
               aria-pressed={audioEnabled}
               className="rounded-md border border-neutral-600 px-3 py-1.5 text-sm text-white hover:bg-neutral-800"
             >
