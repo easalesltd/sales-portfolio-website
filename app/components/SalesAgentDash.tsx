@@ -119,7 +119,7 @@ interface Billboard {
   promoImageUrl?: string;
 }
 
-type SeasonalTheme = 'christmas' | 'valentines' | 'mothers_day' | 'fathers_day' | 'easter' | 'spring';
+type SeasonalTheme = 'christmas' | 'valentines' | 'mothers_day' | 'fathers_day' | 'easter';
 type SeasonalMessage = { text: string; theme: SeasonalTheme };
 
 const SEASONAL_BILLBOARD_MESSAGES: readonly SeasonalMessage[] = [
@@ -128,8 +128,6 @@ const SEASONAL_BILLBOARD_MESSAGES: readonly SeasonalMessage[] = [
   { text: "Mother's Day cards: ready to go? 💐💖", theme: 'mothers_day' },
   { text: "Father's Day cards: ready to go? 👔💙", theme: 'fathers_day' },
   { text: 'Easter cards and gifts ready? 🐣🌼', theme: 'easter' },
-  { text: 'Spring ranges in store yet? 🌸🌼', theme: 'spring' },
-  { text: 'Need top-up stock for seasonal cards?', theme: 'spring' },
 ] as const;
 
 /** Silly Beans coming-soon board — brand sky blue ~#A2D9F7 */
@@ -224,7 +222,6 @@ function drawBillboard(
     mothers_day: { outer: '#fce7f3', inner: '#fbcfe8', text: '#9d174d', stroke: '#db2777' }, // pink
     fathers_day: { outer: '#dbeafe', inner: '#bfdbfe', text: '#1e3a8a', stroke: '#2563eb' }, // blue
     easter: { outer: '#fef9c3', inner: '#fef3c7', text: '#854d0e', stroke: '#ca8a04' }, // yellow
-    spring: { outer: '#fef9c3', inner: '#fef3c7', text: '#854d0e', stroke: '#ca8a04' }, // yellow-ish
   };
   const seasonal = b.seasonalTheme ? seasonalPalette[b.seasonalTheme] : null;
 
@@ -1219,21 +1216,35 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const displayScore = Math.floor(scoreRef.current);
       const countyLabel = countyForScore(scoreRef.current);
       const countyHue = ['#6d28d9', '#047857', '#b91c1c', '#0369a1'][ci];
+      const hudPadL = 10;
+      const hudPadR = 10;
+      const hudX = 8;
+      const hudY = 8;
+      const textX = hudX + hudPadL;
+      ctx.font = 'bold 12px system-ui, sans-serif';
+      const wCounty = ctx.measureText(countyLabel).width;
+      ctx.font = 'bold 13px system-ui, sans-serif';
+      const wScore = ctx.measureText(`Score ${displayScore.toLocaleString()}`).width;
+      ctx.font = '11px system-ui, sans-serif';
+      const wBest = ctx.measureText(`Best ${readHighScore().toLocaleString()}`).width;
+      const hudW = Math.ceil(
+        Math.max(wCounty, wScore, wBest) + hudPadL + hudPadR
+      );
       ctx.fillStyle = 'rgba(255,255,255,0.94)';
-      roundRectPath(ctx, 8, 8, 216, 58, 8);
+      roundRectPath(ctx, hudX, hudY, hudW, 58, 8);
       ctx.fill();
       ctx.strokeStyle = 'rgba(15,23,42,0.12)';
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.fillStyle = countyHue;
       ctx.font = 'bold 12px system-ui, sans-serif';
-      ctx.fillText(countyLabel, 18, 24);
+      ctx.fillText(countyLabel, textX, 24);
       ctx.fillStyle = '#1a1a1a';
       ctx.font = 'bold 13px system-ui, sans-serif';
-      ctx.fillText(`Score ${displayScore.toLocaleString()}`, 18, 42);
+      ctx.fillText(`Score ${displayScore.toLocaleString()}`, textX, 42);
       ctx.font = '11px system-ui, sans-serif';
       ctx.fillStyle = '#52525b';
-      ctx.fillText(`Best ${readHighScore().toLocaleString()}`, 18, 56);
+      ctx.fillText(`Best ${readHighScore().toLocaleString()}`, textX, 56);
 
       const banner = countyBannerRef.current;
       if (banner.frames > 0) {
