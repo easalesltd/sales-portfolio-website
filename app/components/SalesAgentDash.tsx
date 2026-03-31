@@ -1104,10 +1104,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       if (banner.frames > 0) {
         const fade = Math.min(1, banner.frames / 28);
         const isCompact = W < 420;
-        // Tighter horizontal padding on narrow canvases so long county names get more width.
-        const outerPad = isCompact ? Math.max(6, Math.floor(W * 0.022)) : Math.max(10, Math.floor(W * 0.032));
-        const innerPad = Math.max(6, Math.floor(W * 0.022));
-        const maxTextW = Math.max(64, W - outerPad * 2 - 4);
+        const panelW = Math.min(
+          W * (isCompact ? 0.5 : 0.36),
+          isCompact ? 300 : 340
+        );
+        const panelX = (W - panelW) / 2;
+        const innerPad = isCompact ? 10 : 12;
+        const maxTextW = Math.max(64, panelW - innerPad * 2 - 6);
         const line1Max = isCompact ? Math.min(15, W * 0.046) : Math.min(14, W * 0.028);
         const line2Max = isCompact ? Math.min(26, W * 0.095) : Math.min(24, W * 0.05);
         const line3Max = isCompact ? Math.min(12, W * 0.036) : Math.min(11, W * 0.026);
@@ -1117,10 +1120,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
         ctx.save();
         ctx.fillStyle = `rgba(15,23,42,${0.82 * fade})`;
-        ctx.fillRect(0, panelTop, W, panelH);
+        roundRectPath(ctx, panelX, panelTop, panelW, panelH, 8);
+        ctx.fill();
         ctx.strokeStyle = 'rgba(255,255,255,0.22)';
         ctx.lineWidth = 2;
-        ctx.strokeRect(outerPad, panelTop + innerPad, W - outerPad * 2, panelH - innerPad * 2);
+        roundRectPath(ctx, panelX + innerPad, panelTop + innerPad, panelW - innerPad * 2, panelH - innerPad * 2, 6);
+        ctx.stroke();
 
         const innerTop = panelTop + innerPad;
         const innerBot = panelTop + panelH - innerPad;
