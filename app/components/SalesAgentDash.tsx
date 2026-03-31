@@ -1026,8 +1026,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   }, []);
 
   const setMusicMode = useCallback((mode: 'none' | 'game' | 'disco') => {
-    // No-op if we're already in the requested mode.
-    if (musicModeRef.current === mode) return;
+    const previousMode = musicModeRef.current;
+    if (previousMode === mode) return;
     musicModeRef.current = mode;
 
     const gameAudio = gameMusicRef.current;
@@ -1046,11 +1046,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     const discoAudio2 = discoMusicRef.current;
     if (!gameAudio2 || !discoAudio2) return;
 
-    // Switch tracks: reset time so each disco segment feels like a fresh "drop in".
     if (mode === 'game') {
       discoAudio2.pause();
       discoAudio2.currentTime = 0;
-      gameAudio2.currentTime = 0;
+      // After disco, resume main track where it left off; fresh run from menu/life uses `none` → `game`.
+      if (previousMode !== 'disco') {
+        gameAudio2.currentTime = 0;
+      }
       void gameAudio2.play().catch(() => {
         // Autoplay policies can still block play() in some environments.
         // If that happens, we'll just stay silent until the next user gesture.
@@ -1058,9 +1060,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       return;
     }
 
-    // mode === 'disco'
+    // mode === 'disco' — pause main music but keep its timeline for when disco ends.
     gameAudio2.pause();
-    gameAudio2.currentTime = 0;
     discoAudio2.currentTime = 0;
     void discoAudio2.play().catch(() => {});
   }, [ensureMusicElements]);
