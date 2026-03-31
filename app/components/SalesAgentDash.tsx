@@ -177,6 +177,16 @@ function drawBillboard(
     boardW = Math.min(canvasW * 0.5, 200);
     boardH = Math.min(boardH, boardW / aspect);
   }
+  // Promo: wider + a bit taller so product art can sit large beside copy.
+  if (b.kind === 'promo') {
+    const promoAspect = 2.12;
+    boardH = Math.max(92, Math.min(canvasH * 0.24, 156));
+    boardW = Math.min(boardH * promoAspect, canvasW * 0.58, 252);
+    if (boardW <= boardH) {
+      boardW = Math.min(canvasW * 0.58, 252);
+      boardH = Math.min(boardH, Math.max(86, Math.floor(boardW / promoAspect)));
+    }
+  }
   const poleW = Math.max(9, boardW * 0.065);
   const x = b.x;
   // Keep billboards visually away from the "jump obstacle" lane (which tops out ~64px above ground).
@@ -257,33 +267,45 @@ function drawBillboard(
     ctx.fillStyle = SILLY_BEANS_BRAND.inner;
     roundRectPath(ctx, x + pad, panelTop + pad, innerW, innerH, 3);
     ctx.fill();
-    const imgSlotH = Math.max(28, Math.floor(innerH * 0.55));
+
+    const colGap = 6;
+    const imgColW = Math.max(54, Math.floor(innerW * 0.58));
+    const textColW = Math.max(36, innerW - imgColW - colGap);
+    const imgLeft = x + pad;
+    const imgTop = panelTop + pad;
     const img = logos.get(promoUrl);
     if (img && img.complete && img.naturalWidth > 0) {
-      const scale = Math.min(innerW / img.naturalWidth, imgSlotH / img.naturalHeight);
+      const scale = Math.min(imgColW / img.naturalWidth, innerH / img.naturalHeight);
       const dw = img.naturalWidth * scale;
       const dh = img.naturalHeight * scale;
-      const dx = x + pad + (innerW - dw) / 2;
-      const dy = panelTop + pad + (imgSlotH - dh) / 2;
+      const dx = imgLeft + (imgColW - dw) / 2;
+      const dy = imgTop + (innerH - dh) / 2;
       ctx.drawImage(img, dx, dy, dw, dh);
     } else {
       ctx.fillStyle = SILLY_BEANS_BRAND.outer;
-      roundRectPath(ctx, x + pad, panelTop + pad, innerW, Math.min(imgSlotH, innerH - 18), 3);
+      roundRectPath(ctx, imgLeft, imgTop, imgColW, innerH, 3);
       ctx.fill();
       ctx.fillStyle = SILLY_BEANS_BRAND.text;
       ctx.font = '600 9px system-ui, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('…', x + boardW / 2, panelTop + pad + imgSlotH / 2);
+      ctx.fillText('…', imgLeft + imgColW / 2, imgTop + innerH / 2);
       ctx.textAlign = 'left';
     }
-    ctx.fillStyle = SILLY_BEANS_BRAND.text;
+
     const caption = b.message ?? SILLY_BEANS_BILLBOARD_CAPTION;
-    const capLines = wrapWords(caption, 18, 2);
-    const cx = x + boardW / 2;
-    const textStartY = panelTop + pad + imgSlotH + 6;
+    const approxChar = 5.2;
+    const capLines = wrapWords(
+      caption,
+      Math.max(8, Math.floor(textColW / approxChar)),
+      3
+    );
+    ctx.fillStyle = SILLY_BEANS_BRAND.text;
+    const textCx = imgLeft + imgColW + colGap + textColW / 2;
     const lineGap = 13;
+    const midInner = panelTop + pad + innerH / 2;
+    const startY = midInner - ((capLines.length - 1) * lineGap) / 2 + 4;
     capLines.forEach((line, idx) => {
-      fillTextScaledCenter(ctx, line, cx, textStartY + idx * lineGap, innerW - 6, 11, 7, 'bold');
+      fillTextScaledCenter(ctx, line, textCx, startY + idx * lineGap, textColW - 4, 12, 7, 'bold');
     });
   } else {
     const img = logos.get(url);
@@ -1579,7 +1601,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
       billboardsRef.current = billboardsRef.current.filter((bb) => {
         bb.x -= scroll;
-        return bb.x + 210 > -100;
+        return bb.x + 280 > -100;
       });
 
       vyRef.current += GRAVITY;
