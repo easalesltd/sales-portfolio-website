@@ -109,12 +109,14 @@ interface Obstacle {
 
 interface Billboard {
   x: number;
-  kind: 'company' | 'seasonal';
+  kind: 'company' | 'seasonal' | 'promo';
   /** Index into `companies` when `kind === "company"` */
   companyIndex?: number;
-  /** Copy line when `kind === "seasonal"` */
+  /** Copy line when `kind === "seasonal"` or caption when `kind === "promo"` */
   message?: string;
   seasonalTheme?: SeasonalTheme;
+  /** Public URL for promo image (must match preload map key) */
+  promoImageUrl?: string;
 }
 
 type SeasonalTheme = 'christmas' | 'valentines' | 'mothers_day' | 'fathers_day' | 'easter' | 'spring';
@@ -129,6 +131,16 @@ const SEASONAL_BILLBOARD_MESSAGES: readonly SeasonalMessage[] = [
   { text: 'Spring ranges in store yet? 🌸🌼', theme: 'spring' },
   { text: 'Need top-up stock for seasonal cards?', theme: 'spring' },
 ] as const;
+
+/** Silly Beans coming-soon board — brand sky blue ~#A2D9F7 */
+const SILLY_BEANS_BILLBOARD_SRC = encodeURI('/images/Silly Beans Counter Top Spinner.png');
+const SILLY_BEANS_BILLBOARD_CAPTION = 'Silly Beans Coming Soon';
+const SILLY_BEANS_BRAND = {
+  outer: '#A2D9F7',
+  inner: '#C8ECFC',
+  text: '#0C4A6E',
+  stroke: '#0284C7',
+} as const;
 
 function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): string[] {
   const words = text.split(/\s+/).filter(Boolean);
@@ -208,12 +220,19 @@ function drawBillboard(
 
   if (b.kind === 'seasonal') {
     ctx.fillStyle = seasonal?.outer ?? '#fef9c3';
+  } else if (b.kind === 'promo') {
+    ctx.fillStyle = SILLY_BEANS_BRAND.outer;
   } else {
     ctx.fillStyle = '#fafafa';
   }
   roundRectPath(ctx, x, panelTop, boardW, boardH, 5);
   ctx.fill();
-  ctx.strokeStyle = b.kind === 'seasonal' ? (seasonal?.stroke ?? '#a16207') : '#27272a';
+  ctx.strokeStyle =
+    b.kind === 'seasonal'
+      ? (seasonal?.stroke ?? '#a16207')
+      : b.kind === 'promo'
+        ? SILLY_BEANS_BRAND.stroke
+        : '#27272a';
   ctx.lineWidth = 2;
   ctx.stroke();
 
@@ -232,6 +251,39 @@ function drawBillboard(
     const startY = panelTop + boardH / 2 - ((lines.length - 1) * lineGap) / 2 + 4;
     lines.forEach((line, idx) => {
       fillTextScaledCenter(ctx, line, cx, startY + idx * lineGap, innerW - 8, 14, 9, 'bold');
+    });
+  } else if (b.kind === 'promo') {
+    const promoUrl = b.promoImageUrl ?? SILLY_BEANS_BILLBOARD_SRC;
+    ctx.fillStyle = SILLY_BEANS_BRAND.inner;
+    roundRectPath(ctx, x + pad, panelTop + pad, innerW, innerH, 3);
+    ctx.fill();
+    const imgSlotH = Math.max(28, Math.floor(innerH * 0.55));
+    const img = logos.get(promoUrl);
+    if (img && img.complete && img.naturalWidth > 0) {
+      const scale = Math.min(innerW / img.naturalWidth, imgSlotH / img.naturalHeight);
+      const dw = img.naturalWidth * scale;
+      const dh = img.naturalHeight * scale;
+      const dx = x + pad + (innerW - dw) / 2;
+      const dy = panelTop + pad + (imgSlotH - dh) / 2;
+      ctx.drawImage(img, dx, dy, dw, dh);
+    } else {
+      ctx.fillStyle = SILLY_BEANS_BRAND.outer;
+      roundRectPath(ctx, x + pad, panelTop + pad, innerW, Math.min(imgSlotH, innerH - 18), 3);
+      ctx.fill();
+      ctx.fillStyle = SILLY_BEANS_BRAND.text;
+      ctx.font = '600 9px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('…', x + boardW / 2, panelTop + pad + imgSlotH / 2);
+      ctx.textAlign = 'left';
+    }
+    ctx.fillStyle = SILLY_BEANS_BRAND.text;
+    const caption = b.message ?? SILLY_BEANS_BILLBOARD_CAPTION;
+    const capLines = wrapWords(caption, 18, 2);
+    const cx = x + boardW / 2;
+    const textStartY = panelTop + pad + imgSlotH + 6;
+    const lineGap = 13;
+    capLines.forEach((line, idx) => {
+      fillTextScaledCenter(ctx, line, cx, textStartY + idx * lineGap, innerW - 6, 11, 7, 'bold');
     });
   } else {
     const img = logos.get(url);
@@ -920,7 +972,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const billboardsRef = useRef<Billboard[]>([]);
   const billboardCompanyDeckRef = useRef<number[]>([]);
   const billboardDeckIndexRef = useRef(0);
-  const lastBillboardKindRef = useRef<'company' | 'seasonal'>('company');
+  const lastBillboardKindRef = useRef<'company' | 'seasonal' | 'promo'>('company');
   const logoImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
   const lastCountyBucketRef = useRef(0);
   const countyBannerShowsCountRef = useRef(0);
@@ -1351,6 +1403,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       img.src = url;
       map.set(url, img);
     }
+    if (!map.has(SILLY_BEANS_BILLBOARD_SRC)) {
+      const promo = new Image();
+      promo.decoding = 'async';
+      promo.src = SILLY_BEANS_BILLBOARD_SRC;
+      map.set(SILLY_BEANS_BILLBOARD_SRC, promo);
+    }
     logoImagesRef.current = map;
   }, []);
 
@@ -1474,11 +1532,22 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       if (nCompanies > 0) {
         while (runDistanceRef.current >= nextBillboardAtRef.current) {
           nextBillboardAtRef.current += OBSTACLE_SPAWN_GAP_PX;
-          const useSeasonal =
+          const lastKind = lastBillboardKindRef.current;
+          const rollPromo = lastKind !== 'promo' && Math.random() < 0.12;
+          const rollSeasonal =
+            !rollPromo &&
             SEASONAL_BILLBOARD_MESSAGES.length > 0 &&
-            lastBillboardKindRef.current !== 'seasonal' &&
-            Math.random() < 0.4;
-          if (useSeasonal) {
+            lastKind !== 'seasonal' &&
+            Math.random() < 0.38;
+          if (rollPromo) {
+            billboardsRef.current.push({
+              x: W + 24,
+              kind: 'promo',
+              message: SILLY_BEANS_BILLBOARD_CAPTION,
+              promoImageUrl: SILLY_BEANS_BILLBOARD_SRC,
+            });
+            lastBillboardKindRef.current = 'promo';
+          } else if (rollSeasonal) {
             const seasonal =
               SEASONAL_BILLBOARD_MESSAGES[
                 Math.floor(Math.random() * SEASONAL_BILLBOARD_MESSAGES.length)
