@@ -109,8 +109,39 @@ interface Obstacle {
 
 interface Billboard {
   x: number;
-  /** Index into `companies` */
-  companyIndex: number;
+  kind: 'company' | 'seasonal';
+  /** Index into `companies` when `kind === "company"` */
+  companyIndex?: number;
+  /** Copy line when `kind === "seasonal"` */
+  message?: string;
+}
+
+const SEASONAL_BILLBOARD_MESSAGES = [
+  'Have you ordered Xmas Cards yet? 🎄🎅✨',
+  "Valentine's Day stock sorted yet? 💘💝",
+  "Mother's Day cards: ready to go? 💐💖",
+  'Spring ranges in store yet? 🌸🌼',
+  'Easter cards and gifts ready? 🐣🌼',
+  'Need top-up stock for seasonal cards?',
+] as const;
+
+function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): string[] {
+  const words = text.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let current = '';
+  for (const w of words) {
+    const candidate = current ? `${current} ${w}` : w;
+    if (candidate.length <= maxCharsPerLine || current.length === 0) {
+      current = candidate;
+      continue;
+    }
+    lines.push(current);
+    current = w;
+    if (lines.length >= maxLines - 1) break;
+  }
+  if (current && lines.length < maxLines) lines.push(current);
+  if (lines.length === 0) lines.push(text);
+  return lines;
 }
 
 function drawBillboard(
@@ -121,9 +152,6 @@ function drawBillboard(
   canvasW: number,
   logos: Map<string, HTMLImageElement>
 ) {
-  const c = companies[b.companyIndex];
-  if (!c) return;
-
   // Landscape (width > height); vertical span similar to before; bottom edge above obstacles.
   const aspect = 1.82;
   let boardH = Math.max(86, Math.min(canvasH * 0.21, 142));
@@ -139,7 +167,8 @@ function drawBillboard(
   const clearanceAboveRoad = Math.max(120, Math.min(groundY * 0.18, 160));
   const boardBottom = groundY - clearanceAboveRoad;
   const boardTop = boardBottom - boardH;
-  const url = c.logoUrlDark ?? c.logoUrl;
+  const c = typeof b.companyIndex === 'number' ? companies[b.companyIndex] : undefined;
+  const url = c ? c.logoUrlDark ?? c.logoUrl : '';
 
   ctx.fillStyle = '#3f3f46';
   // Prevent the billboard panel from visually "climbing into" the scoreboard HUD,
@@ -162,33 +191,52 @@ function drawBillboard(
   // Pole reaches the road/floor; the panel itself is positioned via `panelTop/panelBottom`.
   ctx.fillRect(x + boardW / 2 - poleW / 2, panelBottom, poleW, groundY - panelBottom);
 
-  ctx.fillStyle = '#fafafa';
+  if (b.kind === 'seasonal') {
+    ctx.fillStyle = '#fef9c3';
+  } else {
+    ctx.fillStyle = '#fafafa';
+  }
   roundRectPath(ctx, x, panelTop, boardW, boardH, 5);
   ctx.fill();
-  ctx.strokeStyle = '#27272a';
+  ctx.strokeStyle = b.kind === 'seasonal' ? '#a16207' : '#27272a';
   ctx.lineWidth = 2;
   ctx.stroke();
 
   const pad = 7;
   const innerW = boardW - pad * 2;
   const innerH = boardH - pad * 2;
-  const img = logos.get(url);
-  if (img && img.complete && img.naturalWidth > 0) {
-    const scale = Math.min(innerW / img.naturalWidth, innerH / img.naturalHeight);
-    const dw = img.naturalWidth * scale;
-    const dh = img.naturalHeight * scale;
-    const dx = x + pad + (innerW - dw) / 2;
-    const dy = panelTop + pad + (innerH - dh) / 2;
-    ctx.drawImage(img, dx, dy, dw, dh);
-  } else {
-    ctx.fillStyle = '#e4e4e7';
+  if (b.kind === 'seasonal') {
+    ctx.fillStyle = '#fef3c7';
     roundRectPath(ctx, x + pad, panelTop + pad, innerW, innerH, 3);
     ctx.fill();
-    ctx.fillStyle = '#71717a';
-    ctx.font = '600 11px system-ui, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(c.name.split(' ')[0] ?? '…', x + boardW / 2, panelTop + pad + innerH / 2 + 4);
-    ctx.textAlign = 'left';
+    ctx.fillStyle = '#854d0e';
+    const seasonalText = b.message ?? 'Seasonal stock ready?';
+    const lines = wrapWords(seasonalText, 22, 3);
+    const cx = x + boardW / 2;
+    const lineGap = 16;
+    const startY = panelTop + boardH / 2 - ((lines.length - 1) * lineGap) / 2 + 4;
+    lines.forEach((line, idx) => {
+      fillTextScaledCenter(ctx, line, cx, startY + idx * lineGap, innerW - 8, 14, 9, 'bold');
+    });
+  } else {
+    const img = logos.get(url);
+    if (img && img.complete && img.naturalWidth > 0) {
+      const scale = Math.min(innerW / img.naturalWidth, innerH / img.naturalHeight);
+      const dw = img.naturalWidth * scale;
+      const dh = img.naturalHeight * scale;
+      const dx = x + pad + (innerW - dw) / 2;
+      const dy = panelTop + pad + (innerH - dh) / 2;
+      ctx.drawImage(img, dx, dy, dw, dh);
+    } else {
+      ctx.fillStyle = '#e4e4e7';
+      roundRectPath(ctx, x + pad, panelTop + pad, innerW, innerH, 3);
+      ctx.fill();
+      ctx.fillStyle = '#71717a';
+      ctx.font = '600 11px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(c?.name.split(' ')[0] ?? 'Brand', x + boardW / 2, panelTop + pad + innerH / 2 + 4);
+      ctx.textAlign = 'left';
+    }
   }
 }
 
@@ -1357,18 +1405,33 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       if (nCompanies > 0) {
         while (runDistanceRef.current >= nextBillboardAtRef.current) {
           nextBillboardAtRef.current += OBSTACLE_SPAWN_GAP_PX;
-          if (billboardDeckIndexRef.current >= billboardCompanyDeckRef.current.length) {
-            billboardCompanyDeckRef.current = shuffleCompanyIndices(nCompanies);
-            billboardDeckIndexRef.current = 0;
+          const useSeasonal =
+            SEASONAL_BILLBOARD_MESSAGES.length > 0 && Math.random() < 0.4;
+          if (useSeasonal) {
+            const msg =
+              SEASONAL_BILLBOARD_MESSAGES[
+                Math.floor(Math.random() * SEASONAL_BILLBOARD_MESSAGES.length)
+              ];
+            billboardsRef.current.push({
+              x: W + 24,
+              kind: 'seasonal',
+              message: msg,
+            });
+          } else {
+            if (billboardDeckIndexRef.current >= billboardCompanyDeckRef.current.length) {
+              billboardCompanyDeckRef.current = shuffleCompanyIndices(nCompanies);
+              billboardDeckIndexRef.current = 0;
+            }
+            const companyIndex =
+              billboardCompanyDeckRef.current[billboardDeckIndexRef.current]!;
+            billboardDeckIndexRef.current += 1;
+            billboardsRef.current.push({
+              // Align to obstacle lane; timing alignment places them between obstacles.
+              x: W + 24,
+              kind: 'company',
+              companyIndex,
+            });
           }
-          const companyIndex =
-            billboardCompanyDeckRef.current[billboardDeckIndexRef.current]!;
-          billboardDeckIndexRef.current += 1;
-          billboardsRef.current.push({
-            // Align to obstacle lane; timing alignment places them between obstacles.
-            x: W + 24,
-            companyIndex,
-          });
         }
       }
       billboardsRef.current = billboardsRef.current.filter((bb) => {
