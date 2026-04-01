@@ -132,7 +132,7 @@ const SEASONAL_BILLBOARD_MESSAGES: readonly SeasonalMessage[] = [
 
 /** Silly Beans coming-soon board — brand sky blue ~#A2D9F7 */
 const SILLY_BEANS_BILLBOARD_SRC = encodeURI('/images/Silly Beans Counter Top Spinner.png');
-const SILLY_BEANS_BILLBOARD_CAPTION = 'Silly Beans Coming Soon';
+const SILLY_BEANS_BILLBOARD_OHH_DEER_SRC = encodeURI('/images/The Silly Beans are Coming Ohh Deer.png');
 const SILLY_BEANS_BRAND = {
   outer: '#A2D9F7',
   inner: '#C8ECFC',
@@ -157,6 +157,12 @@ function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): str
   if (current && lines.length < maxLines) lines.push(current);
   if (lines.length === 0) lines.push(text);
   return lines;
+}
+
+function getCompanyBillboardLogoUrl(c: (typeof companies)[number]): string {
+  // Cambridge Confectionery should use its black logo with white lettering on the game billboard.
+  if (c.id === 'cambridge-confectionery-company') return c.logoUrl;
+  return c.logoUrlDark ?? c.logoUrl;
 }
 
 function drawBillboard(
@@ -193,7 +199,8 @@ function drawBillboard(
   const boardBottom = groundY - clearanceAboveRoad;
   const boardTop = boardBottom - boardH;
   const c = typeof b.companyIndex === 'number' ? companies[b.companyIndex] : undefined;
-  const url = c ? c.logoUrlDark ?? c.logoUrl : '';
+  const url = c ? getCompanyBillboardLogoUrl(c) : '';
+  const isNewAgency = c?.id === 'cambridge-confectionery-company';
 
   ctx.fillStyle = '#3f3f46';
   // Prevent the billboard panel from visually "climbing into" the scoreboard HUD,
@@ -265,44 +272,35 @@ function drawBillboard(
     roundRectPath(ctx, x + pad, panelTop + pad, innerW, innerH, 3);
     ctx.fill();
 
-    const colGap = 6;
-    const imgColW = Math.max(54, Math.floor(innerW * 0.58));
-    const textColW = Math.max(36, innerW - imgColW - colGap);
-    const imgLeft = x + pad;
-    const imgTop = panelTop + pad;
-    const img = logos.get(promoUrl);
-    if (img && img.complete && img.naturalWidth > 0) {
-      const scale = Math.min(imgColW / img.naturalWidth, innerH / img.naturalHeight);
-      const dw = img.naturalWidth * scale;
-      const dh = img.naturalHeight * scale;
-      const dx = imgLeft + (imgColW - dw) / 2;
-      const dy = imgTop + (innerH - dh) / 2;
-      ctx.drawImage(img, dx, dy, dw, dh);
-    } else {
-      ctx.fillStyle = SILLY_BEANS_BRAND.outer;
-      roundRectPath(ctx, imgLeft, imgTop, imgColW, innerH, 3);
-      ctx.fill();
-      ctx.fillStyle = SILLY_BEANS_BRAND.text;
-      ctx.font = '600 9px system-ui, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('…', imgLeft + imgColW / 2, imgTop + innerH / 2);
-      ctx.textAlign = 'left';
-    }
+    const imgGap = 6;
+    const tileW = Math.max(42, Math.floor((innerW - imgGap) / 2));
+    const tileH = innerH;
+    const leftX = x + pad;
+    const rightX = leftX + tileW + imgGap;
+    const tileY = panelTop + pad;
+    const promoUrls = [promoUrl, SILLY_BEANS_BILLBOARD_OHH_DEER_SRC];
+    const tileXs = [leftX, rightX];
 
-    const caption = b.message ?? SILLY_BEANS_BILLBOARD_CAPTION;
-    const approxChar = 5.2;
-    const capLines = wrapWords(
-      caption,
-      Math.max(8, Math.floor(textColW / approxChar)),
-      3
-    );
-    ctx.fillStyle = SILLY_BEANS_BRAND.text;
-    const textCx = imgLeft + imgColW + colGap + textColW / 2;
-    const lineGap = 13;
-    const midInner = panelTop + pad + innerH / 2;
-    const startY = midInner - ((capLines.length - 1) * lineGap) / 2 + 4;
-    capLines.forEach((line, idx) => {
-      fillTextScaledCenter(ctx, line, textCx, startY + idx * lineGap, textColW - 4, 12, 7, 'bold');
+    promoUrls.forEach((u, i) => {
+      const img = logos.get(u);
+      const tx = tileXs[i];
+      if (img && img.complete && img.naturalWidth > 0) {
+        const scale = Math.min(tileW / img.naturalWidth, tileH / img.naturalHeight);
+        const dw = img.naturalWidth * scale;
+        const dh = img.naturalHeight * scale;
+        const dx = tx + (tileW - dw) / 2;
+        const dy = tileY + (tileH - dh) / 2;
+        ctx.drawImage(img, dx, dy, dw, dh);
+      } else {
+        ctx.fillStyle = SILLY_BEANS_BRAND.outer;
+        roundRectPath(ctx, tx, tileY, tileW, tileH, 3);
+        ctx.fill();
+        ctx.fillStyle = SILLY_BEANS_BRAND.text;
+        ctx.font = '600 9px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('…', tx + tileW / 2, tileY + tileH / 2);
+        ctx.textAlign = 'left';
+      }
     });
   } else {
     const img = logos.get(url);
@@ -322,6 +320,20 @@ function drawBillboard(
       ctx.textAlign = 'center';
       ctx.fillText(c?.name.split(' ')[0] ?? 'Brand', x + boardW / 2, panelTop + pad + innerH / 2 + 4);
       ctx.textAlign = 'left';
+    }
+    if (isNewAgency) {
+      const badgeW = Math.max(36, Math.min(56, boardW * 0.28));
+      const badgeH = Math.max(16, Math.min(22, boardH * 0.2));
+      const badgeX = x + boardW - badgeW - 5;
+      const badgeY = panelTop + 5;
+      ctx.fillStyle = '#dc2626';
+      roundRectPath(ctx, badgeX, badgeY, badgeW, badgeH, 4);
+      ctx.fill();
+      ctx.strokeStyle = '#991b1b';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = '#ffffff';
+      fillTextScaledCenter(ctx, 'NEW', badgeX + badgeW / 2, badgeY + badgeH * 0.66, badgeW - 8, 11, 8, 'bold');
     }
   }
 }
@@ -1430,7 +1442,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     const map = new Map<string, HTMLImageElement>();
     for (const comp of companies) {
-      const url = comp.logoUrlDark ?? comp.logoUrl;
+      const url = getCompanyBillboardLogoUrl(comp);
       if (map.has(url)) continue;
       const img = new Image();
       img.decoding = 'async';
@@ -1442,6 +1454,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       promo.decoding = 'async';
       promo.src = SILLY_BEANS_BILLBOARD_SRC;
       map.set(SILLY_BEANS_BILLBOARD_SRC, promo);
+    }
+    if (!map.has(SILLY_BEANS_BILLBOARD_OHH_DEER_SRC)) {
+      const promo2 = new Image();
+      promo2.decoding = 'async';
+      promo2.src = SILLY_BEANS_BILLBOARD_OHH_DEER_SRC;
+      map.set(SILLY_BEANS_BILLBOARD_OHH_DEER_SRC, promo2);
     }
     logoImagesRef.current = map;
   }, []);
@@ -1577,7 +1595,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
             billboardsRef.current.push({
               x: W + 24,
               kind: 'promo',
-              message: SILLY_BEANS_BILLBOARD_CAPTION,
               promoImageUrl: SILLY_BEANS_BILLBOARD_SRC,
             });
             lastBillboardKindRef.current = 'promo';
