@@ -79,6 +79,8 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {companies.map((company, index) => {
                   const useLightMarkOnDarkTile = Boolean(company.logoUrlDark);
+                  const invertLightMarkOnDarkTile =
+                    useLightMarkOnDarkTile && company.id !== 'cambridge-confectionery-company';
                   const logoSrc = company.logoUrlDark ?? company.logoUrl;
                   return (
                   <FadeInOnScroll key={company.id} delay={0.1 * (index % 6)}>
@@ -96,7 +98,7 @@ export default function Home() {
                           alt={`${company.name} logo`}
                           fill
                           className={`object-contain p-6 group-hover:scale-105 transition-transform duration-300 ${
-                            useLightMarkOnDarkTile ? 'invert' : ''
+                            invertLightMarkOnDarkTile ? 'invert' : ''
                           }`}
                         />
                       </div>

@@ -1791,6 +1791,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const companyPageLogoSrc = company.logoUrlDark ?? company.logoUrl;
   const useLightMarkOnDark = Boolean(company.logoUrlDark);
   const isCambridgeDarkBrand = resolvedParams.slug === 'cambridge-confectionery-company';
+  const invertLightMarkOnDark = useLightMarkOnDark && !isCambridgeDarkBrand;
 
   const content = (
     <>
@@ -1827,9 +1828,11 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                   priority
                   className={`object-contain p-6 z-10 transition-transform duration-300 group-hover:scale-105 ${
                     /* logoUrlDark file is black artwork on transparent — invert so it reads as white on bg-black */
-                    useLightMarkOnDark
+                    invertLightMarkOnDark
                       ? 'invert'
-                      : 'dark:brightness-0 dark:invert'
+                      : useLightMarkOnDark
+                        ? ''
+                        : 'dark:brightness-0 dark:invert'
                   }`}
                 />
               </div>
