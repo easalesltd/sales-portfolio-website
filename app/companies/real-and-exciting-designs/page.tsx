@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Metadata } from 'next';
+import { getCspNonce } from '@/app/lib/csp-nonce';
 import { companies } from '@/app/data/companies';
 import { partnerBrandLogoAlt } from '@/app/lib/partner-brand-logo-alt';
 import OrderForm from '../[slug]/OrderForm'
@@ -171,11 +172,13 @@ export default async function CompanyPage() {
   ]
 
   const structuredData = generateStructuredData(company)
+  const nonce = await getCspNonce()
 
   return (
     <main className="min-h-screen">
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData)
         }}

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from "next";
+import { getCspNonce } from './lib/csp-nonce';
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
@@ -572,11 +573,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const nonce = await getCspNonce()
+
   return (
     <html lang="en-GB">
       <head>
@@ -628,6 +631,7 @@ export default function RootLayout({
         <script
           id="schema-org"
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
               {
@@ -960,8 +964,9 @@ export default function RootLayout({
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-7HWXWDZG4F"
           strategy="lazyOnload"
+          nonce={nonce}
         />
-        <Script id="google-analytics" strategy="lazyOnload">
+        <Script id="google-analytics" strategy="lazyOnload" nonce={nonce}>
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

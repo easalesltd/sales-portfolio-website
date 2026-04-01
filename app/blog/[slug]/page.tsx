@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { getCspNonce } from '@/app/lib/csp-nonce';
 import BlogCoverImage from '../../components/BlogCoverImage';
 import {
   getAllMagazineArticleSlugs,
@@ -89,6 +90,7 @@ export default async function BlogArticlePage({
   const article = getMagazineArticleBySlug(slug);
   if (!article) notFound();
 
+  const nonce = await getCspNonce();
   const pageUrl = `https://www.easalesltd.co.uk/blog/${article.slug}`;
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -149,10 +151,12 @@ export default async function BlogArticlePage({
     <>
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">

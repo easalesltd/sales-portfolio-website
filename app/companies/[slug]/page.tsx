@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
+import { getCspNonce } from '@/app/lib/csp-nonce'
 import { companies } from '../../data/companies'
 import OrderForm from './OrderForm'
 import VideoBackground from '../../components/VideoBackground'
@@ -1618,6 +1619,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     return <div>Company not found</div>;
   }
 
+  const nonce = await getCspNonce();
   const structuredData = generateStructuredData(company);
   
   // Generate VideoObject schemas for company videos
@@ -1828,6 +1830,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
         <script
           key={`schema-${index}`}
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(schema)
           }}

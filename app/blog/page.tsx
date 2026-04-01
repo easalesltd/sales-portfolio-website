@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { getCspNonce } from '@/app/lib/csp-nonce';
 import BlogCoverImage from '../components/BlogCoverImage';
 import { getAllMagazineArticles } from '../data/magazine-articles';
 
@@ -45,7 +46,8 @@ function formatDate(iso: string): string {
   });
 }
 
-export default function BlogIndexPage() {
+export default async function BlogIndexPage() {
+  const nonce = await getCspNonce();
   const articles = getAllMagazineArticles();
 
   const collectionSchema = {
@@ -83,6 +85,7 @@ export default function BlogIndexPage() {
     <>
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">

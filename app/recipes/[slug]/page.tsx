@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getCspNonce } from '@/app/lib/csp-nonce';
 import { getRecipeBySlug, getAllRecipeSlugs, Recipe } from '../../data/recipes';
 import type { Metadata } from 'next';
 import RecipeActions from './RecipeActions';
@@ -133,6 +134,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
     notFound();
   }
 
+  const nonce = await getCspNonce();
   const recipeSchema = generateRecipeSchema(recipe);
 
   return (
@@ -140,6 +142,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
       <script
         id={`recipe-schema-${recipe.slug}`}
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(recipeSchema)
         }}

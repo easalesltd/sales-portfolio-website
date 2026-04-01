@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getCspNonce } from '@/app/lib/csp-nonce';
 import TerritoryImage from './TerritoryImage';
 
 const articleSchema = {
@@ -65,15 +66,18 @@ const faqSchema = {
   ],
 };
 
-export default function WhatIsASalesAgentPage() {
+export default async function WhatIsASalesAgentPage() {
+  const nonce = await getCspNonce();
   return (
     <div className="min-h-screen py-12">
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
       <script
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
