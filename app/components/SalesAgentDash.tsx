@@ -160,8 +160,6 @@ function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): str
 }
 
 function getCompanyBillboardLogoUrl(c: (typeof companies)[number]): string {
-  // Cambridge Confectionery should use its black-background logo with white lettering.
-  if (c.id === 'cambridge-confectionery-company') return c.logoUrl;
   return c.logoUrlDark ?? c.logoUrl;
 }
 
@@ -303,6 +301,11 @@ function drawBillboard(
       }
     });
   } else {
+    if (isNewAgency) {
+      ctx.fillStyle = '#0a0a0a';
+      roundRectPath(ctx, x + pad, panelTop + pad, innerW, innerH, 3);
+      ctx.fill();
+    }
     const img = logos.get(url);
     if (img && img.complete && img.naturalWidth > 0) {
       const scale = Math.min(innerW / img.naturalWidth, innerH / img.naturalHeight);
