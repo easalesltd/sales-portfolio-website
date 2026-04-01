@@ -13,6 +13,7 @@ export default function AboutDropdown() {
 
   const aboutItems = [
     { name: 'Meet Dave', href: '/about' },
+    { name: 'Contact Dave', href: '/about/contact' },
     { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
     { name: 'Magazine articles', href: '/blog' },
     { name: 'Recipes', href: '/recipes' }
@@ -40,7 +41,7 @@ export default function AboutDropdown() {
   }, []);
 
   const isActive =
-    pathname === '/about' ||
+    pathname.startsWith('/about') ||
     pathname === '/recipes' ||
     pathname === '/what-is-a-sales-agent' ||
     pathname.startsWith('/blog');
