@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   FaEnvelope,
   FaFacebook,
@@ -44,22 +43,9 @@ export default function AboutContactPage() {
       <div className="min-h-screen py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInOnScroll>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-neutral-100 mb-4 text-center">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-neutral-100 mb-8 text-center">
               Contact Dave
             </h1>
-            <p className="text-center text-gray-700 dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
-              Reach Dave Langdon directly for wholesale greeting cards, gifts,
-              and display solutions across Suffolk, Norfolk, Essex,
-              Cambridgeshire, and Hertfordshire. For a visit request you can also
-              use the main{" "}
-              <Link
-                href="/contact"
-                className="font-medium text-neutral-900 underline underline-offset-2 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300"
-              >
-                contact page
-              </Link>
-              .
-            </p>
           </FadeInOnScroll>
 
           <FadeInOnScroll delay={0.12} direction="up">
