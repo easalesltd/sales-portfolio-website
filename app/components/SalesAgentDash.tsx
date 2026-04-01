@@ -123,11 +123,11 @@ type SeasonalTheme = 'christmas' | 'valentines' | 'mothers_day' | 'fathers_day' 
 type SeasonalMessage = { text: string; theme: SeasonalTheme };
 
 const SEASONAL_BILLBOARD_MESSAGES: readonly SeasonalMessage[] = [
-  { text: 'Have you ordered Xmas Cards yet? 🎄🎅✨', theme: 'christmas' },
-  { text: "Valentine's Day stock sorted yet? 💘💝", theme: 'valentines' },
-  { text: "Mother's Day cards: ready to go? 💐💖", theme: 'mothers_day' },
-  { text: "Father's Day cards: ready to go? 👔💙", theme: 'fathers_day' },
-  { text: 'Easter cards and gifts ready? 🐣🌼', theme: 'easter' },
+  { text: 'January 1st, time to Pre Order Xmas Cards lol 🎄😂', theme: 'christmas' },
+  { text: "Valentine's Day: Pre Order now, for the one you love. 💘😅", theme: 'valentines' },
+  { text: 'Love you Mum. Mother\'s Day cards available to pre-order now. 💐💖', theme: 'mothers_day' },
+  { text: "Father's Day cards: because Dad definitely won't say he wants one... but he does. 👔😂", theme: 'fathers_day' },
+  { text: "Easter isn't just about chocolate — buy a card too. 🐣💌", theme: 'easter' },
 ] as const;
 
 /** Silly Beans coming-soon board — brand sky blue ~#A2D9F7 */
