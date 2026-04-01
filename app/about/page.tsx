@@ -6,22 +6,60 @@ import ImageModal from "../components/ImageModal";
 import VideoBackground from "../components/VideoBackground";
 import FadeInOnScroll from "../components/FadeInOnScroll";
 
+function aboutSrc(file: string): string {
+  return encodeURI(`/images/about/${file}`);
+}
+
+/** Filenames match `public/images/about` (descriptive names for SEO). Desktop wall: 4×3 grid. */
 const aboutImages = [
-  { src: '/images/about/IMG-20230520-WA0021.jpg', alt: 'Dave portrait' },
-  { src: '/images/about/Underline_The_Sky_(3_of_21) (1).jpg', alt: 'Dave professional photo' },
-  { src: '/images/about/Screenshot%202026-02-08%20at%2019.24.09.png', alt: 'Magazine article' },
-  { src: '/images/about/20240420_103516 portrait.jpg', alt: 'Recent photo' },
-  { src: '/images/about/20251201_135658.jpg', alt: 'Dave photo' },
-  { src: '/images/about/20250526_145646 portrait.jpg', alt: 'Latest photo' },
-  { src: '/images/about/DSC07186.JPG', alt: 'Dave with his guitar' },
-  { src: '/images/about/Screenshot-2025-08-30-at-17-41-48.png', alt: 'Magazine article' },
-  { src: '/images/about/IMG-20230810-WA0046.jpg', alt: 'Family moment' },
-  { src: '/images/about/20251205_105843.jpg', alt: 'Dave photo' },
-  { src: '/images/about/Screenshot%202026-02-08%20at%2019.26.09.png', alt: 'Magazine article' },
-  { src: '/images/about/IMG-20240923-WA0018.jpg', alt: 'Family at Legoland' },
-  { src: '/images/about/PXL_20240810_193137220_1.jpg', alt: 'Dave with family' },
-  { src: '/images/about/dave-portrait-2025.jpg', alt: 'Dave portrait' },
-  { src: '/images/about/Screenshot%202026-02-08%20at%2019.28.01.png', alt: 'Magazine article' },
+  {
+    src: aboutSrc('Selfie with Cards N Things Norwich.jpg'),
+    alt: 'Dave Langdon, greeting card sales agent, with Cards N Things Norwich',
+  },
+  {
+    src: aboutSrc('Team Ohh Deer at Spring Fair NEC.png'),
+    alt: 'Dave Langdon with Team Ohh Deer at Spring Fair NEC wholesale trade show',
+  },
+  {
+    src: aboutSrc('Dave playing with Underline The Sky at the Apex Bury St Edmunds.jpg'),
+    alt: 'Dave Langdon playing guitar with Underline The Sky at The Apex, Bury St Edmunds',
+  },
+  {
+    src: aboutSrc('On the way to watch Ipswich Town.jpg'),
+    alt: 'Dave Langdon on the way to watch Ipswich Town FC',
+  },
+  {
+    src: aboutSrc('Guitar Training 101.jpg'),
+    alt: 'Dave Langdon guitar practice',
+  },
+  {
+    src: aboutSrc('Selfie With Amanda at Love it Bury St Edmunds.jpg'),
+    alt: 'Dave Langdon and Amanda at Love it Bury St Edmunds gift shop',
+  },
+  {
+    src: aboutSrc('Family Langdon Selfie in Cornwall.jpg'),
+    alt: 'Dave Langdon family selfie in Cornwall',
+  },
+  {
+    src: aboutSrc('Legoland Fun.jpg'),
+    alt: 'Dave Langdon family day at Legoland',
+  },
+  {
+    src: aboutSrc('Family Picture after completing Carten 100 for Anthony Nolan.jpg'),
+    alt: 'Dave Langdon family after Carten 100 charity ride for Anthony Nolan',
+  },
+  {
+    src: aboutSrc('Tarzan Fun in Orwell Country Park.jpg'),
+    alt: 'Dave Langdon outdoors at Orwell Country Park, Ipswich area',
+  },
+  {
+    src: aboutSrc('Coffee on a Lake in Austria.jpg'),
+    alt: 'Dave Langdon drinking coffee by a lake in Austria',
+  },
+  {
+    src: aboutSrc('Up an Austrian Moutain wearing Flip Flops, as you do.JPG'),
+    alt: 'Dave Langdon hiking up an Austrian mountain in flip flops',
+  },
 ];
 
 export default function AboutPage() {
@@ -167,63 +205,22 @@ export default function AboutPage() {
 
             {/* Right Column - Desktop Photo Grid - Magazine article pictures spread out */}
             <FadeInOnScroll className="hidden lg:block" direction="left" delay={0.1}>
-              <div className="space-y-3 mt-4">
-                {/* Row 1 - 5 images */}
-                <div className="grid grid-cols-5 gap-2">
-                  {aboutImages.slice(0, 5).map((img, index) => (
-                    <div
-                      key={`desktop-row1-${index}`}
-                      className="relative h-44 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                      onClick={() => handleImageClick(index)}
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 20vw"
-                      />
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Row 2 - 5 images */}
-                <div className="grid grid-cols-5 gap-2">
-                  {aboutImages.slice(5, 10).map((img, index) => (
-                    <div
-                      key={`desktop-row2-${index}`}
-                      className="relative h-44 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                      onClick={() => handleImageClick(index + 5)}
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 20vw"
-                      />
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Row 3 - 5 images */}
-                <div className="grid grid-cols-5 gap-2">
-                  {aboutImages.slice(10, 15).map((img, index) => (
-                    <div
-                      key={`desktop-row3-${index}`}
-                      className="relative h-44 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                      onClick={() => handleImageClick(index + 10)}
-                    >
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 768px) 100vw, 20vw"
-                      />
-                    </div>
-                  ))}
-                </div>
+              <div className="mt-4 grid grid-cols-4 gap-2">
+                {aboutImages.map((img, index) => (
+                  <div
+                    key={`desktop-${img.src}-${index}`}
+                    className="relative aspect-square max-h-52 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => handleImageClick(index)}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover hover:scale-105 transition-transform duration-300"
+                      sizes="(max-width: 1280px) 25vw, 280px"
+                    />
+                  </div>
+                ))}
               </div>
             </FadeInOnScroll>
           </div>

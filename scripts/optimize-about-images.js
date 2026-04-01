@@ -23,19 +23,3 @@ fs.readdirSync(aboutDir).forEach(file => {
       });
   }
 });
-
-const file = 'DSC07186.JPG';
-const filePath = path.join(aboutDir, file);
-
-sharp(filePath)
-  .rotate() // auto-orient based on EXIF
-  .resize({ width: maxWidth, withoutEnlargement: true })
-  .jpeg({ quality, mozjpeg: true })
-  .toBuffer()
-  .then(data => {
-    fs.writeFileSync(filePath, data);
-    console.log(`Auto-rotated and optimized: ${file}`);
-  })
-  .catch(err => {
-    console.error(`Error optimizing ${file}:`, err);
-  }); 

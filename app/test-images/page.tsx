@@ -7,23 +7,23 @@ export default function TestImagesPage() {
       
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <h2 className="text-lg font-semibold mb-2">dave-portrait-2025.jpg</h2>
+          <h2 className="text-lg font-semibold mb-2">Guitar Training 101.jpg</h2>
           <div className="relative h-64 w-full">
             <Image
-              src="/images/about/dave-portrait-2025.jpg"
-              alt="Test PXL image"
+              src="/images/about/Guitar%20Training%20101.jpg"
+              alt="Test about image"
               fill
               className="object-cover"
             />
           </div>
         </div>
-        
+
         <div>
-          <h2 className="text-lg font-semibold mb-2">Screenshot-2025-08-30-at-17-41-48.png</h2>
+          <h2 className="text-lg font-semibold mb-2">Team Ohh Deer at Spring Fair NEC.png</h2>
           <div className="relative h-64 w-full">
             <Image
-              src="/images/about/Screenshot-2025-08-30-at-17-41-48.png"
-              alt="Test Screenshot image"
+              src="/images/about/Team%20Ohh%20Deer%20at%20Spring%20Fair%20NEC.png"
+              alt="Test about image"
               fill
               className="object-cover"
             />
