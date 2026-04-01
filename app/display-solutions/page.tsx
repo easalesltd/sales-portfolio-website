@@ -96,6 +96,12 @@ export default function DisplaySolutionsPage() {
     </div>
   );
 
+  // Brand + sku satisfy merchant-listing-style Product checks (price + offers) in Search Console.
+  const displayBrand = {
+    '@type': 'Brand',
+    'name': 'East Anglian Sales LTD',
+  };
+
   // Add structured data for greeting card display solutions
   const structuredData = {
     '@context': 'https://schema.org',
@@ -122,6 +128,8 @@ export default function DisplaySolutionsPage() {
           'itemOffered': {
             '@type': 'Product',
             'name': 'Free Greeting Card Spinners',
+            'sku': 'eas-display-card-spinner-free',
+            'brand': displayBrand,
             'description': 'Complimentary greeting card spinners and display units for retailers. Professional quality displays at no cost to qualifying retailers.',
             'category': ['Retail Displays', 'Card Spinners', 'Free Displays', 'Greeting Card Solutions'],
             'offers': {
@@ -139,6 +147,8 @@ export default function DisplaySolutionsPage() {
           'itemOffered': {
             '@type': 'Product',
             'name': 'Affordable Greeting Card Displays',
+            'sku': 'eas-display-affordable-range',
+            'brand': displayBrand,
             'description': 'Cost-effective greeting card display solutions for retailers. Quality displays at competitive prices.',
             'category': ['Retail Displays', 'Card Spinners', 'Affordable Displays', 'Greeting Card Solutions'],
             'offers': {
@@ -161,6 +171,8 @@ export default function DisplaySolutionsPage() {
           'itemOffered': {
             '@type': 'Product',
             'name': 'Bespoke Greeting Card Wall Displays',
+            'sku': 'eas-display-bespoke-wall',
+            'brand': displayBrand,
             'description': 'Custom-designed wall displays for greeting cards. Tailored solutions to maximize your retail space and showcase your products effectively.',
             'category': ['Retail Displays', 'Wall Displays', 'Bespoke Solutions', 'Greeting Card Solutions'],
             'offers': {
