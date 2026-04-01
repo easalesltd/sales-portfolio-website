@@ -1266,26 +1266,37 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       if (banner.frames > 0) {
         const fade = Math.min(1, banner.frames / 28);
         const isCompact = W < 420;
-        const panelW = Math.min(
-          W * (isCompact ? 0.5 : 0.36),
-          isCompact ? 300 : 340
-        );
-        const panelX = (W - panelW) / 2;
-        const innerPad = isCompact ? 10 : 12;
-        const maxTextW = Math.max(64, panelW - innerPad * 2 - 6);
         const line1Max = isCompact ? Math.min(15, W * 0.046) : Math.min(14, W * 0.028);
         const line2Max = isCompact ? Math.min(26, W * 0.095) : Math.min(24, W * 0.05);
         const line3Max = isCompact ? Math.min(12, W * 0.036) : Math.min(11, W * 0.026);
+        ctx.font = `${line1Max}px system-ui, sans-serif`;
+        const wLine1 = ctx.measureText('Now entering').width;
+        ctx.font = `bold ${line2Max}px system-ui, sans-serif`;
+        const wLine2 = ctx.measureText(banner.name).width;
+        ctx.font = `${line3Max}px system-ui, sans-serif`;
+        const wLine3 = ctx.measureText('East Anglia route').width;
+        const panelW = Math.ceil(
+          Math.max(
+            isCompact ? 180 : 210,
+            Math.min(
+              isCompact ? 258 : 290,
+              Math.max(wLine1, wLine2, wLine3) + (isCompact ? 24 : 26)
+            )
+          )
+        );
+        const panelX = (W - panelW) / 2;
+        const innerPad = isCompact ? 6 : 7;
+        const maxTextW = Math.max(64, panelW - innerPad * 2 - 6);
 
         const panelTop = H * 0.23;
-        const panelH = Math.min(118, Math.max(isCompact ? 80 : 74, Math.floor(H * 0.32)));
+        const panelH = isCompact ? 78 : 70;
 
         ctx.save();
         ctx.fillStyle = `rgba(15,23,42,${0.82 * fade})`;
         roundRectPath(ctx, panelX, panelTop, panelW, panelH, 8);
         ctx.fill();
         ctx.strokeStyle = 'rgba(255,255,255,0.22)';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
         roundRectPath(ctx, panelX + innerPad, panelTop + innerPad, panelW - innerPad * 2, panelH - innerPad * 2, 6);
         ctx.stroke();
 
