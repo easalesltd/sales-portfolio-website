@@ -9,10 +9,25 @@ const BLOG_DESCRIPTION =
 export const metadata: Metadata = {
   title: 'Magazine articles',
   description: BLOG_DESCRIPTION,
+  keywords: [
+    'Dave Langdon',
+    'Greetings Today',
+    'Progressive Greetings',
+    'greeting card sales agent',
+    'trade press',
+    'East Anglia wholesale',
+    'magazine articles',
+  ],
   openGraph: {
+    type: 'website',
     title: 'Magazine articles | Dave Langdon',
     description: BLOG_DESCRIPTION,
     url: 'https://www.easalesltd.co.uk/blog',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Magazine articles | Dave Langdon',
+    description: BLOG_DESCRIPTION,
   },
   alternates: {
     canonical: 'https://www.easalesltd.co.uk/blog',

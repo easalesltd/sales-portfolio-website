@@ -22,9 +22,18 @@ export async function generateMetadata({
     return { title: 'Article not found' };
   }
   const url = `https://www.easalesltd.co.uk/blog/${article.slug}`;
+  const keywords = [
+    'Dave Langdon',
+    'East Anglia sales agent',
+    'greeting cards wholesale',
+    article.publication ?? '',
+    article.title.split(/[|,\u2014]/)[0]?.trim() ?? '',
+  ].filter(Boolean);
+
   return {
     title: article.title,
     description: article.excerpt,
+    keywords,
     openGraph: {
       title: `${article.title} | Magazine articles`,
       description: article.excerpt,
@@ -66,12 +75,17 @@ export default async function BlogArticlePage({
   const article = getMagazineArticleBySlug(slug);
   if (!article) notFound();
 
+  const pageUrl = `https://www.easalesltd.co.uk/blog/${article.slug}`;
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.title,
     description: article.excerpt,
+    articleSection: 'Magazine articles',
     datePublished: article.publishedAt,
+    ...(article.paragraphs.length > 0
+      ? { articleBody: article.paragraphs.join('\n\n') }
+      : {}),
     author: {
       '@type': 'Person',
       name: 'Dave Langdon',
@@ -84,7 +98,7 @@ export default async function BlogArticlePage({
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://www.easalesltd.co.uk/blog/${article.slug}`,
+      '@id': pageUrl,
     },
     ...(article.coverImage
       ? { image: [`https://www.easalesltd.co.uk${article.coverImage}`] }
@@ -92,11 +106,40 @@ export default async function BlogArticlePage({
     ...(article.sourceUrl ? { isBasedOn: article.sourceUrl } : {}),
   };
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://www.easalesltd.co.uk/',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Magazine articles',
+        item: 'https://www.easalesltd.co.uk/blog',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: article.title,
+        item: pageUrl,
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
         <Link
