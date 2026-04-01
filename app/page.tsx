@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { FaInstagram } from "react-icons/fa";
 import { companies } from "./data/companies";
+import { partnerBrandLogoAlt } from "./lib/partner-brand-logo-alt";
 import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
 import FadeInOnScroll from "./components/FadeInOnScroll";
 
@@ -100,7 +101,7 @@ export default function Home() {
                       >
                         <Image
                           src={logoSrc}
-                          alt={`${company.name} logo`}
+                          alt={partnerBrandLogoAlt(company.name)}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 320px"
                           className={`object-contain p-6 group-hover:scale-105 transition-transform duration-300 ${

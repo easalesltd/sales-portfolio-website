@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Metadata } from 'next';
 import { companies } from '@/app/data/companies';
+import { partnerBrandLogoAlt } from '@/app/lib/partner-brand-logo-alt';
 import OrderForm from '../[slug]/OrderForm'
 import ImageGallery from '../../components/ImageGallery'
 
@@ -188,7 +189,7 @@ export default async function CompanyPage() {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-50/10 group-hover:to-gray-50/20 transition-all duration-300" />
                 <Image
                   src={company.logoUrl}
-                  alt={`${company.name} logo`}
+                  alt={partnerBrandLogoAlt(company.name)}
                   fill
                   className="object-contain transition-transform duration-300 group-hover:scale-105"
                   priority

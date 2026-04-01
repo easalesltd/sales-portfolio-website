@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { companies } from "../data/companies";
+import { partnerBrandLogoAlt } from "../lib/partner-brand-logo-alt";
 import ShowcaseSlideshow from "../components/ShowcaseSlideshow";
 import VideoBackground from "../components/VideoBackground";
 import FadeInOnScroll from "../components/FadeInOnScroll";
@@ -95,7 +96,7 @@ export default function Home() {
                       >
                         <Image
                           src={logoSrc}
-                          alt={`${company.name} logo`}
+                          alt={partnerBrandLogoAlt(company.name)}
                           fill
                           className={`object-contain p-6 group-hover:scale-105 transition-transform duration-300 ${
                             invertLightMarkOnDarkTile ? 'invert' : ''

@@ -6,6 +6,7 @@ import VideoBackground from '../../components/VideoBackground'
 import ImageGallery from '../../components/ImageGallery'
 import ShowroomVideo from '../../components/ShowroomVideo'
 import { Company } from '@/app/lib/types'
+import { partnerBrandLogoAlt } from '@/app/lib/partner-brand-logo-alt'
 
 // Add shuffle function at the top level
 function shuffleArray<T>(array: T[]): T[] {
@@ -1822,7 +1823,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                 )}
                 <Image
                   src={companyPageLogoSrc}
-                  alt={`${company.name} logo`}
+                  alt={partnerBrandLogoAlt(company.name)}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   priority

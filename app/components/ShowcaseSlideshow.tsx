@@ -7,52 +7,194 @@ import Image from 'next/image';
 const TRANSITION_DURATION = 1000; // 1 second for a smoother fade transition
 const SLIDE_DURATION = 5000; // 5 seconds per slide for better viewing
 
-// Showcase images — kept in sync with files in public/images/showcase (remove entries when files are deleted)
-const showcaseImages = [
-  '/images/showcase/1-1-25.jpeg',
-  '/images/showcase/1066f4f9-50ba-4dfb-8f5d-703151fd119e.jpeg',
-  '/images/showcase/1755245031292398.jpg',
-  '/images/showcase/1755253128244036.jpg',
-  '/images/showcase/4003f792-f399-4cc5-8802-e2bfcd93c330.jpeg',
-  '/images/showcase/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
-  '/images/showcase/901d0ddb-3e10-4a3d-aeee-c2d207eba557.jpeg',
-  '/images/showcase/Fudge-hero-1536x600.png',
-  '/images/showcase/Hero-sticks-1024x600.png',
-  '/images/showcase/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
-  '/images/showcase/Large-Hamper-1024x600.png',
-  '/images/showcase/Screenshot 2025-05-18 at 09.18.07.png',
-  '/images/showcase/Screenshot 2025-06-03 at 21.45.03.png',
-  '/images/showcase/Screenshot 2025-06-03 at 21.45.27.png',
-  '/images/showcase/Screenshot 2025-07-07 at 09.31.03-optimized.png',
-  '/images/showcase/Screenshot 2025-08-30 at 17.42.49.png',
-  '/images/showcase/Screenshot 2025-11-24 at 12.30.52.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.39.30.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.40.59.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.41.18.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.42.49.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.43.00.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.43.40.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.44.30.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.44.45.png',
-  '/images/showcase/Screenshot 2025-12-19 at 20.46.04.png',
-  '/images/showcase/Screenshot 2026-01-18 at 13.06.13.png',
-  '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg',
-  '/images/showcase/bd66610d-a7c2-4835-9657-9e4248cf7400.jpeg',
-  '/images/showcase/d40a6860-3952-4308-b87b-770c946035a3.jpeg',
-  '/images/showcase/image (17).png',
-  '/images/showcase/mix-hero-1024x600.png',
-  '/images/showcase/showcase1.jpeg',
-  '/images/showcase/showcase2.jpeg',
-  '/images/showcase/showcase4.jpeg'
+type ShowcaseSlide = { src: string; alt: string };
+
+/** Homepage hero — descriptive alts only (no layout/CSS change); keep file list in sync with public/images/showcase. */
+const SHOWCASE_SLIDES: ShowcaseSlide[] = [
+  {
+    src: '/images/showcase/1-1-25.jpeg',
+    alt:
+      'Seasonal greeting card display at an East Anglia shop — Dave Langdon wholesale greeting card sales agent portfolio',
+  },
+  {
+    src: '/images/showcase/1066f4f9-50ba-4dfb-8f5d-703151fd119e.jpeg',
+    alt:
+      'Greeting card spinner or stand on an independent retail visit — Dave Langdon Suffolk Norfolk Essex Cambridgeshire sales agent',
+  },
+  {
+    src: '/images/showcase/1755245031292398.jpg',
+    alt:
+      'Wholesale gift and greeting card range photographed for retailers — East Anglia sales rep Dave Langdon',
+  },
+  {
+    src: '/images/showcase/1755253128244036.jpg',
+    alt:
+      'Card and gift point of sale display on a shop floor — Dave Langdon greeting card agent East Anglia',
+  },
+  {
+    src: '/images/showcase/4003f792-f399-4cc5-8802-e2bfcd93c330.jpeg',
+    alt:
+      'Independent retailer greeting card bay — Dave Langdon wholesale trade portfolio East Anglian Sales Ltd',
+  },
+  {
+    src: '/images/showcase/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
+    alt:
+      'Garden centre or gift shop greeting card fixture — Dave Langdon giftware sales agent East Anglia',
+  },
+  {
+    src: '/images/showcase/901d0ddb-3e10-4a3d-aeee-c2d207eba557.jpeg',
+    alt:
+      'Retail card publisher ranges on display — Dave Langdon wholesale greeting cards East Anglia visit',
+  },
+  {
+    src: '/images/showcase/Fudge-hero-1536x600.png',
+    alt:
+      'Wholesale fudge and confectionery hero display for gift retailers — Dave Langdon East Anglia sales agent',
+  },
+  {
+    src: '/images/showcase/Hero-sticks-1024x600.png',
+    alt:
+      'Chocolate sticks and confectionery wholesale POS — gift sales agent Dave Langdon East Anglia',
+  },
+  {
+    src: '/images/showcase/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
+    alt:
+      'Greeting cards and stationery photographed on a retailer call — Dave Langdon Ipswich based wholesale agent',
+  },
+  {
+    src: '/images/showcase/Large-Hamper-1024x600.png',
+    alt:
+      'Large gift hamper and gourmet gifting wholesale display — Dave Langdon East Anglia trade portfolio',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-05-18 at 09.18.07.png',
+    alt:
+      'Card and gift fixture at an East Anglia independent — Dave Langdon greeting card sales representative visit photo',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-06-03 at 21.45.03.png',
+    alt:
+      'Wholesale ranges on display during a shop appointment — Dave Langdon Suffolk Norfolk sales agent portfolio',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-06-03 at 21.45.27.png',
+    alt:
+      'Retailer shelf or spinner with greeting cards — Dave Langdon East Anglia wholesale portfolio',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-07-07 at 09.31.03-optimized.png',
+    alt:
+      'Gift shop greeting card selection East Anglia — Dave Langdon independent retailer support',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-08-30 at 17.42.49.png',
+    alt:
+      'Seasonal cards and gifts merchandised in store — Dave Langdon trade sales agent photo',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-11-24 at 12.30.52.png',
+    alt:
+      'Christmas or Q4 card display for wholesale customers — Dave Langdon East Anglia rep showcase',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.39.30.png',
+    alt:
+      'Greeting card publisher POS in an independent shop — Dave Langdon sales agent East Anglian Sales Ltd',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.40.59.png',
+    alt:
+      'Retailer card stand with bestseller designs — Dave Langdon wholesale greeting cards portfolio',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.41.18.png',
+    alt:
+      'Gift and card retail bay photographed on route — Dave Langdon Norfolk Suffolk Essex agent',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.42.49.png',
+    alt:
+      'Wholesale stationery and cards on display — Dave Langdon East Anglia shop visit snapshot',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.43.00.png',
+    alt:
+      'Independent store greeting card department — Dave Langdon sales agent portfolio East Anglia',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.43.40.png',
+    alt:
+      'Card racks and gift lines at a local retailer — Dave Langdon wholesale trade photography',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.44.30.png',
+    alt:
+      'Publisher ranges merchandised for East Anglia shops — Dave Langdon greeting card rep',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.44.45.png',
+    alt:
+      'Shop display refresh with new season cards — Dave Langdon giftware wholesale agent',
+  },
+  {
+    src: '/images/showcase/Screenshot 2025-12-19 at 20.46.04.png',
+    alt:
+      'Farm shop or gift store card selection — Dave Langdon East Anglia wholesale portfolio',
+  },
+  {
+    src: '/images/showcase/Screenshot 2026-01-18 at 13.06.13.png',
+    alt:
+      'New year card and gift display for retailers — Dave Langdon sales agent East Anglia 2026',
+  },
+  {
+    src: '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg',
+    alt:
+      'Wholesale greeting card layout on retailer visit — Dave Langdon East Anglian Sales Ltd showcase',
+  },
+  {
+    src: '/images/showcase/bd66610d-a7c2-4835-9657-9e4248cf7400.jpeg',
+    alt:
+      'Card and gift shelving at an East Anglia business — Dave Langdon wholesale agent photo',
+  },
+  {
+    src: '/images/showcase/d40a6860-3952-4308-b87b-770c946035a3.jpeg',
+    alt:
+      'Independent shop wholesale order display — Dave Langdon greeting card sales East Anglia',
+  },
+  {
+    src: '/images/showcase/image (17).png',
+    alt:
+      'Mixed giftware and card wholesale hero image — Dave Langdon partner brands East Anglia',
+  },
+  {
+    src: '/images/showcase/mix-hero-1024x600.png',
+    alt:
+      'Mixed greeting cards and gifts wholesale hero banner — Dave Langdon East Anglia sales agent homepage',
+  },
+  {
+    src: '/images/showcase/showcase1.jpeg',
+    alt:
+      'Retail greeting card display example — Dave Langdon wholesale supplier visit portfolio photo one',
+  },
+  {
+    src: '/images/showcase/showcase2.jpeg',
+    alt:
+      'Shop card fixture and gifting display — Dave Langdon East Anglia independent retailer showcase two',
+  },
+  {
+    src: '/images/showcase/showcase4.jpeg',
+    alt:
+      'Greeting cards merchandised for trade customers — Dave Langdon sales rep showcase photo three',
+  },
 ];
 
 export default function ShowcaseSlideshow() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [imageError, setImageError] = useState<boolean[]>(new Array(showcaseImages.length).fill(false));
+  const [imageError, setImageError] = useState<boolean[]>(new Array(SHOWCASE_SLIDES.length).fill(false));
   /** Start with a full ordered list so SSR and first paint never show an empty/loading state. */
-  const [shuffledImages, setShuffledImages] = useState<string[]>(() => [...showcaseImages]);
+  const [shuffledImages, setShuffledImages] = useState<ShowcaseSlide[]>(() => [...SHOWCASE_SLIDES]);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -62,18 +204,18 @@ export default function ShowcaseSlideshow() {
   const minSwipeDistance = 50;
 
   // Function to shuffle array using Fisher-Yates algorithm
-  const shuffleArray = (array: string[]) => {
+  function shuffleArray<T>(array: T[]): T[] {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
-  };
+  }
 
   // Shuffle after mount (client-only); keep the first slide so LCP and hydration stay stable.
   useEffect(() => {
-    const [first, ...rest] = showcaseImages;
+    const [first, ...rest] = SHOWCASE_SLIDES;
     setShuffledImages([first, ...shuffleArray(rest)]);
   }, []);
 
@@ -199,8 +341,8 @@ export default function ShowcaseSlideshow() {
           }}
         >
           <Image
-            src={shuffledImages[currentIndex]}
-            alt={`Showcase image ${currentIndex + 1}`}
+            src={shuffledImages[currentIndex].src}
+            alt={shuffledImages[currentIndex].alt}
             fill
             className="object-cover select-none"
             priority={currentIndex === 0}
@@ -221,8 +363,8 @@ export default function ShowcaseSlideshow() {
           }}
         >
           <Image
-            src={shuffledImages[nextIndex]}
-            alt={`Showcase image ${nextIndex + 1}`}
+            src={shuffledImages[nextIndex].src}
+            alt={shuffledImages[nextIndex].alt}
             fill
             className="object-cover select-none"
             priority

@@ -14,51 +14,63 @@ function aboutSrc(file: string): string {
 const aboutImages = [
   {
     src: aboutSrc('Selfie with Cards N Things Norwich.jpg'),
-    alt: 'Dave Langdon, greeting card sales agent, with Cards N Things Norwich',
+    alt:
+      'Dave Langdon, greeting card sales agent for Norfolk and East Anglia, visiting Cards N Things independent card shop Norwich with wholesale ranges',
   },
   {
     src: aboutSrc('Team Ohh Deer at Spring Fair NEC.png'),
-    alt: 'Dave Langdon with Team Ohh Deer at Spring Fair NEC wholesale trade show',
+    alt:
+      'Dave Langdon with Ohh Deer wholesale team at Spring Fair NEC Birmingham — greeting card trade show, East Anglia sales agent portfolio',
   },
   {
     src: aboutSrc('Dave playing with Underline The Sky at the Apex Bury St Edmunds.jpg'),
-    alt: 'Dave Langdon playing guitar with Underline The Sky at The Apex, Bury St Edmunds',
+    alt:
+      'Dave Langdon playing guitar on stage with Underline The Sky at The Apex Bury St Edmunds Suffolk — gift industry sales rep in East Anglia',
   },
   {
     src: aboutSrc('On the way to watch Ipswich Town.jpg'),
-    alt: 'Dave Langdon on the way to watch Ipswich Town FC',
+    alt:
+      'Dave Langdon Ipswich Suffolk based greeting card sales agent on the way to watch Ipswich Town FC',
   },
   {
     src: aboutSrc('Guitar Training 101.jpg'),
-    alt: 'Dave Langdon guitar practice',
+    alt:
+      'Dave Langdon practising guitar between East Anglia retailer visits — wholesale greeting card and gift sales agent Suffolk',
   },
   {
     src: aboutSrc('Selfie With Amanda at Love it Bury St Edmunds.jpg'),
-    alt: 'Dave Langdon and Amanda at Love it Bury St Edmunds gift shop',
+    alt:
+      'Dave Langdon with Amanda at Love it Bury St Edmunds Suffolk gift shop — independent retailer wholesale cards and gifts',
   },
   {
     src: aboutSrc('Family Langdon Selfie in Cornwall.jpg'),
-    alt: 'Dave Langdon family selfie in Cornwall',
+    alt:
+      'Dave Langdon and family in Cornwall — Ipswich based wholesale greeting card sales agent East Anglia',
   },
   {
     src: aboutSrc('Legoland Fun.jpg'),
-    alt: 'Dave Langdon family day at Legoland',
+    alt:
+      'Dave Langdon family day at Legoland — greeting card sales representative East Anglian Sales Ltd',
   },
   {
     src: aboutSrc('Family Picture after completing Carten 100 for Anthony Nolan.jpg'),
-    alt: 'Dave Langdon family after Carten 100 charity ride for Anthony Nolan',
+    alt:
+      'Dave Langdon family after Carten 100 charity ride for Anthony Nolan — card and gift wholesale agent East Anglia',
   },
   {
     src: aboutSrc('Tarzan Fun in Orwell Country Park.jpg'),
-    alt: 'Dave Langdon outdoors at Orwell Country Park, Ipswich area',
+    alt:
+      'Dave Langdon outdoors at Orwell Country Park Ipswich Suffolk — East Anglia greeting card sales agent',
   },
   {
     src: aboutSrc('Coffee on a Lake in Austria.jpg'),
-    alt: 'Dave Langdon drinking coffee by a lake in Austria',
+    alt:
+      'Dave Langdon relaxing by an Austrian lake — East Anglia wholesale greeting card and giftware sales agent',
   },
   {
     src: aboutSrc('Up an Austrian Moutain wearing Flip Flops, as you do.JPG'),
-    alt: 'Dave Langdon hiking up an Austrian mountain in flip flops',
+    alt:
+      'Dave Langdon hiking in the Austrian mountains — Suffolk based Dave Langdon greeting card sales agent holiday photo',
   },
 ];
 
