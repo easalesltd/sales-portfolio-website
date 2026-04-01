@@ -10,7 +10,7 @@ const counties = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire']
 
 function generateCompanyMetadata(company: typeof companies[0]): Metadata {
   const baseTitle = `Real and Exciting Designs Sales Agent | Contemporary Fashion Led Greeting Cards & Gift Wrap | Wholesale Supplier`;
-  const baseDescription = `Official Real and Exciting Designs sales agent and wholesale supplier in East Anglia. We supply contemporary fashion led greeting cards, gift wrap, and notebooks to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.`;
+  const baseDescription = `Real and Exciting Designs wholesale greeting cards and gift wrap supplied by Dave Langdon across East Anglia. Contemporary fashion-led designs, printed in England on FSC board.`;
   
   const locationMetadata = counties.map(county => ({
     title: `Real and Exciting Designs Sales Agent ${county} | Contemporary Greeting Cards & Gift Wrap in ${county}`,
@@ -103,7 +103,7 @@ function generateStructuredData(company: typeof companies[0]) {
     '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
     '@id': `https://www.easalesltd.co.uk/companies/real-and-exciting-designs#organization`,
     'name': 'Real and Exciting Designs Sales Agent - Contemporary Fashion Led Greeting Cards & Gift Wrap',
-    'description': 'Official Real and Exciting Designs sales agent and wholesale supplier in East Anglia. We supply contemporary fashion led greeting cards, gift wrap, and notebooks to retailers across Essex, Suffolk, Norfolk, and Cambridgeshire.',
+    'description': 'Real and Exciting Designs wholesale greeting cards and gift wrap supplied by Dave Langdon across East Anglia. Contemporary fashion-led designs, printed in England on FSC board.',
     'url': 'https://www.easalesltd.co.uk/companies/real-and-exciting-designs',
     'logo': {
       '@type': 'ImageObject',

@@ -32,6 +32,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const companyMetadata = {
     'museums-and-galleries': {
       title: 'David Langdon & Dave Langdon - Museums and Galleries Sales Agent | Art & Design-led Cards Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Museums & Galleries art and design-led greeting cards supplied by Dave Langdon across East Anglia. Includes Angela Harding, Peter Rabbit and Henry Fraser ranges for 2026.',
       keywords: [
         'Dave Langdon Museums and Galleries',
         'David Langdon Museums and Galleries',
@@ -558,6 +560,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'paper-salad': {
       title: 'David Langdon & Dave Langdon - Paper Salad Sales Agent | Contemporary Design-led Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Paper Salad wholesale greeting cards and chocolate supplied by Dave Langdon, sales agent for East Anglia. Neon-bright, hand-painted designs for independent retailers across Suffolk and Norfolk.',
       keywords: [
         'Dave Langdon Paper Salad',
         'David Langdon Paper Salad',
@@ -630,6 +634,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'ohh-deer': {
       title: 'David Langdon & Dave Langdon - Ohh Deer Sales Agent | Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Ohh Deer wholesale greeting cards, stationery, silly beans, seasonal cards and gifts supplied by Dave Langdon across East Anglia. Includes the Cath Kidston and Laura Ashley greeting card ranges.',
       keywords: [
         'Dave Langdon Ohh Deer',
         'David Langdon Ohh Deer',
@@ -761,6 +767,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'mint-publishing': {
       title: 'David Langdon & Dave Langdon - Mint Publishing Sales Agent | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Mint Publishing wholesale greeting cards supplied by Dave Langdon across Suffolk, Norfolk, Essex and Cambridgeshire. Funny birthday and captioned cards including the Katie Abey range.',
       keywords: [
         'Dave Langdon Mint Publishing',
         'David Langdon Mint Publishing',
@@ -961,6 +969,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'global-journey-gifts': {
       title: 'Global Journey Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Global Journey wholesale gifts and coin dispenser machines supplied by Dave Langdon across East Anglia. Ideal for tourist attractions, museums, garden centres and visitor centres.',
       keywords: [
         'global journey sales agent',
         'global journey agent',
@@ -982,6 +992,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'david-fischhoff': {
       title: 'David Fischhoff Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'David Fischhoff wholesale artificial flowers, grave ornaments and memorial products supplied by Dave Langdon across Suffolk, Norfolk, Essex and Cambridgeshire.',
       keywords: [
         'david fischhoff sales agent',
         'david fischhoff agent',
@@ -1002,6 +1014,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'emotional-rescue': {
       title: 'Emotional Rescue Greeting Cards | Contemporary Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Emotional Rescue wholesale greeting cards supplied by Dave Langdon, East Anglia sales agent. Unique, innovative card designs for independent retailers across Suffolk and Norfolk.',
       keywords: [
         'emotional rescue sales agent',
         'emotional rescue agent',
@@ -1090,6 +1104,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'boxer-gifts': {
       title: 'Boxer Gifts Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Wholesale Boxer Books and Gifts supplied by Dave Langdon, greeting card and gift sales agent for Suffolk, Norfolk, Essex and Cambridgeshire. Fun, unique gift ranges for independent retailers.',
       keywords: [
         'boxer gifts sales agent',
         'boxer gifts agent',
@@ -1110,6 +1126,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'peppermint-grove': {
       title: 'Peppermint Grove Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Peppermint Grove luxury home fragrance and bath & body wholesale products supplied by Dave Langdon across Suffolk, Norfolk, Essex and Cambridgeshire. Australian-made, beautifully presented.',
       keywords: [
         'peppermint grove sales agent',
         'peppermint grove agent',
@@ -1130,6 +1148,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'cgb-giftware': {
       title: 'David Langdon & Dave Langdon - CGB Giftware Sales Agent | Container Group Gifts & Bespoke Giftware in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'CGB Giftware wholesale gifts and bespoke giftware supplied by Dave Langdon, East Anglia sales agent. Artisan glass, Enchanted Emporium and high-quality gift ranges for retailers.',
       keywords: [
         'Dave Langdon CGB Giftware',
         'David Langdon CGB Giftware',
@@ -1273,6 +1293,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'cambridge-confectionery-company': {
       title: 'David Langdon & Dave Langdon - The Cambridge Confectionery Company & Calico Cottage Sales Agent | Wholesale Confectionery in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'The Cambridge Confectionery Company wholesale chocolate and confectionery gifts supplied by Dave Langdon across East Anglia. Handfinished gift bars and collections for independent retailers.',
       keywords: [
         'Dave Langdon Cambridge Confectionery Company',
         'David Langdon Cambridge Confectionery Company',
@@ -1336,6 +1358,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     'star-editions': {
       title: 'David Langdon & Dave Langdon - Star Editions Sales Agent | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
+      description:
+        'Star Editions wholesale greeting cards and licensed gifts supplied by Dave Langdon across East Anglia. Includes Richard Briggs and Dave Thompson ranges, with 5-day UK turnaround.',
       keywords: [
         'Dave Langdon Star Editions',
         'David Langdon Star Editions',
@@ -1427,19 +1451,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const metadata = companyMetadata[resolvedParams.slug as keyof typeof companyMetadata];
   if (metadata) {
+    const metaDescription =
+      'description' in metadata && typeof metadata.description === 'string'
+        ? metadata.description
+        : `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`;
     return {
       title: metadata.title,
-      description: `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`,
+      description: metaDescription,
       keywords: metadata.keywords.join(', '),
       openGraph: {
         title: metadata.title,
-        description: `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`,
+        description: metaDescription,
         type: 'website',
       },
       twitter: {
         card: 'summary_large_image',
         title: metadata.title,
-        description: `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`,
+        description: metaDescription,
       }
     };
   }
