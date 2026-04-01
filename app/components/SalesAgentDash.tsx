@@ -160,8 +160,8 @@ function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): str
 }
 
 function getCompanyBillboardLogoUrl(c: (typeof companies)[number]): string {
-  // Cambridge Confectionery should use its black logo with white lettering on the game billboard.
-  if (c.id === 'cambridge-confectionery-company') return c.logoUrl;
+  // Cambridge Confectionery should use its black-background logo with white lettering.
+  if (c.id === 'cambridge-confectionery-company') return c.logoUrlDark ?? c.logoUrl;
   return c.logoUrlDark ?? c.logoUrl;
 }
 
