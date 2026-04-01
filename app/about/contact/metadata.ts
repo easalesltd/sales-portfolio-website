@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact Dave Langdon | Phone, Email & Social",
   description:
-    "Direct contact details for Dave Langdon, greeting card and giftware sales agent for East Anglian Sales LTD — mobile, email, Instagram, LinkedIn, and Facebook.",
+    "Direct contact details for Dave Langdon, greeting card and giftware sales agent for East Anglian Sales LTD — mobile, email, Instagram, and LinkedIn.",
   keywords: [
     "Dave Langdon contact",
     "David Langdon contact",

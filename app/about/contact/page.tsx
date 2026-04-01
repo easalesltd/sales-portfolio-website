@@ -2,7 +2,6 @@
 
 import {
   FaEnvelope,
-  FaFacebook,
   FaInstagram,
   FaLinkedin,
   FaPhone,
@@ -27,7 +26,6 @@ export default function AboutContactPage() {
       sameAs: [
         "https://www.instagram.com/eastangliansalesltd/",
         "https://www.linkedin.com/in/dave-langdon-709a8547",
-        "https://www.facebook.com/eastangliansalesltd",
       ],
     },
   };
@@ -127,27 +125,6 @@ export default function AboutContactPage() {
                       className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                     >
                       linkedin.com/in/dave-langdon-709a8547
-                    </a>
-                  </dd>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <dt className="sr-only">Facebook</dt>
-                  <FaFacebook
-                    className="text-2xl text-gray-600 dark:text-neutral-400 shrink-0 mt-0.5"
-                    aria-hidden
-                  />
-                  <dd>
-                    <span className="block text-sm font-semibold text-gray-500 dark:text-neutral-400 mb-1">
-                      Facebook
-                    </span>
-                    <a
-                      href="https://www.facebook.com/eastangliansalesltd"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
-                    >
-                      facebook.com/eastangliansalesltd
                     </a>
                   </dd>
                 </div>

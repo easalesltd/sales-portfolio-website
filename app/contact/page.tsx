@@ -58,8 +58,7 @@ export default function ContactPage() {
       ],
       'sameAs': [
         'https://www.instagram.com/eastangliansalesltd/',
-        'https://www.linkedin.com/in/dave-langdon-709a8547',
-        'https://www.facebook.com/eastangliansalesltd'
+        'https://www.linkedin.com/in/dave-langdon-709a8547'
       ]
     }
   };
