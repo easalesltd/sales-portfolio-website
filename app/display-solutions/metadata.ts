@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays | East Anglian Sales LTD",
   description:
-    "Card & gift display solutions — Dave Langdon, East Anglia greeting card agent. Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.",
+    "Professional greeting card display solutions for independent retailers across East Anglia. Dave Langdon supplies and installs branded card stands and POS for shops and garden centres.",
   keywords: [
     "Dave Langdon display solutions",
     "David Langdon display solutions",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays | East Anglian Sales LTD",
     description:
-      "Card & gift display solutions — Dave Langdon, East Anglia greeting card agent. Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.",
+      "Professional greeting card display solutions for independent retailers across East Anglia. Dave Langdon supplies and installs branded card stands and POS for shops and garden centres.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays",
     description:
-      "Card & gift display solutions — Dave Langdon, East Anglia greeting card agent. Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.",
+      "Professional greeting card display solutions for independent retailers across East Anglia. Dave Langdon supplies and installs branded card stands and POS for shops and garden centres.",
     images: ["https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg"]
   },
   alternates: {

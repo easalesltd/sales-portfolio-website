@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
   description:
-    'Temporary rep cover for cards & gifts — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.',
+    'Need temporary sales rep cover in East Anglia? Dave Langdon provides professional greeting card and gift agency cover across Suffolk, Norfolk, Essex and Cambridgeshire.',
   keywords: [
     "Dave Langdon temporary rep cover",
     "David Langdon temporary rep cover",
@@ -121,7 +121,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
     description:
-      'Temporary rep cover for cards & gifts — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.',
+      'Need temporary sales rep cover in East Anglia? Dave Langdon provides professional greeting card and gift agency cover across Suffolk, Norfolk, Essex and Cambridgeshire.',
     type: 'website',
     locale: 'en_GB',
     siteName: 'East Anglian Sales LTD',
@@ -145,7 +145,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
     description:
-      'Temporary rep cover for cards & gifts — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.',
+      'Need temporary sales rep cover in East Anglia? Dave Langdon provides professional greeting card and gift agency cover across Suffolk, Norfolk, Essex and Cambridgeshire.',
     images: [
       'https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg',
       'https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg'

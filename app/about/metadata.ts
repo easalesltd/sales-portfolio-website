@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About East Anglian Sales LTD | David Langdon & Dave Langdon - Wholesale Cards & Gifts Supplier in East Anglia",
   description:
-    "About Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Ipswich-based. East Anglian Sales Ltd.",
+    "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
   keywords: [
     "East Anglian Sales LTD",
     "Dave Langdon wholesale",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About East Anglian Sales LTD | David Langdon & Dave Langdon - Your Local Wholesale Partner in East Anglia",
     description:
-      "About Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Ipswich-based. East Anglian Sales Ltd.",
+      "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "About East Anglian Sales LTD | Your Local Wholesale Partner",
     description:
-      "About Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Ipswich-based. East Anglian Sales Ltd.",
+      "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
     images: [
       "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
       "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"
