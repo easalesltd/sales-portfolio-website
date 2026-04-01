@@ -1,0 +1,162 @@
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import type { Metadata } from 'next';
+import BlogCoverImage from '../../components/BlogCoverImage';
+import {
+  getAllMagazineArticleSlugs,
+  getMagazineArticleBySlug,
+} from '../../data/magazine-articles';
+
+export async function generateStaticParams() {
+  return getAllMagazineArticleSlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getMagazineArticleBySlug(slug);
+  if (!article) {
+    return { title: 'Article not found' };
+  }
+  const url = `https://www.easalesltd.co.uk/blog/${article.slug}`;
+  return {
+    title: article.title,
+    description: article.excerpt,
+    openGraph: {
+      title: `${article.title} | Magazine articles`,
+      description: article.excerpt,
+      url,
+      type: 'article',
+      publishedTime: article.publishedAt,
+      ...(article.coverImage
+        ? { images: [`https://www.easalesltd.co.uk${article.coverImage}`] }
+        : {}),
+    },
+    twitter: {
+      card: article.coverImage ? 'summary_large_image' : 'summary',
+      title: article.title,
+      description: article.excerpt,
+      ...(article.coverImage
+        ? { images: [`https://www.easalesltd.co.uk${article.coverImage}`] }
+        : {}),
+    },
+    alternates: { canonical: url },
+  };
+}
+
+function formatDate(iso: string): string {
+  const d = new Date(iso + 'T12:00:00');
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+export default async function BlogArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const article = getMagazineArticleBySlug(slug);
+  if (!article) notFound();
+
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.excerpt,
+    datePublished: article.publishedAt,
+    author: {
+      '@type': 'Person',
+      name: 'Dave Langdon',
+      url: 'https://www.easalesltd.co.uk/about',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'East Anglian Sales LTD',
+      url: 'https://www.easalesltd.co.uk',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.easalesltd.co.uk/blog/${article.slug}`,
+    },
+    ...(article.coverImage
+      ? { image: [`https://www.easalesltd.co.uk${article.coverImage}`] }
+      : {}),
+    ...(article.sourceUrl ? { isBasedOn: article.sourceUrl } : {}),
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+        <Link
+          href="/blog"
+          className="inline-flex text-sm font-medium text-teal-700 dark:text-teal-400 hover:underline mb-8"
+        >
+          ← Magazine articles
+        </Link>
+
+        <header>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-500 dark:text-neutral-400">
+            <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+            {article.publication ? (
+              <>
+                <span aria-hidden className="text-gray-300 dark:text-neutral-600">
+                  ·
+                </span>
+                <span>{article.publication}</span>
+              </>
+            ) : null}
+          </div>
+          <h1 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
+            {article.title}
+          </h1>
+          <p className="mt-4 text-lg text-gray-600 dark:text-neutral-300 leading-relaxed">
+            {article.excerpt}
+          </p>
+        </header>
+
+        {article.coverImage ? (
+          <div className="mt-10 rounded-xl overflow-hidden">
+            <BlogCoverImage
+              src={article.coverImage}
+              alt={article.title}
+              sizes="(max-width: 768px) 100vw, 42rem"
+              priority
+              className="rounded-xl"
+            />
+          </div>
+        ) : null}
+
+        <div className="mt-10 space-y-5 text-base sm:text-lg text-gray-700 dark:text-neutral-300 leading-relaxed">
+          {article.paragraphs.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+
+        {article.sourceUrl ? (
+          <p className="mt-10 text-sm text-gray-600 dark:text-neutral-400">
+            <a
+              href={article.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-teal-700 dark:text-teal-400 hover:underline"
+            >
+              View original piece
+            </a>
+          </p>
+        ) : null}
+      </article>
+    </>
+  );
+}

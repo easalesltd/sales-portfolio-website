@@ -147,6 +147,38 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Magazine articles -->
+  <url>
+    <loc>https://www.easalesltd.co.uk/blog</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.easalesltd.co.uk/blog/diary-sales-agent-march-april-2026</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.easalesltd.co.uk/blog/diary-sales-agent-september-october-2025</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.easalesltd.co.uk/blog/diary-sales-agent-january-february-2026</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.easalesltd.co.uk/blog/progressive-greetings-winnie-the-pooh-february-2026</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
   <!-- Recipes Pages -->
   <url>
     <loc>https://www.easalesltd.co.uk/recipes</loc>
