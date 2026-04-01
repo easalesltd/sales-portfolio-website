@@ -121,9 +121,6 @@ export default async function BlogArticlePage({
           <h1 className="mt-4 text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">
             {article.title}
           </h1>
-          <p className="mt-4 text-lg text-gray-600 dark:text-neutral-300 leading-relaxed">
-            {article.excerpt}
-          </p>
         </header>
 
         {article.coverImage ? (
@@ -138,11 +135,13 @@ export default async function BlogArticlePage({
           </div>
         ) : null}
 
-        <div className="mt-10 space-y-5 text-base sm:text-lg text-gray-700 dark:text-neutral-300 leading-relaxed">
-          {article.paragraphs.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
+        {article.paragraphs.length > 0 ? (
+          <div className="mt-10 space-y-5 text-base sm:text-lg text-gray-700 dark:text-neutral-300 leading-relaxed">
+            {article.paragraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        ) : null}
 
         {article.sourceUrl ? (
           <p className="mt-10 text-sm text-gray-600 dark:text-neutral-400">

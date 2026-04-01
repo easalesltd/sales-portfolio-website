@@ -36,8 +36,6 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
       'https://issuu.com/maxpublishing/docs/progressive_greetings_february_2026',
     paragraphs: [
       'This piece appears in the February 2026 issue of Progressive Greetings from Max Publishing — spotlighting Winnie the Pooh and life as an agent in the trade.',
-      'Read the full magazine on Issuu as a flipbook, in the same layout as the printed edition.',
-      'Retailers and suppliers in East Anglia: to book a visit or talk ranges, use the Contact page on this site.',
     ],
   },
   {
@@ -54,8 +52,6 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
       'https://issuu.com/lemapublisihng/docs/greetings_today_january_february_2026',
     paragraphs: [
       'This instalment of Diary of a Sales Agent appears in the January/February 2026 issue of Greetings Today from Lema Publishing.',
-      'Read the full issue on Issuu as a flipbook — layout as published, easy to read on screen.',
-      'For a shop visit or to talk ranges in East Anglia, get in touch via the Contact page on this site.',
     ],
   },
   {
@@ -72,8 +68,6 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
       'https://issuu.com/lemapublisihng/docs/greetings_today_september_october_2025',
     paragraphs: [
       'This instalment of Diary of a Sales Agent appears in the September/October 2025 issue of Greetings Today from Lema Publishing.',
-      'Read the full magazine as a flipbook on Issuu — same layout as print, easy to browse on any device.',
-      'Representing brands across East Anglia? If you’d like a shop visit or a chat about ranges, use the Contact page on this site.',
     ],
   },
   {
@@ -90,8 +84,6 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
       'https://issuu.com/lemapublisihng/docs/greetings_today_march_april_2026',
     paragraphs: [
       'This instalment of Diary of a Sales Agent appears in the March/April 2026 issue of Greetings Today from Lema Publishing — a look at the day-to-day of representing greeting card and giftware brands across East Anglia.',
-      'The full piece is available as a digital flipbook on Issuu, so you can read it in the magazine layout wherever you are.',
-      'If you’re a retailer and something in the column resonates — or you’d like a visit to talk ranges and display — you can always get in touch via the Contact page on this site.',
     ],
   },
 ];
