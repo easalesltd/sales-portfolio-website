@@ -24,13 +24,13 @@ export const recipes: Record<string, Recipe> = {
     image: '/images/recipes/20251125_083621.jpg',
     ingredients: [
       '150g active sourdough starter (I can give you this if you need it)',
-      '340g warm water',
+      '340g barely warm (not hot) water',
       '500g strong white bread flour',
       '11g fine sea salt + 10ml more water',
       'Rice flour (for dusting)'
     ],
     instructions: [
-      'Mix the starter and warm water in a large bowl until combined. Add the flour, mix until a shaggy dough forms. Cover and let rest for 1hr.',
+      'Mix the starter and barely warm (not hot) water in a large bowl until combined. Add the flour, mix until a shaggy dough forms. Cover and let rest for 1hr.',
       'Add the salt and 10ml of water, and perform the first stretch and fold.',
       'Perform 3 additional sets of stretch and folds, 30 minutes apart.',
       'Cover and bulk ferment for at least 1 hour at room temperature, or overnight in the fridge. You can also leave it in the oven with the light on if your house is cold.',
