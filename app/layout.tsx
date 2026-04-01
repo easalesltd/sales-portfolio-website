@@ -662,7 +662,11 @@ export default function RootLayout({
               },
               {
                 "@context": "https://schema.org",
-                "@type": ["Organization", "LocalBusiness", "SalesAgent"],
+                "@type": "Organization",
+                "additionalType": [
+                  "https://schema.org/LocalBusiness",
+                  "https://schema.org/SalesAgent"
+                ],
                 "@id": "https://www.easalesltd.co.uk/#organization",
                 "name": "East Anglian Sales LTD",
                 "alternateName": ["EA Sales", "East Anglian Sales"],
