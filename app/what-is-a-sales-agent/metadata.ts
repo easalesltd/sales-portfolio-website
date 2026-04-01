@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'What is a Sales Agent? | Greeting Card & Gift Sales Agent | East Anglia',
-  description: 'What is a sales agent? Find out how self-employed greeting card and gift sales agents work, cover specific territories, and represent multiple brands. Dave Langdon explains the role across Suffolk, Norfolk, Essex, and Cambridgeshire.',
+  description:
+    'What is a sales agent? Greeting card reps, territories & brands — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Plain guide.',
   keywords: [
     'what is a sales agent',
     'sales agent definition',
@@ -33,7 +34,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'What is a Sales Agent? | Greeting Card & Gift Sales | East Anglian Sales LTD',
-    description: 'How greeting card and gift sales agents work: self-employed, commission-only, covering specific territories. Serving retailers in Suffolk, Norfolk, Essex, and Cambridgeshire.',
+    description:
+      'What is a sales agent? Greeting card reps, territories & brands — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Plain guide.',
     type: 'website',
     locale: 'en_GB',
     siteName: 'East Anglian Sales LTD',
@@ -50,7 +52,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'What is a Sales Agent? | Greeting Card & Gift Sales | East Anglia',
-    description: 'How sales agents work for greeting cards and gifts. Self-employed, commission-only, covering Suffolk, Norfolk, Essex, Cambridgeshire.',
+    description:
+      'What is a sales agent? Greeting card reps, territories & brands — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Plain guide.',
     images: ['https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg'],
   },
   alternates: {

@@ -10,6 +10,7 @@ import { companies, type Company } from './data/companies';
 import MobileRequestButton from './components/MobileRequestButton';
 import HeaderLogo from './components/HeaderLogo';
 import AboutDropdown from './components/AboutDropdown';
+import { HOME_PAGE_META_DESCRIPTION } from './lib/home-page-meta-description';
 
 // Optimize font loading with display swap and preload
 const inter = Inter({ 
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     template: '%s | Greeting Card & Gift Sales Agent',
     default: 'Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia',
   },
-  description: 'Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Dave Langdon provides personal service to retailers across Suffolk, Norfolk, Essex, and Cambridgeshire.',
+  description: HOME_PAGE_META_DESCRIPTION,
   icons: {
     icon: [
       { url: '/favicons/favicon.ico', sizes: 'any' },
@@ -515,7 +516,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia",
-    description: "Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Dave Langdon provides personal service to retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.",
+    description: HOME_PAGE_META_DESCRIPTION,
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -561,7 +562,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia',
-    description: 'Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Serving retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.',
+    description: HOME_PAGE_META_DESCRIPTION,
     site: '@eastangliansalesltd',
     creator: '@DaveLangdon',
     images: [
@@ -635,7 +636,7 @@ export default function RootLayout({
                 "@id": "https://www.easalesltd.co.uk/#webpage",
                 "url": "https://www.easalesltd.co.uk",
                 "name": "Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia",
-                "description": "Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Dave Langdon provides personal service to retailers across Suffolk, Norfolk, Essex, and Cambridgeshire.",
+                "description": HOME_PAGE_META_DESCRIPTION,
                 "inLanguage": "en-GB",
                 "isPartOf": {
                   "@type": "WebSite",
@@ -670,7 +671,7 @@ export default function RootLayout({
                 "@id": "https://www.easalesltd.co.uk/#organization",
                 "name": "East Anglian Sales LTD",
                 "alternateName": ["EA Sales", "East Anglian Sales"],
-                "description": "Professional Greeting Card and Giftware Sales Agent serving the wholesale trade in East Anglia. Providing personal service to retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire.",
+                "description": HOME_PAGE_META_DESCRIPTION,
                 "url": "https://www.easalesltd.co.uk",
                 "logo": {
                   "@type": "ImageObject",

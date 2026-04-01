@@ -4,7 +4,7 @@ import BlogCoverImage from '../components/BlogCoverImage';
 import { getAllMagazineArticles } from '../data/magazine-articles';
 
 const BLOG_DESCRIPTION =
-  'Blog and trade press by Dave Langdon, greeting card and giftware sales agent for East Anglia.';
+  'Blog & press by Dave Langdon, greeting card agent — trade articles & diary from East Anglia (Suffolk, Norfolk, Essex, Cambridgeshire). East Anglian Sales Ltd.';
 
 export const metadata: Metadata = {
   title: 'Blog / Press',

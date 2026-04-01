@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About East Anglian Sales LTD | David Langdon & Dave Langdon - Wholesale Cards & Gifts Supplier in East Anglia",
-  description: "Meet David Langdon and Dave Langdon at East Anglian Sales LTD, your trusted wholesale supplier of greeting cards, gifts, and display solutions in Suffolk, Norfolk, Essex, and Cambridgeshire. Family-run business with personal service.",
+  description:
+    "About Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Ipswich-based. East Anglian Sales Ltd.",
   keywords: [
     "East Anglian Sales LTD",
     "Dave Langdon wholesale",
@@ -27,7 +28,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "About East Anglian Sales LTD | David Langdon & Dave Langdon - Your Local Wholesale Partner in East Anglia",
-    description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia. Personal service from David Langdon and Dave Langdon in Suffolk, Norfolk, Essex, and Cambridgeshire.",
+    description:
+      "About Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Ipswich-based. East Anglian Sales Ltd.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -50,7 +52,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "About East Anglian Sales LTD | Your Local Wholesale Partner",
-    description: "Family-run wholesale supplier of greeting cards, gifts, and display solutions serving retailers across East Anglia.",
+    description:
+      "About Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Ipswich-based. East Anglian Sales Ltd.",
     images: [
       "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
       "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"

@@ -148,8 +148,8 @@ export default function AboutPage() {
               <FadeInOnScroll className="text-center px-4 max-w-3xl" direction="up" delay={0.1}>
                 <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">Meet Dave</h1>
                 <p className="text-sm md:text-lg text-white drop-shadow-lg leading-relaxed">
-                  Dave established East Anglian Sales Ltd in 2022, bringing over a decade of experience as a rep in East Anglia. 
-                  Dave has built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire, 
+                  Dave established East Anglian Sales Ltd in 2022, bringing over a decade of experience as a rep in East Anglia.
+                  Dave has built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire,
                   understanding their unique needs and helping them succeed with expert greeting card sales representation.
                 </p>
               </FadeInOnScroll>

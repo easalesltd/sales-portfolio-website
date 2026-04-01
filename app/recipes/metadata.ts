@@ -2,7 +2,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough Bread, Mince Pies & Chocolate Christmas Puddings | East Anglian Sales",
-  description: "Dave Langdon and David Langdon share their favourite baking recipes for gifting to customers. Learn how to make classic sourdough bread, delicious orange juice pastry mince pies, and mini chocolate Christmas puddings. Perfect for building business relationships with homemade treats!",
+  description:
+    "Baking recipes from Dave Langdon, greeting card agent — sourdough, mince pies & chocolate puds for customer gifts. East Anglia. East Anglian Sales Ltd.",
   keywords: [
     "sourdough bread recipe",
     "sourdough starter recipe",
@@ -53,7 +54,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough & Mince Pies",
-    description: "Share in Dave Langdon and David Langdon's passion for baking with these two go-to recipes perfect for gifting to customers.",
+    description:
+      "Baking recipes from Dave Langdon, greeting card agent — sourdough, mince pies & chocolate puds for customer gifts. East Anglia. East Anglian Sales Ltd.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -70,7 +72,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough & Mince Pies",
-    description: "Share in Dave Langdon and David Langdon's passion for baking with these go-to recipes perfect for gifting to customers.",
+    description:
+      "Baking recipes from Dave Langdon, greeting card agent — sourdough, mince pies & chocolate puds for customer gifts. East Anglia. East Anglian Sales Ltd.",
     images: ["https://www.easalesltd.co.uk/images/recipes/20251125_083621.jpg"]
   },
   alternates: {

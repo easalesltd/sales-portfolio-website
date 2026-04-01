@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
-  description: 'Professional temporary sales representative cover from Dave Langdon and David Langdon across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves. Fully trained on Sales Pak, Blue Alligator, Pixsell, Card Manager, Shopify and Inzant. Covering Suffolk, Norfolk, Essex, Cambridgeshire.',
+  description:
+    'Temporary rep cover for cards & gifts — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.',
   keywords: [
     "Dave Langdon temporary rep cover",
     "David Langdon temporary rep cover",
@@ -119,7 +120,8 @@ export const metadata: Metadata = {
   ].join(', '),
   openGraph: {
     title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
-    description: 'Professional temporary sales representative cover from Dave Langdon and David Langdon across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves. Fully trained on all major sales platforms.',
+    description:
+      'Temporary rep cover for cards & gifts — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.',
     type: 'website',
     locale: 'en_GB',
     siteName: 'East Anglian Sales LTD',
@@ -142,7 +144,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Temporary Sales Rep Cover | Dave Langdon & David Langdon - Emergency Sales Agent Cover East Anglia | EA Sales',
-    description: 'Professional temporary sales representative cover from Dave Langdon and David Langdon across East Anglia. Emergency cover for greeting cards, gifts, stationery when your rep leaves.',
+    description:
+      'Temporary rep cover for cards & gifts — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.',
     images: [
       'https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg',
       'https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg'

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Contact East Anglian Sales LTD | David Langdon & Dave Langdon - Request a Visit from Your Local Agent",
-  description: "Get in touch with David Langdon and Dave Langdon, your local wholesale agent in East Anglia. Request a visit, discuss trade prices, or place an order for greeting cards, gifts, and display solutions across Suffolk, Norfolk, Essex, and Cambridgeshire.",
+  description:
+    "Contact Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Visits & orders. East Anglian Sales Ltd.",
   keywords: [
     "contact East Anglian Sales",
     "contact Dave Langdon",
@@ -30,7 +31,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Contact East Anglian Sales LTD | David Langdon & Dave Langdon - Request a Visit from Your Local Agent",
-    description: "Get in touch with David Langdon and Dave Langdon, your local wholesale agent in East Anglia. Request a visit, discuss trade prices, or place an order for greeting cards, gifts, and display solutions across Suffolk, Norfolk, Essex, and Cambridgeshire.",
+    description:
+      "Contact Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Visits & orders. East Anglian Sales Ltd.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -53,7 +55,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Contact East Anglian Sales LTD | David Langdon & Dave Langdon - Request a Visit",
-    description: "Get in touch with David Langdon and Dave Langdon, your local wholesale agent in East Anglia. Request a visit or place an order.",
+    description:
+      "Contact Dave Langdon, greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Visits & orders. East Anglian Sales Ltd.",
     images: [
       "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
       "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"

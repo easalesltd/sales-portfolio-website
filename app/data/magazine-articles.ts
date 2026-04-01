@@ -8,6 +8,10 @@ export interface MagazineArticle {
   slug: string;
   title: string;
   excerpt: string;
+  /** Full document title; used with `absolute` so the root title template is not applied */
+  metaTitle?: string;
+  /** meta description + OG/Twitter; ~150–160 chars, key terms for search */
+  metaDescription?: string;
   /** ISO date YYYY-MM-DD */
   publishedAt: string;
   /** e.g. magazine or supplement name */
@@ -25,6 +29,10 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
   {
     slug: 'progressive-greetings-winnie-the-pooh-february-2026',
     title: 'Progressive Greetings, February 2026 — Winnie the Pooh agent feature | Dave Langdon',
+    metaTitle:
+      'Winnie the Pooh & greeting card agents — Progressive Greetings Feb 2026 | Dave Langdon, East Anglia',
+    metaDescription:
+      'Dave Langdon in Progressive Greetings — Winnie the Pooh, wholesale greeting card agents & the trade. East Anglia sales rep, East Anglian Sales Ltd.',
     excerpt:
       'Feature in Progressive Greetings (Max Publishing) — Winnie the Pooh, agents, and the wholesale greeting card trade.',
     publishedAt: '2026-01-23',
@@ -41,6 +49,10 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
   {
     slug: 'diary-sales-agent-january-february-2026',
     title: 'Greetings Today, January/February 2026 — Diary of a Sales Agent | Dave Langdon',
+    metaTitle:
+      'Diary of a Sales Agent — Greetings Today Jan/Feb 2026 | Dave Langdon, East Anglia',
+    metaDescription:
+      'Dave Langdon’s Greetings Today diary — wholesale greeting cards & giftware, life on the road across Suffolk, Norfolk, Essex & Cambridgeshire.',
     excerpt:
       'Greetings Today column — diary from the road, wholesale greeting cards and giftware across East Anglia.',
     publishedAt: '2026-01-22',
@@ -57,6 +69,10 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
   {
     slug: 'diary-sales-agent-september-october-2025',
     title: 'Greetings Today, September/October 2025 — Diary of a Sales Agent | Dave Langdon',
+    metaTitle:
+      'Diary of a Sales Agent — Greetings Today Sep/Oct 2025 | Dave Langdon, East Anglia',
+    metaDescription:
+      'Greetings Today column by Dave Langdon — retail visits, wholesale cards & gifts, East Anglia greeting card agent. East Anglian Sales Ltd.',
     excerpt:
       'Greetings Today column — diary from the road, retailers, and wholesale cards & gift across East Anglia.',
     publishedAt: '2025-08-27',
@@ -73,6 +89,10 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
   {
     slug: 'diary-sales-agent-march-april-2026',
     title: 'Greetings Today, March/April 2026 — Diary of a Sales Agent | Dave Langdon',
+    metaTitle:
+      'Diary of a Sales Agent — Greetings Today March/April 2026 | Dave Langdon, East Anglia',
+    metaDescription:
+      'Dave Langdon’s Diary of a Sales Agent in Greetings Today — wholesale greeting cards, retailers & trade life across East Anglia. East Anglian Sales Ltd.',
     excerpt:
       'My latest column for Greetings Today — life on the road, retailers, and the wholesale greeting card trade in East Anglia.',
     publishedAt: '2026-03-30',

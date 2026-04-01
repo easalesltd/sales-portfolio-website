@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Contact Dave Langdon | Phone, Email & Social",
   description:
-    "Direct contact details for Dave Langdon, greeting card and giftware sales agent for East Anglian Sales LTD — mobile, email, Instagram, and LinkedIn.",
+    "Contact Dave: mobile, email & social. Greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.",
   keywords: [
     "Dave Langdon contact",
     "David Langdon contact",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Contact Dave Langdon | East Anglian Sales LTD",
     description:
-      "Phone, email, and social links to reach Dave Langdon, your local wholesale agent in East Anglia.",
+      "Contact Dave: mobile, email & social. Greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Contact Dave Langdon | East Anglian Sales LTD",
     description:
-      "Phone, email, and social links to reach Dave Langdon in East Anglia.",
+      "Contact Dave: mobile, email & social. Greeting card agent — East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. East Anglian Sales Ltd.",
   },
   alternates: {
     canonical: "https://www.easalesltd.co.uk/about/contact",

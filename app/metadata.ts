@@ -1,8 +1,9 @@
 import { Metadata } from "next";
+import { HOME_PAGE_META_DESCRIPTION } from "./lib/home-page-meta-description";
 
 export const metadata: Metadata = {
   title: "Dave Langdon | Greeting Card and Gift Sales Agent East Anglia | East Anglian Sales Ltd",
-  description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, The Cambridge Confectionery Company (Calico Cottage), wholesale confectionery, and more. Wholesale supplier of greeting cards, gifts, and display solutions for retailers across the region.",
+  description: HOME_PAGE_META_DESCRIPTION,
   keywords: [
     // Dave Langdon & David Langdon - Personal Brand Keywords (Comprehensive)
     "Dave Langdon",
@@ -663,7 +664,7 @@ export const metadata: Metadata = {
   ].join(', '),
   openGraph: {
     title: "David Langdon & Dave Langdon - UK Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia",
-    description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia, Essex, Suffolk, Norfolk, Cambridgeshire, and Hertfordshire. Official sales agent for Paper Salad, Ohh Deer, Silly Beans, Museums & Galleries, Mint Publishing, The Cambridge Confectionery Company (Calico Cottage), wholesale confectionery, and more.",
+    description: HOME_PAGE_META_DESCRIPTION,
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -692,7 +693,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "David Langdon & Dave Langdon - UK Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia",
-    description: "David Langdon and Dave Langdon - UK-based professional Greeting Card Sales Agent and Gift Sales Agent serving East of England, East Anglia. Official sales agent for Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, The Cambridge Confectionery Company (Calico Cottage), and more.",
+    description: HOME_PAGE_META_DESCRIPTION,
     images: [
       "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
       "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"

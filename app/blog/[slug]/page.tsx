@@ -11,6 +11,16 @@ export async function generateStaticParams() {
   return getAllMagazineArticleSlugs().map((slug) => ({ slug }));
 }
 
+function metaDescriptionFallback(article: {
+  excerpt: string;
+  publication?: string;
+}): string {
+  const base = article.excerpt.trim();
+  if (base.length <= 160) return base;
+  const cut = base.slice(0, 157).replace(/\s+\S*$/, '');
+  return cut.endsWith('.') ? cut : `${cut}…`;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -22,21 +32,25 @@ export async function generateMetadata({
     return { title: 'Article not found' };
   }
   const url = `https://www.easalesltd.co.uk/blog/${article.slug}`;
+  const docTitle = article.metaTitle ?? article.title;
+  const docDescription =
+    article.metaDescription ?? metaDescriptionFallback(article);
   const keywords = [
     'Dave Langdon',
-    'East Anglia sales agent',
+    'East Anglia',
+    'greeting card sales agent',
     'greeting cards wholesale',
     article.publication ?? '',
     article.title.split(/[|,\u2014]/)[0]?.trim() ?? '',
   ].filter(Boolean);
 
   return {
-    title: article.title,
-    description: article.excerpt,
+    title: { absolute: docTitle },
+    description: docDescription,
     keywords,
     openGraph: {
-      title: `${article.title} | Blog / Press`,
-      description: article.excerpt,
+      title: docTitle,
+      description: docDescription,
       url,
       type: 'article',
       publishedTime: article.publishedAt,
@@ -46,8 +60,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: article.coverImage ? 'summary_large_image' : 'summary',
-      title: article.title,
-      description: article.excerpt,
+      title: docTitle,
+      description: docDescription,
       ...(article.coverImage
         ? { images: [`https://www.easalesltd.co.uk${article.coverImage}`] }
         : {}),
@@ -80,7 +94,7 @@ export default async function BlogArticlePage({
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: article.title,
-    description: article.excerpt,
+    description: article.metaDescription ?? article.excerpt,
     articleSection: 'Blog / Press',
     datePublished: article.publishedAt,
     ...(article.paragraphs.length > 0
