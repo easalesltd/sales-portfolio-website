@@ -35,7 +35,7 @@ export async function generateMetadata({
     description: article.excerpt,
     keywords,
     openGraph: {
-      title: `${article.title} | Magazine articles`,
+      title: `${article.title} | Blog / Press`,
       description: article.excerpt,
       url,
       type: 'article',
@@ -81,7 +81,7 @@ export default async function BlogArticlePage({
     '@type': 'Article',
     headline: article.title,
     description: article.excerpt,
-    articleSection: 'Magazine articles',
+    articleSection: 'Blog / Press',
     datePublished: article.publishedAt,
     ...(article.paragraphs.length > 0
       ? { articleBody: article.paragraphs.join('\n\n') }
@@ -119,7 +119,7 @@ export default async function BlogArticlePage({
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Magazine articles',
+        name: 'Blog / Press',
         item: 'https://www.easalesltd.co.uk/blog',
       },
       {
@@ -146,7 +146,7 @@ export default async function BlogArticlePage({
           href="/blog"
           className="inline-flex text-sm font-medium text-teal-700 dark:text-teal-400 hover:underline mb-8"
         >
-          ← Magazine articles
+          ← Blog / Press
         </Link>
 
         <header>

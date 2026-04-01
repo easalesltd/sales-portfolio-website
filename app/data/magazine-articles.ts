@@ -1,5 +1,5 @@
 /**
- * Magazine / trade press articles by Dave Langdon.
+ * Blog / Press (magazine and trade press) articles by Dave Langdon.
  *
  * Add an entry to `magazineArticles` for each piece. The site builds
  * `/blog` (index) and `/blog/[slug]` (article pages) from this list.

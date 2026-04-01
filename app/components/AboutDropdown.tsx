@@ -15,7 +15,7 @@ export default function AboutDropdown() {
     { name: 'Meet Dave', href: '/about' },
     { name: 'Contact Dave', href: '/about/contact' },
     { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
-    { name: 'Magazine articles', href: '/blog' },
+    { name: 'Blog / Press', href: '/blog' },
     { name: 'Recipes', href: '/recipes' }
   ];
 

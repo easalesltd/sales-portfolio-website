@@ -4,10 +4,10 @@ import BlogCoverImage from '../components/BlogCoverImage';
 import { getAllMagazineArticles } from '../data/magazine-articles';
 
 const BLOG_DESCRIPTION =
-  'Magazine and trade press articles by Dave Langdon, greeting card and giftware sales agent for East Anglia.';
+  'Blog and trade press by Dave Langdon, greeting card and giftware sales agent for East Anglia.';
 
 export const metadata: Metadata = {
-  title: 'Magazine articles',
+  title: 'Blog / Press',
   description: BLOG_DESCRIPTION,
   keywords: [
     'Dave Langdon',
@@ -16,17 +16,18 @@ export const metadata: Metadata = {
     'greeting card sales agent',
     'trade press',
     'East Anglia wholesale',
-    'magazine articles',
+    'blog',
+    'press',
   ],
   openGraph: {
     type: 'website',
-    title: 'Magazine articles | Dave Langdon',
+    title: 'Blog / Press | Dave Langdon',
     description: BLOG_DESCRIPTION,
     url: 'https://www.easalesltd.co.uk/blog',
   },
   twitter: {
     card: 'summary',
-    title: 'Magazine articles | Dave Langdon',
+    title: 'Blog / Press | Dave Langdon',
     description: BLOG_DESCRIPTION,
   },
   alternates: {
@@ -51,7 +52,7 @@ export default function BlogIndexPage() {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     '@id': 'https://www.easalesltd.co.uk/blog#collection',
-    name: 'Magazine articles — Dave Langdon',
+    name: 'Blog / Press — Dave Langdon',
     description: BLOG_DESCRIPTION,
     url: 'https://www.easalesltd.co.uk/blog',
     mainEntity: {
@@ -89,7 +90,7 @@ export default function BlogIndexPage() {
           Writing
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
-          Magazine articles
+          Blog / Press
         </h1>
         <p className="mt-4 text-lg text-gray-600 dark:text-neutral-300 leading-relaxed">
           Pieces I&apos;ve written for the trade press and magazines — stories from the road,

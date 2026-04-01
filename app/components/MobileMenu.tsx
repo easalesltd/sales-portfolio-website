@@ -133,7 +133,7 @@ export default function MobileMenu() {
                   className="block text-sm text-gray-500 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mt-1 ml-4" 
                   onClick={() => setIsOpen(false)}
                 >
-                  Magazine articles
+                  Blog / Press
                 </Link>
                 <Link 
                   href="/recipes" 

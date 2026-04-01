@@ -203,7 +203,7 @@ export default function AboutPage() {
               </FadeInOnScroll>
             </div>
 
-            {/* Right Column - Desktop Photo Grid - Magazine article pictures spread out */}
+            {/* Right Column - Desktop Photo Grid - blog / press imagery spread out */}
             <FadeInOnScroll className="hidden lg:block" direction="left" delay={0.1}>
               <div className="mt-4 grid grid-cols-4 gap-2">
                 {aboutImages.map((img, index) => (
