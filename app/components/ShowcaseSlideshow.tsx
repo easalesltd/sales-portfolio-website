@@ -200,6 +200,13 @@ export default function ShowcaseSlideshow() {
   const touchEndRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Mouse drag support (desktop + trackpads). Uses refs so we don't re-render mid-drag.
+  const dragStartXRef = useRef<number | null>(null);
+  const dragStartYRef = useRef<number | null>(null);
+  const dragEndXRef = useRef<number | null>(null);
+  const dragEndYRef = useRef<number | null>(null);
+  const isDraggingRef = useRef(false);
+
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
 
@@ -278,11 +285,71 @@ export default function ShowcaseSlideshow() {
     }, 5000);
   };
 
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.button !== 0) return; // Only primary button
+    isDraggingRef.current = true;
+    setIsAutoPlaying(false);
+    dragStartXRef.current = e.clientX;
+    dragStartYRef.current = e.clientY;
+    dragEndXRef.current = e.clientX;
+    dragEndYRef.current = e.clientY;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    dragEndXRef.current = e.clientX;
+    dragEndYRef.current = e.clientY;
+  };
+
+  const handleMouseUp = () => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+
+    if (
+      dragStartXRef.current == null ||
+      dragStartYRef.current == null ||
+      dragEndXRef.current == null ||
+      dragEndYRef.current == null
+    )
+      return;
+
+    const distanceX = dragStartXRef.current - dragEndXRef.current;
+    const distanceY = dragStartYRef.current - dragEndYRef.current;
+
+    // Only treat as a horizontal swipe if it "dominates" vertical movement.
+    const isHorizontalGesture = Math.abs(distanceX) > Math.abs(distanceY) * 1.1;
+    if (!isHorizontalGesture) return;
+
+    if (distanceX > minSwipeDistance) {
+      const nextIdx = (currentIndex + 1) % shuffledImages.length;
+      setNextIndex(nextIdx);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex(nextIdx);
+        setIsTransitioning(false);
+      }, TRANSITION_DURATION);
+    } else if (distanceX < -minSwipeDistance) {
+      const prevIdx = (currentIndex - 1 + shuffledImages.length) % shuffledImages.length;
+      setNextIndex(prevIdx);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex(prevIdx);
+        setIsTransitioning(false);
+      }, TRANSITION_DURATION);
+    }
+
+    setTimeout(() => {
+      setIsAutoPlaying(true);
+    }, 5000);
+  };
+
   const handleMouseEnter = () => {
     setIsAutoPlaying(false);
   };
 
   const handleMouseLeave = () => {
+    // If the user drags out of the container, stop the drag so it doesn't "stick".
+    if (isDraggingRef.current) isDraggingRef.current = false;
     setIsAutoPlaying(true);
   };
 
@@ -323,6 +390,9 @@ export default function ShowcaseSlideshow() {
     <div 
       ref={containerRef}
       className="relative w-full h-full"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
