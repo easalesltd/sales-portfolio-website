@@ -36,7 +36,7 @@ const MobileMenu = dynamic(() => import('./components/MobileMenu'), {
   ssr: true,
   loading: () => (
     <div className="md:hidden">
-      <button className="text-gray-500 p-2 animate-pulse">
+      <button className="text-gray-500 p-1.5 animate-pulse">
         <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -974,13 +974,13 @@ export default async function RootLayout({
             gtag('config', 'G-7HWXWDZG4F');
           `}
         </Script>
-        <header className="sticky top-0 z-50 w-full bg-white dark:bg-neutral-950 border-b border-gray-100 dark:border-neutral-800 transition-colors duration-300 pt-[max(1rem,env(safe-area-inset-top))] pb-3">
+        <header className="sticky top-0 z-50 w-full bg-white dark:bg-neutral-950 border-b border-gray-100 dark:border-neutral-800 transition-colors duration-300 pt-[max(0.125rem,env(safe-area-inset-top))] pb-1.5 md:pt-4 md:pb-3">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/*
               Sticky (not fixed) so content always starts below the real header height on mobile — avoids
-              guessing with pt-* on main when the row wraps. Logo art is 67px tall; row height follows content.
+              guessing with pt-* on main when the row wraps. Slimmer py on small screens; md+ keeps roomy bar.
             */}
-            <div className="flex min-h-16 items-center justify-between py-1 md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-x-3 lg:gap-x-4">
+            <div className="flex min-h-0 items-center justify-between py-0 md:min-h-16 md:py-1 md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-x-3 lg:gap-x-4">
               <div className="flex min-w-0 items-center md:justify-self-start">
                 <HeaderLogo />
               </div>
