@@ -1,0 +1,24 @@
+---
+description: Homepage partner brand grid — do not change implementation pattern
+alwaysApply: true
+---
+
+# Partner brand grid (homepage)
+
+Do **not** replace or “simplify” this pattern. It was chosen deliberately after `next/image` **`fill`** caused unreliable sizing/centering in the grid.
+
+## Required implementation
+
+- Render partner tiles with **`app/components/PartnerBrandTile.tsx`** (or equivalent logic kept in one dedicated component — **do not** inline a different image strategy on the homepage without updating this rule).
+- Logo area: **native `<img>`** with **`max-h-full max-w-full object-contain`**, inside a **flex** container (`items-center justify-center`) with **`aspect-[3/2]`** and padding — **not** `<Image fill />` for the partner grid logos.
+- Visual rules: strip uses **`logoUrlDark ?? logoUrl`**. If **`logoUrlDark`** is set, tile top band is **`bg-black`** and **`invert` the logo**, **except** **`company.id === 'cambridge-confectionery-company'`** (black strip, **no** invert).
+- Use **`partnerBrandLogoAlt()`** from **`app/lib/partner-brand-logo-alt.ts`** for `alt` text.
+
+## Do not
+
+- Switch partner logos back to **`next/image`** with **`fill`** for this grid to “optimize” or “match other layouts.”
+- Add a second **`page.tsx`** (or route group) that also serves **`/`** — only one home route must define `/`.
+
+## If something looks wrong
+
+Fix **assets or data** (`logoUrl` / `logoUrlDark` in `companies`) or small CSS tokens — do **not** revert to `Image fill` as the first fix.
