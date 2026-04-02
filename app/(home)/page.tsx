@@ -15,8 +15,8 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section with Showcase Slideshow */}
-      <div className="h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="w-full h-full">
+      <div className="h-[240px] max-h-[240px] md:h-[80vh] md:max-h-none min-h-[240px] md:min-h-[600px] w-full relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="w-full h-full min-h-0">
           <ShowcaseSlideshow />
         </div>
       </div>

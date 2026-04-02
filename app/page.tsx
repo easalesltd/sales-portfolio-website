@@ -18,8 +18,8 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       {/* Hero Section with Showcase Slideshow */}
-      <div className="group/hero h-[30vh] md:h-[80vh] min-h-[200px] md:min-h-[600px] w-full relative overflow-hidden bg-white md:bg-gradient-to-br md:from-blue-50 md:to-indigo-100 transition-shadow duration-500 md:hover:shadow-2xl">
-        <div className="w-full h-full origin-center transition-transform duration-700 ease-out md:group-hover/hero:scale-[1.02]">
+      <div className="h-[240px] max-h-[240px] md:h-[80vh] md:max-h-none min-h-[240px] md:min-h-[600px] w-full relative overflow-hidden bg-white md:bg-gradient-to-br md:from-blue-50 md:to-indigo-100 transition-shadow duration-500 md:hover:shadow-2xl">
+        <div className="w-full h-full min-h-0">
           <ShowcaseSlideshow />
         </div>
       </div>

@@ -229,17 +229,25 @@ export default function ShowcaseSlideshow() {
   useEffect(() => {
     if (shuffledImages.length === 0 || !isAutoPlaying) return;
 
-    const timer = setInterval(() => {
-      setNextIndex((currentIndex + 1) % shuffledImages.length);
-      setIsTransitioning(true);
+    let transitionTimeoutId: number | undefined;
 
-      setTimeout(() => {
-        setCurrentIndex((currentIndex + 1) % shuffledImages.length);
-        setIsTransitioning(false);
-      }, TRANSITION_DURATION);
+    const timer = window.setInterval(() => {
+      setCurrentIndex((prev) => {
+        const nextIdx = (prev + 1) % shuffledImages.length;
+        setNextIndex(nextIdx);
+        setIsTransitioning(true);
+        transitionTimeoutId = window.setTimeout(() => {
+          setCurrentIndex(nextIdx);
+          setIsTransitioning(false);
+        }, TRANSITION_DURATION);
+        return prev;
+      });
     }, SLIDE_DURATION);
 
-    return () => clearInterval(timer);
+    return () => {
+      window.clearInterval(timer);
+      if (transitionTimeoutId !== undefined) clearTimeout(transitionTimeoutId);
+    };
   }, [currentIndex, shuffledImages.length, isAutoPlaying]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -389,7 +397,7 @@ export default function ShowcaseSlideshow() {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full h-full"
+      className="relative min-h-0 min-w-0 w-full h-full overflow-hidden"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -401,10 +409,10 @@ export default function ShowcaseSlideshow() {
       style={{ touchAction: 'pan-y' }}
     >
       {/* Images Container */}
-      <div className="relative w-full h-full bg-white md:bg-transparent">
+      <div className="relative min-h-0 h-full w-full overflow-hidden bg-white md:bg-transparent">
         {/* Current Image */}
         <div 
-          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden [&_img]:!h-full [&_img]:!w-full [&_img]:max-w-none [&_img]:object-cover"
           style={{ 
             opacity: isTransitioning ? 0 : 1, 
             transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
@@ -415,7 +423,7 @@ export default function ShowcaseSlideshow() {
             src={shuffledImages[currentIndex].src}
             alt={shuffledImages[currentIndex].alt}
             fill
-            className="object-cover select-none"
+            className="object-cover select-none max-w-none"
             priority={currentIndex === 0}
             onError={() => handleImageError(currentIndex)}
             sizes="100vw"
@@ -426,7 +434,7 @@ export default function ShowcaseSlideshow() {
 
         {/* Next Image */}
         <div 
-          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden [&_img]:!h-full [&_img]:!w-full [&_img]:max-w-none [&_img]:object-cover"
           style={{ 
             opacity: isTransitioning ? 1 : 0, 
             transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
@@ -437,7 +445,7 @@ export default function ShowcaseSlideshow() {
             src={shuffledImages[nextIndex].src}
             alt={shuffledImages[nextIndex].alt}
             fill
-            className="object-cover select-none"
+            className="object-cover select-none max-w-none"
             priority
             onError={() => handleImageError(nextIndex)}
             sizes="100vw"
