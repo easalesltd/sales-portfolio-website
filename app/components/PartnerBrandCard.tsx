@@ -25,14 +25,16 @@ export default function PartnerBrandCard({
       }`}
     >
       <div className={`relative aspect-[3/2] w-full shrink-0 overflow-hidden ${stripBg}`}>
-        <Image
-          src={company.logoUrl}
-          alt={partnerBrandLogoAlt(company.name)}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 320px"
-          className="object-contain object-center p-6 transition-transform duration-300 group-hover:scale-[1.02]"
-          quality={80}
-        />
+        <div className="absolute inset-1.5 sm:inset-2 md:inset-2.5">
+          <Image
+            src={company.logoUrl}
+            alt={partnerBrandLogoAlt(company.name)}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 320px"
+            className="object-contain object-center transition-transform duration-300 group-hover:scale-[1.02]"
+            quality={80}
+          />
+        </div>
       </div>
       <div className="flex min-h-[140px] flex-grow flex-col justify-start border-t border-gray-100 bg-white p-6">
         <h3 className="mb-2 text-center text-xl font-semibold text-gray-900">{company.name}</h3>
