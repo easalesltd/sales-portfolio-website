@@ -82,20 +82,24 @@ export default function Home() {
               <FadeInOnScroll delay={0.2}>
                 <h3 className="text-xl text-center mb-12 text-gray-700">Quality Products from Leading Suppliers</h3>
               </FadeInOnScroll>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {companies.map((company, index) => {
                   const useLightMarkOnDarkTile = Boolean(company.logoUrlDark);
                   const invertLightMarkOnDarkTile =
                     useLightMarkOnDarkTile && company.id !== 'cambridge-confectionery-company';
                   const logoSrc = company.logoUrlDark ?? company.logoUrl;
                   return (
-                  <FadeInOnScroll key={company.id} delay={0.1 * (index % 6)}>
+                  <FadeInOnScroll
+                    key={company.id}
+                    delay={0.1 * (index % 6)}
+                    className="h-full min-h-0 w-full"
+                  >
                     <Link 
                       href={`/companies/${company.slug}`}
-                      className="group flex flex-col bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full hover:-translate-y-1"
+                      className="group flex h-full min-h-0 w-full flex-col bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                     >
                       <div
-                        className={`aspect-[3/2] relative flex-shrink-0 ${
+                        className={`aspect-[3/2] relative w-full shrink-0 ${
                           useLightMarkOnDarkTile ? 'bg-black' : ''
                         }`}
                       >
@@ -104,7 +108,7 @@ export default function Home() {
                           alt={partnerBrandLogoAlt(company.name)}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 320px"
-                          className={`object-contain p-6 group-hover:scale-105 transition-transform duration-300 ${
+                          className={`object-contain object-center p-6 group-hover:scale-105 transition-transform duration-300 ${
                             invertLightMarkOnDarkTile ? 'invert' : ''
                           }`}
                           quality={75}
