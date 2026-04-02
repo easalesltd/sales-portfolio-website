@@ -196,8 +196,8 @@ export default function ShowcaseSlideshow() {
   /** Start with a full ordered list so SSR and first paint never show an empty/loading state. */
   const [shuffledImages, setShuffledImages] = useState<ShowcaseSlide[]>(() => [...SHOWCASE_SLIDES]);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const touchStartRef = useRef<number | null>(null);
+  const touchEndRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Minimum swipe distance (in px)
@@ -236,19 +236,19 @@ export default function ShowcaseSlideshow() {
   }, [currentIndex, shuffledImages.length, isAutoPlaying]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
+    touchEndRef.current = null;
+    touchStartRef.current = e.targetTouches[0].clientX;
     setIsAutoPlaying(false);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    touchEndRef.current = e.targetTouches[0].clientX;
   };
 
   const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
+    if (touchStartRef.current == null || touchEndRef.current == null) return;
     
-    const distance = touchStart - touchEnd;
+    const distance = touchStartRef.current - touchEndRef.current;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
@@ -328,6 +328,7 @@ export default function ShowcaseSlideshow() {
       onTouchEnd={handleTouchEnd}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      style={{ touchAction: 'pan-y' }}
     >
       {/* Images Container */}
       <div className="relative w-full h-full bg-white md:bg-transparent">
