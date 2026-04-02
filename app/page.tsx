@@ -96,7 +96,7 @@ export default function Home() {
                     >
                       <div
                         className={`aspect-[3/2] relative flex-shrink-0 ${
-                          useLightMarkOnDarkTile ? 'bg-black' : ''
+                          useLightMarkOnDarkTile ? 'bg-black' : 'bg-white'
                         }`}
                       >
                         <Image
