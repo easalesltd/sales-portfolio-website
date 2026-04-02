@@ -412,7 +412,7 @@ export default function ShowcaseSlideshow() {
       <div className="relative min-h-0 h-full w-full overflow-hidden bg-white md:bg-transparent">
         {/* Current Image */}
         <div 
-          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden [&_img]:!h-full [&_img]:!w-full [&_img]:max-w-none [&_img]:object-cover"
+          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden [&_img]:!h-full [&_img]:!w-full [&_img]:max-w-none [&_img]:object-cover md:[&_img]:object-contain"
           style={{ 
             opacity: isTransitioning ? 0 : 1, 
             transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
@@ -423,7 +423,7 @@ export default function ShowcaseSlideshow() {
             src={shuffledImages[currentIndex].src}
             alt={shuffledImages[currentIndex].alt}
             fill
-            className="object-cover select-none max-w-none"
+            className="object-cover md:object-contain select-none max-w-none"
             priority={currentIndex === 0}
             onError={() => handleImageError(currentIndex)}
             sizes="100vw"
@@ -434,7 +434,7 @@ export default function ShowcaseSlideshow() {
 
         {/* Next Image */}
         <div 
-          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden [&_img]:!h-full [&_img]:!w-full [&_img]:max-w-none [&_img]:object-cover"
+          className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing overflow-hidden [&_img]:!h-full [&_img]:!w-full [&_img]:max-w-none [&_img]:object-cover md:[&_img]:object-contain"
           style={{ 
             opacity: isTransitioning ? 1 : 0, 
             transition: `opacity ${TRANSITION_DURATION}ms ease-in-out`,
@@ -445,7 +445,7 @@ export default function ShowcaseSlideshow() {
             src={shuffledImages[nextIndex].src}
             alt={shuffledImages[nextIndex].alt}
             fill
-            className="object-cover select-none max-w-none"
+            className="object-cover md:object-contain select-none max-w-none"
             priority
             onError={() => handleImageError(nextIndex)}
             sizes="100vw"
