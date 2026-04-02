@@ -974,11 +974,11 @@ export default async function RootLayout({
             gtag('config', 'G-7HWXWDZG4F');
           `}
         </Script>
-        <header className="fixed top-0 left-0 right-0 bg-white dark:bg-neutral-950 z-50 border-b border-transparent dark:border-neutral-800 transition-colors duration-300 pt-4 pb-3">
+        <header className="sticky top-0 z-50 w-full bg-white dark:bg-neutral-950 border-b border-gray-100 dark:border-neutral-800 transition-colors duration-300 pt-[max(1rem,env(safe-area-inset-top))] pb-3">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/*
-              Avoid fixed h-16: logo art is 67px tall and the CTA can wrap to several lines; a short row
-              overflowed onto the content below. Row height follows the tallest item plus py.
+              Sticky (not fixed) so content always starts below the real header height on mobile — avoids
+              guessing with pt-* on main when the row wraps. Logo art is 67px tall; row height follows content.
             */}
             <div className="flex min-h-16 items-center justify-between py-1 md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-x-3 lg:gap-x-4">
               <div className="flex min-w-0 items-center md:justify-self-start">
@@ -1002,9 +1002,7 @@ export default async function RootLayout({
             </div>
           </nav>
         </header>
-        {/* Fixed gap below header - stays visible when scrolling so content doesn't touch header */}
-        <div className="fixed top-[6.75rem] left-0 right-0 h-2 bg-white dark:bg-neutral-950 z-40 transition-colors duration-300 motion-reduce:transition-none" aria-hidden="true" />
-        <main id="main-content" className="pt-[7.25rem] min-h-screen bg-white dark:bg-neutral-950 transition-colors duration-300">
+        <main id="main-content" className="min-h-screen bg-white dark:bg-neutral-950 transition-colors duration-300">
           {children}
         </main>
 
