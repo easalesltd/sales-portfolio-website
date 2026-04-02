@@ -77,20 +77,20 @@ export default function Home() {
               <FadeInOnScroll delay={0.2}>
                 <h3 className="text-xl text-center mb-12 text-gray-700">Quality Products from Leading Suppliers</h3>
               </FadeInOnScroll>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
                 {companies.map((company, index) => {
                   const useLightMarkOnDarkTile = Boolean(company.logoUrlDark);
                   const invertLightMarkOnDarkTile =
                     useLightMarkOnDarkTile && company.id !== 'cambridge-confectionery-company';
                   const logoSrc = company.logoUrlDark ?? company.logoUrl;
                   return (
-                  <FadeInOnScroll key={company.id} delay={0.1 * (index % 6)}>
+                  <FadeInOnScroll key={company.id} delay={0.1 * (index % 6)} className="h-full min-h-0 w-full">
                     <Link 
                       href={`/companies/${company.slug}`}
-                      className="group flex flex-col bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full"
+                      className="group flex h-full min-h-0 w-full flex-col bg-white/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       <div
-                        className={`aspect-[3/2] relative flex-shrink-0 ${
+                        className={`relative h-40 w-full flex-shrink-0 overflow-hidden sm:h-44 md:h-48 ${
                           useLightMarkOnDarkTile ? 'bg-black' : ''
                         }`}
                       >
@@ -98,9 +98,11 @@ export default function Home() {
                           src={logoSrc}
                           alt={partnerBrandLogoAlt(company.name)}
                           fill
-                          className={`object-contain p-6 group-hover:scale-105 transition-transform duration-300 ${
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 320px"
+                          className={`object-contain object-center p-4 transition-transform duration-300 group-hover:scale-105 origin-center ${
                             invertLightMarkOnDarkTile ? 'invert' : ''
                           }`}
+                          quality={75}
                         />
                       </div>
                       <div className="p-6 bg-white/90 backdrop-blur-sm flex-grow flex flex-col justify-start min-h-[140px]">
