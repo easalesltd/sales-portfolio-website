@@ -17,6 +17,13 @@ const BASE_SCROLL = 3.9;
 const OBSTACLE_SPAWN_GAP_PX = 465;
 /** Scenic billboards (no collision); spaced apart from obstacle cadence. */
 const BILLBOARD_SPAWN_GAP_PX = 820;
+/** Bonus “order” tablets — spawned between obstacle waves; ~1 per 1.2 obstacle gaps. */
+const ORDER_SPAWN_GAP_PX = Math.round(OBSTACLE_SPAWN_GAP_PX * 1.15);
+const ORDER_BONUS_SCORE = 400;
+const ORDER_W = 40;
+const ORDER_H = 48;
+/** Hitbox / draw position: distance from ground up to the top edge of the tablet. */
+const ORDER_ABOVE_GROUND = 112;
 
 /** No disco below this floor score. */
 const DISCO_MIN_SCORE = 3000;
@@ -105,6 +112,13 @@ interface Obstacle {
   w: number;
   h: number;
   kind: ObstacleKind;
+}
+
+/** Floating iPad-style “order” pickup (bonus score). Position uses same `x` scroll as obstacles; Y derived from `groundY`. */
+interface OrderPickup {
+  x: number;
+  w: number;
+  h: number;
 }
 
 interface Billboard {
@@ -559,6 +573,49 @@ function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w:
   drawPixelSprite8bit(ctx, x, top, w, h, SNAKE_PIXEL_ROWS, SNAKE_PALETTE);
 }
 
+function orderPickupTop(groundY: number): number {
+  return groundY - ORDER_ABOVE_GROUND;
+}
+
+function drawOrderPickup(ctx: CanvasRenderingContext2D, o: OrderPickup, groundY: number) {
+  const top = orderPickupTop(groundY);
+  const { x, w, h } = o;
+  const rBezel = 5;
+  ctx.fillStyle = '#94a3b8';
+  roundRectPath(ctx, x - 1, top - 1, w + 2, h + 2, rBezel + 1);
+  ctx.fill();
+  ctx.strokeStyle = '#64748b';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  ctx.fillStyle = '#1e293b';
+  roundRectPath(ctx, x, top, w, h, rBezel);
+  ctx.fill();
+
+  const inset = 5;
+  const sx = x + inset;
+  const sy = top + inset;
+  const sw = w - inset * 2;
+  const sh = h - inset * 2;
+  ctx.fillStyle = '#e2e8f0';
+  roundRectPath(ctx, sx, sy, sw, sh, 3);
+  ctx.fill();
+  ctx.strokeStyle = '#cbd5e1';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.fillStyle = '#1d4ed8';
+  fillTextScaledCenter(ctx, 'ORDER', x + w / 2, sy + sh * 0.58, sw - 4, 11, 7, 'bold');
+
+  const homeR = 2.2;
+  const hx = x + w * 0.5;
+  const hy = top + h - 5;
+  ctx.fillStyle = '#334155';
+  ctx.beginPath();
+  ctx.arc(hx, hy, homeR, 0, Math.PI * 2);
+  ctx.fill();
+}
+
 function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
   const { x, w, h, kind } = o;
 
@@ -999,10 +1056,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const nextObstacleAtRef = useRef(OBSTACLE_SPAWN_GAP_PX);
   // First billboard is halfway between obstacle 1 and obstacle 2.
   const nextBillboardAtRef = useRef(OBSTACLE_SPAWN_GAP_PX + OBSTACLE_SPAWN_GAP_PX / 2);
+  /** First order slightly before the first obstacle clears — encourages a jump collect. */
+  const nextOrderAtRef = useRef(OBSTACLE_SPAWN_GAP_PX * 0.42);
 
   const pyRef = useRef(0);
   const vyRef = useRef(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
+  const ordersRef = useRef<OrderPickup[]>([]);
   const billboardsRef = useRef<Billboard[]>([]);
   const billboardCompanyDeckRef = useRef<number[]>([]);
   const billboardDeckIndexRef = useRef(0);
@@ -1222,6 +1282,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         drawBillboard(ctx, bb, groundY, H, W, logoImagesRef.current);
       }
 
+      for (const ord of ordersRef.current) {
+        drawOrderPickup(ctx, ord, groundY);
+      }
+
       const yTop = groundY + pyRef.current - ph;
       drawPlayer(ctx, px, yTop, pw, ph);
 
@@ -1421,9 +1485,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     runDistanceRef.current = 0;
     nextObstacleAtRef.current = OBSTACLE_SPAWN_GAP_PX;
     nextBillboardAtRef.current = OBSTACLE_SPAWN_GAP_PX + OBSTACLE_SPAWN_GAP_PX / 2;
+    nextOrderAtRef.current = OBSTACLE_SPAWN_GAP_PX * 0.42;
     pyRef.current = 0;
     vyRef.current = 0;
     obstaclesRef.current = [];
+    ordersRef.current = [];
     lastCountyBucketRef.current = 0;
     countyBannerShowsCountRef.current = 0;
     countyBannerRef.current = { frames: 0, name: '' };
@@ -1594,6 +1660,20 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         return o.x + o.w > -20;
       });
 
+      while (runDistanceRef.current >= nextOrderAtRef.current) {
+        nextOrderAtRef.current += ORDER_SPAWN_GAP_PX;
+        ordersRef.current.push({
+          x: W + 28,
+          w: ORDER_W,
+          h: ORDER_H,
+        });
+      }
+
+      ordersRef.current = ordersRef.current.filter((ord) => {
+        ord.x -= scroll;
+        return ord.x + ord.w > -24;
+      });
+
       const nCompanies = companies.length;
       if (nCompanies > 0) {
         while (runDistanceRef.current >= nextBillboardAtRef.current) {
@@ -1656,6 +1736,20 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       const playerTop = groundY + pyRef.current - ph;
       const playerBottom = groundY + pyRef.current;
+      const orderTopY = orderPickupTop(groundY);
+      const collectPad = 5;
+      for (let i = ordersRef.current.length - 1; i >= 0; i--) {
+        const ord = ordersRef.current[i]!;
+        if (
+          px + pw > ord.x + collectPad &&
+          px + collectPad < ord.x + ord.w &&
+          playerBottom > orderTopY + collectPad &&
+          playerTop < orderTopY + ord.h - collectPad
+        ) {
+          scoreRef.current += ORDER_BONUS_SCORE;
+          ordersRef.current.splice(i, 1);
+        }
+      }
       for (const o of obstaclesRef.current) {
         const obTop = groundY - o.h;
         const obBottom = groundY;
@@ -1776,7 +1870,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           {screen === 'menu' && (
             <div className="py-8 text-center text-neutral-200">
               <p className="mb-6 max-w-md mx-auto text-lg leading-relaxed">
-                Join Dave on the road, as he navigates East Anglia, avoiding peril.
+                Join Dave on the road, as he navigates East Anglia, avoiding peril. Snag the floating tablet
+                orders for bonus points.
               </p>
               <p className="mb-6 text-sm font-medium text-teal-400">
                 High score: {highScore.toLocaleString()}
