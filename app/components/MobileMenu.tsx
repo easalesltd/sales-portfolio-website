@@ -9,7 +9,16 @@ export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+  const [isAboutExpanded, setIsAboutExpanded] = useState(false);
   const [isBrandsExpanded, setIsBrandsExpanded] = useState(false);
+
+  const aboutNavItems = [
+    { name: 'Meet Dave', href: '/about' },
+    { name: 'Contact Dave', href: '/about/contact' },
+    { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
+    { name: 'Blog / Press', href: '/blog' },
+    { name: 'Recipes', href: '/recipes' },
+  ] as const;
 
   useEffect(() => {
     setMounted(true);
@@ -101,48 +110,44 @@ export default function MobileMenu() {
                 Home
               </Link>
               
-              {/* About Section */}
+              {/* About Section — expandable, same pattern as Our Partner Brands */}
               <div>
-                <Link 
-                  href="/about" 
-                  prefetch
-                  className="block text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors" 
-                  onClick={() => setIsOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => setIsAboutExpanded(!isAboutExpanded)}
+                  className="flex w-full items-center justify-between text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mb-2"
+                  aria-expanded={isAboutExpanded}
+                  aria-controls="mobile-menu-about-subnav"
                 >
                   About Dave
-                </Link>
-                <Link 
-                  href="/about/contact" 
-                  prefetch
-                  className="block text-sm text-gray-500 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mt-1 ml-4" 
-                  onClick={() => setIsOpen(false)}
+                  <svg
+                    className={`h-5 w-5 transform transition-transform ${isAboutExpanded ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div
+                  id="mobile-menu-about-subnav"
+                  className={`mt-2 space-y-3 overflow-hidden transition-all duration-300 ${
+                    isAboutExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
                 >
-                  Contact Dave
-                </Link>
-                <Link 
-                  href="/what-is-a-sales-agent" 
-                  prefetch
-                  className="block text-sm text-gray-500 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mt-1 ml-4" 
-                  onClick={() => setIsOpen(false)}
-                >
-                  What is a Sales Agent?
-                </Link>
-                <Link 
-                  href="/blog" 
-                  prefetch
-                  className="block text-sm text-gray-500 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mt-1 ml-4" 
-                  onClick={() => setIsOpen(false)}
-                >
-                  Blog / Press
-                </Link>
-                <Link 
-                  href="/recipes" 
-                  prefetch
-                  className="block text-sm text-gray-500 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mt-1 ml-4" 
-                  onClick={() => setIsOpen(false)}
-                >
-                  Recipes
-                </Link>
+                  {aboutNavItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      prefetch
+                      className="block pl-4 text-gray-600 transition-colors hover:text-neutral-800 dark:hover:text-neutral-200"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
               </div>
               
               {/* Brands Section */}
