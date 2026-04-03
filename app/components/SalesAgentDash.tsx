@@ -6,6 +6,13 @@ import { companies } from '@/app/data/companies';
 const STORAGE_KEY = 'sales-agent-dash-high-score';
 const AUDIO_ENABLED_KEY = 'sales-agent-dash-audio-enabled';
 
+type GameLeaderboardEntry = {
+  rank: number;
+  score: number;
+  name: string;
+  submittedAt: number;
+};
+
 /** Opaque backing store — slightly cheaper compositing than default alpha on many mobile GPUs. */
 const CTX_2D_OPTS: CanvasRenderingContext2DSettings = { alpha: false };
 
@@ -1115,6 +1122,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const [lastRunScore, setLastRunScore] = useState<number | null>(null);
   const [wasRecord, setWasRecord] = useState(false);
   const [losePhrase, setLosePhrase] = useState<string | null>(null);
+  const [globalLb, setGlobalLb] = useState<GameLeaderboardEntry[]>([]);
+  const [globalLbConfigured, setGlobalLbConfigured] = useState<boolean | null>(null);
+  const [globalLbLoading, setGlobalLbLoading] = useState(false);
+  const [lbDisplayName, setLbDisplayName] = useState('');
+  const [lbSubmitting, setLbSubmitting] = useState(false);
+  const [lbSubmitError, setLbSubmitError] = useState<string | null>(null);
+  const [lbSubmittedThisRun, setLbSubmittedThisRun] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(() => {
     if (typeof window === 'undefined') return true;
     const v = window.localStorage.getItem(AUDIO_ENABLED_KEY);
@@ -1129,6 +1143,66 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (typeof window === 'undefined') return;
     window.localStorage.setItem(AUDIO_ENABLED_KEY, String(audioEnabled));
   }, [audioEnabled]);
+
+  const loadLeaderboard = useCallback(async () => {
+    setGlobalLbLoading(true);
+    try {
+      const res = await fetch('/api/game-leaderboard', { cache: 'no-store' });
+      const data = (await res.json()) as {
+        ok?: boolean;
+        configured?: boolean;
+        entries?: GameLeaderboardEntry[];
+      };
+      if (data.ok && Array.isArray(data.entries)) {
+        setGlobalLb(data.entries);
+        setGlobalLbConfigured(data.configured === true);
+      } else {
+        setGlobalLb([]);
+        setGlobalLbConfigured(false);
+      }
+    } catch {
+      setGlobalLb([]);
+      setGlobalLbConfigured(false);
+    } finally {
+      setGlobalLbLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadLeaderboard();
+  }, [loadLeaderboard]);
+
+  useEffect(() => {
+    if (screen === 'menu') void loadLeaderboard();
+  }, [screen, loadLeaderboard]);
+
+  const submitGlobalScore = useCallback(async () => {
+    if (lastRunScore == null || lbSubmitting || lbSubmittedThisRun) return;
+    setLbSubmitting(true);
+    setLbSubmitError(null);
+    try {
+      const res = await fetch('/api/game-leaderboard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ score: lastRunScore, displayName: lbDisplayName }),
+      });
+      const data = (await res.json()) as { ok?: boolean; error?: string };
+      if (!res.ok || !data.ok) {
+        setLbSubmitError(
+          data.error === 'not_configured'
+            ? 'Global leaderboard is not configured on the server yet.'
+            : 'Could not save your score. Try again later.'
+        );
+        return;
+      }
+      setLbSubmittedThisRun(true);
+      await loadLeaderboard();
+    } catch {
+      setLbSubmitError('Network error. Check your connection.');
+    } finally {
+      setLbSubmitting(false);
+    }
+  }, [lastRunScore, lbSubmitting, lbSubmittedThisRun, lbDisplayName, loadLeaderboard]);
 
   // World-distance based spawning so we can align billboards between obstacles.
   // `runDistanceRef` increases by `scroll` each tick; we spawn events when it passes
@@ -1528,6 +1602,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     setLastRunScore(null);
     setWasRecord(false);
     setLosePhrase(null);
+    setLbSubmittedThisRun(false);
+    setLbSubmitError(null);
     laughAudioRef.current?.pause();
     if (laughAudioRef.current) laughAudioRef.current.currentTime = 0;
     // Attempt silent prime so the death sound is allowed later.
@@ -1904,13 +1980,53 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
         <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto overflow-x-hidden p-3 sm:p-4">
           {screen === 'menu' && (
-            <div className="py-8 text-center text-neutral-200">
-              <p className="mb-6 max-w-md mx-auto text-lg leading-relaxed">
+            <div className="py-6 text-center text-neutral-200">
+              <p className="mb-5 max-w-md mx-auto text-lg leading-relaxed">
                 Join Dave on the road, as he navigates East Anglia, avoiding peril. Snag the floating tablet
                 orders for bonus points.
               </p>
-              <p className="mb-6 text-sm font-medium text-teal-400">
-                High score: {highScore.toLocaleString()}
+              <div className="mb-6 w-full max-w-md mx-auto rounded-lg border border-neutral-700 bg-neutral-800/40 px-4 py-3 text-left">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <h3 className="text-sm font-semibold text-white">Global leaderboard</h3>
+                  <button
+                    type="button"
+                    onClick={() => void loadLeaderboard()}
+                    className="text-xs text-teal-400 hover:text-teal-300"
+                    disabled={globalLbLoading}
+                  >
+                    Refresh
+                  </button>
+                </div>
+                {globalLbLoading ? (
+                  <p className="text-sm text-neutral-500">Loading scores…</p>
+                ) : globalLbConfigured === false ? (
+                  <p className="text-sm text-neutral-500 leading-relaxed">
+                    Live scores will appear here after Upstash Redis is configured (see{' '}
+                    <code className="text-neutral-400">.env.example</code>).
+                  </p>
+                ) : globalLb.length === 0 ? (
+                  <p className="text-sm text-neutral-500">No scores yet — be the first.</p>
+                ) : (
+                  <ol className="max-h-48 overflow-y-auto text-sm space-y-1 pr-1">
+                    {globalLb.map((e) => (
+                      <li
+                        key={`${e.rank}-${e.submittedAt}-${e.score}-${e.name}`}
+                        className="flex justify-between gap-2 border-b border-neutral-700/80 py-1 last:border-0"
+                      >
+                        <span className="text-neutral-300">
+                          <span className="text-neutral-500 tabular-nums">{e.rank}.</span> {e.name}
+                        </span>
+                        <span className="font-medium text-teal-400 tabular-nums shrink-0">
+                          {e.score.toLocaleString()}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+              <p className="mb-6 text-xs text-neutral-500">
+                Your best on this device: {highScore.toLocaleString()} (not shared — only the board above is
+                global).
               </p>
               <button
                 type="button"
@@ -1990,6 +2106,44 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   <p className="text-sm italic text-red-400/95">
                     {losePhrase ?? 'Bumped into something — try again!'}
                   </p>
+                  {globalLbConfigured === true && !lbSubmittedThisRun ? (
+                    <div className="mt-4 w-full max-w-sm mx-auto rounded-lg border border-neutral-600 bg-neutral-800/50 p-4 text-left">
+                      <p className="text-sm text-neutral-300 mb-2">
+                        Want this run on the <span className="font-medium text-white">global</span> board? Add a
+                        name and submit.
+                      </p>
+                      <input
+                        type="text"
+                        value={lbDisplayName}
+                        onChange={(e) => setLbDisplayName(e.target.value.slice(0, 24))}
+                        placeholder="Display name"
+                        autoComplete="nickname"
+                        className="mb-3 w-full rounded-md border border-neutral-600 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-500"
+                        maxLength={24}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => void submitGlobalScore()}
+                        disabled={lbSubmitting}
+                        className="w-full rounded-lg border border-teal-600 bg-teal-700 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {lbSubmitting ? 'Submitting…' : 'Submit to global leaderboard'}
+                      </button>
+                    </div>
+                  ) : null}
+                  {globalLbConfigured === false && !globalLbLoading ? (
+                    <p className="mt-3 text-xs text-neutral-500 max-w-sm mx-auto">
+                      Global leaderboard is not enabled on this deployment.
+                    </p>
+                  ) : null}
+                  {lbSubmitError ? (
+                    <p className="mt-2 text-sm text-red-400 max-w-sm mx-auto">{lbSubmitError}</p>
+                  ) : null}
+                  {lbSubmittedThisRun ? (
+                    <p className="mt-2 text-sm text-teal-400 font-medium">
+                      Saved — you&apos;re on the global board.
+                    </p>
+                  ) : null}
                 </div>
               )}
               {outcome !== null && (
