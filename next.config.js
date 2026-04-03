@@ -1,3 +1,4 @@
+const path = require('path')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -65,7 +66,14 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   output: 'standalone',
-  turbopack: {},
+  /**
+   * When a lockfile exists in a parent folder (e.g. home directory), Next can pick that as the
+   * workspace root and Turbopack fails to resolve `next/font/google` (`@vercel/turbopack-next/...`).
+   * Pin the root to this app so dev/build resolve fonts and internals correctly.
+   */
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
 }
 
 module.exports = withBundleAnalyzer(nextConfig)
