@@ -517,69 +517,67 @@ function fillTextScaledCenter(
 }
 
 /**
- * Coiled “S” snake: head top-right facing right (toward travel / player), dark outline,
- * mid + lime highlights, white specular flecks, black eye, red forked tongue, tapered tail.
- * Chars: _ empty, # outline, G/g body, W specular, O eye, r tongue, t tail.
+ * Ground snake, head on the right (leading edge toward the player): wavy body, one-pixel eye,
+ * red tongue, dark outline. Reads clearly at game scale.
+ * Chars: _ empty, # outline, G/g body, O eye, r tongue, t tail underside.
  */
 const SNAKE_PIXEL_ROWS = [
   '____________________________________',
   '____________________________________',
-  '_______________________###__________',
-  '______________________#GGG##________',
-  '_____________________#GgWGO###rr____',
-  '____________________#GGGGGGGG##_____',
-  '___________________#GGGGGGGGG#______',
-  '__________________#GGggGGGGGGG##____',
-  '_________________#GGGGGGGGGGGG#_____',
-  '________________#GGGGGGGGGGGG##_____',
-  '_______________#GGGGGGGGGGGG#_______',
-  '______________#ggGGGGGGGGGG##_______',
-  '_____________#GGGGGGGGGGGG#_________',
-  '____________#GGGGGGGGGGGG##_________',
-  '___________#GGGGGGGGGGGG#___________',
-  '__________#GGGGGGGGGGGG##___________',
-  '_________#tttttttttttt##____________',
-  '__________##________________________',
+  '____________________________________',
+  '____________________________________',
+  '_____________###########____________',
+  '____________#GGGGGGGGGG###__________',
+  '___________#GggGGGGGGGGG###_________',
+  '__________#GGGGGGGGGGGGGG###________',
+  '_________#GGGGGGGGGGGGGGG###________',
+  '________#GGGGGGGGGGGGGGGG####_______',
+  '_______#GGGGGGGGGGGGGGGGG####_______',
+  '______#GGGGGGOrrGGGGGGGGGG####______',
+  '______#GGGGGGGGGGGGGGGGGGG####______',
+  '_______######################_______',
+  '________#tttttttttttttttttt#________',
+  '_________##################_________',
+  '____________________________________',
+  '____________________________________',
 ] as const;
 
 const SNAKE_PALETTE: Record<string, string | undefined> = {
   _: 'transparent',
-  '#': '#052e16',
-  G: '#16a34a',
-  g: '#86efac',
-  l: '#4ade80',
-  W: '#ffffff',
+  '#': '#0f172a',
+  G: '#22c55e',
+  g: '#4ade80',
   O: '#0f172a',
-  r: '#ef4444',
-  t: '#14532d',
+  r: '#dc2626',
+  t: '#166534',
 };
 
-/** Side-view hatchback (faces left / toward player), thick outline; smoke + sparks above hood. */
+/** Side-view compact car: front / headlight on the left (toward player), tidy cabin, two wheels, soft grey smoke. */
 const BROKEN_CAR_PIXEL_ROWS = [
   '........................................',
-  '............ffSSssff....................',
-  '...........sMMMNmMms....................',
-  '..........sMms...smMs...................',
-  '..........SmS.....sSS...................',
-  '...........s...f...s....................',
+  '...............ssssss...................',
+  '..............sMMMMMMss.................',
+  '...............ssssss...................',
   '........................................',
-  '.......########################.........',
-  '......#WWWWWWWWWWWWWWWWWW####...........',
-  '.....#WWwwwwwwwwwwWWWWWWWWW###..........',
-  '....#bBBBBBBBBBBBBBBBBBBBWWW###.........',
-  '...#BBBBBBBBBBBBBBBBBBBBBBWWW###........',
-  '...#YBBbbbBBBBBBBBBBBBBBBBWWW####.......',
-  '..#BBBBBBBBBBBBBBBBBBBBBBBBWWW###.......',
-  '..#BBBBBBBBBBBBBBBBBBBBBBBRWWW###.......',
-  '..#BBBBBBBBBBBBBBBBBBBBBBBBWW###........',
-  '..#BBBBBBBBBBBBBBBBBBBBBBBBW###.........',
-  '...###BBBBBBBBBBBBBBBBBBBB####..........',
-  '.....##BBBBBBBBBBBBBBBBBB####...........',
-  '......##BBBBBBBBBBBBBBBB####............',
-  '.......######################...........',
-  '.......##KK##############KK##...........',
-  '........##kk############kk##............',
-  '.........##ooooooooooooo##..............',
+  '..........##############................',
+  '.........#WWWWWWWWWWWW##................',
+  '........#WWwwwwwwWWWWW###...............',
+  '........#BBBBBBBBBBBWWW###..............',
+  '.......#YBBBBBBBBBBBBWWW###.............',
+  '.......#BBBBBBBBBBBBBBWWW###............',
+  '......#BBBBBBBBBBBBBBBWR###.............',
+  '......#BBBBBBBBBBBBBBBB###..............',
+  '......#BBBBBBBBBBBBBBBB###..............',
+  '.......###BBBBBBBBBBBB####..............',
+  '.........##BBBBBBBBBB####...............',
+  '..........##############................',
+  '..........##KK#######KK##...............',
+  '...........##kk#####kk##................',
+  '............##ooooooo##.................',
+  '........................................',
+  '........................................',
+  '........................................',
+  '........................................',
   '........................................',
   '........................................',
   '........................................',
@@ -590,21 +588,16 @@ const BROKEN_CAR_PIXEL_ROWS = [
 const BROKEN_CAR_PALETTE: Record<string, string | undefined> = {
   '.': 'transparent',
   '#': '#0f172a',
-  B: '#3b82f6',
-  b: '#2563eb',
-  W: '#e0f2fe',
+  B: '#2563eb',
+  W: '#f0f9ff',
   w: '#7dd3fc',
-  Y: '#facc15',
-  R: '#ef4444',
-  K: '#0f172a',
-  k: '#525252',
-  o: '#292524',
-  S: '#cbd5e1',
+  Y: '#fbbf24',
+  R: '#f87171',
+  K: '#171717',
+  k: '#404040',
+  o: '#1c1917',
   s: '#94a3b8',
   M: '#64748b',
-  N: '#475569',
-  f: '#fb923c',
-  F: '#f97316',
 };
 
 /** Hitbox excludes top smoke puffs so jumping through smoke is fair. */
@@ -1020,34 +1013,51 @@ function drawDiscoStarburst(ctx: CanvasRenderingContext2D, x: number, y: number,
   ctx.restore();
 }
 
+/** Filled flying-bird silhouette (wings + body), not stroked chevrons — reads at small size. */
+function fillBirdSilhouette(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  size: number,
+  alpha: number,
+  flapPhase: number
+) {
+  const wingLift = size * (0.42 + Math.sin(flapPhase) * 0.06);
+  const span = size * 0.92;
+  const belly = size * 0.28;
+  ctx.fillStyle = `rgba(51,65,85,${alpha})`;
+  ctx.beginPath();
+  ctx.moveTo(cx - span, cy + belly * 0.15);
+  ctx.quadraticCurveTo(cx - span * 0.35, cy - wingLift, cx, cy - wingLift * 0.38);
+  ctx.quadraticCurveTo(cx + span * 0.35, cy - wingLift, cx + span, cy + belly * 0.15);
+  ctx.quadraticCurveTo(cx + span * 0.42, cy + belly * 0.55, cx, cy + belly);
+  ctx.quadraticCurveTo(cx - span * 0.42, cy + belly * 0.55, cx - span, cy + belly * 0.15);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = `rgba(15,23,42,${Math.min(1, alpha + 0.12)})`;
+  ctx.beginPath();
+  ctx.ellipse(cx - span * 0.72, cy + belly * 0.02, size * 0.11, size * 0.09, -0.35, 0, Math.PI * 2);
+  ctx.fill();
+}
+
 /** Distant flock: slower parallax than clouds; stays in upper sky (below disco/HUD clutter). */
 function drawSkyBirds(ctx: CanvasRenderingContext2D, W: number, groundY: number, score: number) {
   if (W < 40 || groundY < 48) return;
   const yLo = 20;
   const yHi = Math.min(groundY * 0.28, 62);
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  const strokeBird = (cx: number, cy: number, span: number, lift: number, alpha: number) => {
-    ctx.strokeStyle = `rgba(30,41,59,${alpha})`;
-    ctx.lineWidth = Math.max(1, span * 0.28);
-    ctx.beginPath();
-    ctx.moveTo(cx - span, cy);
-    ctx.quadraticCurveTo(cx, cy - lift, cx + span, cy);
-    ctx.stroke();
-  };
+  const t = performance.now() * 0.007;
 
   const cycle = W + 100;
   const s1 = (score * 0.14) % cycle;
   const base1 = W - s1 + 8;
-  strokeBird(base1, yLo + 10, 5, 2.4, 0.78);
-  strokeBird(base1 - 12, yLo + 15, 4, 1.9, 0.68);
-  strokeBird(base1 - 24, yLo + 12, 3.5, 1.6, 0.62);
+  fillBirdSilhouette(ctx, base1, yLo + 10, 10, 0.82, t);
+  fillBirdSilhouette(ctx, base1 - 14, yLo + 16, 8.2, 0.72, t + 1.1);
+  fillBirdSilhouette(ctx, base1 - 28, yLo + 12, 7, 0.65, t + 2.2);
 
   const s2 = (score * 0.09 + cycle * 0.55) % cycle;
   const base2 = W - s2 - W * 0.12;
-  strokeBird(base2, yHi - 4, 4, 1.7, 0.55);
-  strokeBird(base2 - 10, yHi, 3.2, 1.4, 0.48);
+  fillBirdSilhouette(ctx, base2, yHi - 2, 8, 0.58, t + 0.4);
+  fillBirdSilhouette(ctx, base2 - 12, yHi + 4, 6.6, 0.5, t + 1.7);
 }
 
 function drawDiscoFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, groundY: number) {
