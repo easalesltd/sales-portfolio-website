@@ -1117,6 +1117,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   /** Touch target below canvas (mobile): same non-passive touch handling as canvas. */
   const tapBelowRef = useRef<HTMLDivElement>(null);
   const leaderboardSectionRef = useRef<HTMLDivElement>(null);
+  /** Main column with overflow-y-auto — reset scroll on new run so mobile isn’t stuck below the fold. */
+  const mainScrollRef = useRef<HTMLDivElement>(null);
   const [screen, setScreen] = useState<'menu' | 'game'>('menu');
   const [outcome, setOutcome] = useState<null | 'lost'>(null);
   const [highScore, setHighScore] = useState(() => readHighScore());
@@ -1622,6 +1624,14 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     void primeLaughSilently(audioEnabledRef.current);
     setMusicMode(audioEnabledRef.current ? 'game' : 'none');
     setScreen('game');
+    const scrollEl = mainScrollRef.current;
+    if (scrollEl) {
+      scrollEl.scrollTop = 0;
+      requestAnimationFrame(() => {
+        scrollEl.scrollTop = 0;
+        scrollEl.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      });
+    }
   }, []);
 
   const jump = useCallback(() => {
@@ -1990,7 +2000,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           </div>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto overflow-x-hidden p-3 sm:p-4">
+        <div
+          ref={mainScrollRef}
+          className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto overflow-x-hidden p-3 sm:p-4"
+        >
           {screen === 'menu' && (
             <div className="py-6 text-center text-neutral-200">
               <p className="mb-5 max-w-md mx-auto text-lg leading-relaxed">
