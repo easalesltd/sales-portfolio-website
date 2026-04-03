@@ -39,6 +39,19 @@ const ORDER_ASSET_CLEARANCE_PX = 46;
 const ORDER_SPAWN_RETRY_PX = 52;
 const ORDER_SPAWN_EDGE_X = 28;
 
+/**
+ * Player/obstacle AABB uses full sprite `pw`×`ph` and obstacle `w`×`h` by default, which is harsher
+ * than what you see (arms, quiff, transparent padding). Insets shrink both boxes slightly so deaths
+ * line up with apparent contact.
+ */
+const PLAYER_HIT_INSET_X = 5;
+const PLAYER_HIT_INSET_TOP = 7;
+const PLAYER_HIT_INSET_BOTTOM = 2;
+const OBSTACLE_HIT_INSET_X = 4;
+const OBSTACLE_HIT_INSET_TOP = 4;
+/** Obstacles narrower than this keep a proportional hit width so thin hazards still register. */
+const OBSTACLE_HIT_MIN_W = 28;
+
 /** No disco below this floor score. */
 const DISCO_MIN_SCORE = 3000;
 /** First disco block: `DISCO_MIN_SCORE`..`DISCO_MIN_SCORE + DISCO_DURATION_SCORE - 1`. */
@@ -1935,6 +1948,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       const playerTop = groundY + pyRef.current - ph;
       const playerBottom = groundY + pyRef.current;
+      const hitLeft = px + PLAYER_HIT_INSET_X;
+      const hitRight = px + pw - PLAYER_HIT_INSET_X;
+      const hitTop = playerTop + PLAYER_HIT_INSET_TOP;
+      const hitBottom = playerBottom - PLAYER_HIT_INSET_BOTTOM;
       const orderTopY = orderPickupTop(groundY);
       const collectPad = 5;
       for (let i = ordersRef.current.length - 1; i >= 0; i--) {
@@ -1954,7 +1971,15 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         const hitH = o.collisionH ?? o.h;
         const obTop = groundY - hitH;
         const obBottom = groundY;
-        if (px + pw > o.x && px < o.x + o.w && playerBottom > obTop && playerTop < obBottom) {
+        const innerW = Math.max(OBSTACLE_HIT_MIN_W, o.w - OBSTACLE_HIT_INSET_X * 2);
+        const obLeft = o.x + (o.w - innerW) / 2;
+        const obHitTop = obTop + OBSTACLE_HIT_INSET_TOP;
+        if (
+          hitRight > obLeft &&
+          hitLeft < obLeft + innerW &&
+          hitBottom > obHitTop &&
+          hitTop < obBottom
+        ) {
           const final = Math.floor(scoreRef.current);
           const prevHi = readHighScore();
           const nextHi = Math.max(prevHi, final);
