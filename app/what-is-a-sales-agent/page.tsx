@@ -163,7 +163,8 @@ export default async function WhatIsASalesAgentPage() {
           </p>
 
           <p>
-            Want to see what a day on the road is like? Double click the <strong>Black East Anglia</strong> logo (top left).
+            Want to see what a day on the road is like? Double click/tap the <strong>Black East Anglia</strong> logo
+            (top left).
           </p>
         </div>
 

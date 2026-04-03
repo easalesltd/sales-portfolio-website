@@ -205,7 +205,8 @@ export default function AboutPageClient() {
           )}
 
           <p className="mt-8 text-center text-sm text-gray-600">
-            Want to see what a day on the road is like? Double click the <strong>Black East Anglia</strong> logo (top left).
+            Want to see what a day on the road is like? Double click/tap the <strong>Black East Anglia</strong> logo
+            (top left).
           </p>
         </div>
       </div>
