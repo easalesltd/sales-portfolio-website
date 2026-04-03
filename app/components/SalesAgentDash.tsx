@@ -181,8 +181,13 @@ const SILLY_BEANS_BRAND = {
   stroke: '#0284C7',
 } as const;
 
+/**
+ * Word-wrap without dropping words. If more than `maxLines` lines are needed, the tail is merged
+ * into one last line (then scaled down horizontally in `fillTextScaledCenter`).
+ */
 function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): string[] {
   const words = text.split(/\s+/).filter(Boolean);
+  if (words.length === 0) return [text];
   const lines: string[] = [];
   let current = '';
   for (const w of words) {
@@ -193,10 +198,11 @@ function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): str
     }
     lines.push(current);
     current = w;
-    if (lines.length >= maxLines - 1) break;
   }
-  if (current && lines.length < maxLines) lines.push(current);
-  if (lines.length === 0) lines.push(text);
+  if (current) lines.push(current);
+  if (maxLines > 0 && lines.length > maxLines) {
+    return [...lines.slice(0, maxLines - 1), lines.slice(maxLines - 1).join(' ')];
+  }
   return lines;
 }
 
@@ -346,12 +352,19 @@ function drawBillboard(
     ctx.fill();
     ctx.fillStyle = seasonal?.text ?? '#854d0e';
     const seasonalText = b.message ?? 'Seasonal stock ready?';
-    const lines = wrapWords(seasonalText, 22, 3);
+    const textPadX = 10;
+    const maxWidth = innerW - textPadX;
+    // ~6.5px per character at bold 13px — tighter wrap on narrow boards, wider on large.
+    const maxChars = Math.max(16, Math.min(34, Math.floor(maxWidth / 6.5)));
+    const lineGap = Math.max(10, Math.min(15, Math.floor((innerH - 12) / 6)));
+    const maxLines = Math.max(4, Math.min(8, Math.floor((innerH - 10) / lineGap)));
+    const lines = wrapWords(seasonalText, maxChars, maxLines);
     const cx = x + boardW / 2;
-    const lineGap = 16;
-    const startY = panelTop + boardH / 2 - ((lines.length - 1) * lineGap) / 2 + 4;
+    const innerTop = panelTop + pad;
+    const textBlockH = (lines.length - 1) * lineGap + 14;
+    const startY = innerTop + Math.max(2, (innerH - textBlockH) / 2) + 12;
     lines.forEach((line, idx) => {
-      fillTextScaledCenter(ctx, line, cx, startY + idx * lineGap, innerW - 8, 14, 9, 'bold');
+      fillTextScaledCenter(ctx, line, cx, startY + idx * lineGap, maxWidth, 13, 7, 'bold');
     });
   } else if (b.kind === 'promo') {
     const promoUrl = b.promoImageUrl ?? SILLY_BEANS_BILLBOARD_SRC;
