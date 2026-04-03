@@ -1046,16 +1046,16 @@ function drawDiscoFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, g
 
 function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: number) {
   const cx = W / 2;
-  const ballR = Math.min(38, Math.max(24, W * 0.082));
+  const ballR = 0.5 * Math.min(38, Math.max(24, W * 0.082));
   const mountY = 2;
-  const targetBallCy = ballR + 40;
-  const startCy = -ballR - 28;
+  const targetBallCy = ballR + 20;
+  const startCy = -ballR - 14;
   const ballCy = startCy + (targetBallCy - startCy) * dropProgress;
   const t = performance.now() * 0.0018;
 
-  const cordBot = ballCy - ballR - 5;
+  const cordBot = ballCy - ballR - 3;
   ctx.strokeStyle = '#92400e';
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 1.25;
   ctx.lineCap = 'round';
   ctx.beginPath();
   ctx.moveTo(cx, mountY);
@@ -1064,23 +1064,23 @@ function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: n
 
   ctx.fillStyle = '#94a3b8';
   ctx.beginPath();
-  ctx.ellipse(cx, cordBot + 1, 6, 3, 0, 0, Math.PI * 2);
+  ctx.ellipse(cx, cordBot + 0.5, 3, 1.5, 0, 0, Math.PI * 2);
   ctx.fill();
   ctx.strokeStyle = '#64748b';
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 0.75;
   ctx.stroke();
 
-  const capBot = ballCy - ballR + 2;
+  const capBot = ballCy - ballR + 1;
   ctx.fillStyle = '#0d9488';
   ctx.beginPath();
-  ctx.moveTo(cx - 7, capBot);
-  ctx.quadraticCurveTo(cx, capBot - 9, cx + 7, capBot);
-  ctx.lineTo(cx + 5, capBot + 4);
-  ctx.lineTo(cx - 5, capBot + 4);
+  ctx.moveTo(cx - 3.5, capBot);
+  ctx.quadraticCurveTo(cx, capBot - 4.5, cx + 3.5, capBot);
+  ctx.lineTo(cx + 2.5, capBot + 2);
+  ctx.lineTo(cx - 2.5, capBot + 2);
   ctx.closePath();
   ctx.fill();
   ctx.strokeStyle = '#0f766e';
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 0.75;
   ctx.stroke();
 
   ctx.save();
@@ -1145,7 +1145,7 @@ function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: n
   ctx.restore();
 
   ctx.strokeStyle = 'rgba(30,41,59,0.48)';
-  ctx.lineWidth = 1.4;
+  ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.arc(cx, ballCy, ballR, 0, Math.PI * 2);
   ctx.stroke();
@@ -1160,7 +1160,7 @@ function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: n
     const sx = cx + s.ox * ballR;
     const sy = ballCy + s.oy * ballR;
     if ((sx - cx) ** 2 + (sy - ballCy) ** 2 <= (ballR * 0.94) ** 2) {
-      drawDiscoStarburst(ctx, sx, sy, 11 * s.sz * sparklePulse, 0.9);
+      drawDiscoStarburst(ctx, sx, sy, 5.5 * s.sz * sparklePulse, 0.9);
     }
   }
 }
