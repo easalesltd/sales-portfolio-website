@@ -124,6 +124,8 @@ interface Obstacle {
   w: number;
   h: number;
   kind: ObstacleKind;
+  /** Collision height from ground when less than full visual `h` (e.g. smoke above the car). */
+  collisionH?: number;
 }
 
 /** Floating iPad-style “order” pickup (bonus score). Position uses same `x` scroll as obstacles; Y derived from `groundY`. */
@@ -424,7 +426,7 @@ function dimsFor(kind: ObstacleKind): { w: number; h: number } {
     case 'pro_forma_invoice':
       return { w: 50, h: 60 };
     case 'broken_car':
-      return { w: 78, h: 48 };
+      return { w: 80, h: 58 };
     case 'sales_target':
       return { w: 50, h: 62 };
     case 'hmrc':
@@ -502,37 +504,98 @@ function fillTextScaledCenter(
 }
 
 /**
- * 8-bit side-view snake: tail left → head right (toward the player), belly below.
- * Chars: _ empty, # outline, G/g/l body, o/O eyes, r tongue, t tail tip.
+ * Coiled “S” snake: head top-right facing right (toward travel / player), dark outline,
+ * mid + lime highlights, white specular flecks, black eye, red forked tongue, tapered tail.
+ * Chars: _ empty, # outline, G/g body, W specular, O eye, r tongue, t tail.
  */
 const SNAKE_PIXEL_ROWS = [
   '____________________________________',
   '____________________________________',
-  '______________________________oOo___',
-  '____________________________GGGGGG__',
-  '__________________________GGGGGGGGGG',
-  '_gggGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',
-  '_gggGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGr',
-  '_gggGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',
-  '____GGGGGGGGGGGGGGGGGGGGGGGGGG______',
-  '______GGGGGGGGGGGGGGGGGGGGGG________',
-  '__________GGGGGGGGGGGGGGGG__________',
-  '______________GGGGGGGGGG____________',
-  '__________________GGGG______________',
-  '____________________tt______________',
+  '_______________________###__________',
+  '______________________#GGG##________',
+  '_____________________#GgWGO###rr____',
+  '____________________#GGGGGGGG##_____',
+  '___________________#GGGGGGGGG#______',
+  '__________________#GGggGGGGGGG##____',
+  '_________________#GGGGGGGGGGGG#_____',
+  '________________#GGGGGGGGGGGG##_____',
+  '_______________#GGGGGGGGGGGG#_______',
+  '______________#ggGGGGGGGGGG##_______',
+  '_____________#GGGGGGGGGGGG#_________',
+  '____________#GGGGGGGGGGGG##_________',
+  '___________#GGGGGGGGGGGG#___________',
+  '__________#GGGGGGGGGGGG##___________',
+  '_________#tttttttttttt##____________',
+  '__________##________________________',
 ] as const;
 
 const SNAKE_PALETTE: Record<string, string | undefined> = {
   _: 'transparent',
-  '#': '#14532d',
-  G: '#15803d',
-  g: '#22c55e',
+  '#': '#052e16',
+  G: '#16a34a',
+  g: '#86efac',
   l: '#4ade80',
-  o: '#fef9c3',
+  W: '#ffffff',
   O: '#0f172a',
-  r: '#dc2626',
-  t: '#166534',
+  r: '#ef4444',
+  t: '#14532d',
 };
+
+/** Side-view hatchback (faces left / toward player), thick outline; smoke + sparks above hood. */
+const BROKEN_CAR_PIXEL_ROWS = [
+  '........................................',
+  '............ffSSssff....................',
+  '...........sMMMNmMms....................',
+  '..........sMms...smMs...................',
+  '..........SmS.....sSS...................',
+  '...........s...f...s....................',
+  '........................................',
+  '.......########################.........',
+  '......#WWWWWWWWWWWWWWWWWW####...........',
+  '.....#WWwwwwwwwwwwWWWWWWWWW###..........',
+  '....#bBBBBBBBBBBBBBBBBBBBWWW###.........',
+  '...#BBBBBBBBBBBBBBBBBBBBBBWWW###........',
+  '...#YBBbbbBBBBBBBBBBBBBBBBWWW####.......',
+  '..#BBBBBBBBBBBBBBBBBBBBBBBBWWW###.......',
+  '..#BBBBBBBBBBBBBBBBBBBBBBBRWWW###.......',
+  '..#BBBBBBBBBBBBBBBBBBBBBBBBWW###........',
+  '..#BBBBBBBBBBBBBBBBBBBBBBBBW###.........',
+  '...###BBBBBBBBBBBBBBBBBBBB####..........',
+  '.....##BBBBBBBBBBBBBBBBBB####...........',
+  '......##BBBBBBBBBBBBBBBB####............',
+  '.......######################...........',
+  '.......##KK##############KK##...........',
+  '........##kk############kk##............',
+  '.........##ooooooooooooo##..............',
+  '........................................',
+  '........................................',
+  '........................................',
+  '........................................',
+  '........................................',
+] as const;
+
+const BROKEN_CAR_PALETTE: Record<string, string | undefined> = {
+  '.': 'transparent',
+  '#': '#0f172a',
+  B: '#3b82f6',
+  b: '#2563eb',
+  W: '#e0f2fe',
+  w: '#7dd3fc',
+  Y: '#facc15',
+  R: '#ef4444',
+  K: '#0f172a',
+  k: '#525252',
+  o: '#292524',
+  S: '#cbd5e1',
+  s: '#94a3b8',
+  M: '#64748b',
+  N: '#475569',
+  f: '#fb923c',
+  F: '#f97316',
+};
+
+/** Hitbox excludes top smoke puffs so jumping through smoke is fair. */
+const BROKEN_CAR_COLLISION_H = 44;
 
 function drawPixelSprite8bit(
   ctx: CanvasRenderingContext2D,
@@ -541,7 +604,8 @@ function drawPixelSprite8bit(
   w: number,
   h: number,
   rows: readonly string[],
-  palette: Record<string, string | undefined>
+  palette: Record<string, string | undefined>,
+  align: 'center' | 'bottom' = 'center'
 ) {
   const cols = rows[0]!.length;
   const rowCount = rows.length;
@@ -549,7 +613,7 @@ function drawPixelSprite8bit(
   const drawW = cols * scale;
   const drawH = rowCount * scale;
   const ox = x + (w - drawW) / 2;
-  const oy = top + (h - drawH) / 2;
+  const oy = align === 'bottom' ? top + h - drawH : top + (h - drawH) / 2;
 
   for (let ry = 0; ry < rowCount; ry++) {
     const row = rows[ry]!;
@@ -564,7 +628,11 @@ function drawPixelSprite8bit(
 }
 
 function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
-  drawPixelSprite8bit(ctx, x, top, w, h, SNAKE_PIXEL_ROWS, SNAKE_PALETTE);
+  drawPixelSprite8bit(ctx, x, top, w, h, SNAKE_PIXEL_ROWS, SNAKE_PALETTE, 'center');
+}
+
+function drawBrokenCar8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
+  drawPixelSprite8bit(ctx, x, top, w, h, BROKEN_CAR_PIXEL_ROWS, BROKEN_CAR_PALETTE, 'bottom');
 }
 
 function orderPickupTop(groundY: number): number {
@@ -703,33 +771,7 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       break;
     }
     case 'broken_car': {
-      ctx.fillStyle = '#64748b';
-      ctx.fillRect(x + 8, top + 18, w - 16, 22);
-      roundRectPath(ctx, x + 4, top + 14, w - 8, 18, 6);
-      ctx.fill();
-      ctx.fillStyle = '#475569';
-      ctx.fillRect(x + 22, top + 10, 28, 12);
-      ctx.fillStyle = '#1e293b';
-      ctx.beginPath();
-      ctx.arc(x + 22, top + 38, 8, 0, Math.PI * 2);
-      ctx.arc(x + w - 22, top + 38, 8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#cbd5e1';
-      ctx.fillRect(x + 12, top + 22, 16, 10);
-      ctx.fillRect(x + w - 28, top + 22, 16, 10);
-      ctx.strokeStyle = '#94a3b8';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(x + 34, top + 8);
-      ctx.lineTo(x + 42, top + 2);
-      ctx.stroke();
-      ctx.fillStyle = 'rgba(148,163,184,0.7)';
-      ctx.beginPath();
-      ctx.arc(x + 46, top - 2, 6, 0, Math.PI * 2);
-      ctx.arc(x + 54, top - 6, 5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#fbbf24';
-      ctx.fillRect(x + 54, top + 12, 4, 3);
+      drawBrokenCar8bit(ctx, x, top, w, h);
       break;
     }
     case 'sales_target': {
@@ -963,6 +1005,36 @@ function drawDiscoStarburst(ctx: CanvasRenderingContext2D, x: number, y: number,
   ctx.arc(0, 0, 2.8, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
+}
+
+/** Distant flock: slower parallax than clouds; stays in upper sky (below disco/HUD clutter). */
+function drawSkyBirds(ctx: CanvasRenderingContext2D, W: number, groundY: number, score: number) {
+  if (W < 40 || groundY < 48) return;
+  const yLo = 20;
+  const yHi = Math.min(groundY * 0.28, 62);
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  const strokeBird = (cx: number, cy: number, span: number, lift: number, alpha: number) => {
+    ctx.strokeStyle = `rgba(30,41,59,${alpha})`;
+    ctx.lineWidth = Math.max(1, span * 0.28);
+    ctx.beginPath();
+    ctx.moveTo(cx - span, cy);
+    ctx.quadraticCurveTo(cx, cy - lift, cx + span, cy);
+    ctx.stroke();
+  };
+
+  const cycle = W + 100;
+  const s1 = (score * 0.14) % cycle;
+  const base1 = W - s1 + 8;
+  strokeBird(base1, yLo + 10, 5, 2.4, 0.78);
+  strokeBird(base1 - 12, yLo + 15, 4, 1.9, 0.68);
+  strokeBird(base1 - 24, yLo + 12, 3.5, 1.6, 0.62);
+
+  const s2 = (score * 0.09 + cycle * 0.55) % cycle;
+  const base2 = W - s2 - W * 0.12;
+  strokeBird(base2, yHi - 4, 4, 1.7, 0.55);
+  strokeBird(base2 - 10, yHi, 3.2, 1.4, 0.48);
 }
 
 function drawDiscoFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, groundY: number) {
@@ -1407,16 +1479,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const ph = 52;
       const px = W * 0.18;
 
-      const ci = Math.floor(scoreRef.current / 500) % 4;
-      const skyPairs = [
-        ['#87CEEB', '#E0F4FF'],
-        ['#7dd3fc', '#e0f2fe'],
-        ['#93c5fd', '#f0f9ff'],
-        ['#a5b4fc', '#eef2ff'],
-      ];
+      // Fixed sky (no score-based tint); disco overlays draw on top below.
       const grd = ctx.createLinearGradient(0, 0, 0, H);
-      grd.addColorStop(0, skyPairs[ci][0]);
-      grd.addColorStop(1, skyPairs[ci][1]);
+      grd.addColorStop(0, '#87CEEB');
+      grd.addColorStop(1, '#E0F4FF');
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, W, H);
 
@@ -1437,6 +1503,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.arc(W - cloudShift + 62, 48, 26, 0, Math.PI * 2);
       ctx.arc(W - cloudShift + 88, 52, 20, 0, Math.PI * 2);
       ctx.fill();
+
+      drawSkyBirds(ctx, W, groundY, scoreRef.current);
 
       for (const o of obstaclesRef.current) {
         const top = groundY - o.h;
@@ -1462,7 +1530,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       const displayScore = Math.floor(scoreRef.current);
       const countyLabel = countyForScore(scoreRef.current);
-      const countyHue = ['#6d28d9', '#047857', '#b91c1c', '#0369a1'][ci];
+      const countyHue =
+        ['#6d28d9', '#047857', '#b91c1c', '#0369a1'][Math.floor(scoreRef.current / 500) % 4];
       const hudPadL = 10;
       const hudPadR = 10;
       const hudX = 8;
@@ -1762,6 +1831,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           w: ow,
           h: oh,
           kind,
+          ...(kind === 'broken_car' ? { collisionH: BROKEN_CAR_COLLISION_H } : {}),
         });
       }
 
@@ -1881,7 +1951,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       }
       for (const o of obstaclesRef.current) {
-        const obTop = groundY - o.h;
+        const hitH = o.collisionH ?? o.h;
+        const obTop = groundY - hitH;
         const obBottom = groundY;
         if (px + pw > o.x && px < o.x + o.w && playerBottom > obTop && playerTop < obBottom) {
           const final = Math.floor(scoreRef.current);
