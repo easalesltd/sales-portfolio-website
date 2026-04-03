@@ -26,6 +26,11 @@ const ORDER_H = 48;
 const ORDER_ABOVE_GROUND = 112;
 /** HUD toast frames after collecting an order pickup */
 const NICE_ORDER_MESSAGE_FRAMES = 42;
+/** Min horizontal gap between a new order tablet and obstacles / billboards / other orders (world px). */
+const ORDER_ASSET_CLEARANCE_PX = 46;
+/** If spawn slot is blocked, try again after this much extra run distance. */
+const ORDER_SPAWN_RETRY_PX = 52;
+const ORDER_SPAWN_EDGE_X = 28;
 
 /** No disco below this floor score. */
 const DISCO_MIN_SCORE = 3000;
@@ -177,6 +182,54 @@ function wrapWords(text: string, maxCharsPerLine: number, maxLines: number): str
 
 function getCompanyBillboardLogoUrl(c: (typeof companies)[number]): string {
   return c.logoUrlDark ?? c.logoUrl;
+}
+
+/** Matches `drawBillboard` width math so spawn checks align with on-screen billboards. */
+function approxBillboardWidth(b: Billboard, canvasW: number, canvasH: number): number {
+  const aspect = 1.82;
+  let boardH = Math.max(86, Math.min(canvasH * 0.21, 142));
+  let boardW = Math.min(boardH * aspect, canvasW * 0.48, 200);
+  if (boardW <= boardH) {
+    boardW = Math.min(canvasW * 0.5, 200);
+    boardH = Math.min(boardH, boardW / aspect);
+  }
+  if (b.kind === 'promo') {
+    const promoAspect = 2.12;
+    boardH = Math.max(92, Math.min(canvasH * 0.24, 156));
+    boardW = Math.min(boardH * promoAspect, canvasW * 0.58, 252);
+    if (boardW <= boardH) {
+      boardW = Math.min(canvasW * 0.58, 252);
+      boardH = Math.min(boardH, Math.max(86, Math.floor(boardW / promoAspect)));
+    }
+  }
+  return boardW;
+}
+
+function isOrderSpawnBlocked(
+  spawnX: number,
+  canvasW: number,
+  canvasH: number,
+  obstacles: Obstacle[],
+  billboards: Billboard[],
+  existingOrders: OrderPickup[]
+): boolean {
+  const pad = ORDER_ASSET_CLEARANCE_PX;
+  const a0 = spawnX - pad;
+  const a1 = spawnX + ORDER_W + pad;
+
+  for (const o of obstacles) {
+    if (!(a1 < o.x || a0 > o.x + o.w)) return true;
+  }
+  for (const b of billboards) {
+    const bw = approxBillboardWidth(b, canvasW, canvasH);
+    const b0 = b.x - pad;
+    const b1 = b.x + bw + pad;
+    if (!(a1 < b0 || a0 > b1)) return true;
+  }
+  for (const q of existingOrders) {
+    if (!(a1 < q.x || a0 > q.x + q.w)) return true;
+  }
+  return false;
 }
 
 function drawBillboard(
@@ -1433,10 +1486,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         const fs = Math.min(20, Math.max(15, Math.floor(W * 0.048)));
         ctx.font = `bold ${fs}px system-ui, sans-serif`;
         const tw = ctx.measureText(msg).width;
-        const boxW = tw + 32;
+        const boxPadX = 16;
+        const boxW = tw + boxPadX * 2;
         const boxH = 40;
-        const bx = (W - boxW) / 2;
-        const by = Math.min(H * 0.19, 76);
+        const padR = 10;
+        const padT = 8;
+        const bx = Math.max(8, W - boxW - padR);
+        const by = padT;
         ctx.fillStyle = 'rgba(15,23,42,0.9)';
         roundRectPath(ctx, bx, by, boxW, boxH, 12);
         ctx.fill();
@@ -1446,7 +1502,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         ctx.fillStyle = '#fef9c3';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(msg, W / 2, by + boxH / 2 + 1);
+        ctx.fillText(msg, bx + boxW / 2, by + boxH / 2 + 1);
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
         ctx.globalAlpha = 1;
@@ -1788,20 +1844,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         return o.x + o.w > -20;
       });
 
-      while (runDistanceRef.current >= nextOrderAtRef.current) {
-        nextOrderAtRef.current += ORDER_SPAWN_GAP_PX;
-        ordersRef.current.push({
-          x: W + 28,
-          w: ORDER_W,
-          h: ORDER_H,
-        });
-      }
-
-      ordersRef.current = ordersRef.current.filter((ord) => {
-        ord.x -= scroll;
-        return ord.x + ord.w > -24;
-      });
-
       const nCompanies = companies.length;
       if (nCompanies > 0) {
         while (runDistanceRef.current >= nextBillboardAtRef.current) {
@@ -1853,6 +1895,39 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       billboardsRef.current = billboardsRef.current.filter((bb) => {
         bb.x -= scroll;
         return bb.x + 280 > -100;
+      });
+
+      let orderSpawnGuard = 0;
+      while (runDistanceRef.current >= nextOrderAtRef.current && orderSpawnGuard < 24) {
+        orderSpawnGuard += 1;
+        const spawnX = W + ORDER_SPAWN_EDGE_X;
+        if (
+          isOrderSpawnBlocked(
+            spawnX,
+            W,
+            H,
+            obstaclesRef.current,
+            billboardsRef.current,
+            ordersRef.current
+          )
+        ) {
+          nextOrderAtRef.current += ORDER_SPAWN_RETRY_PX;
+        } else {
+          nextOrderAtRef.current += ORDER_SPAWN_GAP_PX;
+          ordersRef.current.push({
+            x: spawnX,
+            w: ORDER_W,
+            h: ORDER_H,
+          });
+        }
+      }
+      if (runDistanceRef.current >= nextOrderAtRef.current) {
+        nextOrderAtRef.current = runDistanceRef.current + ORDER_SPAWN_GAP_PX * 0.35;
+      }
+
+      ordersRef.current = ordersRef.current.filter((ord) => {
+        ord.x -= scroll;
+        return ord.x + ord.w > -24;
       });
 
       vyRef.current += GRAVITY;
