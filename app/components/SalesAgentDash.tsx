@@ -1116,6 +1116,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   /** Touch target below canvas (mobile): same non-passive touch handling as canvas. */
   const tapBelowRef = useRef<HTMLDivElement>(null);
+  const leaderboardSectionRef = useRef<HTMLDivElement>(null);
   const [screen, setScreen] = useState<'menu' | 'game'>('menu');
   const [outcome, setOutcome] = useState<null | 'lost'>(null);
   const [highScore, setHighScore] = useState(() => readHighScore());
@@ -1176,6 +1177,16 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (screen === 'menu') void loadLeaderboard();
   }, [screen, loadLeaderboard]);
 
+  useEffect(() => {
+    if (screen !== 'menu' || !lbSubmittedThisRun) return;
+    const el = leaderboardSectionRef.current;
+    if (!el) return;
+    const id = window.requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [screen, lbSubmittedThisRun]);
+
   const submitGlobalScore = useCallback(async () => {
     if (lastRunScore == null || lbSubmitting || lbSubmittedThisRun) return;
     setLbSubmitting(true);
@@ -1197,6 +1208,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
       setLbSubmittedThisRun(true);
       await loadLeaderboard();
+      setScreen('menu');
     } catch {
       setLbSubmitError('Network error. Check your connection.');
     } finally {
@@ -1985,7 +1997,15 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 Join Dave on the road, as he navigates East Anglia, avoiding peril. Snag the floating tablet
                 orders for bonus points.
               </p>
-              <div className="mb-6 w-full max-w-md mx-auto rounded-lg border border-neutral-700 bg-neutral-800/40 px-4 py-3 text-left">
+              {lbSubmittedThisRun ? (
+                <p className="mb-3 max-w-md mx-auto text-sm font-medium text-teal-400">
+                  Your run is on the board below.
+                </p>
+              ) : null}
+              <div
+                ref={leaderboardSectionRef}
+                className="mb-6 w-full max-w-md mx-auto rounded-lg border border-neutral-700 bg-neutral-800/40 px-4 py-3 text-left"
+              >
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <h3 className="text-sm font-semibold text-white">Global leaderboard</h3>
                   <button
@@ -2138,11 +2158,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   ) : null}
                   {lbSubmitError ? (
                     <p className="mt-2 text-sm text-red-400 max-w-sm mx-auto">{lbSubmitError}</p>
-                  ) : null}
-                  {lbSubmittedThisRun ? (
-                    <p className="mt-2 text-sm text-teal-400 font-medium">
-                      Saved — you&apos;re on the global board.
-                    </p>
                   ) : null}
                 </div>
               )}
