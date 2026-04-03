@@ -34,7 +34,7 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
     metaDescription:
       'Dave Langdon in Progressive Greetings — Winnie the Pooh, wholesale greeting card agents & the trade. East Anglia sales rep, East Anglian Sales Ltd.',
     excerpt:
-      'Feature in Progressive Greetings (Max Publishing) — Winnie the Pooh, agents, and the wholesale greeting card trade.',
+      'Winnie the Pooh takes the spotlight — Dave on agents, nostalgia, and why classic characters still matter in the wholesale trade.',
     publishedAt: '2026-01-23',
     publication: 'Progressive Greetings (February 2026)',
     coverImage: encodeURI(
@@ -54,7 +54,7 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
     metaDescription:
       'Dave Langdon’s Greetings Today diary — wholesale greeting cards & giftware, life on the road across Suffolk, Norfolk, Essex & Cambridgeshire.',
     excerpt:
-      'Greetings Today column — diary from the road, wholesale greeting cards and giftware across East Anglia.',
+      'New year on the road: diary scraps from wholesale card and gift visits across Suffolk, Norfolk, Essex, and Cambridgeshire.',
     publishedAt: '2026-01-22',
     publication: 'Greetings Today (January/February 2026)',
     coverImage: encodeURI(
@@ -74,7 +74,7 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
     metaDescription:
       'Greetings Today column by Dave Langdon — retail visits, wholesale cards & gifts, East Anglia greeting card agent. East Anglian Sales Ltd.',
     excerpt:
-      'Greetings Today column — diary from the road, retailers, and wholesale cards & gift across East Anglia.',
+      'Autumn on the route — shop stories, ranges, and the everyday rhythm of a greeting card agent in East Anglia.',
     publishedAt: '2025-08-27',
     publication: 'Greetings Today (September/October 2025)',
     coverImage: encodeURI(
@@ -92,9 +92,9 @@ const magazineArticlesUnsorted: MagazineArticle[] = [
     metaTitle:
       'Diary of a Sales Agent — Greetings Today March/April 2026 | Dave Langdon, East Anglia',
     metaDescription:
-      'Dave Langdon’s Diary of a Sales Agent in Greetings Today — wholesale greeting cards, retailers & trade life across East Anglia. East Anglian Sales Ltd.',
+      'Dave Langdon: Father’s Day, till point pickup lines and accountancy fails — Diary of a Sales Agent, Greetings Today March/April 2026. East Anglia wholesale greeting cards.',
     excerpt:
-      'My latest column for Greetings Today — life on the road, retailers, and the wholesale greeting card trade in East Anglia.',
+      'Dave talks Fathers Day, Till Point pickup lines and Accountancy fails',
     publishedAt: '2026-03-30',
     publication: 'Greetings Today (March/April 2026)',
     coverImage: encodeURI(
