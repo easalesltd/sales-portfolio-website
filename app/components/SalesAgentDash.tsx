@@ -59,8 +59,6 @@ function isDiscoScore(score: number): boolean {
 }
 
 const COUNTIES = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
-/** "Now entering" overlay only for the first four county transitions per run (one lap). */
-const COUNTY_BANNER_MAX_SHOWS = 4;
 
 function countyForScore(score: number): (typeof COUNTIES)[number] {
   return COUNTIES[Math.floor(score / 500) % 4];
@@ -494,72 +492,6 @@ function fillTextScaledCenter(
   ctx.font = `${w}${px}px system-ui, sans-serif`;
   const tw = ctx.measureText(text).width;
   ctx.fillText(text, cx - tw / 2, y);
-}
-
-/**
- * Shrinks font until the string fits within maxWidth.
- * Uses `>=` so the size at hardMinPx is actually measured; if it still overflows, continues down to absoluteMinPx.
- */
-function measureFitFontPxHard(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  maxWidth: number,
-  maxPx: number,
-  hardMinPx: number,
-  weight: '' | 'bold' = '',
-  absoluteMinPx = 4.5
-): number {
-  let px = maxPx;
-  const w = weight === 'bold' ? 'bold ' : '';
-  while (px >= hardMinPx) {
-    ctx.font = `${w}${px}px system-ui, sans-serif`;
-    if (ctx.measureText(text).width <= maxWidth) return px;
-    px -= 0.5;
-  }
-  px = hardMinPx - 0.5;
-  while (px >= absoluteMinPx) {
-    ctx.font = `${w}${px}px system-ui, sans-serif`;
-    if (ctx.measureText(text).width <= maxWidth) return px;
-    px -= 0.5;
-  }
-  ctx.font = `${w}${absoluteMinPx}px system-ui, sans-serif`;
-  return absoluteMinPx;
-}
-
-function fillTextCenterAtBaseline(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  cx: number,
-  baselineY: number,
-  px: number,
-  weight: '' | 'bold'
-) {
-  const w = weight === 'bold' ? 'bold ' : '';
-  ctx.font = `${w}${px}px system-ui, sans-serif`;
-  ctx.textAlign = 'center';
-  ctx.fillText(text, cx, baselineY);
-}
-
-/** Same as fillTextCenterAtBaseline but never exceeds maxWidth (safety net for long strings). */
-function fillTextCenterAtBaselineClamped(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  cx: number,
-  baselineY: number,
-  px: number,
-  maxWidth: number,
-  weight: '' | 'bold',
-  absoluteMinPx = 4
-) {
-  const w = weight === 'bold' ? 'bold ' : '';
-  let p = px;
-  while (p >= absoluteMinPx) {
-    ctx.font = `${w}${p}px system-ui, sans-serif`;
-    if (ctx.measureText(text).width <= maxWidth) break;
-    p -= 0.5;
-  }
-  ctx.textAlign = 'center';
-  ctx.fillText(text, cx, baselineY);
 }
 
 /**
@@ -1217,9 +1149,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const billboardDeckIndexRef = useRef(0);
   const lastBillboardKindRef = useRef<'company' | 'seasonal' | 'promo'>('company');
   const logoImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
-  const lastCountyBucketRef = useRef(0);
-  const countyBannerShowsCountRef = useRef(0);
-  const countyBannerRef = useRef({ frames: 0, name: '' as string });
   /** Set synchronously on collision so resize (canvas bitmap clear) can repaint before React commits `outcome`. */
   const lostDuringRunRef = useRef(false);
   const discoWasActiveRef = useRef(false);
@@ -1380,8 +1309,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     trackSalesAgentDashOpen();
   }, []);
 
-  const paintGameFrame = useCallback(
-    (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement, advanceCountyBanner: boolean) => {
+  const paintGameFrame = useCallback((ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
       const W = canvas.width;
       const H = canvas.height;
       if (W < 2 || H < 2) return;
@@ -1508,91 +1436,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         ctx.globalAlpha = 1;
         ctx.restore();
       }
-
-      const banner = countyBannerRef.current;
-      if (banner.frames > 0) {
-        const fade = Math.min(1, banner.frames / 28);
-        const isCompact = W < 420;
-        const line1Max = isCompact ? Math.min(15, W * 0.046) : Math.min(14, W * 0.028);
-        const line2Max = isCompact ? Math.min(26, W * 0.095) : Math.min(24, W * 0.05);
-        const line3Max = isCompact ? Math.min(12, W * 0.036) : Math.min(11, W * 0.026);
-        ctx.font = `${line1Max}px system-ui, sans-serif`;
-        const wLine1 = ctx.measureText('Now entering').width;
-        ctx.font = `bold ${line2Max}px system-ui, sans-serif`;
-        const wLine2 = ctx.measureText(banner.name).width;
-        ctx.font = `${line3Max}px system-ui, sans-serif`;
-        const wLine3 = ctx.measureText('East Anglia route').width;
-        const panelW = Math.ceil(
-          Math.max(
-            isCompact ? 180 : 210,
-            Math.min(
-              isCompact ? 258 : 290,
-              Math.max(wLine1, wLine2, wLine3) + (isCompact ? 24 : 26)
-            )
-          )
-        );
-        const panelX = (W - panelW) / 2;
-        const innerPad = isCompact ? 6 : 7;
-        const maxTextW = Math.max(64, panelW - innerPad * 2 - 6);
-
-        const panelTop = H * 0.23;
-        const panelH = isCompact ? 78 : 70;
-
-        ctx.save();
-        ctx.fillStyle = `rgba(15,23,42,${0.82 * fade})`;
-        roundRectPath(ctx, panelX, panelTop, panelW, panelH, 8);
-        ctx.fill();
-        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
-        ctx.lineWidth = 1.5;
-        roundRectPath(ctx, panelX + innerPad, panelTop + innerPad, panelW - innerPad * 2, panelH - innerPad * 2, 6);
-        ctx.stroke();
-
-        const innerTop = panelTop + innerPad;
-        const innerBot = panelTop + panelH - innerPad;
-        const innerMid = (innerTop + innerBot) / 2;
-
-        const px1 = measureFitFontPxHard(ctx, 'Now entering', maxTextW, line1Max, 7, '');
-        const px2 = measureFitFontPxHard(ctx, banner.name, maxTextW, line2Max, 6, 'bold', 4);
-        const px3 = measureFitFontPxHard(ctx, 'East Anglia route', maxTextW, line3Max, 6, '');
-        const gap12 = Math.max(4, Math.round(Math.min(px1, px2) * 0.16));
-        const gap23 = Math.max(3, Math.round(Math.min(px2, px3) * 0.14));
-        const span1 = px1 * 1.08 + gap12 * 0.35;
-        const span2 = px2 * 1.08 + gap23 * 0.35;
-        const span3 = px3 * 0.92;
-        ctx.font = `bold ${px2}px system-ui, sans-serif`;
-        const countyDesc =
-          ctx.measureText(banner.name).actualBoundingBoxDescent ?? px2 * 0.24;
-        const blockH = span1 + span2 + span3 + countyDesc * 0.35;
-        let b1 = innerMid - blockH / 2 + px1 * 0.78;
-        let b2 = b1 + span1;
-        let b3 = b2 + span2 + countyDesc * 0.35;
-        const minBaselineTop = innerTop + px1 + 2;
-        const maxBaselineBot = innerBot - Math.max(px3 * 0.28, (px3 * 0.85) / 3) - 3;
-        if (b1 < minBaselineTop) {
-          const s = minBaselineTop - b1;
-          b1 += s;
-          b2 += s;
-          b3 += s;
-        }
-        if (b3 > maxBaselineBot) {
-          const s = b3 - maxBaselineBot;
-          b1 -= s;
-          b2 -= s;
-          b3 -= s;
-        }
-
-        ctx.fillStyle = '#ffffff';
-        ctx.textAlign = 'center';
-        fillTextCenterAtBaselineClamped(ctx, 'Now entering', W / 2, b1, px1, maxTextW, '');
-        fillTextCenterAtBaselineClamped(ctx, banner.name, W / 2, b2, px2, maxTextW, 'bold', 4);
-        ctx.fillStyle = 'rgba(255,255,255,0.85)';
-        fillTextCenterAtBaselineClamped(ctx, 'East Anglia route', W / 2, b3, px3, maxTextW, '', 4);
-        ctx.textAlign = 'left';
-        ctx.restore();
-        if (advanceCountyBanner) {
-          countyBannerRef.current = { ...banner, frames: banner.frames - 1 };
-        }
-      }
     },
     []
   );
@@ -1622,7 +1465,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     c.height = h;
     if (lostDuringRunRef.current) {
       const ctx = c.getContext('2d', CTX_2D_OPTS);
-      if (ctx) paintGameFrame(ctx, c, false);
+      if (ctx) paintGameFrame(ctx, c);
     }
   }, [paintGameFrame]);
 
@@ -1673,9 +1516,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     vyRef.current = 0;
     obstaclesRef.current = [];
     ordersRef.current = [];
-    lastCountyBucketRef.current = 0;
-    countyBannerShowsCountRef.current = 0;
-    countyBannerRef.current = { frames: 0, name: '' };
     lostDuringRunRef.current = false;
     discoWasActiveRef.current = false;
     discoBallDropRef.current = 0;
@@ -1812,18 +1652,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       } else {
         discoWasActiveRef.current = false;
         discoBallDropRef.current = 0;
-      }
-
-      const scoreBucket = Math.floor(scoreRef.current / 500);
-      if (scoreBucket > lastCountyBucketRef.current) {
-        lastCountyBucketRef.current = scoreBucket;
-        if (countyBannerShowsCountRef.current < COUNTY_BANNER_MAX_SHOWS) {
-          countyBannerShowsCountRef.current += 1;
-          countyBannerRef.current = {
-            frames: 120,
-            name: COUNTIES[scoreBucket % 4],
-          };
-        }
       }
 
       runDistanceRef.current += scroll;
@@ -1969,14 +1797,14 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           setLastRunScore(final);
           setWasRecord(final > prevHi);
           setLosePhrase(randomLosePhrase());
-          paintGameFrame(ctx, canvas, false);
+          paintGameFrame(ctx, canvas);
           playLaugh();
           setOutcome('lost');
           return;
         }
       }
 
-      paintGameFrame(ctx, canvas, true);
+      paintGameFrame(ctx, canvas);
 
       if (niceOrderMessageFramesRef.current > 0) {
         niceOrderMessageFramesRef.current -= 1;
