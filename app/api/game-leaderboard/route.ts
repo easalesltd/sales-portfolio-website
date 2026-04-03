@@ -4,6 +4,7 @@ import {
   gameLeaderboardRedis,
   gameLeaderboardRedisConfigured,
 } from '@/app/lib/game-leaderboard-redis';
+import { redactLeaderboardDisplayName } from '@/app/lib/game-leaderboard-profanity';
 
 export const runtime = 'nodejs';
 
@@ -67,7 +68,7 @@ export async function GET() {
       entries.push({
         rank: rank++,
         score: Math.floor(p.score),
-        name: name.slice(0, NAME_MAX),
+        name: redactLeaderboardDisplayName(name, NAME_MAX),
         submittedAt: Number.isFinite(submittedAt) ? submittedAt : 0,
       });
     }
@@ -106,7 +107,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'invalid_score' }, { status: 400 });
   }
 
-  const name = sanitizeName(String(b.displayName ?? ''));
+  const name = redactLeaderboardDisplayName(sanitizeName(String(b.displayName ?? '')), NAME_MAX);
   const id = randomUUID();
   const submittedAt = Date.now();
 
