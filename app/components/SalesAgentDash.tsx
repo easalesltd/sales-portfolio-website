@@ -24,6 +24,8 @@ const ORDER_W = 40;
 const ORDER_H = 48;
 /** Hitbox / draw position: distance from ground up to the top edge of the tablet. */
 const ORDER_ABOVE_GROUND = 112;
+/** HUD toast frames after collecting an order pickup */
+const NICE_ORDER_MESSAGE_FRAMES = 42;
 
 /** No disco below this floor score. */
 const DISCO_MIN_SCORE = 3000;
@@ -950,6 +952,27 @@ function drawPlayer(ctx: CanvasRenderingContext2D, px: number, yTop: number, pw:
   ctx.stroke();
 }
 
+function drawDiscoStarburst(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, alpha: number) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = 'rgba(255,255,255,0.95)';
+  ctx.lineWidth = 1.4;
+  const rays = 8;
+  for (let i = 0; i < rays; i++) {
+    const a = (i / rays) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+    ctx.stroke();
+  }
+  ctx.fillStyle = 'rgba(255,255,255,0.98)';
+  ctx.beginPath();
+  ctx.arc(0, 0, 2.8, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
 function drawDiscoFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, groundY: number) {
   const t = performance.now() * 0.0035;
   const beat = Math.sin(t * 4.2) * 0.5 + 0.5;
@@ -970,49 +993,122 @@ function drawDiscoFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, g
 
 function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: number) {
   const cx = W / 2;
-  const ballR = Math.min(24, Math.max(16, W * 0.055));
+  const ballR = Math.min(38, Math.max(24, W * 0.082));
   const mountY = 2;
-  const targetBallCy = ballR + 32;
-  const startCy = -ballR - 20;
+  const targetBallCy = ballR + 40;
+  const startCy = -ballR - 28;
   const ballCy = startCy + (targetBallCy - startCy) * dropProgress;
-  const spin = performance.now() * 0.0022;
+  const t = performance.now() * 0.0018;
 
-  ctx.strokeStyle = 'rgba(51,65,85,0.95)';
+  const cordBot = ballCy - ballR - 5;
+  ctx.strokeStyle = '#92400e';
   ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
   ctx.beginPath();
   ctx.moveTo(cx, mountY);
-  ctx.lineTo(cx, Math.max(mountY + 4, ballCy - ballR));
+  ctx.lineTo(cx, cordBot);
   ctx.stroke();
 
-  const spark = ctx.createRadialGradient(
-    cx - ballR * 0.4,
-    ballCy - ballR * 0.4,
-    ballR * 0.1,
-    cx,
-    ballCy,
-    ballR
+  ctx.fillStyle = '#94a3b8';
+  ctx.beginPath();
+  ctx.ellipse(cx, cordBot + 1, 6, 3, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#64748b';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  const capBot = ballCy - ballR + 2;
+  ctx.fillStyle = '#0d9488';
+  ctx.beginPath();
+  ctx.moveTo(cx - 7, capBot);
+  ctx.quadraticCurveTo(cx, capBot - 9, cx + 7, capBot);
+  ctx.lineTo(cx + 5, capBot + 4);
+  ctx.lineTo(cx - 5, capBot + 4);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = '#0f766e';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(cx, ballCy, ballR, 0, Math.PI * 2);
+  ctx.clip();
+
+  const dim = Math.ceil(ballR * 2.2);
+  const baseGrad = ctx.createRadialGradient(
+    cx - ballR * 0.38,
+    ballCy - ballR * 0.42,
+    ballR * 0.06,
+    cx + ballR * 0.22,
+    ballCy + ballR * 0.22,
+    ballR * 1.12
   );
-  spark.addColorStop(0, '#f8fafc');
-  spark.addColorStop(0.4, '#94a3b8');
-  spark.addColorStop(0.75, '#475569');
-  spark.addColorStop(1, '#1e293b');
-  ctx.fillStyle = spark;
+  baseGrad.addColorStop(0, '#ffffff');
+  baseGrad.addColorStop(0.35, '#e2e8f0');
+  baseGrad.addColorStop(0.72, '#94a3b8');
+  baseGrad.addColorStop(1, '#475569');
+  ctx.fillStyle = baseGrad;
+  ctx.fillRect(cx - ballR - 1, ballCy - ballR - 1, dim + 2, dim + 2);
+
+  const cell = Math.max(3, ballR / 13);
+  for (let iy = -ballR; iy <= ballR; iy += cell * 0.88) {
+    for (let ix = -ballR; ix <= ballR; ix += cell * 0.95) {
+      const fx = ix + cell * 0.48;
+      const fy = iy + cell * 0.44;
+      const d2 = fx * fx + fy * fy;
+      if (d2 > ballR * ballR * 0.98) continue;
+      const ang = Math.atan2(fy, fx);
+      const dist = Math.sqrt(d2) / ballR;
+      const hue = (ang * 57.2957795 + dist * 140 + t * 72 + fy) % 360;
+      const sat = 78 + 18 * Math.sin(ang * 2 + t * 3);
+      const lit = 36 + 42 * (1 - dist * 0.55) + 14 * Math.sin(ang * 3 + dist * 6);
+      const cw = cell * 0.9;
+      const ch = cell * 0.86;
+      ctx.fillStyle = `hsl(${hue}, ${Math.min(96, Math.max(55, sat))}%, ${Math.min(88, Math.max(22, lit))}%)`;
+      ctx.fillRect(cx + ix, ballCy + iy, cw, ch);
+      ctx.strokeStyle = 'rgba(15,23,42,0.22)';
+      ctx.lineWidth = 0.55;
+      ctx.strokeRect(cx + ix + 0.35, ballCy + iy + 0.35, cw - 0.7, ch - 0.7);
+    }
+  }
+
+  const hi = ctx.createRadialGradient(
+    cx - ballR * 0.35,
+    ballCy - ballR * 0.42,
+    0,
+    cx - ballR * 0.22,
+    ballCy - ballR * 0.32,
+    ballR * 0.58
+  );
+  hi.addColorStop(0, 'rgba(255,255,255,0.52)');
+  hi.addColorStop(0.4, 'rgba(255,255,255,0.09)');
+  hi.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = hi;
   ctx.beginPath();
   ctx.arc(cx, ballCy, ballR, 0, Math.PI * 2);
   ctx.fill();
-  ctx.strokeStyle = '#334155';
-  ctx.lineWidth = 1.2;
+
+  ctx.restore();
+
+  ctx.strokeStyle = 'rgba(30,41,59,0.48)';
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.arc(cx, ballCy, ballR, 0, Math.PI * 2);
   ctx.stroke();
 
-  const facets = 10;
-  for (let i = 0; i < facets; i++) {
-    const a = (i / facets) * Math.PI * 2 + spin;
-    const hx = cx + Math.cos(a) * ballR * 0.52;
-    const hy = ballCy + Math.sin(a) * ballR * 0.52;
-    const sz = 2.5 + (i % 3) * 0.9;
-    const hue = (i * 41 + spin * 180) % 360;
-    ctx.fillStyle = `hsla(${hue}, 92%, ${48 + 22 * Math.sin(spin * 3 + i)}%, 0.88)`;
-    ctx.fillRect(hx - sz / 2, hy - sz / 2, sz, sz);
+  const sparklePulse = 0.62 + 0.38 * Math.sin(t * 7);
+  const sparks = [
+    { ox: -0.38, oy: -0.2, sz: 1 },
+    { ox: -0.28, oy: 0.2, sz: 0.88 },
+    { ox: 0.34, oy: -0.1, sz: 0.94 },
+  ];
+  for (const s of sparks) {
+    const sx = cx + s.ox * ballR;
+    const sy = ballCy + s.oy * ballR;
+    if ((sx - cx) ** 2 + (sy - ballCy) ** 2 <= (ballR * 0.94) ** 2) {
+      drawDiscoStarburst(ctx, sx, sy, 11 * s.sz * sparklePulse, 0.9);
+    }
   }
 }
 
@@ -1076,6 +1172,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const discoWasActiveRef = useRef(false);
   /** 0 → 1 while disco segment runs; eases the ball down from above. */
   const discoBallDropRef = useRef(0);
+  /** Countdown frames to show “Nice order” after grabbing an order tablet. */
+  const niceOrderMessageFramesRef = useRef(0);
 
   // Audio: start normal music when the run starts; switch to disco during disco segments.
   const gameMusicRef = useRef<HTMLAudioElement | null>(null);
@@ -1326,6 +1424,35 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.fillStyle = '#52525b';
       ctx.fillText(`Best ${readHighScore().toLocaleString()}`, textX, 56);
 
+      const niceFrames = niceOrderMessageFramesRef.current;
+      if (niceFrames > 0) {
+        const opacity = Math.min(1, niceFrames / 9);
+        ctx.save();
+        ctx.globalAlpha = 0.96 * opacity;
+        const msg = 'Nice order';
+        const fs = Math.min(20, Math.max(15, Math.floor(W * 0.048)));
+        ctx.font = `bold ${fs}px system-ui, sans-serif`;
+        const tw = ctx.measureText(msg).width;
+        const boxW = tw + 32;
+        const boxH = 40;
+        const bx = (W - boxW) / 2;
+        const by = Math.min(H * 0.19, 76);
+        ctx.fillStyle = 'rgba(15,23,42,0.9)';
+        roundRectPath(ctx, bx, by, boxW, boxH, 12);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(34,197,94,0.9)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = '#fef9c3';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(msg, W / 2, by + boxH / 2 + 1);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.globalAlpha = 1;
+        ctx.restore();
+      }
+
       const banner = countyBannerRef.current;
       if (banner.frames > 0) {
         const fade = Math.min(1, banner.frames / 28);
@@ -1496,6 +1623,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     lostDuringRunRef.current = false;
     discoWasActiveRef.current = false;
     discoBallDropRef.current = 0;
+    niceOrderMessageFramesRef.current = 0;
     billboardsRef.current = [];
     billboardCompanyDeckRef.current = [];
     billboardDeckIndexRef.current = 0;
@@ -1747,6 +1875,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           playerTop < orderTopY + ord.h - collectPad
         ) {
           scoreRef.current += ORDER_BONUS_SCORE;
+          niceOrderMessageFramesRef.current = NICE_ORDER_MESSAGE_FRAMES;
           ordersRef.current.splice(i, 1);
         }
       }
@@ -1773,6 +1902,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
 
       paintGameFrame(ctx, canvas, true);
+
+      if (niceOrderMessageFramesRef.current > 0) {
+        niceOrderMessageFramesRef.current -= 1;
+      }
 
       raf = requestAnimationFrame(tick);
     };
