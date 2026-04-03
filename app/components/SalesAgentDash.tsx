@@ -181,6 +181,10 @@ const SILLY_BEANS_BRAND = {
   stroke: '#0284C7',
 } as const;
 
+/** Obstacle art under `public/images/Game/` (matches on-disk folder name). */
+const SNAKE_GAME_PNG_SRC = encodeURI('/images/Game/Snake.png');
+const FAULTY_CAR_PNG_SRC = encodeURI('/images/Game/Faulty Car.png');
+
 /**
  * Word-wrap without dropping words. If more than `maxLines` lines are needed, the tail is merged
  * into one last line (then scaled down horizontally in `fillTextScaledCenter`).
@@ -529,129 +533,41 @@ function fillTextScaledCenter(
   ctx.fillText(text, cx - tw / 2, y);
 }
 
-/**
- * Ground snake, head on the right (leading edge toward the player): wavy body, one-pixel eye,
- * red tongue, dark outline. Reads clearly at game scale.
- * Chars: _ empty, # outline, G/g body, O eye, r tongue, t tail underside.
- */
-const SNAKE_PIXEL_ROWS = [
-  '____________________________________',
-  '____________________________________',
-  '____________________________________',
-  '____________________________________',
-  '_____________###########____________',
-  '____________#GGGGGGGGGG###__________',
-  '___________#GggGGGGGGGGG###_________',
-  '__________#GGGGGGGGGGGGGG###________',
-  '_________#GGGGGGGGGGGGGGG###________',
-  '________#GGGGGGGGGGGGGGGG####_______',
-  '_______#GGGGGGGGGGGGGGGGG####_______',
-  '______#GGGGGGOrrGGGGGGGGGG####______',
-  '______#GGGGGGGGGGGGGGGGGGG####______',
-  '_______######################_______',
-  '________#tttttttttttttttttt#________',
-  '_________##################_________',
-  '____________________________________',
-  '____________________________________',
-] as const;
-
-const SNAKE_PALETTE: Record<string, string | undefined> = {
-  _: 'transparent',
-  '#': '#0f172a',
-  G: '#22c55e',
-  g: '#4ade80',
-  O: '#0f172a',
-  r: '#dc2626',
-  t: '#166534',
-};
-
-/** Side-view compact car: front / headlight on the left (toward player), tidy cabin, two wheels, soft grey smoke. */
-const BROKEN_CAR_PIXEL_ROWS = [
-  '........................................',
-  '...............ssssss...................',
-  '..............sMMMMMMss.................',
-  '...............ssssss...................',
-  '........................................',
-  '..........##############................',
-  '.........#WWWWWWWWWWWW##................',
-  '........#WWwwwwwwWWWWW###...............',
-  '........#BBBBBBBBBBBWWW###..............',
-  '.......#YBBBBBBBBBBBBWWW###.............',
-  '.......#BBBBBBBBBBBBBBWWW###............',
-  '......#BBBBBBBBBBBBBBBWR###.............',
-  '......#BBBBBBBBBBBBBBBB###..............',
-  '......#BBBBBBBBBBBBBBBB###..............',
-  '.......###BBBBBBBBBBBB####..............',
-  '.........##BBBBBBBBBB####...............',
-  '..........##############................',
-  '..........##KK#######KK##...............',
-  '...........##kk#####kk##................',
-  '............##ooooooo##.................',
-  '........................................',
-  '........................................',
-  '........................................',
-  '........................................',
-  '........................................',
-  '........................................',
-  '........................................',
-  '........................................',
-  '........................................',
-] as const;
-
-const BROKEN_CAR_PALETTE: Record<string, string | undefined> = {
-  '.': 'transparent',
-  '#': '#0f172a',
-  B: '#2563eb',
-  W: '#f0f9ff',
-  w: '#7dd3fc',
-  Y: '#fbbf24',
-  R: '#f87171',
-  K: '#171717',
-  k: '#404040',
-  o: '#1c1917',
-  s: '#94a3b8',
-  M: '#64748b',
-};
-
 /** Hitbox excludes top smoke puffs so jumping through smoke is fair. */
 const BROKEN_CAR_COLLISION_H = 44;
 
-function drawPixelSprite8bit(
+/** Road strip + image scaled into obstacle box; sprite bottom flush with ground (`top + h`). */
+function drawObstacleImageOnFloor(
   ctx: CanvasRenderingContext2D,
   x: number,
   top: number,
   w: number,
   h: number,
-  rows: readonly string[],
-  palette: Record<string, string | undefined>,
-  align: 'center' | 'bottom' = 'center'
+  img: HTMLImageElement | null | undefined,
+  fallback: 'snake' | 'car'
 ) {
-  const cols = rows[0]!.length;
-  const rowCount = rows.length;
-  const scale = Math.min(w / cols, h / rowCount);
-  const drawW = cols * scale;
-  const drawH = rowCount * scale;
-  const ox = x + (w - drawW) / 2;
-  const oy = align === 'bottom' ? top + h - drawH : top + (h - drawH) / 2;
-
-  for (let ry = 0; ry < rowCount; ry++) {
-    const row = rows[ry]!;
-    for (let rx = 0; rx < cols; rx++) {
-      const ch = row[rx]!;
-      const color = palette[ch];
-      if (!color || color === 'transparent') continue;
-      ctx.fillStyle = color;
-      ctx.fillRect(ox + rx * scale, oy + ry * scale, Math.ceil(scale), Math.ceil(scale));
-    }
+  const groundY = top + h;
+  const stripH = 4;
+  ctx.fillStyle = '#292524';
+  ctx.fillRect(x, groundY - stripH, w, stripH);
+  if (img?.complete && img.naturalWidth > 0) {
+    const scale = Math.min(w / img.naturalWidth, h / img.naturalHeight);
+    const dw = img.naturalWidth * scale;
+    const dh = img.naturalHeight * scale;
+    const dx = x + (w - dw) / 2;
+    const dy = groundY - dh;
+    ctx.drawImage(img, dx, dy, dw, dh);
+    return;
   }
-}
-
-function drawSnake8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
-  drawPixelSprite8bit(ctx, x, top, w, h, SNAKE_PIXEL_ROWS, SNAKE_PALETTE, 'center');
-}
-
-function drawBrokenCar8bit(ctx: CanvasRenderingContext2D, x: number, top: number, w: number, h: number) {
-  drawPixelSprite8bit(ctx, x, top, w, h, BROKEN_CAR_PIXEL_ROWS, BROKEN_CAR_PALETTE, 'bottom');
+  if (fallback === 'snake') {
+    ctx.fillStyle = '#166534';
+    roundRectPath(ctx, x + 4, top + 6, w - 8, h - stripH - 8, 4);
+    ctx.fill();
+  } else {
+    ctx.fillStyle = '#2563eb';
+    roundRectPath(ctx, x + 6, top + 8, w - 12, h - stripH - 14, 4);
+    ctx.fill();
+  }
 }
 
 function orderPickupTop(groundY: number): number {
@@ -697,14 +613,17 @@ function drawOrderPickup(ctx: CanvasRenderingContext2D, o: OrderPickup, groundY:
   ctx.fill();
 }
 
-function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
+function drawObstacle(
+  ctx: CanvasRenderingContext2D,
+  o: Obstacle,
+  top: number,
+  gameImages: Map<string, HTMLImageElement>
+) {
   const { x, w, h, kind } = o;
 
   switch (kind) {
     case 'snake': {
-      ctx.fillStyle = '#292524';
-      ctx.fillRect(x, top + h - 4, w, 4);
-      drawSnake8bit(ctx, x, top, w, h - 4);
+      drawObstacleImageOnFloor(ctx, x, top, w, h, gameImages.get(SNAKE_GAME_PNG_SRC), 'snake');
       break;
     }
     case 'pcn': {
@@ -790,7 +709,7 @@ function drawObstacle(ctx: CanvasRenderingContext2D, o: Obstacle, top: number) {
       break;
     }
     case 'broken_car': {
-      drawBrokenCar8bit(ctx, x, top, w, h);
+      drawObstacleImageOnFloor(ctx, x, top, w, h, gameImages.get(FAULTY_CAR_PNG_SRC), 'car');
       break;
     }
     case 'sales_target': {
@@ -1544,7 +1463,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
       for (const o of obstaclesRef.current) {
         const top = groundY - o.h;
-        drawObstacle(ctx, o, top);
+        drawObstacle(ctx, o, top, logoImagesRef.current);
       }
 
       // Draw billboards after obstacles so the poles don't appear "behind" the
@@ -1767,6 +1686,18 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       promo2.decoding = 'async';
       promo2.src = SILLY_BEANS_BILLBOARD_OHH_DEER_SRC;
       map.set(SILLY_BEANS_BILLBOARD_OHH_DEER_SRC, promo2);
+    }
+    if (!map.has(SNAKE_GAME_PNG_SRC)) {
+      const snake = new Image();
+      snake.decoding = 'async';
+      snake.src = SNAKE_GAME_PNG_SRC;
+      map.set(SNAKE_GAME_PNG_SRC, snake);
+    }
+    if (!map.has(FAULTY_CAR_PNG_SRC)) {
+      const car = new Image();
+      car.decoding = 'async';
+      car.src = FAULTY_CAR_PNG_SRC;
+      map.set(FAULTY_CAR_PNG_SRC, car);
     }
     logoImagesRef.current = map;
   }, []);
