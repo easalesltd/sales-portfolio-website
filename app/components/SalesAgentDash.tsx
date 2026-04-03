@@ -2176,21 +2176,39 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 />
               ) : null}
               {outcome === 'lost' && lastRunScore !== null && (
-                <div className="mt-4 space-y-2 text-center">
-                  <p className="text-lg font-medium text-neutral-100">
-                    Score: <span className="text-white">{lastRunScore.toLocaleString()}</span>
-                  </p>
-                  <p className="text-sm text-neutral-400">
-                    Best: {highScore.toLocaleString()}
-                    {wasRecord ? (
-                      <span className="ml-2 font-semibold text-amber-400">New personal best!</span>
-                    ) : null}
-                  </p>
-                  <p className="text-sm italic text-red-400/95">
-                    {losePhrase ?? 'Bumped into something — try again!'}
-                  </p>
+                <div className="mt-4 flex flex-col gap-2 text-center">
+                  <div className="order-1 space-y-2 sm:order-1">
+                    <p className="text-lg font-medium text-neutral-100">
+                      Score: <span className="text-white">{lastRunScore.toLocaleString()}</span>
+                    </p>
+                    <p className="text-sm text-neutral-400">
+                      Best: {highScore.toLocaleString()}
+                      {wasRecord ? (
+                        <span className="ml-2 font-semibold text-amber-400">New personal best!</span>
+                      ) : null}
+                    </p>
+                    <p className="text-sm italic text-red-400/95">
+                      {losePhrase ?? 'Bumped into something — try again!'}
+                    </p>
+                  </div>
+                  <div className="order-2 flex flex-wrap justify-center gap-3 sm:order-5 sm:mt-2">
+                    <button
+                      type="button"
+                      onClick={startGame}
+                      className="rounded-lg border border-neutral-500 px-4 py-2 text-white hover:bg-neutral-800"
+                    >
+                      Play again
+                    </button>
+                    <button
+                      type="button"
+                      onClick={onClose}
+                      className="rounded-lg border border-white bg-white px-4 py-2 text-neutral-950 hover:bg-neutral-200"
+                    >
+                      Back to site
+                    </button>
+                  </div>
                   {globalLbConfigured === true && !lbSubmittedThisRun ? (
-                    <div className="mt-4 w-full max-w-sm mx-auto rounded-lg border border-neutral-600 bg-neutral-800/50 p-4 text-left">
+                    <div className="order-3 mt-2 w-full max-w-sm mx-auto rounded-lg border border-neutral-600 bg-neutral-800/50 p-4 text-left sm:order-2 sm:mt-0">
                       <p className="text-sm text-neutral-300 mb-2">
                         Want this run on the <span className="font-medium text-white">global</span> board? Add a
                         name and submit.
@@ -2215,31 +2233,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                     </div>
                   ) : null}
                   {globalLbConfigured === false && !globalLbLoading ? (
-                    <p className="mt-3 text-xs text-neutral-500 max-w-sm mx-auto">
+                    <p className="order-4 mt-1 text-xs text-neutral-500 max-w-sm mx-auto sm:order-3 sm:mt-0">
                       Global leaderboard is not enabled on this deployment.
                     </p>
                   ) : null}
                   {lbSubmitError ? (
-                    <p className="mt-2 text-sm text-red-400 max-w-sm mx-auto">{lbSubmitError}</p>
+                    <p className="order-5 text-sm text-red-400 max-w-sm mx-auto sm:order-4">{lbSubmitError}</p>
                   ) : null}
-                </div>
-              )}
-              {outcome !== null && (
-                <div className="mt-4 flex flex-wrap justify-center gap-3">
-                  <button
-                    type="button"
-                    onClick={startGame}
-                    className="rounded-lg border border-neutral-500 px-4 py-2 text-white hover:bg-neutral-800"
-                  >
-                    Play again
-                  </button>
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="rounded-lg border border-white bg-white px-4 py-2 text-neutral-950 hover:bg-neutral-200"
-                  >
-                    Back to site
-                  </button>
                 </div>
               )}
             </>
