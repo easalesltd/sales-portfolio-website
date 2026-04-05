@@ -54,11 +54,8 @@ const OBSTACLE_HIT_MIN_W = 28;
 
 /** No disco below this floor score. */
 const DISCO_MIN_SCORE = 3000;
-/** First disco block: `DISCO_MIN_SCORE`..`DISCO_MIN_SCORE + DISCO_DURATION_SCORE - 1`. */
-const DISCO_DURATION_SCORE = 1000;
-/** After the first block, repeating cycle: this many normal, then `DISCO_DURATION_SCORE` disco. */
-const DISCO_REPEAT_NORMAL_SCORE = 2000;
-const DISCO_REPEAT_CYCLE = DISCO_REPEAT_NORMAL_SCORE + DISCO_DURATION_SCORE;
+/** Single disco segment per run: active while score is in this half-open range after the min. */
+const DISCO_DURATION_SCORE = 2000;
 
 // Game audio lives under `public/` so it's served from the site root (`/Audio/...`).
 // Note: the folder name is capitalized in your project (`public/Audio`).
@@ -83,11 +80,7 @@ const ORDER_PICKUP_VOLUME = 0.55;
 
 function isDiscoScore(score: number): boolean {
   const s = Math.floor(score);
-  if (s < DISCO_MIN_SCORE) return false;
-  if (s < DISCO_MIN_SCORE + DISCO_DURATION_SCORE) return true;
-  const v = s - (DISCO_MIN_SCORE + DISCO_DURATION_SCORE);
-  const pos = v % DISCO_REPEAT_CYCLE;
-  return pos >= DISCO_REPEAT_NORMAL_SCORE;
+  return s >= DISCO_MIN_SCORE && s < DISCO_MIN_SCORE + DISCO_DURATION_SCORE;
 }
 
 const COUNTIES = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire'] as const;
