@@ -353,6 +353,10 @@ const NEC_TRADE_BANTER: readonly string[] = [
   'Sample? That counts as a handshake in law.',
   'Hall 5 energy, Hall 2 budget.',
   'Everything you order will definitely arrive in April.',
+  "I don't want to eat in Resorts World again.",
+  "I'm not going to the casino tonight.",
+  'Who booked the airport hotel?',
+  'Is it time for the PG Pub yet?',
 ];
 
 const HARROGATE_XMAS_TRADE_BANTER: readonly string[] = [
