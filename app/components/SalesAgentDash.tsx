@@ -64,13 +64,22 @@ const DISCO_REPEAT_CYCLE = DISCO_REPEAT_NORMAL_SCORE + DISCO_DURATION_SCORE;
 // Note: the folder name is capitalized in your project (`public/Audio`).
 const GAME_MUSIC_SRC = '/Audio/Game%20Audio.m4a';
 const DISCO_MUSIC_SRC = '/Audio/Disco%20Mode.m4a';
-const LAUGH_SRC = '/Audio/Laugh.m4a';
-const GOLD_SRC = '/Audio/Gold.m4a';
+/** Death sting — one of several clips chosen at random when the run ends. */
+const DEATH_LAUGH_SRCS = [
+  encodeURI('/Audio/Death 1.m4a'),
+  encodeURI('/Audio/Death 2.m4a'),
+  encodeURI('/Audio/Death 3.m4a'),
+  encodeURI('/Audio/Death 4.m4a'),
+] as const;
+/** Order pickup — random clip per collect; keep below music so the loop stays readable. */
+const ORDER_PICKUP_SRCS = [
+  encodeURI('/Audio/Order 1.m4a'),
+  encodeURI('/Audio/Order 2.m4a'),
+] as const;
 const GAME_MUSIC_VOLUME = 0.35;
 const DISCO_MUSIC_VOLUME = 0.45;
 const LAUGH_VOLUME = 0.8;
-/** Order pickup sting — keep below music so the loop stays readable. */
-const GOLD_VOLUME = 0.55;
+const ORDER_PICKUP_VOLUME = 0.55;
 
 function isDiscoScore(score: number): boolean {
   const s = Math.floor(score);
@@ -1339,15 +1348,19 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     void discoAudio2.play().catch(() => {});
   }, [ensureMusicElements]);
 
-  const laughAudioRef = useRef<HTMLAudioElement | null>(null);
+  const laughAudioPoolRef = useRef<HTMLAudioElement[]>([]);
 
-  const ensureLaughElement = useCallback(() => {
-    if (laughAudioRef.current) return;
-    const a = new Audio(LAUGH_SRC);
-    a.preload = 'auto';
-    a.loop = false;
-    a.volume = LAUGH_VOLUME;
-    laughAudioRef.current = a;
+  const ensureLaughElements = useCallback(() => {
+    const pool = laughAudioPoolRef.current;
+    if (pool.length === DEATH_LAUGH_SRCS.length) return;
+    pool.length = 0;
+    for (const src of DEATH_LAUGH_SRCS) {
+      const a = new Audio(src);
+      a.preload = 'auto';
+      a.loop = false;
+      a.volume = LAUGH_VOLUME;
+      pool.push(a);
+    }
   }, []);
 
   /**
@@ -1357,41 +1370,52 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
    */
   const primeLaughSilently = useCallback(async (attempt: boolean) => {
     if (!attempt) return;
-    ensureLaughElement();
-    const a = laughAudioRef.current;
-    if (!a) return;
+    ensureLaughElements();
+    const pool = laughAudioPoolRef.current;
+    for (const a of pool) {
+      const prevMuted = a.muted;
+      const prevVol = a.volume;
+      try {
+        a.pause();
+        a.currentTime = 0;
+        a.muted = true;
+        a.volume = 0;
+        await a.play();
+        a.pause();
+        a.currentTime = 0;
+      } catch {
+        // Ignore autoplay/permission failures; we'll still try to play later.
+      } finally {
+        a.muted = prevMuted;
+        a.volume = prevVol;
+        a.currentTime = 0;
+      }
+    }
+  }, [ensureLaughElements]);
 
-    const prevMuted = a.muted;
-    const prevVol = a.volume;
-    try {
+  const pauseAllLaugh = useCallback(() => {
+    for (const a of laughAudioPoolRef.current) {
       a.pause();
-      a.currentTime = 0;
-      a.muted = true;
-      a.volume = 0;
-      // This counts as an allowed play attempt in most browsers when called
-      // directly from a click/keypress handler.
-      await a.play();
-      a.pause();
-      a.currentTime = 0;
-    } catch {
-      // Ignore autoplay/permission failures; we'll still try to play later.
-    } finally {
-      a.muted = prevMuted;
-      a.volume = prevVol;
       a.currentTime = 0;
     }
-  }, [ensureLaughElement]);
+  }, []);
 
   const playLaugh = useCallback(() => {
     if (!audioEnabledRef.current) return;
-    ensureLaughElement();
-    const a = laughAudioRef.current;
-    if (!a) return;
+    ensureLaughElements();
+    const pool = laughAudioPoolRef.current;
+    if (!pool.length) return;
+    const idx = Math.floor(Math.random() * pool.length);
+    const a = pool[idx]!;
+    for (let i = 0; i < pool.length; i++) {
+      if (i !== idx) {
+        pool[i]!.pause();
+        pool[i]!.currentTime = 0;
+      }
+    }
     a.pause();
     a.currentTime = 0;
     const p = a.play();
-    // If the first attempt is rejected (rare race with permission/focus),
-    // retry once after a frame.
     p.catch(() => {
       requestAnimationFrame(() => {
         try {
@@ -1403,49 +1427,68 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       });
     });
-  }, [ensureLaughElement]);
+  }, [ensureLaughElements]);
 
-  const goldAudioRef = useRef<HTMLAudioElement | null>(null);
+  const orderPickupPoolRef = useRef<HTMLAudioElement[]>([]);
 
-  const ensureGoldElement = useCallback(() => {
-    if (goldAudioRef.current) return;
-    const a = new Audio(GOLD_SRC);
-    a.preload = 'auto';
-    a.loop = false;
-    a.volume = GOLD_VOLUME;
-    goldAudioRef.current = a;
+  const ensureOrderPickupElements = useCallback(() => {
+    const pool = orderPickupPoolRef.current;
+    if (pool.length === ORDER_PICKUP_SRCS.length) return;
+    pool.length = 0;
+    for (const src of ORDER_PICKUP_SRCS) {
+      const a = new Audio(src);
+      a.preload = 'auto';
+      a.loop = false;
+      a.volume = ORDER_PICKUP_VOLUME;
+      pool.push(a);
+    }
   }, []);
 
-  const primeGoldSilently = useCallback(async (attempt: boolean) => {
+  const primeOrderPickupSilently = useCallback(async (attempt: boolean) => {
     if (!attempt) return;
-    ensureGoldElement();
-    const a = goldAudioRef.current;
-    if (!a) return;
+    ensureOrderPickupElements();
+    const pool = orderPickupPoolRef.current;
+    for (const a of pool) {
+      const prevMuted = a.muted;
+      const prevVol = a.volume;
+      try {
+        a.pause();
+        a.currentTime = 0;
+        a.muted = true;
+        a.volume = 0;
+        await a.play();
+        a.pause();
+        a.currentTime = 0;
+      } catch {
+        // ignore
+      } finally {
+        a.muted = prevMuted;
+        a.volume = prevVol;
+        a.currentTime = 0;
+      }
+    }
+  }, [ensureOrderPickupElements]);
 
-    const prevMuted = a.muted;
-    const prevVol = a.volume;
-    try {
+  const pauseAllOrderPickup = useCallback(() => {
+    for (const a of orderPickupPoolRef.current) {
       a.pause();
-      a.currentTime = 0;
-      a.muted = true;
-      a.volume = 0;
-      await a.play();
-      a.pause();
-      a.currentTime = 0;
-    } catch {
-      // ignore
-    } finally {
-      a.muted = prevMuted;
-      a.volume = prevVol;
       a.currentTime = 0;
     }
-  }, [ensureGoldElement]);
+  }, []);
 
-  const playGold = useCallback(() => {
+  const playOrderPickup = useCallback(() => {
     if (!audioEnabledRef.current) return;
-    ensureGoldElement();
-    const a = goldAudioRef.current;
-    if (!a) return;
+    ensureOrderPickupElements();
+    const pool = orderPickupPoolRef.current;
+    if (!pool.length) return;
+    const idx = Math.floor(Math.random() * pool.length);
+    const a = pool[idx]!;
+    for (let i = 0; i < pool.length; i++) {
+      if (i !== idx) {
+        pool[i]!.pause();
+        pool[i]!.currentTime = 0;
+      }
+    }
     a.pause();
     a.currentTime = 0;
     const p = a.play();
@@ -1460,27 +1503,27 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       });
     });
-  }, [ensureGoldElement]);
+  }, [ensureOrderPickupElements]);
 
   useEffect(() => {
     // If audio is turned off, stop any currently playing tracks immediately.
     if (audioEnabled) return;
     gameMusicRef.current?.pause();
     discoMusicRef.current?.pause();
-    laughAudioRef.current?.pause();
-    goldAudioRef.current?.pause();
+    pauseAllLaugh();
+    pauseAllOrderPickup();
     musicModeRef.current = 'none';
-  }, [audioEnabled]);
+  }, [audioEnabled, pauseAllLaugh, pauseAllOrderPickup]);
 
   useEffect(() => {
     // Safety: stop audio if the component unmounts.
     return () => {
       gameMusicRef.current?.pause();
       discoMusicRef.current?.pause();
-      laughAudioRef.current?.pause();
-      goldAudioRef.current?.pause();
+      pauseAllLaugh();
+      pauseAllOrderPickup();
     };
-  }, []);
+  }, [pauseAllLaugh, pauseAllOrderPickup]);
 
   useEffect(() => {
     trackSalesAgentDashOpen();
@@ -1704,13 +1747,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     setLosePhrase(null);
     setLbSubmittedThisRun(false);
     setLbSubmitError(null);
-    laughAudioRef.current?.pause();
-    if (laughAudioRef.current) laughAudioRef.current.currentTime = 0;
-    goldAudioRef.current?.pause();
-    if (goldAudioRef.current) goldAudioRef.current.currentTime = 0;
-    // Silent prime so one-shots are allowed after gesture (laugh, order pickup).
+    pauseAllLaugh();
+    pauseAllOrderPickup();
+    // Silent prime so one-shots are allowed after gesture (death sting, order pickup).
     void primeLaughSilently(audioEnabledRef.current);
-    void primeGoldSilently(audioEnabledRef.current);
+    void primeOrderPickupSilently(audioEnabledRef.current);
     setMusicMode(audioEnabledRef.current ? 'game' : 'none');
     setScreen('game');
     const scrollEl = mainScrollRef.current;
@@ -1721,7 +1762,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         scrollEl.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       });
     }
-  }, [primeLaughSilently, primeGoldSilently, setMusicMode]);
+  }, [pauseAllLaugh, pauseAllOrderPickup, primeLaughSilently, primeOrderPickupSilently, setMusicMode]);
 
   const jump = useCallback(() => {
     if (outcome !== null) return;
@@ -1984,7 +2025,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           scoreRef.current += ORDER_BONUS_SCORE;
           niceOrderMessageFramesRef.current = NICE_ORDER_MESSAGE_FRAMES;
           ordersRef.current.splice(i, 1);
-          playGold();
+          playOrderPickup();
         }
       }
       for (const o of obstaclesRef.current) {
@@ -2029,7 +2070,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [screen, outcome, paintGameFrame, playLaugh, playGold]);
+  }, [screen, outcome, paintGameFrame, playLaugh, playOrderPickup]);
 
   useEffect(() => {
     // Ensure music never plays in the menu state or after a loss.
@@ -2099,7 +2140,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   // When enabling audio, prime silently from this click gesture.
                   if (next) {
                     void primeLaughSilently(true);
-                    void primeGoldSilently(true);
+                    void primeOrderPickupSilently(true);
                   }
                   return next;
                 });
