@@ -65,9 +65,12 @@ const DISCO_REPEAT_CYCLE = DISCO_REPEAT_NORMAL_SCORE + DISCO_DURATION_SCORE;
 const GAME_MUSIC_SRC = '/Audio/Game%20Audio.m4a';
 const DISCO_MUSIC_SRC = '/Audio/Disco%20Mode.m4a';
 const LAUGH_SRC = '/Audio/Laugh.m4a';
+const GOLD_SRC = '/Audio/Gold.m4a';
 const GAME_MUSIC_VOLUME = 0.35;
 const DISCO_MUSIC_VOLUME = 0.45;
 const LAUGH_VOLUME = 0.8;
+/** Order pickup sting — keep below music so the loop stays readable. */
+const GOLD_VOLUME = 0.55;
 
 function isDiscoScore(score: number): boolean {
   const s = Math.floor(score);
@@ -1230,7 +1233,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       if (!res.ok || !data.ok) {
         setLbSubmitError(
           data.error === 'not_configured'
-            ? 'Global leaderboard is not configured on the server yet.'
+            ? 'Leader board is not configured on the server yet.'
             : 'Could not save your score. Try again later.'
         );
         return;
@@ -1402,12 +1405,70 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     });
   }, [ensureLaughElement]);
 
+  const goldAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const ensureGoldElement = useCallback(() => {
+    if (goldAudioRef.current) return;
+    const a = new Audio(GOLD_SRC);
+    a.preload = 'auto';
+    a.loop = false;
+    a.volume = GOLD_VOLUME;
+    goldAudioRef.current = a;
+  }, []);
+
+  const primeGoldSilently = useCallback(async (attempt: boolean) => {
+    if (!attempt) return;
+    ensureGoldElement();
+    const a = goldAudioRef.current;
+    if (!a) return;
+
+    const prevMuted = a.muted;
+    const prevVol = a.volume;
+    try {
+      a.pause();
+      a.currentTime = 0;
+      a.muted = true;
+      a.volume = 0;
+      await a.play();
+      a.pause();
+      a.currentTime = 0;
+    } catch {
+      // ignore
+    } finally {
+      a.muted = prevMuted;
+      a.volume = prevVol;
+      a.currentTime = 0;
+    }
+  }, [ensureGoldElement]);
+
+  const playGold = useCallback(() => {
+    if (!audioEnabledRef.current) return;
+    ensureGoldElement();
+    const a = goldAudioRef.current;
+    if (!a) return;
+    a.pause();
+    a.currentTime = 0;
+    const p = a.play();
+    p.catch(() => {
+      requestAnimationFrame(() => {
+        try {
+          a.pause();
+          a.currentTime = 0;
+          void a.play().catch(() => {});
+        } catch {
+          // ignore
+        }
+      });
+    });
+  }, [ensureGoldElement]);
+
   useEffect(() => {
     // If audio is turned off, stop any currently playing tracks immediately.
     if (audioEnabled) return;
     gameMusicRef.current?.pause();
     discoMusicRef.current?.pause();
     laughAudioRef.current?.pause();
+    goldAudioRef.current?.pause();
     musicModeRef.current = 'none';
   }, [audioEnabled]);
 
@@ -1417,6 +1478,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       gameMusicRef.current?.pause();
       discoMusicRef.current?.pause();
       laughAudioRef.current?.pause();
+      goldAudioRef.current?.pause();
     };
   }, []);
 
@@ -1644,8 +1706,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     setLbSubmitError(null);
     laughAudioRef.current?.pause();
     if (laughAudioRef.current) laughAudioRef.current.currentTime = 0;
-    // Attempt silent prime so the death sound is allowed later.
+    goldAudioRef.current?.pause();
+    if (goldAudioRef.current) goldAudioRef.current.currentTime = 0;
+    // Silent prime so one-shots are allowed after gesture (laugh, order pickup).
     void primeLaughSilently(audioEnabledRef.current);
+    void primeGoldSilently(audioEnabledRef.current);
     setMusicMode(audioEnabledRef.current ? 'game' : 'none');
     setScreen('game');
     const scrollEl = mainScrollRef.current;
@@ -1656,7 +1721,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         scrollEl.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       });
     }
-  }, []);
+  }, [primeLaughSilently, primeGoldSilently, setMusicMode]);
 
   const jump = useCallback(() => {
     if (outcome !== null) return;
@@ -1919,6 +1984,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           scoreRef.current += ORDER_BONUS_SCORE;
           niceOrderMessageFramesRef.current = NICE_ORDER_MESSAGE_FRAMES;
           ordersRef.current.splice(i, 1);
+          playGold();
         }
       }
       for (const o of obstaclesRef.current) {
@@ -1963,7 +2029,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [screen, outcome, paintGameFrame]);
+  }, [screen, outcome, paintGameFrame, playLaugh, playGold]);
 
   useEffect(() => {
     // Ensure music never plays in the menu state or after a loss.
@@ -2031,7 +2097,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 setAudioEnabled((v) => {
                   const next = !v;
                   // When enabling audio, prime silently from this click gesture.
-                  if (next) void primeLaughSilently(true);
+                  if (next) {
+                    void primeLaughSilently(true);
+                    void primeGoldSilently(true);
+                  }
                   return next;
                 });
               }}
@@ -2062,7 +2131,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
               </p>
               {lbSubmittedThisRun ? (
                 <p className="mb-3 max-w-md mx-auto text-sm font-medium text-teal-400">
-                  Your run is on the board below.
+                  Your run is on the leader board below.
                 </p>
               ) : null}
               <div
@@ -2070,7 +2139,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 className="mb-6 w-full max-w-md mx-auto rounded-lg border border-neutral-700 bg-neutral-800/40 px-4 py-3 text-left"
               >
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="text-sm font-semibold text-white">Global leaderboard</h3>
+                  <h3 className="text-sm font-semibold text-white">Leader board</h3>
                   <button
                     type="button"
                     onClick={() => void loadLeaderboard()}
@@ -2108,8 +2177,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 )}
               </div>
               <p className="mb-6 text-xs text-neutral-500">
-                Your best on this device: {highScore.toLocaleString()} (not shared — only the board above is
-                global).
+                Your best on this device: {highScore.toLocaleString()} (not shared — only the leader board above is
+                shared with everyone).
               </p>
               <button
                 type="button"
@@ -2177,7 +2246,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
               ) : null}
               {outcome === 'lost' && lastRunScore !== null && (
                 <div className="mt-4 flex flex-col gap-2 text-center">
-                  <div className="order-1 space-y-2 sm:order-1">
+                  <div className="space-y-2">
                     <p className="text-lg font-medium text-neutral-100">
                       Score: <span className="text-white">{lastRunScore.toLocaleString()}</span>
                     </p>
@@ -2191,7 +2260,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                       {losePhrase ?? 'Bumped into something — try again!'}
                     </p>
                   </div>
-                  <div className="order-2 flex flex-wrap justify-center gap-3 sm:order-5 sm:mt-2">
+                  <div className="mt-1 flex flex-wrap justify-center gap-3">
                     <button
                       type="button"
                       onClick={startGame}
@@ -2208,9 +2277,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                     </button>
                   </div>
                   {globalLbConfigured === true && !lbSubmittedThisRun ? (
-                    <div className="order-3 mt-2 w-full max-w-sm mx-auto rounded-lg border border-neutral-600 bg-neutral-800/50 p-4 text-left sm:order-2 sm:mt-0">
+                    <div className="mt-3 w-full max-w-sm mx-auto rounded-lg border border-neutral-600 bg-neutral-800/50 p-4 text-left">
                       <p className="text-sm text-neutral-300 mb-2">
-                        Want this run on the <span className="font-medium text-white">global</span> board? Add a
+                        Want this run on the <span className="font-medium text-white">leader board</span>? Add a
                         name and submit.
                       </p>
                       <input
@@ -2228,17 +2297,17 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                         disabled={lbSubmitting}
                         className="w-full rounded-lg border border-teal-600 bg-teal-700 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600 disabled:cursor-not-allowed disabled:opacity-50"
                       >
-                        {lbSubmitting ? 'Submitting…' : 'Submit to global leaderboard'}
+                        {lbSubmitting ? 'Submitting…' : 'Submit to leader board'}
                       </button>
                     </div>
                   ) : null}
                   {globalLbConfigured === false && !globalLbLoading ? (
-                    <p className="order-4 mt-1 text-xs text-neutral-500 max-w-sm mx-auto sm:order-3 sm:mt-0">
-                      Global leaderboard is not enabled on this deployment.
+                    <p className="mt-2 text-xs text-neutral-500 max-w-sm mx-auto">
+                      Leader board is not enabled on this deployment.
                     </p>
                   ) : null}
                   {lbSubmitError ? (
-                    <p className="order-5 text-sm text-red-400 max-w-sm mx-auto sm:order-4">{lbSubmitError}</p>
+                    <p className="text-sm text-red-400 max-w-sm mx-auto">{lbSubmitError}</p>
                   ) : null}
                 </div>
               )}
