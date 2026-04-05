@@ -1348,87 +1348,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     void discoAudio2.play().catch(() => {});
   }, [ensureMusicElements]);
 
-  const laughAudioPoolRef = useRef<HTMLAudioElement[]>([]);
-
-  const ensureLaughElements = useCallback(() => {
-    const pool = laughAudioPoolRef.current;
-    if (pool.length === DEATH_LAUGH_SRCS.length) return;
-    pool.length = 0;
-    for (const src of DEATH_LAUGH_SRCS) {
-      const a = new Audio(src);
-      a.preload = 'auto';
-      a.loop = false;
-      a.volume = LAUGH_VOLUME;
-      pool.push(a);
-    }
-  }, []);
-
-  /**
-   * Prime audio playback using a user gesture (e.g. Start run click).
-   * Some browsers only allow `HTMLAudioElement.play()` after a successful
-   * gesture-triggered play, so we play silently (volume 0) and immediately pause.
-   */
-  const primeLaughSilently = useCallback(async (attempt: boolean) => {
-    if (!attempt) return;
-    ensureLaughElements();
-    const pool = laughAudioPoolRef.current;
-    for (const a of pool) {
-      const prevMuted = a.muted;
-      const prevVol = a.volume;
-      try {
-        a.pause();
-        a.currentTime = 0;
-        a.muted = true;
-        a.volume = 0;
-        await a.play();
-        a.pause();
-        a.currentTime = 0;
-      } catch {
-        // Ignore autoplay/permission failures; we'll still try to play later.
-      } finally {
-        a.muted = prevMuted;
-        a.volume = prevVol;
-        a.currentTime = 0;
-      }
-    }
-  }, [ensureLaughElements]);
-
-  const pauseAllLaugh = useCallback(() => {
-    for (const a of laughAudioPoolRef.current) {
-      a.pause();
-      a.currentTime = 0;
-    }
-  }, []);
-
-  const playLaugh = useCallback(() => {
-    if (!audioEnabledRef.current) return;
-    ensureLaughElements();
-    const pool = laughAudioPoolRef.current;
-    if (!pool.length) return;
-    const idx = Math.floor(Math.random() * pool.length);
-    const a = pool[idx]!;
-    for (let i = 0; i < pool.length; i++) {
-      if (i !== idx) {
-        pool[i]!.pause();
-        pool[i]!.currentTime = 0;
-      }
-    }
-    a.pause();
-    a.currentTime = 0;
-    const p = a.play();
-    p.catch(() => {
-      requestAnimationFrame(() => {
-        try {
-          a.pause();
-          a.currentTime = 0;
-          void a.play().catch(() => {});
-        } catch {
-          // ignore
-        }
-      });
-    });
-  }, [ensureLaughElements]);
-
   const orderPickupPoolRef = useRef<HTMLAudioElement[]>([]);
 
   const ensureOrderPickupElements = useCallback(() => {
@@ -1504,6 +1423,93 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       });
     });
   }, [ensureOrderPickupElements]);
+
+  const laughAudioPoolRef = useRef<HTMLAudioElement[]>([]);
+
+  const ensureLaughElements = useCallback(() => {
+    const pool = laughAudioPoolRef.current;
+    if (pool.length === DEATH_LAUGH_SRCS.length) return;
+    pool.length = 0;
+    for (const src of DEATH_LAUGH_SRCS) {
+      const a = new Audio(src);
+      a.preload = 'auto';
+      a.loop = false;
+      a.volume = LAUGH_VOLUME;
+      pool.push(a);
+    }
+  }, []);
+
+  /**
+   * Prime audio playback using a user gesture (e.g. Start run click).
+   * Some browsers only allow `HTMLAudioElement.play()` after a successful
+   * gesture-triggered play, so we play silently (volume 0) and immediately pause.
+   */
+  const primeLaughSilently = useCallback(async (attempt: boolean) => {
+    if (!attempt) return;
+    ensureLaughElements();
+    const pool = laughAudioPoolRef.current;
+    for (const a of pool) {
+      const prevMuted = a.muted;
+      const prevVol = a.volume;
+      try {
+        a.pause();
+        a.currentTime = 0;
+        a.muted = true;
+        a.volume = 0;
+        await a.play();
+        a.pause();
+        a.currentTime = 0;
+      } catch {
+        // Ignore autoplay/permission failures; we'll still try to play later.
+      } finally {
+        a.muted = prevMuted;
+        a.volume = prevVol;
+        a.currentTime = 0;
+      }
+    }
+  }, [ensureLaughElements]);
+
+  const pauseAllLaugh = useCallback(() => {
+    for (const a of laughAudioPoolRef.current) {
+      a.pause();
+      a.currentTime = 0;
+    }
+  }, []);
+
+  const playLaugh = useCallback(() => {
+    // Death sting should be the only sound: stop music and order SFX immediately
+    // (before React re-renders), not only after `outcome` updates.
+    gameMusicRef.current?.pause();
+    discoMusicRef.current?.pause();
+    musicModeRef.current = 'none';
+    pauseAllOrderPickup();
+    if (!audioEnabledRef.current) return;
+    ensureLaughElements();
+    const pool = laughAudioPoolRef.current;
+    if (!pool.length) return;
+    const idx = Math.floor(Math.random() * pool.length);
+    const a = pool[idx]!;
+    for (let i = 0; i < pool.length; i++) {
+      if (i !== idx) {
+        pool[i]!.pause();
+        pool[i]!.currentTime = 0;
+      }
+    }
+    a.pause();
+    a.currentTime = 0;
+    const p = a.play();
+    p.catch(() => {
+      requestAnimationFrame(() => {
+        try {
+          a.pause();
+          a.currentTime = 0;
+          void a.play().catch(() => {});
+        } catch {
+          // ignore
+        }
+      });
+    });
+  }, [ensureLaughElements, pauseAllOrderPickup]);
 
   useEffect(() => {
     // If audio is turned off, stop any currently playing tracks immediately.
