@@ -56,11 +56,8 @@ const OBSTACLE_HIT_MIN_W = 28;
 const DISCO_MIN_SCORE = 3000;
 /** Single disco segment per run: active while score is in this half-open range after the min. */
 const DISCO_DURATION_SCORE = 2000;
-/** Per-frame lerp toward 0/1 so disco visuals and BGM crossfade instead of popping. */
+/** Per-frame lerp toward 0/1 so disco overlays ease in/out (BGM still switches once — avoids per-frame `play()` jank). */
 const DISCO_VISUAL_BLEND_RATE = 0.11;
-const DISCO_AUDIO_BLEND_RATE = 0.09;
-/** Below this, treat blend as full game-only / full disco-only for pause/play. */
-const DISCO_AUDIO_BLEND_EPS = 0.03;
 
 // Game audio lives under `public/` so it's served from the site root (`/Audio/...`).
 // Note: the folder name is capitalized in your project (`public/Audio`).
@@ -1237,9 +1234,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const discoBallDropRef = useRef(0);
   /** 0 = normal look, 1 = full disco overlay (smooth in/out). */
   const discoVisualBlendRef = useRef(0);
-  /** 0 = game BGM, 1 = disco BGM (smooth crossfade). */
-  const discoAudioBlendRef = useRef(0);
-  const prevInDiscoForAudioRef = useRef(false);
   /** Countdown frames to show “Nice order” after grabbing an order tablet. */
   const niceOrderMessageFramesRef = useRef(0);
   /** While true, game tick skips `setMusicMode` so BGM does not overlap one-shot priming (mobile Safari). */
@@ -1424,7 +1418,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     gameMusicRef.current?.pause();
     discoMusicRef.current?.pause();
     musicModeRef.current = 'none';
-    discoAudioBlendRef.current = 0;
     discoVisualBlendRef.current = 0;
     pauseAllOrderPickup();
     if (!audioEnabledRef.current) return;
@@ -1464,7 +1457,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     pauseAllLaugh();
     pauseAllOrderPickup();
     musicModeRef.current = 'none';
-    discoAudioBlendRef.current = 0;
     discoVisualBlendRef.current = 0;
   }, [audioEnabled, pauseAllLaugh, pauseAllOrderPickup]);
 
@@ -1708,8 +1700,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     pauseAllLaugh();
     pauseAllOrderPickup();
     discoVisualBlendRef.current = 0;
-    discoAudioBlendRef.current = 0;
-    prevInDiscoForAudioRef.current = false;
     setScreen('game');
     // Unlock one-shots with a silent clip only, then start BGM after (avoids overlapping `play()` / stray stings).
     if (audioEnabledRef.current) {
@@ -1867,46 +1857,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         discoBallDropRef.current = Math.max(0, discoBallDropRef.current - 0.07);
       }
 
-      if (!primingOneShotAudioRef.current) {
-        if (!audioEnabledRef.current) {
-          if (musicModeRef.current !== 'none') {
-            setMusicMode('none');
-          }
-        } else {
-          ensureMusicElements();
-          const g = gameMusicRef.current;
-          const d = discoMusicRef.current;
-          if (g && d) {
-            const tgtA = inDisco ? 1 : 0;
-            let b = discoAudioBlendRef.current;
-            b += (tgtA - b) * DISCO_AUDIO_BLEND_RATE;
-            if (Math.abs(b - tgtA) < 0.02) b = tgtA;
-            discoAudioBlendRef.current = b;
-
-            if (inDisco && !prevInDiscoForAudioRef.current) {
-              d.currentTime = 0;
-            }
-            prevInDiscoForAudioRef.current = inDisco;
-
-            g.volume = GAME_MUSIC_VOLUME * (1 - b);
-            d.volume = DISCO_MUSIC_VOLUME * b;
-
-            if (b <= DISCO_AUDIO_BLEND_EPS) {
-              d.pause();
-              d.currentTime = 0;
-              musicModeRef.current = 'game';
-              void g.play().catch(() => {});
-            } else if (b >= 1 - DISCO_AUDIO_BLEND_EPS) {
-              g.pause();
-              musicModeRef.current = 'disco';
-              void d.play().catch(() => {});
-            } else {
-              musicModeRef.current = 'game';
-              void g.play().catch(() => {});
-              void d.play().catch(() => {});
-            }
-          }
-        }
+      const desiredMode: 'none' | 'game' | 'disco' = audioEnabledRef.current
+        ? inDisco
+          ? 'disco'
+          : 'game'
+        : 'none';
+      if (!primingOneShotAudioRef.current && musicModeRef.current !== desiredMode) {
+        setMusicMode(desiredMode);
       }
 
       runDistanceRef.current += scroll;
@@ -2085,7 +2042,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [ensureMusicElements, screen, outcome, paintGameFrame, playLaugh, playOrderPickup, setMusicMode]);
+  }, [screen, outcome, paintGameFrame, playLaugh, playOrderPickup, setMusicMode]);
 
   useEffect(() => {
     // Ensure music never plays in the menu state or after a loss.
@@ -2093,7 +2050,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       gameMusicRef.current?.pause();
       discoMusicRef.current?.pause();
       musicModeRef.current = 'none';
-      discoAudioBlendRef.current = 0;
       discoVisualBlendRef.current = 0;
     }
   }, [screen, outcome]);
