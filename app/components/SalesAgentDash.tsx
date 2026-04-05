@@ -77,6 +77,9 @@ const GAME_MUSIC_VOLUME = 0.35;
 const DISCO_MUSIC_VOLUME = 0.45;
 const LAUGH_VOLUME = 0.8;
 const ORDER_PICKUP_VOLUME = 0.55;
+/** Inaudible WAV — use for gesture unlock only so priming never touches death/order clips (avoids stray blips). */
+const SILENT_WAV_DATA_URL =
+  'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
 
 function isDiscoScore(score: number): boolean {
   const s = Math.floor(score);
@@ -1285,6 +1288,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const gameMusicRef = useRef<HTMLAudioElement | null>(null);
   const discoMusicRef = useRef<HTMLAudioElement | null>(null);
   const musicModeRef = useRef<'none' | 'game' | 'disco'>('none');
+  const htmlAudioUnlockRef = useRef<HTMLAudioElement | null>(null);
 
   const ensureMusicElements = useCallback(() => {
     // Only create the elements on the client (this is a `use client` component).
@@ -1360,14 +1364,18 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
   }, []);
 
-  /** One muted `play()` unlocks one-shots for the page; priming every clip stacks `play()` and glitches mobile. */
-  const primeOrderPickupSilently = useCallback(async (attempt: boolean) => {
+  /**
+   * One gesture-triggered `play()` unlocks HTMLAudioElement for the page.
+   * Must not use death/order assets — muted real clips still leak a blip on some browsers when restarting a run.
+   */
+  const primeHtmlAudioUnlockSilently = useCallback(async (attempt: boolean) => {
     if (!attempt) return;
-    ensureOrderPickupElements();
-    const a = orderPickupPoolRef.current[0];
-    if (!a) return;
-    const prevMuted = a.muted;
-    const prevVol = a.volume;
+    if (!htmlAudioUnlockRef.current) {
+      const el = new Audio(SILENT_WAV_DATA_URL);
+      el.preload = 'auto';
+      htmlAudioUnlockRef.current = el;
+    }
+    const a = htmlAudioUnlockRef.current;
     try {
       a.pause();
       a.currentTime = 0;
@@ -1379,11 +1387,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     } catch {
       // ignore
     } finally {
-      a.muted = prevMuted;
-      a.volume = prevVol;
+      a.muted = false;
+      a.volume = 1;
       a.currentTime = 0;
     }
-  }, [ensureOrderPickupElements]);
+  }, []);
 
   const pauseAllOrderPickup = useCallback(() => {
     for (const a of orderPickupPoolRef.current) {
@@ -1436,35 +1444,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
   }, []);
 
-  /**
-   * Prime audio playback using a user gesture (e.g. Start run click).
-   * Some browsers only allow `HTMLAudioElement.play()` after a successful
-   * gesture-triggered play, so we play silently (volume 0) and immediately pause.
-   */
-  const primeLaughSilently = useCallback(async (attempt: boolean) => {
-    if (!attempt) return;
-    ensureLaughElements();
-    const a = laughAudioPoolRef.current[0];
-    if (!a) return;
-    const prevMuted = a.muted;
-    const prevVol = a.volume;
-    try {
-      a.pause();
-      a.currentTime = 0;
-      a.muted = true;
-      a.volume = 0;
-      await a.play();
-      a.pause();
-      a.currentTime = 0;
-    } catch {
-      // Ignore autoplay/permission failures; we'll still try to play later.
-    } finally {
-      a.muted = prevMuted;
-      a.volume = prevVol;
-      a.currentTime = 0;
-    }
-  }, [ensureLaughElements]);
-
   const pauseAllLaugh = useCallback(() => {
     for (const a of laughAudioPoolRef.current) {
       a.pause();
@@ -1512,6 +1491,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (audioEnabled) return;
     gameMusicRef.current?.pause();
     discoMusicRef.current?.pause();
+    htmlAudioUnlockRef.current?.pause();
     pauseAllLaugh();
     pauseAllOrderPickup();
     musicModeRef.current = 'none';
@@ -1522,6 +1502,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     return () => {
       gameMusicRef.current?.pause();
       discoMusicRef.current?.pause();
+      htmlAudioUnlockRef.current?.pause();
       pauseAllLaugh();
       pauseAllOrderPickup();
     };
@@ -1752,15 +1733,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     pauseAllLaugh();
     pauseAllOrderPickup();
     setScreen('game');
-    // Mobile: never run laugh/order priming in parallel with each other or with BGM — that stacks many
-    // `play()` calls and Safari often plays audible blips. Prime sequentially, then start music.
+    // Unlock one-shots with a silent clip only, then start BGM after (avoids overlapping `play()` / stray stings).
     if (audioEnabledRef.current) {
       primingOneShotAudioRef.current = true;
       const gen = ++audioPrimeGenerationRef.current;
       void (async () => {
         try {
-          await primeLaughSilently(true);
-          await primeOrderPickupSilently(true);
+          await primeHtmlAudioUnlockSilently(true);
         } finally {
           if (audioPrimeGenerationRef.current === gen) {
             primingOneShotAudioRef.current = false;
@@ -1781,7 +1760,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         scrollEl.scrollTo({ top: 0, left: 0, behavior: 'auto' });
       });
     }
-  }, [pauseAllLaugh, pauseAllOrderPickup, primeLaughSilently, primeOrderPickupSilently, setMusicMode]);
+  }, [pauseAllLaugh, pauseAllOrderPickup, primeHtmlAudioUnlockSilently, setMusicMode]);
 
   const jump = useCallback(() => {
     if (outcome !== null) return;
@@ -2158,10 +2137,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   const next = !v;
                   // When enabling audio, prime silently from this click gesture.
                   if (next) {
-                    void (async () => {
-                      await primeLaughSilently(true);
-                      await primeOrderPickupSilently(true);
-                    })();
+                    void primeHtmlAudioUnlockSilently(true);
                   }
                   return next;
                 });
