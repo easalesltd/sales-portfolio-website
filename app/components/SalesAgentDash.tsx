@@ -13,9 +13,9 @@ const GAME_LEVELS: readonly { id: GameLevelId; title: string; blurb: string }[] 
   { id: 'nec', title: 'Spring Fair — The NEC', blurb: 'Indoor trade show — crowds, coffee, and paperwork.' },
   {
     id: 'harrogate',
-    title: 'Harrogate Xmas Show — Hard',
+    title: 'Harrogate Xmas Show',
     blurb:
-      'Festive hall run: indoor snow, ceiling fairy lights + icy floor (cosmetic). Same jump hazards as the NEC — clipboard, coffee, and box. Slightly busier than the NEC.',
+      'Festive hall run: indoor snow, ceiling fairy lights + icy floor (cosmetic). Jump Christmas trees, reindeer, and sleighs between trade stands — slightly busier than the NEC.',
   },
 ] as const;
 
@@ -213,20 +213,25 @@ const ROAD_OBSTACLE_KINDS = [
   'snake',
 ] as const;
 
-/** Spring Fair & Harrogate — shared PNG jump hazards (`public/images/Game/`). */
+/** Spring Fair — office / hall props (`public/images/Game/`). */
 const TRADE_SHOW_OBSTACLE_KINDS = ['trade_clipboard', 'trade_coffee', 'trade_box'] as const;
+
+/** Harrogate — festive jump hazards only. */
+const HARROGATE_OBSTACLE_KINDS = ['hg_xmas_tree', 'hg_reindeer', 'hg_sleigh'] as const;
 
 type RoadObstacleKind = (typeof ROAD_OBSTACLE_KINDS)[number];
 type TradeShowObstacleKind = (typeof TRADE_SHOW_OBSTACLE_KINDS)[number];
-type ObstacleKind = RoadObstacleKind | TradeShowObstacleKind;
+type HarrogateObstacleKind = (typeof HARROGATE_OBSTACLE_KINDS)[number];
+type ObstacleKind = RoadObstacleKind | TradeShowObstacleKind | HarrogateObstacleKind;
 
 function obstacleKindsForLevel(level: GameLevelId): readonly ObstacleKind[] {
   switch (level) {
     case 'road':
       return ROAD_OBSTACLE_KINDS;
     case 'nec':
-    case 'harrogate':
       return TRADE_SHOW_OBSTACLE_KINDS;
+    case 'harrogate':
+      return HARROGATE_OBSTACLE_KINDS;
   }
 }
 
@@ -372,6 +377,9 @@ const FAULTY_CAR_PNG_SRC = encodeURI('/images/Game/Faulty Car.png');
 const CLIPBOARD_GAME_PNG_SRC = encodeURI('/images/Game/Clipboard.png');
 const COFFEE_GAME_PNG_SRC = encodeURI('/images/Game/coffee.png');
 const BOX_GAME_PNG_SRC = encodeURI('/images/Game/box.png');
+const XMAS_TREE_GAME_PNG_SRC = encodeURI('/images/Game/Xmas Tree.png');
+const REINDEER_GAME_PNG_SRC = encodeURI('/images/Game/Reindeer.png');
+const SLEIGH_GAME_PNG_SRC = encodeURI('/images/Game/Sleigh.png');
 
 /**
  * Word-wrap without dropping words. If more than `maxLines` lines are needed, the tail is merged
@@ -1192,6 +1200,12 @@ function dimsFor(kind: ObstacleKind): { w: number; h: number } {
       return { w: 46, h: 54 };
     case 'trade_box':
       return { w: 58, h: 56 };
+    case 'hg_xmas_tree':
+      return { w: 54, h: 66 };
+    case 'hg_reindeer':
+      return { w: 72, h: 58 };
+    case 'hg_sleigh':
+      return { w: 96, h: 56 };
   }
 }
 
@@ -1273,7 +1287,7 @@ function drawObstacleImageOnFloor(
   w: number,
   h: number,
   img: HTMLImageElement | null | undefined,
-  fallback: 'snake' | 'car' | 'clipboard' | 'coffee' | 'box'
+  fallback: 'snake' | 'car' | 'clipboard' | 'coffee' | 'box' | 'xmasTree' | 'reindeer' | 'sleigh'
 ) {
   const groundY = top + h;
   const stripH = 4;
@@ -1308,6 +1322,33 @@ function drawObstacleImageOnFloor(
     roundRectPath(ctx, x + 6, top + 8, w - 12, h - stripH - 12, 4);
     ctx.fill();
     ctx.strokeStyle = '#b45309';
+    ctx.stroke();
+  } else if (fallback === 'xmasTree') {
+    const cx = x + w / 2;
+    const gy = top + h;
+    ctx.fillStyle = '#78350f';
+    ctx.fillRect(cx - 5, gy - stripH - 14, 10, 14);
+    ctx.fillStyle = '#166534';
+    ctx.beginPath();
+    ctx.moveTo(cx, top + 4);
+    ctx.lineTo(cx + w * 0.38, gy - stripH - 16);
+    ctx.lineTo(cx - w * 0.38, gy - stripH - 16);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#facc15';
+    ctx.beginPath();
+    ctx.arc(cx, top + 10, 4, 0, Math.PI * 2);
+    ctx.fill();
+  } else if (fallback === 'reindeer') {
+    ctx.fillStyle = '#92400e';
+    roundRectPath(ctx, x + 4, top + 8, w - 8, h - stripH - 10, 5);
+    ctx.fill();
+  } else if (fallback === 'sleigh') {
+    ctx.fillStyle = '#b91c1c';
+    roundRectPath(ctx, x + 5, top + 10, w - 10, h - stripH - 12, 4);
+    ctx.fill();
+    ctx.strokeStyle = '#7f1d1d';
+    ctx.lineWidth = 1.5;
     ctx.stroke();
   } else {
     ctx.fillStyle = '#d6d3d1';
@@ -1551,6 +1592,34 @@ function drawObstacle(
     }
     case 'trade_box': {
       drawObstacleImageOnFloor(ctx, x, top, w, h, gameImages.get(BOX_GAME_PNG_SRC), 'box');
+      break;
+    }
+    case 'hg_xmas_tree': {
+      drawObstacleImageOnFloor(
+        ctx,
+        x,
+        top,
+        w,
+        h,
+        gameImages.get(XMAS_TREE_GAME_PNG_SRC),
+        'xmasTree'
+      );
+      break;
+    }
+    case 'hg_reindeer': {
+      drawObstacleImageOnFloor(
+        ctx,
+        x,
+        top,
+        w,
+        h,
+        gameImages.get(REINDEER_GAME_PNG_SRC),
+        'reindeer'
+      );
+      break;
+    }
+    case 'hg_sleigh': {
+      drawObstacleImageOnFloor(ctx, x, top, w, h, gameImages.get(SLEIGH_GAME_PNG_SRC), 'sleigh');
       break;
     }
   }
@@ -2803,7 +2872,14 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       car.src = FAULTY_CAR_PNG_SRC;
       map.set(FAULTY_CAR_PNG_SRC, car);
     }
-    for (const src of [CLIPBOARD_GAME_PNG_SRC, COFFEE_GAME_PNG_SRC, BOX_GAME_PNG_SRC]) {
+    for (const src of [
+      CLIPBOARD_GAME_PNG_SRC,
+      COFFEE_GAME_PNG_SRC,
+      BOX_GAME_PNG_SRC,
+      XMAS_TREE_GAME_PNG_SRC,
+      REINDEER_GAME_PNG_SRC,
+      SLEIGH_GAME_PNG_SRC,
+    ]) {
       if (map.has(src)) continue;
       const img = new Image();
       img.decoding = 'async';
