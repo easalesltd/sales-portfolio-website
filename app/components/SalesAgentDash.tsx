@@ -15,7 +15,7 @@ const GAME_LEVELS: readonly { id: GameLevelId; title: string; blurb: string }[] 
     id: 'harrogate',
     title: 'Harrogate Xmas Show',
     blurb:
-      'Hardest venue: faster run, tighter jumps, busier stands. Festive trees, reindeer, and sleighs — same hall vibe as the NEC but more intense.',
+      'Hardest venue: a bit faster than the NEC with festive trees, reindeer, and sleighs — busier hall, slightly trickier timing.',
   },
 ] as const;
 
@@ -43,8 +43,7 @@ const TRADE_STAND_SPEECH_CYCLE_INDEX = 2;
 const TRADE_MIN_RUN_DIST_AFTER_STAND_BEFORE_OBS = 170;
 const TRADE_MIN_RUN_DIST_AFTER_OBS_BEFORE_STAND = 190;
 const TRADE_MAX_CONSECUTIVE_STANDS = 2;
-const TRADE_MAX_CONSECUTIVE_OBSTACLES_NEC = 3;
-const TRADE_MAX_CONSECUTIVE_OBSTACLES_HARROGATE = 4;
+const TRADE_MAX_CONSECUTIVE_OBSTACLES = 3;
 /** Scenic signs in the hall / on the road (no collision); NEC & Harrogate use exhibitor stands only. */
 const BILLBOARD_SPAWN_GAP_PX = 820;
 /** Bonus “order” tablets — spawned between obstacle waves; ~1 per 1.2 obstacle gaps. */
@@ -259,21 +258,18 @@ function obstacleSpawnGapPx(_level: GameLevelId): number {
   return OBSTACLE_SPAWN_GAP_PX;
 }
 
-/** Trade-show jump hazards — world distance between spawns (smaller = harder). Harrogate densest. */
+/** Trade-show jump hazards — world distance between spawns (smaller = harder). Harrogate uses a bit more gap than NEC so hazards aren’t on top of each other. */
 function tradeShowObstacleAdvancePx(level: GameLevelId): number {
-  if (level === 'harrogate') return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.4);
+  if (level === 'harrogate') return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.52);
   return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.5);
 }
 
 /** Trade-show stand spacing — shorter distance = booths appear more often along the run. */
 function tradeShowStandAdvancePx(level: GameLevelId): number {
-  if (level === 'harrogate') return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.72);
+  if (level === 'harrogate') return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.75);
   return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.78);
 }
 
-function tradeMaxConsecutiveObstacles(level: GameLevelId): number {
-  return level === 'harrogate' ? TRADE_MAX_CONSECUTIVE_OBSTACLES_HARROGATE : TRADE_MAX_CONSECUTIVE_OBSTACLES_NEC;
-}
 
 /** Order tablet spacing scales with obstacle gap on Harrogate. */
 function orderSpawnGapPx(level: GameLevelId): number {
@@ -282,7 +278,7 @@ function orderSpawnGapPx(level: GameLevelId): number {
 
 /** World scroll speed multiplier — keep Harrogate near other venues so jump timing stays fair. */
 function levelScrollMultiplier(level: GameLevelId): number {
-  if (level === 'harrogate') return 1.1;
+  if (level === 'harrogate') return 1.05;
   return 1;
 }
 
@@ -3075,7 +3071,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           if (
             !standFirst &&
             canObs &&
-            tradeConsecutiveObstaclesRef.current >= tradeMaxConsecutiveObstacles(runLevel) &&
+            tradeConsecutiveObstaclesRef.current >= TRADE_MAX_CONSECUTIVE_OBSTACLES &&
             canStand
           ) {
             standFirst = true;
@@ -3083,7 +3079,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           if (
             !standFirst &&
             canObs &&
-            tradeConsecutiveObstaclesRef.current >= tradeMaxConsecutiveObstacles(runLevel) &&
+            tradeConsecutiveObstaclesRef.current >= TRADE_MAX_CONSECUTIVE_OBSTACLES &&
             !canStand
           ) {
             nextObstacleAtRef.current = runD + obsAdv * 0.45;
