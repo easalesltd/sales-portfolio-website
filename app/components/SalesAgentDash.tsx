@@ -1283,6 +1283,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const discoBallDropRef = useRef(0);
   /** Countdown frames to show “Nice order” after grabbing an order tablet. */
   const niceOrderMessageFramesRef = useRef(0);
+  /** While true, game tick skips `setMusicMode` so BGM does not overlap one-shot priming (mobile Safari). */
+  const primingOneShotAudioRef = useRef(false);
+  /** Bumps on each `startGame`; only the latest prime sequence may start BGM. */
+  const audioPrimeGenerationRef = useRef(0);
 
   // Audio: start normal music when the run starts; switch to disco during disco segments.
   const gameMusicRef = useRef<HTMLAudioElement | null>(null);
@@ -1363,28 +1367,28 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
   }, []);
 
+  /** One muted `play()` unlocks one-shots for the page; priming every clip stacks `play()` and glitches mobile. */
   const primeOrderPickupSilently = useCallback(async (attempt: boolean) => {
     if (!attempt) return;
     ensureOrderPickupElements();
-    const pool = orderPickupPoolRef.current;
-    for (const a of pool) {
-      const prevMuted = a.muted;
-      const prevVol = a.volume;
-      try {
-        a.pause();
-        a.currentTime = 0;
-        a.muted = true;
-        a.volume = 0;
-        await a.play();
-        a.pause();
-        a.currentTime = 0;
-      } catch {
-        // ignore
-      } finally {
-        a.muted = prevMuted;
-        a.volume = prevVol;
-        a.currentTime = 0;
-      }
+    const a = orderPickupPoolRef.current[0];
+    if (!a) return;
+    const prevMuted = a.muted;
+    const prevVol = a.volume;
+    try {
+      a.pause();
+      a.currentTime = 0;
+      a.muted = true;
+      a.volume = 0;
+      await a.play();
+      a.pause();
+      a.currentTime = 0;
+    } catch {
+      // ignore
+    } finally {
+      a.muted = prevMuted;
+      a.volume = prevVol;
+      a.currentTime = 0;
     }
   }, [ensureOrderPickupElements]);
 
@@ -1447,25 +1451,24 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const primeLaughSilently = useCallback(async (attempt: boolean) => {
     if (!attempt) return;
     ensureLaughElements();
-    const pool = laughAudioPoolRef.current;
-    for (const a of pool) {
-      const prevMuted = a.muted;
-      const prevVol = a.volume;
-      try {
-        a.pause();
-        a.currentTime = 0;
-        a.muted = true;
-        a.volume = 0;
-        await a.play();
-        a.pause();
-        a.currentTime = 0;
-      } catch {
-        // Ignore autoplay/permission failures; we'll still try to play later.
-      } finally {
-        a.muted = prevMuted;
-        a.volume = prevVol;
-        a.currentTime = 0;
-      }
+    const a = laughAudioPoolRef.current[0];
+    if (!a) return;
+    const prevMuted = a.muted;
+    const prevVol = a.volume;
+    try {
+      a.pause();
+      a.currentTime = 0;
+      a.muted = true;
+      a.volume = 0;
+      await a.play();
+      a.pause();
+      a.currentTime = 0;
+    } catch {
+      // Ignore autoplay/permission failures; we'll still try to play later.
+    } finally {
+      a.muted = prevMuted;
+      a.volume = prevVol;
+      a.currentTime = 0;
     }
   }, [ensureLaughElements]);
 
@@ -1755,11 +1758,28 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     setLbSubmitError(null);
     pauseAllLaugh();
     pauseAllOrderPickup();
-    // Silent prime so one-shots are allowed after gesture (death sting, order pickup).
-    void primeLaughSilently(audioEnabledRef.current);
-    void primeOrderPickupSilently(audioEnabledRef.current);
-    setMusicMode(audioEnabledRef.current ? 'game' : 'none');
     setScreen('game');
+    // Mobile: never run laugh/order priming in parallel with each other or with BGM — that stacks many
+    // `play()` calls and Safari often plays audible blips. Prime sequentially, then start music.
+    if (audioEnabledRef.current) {
+      primingOneShotAudioRef.current = true;
+      const gen = ++audioPrimeGenerationRef.current;
+      void (async () => {
+        try {
+          await primeLaughSilently(true);
+          await primeOrderPickupSilently(true);
+        } finally {
+          if (audioPrimeGenerationRef.current === gen) {
+            primingOneShotAudioRef.current = false;
+            setMusicMode(audioEnabledRef.current ? 'game' : 'none');
+          }
+        }
+      })();
+    } else {
+      audioPrimeGenerationRef.current += 1;
+      primingOneShotAudioRef.current = false;
+      setMusicMode('none');
+    }
     const scrollEl = mainScrollRef.current;
     if (scrollEl) {
       scrollEl.scrollTop = 0;
@@ -1887,7 +1907,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           ? 'disco'
           : 'game'
         : 'none';
-      if (musicModeRef.current !== desiredMode) {
+      if (!primingOneShotAudioRef.current && musicModeRef.current !== desiredMode) {
         setMusicMode(desiredMode);
       }
 
@@ -2145,8 +2165,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   const next = !v;
                   // When enabling audio, prime silently from this click gesture.
                   if (next) {
-                    void primeLaughSilently(true);
-                    void primeOrderPickupSilently(true);
+                    void (async () => {
+                      await primeLaughSilently(true);
+                      await primeOrderPickupSilently(true);
+                    })();
                   }
                   return next;
                 });
