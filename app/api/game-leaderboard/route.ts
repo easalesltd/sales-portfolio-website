@@ -203,3 +203,97 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 });
   }
 }
+
+/**
+ * Remove one leaderboard row (moderation). Requires `GAME_LEADERBOARD_ADMIN_SECRET` and
+ * `Authorization: Bearer <that secret>`.
+ *
+ * Body JSON (either):
+ * - `{ "level": "road" | "nec" | "harrogate", "rank": 1 }` — `rank` is 1-based, same order as the public GET (highest score = 1).
+ * - `{ "level": "...", "memberId": "<uuid>" }` — the Redis sorted-set member from server logs / Upstash.
+ */
+export async function DELETE(req: Request) {
+  const secret = process.env.GAME_LEADERBOARD_ADMIN_SECRET?.trim();
+  if (!secret) {
+    return NextResponse.json({ ok: false, error: 'admin_not_configured' }, { status: 503 });
+  }
+  const auth = req.headers.get('authorization') ?? '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
+  if (!timingSafeEqualUtf8(token, secret)) {
+    return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
+  }
+
+  const r = gameLeaderboardRedis();
+  if (!r) {
+    return NextResponse.json({ ok: false, error: 'not_configured' }, { status: 503 });
+  }
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ ok: false, error: 'invalid_json' }, { status: 400 });
+  }
+  if (!body || typeof body !== 'object') {
+    return NextResponse.json({ ok: false, error: 'invalid_body' }, { status: 400 });
+  }
+  const b = body as Record<string, unknown>;
+  const levelRaw = typeof b.level === 'string' ? b.level.trim() : '';
+  if (!isGameLevelId(levelRaw)) {
+    return NextResponse.json({ ok: false, error: 'invalid_level' }, { status: 400 });
+  }
+  const level = levelRaw;
+  const zkey = zKeyForLevel(level);
+
+  const memberIdRaw = typeof b.memberId === 'string' ? b.memberId.trim() : '';
+  const rankRaw = b.rank;
+
+  let memberId: string | null = null;
+  if (memberIdRaw) {
+    memberId = memberIdRaw;
+  } else if (rankRaw != null) {
+    const rank = Math.floor(Number(rankRaw));
+    if (!Number.isFinite(rank) || rank < 1 || rank > MAX_STORED) {
+      return NextResponse.json({ ok: false, error: 'invalid_rank' }, { status: 400 });
+    }
+    try {
+      if (level === 'road') {
+        await mergeLegacyGlobalBoardIntoRoad(r);
+      }
+      const row = await r.zrange(zkey, rank - 1, rank - 1, { rev: true });
+      if (!row || row.length === 0) {
+        return NextResponse.json({ ok: false, error: 'rank_not_found' }, { status: 404 });
+      }
+      memberId = String(row[0]);
+    } catch (e) {
+      console.error('game-leaderboard DELETE zrange', e);
+      return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 });
+    }
+  } else {
+    return NextResponse.json({ ok: false, error: 'need_rank_or_memberId' }, { status: 400 });
+  }
+
+  try {
+    if (level === 'road') {
+      await mergeLegacyGlobalBoardIntoRoad(r);
+    }
+    const removed = await r.zrem(zkey, memberId!);
+    if (removed === 0) {
+      return NextResponse.json({ ok: false, error: 'member_not_in_board' }, { status: 404 });
+    }
+    await r.del(`${EPREFIX}${memberId!}`);
+    return NextResponse.json({ ok: true as const, level, removedMemberId: memberId });
+  } catch (e) {
+    console.error('game-leaderboard DELETE', e);
+    return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 });
+  }
+}
+
+function timingSafeEqualUtf8(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let out = 0;
+  for (let i = 0; i < a.length; i++) {
+    out |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return out === 0;
+}

@@ -15,7 +15,7 @@ const GAME_LEVELS: readonly { id: GameLevelId; title: string; blurb: string }[] 
     id: 'harrogate',
     title: 'Harrogate Xmas Show',
     blurb:
-      'Festive hall run: indoor snow, ceiling fairy lights + icy floor (cosmetic). Jump Christmas trees, reindeer, and sleighs between trade stands — slightly busier than the NEC.',
+      'Hardest venue: faster run, tighter jumps, busier stands. Festive trees, reindeer, and sleighs — same hall vibe as the NEC but more intense.',
   },
 ] as const;
 
@@ -43,7 +43,8 @@ const TRADE_STAND_SPEECH_CYCLE_INDEX = 2;
 const TRADE_MIN_RUN_DIST_AFTER_STAND_BEFORE_OBS = 170;
 const TRADE_MIN_RUN_DIST_AFTER_OBS_BEFORE_STAND = 190;
 const TRADE_MAX_CONSECUTIVE_STANDS = 2;
-const TRADE_MAX_CONSECUTIVE_OBSTACLES = 3;
+const TRADE_MAX_CONSECUTIVE_OBSTACLES_NEC = 3;
+const TRADE_MAX_CONSECUTIVE_OBSTACLES_HARROGATE = 4;
 /** Scenic signs in the hall / on the road (no collision); NEC & Harrogate use exhibitor stands only. */
 const BILLBOARD_SPAWN_GAP_PX = 820;
 /** Bonus “order” tablets — spawned between obstacle waves; ~1 per 1.2 obstacle gaps. */
@@ -73,6 +74,21 @@ const OBSTACLE_HIT_INSET_X = 4;
 const OBSTACLE_HIT_INSET_TOP = 4;
 /** Obstacles narrower than this keep a proportional hit width so thin hazards still register. */
 const OBSTACLE_HIT_MIN_W = 28;
+/**
+ * NEC / Harrogate: only the lower part of each jump hazard counts as lethal (road: full box).
+ * Harrogate uses a tighter band than NEC so deaths match visible contact — hardest level, fair hits.
+ */
+function tradeJumpObstacleHitTuning(level: GameLevelId): {
+  hFrac: number;
+  hMin: number;
+  topTrimFrac: number;
+  insetX: number;
+} {
+  if (level === 'harrogate') {
+    return { hFrac: 0.5, hMin: 26, topTrimFrac: 0.24, insetX: 14 };
+  }
+  return { hFrac: 0.62, hMin: 32, topTrimFrac: 0.14, insetX: 11 };
+}
 
 /** No disco below this floor score. */
 const DISCO_MIN_SCORE = 3000;
@@ -243,15 +259,20 @@ function obstacleSpawnGapPx(_level: GameLevelId): number {
   return OBSTACLE_SPAWN_GAP_PX;
 }
 
-/** Trade-show jump hazards — world distance between spawns (smaller = harder). */
+/** Trade-show jump hazards — world distance between spawns (smaller = harder). Harrogate densest. */
 function tradeShowObstacleAdvancePx(level: GameLevelId): number {
-  if (level === 'harrogate') return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.58);
-  return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.48);
+  if (level === 'harrogate') return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.4);
+  return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.5);
 }
 
 /** Trade-show stand spacing — shorter distance = booths appear more often along the run. */
-function tradeShowStandAdvancePx(_level: GameLevelId): number {
+function tradeShowStandAdvancePx(level: GameLevelId): number {
+  if (level === 'harrogate') return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.72);
   return Math.round(OBSTACLE_SPAWN_GAP_PX * 0.78);
+}
+
+function tradeMaxConsecutiveObstacles(level: GameLevelId): number {
+  return level === 'harrogate' ? TRADE_MAX_CONSECUTIVE_OBSTACLES_HARROGATE : TRADE_MAX_CONSECUTIVE_OBSTACLES_NEC;
 }
 
 /** Order tablet spacing scales with obstacle gap on Harrogate. */
@@ -261,7 +282,7 @@ function orderSpawnGapPx(level: GameLevelId): number {
 
 /** World scroll speed multiplier — keep Harrogate near other venues so jump timing stays fair. */
 function levelScrollMultiplier(level: GameLevelId): number {
-  if (level === 'harrogate') return 1.02;
+  if (level === 'harrogate') return 1.1;
   return 1;
 }
 
@@ -3054,7 +3075,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           if (
             !standFirst &&
             canObs &&
-            tradeConsecutiveObstaclesRef.current >= TRADE_MAX_CONSECUTIVE_OBSTACLES &&
+            tradeConsecutiveObstaclesRef.current >= tradeMaxConsecutiveObstacles(runLevel) &&
             canStand
           ) {
             standFirst = true;
@@ -3062,7 +3083,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           if (
             !standFirst &&
             canObs &&
-            tradeConsecutiveObstaclesRef.current >= TRADE_MAX_CONSECUTIVE_OBSTACLES &&
+            tradeConsecutiveObstaclesRef.current >= tradeMaxConsecutiveObstacles(runLevel) &&
             !canStand
           ) {
             nextObstacleAtRef.current = runD + obsAdv * 0.45;
@@ -3278,12 +3299,20 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       }
       for (const o of obstaclesRef.current) {
-        const hitH = o.collisionH ?? o.h;
+        let hitH = o.collisionH ?? o.h;
+        let obInsetX = OBSTACLE_HIT_INSET_X;
+        let obHitTopPad = OBSTACLE_HIT_INSET_TOP;
+        if (isTradeShowLevel(runLevel) && o.collisionH == null) {
+          const tun = tradeJumpObstacleHitTuning(runLevel);
+          hitH = Math.max(tun.hMin, Math.round(o.h * tun.hFrac));
+          obInsetX = tun.insetX;
+          obHitTopPad = OBSTACLE_HIT_INSET_TOP + Math.round(o.h * tun.topTrimFrac);
+        }
         const obTop = groundY - hitH;
         const obBottom = groundY;
-        const innerW = Math.max(OBSTACLE_HIT_MIN_W, o.w - OBSTACLE_HIT_INSET_X * 2);
+        const innerW = Math.max(OBSTACLE_HIT_MIN_W, o.w - obInsetX * 2);
         const obLeft = o.x + (o.w - innerW) / 2;
-        const obHitTop = obTop + OBSTACLE_HIT_INSET_TOP;
+        const obHitTop = obTop + obHitTopPad;
         if (
           hitRight > obLeft &&
           hitLeft < obLeft + innerW &&
