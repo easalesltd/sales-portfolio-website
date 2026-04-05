@@ -350,10 +350,8 @@ const SEASONAL_BILLBOARD_MESSAGES: readonly SeasonalMessage[] = [
 const NEC_TRADE_BANTER: readonly string[] = [
   'Our stand is carbon-neutral* (*the PDF says so).',
   'Lead time: yesterday, if you sign now.',
-  'Catalogue? I memorised it. Terrifyingly.',
   'Sample? That counts as a handshake in law.',
   'Hall 5 energy, Hall 2 budget.',
-  'Freight is feelings-based this quarter.',
   'Everything you order will definitely arrive in April.',
 ];
 
