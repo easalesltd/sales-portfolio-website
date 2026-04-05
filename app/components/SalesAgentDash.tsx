@@ -56,6 +56,11 @@ const OBSTACLE_HIT_MIN_W = 28;
 const DISCO_MIN_SCORE = 3000;
 /** Single disco segment per run: active while score is in this half-open range after the min. */
 const DISCO_DURATION_SCORE = 2000;
+/** Per-frame lerp toward 0/1 so disco visuals and BGM crossfade instead of popping. */
+const DISCO_VISUAL_BLEND_RATE = 0.11;
+const DISCO_AUDIO_BLEND_RATE = 0.09;
+/** Below this, treat blend as full game-only / full disco-only for pause/play. */
+const DISCO_AUDIO_BLEND_EPS = 0.03;
 
 // Game audio lives under `public/` so it's served from the site root (`/Audio/...`).
 // Note: the folder name is capitalized in your project (`public/Audio`).
@@ -953,53 +958,6 @@ function drawDiscoStarburst(ctx: CanvasRenderingContext2D, x: number, y: number,
   ctx.restore();
 }
 
-/** Filled flying-bird silhouette (wings + body), not stroked chevrons — reads at small size. */
-function fillBirdSilhouette(
-  ctx: CanvasRenderingContext2D,
-  cx: number,
-  cy: number,
-  size: number,
-  alpha: number,
-  flapPhase: number
-) {
-  const wingLift = size * (0.42 + Math.sin(flapPhase) * 0.06);
-  const span = size * 0.92;
-  const belly = size * 0.28;
-  ctx.fillStyle = `rgba(51,65,85,${alpha})`;
-  ctx.beginPath();
-  ctx.moveTo(cx - span, cy + belly * 0.15);
-  ctx.quadraticCurveTo(cx - span * 0.35, cy - wingLift, cx, cy - wingLift * 0.38);
-  ctx.quadraticCurveTo(cx + span * 0.35, cy - wingLift, cx + span, cy + belly * 0.15);
-  ctx.quadraticCurveTo(cx + span * 0.42, cy + belly * 0.55, cx, cy + belly);
-  ctx.quadraticCurveTo(cx - span * 0.42, cy + belly * 0.55, cx - span, cy + belly * 0.15);
-  ctx.closePath();
-  ctx.fill();
-  ctx.fillStyle = `rgba(15,23,42,${Math.min(1, alpha + 0.12)})`;
-  ctx.beginPath();
-  ctx.ellipse(cx - span * 0.72, cy + belly * 0.02, size * 0.11, size * 0.09, -0.35, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-/** Distant flock: slower parallax than clouds; stays in upper sky (below disco/HUD clutter). */
-function drawSkyBirds(ctx: CanvasRenderingContext2D, W: number, groundY: number, score: number) {
-  if (W < 40 || groundY < 48) return;
-  const yLo = 20;
-  const yHi = Math.min(groundY * 0.28, 62);
-  const t = performance.now() * 0.007;
-
-  const cycle = W + 100;
-  const s1 = (score * 0.14) % cycle;
-  const base1 = W - s1 + 8;
-  fillBirdSilhouette(ctx, base1, yLo + 10, 10, 0.82, t);
-  fillBirdSilhouette(ctx, base1 - 14, yLo + 16, 8.2, 0.72, t + 1.1);
-  fillBirdSilhouette(ctx, base1 - 28, yLo + 12, 7, 0.65, t + 2.2);
-
-  const s2 = (score * 0.09 + cycle * 0.55) % cycle;
-  const base2 = W - s2 - W * 0.12;
-  fillBirdSilhouette(ctx, base2, yHi - 2, 8, 0.58, t + 0.4);
-  fillBirdSilhouette(ctx, base2 - 12, yHi + 4, 6.6, 0.5, t + 1.7);
-}
-
 function drawDiscoFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, groundY: number) {
   const t = performance.now() * 0.0035;
   const beat = Math.sin(t * 4.2) * 0.5 + 0.5;
@@ -1277,6 +1235,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const discoWasActiveRef = useRef(false);
   /** 0 → 1 while disco segment runs; eases the ball down from above. */
   const discoBallDropRef = useRef(0);
+  /** 0 = normal look, 1 = full disco overlay (smooth in/out). */
+  const discoVisualBlendRef = useRef(0);
+  /** 0 = game BGM, 1 = disco BGM (smooth crossfade). */
+  const discoAudioBlendRef = useRef(0);
+  const prevInDiscoForAudioRef = useRef(false);
   /** Countdown frames to show “Nice order” after grabbing an order tablet. */
   const niceOrderMessageFramesRef = useRef(0);
   /** While true, game tick skips `setMusicMode` so BGM does not overlap one-shot priming (mobile Safari). */
@@ -1330,6 +1293,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (!gameAudio2 || !discoAudio2) return;
 
     if (mode === 'game') {
+      gameAudio2.volume = GAME_MUSIC_VOLUME;
+      discoAudio2.volume = DISCO_MUSIC_VOLUME;
       discoAudio2.pause();
       discoAudio2.currentTime = 0;
       // After disco, resume main track where it left off; fresh run from menu/life uses `none` → `game`.
@@ -1344,6 +1309,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
 
     // mode === 'disco' — pause main music but keep its timeline for when disco ends.
+    gameAudio2.volume = GAME_MUSIC_VOLUME;
+    discoAudio2.volume = DISCO_MUSIC_VOLUME;
     gameAudio2.pause();
     discoAudio2.currentTime = 0;
     void discoAudio2.play().catch(() => {});
@@ -1457,6 +1424,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     gameMusicRef.current?.pause();
     discoMusicRef.current?.pause();
     musicModeRef.current = 'none';
+    discoAudioBlendRef.current = 0;
+    discoVisualBlendRef.current = 0;
     pauseAllOrderPickup();
     if (!audioEnabledRef.current) return;
     ensureLaughElements();
@@ -1495,6 +1464,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     pauseAllLaugh();
     pauseAllOrderPickup();
     musicModeRef.current = 'none';
+    discoAudioBlendRef.current = 0;
+    discoVisualBlendRef.current = 0;
   }, [audioEnabled, pauseAllLaugh, pauseAllOrderPickup]);
 
   useEffect(() => {
@@ -1529,9 +1500,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, W, H);
 
-      const disco = isDiscoScore(scoreRef.current);
-      if (disco) {
+      const vBlend = discoVisualBlendRef.current;
+      if (vBlend > 0.02) {
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, vBlend);
         drawDiscoFlashes(ctx, W, H, groundY);
+        ctx.restore();
       }
 
       ctx.fillStyle = '#6B5344';
@@ -1546,8 +1520,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.arc(W - cloudShift + 62, 48, 26, 0, Math.PI * 2);
       ctx.arc(W - cloudShift + 88, 52, 20, 0, Math.PI * 2);
       ctx.fill();
-
-      drawSkyBirds(ctx, W, groundY, scoreRef.current);
 
       for (const o of obstaclesRef.current) {
         const top = groundY - o.h;
@@ -1567,8 +1539,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const yTop = groundY + pyRef.current - ph;
       drawPlayer(ctx, px, yTop, pw, ph);
 
-      if (disco) {
+      if (vBlend > 0.02 && discoBallDropRef.current > 0.02) {
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, vBlend);
         drawDiscoBall(ctx, W, discoBallDropRef.current);
+        ctx.restore();
       }
 
       const displayScore = Math.floor(scoreRef.current);
@@ -1732,6 +1707,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     setLbSubmitError(null);
     pauseAllLaugh();
     pauseAllOrderPickup();
+    discoVisualBlendRef.current = 0;
+    discoAudioBlendRef.current = 0;
+    prevInDiscoForAudioRef.current = false;
     setScreen('game');
     // Unlock one-shots with a silent clip only, then start BGM after (avoids overlapping `play()` / stray stings).
     if (audioEnabledRef.current) {
@@ -1872,15 +1850,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const sFloor = Math.floor(scoreRef.current);
       const inDisco = isDiscoScore(sFloor);
 
-      // Audio mode switches only when the disco state flips, not every frame.
-      // This keeps play/pause calls from spamming.
-      const desiredMode: 'none' | 'game' | 'disco' = audioEnabledRef.current
-        ? inDisco
-          ? 'disco'
-          : 'game'
-        : 'none';
-      if (!primingOneShotAudioRef.current && musicModeRef.current !== desiredMode) {
-        setMusicMode(desiredMode);
+      {
+        const tgtV = inDisco ? 1 : 0;
+        let vb = discoVisualBlendRef.current;
+        vb += (tgtV - vb) * DISCO_VISUAL_BLEND_RATE;
+        if (Math.abs(vb - tgtV) < 0.012) vb = tgtV;
+        discoVisualBlendRef.current = vb;
       }
 
       if (inDisco) {
@@ -1889,7 +1864,49 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         discoWasActiveRef.current = true;
       } else {
         discoWasActiveRef.current = false;
-        discoBallDropRef.current = 0;
+        discoBallDropRef.current = Math.max(0, discoBallDropRef.current - 0.07);
+      }
+
+      if (!primingOneShotAudioRef.current) {
+        if (!audioEnabledRef.current) {
+          if (musicModeRef.current !== 'none') {
+            setMusicMode('none');
+          }
+        } else {
+          ensureMusicElements();
+          const g = gameMusicRef.current;
+          const d = discoMusicRef.current;
+          if (g && d) {
+            const tgtA = inDisco ? 1 : 0;
+            let b = discoAudioBlendRef.current;
+            b += (tgtA - b) * DISCO_AUDIO_BLEND_RATE;
+            if (Math.abs(b - tgtA) < 0.02) b = tgtA;
+            discoAudioBlendRef.current = b;
+
+            if (inDisco && !prevInDiscoForAudioRef.current) {
+              d.currentTime = 0;
+            }
+            prevInDiscoForAudioRef.current = inDisco;
+
+            g.volume = GAME_MUSIC_VOLUME * (1 - b);
+            d.volume = DISCO_MUSIC_VOLUME * b;
+
+            if (b <= DISCO_AUDIO_BLEND_EPS) {
+              d.pause();
+              d.currentTime = 0;
+              musicModeRef.current = 'game';
+              void g.play().catch(() => {});
+            } else if (b >= 1 - DISCO_AUDIO_BLEND_EPS) {
+              g.pause();
+              musicModeRef.current = 'disco';
+              void d.play().catch(() => {});
+            } else {
+              musicModeRef.current = 'game';
+              void g.play().catch(() => {});
+              void d.play().catch(() => {});
+            }
+          }
+        }
       }
 
       runDistanceRef.current += scroll;
@@ -2068,7 +2085,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [screen, outcome, paintGameFrame, playLaugh, playOrderPickup]);
+  }, [ensureMusicElements, screen, outcome, paintGameFrame, playLaugh, playOrderPickup, setMusicMode]);
 
   useEffect(() => {
     // Ensure music never plays in the menu state or after a loss.
@@ -2076,6 +2093,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       gameMusicRef.current?.pause();
       discoMusicRef.current?.pause();
       musicModeRef.current = 'none';
+      discoAudioBlendRef.current = 0;
+      discoVisualBlendRef.current = 0;
     }
   }, [screen, outcome]);
 
