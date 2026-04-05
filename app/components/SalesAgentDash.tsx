@@ -444,7 +444,8 @@ function tradeStandLayout(
   canvasH: number,
   depthScale = 1
 ): { standW: number; standH: number } {
-  let standH = Math.max(110, Math.min(canvasH * 0.29, 158));
+  /** ~1.5× prior size so backdrop / logo banner is much taller and brand marks read clearly. */
+  let standH = Math.max(165, Math.min(canvasH * 0.435, 237));
   let standW = Math.min(standH * 1.88, canvasW * 0.55, 236);
   if (standW < 124) standW = Math.min(canvasW * 0.56, 236);
   return { standW: standW * depthScale, standH: standH * depthScale };
@@ -758,11 +759,11 @@ function drawTradeStand(
   const url = c ? getTradeStandHeaderLogoUrl(c) : '';
   const isCambridgeConfectioneryStand = c?.id === 'cambridge-confectionery-company';
 
-  const tableBlockH = Math.max(22, Math.min(36, Math.round(useH * 0.32)));
+  const tableBlockH = Math.max(22, Math.min(36, Math.round(useH * 0.28)));
   const tableTopY = panelBottom - tableBlockH;
   const fasciaH = Math.max(5, Math.min(8, Math.round(useH * 0.048)));
   const backdropTop = panelTop + fasciaH + 5;
-  const backdropH = Math.max(48, tableTopY - backdropTop);
+  const backdropH = Math.max(72, tableTopY - backdropTop);
 
   const matW = standW + 22;
   const matX = x + (standW - matW) / 2;
@@ -802,8 +803,8 @@ function drawTradeStand(
   }
 
   const logoPad = Math.max(7, standW * 0.06);
-  const logoAreaTop = backdropTop + 8;
-  const logoAreaH = Math.min(backdropH - 18, backdropH * 0.68);
+  const logoAreaTop = backdropTop + 6;
+  const logoAreaH = Math.min(backdropH - 12, backdropH * 0.88);
   const logoAreaW = standW - logoPad * 2;
   ctx.fillStyle = isCambridgeConfectioneryStand ? '#000000' : '#ffffff';
   roundRectPath(ctx, x + logoPad, logoAreaTop, logoAreaW, logoAreaH, 5);
@@ -812,7 +813,7 @@ function drawTradeStand(
   ctx.stroke();
 
   const img = logos.get(url);
-  const innerPad = 6;
+  const innerPad = 5;
   const iw = logoAreaW - innerPad * 2;
   const ih = logoAreaH - innerPad * 2;
   if (img && img.complete && img.naturalWidth > 0) {
