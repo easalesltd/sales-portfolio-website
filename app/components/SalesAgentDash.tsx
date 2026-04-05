@@ -348,21 +348,13 @@ const SEASONAL_BILLBOARD_MESSAGES: readonly SeasonalMessage[] = [
 ] as const;
 
 const NEC_TRADE_BANTER: readonly string[] = [
-  'MOQ? More Questions, Obviously.',
-  "I'll badge you as 'VIP — Very In Procurement'.",
   'Our stand is carbon-neutral* (*the PDF says so).',
   'Lead time: yesterday, if you sign now.',
-  "That's not a pen — it's a commitment device.",
   'Catalogue? I memorised it. Terrifyingly.',
-  'Trade price — retail confidence.',
-  "I'll WhatsApp the SKU from a corridor.",
   'Sample? That counts as a handshake in law.',
   'Hall 5 energy, Hall 2 budget.',
-  'Let me laminate your optimism.',
-  "Buyer's journey ends at this lanyard.",
-  'MOQ stands for Mostly Quite Optional, right?',
-  'I can do net 30… net 30 seconds of thinking.',
   'Freight is feelings-based this quarter.',
+  'Everything you order will definitely arrive in April.',
 ];
 
 const HARROGATE_XMAS_TRADE_BANTER: readonly string[] = [
