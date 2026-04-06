@@ -2522,6 +2522,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const tapBelowRef = useRef<HTMLDivElement>(null);
   const leaderboardSectionRef = useRef<HTMLDivElement>(null);
   const lossScreenSubmitRef = useRef<HTMLDivElement>(null);
+  /** Ignore stale leaderboard fetch results when level changes mid-request. */
+  const leaderboardFetchGenRef = useRef(0);
   /** Main column with overflow-y-auto — reset scroll on new run so mobile isn’t stuck below the fold. */
   const mainScrollRef = useRef<HTMLDivElement>(null);
   const [screen, setScreen] = useState<'menu' | 'game'>('menu');
@@ -2572,6 +2574,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
   const loadLeaderboard = useCallback(async (levelOverride?: GameLevelId) => {
     const level = levelOverride ?? menuLevel;
+    const gen = ++leaderboardFetchGenRef.current;
     setGlobalLbLoading(true);
     setGlobalLbLoadError(null);
     try {
@@ -2586,32 +2589,39 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       try {
         data = (await res.json()) as typeof data;
       } catch {
+        if (gen !== leaderboardFetchGenRef.current) return;
         setGlobalLb([]);
         setGlobalLbConfigured(false);
         setGlobalLbLoadError('server');
         return;
       }
       if (!res.ok) {
+        if (gen !== leaderboardFetchGenRef.current) return;
         setGlobalLb([]);
         setGlobalLbConfigured(false);
         setGlobalLbLoadError(data.error === 'invalid_level' ? 'invalid_level' : 'server');
         return;
       }
       if (data.ok && Array.isArray(data.entries)) {
+        if (gen !== leaderboardFetchGenRef.current) return;
         setGlobalLb(data.entries);
         setGlobalLbConfigured(data.configured === true);
         setGlobalLbLoadError(null);
       } else {
+        if (gen !== leaderboardFetchGenRef.current) return;
         setGlobalLb([]);
         setGlobalLbConfigured(false);
         setGlobalLbLoadError('server');
       }
     } catch {
+      if (gen !== leaderboardFetchGenRef.current) return;
       setGlobalLb([]);
       setGlobalLbConfigured(false);
       setGlobalLbLoadError('network');
     } finally {
-      setGlobalLbLoading(false);
+      if (gen === leaderboardFetchGenRef.current) {
+        setGlobalLbLoading(false);
+      }
     }
   }, [menuLevel]);
 
@@ -2706,6 +2716,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const logoImagesRef = useRef<Map<string, HTMLImageElement>>(new Map());
   /** Set synchronously on collision so resize (canvas bitmap clear) can repaint before React commits `outcome`. */
   const lostDuringRunRef = useRef(false);
+  /** HUD "Best" for active run — avoids `localStorage` reads every animation frame (slow on mobile). */
+  const personalBestHudRef = useRef(0);
   const discoWasActiveRef = useRef(false);
   /** One-shot disco per run: idle until score threshold, then playing until track ends. */
   const discoSegmentRef = useRef<'idle' | 'playing' | 'done'>('idle');
@@ -3088,7 +3100,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const displayScore = Math.floor(scoreRef.current);
       const venueLabel = hudVenueLabel(activeGameLevelRef.current, scoreRef.current);
       const venueHue = hudVenueHue(activeGameLevelRef.current, scoreRef.current);
-      const bestForLevel = readHighScoreForLevel(activeGameLevelRef.current);
+      const bestForLevel = personalBestHudRef.current;
       const hudPadL = 10;
       const hudPadR = 10;
       const hudX = 8;
@@ -3261,6 +3273,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     scoreRef.current = 0;
     runDistanceRef.current = 0;
     const level0 = activeGameLevelRef.current;
+    personalBestHudRef.current = readHighScoreForLevel(level0);
     if (isTradeShowLevel(level0)) {
       const obsAdv0 = tradeShowObstacleAdvancePx(level0);
       const stAdv0 = tradeShowStandAdvancePx(level0);
@@ -4230,11 +4243,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                       <>Could not load scores. Tap Refresh or try again shortly.</>
                     ) : (
                       <>
-                        Global boards for every level, <span className="text-neutral-400">including Bonus Level</span>,
-                        use the same Upstash Redis setup. Add{' '}
-                        <code className="text-neutral-400">UPSTASH_REDIS_REST_URL</code> and{' '}
-                        <code className="text-neutral-400">UPSTASH_REDIS_REST_TOKEN</code> to your host environment
-                        (see <code className="text-neutral-400">.env.example</code>), then redeploy.
+                        Global boards need a Redis REST API on the server (every level, including Bonus). Use either{' '}
+                        <code className="text-neutral-400">UPSTASH_REDIS_REST_URL</code> +{' '}
+                        <code className="text-neutral-400">UPSTASH_REDIS_REST_TOKEN</code>, or Vercel Storage / KV:{' '}
+                        <code className="text-neutral-400">KV_REST_API_URL</code> +{' '}
+                        <code className="text-neutral-400">KV_REST_API_TOKEN</code>. See{' '}
+                        <code className="text-neutral-400">.env.example</code>, then redeploy.
                       </>
                     )}
                   </p>
@@ -4423,10 +4437,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                         <>Leaderboard request failed. Try Choose level → Refresh, or Play again.</>
                       ) : (
                         <>
-                          Bonus Level is not a separate system: global boards need Upstash Redis on this deployment.
-                          Set <code className="text-neutral-400">UPSTASH_REDIS_REST_URL</code> and{' '}
-                          <code className="text-neutral-400">UPSTASH_REDIS_REST_TOKEN</code> (e.g. in Vercel →
-                          Environment Variables), redeploy, and the submit form will work here like on other levels.
+                          Global boards need Redis REST credentials on this host (Bonus uses the same API as other
+                          levels). Set either Upstash{' '}
+                          <code className="text-neutral-400">UPSTASH_REDIS_REST_URL</code> +{' '}
+                          <code className="text-neutral-400">UPSTASH_REDIS_REST_TOKEN</code>, or Vercel KV{' '}
+                          <code className="text-neutral-400">KV_REST_API_URL</code> +{' '}
+                          <code className="text-neutral-400">KV_REST_API_TOKEN</code>, then redeploy.
                         </>
                       )}
                     </p>
