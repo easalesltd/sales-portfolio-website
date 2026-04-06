@@ -3378,6 +3378,37 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     [menuLevel, startGame]
   );
 
+  useEffect(() => {
+    if (screen !== 'menu') return;
+    const levelIds = GAME_LEVELS.map((l) => l.id);
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target;
+      if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t instanceof HTMLSelectElement) {
+        return;
+      }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const idx = levelIds.indexOf(menuLevel);
+        if (idx < 0) return;
+        const next =
+          e.key === 'ArrowDown'
+            ? levelIds[(idx + 1) % levelIds.length]!
+            : levelIds[(idx - 1 + levelIds.length) % levelIds.length]!;
+        setMenuLevel(next);
+        secondTapSameLevelRef.current = null;
+        return;
+      }
+      if (e.key === 'Enter' || e.code === 'Space') {
+        e.preventDefault();
+        activeGameLevelRef.current = menuLevel;
+        secondTapSameLevelRef.current = null;
+        startGame();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [screen, menuLevel, startGame]);
+
   const jump = useCallback(() => {
     if (outcome !== null) return;
     if (pyRef.current >= 0 && vyRef.current >= 0) {
@@ -4187,7 +4218,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                     onClick={() => onMenuLevelCardClick(lv.id)}
                     className={`rounded-lg border px-2.5 py-1.5 text-left transition-colors sm:px-3 ${
                       menuLevel === lv.id
-                        ? 'border-teal-500 bg-teal-950/35 ring-1 ring-teal-500/40'
+                        ? 'border-teal-400 bg-teal-950/40 animate-arcade-menu-pulse'
                         : 'border-neutral-600 bg-neutral-800/45 hover:bg-neutral-800'
                     }`}
                   >
@@ -4457,8 +4488,17 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         </div>
 
         <p className="shrink-0 border-t border-neutral-800 px-3 py-1.5 text-center text-[11px] text-neutral-500 sm:px-4 sm:py-2 sm:text-xs">
-          <span className="sm:hidden">Touch screen to jump</span>
-          <span className="hidden sm:inline">Click or press Space to jump</span>
+          {screen === 'menu' ? (
+            <>
+              <span className="sm:hidden">↑ ↓ change level · tap row twice to start</span>
+              <span className="hidden sm:inline">↑ ↓ change level · Enter or Space to start · tap a row twice to start</span>
+            </>
+          ) : (
+            <>
+              <span className="sm:hidden">Touch screen to jump</span>
+              <span className="hidden sm:inline">Click or press Space to jump</span>
+            </>
+          )}
         </p>
       </div>
     </div>

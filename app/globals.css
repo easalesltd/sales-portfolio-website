@@ -20,6 +20,36 @@
   animation: fadeSlideUp 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
+/* Sales Agent Dash — level row highlight (arcade-style attract pulse) */
+@keyframes arcade-menu-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(45, 212, 191, 0.55),
+      0 0 16px rgba(34, 211, 238, 0.22),
+      inset 0 0 18px rgba(13, 148, 136, 0.08);
+  }
+  50% {
+    box-shadow:
+      0 0 0 2px rgba(94, 234, 212, 0.95),
+      0 0 32px rgba(45, 212, 191, 0.5),
+      inset 0 0 26px rgba(20, 184, 166, 0.14);
+  }
+}
+
+.animate-arcade-menu-pulse {
+  animation: arcade-menu-pulse 1.05s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-arcade-menu-pulse {
+    animation: none;
+    box-shadow:
+      0 0 0 1px rgba(45, 212, 191, 0.55),
+      0 0 16px rgba(34, 211, 238, 0.22);
+  }
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
