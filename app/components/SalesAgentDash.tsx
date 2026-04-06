@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BONUS_COLLECTIBLE_SRCS } from '@/app/data/bonus-game-collectibles';
 import { companies } from '@/app/data/companies';
 import { type GameLevelId } from '@/app/lib/game-levels';
@@ -3352,13 +3352,36 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
     const scrollEl = mainScrollRef.current;
     if (scrollEl) {
-      scrollEl.scrollTop = 0;
-      requestAnimationFrame(() => {
+      const snap = () => {
         scrollEl.scrollTop = 0;
         scrollEl.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      };
+      snap();
+      requestAnimationFrame(() => {
+        snap();
+        requestAnimationFrame(snap);
       });
     }
   }, [pauseAllLaugh, pauseAllOrderPickup, primeHtmlAudioUnlockSilently, setMusicMode]);
+
+  /** After "Play again", DOM shrinks — scroll once layout has removed the game-over block so the canvas is visible. */
+  const prevOutcomeForMainScrollRef = useRef<null | 'lost'>(null);
+  useLayoutEffect(() => {
+    const prev = prevOutcomeForMainScrollRef.current;
+    prevOutcomeForMainScrollRef.current = outcome;
+    if (screen !== 'game' || outcome !== null) return;
+    if (prev !== 'lost') return;
+    const el = mainScrollRef.current;
+    if (!el) return;
+    el.scrollTop = 0;
+    el.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    requestAnimationFrame(() => {
+      const el2 = mainScrollRef.current;
+      if (!el2) return;
+      el2.scrollTop = 0;
+      el2.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    });
+  }, [screen, outcome]);
 
   const onMenuLevelCardClick = useCallback(
     (lv: GameLevelId) => {
