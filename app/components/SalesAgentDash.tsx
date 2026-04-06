@@ -2676,7 +2676,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const discoBallDropRef = useRef(0);
   /** 0 = normal look, 1 = full disco overlay (smooth in/out). */
   const discoVisualBlendRef = useRef(0);
-  /** Countdown frames to show “Nice order” after grabbing an order tablet. */
+  /** Countdown frames for order pickup toast (“Added to Order” on bonus, “Nice order” elsewhere). */
   const niceOrderMessageFramesRef = useRef(0);
   /** Bonus level: wall-clock next heat-wave start (`performance.now()`). */
   const bonusNextHeatWaveAtMsRef = useRef(Number.POSITIVE_INFINITY);
@@ -3077,7 +3077,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         const opacity = Math.min(1, niceFrames / 9);
         ctx.save();
         ctx.globalAlpha = 0.96 * opacity;
-        const msg = 'Nice order';
+        const msg = runLvl === 'bonus' ? 'Added to Order' : 'Nice order';
         const fs = Math.min(20, Math.max(15, Math.floor(W * 0.048)));
         ctx.font = `bold ${fs}px system-ui, sans-serif`;
         const tw = ctx.measureText(msg).width;
