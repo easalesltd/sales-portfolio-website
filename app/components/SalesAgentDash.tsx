@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { BONUS_COLLECTIBLE_SRCS } from '@/app/data/bonus-game-collectibles';
 import { companies } from '@/app/data/companies';
 import { type GameLevelId } from '@/app/lib/game-levels';
 
@@ -14,8 +15,12 @@ const GAME_LEVELS: readonly { id: GameLevelId; title: string; blurb: string }[] 
   {
     id: 'harrogate',
     title: 'Harrogate Xmas Show',
-    blurb:
-      'Hardest venue: a bit faster than the NEC with festive trees, reindeer, and sleighs — busier hall, slightly trickier timing.',
+    blurb: 'Hardest: faster hall; festive trees, reindeer & sleighs.',
+  },
+  {
+    id: 'bonus',
+    title: 'Bonus Level',
+    blurb: 'Neon bonus room — dodge fire, grab every bonus pickup.',
   },
 ] as const;
 
@@ -53,6 +58,21 @@ const ORDER_W = 40;
 const ORDER_H = 48;
 /** Hitbox / draw position: distance from ground up to the top edge of the tablet. */
 const ORDER_ABOVE_GROUND = 112;
+/** Bonus collectibles — larger on screen (same feet-from-ground as default tablets). */
+const BONUS_ORDER_W = 78;
+const BONUS_ORDER_H = 96;
+const BONUS_ORDER_ABOVE_GROUND = ORDER_ABOVE_GROUND - ORDER_H + BONUS_ORDER_H;
+
+function orderPickupSizeForLevel(level: GameLevelId): { w: number; h: number; aboveGround: number } {
+  if (level === 'bonus') {
+    return { w: BONUS_ORDER_W, h: BONUS_ORDER_H, aboveGround: BONUS_ORDER_ABOVE_GROUND };
+  }
+  return { w: ORDER_W, h: ORDER_H, aboveGround: ORDER_ABOVE_GROUND };
+}
+
+function orderPickupTop(groundY: number, level: GameLevelId): number {
+  return groundY - orderPickupSizeForLevel(level).aboveGround;
+}
 /** HUD toast frames after collecting an order pickup */
 const NICE_ORDER_MESSAGE_FRAMES = 42;
 /** Min horizontal gap between a new order tablet and obstacles / billboards / other orders (world px). */
@@ -113,10 +133,15 @@ const NEC_DISCO_MUSIC_SRC = encodeURI('/Audio/NEC Disco Music.m4a');
 const NEC_GAME_MUSIC_SRC = encodeURI('/Audio/Spring Fair Music.m4a');
 const HARROGATE_GAME_MUSIC_SRC = encodeURI('/Audio/Xmas Music.m4a');
 const HARROGATE_DISCO_MUSIC_SRC = encodeURI('/Audio/Xmas Disco Mode.m4a');
+const BONUS_GAME_MUSIC_SRC = encodeURI('/Audio/Bonus Round Music.m4a');
+const BONUS_HELL_MUSIC_SRC = encodeURI('/Audio/Bonus Round Hell.m4a');
+/** Wall-clock fallback length (`Bonus Round Hell.m4a` compressed AAC ~49k). */
+const BONUS_HELL_TRACK_FALLBACK_SEC = 20.827;
 
 function gameMusicSrcForLevel(level: GameLevelId): string {
   if (level === 'harrogate') return HARROGATE_GAME_MUSIC_SRC;
   if (level === 'nec') return NEC_GAME_MUSIC_SRC;
+  if (level === 'bonus') return BONUS_GAME_MUSIC_SRC;
   return GAME_MUSIC_SRC;
 }
 
@@ -145,6 +170,16 @@ function syncDiscoBgmElement(a: HTMLAudioElement, level: GameLevelId): void {
   a.dataset.salesDashDisco = path;
   a.pause();
   a.src = path;
+  a.load();
+  a.loop = false;
+  a.volume = DISCO_MUSIC_VOLUME;
+}
+
+function syncBonusHellBgmElement(a: HTMLAudioElement): void {
+  if (a.dataset.salesDashHell === BONUS_HELL_MUSIC_SRC) return;
+  a.dataset.salesDashHell = BONUS_HELL_MUSIC_SRC;
+  a.pause();
+  a.src = BONUS_HELL_MUSIC_SRC;
   a.load();
   a.loop = false;
   a.volume = DISCO_MUSIC_VOLUME;
@@ -234,10 +269,18 @@ const TRADE_SHOW_OBSTACLE_KINDS = ['trade_clipboard', 'trade_coffee', 'trade_box
 /** Harrogate — festive jump hazards only. */
 const HARROGATE_OBSTACLE_KINDS = ['hg_xmas_tree', 'hg_reindeer', 'hg_sleigh'] as const;
 
+/** Bonus room — only fire hazards (drawn as emoji). */
+const BONUS_OBSTACLE_KINDS = ['bonus_fire_emoji'] as const;
+
 type RoadObstacleKind = (typeof ROAD_OBSTACLE_KINDS)[number];
 type TradeShowObstacleKind = (typeof TRADE_SHOW_OBSTACLE_KINDS)[number];
 type HarrogateObstacleKind = (typeof HARROGATE_OBSTACLE_KINDS)[number];
-type ObstacleKind = RoadObstacleKind | TradeShowObstacleKind | HarrogateObstacleKind;
+type BonusObstacleKind = (typeof BONUS_OBSTACLE_KINDS)[number];
+type ObstacleKind =
+  | RoadObstacleKind
+  | TradeShowObstacleKind
+  | HarrogateObstacleKind
+  | BonusObstacleKind;
 
 function obstacleKindsForLevel(level: GameLevelId): readonly ObstacleKind[] {
   switch (level) {
@@ -247,6 +290,8 @@ function obstacleKindsForLevel(level: GameLevelId): readonly ObstacleKind[] {
       return TRADE_SHOW_OBSTACLE_KINDS;
     case 'harrogate':
       return HARROGATE_OBSTACLE_KINDS;
+    case 'bonus':
+      return BONUS_OBSTACLE_KINDS;
   }
 }
 
@@ -290,12 +335,17 @@ function hudVenueLabel(level: GameLevelId, score: number): string {
       return `NEC • ${hallForTradeShowScore(score)}`;
     case 'harrogate':
       return `Harrogate • ${hallForTradeShowScore(score)}`;
+    case 'bonus':
+      return ['Bonus run', 'Loot room', 'Extra mile', 'Side quest'][Math.floor(score / 600) % 4];
   }
 }
 
 function hudVenueHue(level: GameLevelId, score: number): string {
   if (level === 'road') {
     return ['#6d28d9', '#047857', '#b91c1c', '#0369a1'][Math.floor(score / 500) % 4];
+  }
+  if (level === 'bonus') {
+    return ['#eab308', '#f472b6', '#22d3ee', '#a78bfa'][Math.floor(score / 500) % 4];
   }
   const hallIdx = Math.floor(score / 500) % 5;
   if (level === 'nec') {
@@ -311,13 +361,21 @@ interface Obstacle {
   kind: ObstacleKind;
   /** Collision height from ground when less than full visual `h` (e.g. smoke above the car). */
   collisionH?: number;
+  /** Bonus fire only: phase (rad) for horizontal sway. */
+  swayPhase?: number;
+  /** Bonus fire only: lateral offset from `x`, recomputed each frame after scroll. */
+  swayOffset?: number;
 }
 
-/** Floating iPad-style “order” pickup (bonus score). Position uses same `x` scroll as obstacles; Y derived from `groundY`. */
+/** Floating iPad-style “order” pickup (bonus score). Position uses same `x` scroll as obstacles; Y is derived from `groundY`. */
 interface OrderPickup {
   x: number;
   w: number;
   h: number;
+  /** Bonus level: draw this asset from `logoImagesRef` instead of the ORDER tablet. */
+  collectibleSrc?: string;
+  /** Bonus level only: mystery box — random effect + toast on pickup. */
+  isMysteryBox?: boolean;
 }
 
 interface Billboard {
@@ -725,11 +783,13 @@ function isOrderSpawnBlocked(
   gameLevel: GameLevelId
 ): boolean {
   const pad = ORDER_ASSET_CLEARANCE_PX;
+  const spawnW = orderPickupSizeForLevel(gameLevel).w;
   const a0 = spawnX - pad;
-  const a1 = spawnX + ORDER_W + pad;
+  const a1 = spawnX + spawnW + pad;
 
   for (const o of obstacles) {
-    if (!(a1 < o.x || a0 > o.x + o.w)) return true;
+    const ox = obstacleEffectiveLeft(o);
+    if (!(a1 < ox || a0 > ox + o.w)) return true;
   }
   for (const b of billboards) {
     const bw = approxForegroundSignWidth(b, canvasW, canvasH, gameLevel);
@@ -1218,6 +1278,8 @@ function dimsFor(kind: ObstacleKind): { w: number; h: number } {
       return { w: 72, h: 58 };
     case 'hg_sleigh':
       return { w: 96, h: 56 };
+    case 'bonus_fire_emoji':
+      return { w: 76, h: 84 };
   }
 }
 
@@ -1290,6 +1352,133 @@ function fillTextScaledCenter(
 
 /** Hitbox excludes top smoke puffs so jumping through smoke is fair. */
 const BROKEN_CAR_COLLISION_H = 44;
+/** Tall emoji/glow art; only the lower flame band is lethal (same idea as the car). */
+const BONUS_FIRE_COLLISION_H = 40;
+/** Horizontal sway (px); `swayOffset` updated each tick from world run distance. */
+const BONUS_FIRE_SWAY_PX = 16;
+const BONUS_FIRE_SWAY_FREQ = 0.0095;
+/** Bonus Hell Mode (replaces disco there): score gate, lasts one Hell track. */
+const BONUS_HELL_MIN_SCORE = 5000;
+const HELL_FIRE_VISUAL_MULT = 1.14;
+const HELL_FIRE_COLLISION_MULT = 1.12;
+const HELL_FIRE_SWAY_MULT = 1.28;
+/** Wall-clock: harder stretch every interval (bonus only). */
+const BONUS_HEAT_WAVE_INTERVAL_MS = 90_000;
+const BONUS_HEAT_WAVE_DURATION_MS = 10_000;
+const BONUS_HEAT_WAVE_SCROLL_MULT = 1.22;
+const BONUS_HEAT_WAVE_SWAY_MULT = 1.72;
+const BONUS_PARTICLE_CAP = 72;
+const HEAT_WAVE_HUD_FRAMES = 66;
+/** Rare bonus pickup — random buff on collect; toast explains outcome. */
+const MYSTERY_BOX_SPAWN_CHANCE = 0.2;
+const MYSTERY_JACKPOT_SCORE = 950;
+const BONUS_SLOWMO_DURATION_MS = 5200;
+/** World scroll during slow-mo; same factor scales player physics so jump timing still matches fire. */
+const BONUS_SLOWMO_SCROLL_MULT = 0.56;
+const BONUS_MYSTERY_TOAST_FRAMES = 96;
+/** Square mystery pickup — smaller than normal bonus collectibles; bottom aligns with them. */
+const MYSTERY_BOX_SIDE = 58;
+
+function rollBonusMysteryEffect(): 'jackpot' | 'slowmo' | 'shield' {
+  const r = Math.random();
+  if (r < 1 / 3) return 'jackpot';
+  if (r < 2 / 3) return 'slowmo';
+  return 'shield';
+}
+
+function drawBonusToastBox(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  _H: number,
+  text: string,
+  opacity: number
+) {
+  const lines = text.split('\n').filter(Boolean);
+  if (lines.length === 0) return;
+  const fsTitle = Math.min(20, Math.max(15, W * 0.045));
+  const fsBody = Math.min(15, Math.max(12, W * 0.034));
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  let maxW = 0;
+  ctx.font = `bold ${fsTitle}px system-ui, sans-serif`;
+  maxW = Math.max(maxW, ctx.measureText(lines[0]!).width);
+  for (let i = 1; i < lines.length; i++) {
+    ctx.font = `${fsBody}px system-ui, sans-serif`;
+    maxW = Math.max(maxW, ctx.measureText(lines[i]!).width);
+  }
+  const padX = 20;
+  const padY = 14;
+  const lineGap = 8;
+  const bodyLines = Math.max(0, lines.length - 1);
+  const boxW = maxW + padX * 2;
+  const boxH = padY * 2 + fsTitle + (bodyLines > 0 ? lineGap + bodyLines * (fsBody + 3) : 0);
+  const bx = (W - boxW) / 2;
+  const by = Math.floor(_H * 0.34);
+  ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+  roundRectPath(ctx, bx, by, boxW, boxH, 14);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(250, 204, 21, 0.9)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#fef3c7';
+  ctx.font = `bold ${fsTitle}px system-ui, sans-serif`;
+  let ty = by + padY + fsTitle * 0.8;
+  ctx.fillText(lines[0]!, bx + boxW / 2, ty);
+  if (bodyLines > 0) {
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = `${fsBody}px system-ui, sans-serif`;
+    ty += lineGap;
+    for (let li = 1; li < lines.length; li++) {
+      ty += fsBody;
+      ctx.fillText(lines[li]!, bx + boxW / 2, ty);
+      ty += 3;
+    }
+  }
+  ctx.textAlign = 'left';
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function bonusFireSwayOffset(runDist: number, phase: number, pxScale = 1): number {
+  return Math.sin(runDist * BONUS_FIRE_SWAY_FREQ + phase) * BONUS_FIRE_SWAY_PX * pxScale;
+}
+
+interface BonusParticle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  phase: number;
+}
+
+function drawBonusParticleTrail(
+  ctx: CanvasRenderingContext2D,
+  parts: readonly BonusParticle[],
+  heatWave: boolean
+) {
+  for (const p of parts) {
+    const a = Math.min(1, p.life) * 0.88;
+    if (a < 0.04) continue;
+    const r = 1.1 + (1 - p.life) * 2.4;
+    ctx.fillStyle = heatWave
+      ? `rgba(255, ${120 + Math.floor(100 * p.life)}, ${60 + Math.floor(40 * p.life)}, ${a})`
+      : `rgba(253, 224, ${90 + Math.floor(120 * p.life)}, ${a})`;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = `rgba(255,255,255,${a * 0.35})`;
+    ctx.beginPath();
+    ctx.arc(p.x - r * 0.35, p.y - r * 0.35, r * 0.35, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function obstacleEffectiveLeft(o: Obstacle): number {
+  return o.x + (o.swayOffset ?? 0);
+}
 
 /** Road strip + image scaled into obstacle box; sprite bottom flush with ground (`top + h`). */
 function drawObstacleImageOnFloor(
@@ -1371,13 +1560,81 @@ function drawObstacleImageOnFloor(
   }
 }
 
-function orderPickupTop(groundY: number): number {
-  return groundY - ORDER_ABOVE_GROUND;
-}
-
-function drawOrderPickup(ctx: CanvasRenderingContext2D, o: OrderPickup, groundY: number) {
-  const top = orderPickupTop(groundY);
+function drawOrderPickup(
+  ctx: CanvasRenderingContext2D,
+  o: OrderPickup,
+  groundY: number,
+  level: GameLevelId,
+  logos: Map<string, HTMLImageElement>
+) {
   const { x, w, h } = o;
+  let top = orderPickupTop(groundY, level);
+  if (o.isMysteryBox && level === 'bonus') {
+    top = top + BONUS_ORDER_H - h;
+  }
+  if (o.isMysteryBox) {
+    const r = 4;
+    ctx.save();
+    ctx.shadowColor = 'rgba(250, 204, 21, 0.75)';
+    ctx.shadowBlur = 14;
+    ctx.shadowOffsetY = 0;
+    const g = ctx.createLinearGradient(x, top, x + w, top + h);
+    g.addColorStop(0, '#fcd34d');
+    g.addColorStop(0.35, '#f59e0b');
+    g.addColorStop(0.7, '#ea580c');
+    g.addColorStop(1, '#a21caf');
+    ctx.fillStyle = g;
+    roundRectPath(ctx, x - 2, top - 2, w + 4, h + 4, r + 2);
+    ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 3;
+    roundRectPath(ctx, x - 1, top - 1, w + 2, h + 2, r + 1);
+    ctx.stroke();
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = 2;
+    roundRectPath(ctx, x, top, w, h, r);
+    ctx.stroke();
+
+    const fs = Math.min(32, Math.max(20, Math.floor(w * 0.48)));
+    const cx = x + w / 2;
+    const cy = top + h / 2;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = `900 ${fs}px system-ui, -apple-system, sans-serif`;
+    const lw = Math.max(2.5, fs * 0.14);
+    ctx.strokeStyle = '#0f172a';
+    ctx.lineWidth = lw;
+    ctx.lineJoin = 'round';
+    ctx.miterLimit = 2;
+    ctx.strokeText('?', cx, cy);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('?', cx, cy);
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+    return;
+  }
+  const src = o.collectibleSrc;
+  if (src) {
+    const img = logos.get(src);
+    if (img && img.complete && img.naturalWidth > 0) {
+      const iw = img.naturalWidth;
+      const ih = img.naturalHeight;
+      const scale = Math.min(w / iw, h / ih);
+      const dw = iw * scale;
+      const dh = ih * scale;
+      const dx = x + (w - dw) / 2;
+      const dy = top + (h - dh) / 2;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,0.28)';
+      ctx.shadowBlur = 5;
+      ctx.shadowOffsetY = 2;
+      ctx.drawImage(img, dx, dy, dw, dh);
+      ctx.restore();
+    }
+    return;
+  }
+
   const rBezel = 5;
   ctx.fillStyle = '#94a3b8';
   roundRectPath(ctx, x - 1, top - 1, w + 2, h + 2, rBezel + 1);
@@ -1418,7 +1675,8 @@ function drawObstacle(
   ctx: CanvasRenderingContext2D,
   o: Obstacle,
   top: number,
-  gameImages: Map<string, HTMLImageElement>
+  gameImages: Map<string, HTMLImageElement>,
+  bonusHellFireScale = 1
 ) {
   const { x, w, h, kind } = o;
 
@@ -1634,6 +1892,44 @@ function drawObstacle(
       drawObstacleImageOnFloor(ctx, x, top, w, h, gameImages.get(SLEIGH_GAME_PNG_SRC), 'sleigh');
       break;
     }
+    case 'bonus_fire_emoji': {
+      const x0 = obstacleEffectiveLeft(o);
+      const bottom = top + h;
+      const s = bonusHellFireScale;
+      const th = h * s;
+      const tw = w * s;
+      const x0s = x0 + (w - tw) / 2;
+      const cx = x0s + tw * 0.5;
+      const baseY = bottom - 2;
+      const glowR = Math.max(18, tw * 0.42);
+      const rg = ctx.createRadialGradient(cx, baseY - 8, 2, cx, baseY, glowR);
+      rg.addColorStop(0, 'rgba(255, 250, 200, 0.95)');
+      rg.addColorStop(0.35, 'rgba(255, 140, 40, 0.85)');
+      rg.addColorStop(0.7, 'rgba(220, 60, 20, 0.55)');
+      rg.addColorStop(1, 'rgba(80, 20, 10, 0)');
+      ctx.fillStyle = rg;
+      ctx.beginPath();
+      ctx.ellipse(cx, baseY - 4, glowR, glowR * 0.55, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(cx, bottom + 2, glowR * 0.65, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      const em = Math.max(44, Math.min(84, Math.floor(th * 1.02)));
+      ctx.font = `${em}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",system-ui,sans-serif`;
+      ctx.shadowColor = 'rgba(255, 130, 40, 1)';
+      ctx.shadowBlur = 14;
+      ctx.fillText('🔥', cx, bottom + 4);
+      ctx.shadowBlur = 0;
+      ctx.fillText('🔥', cx, bottom + 4);
+      ctx.restore();
+      break;
+    }
   }
 }
 
@@ -1660,6 +1956,53 @@ function drawRoadBackdrop(
   ctx.arc(W - cloudShift + 62, 48, 26, 0, Math.PI * 2);
   ctx.arc(W - cloudShift + 88, 52, 20, 0, Math.PI * 2);
   ctx.fill();
+}
+
+/** Abstract “bonus room” — not road / NEC / Harrogate. */
+function drawBonusBackdrop(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+  groundY: number,
+  score: number
+) {
+  const sky = ctx.createLinearGradient(0, 0, 0, groundY + 24);
+  sky.addColorStop(0, '#0f0a1f');
+  sky.addColorStop(0.4, '#1e1b4b');
+  sky.addColorStop(1, '#4c1d95');
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, W, groundY + 8);
+
+  const drift = (score * 0.22) % 280;
+  ctx.strokeStyle = 'rgba(250,204,21,0.12)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 9; i++) {
+    const x0 = -drift + i * 110;
+    ctx.beginPath();
+    ctx.moveTo(x0, 18);
+    ctx.lineTo(x0 + 80, groundY - 30);
+    ctx.stroke();
+  }
+  ctx.fillStyle = 'rgba(250,204,21,0.5)';
+  for (let i = 0; i < 14; i++) {
+    const px = ((i * 73 + drift * 1.4) % (W + 36)) - 18;
+    const py = 24 + (i * 19) % Math.max(32, groundY - 70);
+    ctx.globalAlpha = 0.35 + (i % 4) * 0.1;
+    ctx.beginPath();
+    ctx.arc(px, py, 1.8 + (i % 3) * 0.6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  const floor = ctx.createLinearGradient(0, groundY, 0, H);
+  floor.addColorStop(0, '#312e81');
+  floor.addColorStop(1, '#1e1b4b');
+  ctx.fillStyle = floor;
+  ctx.fillRect(0, groundY, W, H - groundY);
+  ctx.fillStyle = 'rgba(251,191,36,0.45)';
+  ctx.fillRect(0, groundY, W, 3);
+  ctx.fillStyle = 'rgba(15,23,42,0.35)';
+  ctx.fillRect(0, groundY + 3, W, 6);
 }
 
 /** Festive string lights along the hall ceiling (Harrogate only — not a gameplay hazard). */
@@ -2012,6 +2355,23 @@ function drawDiscoFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, g
   }
 }
 
+function drawHellFlashes(ctx: CanvasRenderingContext2D, W: number, H: number, groundY: number) {
+  const t = performance.now() * 0.0042;
+  const beat = Math.sin(t * 5.5) * 0.5 + 0.5;
+  const n = 5;
+  for (let i = 0; i < n; i++) {
+    const x = (W / n) * i - 2;
+    ctx.fillStyle = `rgba(220, 38, 38, ${0.07 + beat * 0.12})`;
+    ctx.fillRect(x, 0, W / n + 5, groundY + 16);
+    ctx.fillStyle = `rgba(234, 88, 12, ${0.05 + beat * 0.08})`;
+    ctx.fillRect(x + 4, 0, W / n - 2, groundY + 12);
+  }
+  ctx.fillStyle = `rgba(254, 243, 199, ${0.035 + beat * 0.06})`;
+  ctx.fillRect(0, 0, W, groundY + 8);
+  ctx.fillStyle = `rgba(127, 29, 29, ${0.08 + beat * 0.05})`;
+  ctx.fillRect(0, groundY - 10, W, H - groundY + 12);
+}
+
 function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: number) {
   const cx = W / 2;
   const ballR = 0.5 * Math.min(38, Math.max(24, W * 0.082));
@@ -2304,6 +2664,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const discoWasActiveRef = useRef(false);
   /** One-shot disco per run: idle until score threshold, then playing until track ends. */
   const discoSegmentRef = useRef<'idle' | 'playing' | 'done'>('idle');
+  /** Bonus only: Hell segment (separate audio), replaces disco on that level. */
+  const bonusHellSegmentRef = useRef<'idle' | 'playing' | 'done'>('idle');
+  const bonusHellWallEndMsRef = useRef(0);
+  const bonusHellSegmentStartWallMsRef = useRef(0);
   /** Wall-clock end if disco clip metadata is not ready in time. */
   const discoWallEndMsRef = useRef(0);
   /** When audio is off, disco visuals follow wall time from this moment. */
@@ -2314,6 +2678,17 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const discoVisualBlendRef = useRef(0);
   /** Countdown frames to show “Nice order” after grabbing an order tablet. */
   const niceOrderMessageFramesRef = useRef(0);
+  /** Bonus level: wall-clock next heat-wave start (`performance.now()`). */
+  const bonusNextHeatWaveAtMsRef = useRef(Number.POSITIVE_INFINITY);
+  /** Bonus level: heat wave active until this wall time (compare with `performance.now()`). */
+  const bonusHeatWaveEndMsRef = useRef(0);
+  /** Frames to show “Heat wave!” banner. */
+  const heatWaveHudFramesRef = useRef(0);
+  const bonusParticlesRef = useRef<BonusParticle[]>([]);
+  const bonusSlowMoEndMsRef = useRef(0);
+  const bonusShieldChargesRef = useRef(0);
+  const bonusToastFramesRef = useRef(0);
+  const bonusToastMessageRef = useRef('');
   /** While true, game tick skips `setMusicMode` so BGM does not overlap one-shot priming (mobile Safari). */
   const primingOneShotAudioRef = useRef(false);
   /** Bumps on each `startGame`; only the latest prime sequence may start BGM. */
@@ -2322,7 +2697,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   // Audio: start normal music when the run starts; switch to disco during disco segments.
   const gameMusicRef = useRef<HTMLAudioElement | null>(null);
   const discoMusicRef = useRef<HTMLAudioElement | null>(null);
-  const musicModeRef = useRef<'none' | 'game' | 'disco'>('none');
+  const bonusHellMusicRef = useRef<HTMLAudioElement | null>(null);
+  const musicModeRef = useRef<'none' | 'game' | 'disco' | 'hell'>('none');
   const htmlAudioUnlockRef = useRef<HTMLAudioElement | null>(null);
 
   const ensureMusicElements = useCallback(() => {
@@ -2341,28 +2717,38 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       a.volume = DISCO_MUSIC_VOLUME;
       discoMusicRef.current = a;
     }
+    if (!bonusHellMusicRef.current) {
+      const a = new Audio(BONUS_HELL_MUSIC_SRC);
+      a.loop = false;
+      a.preload = 'auto';
+      a.volume = DISCO_MUSIC_VOLUME;
+      bonusHellMusicRef.current = a;
+    }
   }, []);
 
-  const setMusicMode = useCallback((mode: 'none' | 'game' | 'disco') => {
+  const setMusicMode = useCallback((mode: 'none' | 'game' | 'disco' | 'hell') => {
     const previousMode = musicModeRef.current;
     if (previousMode === mode) return;
     musicModeRef.current = mode;
 
     const gameAudio = gameMusicRef.current;
     const discoAudio = discoMusicRef.current;
+    const hellAudio = bonusHellMusicRef.current;
 
     if (mode === 'none') {
       gameAudio?.pause();
       discoAudio?.pause();
+      hellAudio?.pause();
       return;
     }
 
-    // For 'game'/'disco', ensure elements exist before attempting to play.
+    // For 'game'/'disco'/'hell', ensure elements exist before attempting to play.
     ensureMusicElements();
 
     const gameAudio2 = gameMusicRef.current;
     const discoAudio2 = discoMusicRef.current;
-    if (!gameAudio2 || !discoAudio2) return;
+    const hellAudio2 = bonusHellMusicRef.current;
+    if (!gameAudio2 || !discoAudio2 || !hellAudio2) return;
 
     if (mode === 'game') {
       syncGameBgmElement(gameAudio2, activeGameLevelRef.current);
@@ -2370,8 +2756,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       discoAudio2.volume = DISCO_MUSIC_VOLUME;
       discoAudio2.pause();
       discoAudio2.currentTime = 0;
-      // After disco, resume main track where it left off; fresh run from menu/life uses `none` → `game`.
-      if (previousMode !== 'disco') {
+      hellAudio2.pause();
+      hellAudio2.currentTime = 0;
+      if (previousMode !== 'disco' && previousMode !== 'hell') {
         gameAudio2.currentTime = 0;
       }
       void gameAudio2.play().catch(() => {
@@ -2381,10 +2768,23 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       return;
     }
 
+    if (mode === 'hell') {
+      syncBonusHellBgmElement(hellAudio2);
+      hellAudio2.volume = DISCO_MUSIC_VOLUME;
+      discoAudio2.pause();
+      discoAudio2.currentTime = 0;
+      gameAudio2.pause();
+      hellAudio2.currentTime = 0;
+      void hellAudio2.play().catch(() => {});
+      return;
+    }
+
     // mode === 'disco' — pause main music but keep its timeline for when disco ends.
     gameAudio2.volume = GAME_MUSIC_VOLUME;
     syncDiscoBgmElement(discoAudio2, activeGameLevelRef.current);
     discoAudio2.volume = DISCO_MUSIC_VOLUME;
+    hellAudio2.pause();
+    hellAudio2.currentTime = 0;
     gameAudio2.pause();
     discoAudio2.currentTime = 0;
     void discoAudio2.play().catch(() => {});
@@ -2497,8 +2897,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     // (before React re-renders), not only after `outcome` updates.
     gameMusicRef.current?.pause();
     discoMusicRef.current?.pause();
+    bonusHellMusicRef.current?.pause();
     musicModeRef.current = 'none';
     discoSegmentRef.current = 'idle';
+    bonusHellSegmentRef.current = 'idle';
     discoVisualBlendRef.current = 0;
     pauseAllOrderPickup();
     if (!audioEnabledRef.current) return;
@@ -2534,6 +2936,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (audioEnabled) return;
     gameMusicRef.current?.pause();
     discoMusicRef.current?.pause();
+    bonusHellMusicRef.current?.pause();
     htmlAudioUnlockRef.current?.pause();
     pauseAllLaugh();
     pauseAllOrderPickup();
@@ -2546,6 +2949,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     return () => {
       gameMusicRef.current?.pause();
       discoMusicRef.current?.pause();
+      bonusHellMusicRef.current?.pause();
       htmlAudioUnlockRef.current?.pause();
       pauseAllLaugh();
       pauseAllOrderPickup();
@@ -2569,6 +2973,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const level = activeGameLevelRef.current;
       if (level === 'road') {
         drawRoadBackdrop(ctx, W, H, groundY, scoreRef.current);
+      } else if (level === 'bonus') {
+        drawBonusBackdrop(ctx, W, H, groundY, scoreRef.current);
       } else {
         drawIndoorHallBackdrop(ctx, W, H, groundY, scoreRef.current, level === 'harrogate' ? 'harrogate' : 'nec');
       }
@@ -2578,10 +2984,15 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
 
       const vBlend = discoVisualBlendRef.current;
+      const hellPlayingUi = bonusHellSegmentRef.current === 'playing';
       if (vBlend > 0.02) {
         ctx.save();
         ctx.globalAlpha = Math.min(1, vBlend);
-        drawDiscoFlashes(ctx, W, H, groundY);
+        if (activeGameLevelRef.current === 'bonus' && hellPlayingUi) {
+          drawHellFlashes(ctx, W, H, groundY);
+        } else {
+          drawDiscoFlashes(ctx, W, H, groundY);
+        }
         ctx.restore();
       }
 
@@ -2592,25 +3003,35 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       }
 
+      const hellFireDraw =
+        runLvl === 'bonus' && hellPlayingUi ? HELL_FIRE_VISUAL_MULT : 1;
       for (const o of obstaclesRef.current) {
         const top = groundY - o.h;
-        drawObstacle(ctx, o, top, logoImagesRef.current);
+        drawObstacle(ctx, o, top, logoImagesRef.current, hellFireDraw);
       }
 
-      if (!isTradeShowLevel(runLvl)) {
+      if (runLvl === 'road') {
         for (const bb of billboardsRef.current) {
           drawForegroundSign(ctx, bb, groundY, H, W, logoImagesRef.current, runLvl);
         }
       }
 
       for (const ord of ordersRef.current) {
-        drawOrderPickup(ctx, ord, groundY);
+        drawOrderPickup(ctx, ord, groundY, activeGameLevelRef.current, logoImagesRef.current);
       }
 
       const yTop = groundY + pyRef.current - ph;
+      if (runLvl === 'bonus' && bonusParticlesRef.current.length > 0) {
+        const heat = performance.now() < bonusHeatWaveEndMsRef.current;
+        drawBonusParticleTrail(ctx, bonusParticlesRef.current, heat);
+      }
       drawPlayer(ctx, px, yTop, pw, ph);
 
-      if (vBlend > 0.02 && discoBallDropRef.current > 0.02) {
+      if (
+        vBlend > 0.02 &&
+        discoBallDropRef.current > 0.02 &&
+        !(runLvl === 'bonus' && hellPlayingUi)
+      ) {
         ctx.save();
         ctx.globalAlpha = Math.min(1, vBlend);
         drawDiscoBall(ctx, W, discoBallDropRef.current);
@@ -2681,6 +3102,43 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         ctx.textBaseline = 'alphabetic';
         ctx.globalAlpha = 1;
         ctx.restore();
+      }
+
+      const heatHudFrames = heatWaveHudFramesRef.current;
+      if (heatHudFrames > 0) {
+        const opacity = Math.min(1, heatHudFrames / 10);
+        ctx.save();
+        ctx.globalAlpha = 0.95 * opacity;
+        const msg = 'Heat wave!';
+        const fs = Math.min(22, Math.max(16, Math.floor(W * 0.05)));
+        ctx.font = `bold ${fs}px system-ui, sans-serif`;
+        const tw = ctx.measureText(msg).width;
+        const boxPadX = 18;
+        const boxW = tw + boxPadX * 2;
+        const boxH = 44;
+        const bx = (W - boxW) / 2;
+        const by = Math.max(10, Math.floor(H * 0.06));
+        ctx.fillStyle = 'rgba(127, 29, 29, 0.92)';
+        roundRectPath(ctx, bx, by, boxW, boxH, 12);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.95)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = '#ffedd5';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(msg, bx + boxW / 2, by + boxH / 2 + 1);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.globalAlpha = 1;
+        ctx.restore();
+      }
+
+      const bonusToastFrames = bonusToastFramesRef.current;
+      const bonusToastMsg = bonusToastMessageRef.current;
+      if (bonusToastFrames > 0 && bonusToastMsg) {
+        const opacity = Math.min(1, bonusToastFrames / 12);
+        drawBonusToastBox(ctx, W, H, bonusToastMsg, 0.96 * opacity);
       }
     },
     []
@@ -2775,6 +3233,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     lostDuringRunRef.current = false;
     discoWasActiveRef.current = false;
     discoSegmentRef.current = 'idle';
+    bonusHellSegmentRef.current = 'idle';
+    bonusHellWallEndMsRef.current = 0;
+    bonusHellSegmentStartWallMsRef.current = 0;
     discoBallDropRef.current = 0;
     niceOrderMessageFramesRef.current = 0;
     billboardsRef.current = [];
@@ -2784,6 +3245,20 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     tradeConsecutiveStandsRef.current = 0;
     tradeConsecutiveObstaclesRef.current = 0;
     lastBillboardKindRef.current = 'company';
+    bonusParticlesRef.current = [];
+    heatWaveHudFramesRef.current = 0;
+    if (level0 === 'bonus') {
+      const t = performance.now();
+      bonusNextHeatWaveAtMsRef.current = t + BONUS_HEAT_WAVE_INTERVAL_MS;
+      bonusHeatWaveEndMsRef.current = 0;
+    } else {
+      bonusNextHeatWaveAtMsRef.current = Number.POSITIVE_INFINITY;
+      bonusHeatWaveEndMsRef.current = 0;
+    }
+    bonusSlowMoEndMsRef.current = 0;
+    bonusShieldChargesRef.current = 0;
+    bonusToastFramesRef.current = 0;
+    bonusToastMessageRef.current = '';
     setOutcome(null);
     setLastRunScore(null);
     setLastRunLevel(null);
@@ -2891,6 +3366,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       XMAS_TREE_GAME_PNG_SRC,
       REINDEER_GAME_PNG_SRC,
       SLEIGH_GAME_PNG_SRC,
+      ...BONUS_COLLECTIBLE_SRCS,
     ]) {
       if (map.has(src)) continue;
       const img = new Image();
@@ -2961,20 +3437,79 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const px = W * 0.18;
 
       const runLevel = activeGameLevelRef.current;
+      const nowWall = performance.now();
+      let bonusHeatWave = false;
+      if (runLevel === 'bonus') {
+        if (bonusHeatWaveEndMsRef.current <= nowWall && nowWall >= bonusNextHeatWaveAtMsRef.current) {
+          bonusHeatWaveEndMsRef.current = nowWall + BONUS_HEAT_WAVE_DURATION_MS;
+          bonusNextHeatWaveAtMsRef.current += BONUS_HEAT_WAVE_INTERVAL_MS;
+          heatWaveHudFramesRef.current = HEAT_WAVE_HUD_FRAMES;
+        }
+        bonusHeatWave = bonusHeatWaveEndMsRef.current > nowWall;
+      }
+
       const difficulty = 1 + Math.min(2, scoreRef.current / 4000);
-      const scroll = BASE_SCROLL * difficulty * levelScrollMultiplier(runLevel);
+      let scroll = BASE_SCROLL * difficulty * levelScrollMultiplier(runLevel);
+      if (runLevel === 'bonus' && bonusHeatWave) {
+        scroll *= BONUS_HEAT_WAVE_SCROLL_MULT;
+      }
+      const bonusSlowMoActive =
+        runLevel === 'bonus' && bonusSlowMoEndMsRef.current > nowWall;
+      if (bonusSlowMoActive) {
+        scroll *= BONUS_SLOWMO_SCROLL_MULT;
+      }
+      /** Match vertical integration to scroll scale so fire stays jumpable during mystery slow-mo. */
+      const physicsDt = bonusSlowMoActive ? BONUS_SLOWMO_SCROLL_MULT : 1;
       scoreRef.current += scroll * 0.35;
 
       const sFloor = Math.floor(scoreRef.current);
-      const lvlDisco = activeGameLevelRef.current;
+      const lvlAudio = activeGameLevelRef.current;
       let inDisco = false;
+      let inHell = false;
       const dSeg = discoSegmentRef.current;
-      if (dSeg === 'done') {
+      const hHell = bonusHellSegmentRef.current;
+
+      if (lvlAudio === 'bonus') {
+        if (hHell === 'done') {
+          inHell = false;
+        } else if (hHell === 'idle') {
+          if (sFloor >= BONUS_HELL_MIN_SCORE) {
+            bonusHellSegmentRef.current = 'playing';
+            const fallMs = BONUS_HELL_TRACK_FALLBACK_SEC * 1000 + 400;
+            bonusHellWallEndMsRef.current = performance.now() + fallMs;
+            bonusHellSegmentStartWallMsRef.current = performance.now();
+          }
+          inHell = bonusHellSegmentRef.current === 'playing';
+        } else {
+          inHell = true;
+          const aHell = bonusHellMusicRef.current;
+          const durOk =
+            !!aHell &&
+            Number.isFinite(aHell.duration) &&
+            aHell.duration > 0.05;
+          let trackDone = false;
+          if (!audioEnabledRef.current) {
+            trackDone =
+              performance.now() >=
+              bonusHellSegmentStartWallMsRef.current +
+                BONUS_HELL_TRACK_FALLBACK_SEC * 1000;
+          } else if (durOk) {
+            trackDone =
+              aHell!.ended || aHell!.currentTime >= aHell!.duration - 0.12;
+          } else {
+            trackDone = performance.now() >= bonusHellWallEndMsRef.current;
+          }
+          if (trackDone) {
+            bonusHellSegmentRef.current = 'done';
+            inHell = false;
+          }
+        }
+      } else if (dSeg === 'done') {
         inDisco = false;
       } else if (dSeg === 'idle') {
         if (sFloor >= DISCO_MIN_SCORE) {
           discoSegmentRef.current = 'playing';
-          const fallMs = discoTrackFallbackDurationSec(lvlDisco) * 1000 + 800;
+          const fallMs = discoTrackFallbackDurationSec(lvlAudio) * 1000 + 800;
           discoWallEndMsRef.current = performance.now() + fallMs;
           discoSegmentStartWallMsRef.current = performance.now();
         }
@@ -2991,7 +3526,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           trackDone =
             performance.now() >=
             discoSegmentStartWallMsRef.current +
-              discoTrackFallbackDurationSec(lvlDisco) * 1000;
+              discoTrackFallbackDurationSec(lvlAudio) * 1000;
         } else if (durOk) {
           trackDone =
             aDisco!.ended || aDisco!.currentTime >= aDisco!.duration - 0.12;
@@ -3005,7 +3540,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
 
       {
-        const tgtV = inDisco ? 1 : 0;
+        const tgtV = inDisco || inHell ? 1 : 0;
         let vb = discoVisualBlendRef.current;
         vb += (tgtV - vb) * DISCO_VISUAL_BLEND_RATE;
         if (Math.abs(vb - tgtV) < 0.012) vb = tgtV;
@@ -3021,10 +3556,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         discoBallDropRef.current = Math.max(0, discoBallDropRef.current - 0.07);
       }
 
-      const desiredMode: 'none' | 'game' | 'disco' = audioEnabledRef.current
-        ? inDisco
-          ? 'disco'
-          : 'game'
+      const desiredMode: 'none' | 'game' | 'disco' | 'hell' = audioEnabledRef.current
+        ? inHell
+          ? 'hell'
+          : inDisco
+            ? 'disco'
+            : 'game'
         : 'none';
       if (!primingOneShotAudioRef.current && musicModeRef.current !== desiredMode) {
         setMusicMode(desiredMode);
@@ -3140,7 +3677,14 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
               w: ow,
               h: oh,
               kind,
-              ...(kind === 'broken_car' ? { collisionH: BROKEN_CAR_COLLISION_H } : {}),
+              ...(kind === 'broken_car'
+                ? { collisionH: BROKEN_CAR_COLLISION_H }
+                : kind === 'bonus_fire_emoji'
+                  ? {
+                      collisionH: BONUS_FIRE_COLLISION_H,
+                      swayPhase: Math.random() * Math.PI * 2,
+                    }
+                  : {}),
             });
             tradeConsecutiveObstaclesRef.current += 1;
             tradeConsecutiveStandsRef.current = 0;
@@ -3163,11 +3707,18 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
             w: ow,
             h: oh,
             kind,
-            ...(kind === 'broken_car' ? { collisionH: BROKEN_CAR_COLLISION_H } : {}),
+            ...(kind === 'broken_car'
+              ? { collisionH: BROKEN_CAR_COLLISION_H }
+              : kind === 'bonus_fire_emoji'
+                ? {
+                    collisionH: BONUS_FIRE_COLLISION_H,
+                    swayPhase: Math.random() * Math.PI * 2,
+                  }
+                : {}),
           });
         }
 
-        if (nCompanies > 0) {
+        if (runLevel === 'road' && nCompanies > 0) {
           while (runDistanceRef.current >= nextBillboardAtRef.current) {
             nextBillboardAtRef.current += obsGap;
             const lastKind = lastBillboardKindRef.current;
@@ -3215,8 +3766,23 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       }
 
+      let bonusSwayScale = 1;
+      if (runLevel === 'bonus') {
+        bonusSwayScale =
+          (bonusHeatWave ? BONUS_HEAT_WAVE_SWAY_MULT : 1) *
+          (inHell ? HELL_FIRE_SWAY_MULT : 1);
+      }
       obstaclesRef.current = obstaclesRef.current.filter((o) => {
         o.x -= scroll;
+        if (o.kind === 'bonus_fire_emoji') {
+          o.swayOffset = bonusFireSwayOffset(
+            runDistanceRef.current,
+            o.swayPhase ?? 0,
+            bonusSwayScale
+          );
+        } else {
+          o.swayOffset = undefined;
+        }
         return o.x + o.w > -20;
       });
       billboardsRef.current = billboardsRef.current.filter((bb) => {
@@ -3243,11 +3809,26 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           nextOrderAtRef.current += ORDER_SPAWN_RETRY_PX;
         } else {
           nextOrderAtRef.current += orderSpawnGapPx(runLevel);
-          ordersRef.current.push({
-            x: spawnX,
-            w: ORDER_W,
-            h: ORDER_H,
-          });
+          const { w: ow, h: oh } = orderPickupSizeForLevel(runLevel);
+          if (runLevel === 'bonus' && Math.random() < MYSTERY_BOX_SPAWN_CHANCE) {
+            ordersRef.current.push({
+              x: spawnX,
+              w: MYSTERY_BOX_SIDE,
+              h: MYSTERY_BOX_SIDE,
+              isMysteryBox: true,
+            });
+          } else {
+            const collectibleSrc =
+              runLevel === 'bonus'
+                ? BONUS_COLLECTIBLE_SRCS[Math.floor(Math.random() * BONUS_COLLECTIBLE_SRCS.length)]
+                : undefined;
+            ordersRef.current.push({
+              x: spawnX,
+              w: ow,
+              h: oh,
+              ...(collectibleSrc ? { collectibleSrc } : {}),
+            });
+          }
         }
       }
       if (runDistanceRef.current >= nextOrderAtRef.current) {
@@ -3259,11 +3840,39 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         return ord.x + ord.w > -24;
       });
 
-      vyRef.current += GRAVITY;
-      pyRef.current += vyRef.current;
+      vyRef.current += GRAVITY * physicsDt;
+      pyRef.current += vyRef.current * physicsDt;
       if (pyRef.current >= 0) {
         pyRef.current = 0;
         vyRef.current = 0;
+      }
+
+      if (runLevel === 'bonus') {
+        const parts = bonusParticlesRef.current;
+        const yTopP = groundY + pyRef.current - ph;
+        const spawns = bonusHeatWave ? 3 : 2;
+        for (let s = 0; s < spawns; s++) {
+          parts.push({
+            x: px + pw * 0.18 + Math.random() * pw * 0.58,
+            y: yTopP + ph * 0.15 + Math.random() * ph * 0.72,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: -0.4 - Math.random() * 1.05,
+            life: 1,
+            phase: Math.random() * Math.PI * 2,
+          });
+        }
+        const lifeDecay = bonusHeatWave ? 0.039 : 0.031;
+        for (let i = parts.length - 1; i >= 0; i--) {
+          const p = parts[i]!;
+          p.x -= scroll * 0.36 + p.vx * 0.14;
+          p.y += p.vy;
+          p.vy += 0.042;
+          p.life -= lifeDecay;
+          if (p.life <= 0) parts.splice(i, 1);
+        }
+        while (parts.length > BONUS_PARTICLE_CAP) parts.shift();
+      } else {
+        bonusParticlesRef.current = [];
       }
 
       const playerTop = groundY + pyRef.current - ph;
@@ -3272,7 +3881,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const hitRight = px + pw - PLAYER_HIT_INSET_X;
       const hitTop = playerTop + PLAYER_HIT_INSET_TOP;
       const hitBottom = playerBottom - PLAYER_HIT_INSET_BOTTOM;
-      const orderTopY = orderPickupTop(groundY);
+      const orderTopY = orderPickupTop(groundY, activeGameLevelRef.current);
       const collectPad = 5;
       for (let i = ordersRef.current.length - 1; i >= 0; i--) {
         const ord = ordersRef.current[i]!;
@@ -3282,10 +3891,28 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           playerBottom > orderTopY + collectPad &&
           playerTop < orderTopY + ord.h - collectPad
         ) {
-          scoreRef.current += ORDER_BONUS_SCORE;
-          niceOrderMessageFramesRef.current = NICE_ORDER_MESSAGE_FRAMES;
           ordersRef.current.splice(i, 1);
           playOrderPickup();
+          if (ord.isMysteryBox) {
+            const roll = rollBonusMysteryEffect();
+            if (roll === 'jackpot') {
+              scoreRef.current += MYSTERY_JACKPOT_SCORE;
+              bonusToastMessageRef.current =
+                'Jackpot!\nHuge score burst from the mystery box.';
+            } else if (roll === 'slowmo') {
+              bonusSlowMoEndMsRef.current = nowWall + BONUS_SLOWMO_DURATION_MS;
+              bonusToastMessageRef.current =
+                'Slow-mo!\nScroll eases off for a few seconds — breathe.';
+            } else {
+              bonusShieldChargesRef.current += 1;
+              bonusToastMessageRef.current =
+                'Shield!\nThe next fire hit is absorbed — one charge.';
+            }
+            bonusToastFramesRef.current = BONUS_MYSTERY_TOAST_FRAMES;
+          } else {
+            scoreRef.current += ORDER_BONUS_SCORE;
+            niceOrderMessageFramesRef.current = NICE_ORDER_MESSAGE_FRAMES;
+          }
         }
       }
       for (const o of obstaclesRef.current) {
@@ -3298,10 +3925,16 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           obInsetX = tun.insetX;
           obHitTopPad = OBSTACLE_HIT_INSET_TOP + Math.round(o.h * tun.topTrimFrac);
         }
+        let effW = o.w;
+        if (runLevel === 'bonus' && o.kind === 'bonus_fire_emoji' && inHell) {
+          effW = o.w * HELL_FIRE_COLLISION_MULT;
+          hitH = Math.ceil(hitH * HELL_FIRE_COLLISION_MULT);
+        }
         const obTop = groundY - hitH;
         const obBottom = groundY;
-        const innerW = Math.max(OBSTACLE_HIT_MIN_W, o.w - obInsetX * 2);
-        const obLeft = o.x + (o.w - innerW) / 2;
+        const innerW = Math.max(OBSTACLE_HIT_MIN_W, effW - obInsetX * 2);
+        const xEff = obstacleEffectiveLeft(o);
+        const obLeft = xEff + o.w / 2 - innerW / 2;
         const obHitTop = obTop + obHitTopPad;
         if (
           hitRight > obLeft &&
@@ -3309,6 +3942,20 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           hitBottom > obHitTop &&
           hitTop < obBottom
         ) {
+          if (
+            runLevel === 'bonus' &&
+            o.kind === 'bonus_fire_emoji' &&
+            bonusShieldChargesRef.current > 0
+          ) {
+            bonusShieldChargesRef.current -= 1;
+            const left = bonusShieldChargesRef.current;
+            bonusToastMessageRef.current =
+              left > 0
+                ? `Shield absorbed the hit!\n${left} charge${left === 1 ? '' : 's'} left.`
+                : 'Shield absorbed the hit!\nNo shield left — grab a mystery box.';
+            bonusToastFramesRef.current = BONUS_MYSTERY_TOAST_FRAMES;
+            continue;
+          }
           const final = Math.floor(scoreRef.current);
           const lvl = activeGameLevelRef.current;
           const prevHi = readHighScoreForLevel(lvl);
@@ -3332,6 +3979,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       if (niceOrderMessageFramesRef.current > 0) {
         niceOrderMessageFramesRef.current -= 1;
       }
+      if (heatWaveHudFramesRef.current > 0) {
+        heatWaveHudFramesRef.current -= 1;
+      }
+      if (bonusToastFramesRef.current > 0) {
+        bonusToastFramesRef.current -= 1;
+      }
 
       raf = requestAnimationFrame(tick);
     };
@@ -3345,8 +3998,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (screen !== 'game' || outcome !== null) {
       gameMusicRef.current?.pause();
       discoMusicRef.current?.pause();
+      bonusHellMusicRef.current?.pause();
       musicModeRef.current = 'none';
       discoSegmentRef.current = 'idle';
+      bonusHellSegmentRef.current = 'idle';
       discoVisualBlendRef.current = 0;
     }
   }, [screen, outcome]);
@@ -3437,9 +4092,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         >
           {screen === 'menu' && (
             <div className="w-full py-3 text-center text-neutral-200 md:py-4">
-              <p className="mb-2 max-w-md mx-auto px-1 text-sm leading-snug text-neutral-300 md:text-[0.9375rem] md:leading-snug">
-                Pick a venue, then run and jump. Grab floating tablet orders for bonus points — same rules, different
-                hazards per level.
+              <p className="mb-1.5 max-w-md mx-auto px-1 text-xs leading-snug text-neutral-300 md:text-sm md:leading-snug">
+                Pick a level, run and jump. Collect floating pickups for bonus score — hazards change per level.
               </p>
               <div className="mb-3 flex w-full max-w-md mx-auto items-center justify-center gap-1 px-2 sm:gap-1.5">
                 <span className="h-0.5 w-5 shrink-0 rounded-full bg-gradient-to-r from-transparent to-teal-400/90 sm:w-8" />
@@ -3452,21 +4106,21 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 <span className="h-0.5 min-w-[0.75rem] flex-1 max-w-[3rem] rounded-full bg-gradient-to-l from-teal-600/80 to-teal-400" />
                 <span className="h-0.5 w-5 shrink-0 rounded-full bg-gradient-to-l from-transparent to-teal-400/90 sm:w-8" />
               </div>
-              <div className="mb-3 grid max-w-md mx-auto w-full gap-1.5 px-1 sm:gap-2">
+              <div className="mb-2 grid max-w-md mx-auto w-full gap-1 px-1 sm:gap-1.5">
                 {GAME_LEVELS.map((lv) => (
                   <button
                     key={lv.id}
                     type="button"
                     title={`${lv.blurb} — Click again when highlighted to start.`}
                     onClick={() => onMenuLevelCardClick(lv.id)}
-                    className={`rounded-lg border px-3 py-2 text-left transition-colors md:py-1.5 ${
+                    className={`rounded-lg border px-2.5 py-1.5 text-left transition-colors sm:px-3 ${
                       menuLevel === lv.id
                         ? 'border-teal-500 bg-teal-950/35 ring-1 ring-teal-500/40'
                         : 'border-neutral-600 bg-neutral-800/45 hover:bg-neutral-800'
                     }`}
                   >
-                    <span className="block text-sm font-semibold text-white">{lv.title}</span>
-                    <span className="mt-0.5 block line-clamp-2 text-left text-xs leading-snug text-neutral-400">
+                    <span className="block text-sm font-semibold leading-tight text-white">{lv.title}</span>
+                    <span className="mt-0.5 block line-clamp-1 text-left text-[11px] leading-tight text-neutral-400 sm:text-xs">
                       {lv.blurb}
                     </span>
                   </button>

@@ -14,7 +14,10 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run",
-    "lighthouse": "lhci autorun"
+    "lighthouse": "lhci autorun",
+    "optimize:bonus-images": "node scripts/optimize-bonus-game-images.cjs",
+    "compress:bonus-audio": "bash scripts/compress-bonus-round-music.sh",
+    "compress:bonus-hell-audio": "bash scripts/compress-bonus-hell-music.sh"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
