@@ -36,7 +36,7 @@ export default function Home() {
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.3}>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              I work with a carefully chosen set of publishers and gift suppliers, and I cover Suffolk, Norfolk, Essex, and Cambridgeshire, visiting regularly, not just dropping off stock and disappearing. Whether you run an independent shop, garden centre, farm shop, or retail store, I can help you find the right ranges, get your display working harder, and keep things fresh with new designs as they come through.
+              I work with a carefully chosen set of publishers and gift suppliers, covering Suffolk, Norfolk, Essex, and Cambridgeshire, visiting regularly, not just dropping off stock and disappearing. Whether you run an independent shop, garden centre, farm shop, or retail store, I can help you find the right ranges, get your display working harder, and keep things fresh with new designs as they come through.
             </p>
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.4}>
