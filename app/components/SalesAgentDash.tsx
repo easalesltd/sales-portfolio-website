@@ -1376,6 +1376,8 @@ const BONUS_SLOWMO_DURATION_MS = 5200;
 /** World scroll during slow-mo; same factor scales player physics so jump timing still matches fire. */
 const BONUS_SLOWMO_SCROLL_MULT = 0.56;
 const BONUS_MYSTERY_TOAST_FRAMES = 96;
+/** After shield absorbs a fire hit, skip fire damage briefly so a wide flame doesn’t kill next frame. */
+const BONUS_SHIELD_FIRE_INVULN_FRAMES = 26;
 /** Square mystery pickup — smaller than normal bonus collectibles; bottom aligns with them. */
 const MYSTERY_BOX_SIDE = 58;
 
@@ -2687,6 +2689,8 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const bonusParticlesRef = useRef<BonusParticle[]>([]);
   const bonusSlowMoEndMsRef = useRef(0);
   const bonusShieldChargesRef = useRef(0);
+  /** Bonus: countdown after shield pop — fire overlaps still ignored (one charge = one survivable brush with fire). */
+  const bonusShieldFireInvulnFramesRef = useRef(0);
   const bonusToastFramesRef = useRef(0);
   const bonusToastMessageRef = useRef('');
   /** While true, game tick skips `setMusicMode` so BGM does not overlap one-shot priming (mobile Safari). */
@@ -3257,6 +3261,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
     bonusSlowMoEndMsRef.current = 0;
     bonusShieldChargesRef.current = 0;
+    bonusShieldFireInvulnFramesRef.current = 0;
     bonusToastFramesRef.current = 0;
     bonusToastMessageRef.current = '';
     setOutcome(null);
@@ -3945,9 +3950,17 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           if (
             runLevel === 'bonus' &&
             o.kind === 'bonus_fire_emoji' &&
+            bonusShieldFireInvulnFramesRef.current > 0
+          ) {
+            continue;
+          }
+          if (
+            runLevel === 'bonus' &&
+            o.kind === 'bonus_fire_emoji' &&
             bonusShieldChargesRef.current > 0
           ) {
             bonusShieldChargesRef.current -= 1;
+            bonusShieldFireInvulnFramesRef.current = BONUS_SHIELD_FIRE_INVULN_FRAMES;
             const left = bonusShieldChargesRef.current;
             bonusToastMessageRef.current =
               left > 0
@@ -3984,6 +3997,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
       if (bonusToastFramesRef.current > 0) {
         bonusToastFramesRef.current -= 1;
+      }
+      if (bonusShieldFireInvulnFramesRef.current > 0) {
+        bonusShieldFireInvulnFramesRef.current -= 1;
       }
 
       raf = requestAnimationFrame(tick);
