@@ -2546,6 +2546,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const [losePhrase, setLosePhrase] = useState<string | null>(null);
   const [globalLb, setGlobalLb] = useState<GameLeaderboardEntry[]>([]);
   const [globalLbConfigured, setGlobalLbConfigured] = useState<boolean | null>(null);
+  /** When set, `configured === false` was caused by a failed request — not “Redis off”. */
+  const [globalLbLoadError, setGlobalLbLoadError] = useState<
+    'invalid_level' | 'server' | 'network' | null
+  >(null);
   const [globalLbLoading, setGlobalLbLoading] = useState(false);
   const [lbDisplayName, setLbDisplayName] = useState('');
   const [lbSubmitting, setLbSubmitting] = useState(false);
@@ -2569,24 +2573,43 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const loadLeaderboard = useCallback(async (levelOverride?: GameLevelId) => {
     const level = levelOverride ?? menuLevel;
     setGlobalLbLoading(true);
+    setGlobalLbLoadError(null);
     try {
       const q = new URLSearchParams({ level });
       const res = await fetch(`/api/game-leaderboard?${q}`, { cache: 'no-store' });
-      const data = (await res.json()) as {
+      let data: {
         ok?: boolean;
+        error?: string;
         configured?: boolean;
         entries?: GameLeaderboardEntry[];
       };
+      try {
+        data = (await res.json()) as typeof data;
+      } catch {
+        setGlobalLb([]);
+        setGlobalLbConfigured(false);
+        setGlobalLbLoadError('server');
+        return;
+      }
+      if (!res.ok) {
+        setGlobalLb([]);
+        setGlobalLbConfigured(false);
+        setGlobalLbLoadError(data.error === 'invalid_level' ? 'invalid_level' : 'server');
+        return;
+      }
       if (data.ok && Array.isArray(data.entries)) {
         setGlobalLb(data.entries);
         setGlobalLbConfigured(data.configured === true);
+        setGlobalLbLoadError(null);
       } else {
         setGlobalLb([]);
         setGlobalLbConfigured(false);
+        setGlobalLbLoadError('server');
       }
     } catch {
       setGlobalLb([]);
       setGlobalLbConfigured(false);
+      setGlobalLbLoadError('network');
     } finally {
       setGlobalLbLoading(false);
     }
@@ -2641,8 +2664,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       if (!res.ok || !data.ok) {
         setLbSubmitError(
           data.error === 'not_configured'
-            ? 'Global boards are not configured on the server yet.'
-            : 'Could not save your score. Try again later.'
+            ? 'Global boards are not configured on the server yet (add Upstash env vars and redeploy).'
+            : data.error === 'invalid_level'
+              ? 'Server rejected this level — deploy the latest build so Bonus is in the leaderboard API.'
+              : 'Could not save your score. Try again later.'
         );
         return;
       }
@@ -4193,8 +4218,25 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                   <p className="text-xs text-neutral-500 sm:text-sm">Loading scores…</p>
                 ) : globalLbConfigured === false ? (
                   <p className="text-xs text-neutral-500 leading-snug sm:text-sm sm:leading-relaxed">
-                    Global scores for this venue will appear here after Upstash Redis is configured (see{' '}
-                    <code className="text-neutral-400">.env.example</code>).
+                    {globalLbLoadError === 'invalid_level' ? (
+                      <>
+                        This deployment’s API does not recognise a level id (e.g.{' '}
+                        <code className="text-neutral-400">bonus</code>). Deploy the latest code so the leaderboard route
+                        matches <code className="text-neutral-400">game-levels.ts</code>.
+                      </>
+                    ) : globalLbLoadError === 'network' ? (
+                      <>Could not reach the server. Check your connection and tap Refresh.</>
+                    ) : globalLbLoadError === 'server' ? (
+                      <>Could not load scores. Tap Refresh or try again shortly.</>
+                    ) : (
+                      <>
+                        Global boards for every level, <span className="text-neutral-400">including Bonus Level</span>,
+                        use the same Upstash Redis setup. Add{' '}
+                        <code className="text-neutral-400">UPSTASH_REDIS_REST_URL</code> and{' '}
+                        <code className="text-neutral-400">UPSTASH_REDIS_REST_TOKEN</code> to your host environment
+                        (see <code className="text-neutral-400">.env.example</code>), then redeploy.
+                      </>
+                    )}
                   </p>
                 ) : globalLb.length === 0 ? (
                   <p className="text-xs text-neutral-500 sm:text-sm">No scores yet — be the first.</p>
@@ -4369,8 +4411,24 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                     </div>
                   ) : null}
                   {globalLbConfigured === false && !globalLbLoading ? (
-                    <p className="mt-2 text-xs text-neutral-500 max-w-sm mx-auto">
-                      Global score sharing is not enabled on this deployment.
+                    <p className="mt-2 text-xs text-neutral-500 max-w-sm mx-auto leading-snug">
+                      {globalLbLoadError === 'invalid_level' ? (
+                        <>
+                          Deploy the latest site: this server’s leaderboard does not accept the Bonus level id yet (it
+                          should match <code className="text-neutral-400">game-levels.ts</code>).
+                        </>
+                      ) : globalLbLoadError === 'network' ? (
+                        <>Could not reach the leaderboard. Check your connection, or open Choose level and tap Refresh.</>
+                      ) : globalLbLoadError === 'server' ? (
+                        <>Leaderboard request failed. Try Choose level → Refresh, or Play again.</>
+                      ) : (
+                        <>
+                          Bonus Level is not a separate system: global boards need Upstash Redis on this deployment.
+                          Set <code className="text-neutral-400">UPSTASH_REDIS_REST_URL</code> and{' '}
+                          <code className="text-neutral-400">UPSTASH_REDIS_REST_TOKEN</code> (e.g. in Vercel →
+                          Environment Variables), redeploy, and the submit form will work here like on other levels.
+                        </>
+                      )}
                     </p>
                   ) : null}
                   {lbSubmitError ? (
