@@ -2521,6 +2521,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   /** Touch target below canvas (mobile): same non-passive touch handling as canvas. */
   const tapBelowRef = useRef<HTMLDivElement>(null);
   const leaderboardSectionRef = useRef<HTMLDivElement>(null);
+  const lossScreenSubmitRef = useRef<HTMLDivElement>(null);
   /** Main column with overflow-y-auto — reset scroll on new run so mobile isn’t stuck below the fold. */
   const mainScrollRef = useRef<HTMLDivElement>(null);
   const [screen, setScreen] = useState<'menu' | 'game'>('menu');
@@ -2565,10 +2566,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     window.localStorage.setItem(AUDIO_ENABLED_KEY, String(audioEnabled));
   }, [audioEnabled]);
 
-  const loadLeaderboard = useCallback(async () => {
+  const loadLeaderboard = useCallback(async (levelOverride?: GameLevelId) => {
+    const level = levelOverride ?? menuLevel;
     setGlobalLbLoading(true);
     try {
-      const q = new URLSearchParams({ level: menuLevel });
+      const q = new URLSearchParams({ level });
       const res = await fetch(`/api/game-leaderboard?${q}`, { cache: 'no-store' });
       const data = (await res.json()) as {
         ok?: boolean;
@@ -2594,6 +2596,22 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (screen !== 'menu') return;
     void loadLeaderboard();
   }, [screen, menuLevel, loadLeaderboard]);
+
+  /** Game over: refresh board + configured flag for the level you just played (menu fetch may still be pending or wrong level). */
+  useEffect(() => {
+    if (screen !== 'game' || outcome !== 'lost' || lastRunLevel == null) return;
+    void loadLeaderboard(lastRunLevel);
+  }, [screen, outcome, lastRunLevel, loadLeaderboard]);
+
+  useEffect(() => {
+    if (screen !== 'game' || outcome !== 'lost' || globalLbConfigured !== true) return;
+    const el = lossScreenSubmitRef.current;
+    if (!el) return;
+    const id = window.requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [screen, outcome, globalLbConfigured]);
 
   useEffect(() => {
     if (screen !== 'menu' || !lbSubmittedThisRun) return;
@@ -4293,6 +4311,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                       {GAME_LEVELS.find((l) => l.id === activeGameLevelRef.current)?.title ?? '—'}
                     </span>
                   </p>
+                  {globalLbLoading && !lbSubmittedThisRun ? (
+                    <p className="text-xs text-neutral-500">Loading global leaderboard for this level…</p>
+                  ) : null}
                   <div className="mt-1 flex flex-wrap justify-center gap-3">
                     <button
                       type="button"
@@ -4317,7 +4338,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                     </button>
                   </div>
                   {globalLbConfigured === true && !lbSubmittedThisRun ? (
-                    <div className="mt-3 w-full max-w-sm mx-auto rounded-lg border border-neutral-600 bg-neutral-800/50 p-4 text-left">
+                    <div
+                      ref={lossScreenSubmitRef}
+                      className="mt-3 w-full max-w-sm mx-auto rounded-lg border border-neutral-600 bg-neutral-800/50 p-4 text-left"
+                    >
                       <p className="text-sm text-neutral-300 mb-2">
                         Add this run to the global board for{' '}
                         <span className="font-medium text-white">
