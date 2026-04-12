@@ -3,7 +3,6 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { FaInstagram } from "react-icons/fa";
 import { companies } from "./data/companies";
 import ShowcaseSlideshow from "./components/ShowcaseSlideshow";
 import FadeInOnScroll from "./components/FadeInOnScroll";
@@ -95,33 +94,6 @@ export default function Home() {
             </div>
           </div>
         </VideoBackground>
-      </div>
-
-      {/* Instagram — prominent CTA (also linked in site footer) */}
-      <div className="bg-gradient-to-br from-pink-50 via-white to-violet-50 border-t border-gray-100">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12 text-center">
-          <FadeInOnScroll>
-            <div
-              className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 mb-4 text-white shadow-md"
-              aria-hidden
-            >
-              <FaInstagram className="h-8 w-8" />
-            </div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-2">Follow Dave on Instagram</h2>
-            <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              Shop visits, new ranges, and snapshots from the road across East Anglia.
-            </p>
-            <a
-              href="https://www.instagram.com/eastangliansalesltd/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-md font-semibold text-white bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 hover:opacity-95 transition-opacity shadow-md"
-            >
-              <FaInstagram className="h-5 w-5 shrink-0" aria-hidden />
-              @eastangliansalesltd
-            </a>
-          </FadeInOnScroll>
-        </div>
       </div>
 
       {/* Request Visit Form Modal */}

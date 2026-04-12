@@ -4,6 +4,7 @@ import { getCspNonce } from './lib/csp-nonce';
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import Image from "next/image";
 import { FaEnvelope, FaInstagram, FaPhone } from 'react-icons/fa';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
@@ -11,7 +12,12 @@ import { companies, type Company } from './data/companies';
 import MobileRequestButton from './components/MobileRequestButton';
 import HeaderLogo from './components/HeaderLogo';
 import AboutDropdown from './components/AboutDropdown';
-import { HOME_PAGE_META_DESCRIPTION } from './lib/home-page-meta-description';
+import {
+  GCA_MEMBER_LOGO_PATH,
+  HOME_PAGE_META_DESCRIPTION,
+  UK_GREETING_CARD_ASSOCIATION_NAME,
+  UK_GREETING_CARD_ASSOCIATION_URL,
+} from './lib/home-page-meta-description';
 
 // Optimize font loading with display swap and preload
 const inter = Inter({ 
@@ -380,6 +386,9 @@ export const metadata: Metadata = {
     "Local Gift Agent Hertfordshire",
     
     // Industry Specific Terms
+    "UK Greeting Card Association",
+    "UK Greeting Card Association member",
+    "GCA member",
     "Greeting Card Distributor East Anglia",
     "Gift Distributor East Anglia",
     "Greeting Card Distributor Essex",
@@ -737,6 +746,12 @@ export default async function RootLayout({
                   "https://www.instagram.com/eastangliansalesltd/",
                   "https://www.linkedin.com/company/east-anglian-sales-ltd"
                 ],
+                "memberOf": {
+                  "@type": "Organization",
+                  "name": UK_GREETING_CARD_ASSOCIATION_NAME,
+                  "alternateName": "GCA",
+                  "url": UK_GREETING_CARD_ASSOCIATION_URL
+                },
                 "areaServed": [
                   {
                     "@type": "State",
@@ -871,7 +886,14 @@ export default async function RootLayout({
                     "name": "Ipswich"
                   }
                 },
-                "knowsAbout": ["Greeting Card Sales", "Giftware Sales", "Retail Supplier", "Wholesale Agent", "Gift Sales Representative"],
+                "knowsAbout": [
+                  "Greeting Card Sales",
+                  "Giftware Sales",
+                  "Retail Supplier",
+                  "Wholesale Agent",
+                  "Gift Sales Representative",
+                  UK_GREETING_CARD_ASSOCIATION_NAME
+                ],
                 "worksFor": {
                   "@type": "Organization",
                   "@id": "https://www.easalesltd.co.uk/#organization",
@@ -953,6 +975,14 @@ export default async function RootLayout({
                     "@type": "Answer",
                     "text": "East Anglian Sales LTD provides wholesale greeting cards and giftware supply, display solutions, expert product advice, and personal service to retailers. They help businesses create effective product displays and grow their greeting card and gift ranges."
                   }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is East Anglian Sales LTD a member of the UK Greeting Card Association?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. East Anglian Sales LTD is a member of the UK Greeting Card Association (GCA), the trade body for the UK greeting card industry."
+                  }
                 }
                 ]
               }
@@ -1008,40 +1038,71 @@ export default async function RootLayout({
 
         <footer className="bg-gray-50 dark:bg-neutral-950 dark:border-t dark:border-neutral-800 transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100 mb-4">East Anglian Sales LTD</h3>
-              <div className="space-y-2 text-gray-600 dark:text-neutral-400">
-                <p>Registered office: Office 2, Paragon House,</p>
-                <p>35 Lower Brook Street, Ipswich, England, IP4 1AQ</p>
-                <p>Company Registration No: 14725288</p>
-                <p>VAT No. 481 2602 07</p>
-              </div>
-              <div className="mt-6 space-y-4">
-                <div className="flex justify-center space-x-6">
-                  <a 
-                    href="tel:07709197915" 
-                    className="text-gray-600 dark:text-neutral-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+            <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-x-8 xl:gap-x-10 gap-y-10 items-start">
+              <div className="order-3 lg:order-1 text-center lg:text-left min-w-0 lg:max-w-md border-t border-gray-200 dark:border-neutral-800 pt-10 lg:border-t-0 lg:pt-0">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100 mb-4">East Anglian Sales LTD</h3>
+                <div className="space-y-2 text-sm text-gray-600 dark:text-neutral-400 leading-relaxed">
+                  <p>Registered office: Office 2, Paragon House,</p>
+                  <p>35 Lower Brook Street, Ipswich, England, IP4 1AQ</p>
+                  <p>Company Registration No: 14725288</p>
+                  <p>VAT No. 481 2602 07</p>
+                </div>
+                <div className="mt-6 flex justify-center lg:justify-start gap-7">
+                  <a
+                    href="tel:07709197915"
+                    className="rounded-md p-1 text-gray-800 dark:text-neutral-200 hover:text-neutral-950 dark:hover:text-white transition-colors"
                     aria-label="Phone"
                   >
-                    <FaPhone className="h-6 w-6" />
+                    <FaPhone className="h-7 w-7" />
                   </a>
-                  <a 
-                    href="mailto:dave@easalesltd.co.uk" 
-                    className="text-gray-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+                  <a
+                    href="mailto:dave@easalesltd.co.uk"
+                    className="rounded-md p-1 text-gray-800 dark:text-neutral-200 hover:text-neutral-950 dark:hover:text-white transition-colors"
                     aria-label="Email"
                   >
-                    <FaEnvelope className="h-6 w-6" />
-                  </a>
-                  <a 
-                    href="https://www.instagram.com/eastangliansalesltd/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-gray-600 dark:text-neutral-400 hover:text-pink-600 dark:hover:text-pink-400 transition-colors"
-                    aria-label="Instagram"
-                  >
-                    <FaInstagram className="h-6 w-6" />
+                    <FaEnvelope className="h-7 w-7" />
                   </a>
                 </div>
+              </div>
+
+              <div className="order-1 lg:order-2 text-center border-t-0 pt-0 lg:pt-0 flex flex-col items-center lg:items-center min-w-0">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100 mb-4 w-full">
+                  Follow Dave on Instagram
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-neutral-400 mb-4 max-w-sm mx-auto leading-relaxed">
+                  Shop visits, new ranges, and snapshots from the road across East Anglia.
+                </p>
+                <a
+                  href="https://www.instagram.com/eastangliansalesltd/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold border border-neutral-900 dark:border-neutral-200 text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-950 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-800 dark:focus-visible:ring-neutral-300 dark:focus-visible:ring-offset-neutral-950"
+                >
+                  <FaInstagram className="h-5 w-5 shrink-0" aria-hidden />
+                  @eastangliansalesltd
+                </a>
+              </div>
+
+              <div className="order-2 lg:order-3 text-center lg:text-right border-t border-gray-200 dark:border-neutral-800 pt-10 lg:border-t-0 lg:pt-0 min-w-0">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100 mb-4">
+                  Member of the {UK_GREETING_CARD_ASSOCIATION_NAME}
+                </h3>
+                <a
+                  href={UK_GREETING_CARD_ASSOCIATION_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex justify-center lg:justify-end focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-800 dark:focus-visible:ring-neutral-300 dark:focus-visible:ring-offset-neutral-950 rounded w-full lg:w-auto"
+                  aria-label={`${UK_GREETING_CARD_ASSOCIATION_NAME} (opens in a new tab)`}
+                >
+                  <Image
+                    src={encodeURI(GCA_MEMBER_LOGO_PATH)}
+                    alt={`${UK_GREETING_CARD_ASSOCIATION_NAME} member logo`}
+                    width={280}
+                    height={84}
+                    className="h-[4.25rem] w-auto max-w-[min(100%,280px)] object-contain mx-auto lg:ml-auto lg:mr-0 mix-blend-multiply"
+                    sizes="(max-width: 640px) 70vw, 280px"
+                  />
+                </a>
               </div>
             </div>
           </div>
