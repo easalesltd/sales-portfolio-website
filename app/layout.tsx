@@ -63,6 +63,21 @@ const BrandsDropdown = dynamic(() => import('./components/BrandsDropdown'), {
   )
 });
 
+const DisplaySolutionsDropdown = dynamic(
+  () => import('./components/DisplaySolutionsDropdown'),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="text-gray-700 px-3 py-2 rounded-md hover:bg-gray-50 flex items-center animate-pulse">
+        Display Solutions
+        <svg className="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+        </svg>
+      </div>
+    ),
+  }
+);
+
 export const metadata: Metadata = {
   title: {
     template: '%s | Greeting Card & Gift Sales Agent',
@@ -1018,7 +1033,7 @@ export default async function RootLayout({
                 <Link href="/" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Home</Link>
                 <AboutDropdown />
                 <BrandsDropdown />
-                <Link href="/display-solutions" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Display Solutions</Link>
+                <DisplaySolutionsDropdown />
                 <Link href="/temporary-rep-cover" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Temporary Rep Cover</Link>
                 <Link href="/contact" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Contact</Link>
               </div>

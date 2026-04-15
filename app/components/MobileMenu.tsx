@@ -11,6 +11,7 @@ export default function MobileMenu() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
   const [isAboutExpanded, setIsAboutExpanded] = useState(false);
   const [isBrandsExpanded, setIsBrandsExpanded] = useState(false);
+  const [isDisplaySolutionsExpanded, setIsDisplaySolutionsExpanded] = useState(false);
 
   const aboutNavItems = [
     { name: 'Meet Dave', href: '/about' },
@@ -181,14 +182,49 @@ export default function MobileMenu() {
                 </div>
               </div>
 
-              <Link 
-                href="/display-solutions" 
-                prefetch
-                className="block text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors" 
-                onClick={() => setIsOpen(false)}
-              >
-                Display Solutions
-              </Link>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setIsDisplaySolutionsExpanded(!isDisplaySolutionsExpanded)}
+                  className="flex w-full items-center justify-between text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mb-2"
+                  aria-expanded={isDisplaySolutionsExpanded}
+                  aria-controls="mobile-menu-display-solutions-subnav"
+                >
+                  Display Solutions
+                  <svg
+                    className={`h-5 w-5 transform transition-transform ${isDisplaySolutionsExpanded ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    aria-hidden
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div
+                  id="mobile-menu-display-solutions-subnav"
+                  className={`mt-2 space-y-3 overflow-hidden transition-all duration-300 ${
+                    isDisplaySolutionsExpanded ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <Link
+                    href="/display-solutions"
+                    prefetch
+                    className="block pl-4 text-gray-600 transition-colors hover:text-neutral-800 dark:hover:text-neutral-200"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    All Display Solutions
+                  </Link>
+                  <Link
+                    href="/display-solutions/bespoke-confectionary-displays"
+                    prefetch
+                    className="block pl-4 text-gray-600 transition-colors hover:text-neutral-800 dark:hover:text-neutral-200"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Bespoke Confectionary Displays
+                  </Link>
+                </div>
+              </div>
               
               <Link 
                 href="/temporary-rep-cover" 
