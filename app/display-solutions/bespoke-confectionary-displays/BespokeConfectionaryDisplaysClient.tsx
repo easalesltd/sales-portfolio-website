@@ -22,7 +22,7 @@ const commonNotes = [
   'Minimum print run is 5,000 labels.',
   'Label formats: 45mm round or 40mm square.',
   'Displays are available in short or tall format.',
-  'A full display holds around 360 bags (initial cost: GBP 540).',
+  'A full display holds around 360 bags.',
 ];
 
 type GalleryImage = {
