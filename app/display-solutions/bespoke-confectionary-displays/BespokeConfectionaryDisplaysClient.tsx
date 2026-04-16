@@ -102,6 +102,59 @@ export default function BespokeConfectionaryDisplaysClient() {
     <>
       <div className="min-h-screen py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <section className="relative overflow-hidden rounded-2xl border border-pink-100 bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 p-4 sm:p-6 shadow-lg">
+            <div className="mb-4 text-center">
+              <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-purple-700">
+                Pick Your Stand Style
+              </p>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2">
+              <a
+                href="#bespoke-labelling"
+                className="group relative block overflow-hidden rounded-xl bg-white p-3 shadow-md ring-1 ring-purple-200 transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <span className="absolute left-3 top-3 z-10 rounded-full bg-purple-700 px-3 py-1 text-xs font-semibold text-white">
+                  Option 1
+                </span>
+                <div className="relative h-64 sm:h-72 overflow-hidden rounded-lg">
+                  <Image
+                    src="/images/bespoke-confectionary-displays/Bespoke.png"
+                    alt="Bespoke confectionary display stand option"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                </div>
+                <p className="mt-3 text-center text-base font-semibold text-gray-900">
+                  Bespoke Labelling
+                </p>
+              </a>
+
+              <a
+                href="#cambridge-branded"
+                className="group relative block overflow-hidden rounded-xl bg-white p-3 shadow-md ring-1 ring-blue-200 transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <span className="absolute left-3 top-3 z-10 rounded-full bg-blue-700 px-3 py-1 text-xs font-semibold text-white">
+                  Option 2
+                </span>
+                <div className="relative h-64 sm:h-72 overflow-hidden rounded-lg">
+                  <Image
+                    src="/images/bespoke-confectionary-displays/Off the Shelf.png"
+                    alt="Off the shelf Cambridge branded display stand option"
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                </div>
+                <p className="mt-3 text-center text-base font-semibold text-gray-900">
+                  Cambridge Branded (Off the Shelf)
+                </p>
+              </a>
+            </div>
+          </section>
+
           <section className="bg-white rounded-lg shadow-lg p-6 md:p-8">
             <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
               Display Solutions
