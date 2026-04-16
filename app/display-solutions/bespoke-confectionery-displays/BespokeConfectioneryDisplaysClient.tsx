@@ -108,51 +108,47 @@ export default function BespokeConfectioneryDisplaysClient() {
                 Pick Your Stand Style
               </p>
             </div>
-            <div className="grid gap-5 md:grid-cols-2">
+            <div className="grid justify-items-center gap-6 md:grid-cols-2 md:gap-8">
               <a
                 href="#bespoke-labelling"
-                className="group relative block overflow-hidden rounded-xl bg-white p-3 shadow-md ring-1 ring-purple-200 transition duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10"
+                className="group relative inline-flex max-w-full flex-col overflow-hidden rounded-lg border border-purple-200/90 bg-white p-1 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-purple-300 hover:shadow-md"
               >
-                <span className="absolute left-3 top-3 z-10 rounded-full bg-purple-700 px-3 py-1 text-xs font-semibold text-white">
+                <span className="absolute left-2 top-2 z-10 rounded-full bg-purple-700 px-2 py-0.5 text-[11px] font-semibold leading-tight text-white sm:text-xs sm:px-2.5 sm:py-1">
                   Option 1
                 </span>
-                <div className="flex h-64 sm:h-72 w-full items-start justify-center overflow-hidden rounded-lg bg-neutral-50">
-                  <div className="relative h-full w-[min(88vw,17.5rem)] sm:w-[min(85vw,18.75rem)] md:w-[min(72%,17.5rem)] lg:w-[min(65%,18.75rem)]">
-                    <Image
-                      src="/images/bespoke-confectionery-displays/Bespoke.png"
-                      alt="Bespoke confectionery display stand option"
-                      fill
-                      className="object-cover object-[center_top] transition-transform duration-300 group-hover:scale-110"
-                      sizes="(max-width: 768px) 280px, 300px"
-                      priority
-                    />
-                  </div>
+                <div className="relative h-56 w-[14.5rem] overflow-hidden rounded-md bg-neutral-50 sm:h-60 sm:w-60 md:h-64 md:w-64">
+                  <Image
+                    src="/images/bespoke-confectionery-displays/Bespoke.png"
+                    alt="Bespoke confectionery display stand option"
+                    fill
+                    className="object-cover object-[center_top] transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 640px) 232px, 256px"
+                    priority
+                  />
                 </div>
-                <p className="mt-3 text-center text-base font-semibold text-gray-900">
+                <p className="mt-2 w-[14.5rem] px-0.5 text-center text-sm font-semibold leading-snug text-gray-900 sm:w-60 md:w-64 sm:text-base">
                   Bespoke - Your Brand, Your Way
                 </p>
               </a>
 
               <a
                 href="#cambridge-branded"
-                className="group relative block overflow-hidden rounded-xl bg-white p-3 shadow-md ring-1 ring-blue-200 transition duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10"
+                className="group relative inline-flex max-w-full flex-col overflow-hidden rounded-lg border border-blue-200/90 bg-white p-1 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
               >
-                <span className="absolute left-3 top-3 z-10 rounded-full bg-blue-700 px-3 py-1 text-xs font-semibold text-white">
+                <span className="absolute left-2 top-2 z-10 rounded-full bg-blue-700 px-2 py-0.5 text-[11px] font-semibold leading-tight text-white sm:text-xs sm:px-2.5 sm:py-1">
                   Option 2
                 </span>
-                <div className="flex h-64 sm:h-72 w-full items-start justify-center overflow-hidden rounded-lg bg-neutral-50">
-                  <div className="relative h-full w-[min(88vw,17.5rem)] sm:w-[min(85vw,18.75rem)] md:w-[min(72%,17.5rem)] lg:w-[min(65%,18.75rem)]">
-                    <Image
-                      src="/images/bespoke-confectionery-displays/Off the Shelf.png"
-                      alt="Off the shelf Cambridge branded display stand option"
-                      fill
-                      className="object-cover object-[center_top] transition-transform duration-300 group-hover:scale-110"
-                      sizes="(max-width: 768px) 280px, 300px"
-                      priority
-                    />
-                  </div>
+                <div className="relative h-56 w-[14.5rem] overflow-hidden rounded-md bg-neutral-50 sm:h-60 sm:w-60 md:h-64 md:w-64">
+                  <Image
+                    src="/images/bespoke-confectionery-displays/Off the Shelf.png"
+                    alt="Off the shelf Cambridge branded display stand option"
+                    fill
+                    className="object-cover object-[center_top] transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 640px) 232px, 256px"
+                    priority
+                  />
                 </div>
-                <p className="mt-3 text-center text-base font-semibold text-gray-900">
+                <p className="mt-2 w-[14.5rem] px-0.5 text-center text-sm font-semibold leading-snug text-gray-900 sm:w-60 md:w-64 sm:text-base">
                   Cambridge Branded (Off the Shelf)
                 </p>
               </a>
