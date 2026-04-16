@@ -117,16 +117,16 @@ export default function DisplaySolutionsClient() {
 
             <FadeInOnScroll delay={0.12} direction="up">
               <div className="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-6 shadow-sm">
-                <h3 className="text-xl font-semibold text-gray-900">Bespoke Confectionary Displays</h3>
+                <h3 className="text-xl font-semibold text-gray-900">Bespoke Confectionery Displays</h3>
                 <p className="mt-2 text-gray-700">
                   Need pick-up confectionery displays? Choose between full bespoke labelling or a
                   Cambridge branded off-the-shelf solution and jump straight to the right option.
                 </p>
                 <Link
-                  href="/display-solutions/bespoke-confectionary-displays"
+                  href="/display-solutions/bespoke-confectionery-displays"
                   className="mt-4 inline-flex items-center px-5 py-3 rounded-md text-sm font-semibold border border-neutral-950 text-white bg-neutral-950 hover:bg-neutral-800 transition-colors"
                 >
-                  Explore Bespoke Confectionary Displays
+                  Explore Bespoke Confectionery Displays
                 </Link>
               </div>
             </FadeInOnScroll>

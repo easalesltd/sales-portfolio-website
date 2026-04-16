@@ -51,23 +51,23 @@ function ClickableImageTile({
   );
 }
 
-export default function BespokeConfectionaryDisplaysClient() {
+export default function BespokeConfectioneryDisplaysClient() {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   const bespokeImages = useMemo<GalleryImage[]>(
     () => [
       {
-        src: '/images/display-solutions/bespoke-confectionary/page-23-asset-1.jpeg',
+        src: '/images/display-solutions/bespoke-confectionery/page-23-asset-1.jpeg',
         alt: 'Bespoke bag mockups and branded display concept',
         sizes: '(max-width: 1024px) 100vw, 50vw',
       },
       {
-        src: '/images/display-solutions/bespoke-confectionary/page-22-asset-2.jpeg',
+        src: '/images/display-solutions/bespoke-confectionery/page-22-asset-2.jpeg',
         alt: 'Sweet category examples for bespoke ranges',
         sizes: '(max-width: 1024px) 100vw, 25vw',
       },
       {
-        src: '/images/display-solutions/bespoke-confectionary/page-22-asset-1.jpeg',
+        src: '/images/display-solutions/bespoke-confectionery/page-22-asset-1.jpeg',
         alt: 'Bespoke confectionery visual style and textures',
         className: 'sm:col-span-2',
         sizes: '(max-width: 1024px) 100vw, 50vw',
@@ -79,17 +79,17 @@ export default function BespokeConfectionaryDisplaysClient() {
   const offTheShelfImages = useMemo<GalleryImage[]>(
     () => [
       {
-        src: '/images/display-solutions/bespoke-confectionary/page-24-asset-2.jpeg',
+        src: '/images/display-solutions/bespoke-confectionery/page-24-asset-2.jpeg',
         alt: 'Cambridge and Little Things branded bag options',
         sizes: '(max-width: 1024px) 100vw, 25vw',
       },
       {
-        src: '/images/display-solutions/bespoke-confectionary/page-24-asset-1.jpeg',
+        src: '/images/display-solutions/bespoke-confectionery/page-24-asset-1.jpeg',
         alt: 'Installed branded sweets display and display frame',
         sizes: '(max-width: 1024px) 100vw, 25vw',
       },
       {
-        src: '/images/display-solutions/bespoke-confectionary/brochure-page-24.png',
+        src: '/images/display-solutions/bespoke-confectionery/brochure-page-24.png',
         alt: 'Skip bespoke labelling brochure reference',
         className: 'sm:col-span-2',
         sizes: '(max-width: 1024px) 100vw, 50vw',
@@ -118,8 +118,8 @@ export default function BespokeConfectionaryDisplaysClient() {
                 </span>
                 <div className="relative h-64 sm:h-72 overflow-hidden rounded-lg">
                   <Image
-                    src="/images/bespoke-confectionary-displays/Bespoke.png"
-                    alt="Bespoke confectionary display stand option"
+                    src="/images/bespoke-confectionery-displays/Bespoke.png"
+                    alt="Bespoke confectionery display stand option"
                     fill
                     className="object-cover object-top transition-transform duration-300 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -140,7 +140,7 @@ export default function BespokeConfectionaryDisplaysClient() {
                 </span>
                 <div className="relative h-64 sm:h-72 overflow-hidden rounded-lg">
                   <Image
-                    src="/images/bespoke-confectionary-displays/Off the Shelf.png"
+                    src="/images/bespoke-confectionery-displays/Off the Shelf.png"
                     alt="Off the shelf Cambridge branded display stand option"
                     fill
                     className="object-cover object-top transition-transform duration-300 group-hover:scale-110"
@@ -160,10 +160,10 @@ export default function BespokeConfectionaryDisplaysClient() {
               Display Solutions
             </p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
-              Bespoke Confectionary Displays
+              Bespoke Confectionery Displays
             </h1>
             <p className="text-lg text-gray-700 mt-4 max-w-4xl">
-              The go-to bespoke confectionary and display service for attractions-style retailers
+              The go-to bespoke confectionery and display service for attractions-style retailers
               across East Anglia. Choose the route that best fits your store: fully bespoke
               compostable labelling with matched display graphics, or a ready-to-install Cambridge
               branded solution.

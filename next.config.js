@@ -23,6 +23,15 @@ const corsOrigin = corsAllowOrigin()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: '/display-solutions/bespoke-confectionary-displays',
+        destination: '/display-solutions/bespoke-confectionery-displays',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     const securityHeaders = [
       { key: 'X-Frame-Options', value: 'SAMEORIGIN' },

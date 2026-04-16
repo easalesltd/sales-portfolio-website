@@ -8,8 +8,8 @@ import { usePathname } from 'next/navigation';
 const displaySolutionItems = [
   { name: 'All Display Solutions', href: '/display-solutions' },
   {
-    name: 'Bespoke Confectionary Displays',
-    href: '/display-solutions/bespoke-confectionary-displays',
+    name: 'Bespoke Confectionery Displays',
+    href: '/display-solutions/bespoke-confectionery-displays',
   },
 ] as const;
 

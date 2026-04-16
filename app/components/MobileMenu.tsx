@@ -216,12 +216,12 @@ export default function MobileMenu() {
                     All Display Solutions
                   </Link>
                   <Link
-                    href="/display-solutions/bespoke-confectionary-displays"
+                    href="/display-solutions/bespoke-confectionery-displays"
                     prefetch
                     className="block pl-4 text-gray-600 transition-colors hover:text-neutral-800 dark:hover:text-neutral-200"
                     onClick={() => setIsOpen(false)}
                   >
-                    Bespoke Confectionary Displays
+                    Bespoke Confectionery Displays
                   </Link>
                 </div>
               </div>
