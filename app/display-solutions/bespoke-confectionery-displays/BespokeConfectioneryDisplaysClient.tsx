@@ -127,7 +127,7 @@ export default function BespokeConfectioneryDisplaysClient() {
                   />
                 </div>
                 <p className="mt-3 text-center text-base font-semibold text-gray-900">
-                  Bespoke Labelling - Your Brand - Your Way
+                  Bespoke - Your Brand, Your Way
                 </p>
               </a>
 
