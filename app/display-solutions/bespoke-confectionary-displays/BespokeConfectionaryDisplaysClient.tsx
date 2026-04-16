@@ -111,7 +111,7 @@ export default function BespokeConfectionaryDisplaysClient() {
             <div className="grid gap-5 md:grid-cols-2">
               <a
                 href="#bespoke-labelling"
-                className="group relative block overflow-hidden rounded-xl bg-white p-3 shadow-md ring-1 ring-purple-200 transition hover:-translate-y-1 hover:shadow-xl"
+                className="group relative block overflow-hidden rounded-xl bg-white p-3 shadow-md ring-1 ring-purple-200 transition duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10"
               >
                 <span className="absolute left-3 top-3 z-10 rounded-full bg-purple-700 px-3 py-1 text-xs font-semibold text-white">
                   Option 1
@@ -121,7 +121,7 @@ export default function BespokeConfectionaryDisplaysClient() {
                     src="/images/bespoke-confectionary-displays/Bespoke.png"
                     alt="Bespoke confectionary display stand option"
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="object-cover object-top transition-transform duration-300 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority
                   />
@@ -133,7 +133,7 @@ export default function BespokeConfectionaryDisplaysClient() {
 
               <a
                 href="#cambridge-branded"
-                className="group relative block overflow-hidden rounded-xl bg-white p-3 shadow-md ring-1 ring-blue-200 transition hover:-translate-y-1 hover:shadow-xl"
+                className="group relative block overflow-hidden rounded-xl bg-white p-3 shadow-md ring-1 ring-blue-200 transition duration-300 hover:-translate-y-1 hover:scale-[1.02] hover:shadow-xl hover:z-10"
               >
                 <span className="absolute left-3 top-3 z-10 rounded-full bg-blue-700 px-3 py-1 text-xs font-semibold text-white">
                   Option 2
@@ -143,7 +143,7 @@ export default function BespokeConfectionaryDisplaysClient() {
                     src="/images/bespoke-confectionary-displays/Off the Shelf.png"
                     alt="Off the shelf Cambridge branded display stand option"
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="object-cover object-top transition-transform duration-300 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority
                   />
