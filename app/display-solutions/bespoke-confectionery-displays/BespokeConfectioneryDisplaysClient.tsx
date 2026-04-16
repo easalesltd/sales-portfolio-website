@@ -108,10 +108,10 @@ export default function BespokeConfectioneryDisplaysClient() {
                 Pick Your Stand Style
               </p>
             </div>
-            <div className="grid justify-items-center gap-6 md:grid-cols-2 md:gap-8">
+            <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8 lg:gap-10">
               <a
                 href="#bespoke-labelling"
-                className="group relative inline-flex max-w-full flex-col overflow-hidden rounded-lg border border-purple-200/90 bg-white p-1 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-purple-300 hover:shadow-md"
+                className="group relative inline-flex max-w-full shrink-0 flex-col overflow-hidden rounded-lg border border-purple-200/90 bg-white p-1 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-purple-300 hover:shadow-md"
               >
                 <span className="absolute left-2 top-2 z-10 rounded-full bg-purple-700 px-2 py-0.5 text-[11px] font-semibold leading-tight text-white sm:text-xs sm:px-2.5 sm:py-1">
                   Option 1
@@ -133,7 +133,7 @@ export default function BespokeConfectioneryDisplaysClient() {
 
               <a
                 href="#cambridge-branded"
-                className="group relative inline-flex max-w-full flex-col overflow-hidden rounded-lg border border-blue-200/90 bg-white p-1 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+                className="group relative inline-flex max-w-full shrink-0 flex-col overflow-hidden rounded-lg border border-blue-200/90 bg-white p-1 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
               >
                 <span className="absolute left-2 top-2 z-10 rounded-full bg-blue-700 px-2 py-0.5 text-[11px] font-semibold leading-tight text-white sm:text-xs sm:px-2.5 sm:py-1">
                   Option 2
