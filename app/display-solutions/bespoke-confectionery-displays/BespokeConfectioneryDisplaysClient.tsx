@@ -32,6 +32,10 @@ type GalleryImage = {
   sizes: string;
 };
 
+/** Identical frame for both stand hero images — same window size side-by-side */
+const STAND_HERO_FRAME =
+  'relative mx-auto h-[22rem] w-[17.5rem] shrink-0 overflow-hidden rounded-md bg-neutral-50 sm:h-[24rem] sm:w-[19rem] md:h-[26rem] md:w-[20.5rem]';
+
 function ClickableImageTile({
   image,
   onOpen,
@@ -108,49 +112,53 @@ export default function BespokeConfectioneryDisplaysClient() {
                 Pick Your Stand Style
               </p>
             </div>
-            <div className="mx-auto flex w-full max-w-3xl flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8 lg:gap-10">
+            <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-6 md:gap-10">
               <a
                 href="#bespoke-labelling"
-                className="group relative inline-flex max-w-full shrink-0 flex-col overflow-hidden rounded-lg border border-purple-200/90 bg-white p-1 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-purple-300 hover:shadow-md"
+                className="group relative flex w-full flex-col overflow-hidden rounded-lg border border-purple-200/90 bg-white p-1.5 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-purple-300 hover:shadow-md"
               >
                 <span className="absolute left-2 top-2 z-10 rounded-full bg-purple-700 px-2 py-0.5 text-[11px] font-semibold leading-tight text-white sm:text-xs sm:px-2.5 sm:py-1">
                   Option 1
                 </span>
-                <div className="relative h-56 w-[14.5rem] overflow-hidden rounded-md bg-neutral-50 sm:h-60 sm:w-60 md:h-64 md:w-64">
+                <div className={STAND_HERO_FRAME}>
                   <Image
                     src="/images/bespoke-confectionery-displays/Bespoke.png"
                     alt="Bespoke confectionery display stand option"
                     fill
                     className="object-cover object-[center_top] transition-transform duration-300 group-hover:scale-105"
-                    sizes="(max-width: 640px) 232px, 256px"
+                    sizes="(max-width: 640px) 280px, (max-width: 1024px) 304px, 328px"
                     priority
                   />
                 </div>
-                <p className="mt-2 w-[14.5rem] px-0.5 text-center text-sm font-semibold leading-snug text-gray-900 sm:w-60 md:w-64 sm:text-base">
-                  Bespoke - Your Brand, Your Way
-                </p>
+                <div className="mt-3 flex min-h-[4.75rem] items-start justify-center px-1">
+                  <p className="max-w-[20.5rem] text-center text-sm font-semibold leading-snug text-gray-900 sm:text-base">
+                    Bespoke - Your Brand, Your Way
+                  </p>
+                </div>
               </a>
 
               <a
                 href="#cambridge-branded"
-                className="group relative inline-flex max-w-full shrink-0 flex-col overflow-hidden rounded-lg border border-blue-200/90 bg-white p-1 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
+                className="group relative flex w-full flex-col overflow-hidden rounded-lg border border-blue-200/90 bg-white p-1.5 shadow-sm transition duration-300 hover:z-10 hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md"
               >
                 <span className="absolute left-2 top-2 z-10 rounded-full bg-blue-700 px-2 py-0.5 text-[11px] font-semibold leading-tight text-white sm:text-xs sm:px-2.5 sm:py-1">
                   Option 2
                 </span>
-                <div className="relative h-56 w-[14.5rem] overflow-hidden rounded-md bg-neutral-50 sm:h-60 sm:w-60 md:h-64 md:w-64">
+                <div className={STAND_HERO_FRAME}>
                   <Image
                     src="/images/bespoke-confectionery-displays/Off the Shelf.png"
                     alt="Off the shelf Cambridge branded display stand option"
                     fill
                     className="object-cover object-[center_top] transition-transform duration-300 group-hover:scale-105"
-                    sizes="(max-width: 640px) 232px, 256px"
+                    sizes="(max-width: 640px) 280px, (max-width: 1024px) 304px, 328px"
                     priority
                   />
                 </div>
-                <p className="mt-2 w-[14.5rem] px-0.5 text-center text-sm font-semibold leading-snug text-gray-900 sm:w-60 md:w-64 sm:text-base">
-                  Cambridge Branded (Off the Shelf)
-                </p>
+                <div className="mt-3 flex min-h-[4.75rem] items-start justify-center px-1">
+                  <p className="max-w-[20.5rem] text-center text-sm font-semibold leading-snug text-gray-900 sm:text-base">
+                    Cambridge Branded (Off the Shelf)
+                  </p>
+                </div>
               </a>
             </div>
           </section>
