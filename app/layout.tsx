@@ -603,6 +603,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const nonce = await getCspNonce()
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim()
 
   return (
     <html lang="en-GB">
@@ -1006,19 +1007,23 @@ export default async function RootLayout({
         ></script>
       </head>
       <body className={inter.className}>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-7HWXWDZG4F"
-          strategy="lazyOnload"
-          nonce={nonce}
-        />
-        <Script id="google-analytics" strategy="lazyOnload" nonce={nonce}>
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-7HWXWDZG4F');
-          `}
-        </Script>
+        {gaMeasurementId ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="lazyOnload"
+              nonce={nonce}
+            />
+            <Script id="google-analytics" strategy="lazyOnload" nonce={nonce}>
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaMeasurementId}');
+              `}
+            </Script>
+          </>
+        ) : null}
         <header className="sticky top-0 z-50 w-full bg-white dark:bg-neutral-950 border-b border-gray-100 dark:border-neutral-800 transition-colors duration-300 pt-[max(0.125rem,env(safe-area-inset-top))] pb-1.5 md:pt-4 md:pb-3">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/*
