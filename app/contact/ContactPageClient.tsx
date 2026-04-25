@@ -5,6 +5,7 @@ import { FaEnvelope, FaInstagram, FaLinkedin, FaCalendarCheck, FaPhone } from 'r
 import { useState, useEffect } from 'react';
 import RequestVisitForm from '../components/RequestVisitForm';
 import FadeInOnScroll from '../components/FadeInOnScroll';
+import { trackGaEvent } from '@/app/lib/ga-event';
 
 export default function ContactPageClient() {
   const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
@@ -116,6 +117,7 @@ export default function ContactPageClient() {
                 <FaPhone className="text-2xl text-gray-600" />
                 <a
                   href="tel:07709197915"
+                  onClick={() => trackGaEvent('phone_click', { location: 'contact_page' })}
                   className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                 >
                   07709 197915
@@ -126,6 +128,7 @@ export default function ContactPageClient() {
                 <FaEnvelope className="text-2xl text-gray-600" />
                 <a
                   href="mailto:dave@easalesltd.co.uk"
+                  onClick={() => trackGaEvent('email_click', { location: 'contact_page' })}
                   className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                 >
                   dave@easalesltd.co.uk

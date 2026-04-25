@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import VideoBackground from '../components/VideoBackground';
+import { trackGaEvent } from '@/app/lib/ga-event';
 
 export default function TemporaryRepCoverPage() {
   const salesApps = [
@@ -223,6 +224,7 @@ export default function TemporaryRepCoverPage() {
               </Link>
               <Link 
                 href="tel:+44" 
+                onClick={() => trackGaEvent('phone_click', { location: 'temporary_rep_cover' })}
                 className="px-8 py-3 border-2 border-white text-white rounded-md hover:bg-white hover:text-neutral-950 transition-colors font-medium text-lg"
               >
                 Call Now

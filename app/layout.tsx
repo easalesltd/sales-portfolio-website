@@ -12,6 +12,7 @@ import { companies, type Company } from './data/companies';
 import MobileRequestButton from './components/MobileRequestButton';
 import HeaderLogo from './components/HeaderLogo';
 import AboutDropdown from './components/AboutDropdown';
+import GoogleWebVitals from './components/GoogleWebVitals';
 import {
   GCA_MEMBER_LOGO_PATH,
   HOME_PAGE_META_DESCRIPTION,
@@ -1007,6 +1008,7 @@ export default async function RootLayout({
         ></script>
       </head>
       <body className={inter.className}>
+        <GoogleWebVitals />
         {gaMeasurementId ? (
           <>
             <Script

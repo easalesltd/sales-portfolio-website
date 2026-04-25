@@ -40,3 +40,7 @@ next-env.d.ts
 # build cache
 .next/cache/
 deploy/.next/cache/
+
+# local perf audit artifacts
+.tmp-lh-home.json
+.tmp-lighthouse*/

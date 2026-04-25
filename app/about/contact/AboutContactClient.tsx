@@ -7,6 +7,7 @@ import {
   FaPhone,
 } from "react-icons/fa";
 import FadeInOnScroll from "../../components/FadeInOnScroll";
+import { trackGaEvent } from "@/app/lib/ga-event";
 
 export default function AboutContactClient() {
   return (
@@ -33,6 +34,7 @@ export default function AboutContactClient() {
                   </span>
                   <a
                     href="tel:07709197915"
+                    onClick={() => trackGaEvent("phone_click", { location: "about_contact_page" })}
                     className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                   >
                     07709 197915
@@ -52,6 +54,7 @@ export default function AboutContactClient() {
                   </span>
                   <a
                     href="mailto:dave@easalesltd.co.uk"
+                    onClick={() => trackGaEvent("email_click", { location: "about_contact_page" })}
                     className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300 break-all"
                   >
                     dave@easalesltd.co.uk

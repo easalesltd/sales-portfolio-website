@@ -1,13 +1,31 @@
 import { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { getCspNonce } from '@/app/lib/csp-nonce'
 import { companies } from '../../data/companies'
-import OrderForm from './OrderForm'
 import VideoBackground from '../../components/VideoBackground'
-import ImageGallery from '../../components/ImageGallery'
-import ShowroomVideo from '../../components/ShowroomVideo'
 import { Company } from '@/app/lib/types'
 import { partnerBrandLogoAlt } from '@/app/lib/partner-brand-logo-alt'
+
+const OrderForm = dynamic(() => import('./OrderForm'), {
+  loading: () => (
+    <div className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
+      Loading order form...
+    </div>
+  ),
+})
+
+const ImageGallery = dynamic(() => import('../../components/ImageGallery'), {
+  loading: () => (
+    <div className="h-64 w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800" />
+  ),
+})
+
+const ShowroomVideo = dynamic(() => import('../../components/ShowroomVideo'), {
+  loading: () => (
+    <div className="h-64 w-full animate-pulse rounded-lg bg-gray-100 dark:bg-neutral-800" />
+  ),
+})
 
 // Add shuffle function at the top level
 function shuffleArray<T>(array: T[]): T[] {
@@ -17,6 +35,21 @@ function shuffleArray<T>(array: T[]): T[] {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
+}
+
+function sanitizeKeywords(rawKeywords: string[], limit = 60): string[] {
+  const seen = new Set<string>()
+  const cleaned: string[] = []
+  for (const keyword of rawKeywords) {
+    const value = keyword.trim()
+    if (!value) continue
+    const normalized = value.toLowerCase()
+    if (seen.has(normalized)) continue
+    seen.add(normalized)
+    cleaned.push(value)
+    if (cleaned.length >= limit) break
+  }
+  return cleaned
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> | { slug: string } }): Promise<Metadata> {
@@ -1459,7 +1492,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return {
       title: metadata.title,
       description: metaDescription,
-      keywords: metadata.keywords.join(', '),
+      keywords: sanitizeKeywords(metadata.keywords).join(', '),
       openGraph: {
         title: metadata.title,
         description: metaDescription,
@@ -1477,7 +1510,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (resolvedParams.slug === 'museums-and-galleries') {
     const title = 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia';
     const description = `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. ${company.description}`;
-    const keywords = [
+    const keywords = sanitizeKeywords([
       'museums and galleries sales agent',
       'museums and galleries agent',
       'museums and galleries wholesale supplier',
@@ -1539,7 +1572,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       'licensed charity card agent',
       'charity card agent',
       'Christmas card agent'
-    ].join(', ');
+    ]).join(', ');
 
     return {
       title,

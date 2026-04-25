@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import dynamic from 'next/dynamic';
+import { trackGaEvent } from '@/app/lib/ga-event';
 
 // Dynamically import Confetti to avoid SSR issues
 const ReactConfetti = dynamic(() => import('react-confetti'), {
@@ -131,6 +132,10 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
       const data = (await res.json()) as { ok?: boolean; fallback?: boolean; error?: string };
 
       if (res.ok && data.ok && !data.fallback) {
+        trackGaEvent('request_visit_submit', {
+          request_type: 'verified_email_flow',
+          selected_company_count: selectedList.length,
+        });
         setVerifyEmail(formData.email);
         setFlow('verify_sent');
         return;
@@ -138,6 +143,10 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
 
       if (data.fallback) {
         await sendLegacyEmail(selectedCompanies);
+        trackGaEvent('request_visit_submit', {
+          request_type: 'legacy_email_fallback',
+          selected_company_count: selectedList.length,
+        });
         setSubmitStatus('success');
         setTimeout(() => {
           handleClose();
