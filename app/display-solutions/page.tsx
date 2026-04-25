@@ -33,6 +33,7 @@ const structuredData = {
           '@type': 'Product',
           name: 'Free Greeting Card Spinners',
           sku: 'eas-display-card-spinner-free',
+          image: 'https://www.easalesltd.co.uk/images/display-solutions/Paper Salad Greeting Card FSDU.png',
           brand: displayBrand,
           description:
             'Complimentary greeting card spinners and display units for retailers. Professional quality displays at no cost to qualifying retailers.',
@@ -42,7 +43,7 @@ const structuredData = {
             price: '0',
             priceCurrency: 'GBP',
             availability: 'https://schema.org/InStock',
-            priceValidUntil: '2024-12-31',
+            priceValidUntil: '2027-12-31',
             description: 'Free of charge greeting card spinners for qualifying retailers',
           },
         },
@@ -53,6 +54,7 @@ const structuredData = {
           '@type': 'Product',
           name: 'Affordable Greeting Card Displays',
           sku: 'eas-display-affordable-range',
+          image: 'https://www.easalesltd.co.uk/images/display-solutions/Mint Publishing CDU.png',
           brand: displayBrand,
           description:
             'Cost-effective greeting card display solutions for retailers. Quality displays at competitive prices.',
@@ -65,7 +67,7 @@ const structuredData = {
               priceCurrency: 'GBP',
               minPrice: '50',
               maxPrice: '200',
-              priceValidUntil: '2024-12-31',
+              priceValidUntil: '2027-12-31',
             },
             availability: 'https://schema.org/InStock',
             description: 'Affordable greeting card display solutions starting from £50',
@@ -78,6 +80,8 @@ const structuredData = {
           '@type': 'Product',
           name: 'Bespoke Greeting Card Wall Displays',
           sku: 'eas-display-bespoke-wall',
+          image:
+            'https://www.easalesltd.co.uk/images/display-solutions/Ohh Deer Card Wall Display.png',
           brand: displayBrand,
           description:
             'Custom-designed wall displays for greeting cards. Tailored solutions to maximize your retail space and showcase your products effectively.',
@@ -90,7 +94,7 @@ const structuredData = {
               priceCurrency: 'GBP',
               minPrice: '200',
               maxPrice: '1000',
-              priceValidUntil: '2024-12-31',
+              priceValidUntil: '2027-12-31',
             },
             availability: 'https://schema.org/InStock',
             description:
