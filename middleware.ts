@@ -39,6 +39,23 @@ function buildCsp(nonce: string, isDev: boolean): string {
 }
 
 export function middleware(request: NextRequest) {
+  const { nextUrl } = request;
+  const hostname = nextUrl.hostname.toLowerCase();
+
+  // Canonical host policy: always serve production on www.
+  if (hostname === 'easalesltd.co.uk') {
+    const redirectUrl = nextUrl.clone();
+    redirectUrl.hostname = 'www.easalesltd.co.uk';
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
+  // Keep one path version indexed: remove trailing slash except root.
+  if (nextUrl.pathname.length > 1 && nextUrl.pathname.endsWith('/')) {
+    const redirectUrl = nextUrl.clone();
+    redirectUrl.pathname = nextUrl.pathname.replace(/\/+$/, '');
+    return NextResponse.redirect(redirectUrl, 308);
+  }
+
   const isDev = process.env.NODE_ENV === 'development'
   const nonce = generateNonce()
   const csp = buildCsp(nonce, isDev)

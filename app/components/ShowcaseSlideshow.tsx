@@ -425,6 +425,7 @@ export default function ShowcaseSlideshow() {
             fill
             className="object-cover select-none max-w-none"
             priority={currentIndex === 0}
+            fetchPriority={currentIndex === 0 ? 'high' : 'auto'}
             onError={() => handleImageError(currentIndex)}
             sizes="100vw"
             quality={75}
@@ -446,7 +447,7 @@ export default function ShowcaseSlideshow() {
             alt={shuffledImages[nextIndex].alt}
             fill
             className="object-cover select-none max-w-none"
-            priority
+            loading="lazy"
             onError={() => handleImageError(nextIndex)}
             sizes="100vw"
             quality={75}
