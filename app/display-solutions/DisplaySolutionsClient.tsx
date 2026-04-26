@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import FadeInOnScroll from '../components/FadeInOnScroll';
 
-/** Screen-reader-friendly alt; keeps filename wording (e.g. stationary product range). */
+/** Screen-reader-friendly alt; expands CDU/FSDU; filename reflects product (e.g. stationery range). */
 function altForDisplaySolutionImage(sectionTitle: string, filename: string): string {
   const stem = filename.replace(/\.(png|jpe?g)$/i, '');
   const expanded = stem
@@ -54,7 +54,7 @@ export default function DisplaySolutionsClient() {
     'Global Journey Rustic Plaque FSDU.png',
     'Museums and Galleries Giftware FSDU.png',
     'Museums and Galleries Flat Wrap FSDU.png',
-    'Museums and Galleries Stationary FSDU.png',
+    'Museums and Galleries Stationery FSDU.png',
     'Museums and Galleries Card FSDU.png',
     'Ohh Deer Gouda FSDU.png',
     'Ohh Deer Journal and Art Print FSDU.png'
