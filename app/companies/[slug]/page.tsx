@@ -1664,7 +1664,8 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
         'name': `${company.name} Trade Show Video`,
         'description': `Trade show presentation and product showcase for ${company.name}`,
         'thumbnailUrl': `https://www.easalesltd.co.uk${company.logoUrl}`,
-        'uploadDate': '2024-01-01', // Update with actual date if available
+        // Google expects a timezone-qualified datetime (ISO 8601), not date-only.
+        'uploadDate': '2024-01-01T00:00:00Z',
         'contentUrl': `https://www.easalesltd.co.uk${video}`,
         'embedUrl': `https://www.easalesltd.co.uk${video}`,
         'publisher': {
@@ -2523,7 +2524,18 @@ function generateStructuredData(company: Company) {
               '@type': 'Brand',
               'name': company.name
             },
-            'category': data.categories
+            'category': data.categories,
+            'offers': {
+              '@type': 'Offer',
+              'priceCurrency': 'GBP',
+              'price': '0.00',
+              'availability': 'https://schema.org/InStock',
+              'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
+              'seller': {
+                '@type': 'Organization',
+                'name': 'East Anglian Sales LTD'
+              }
+            }
           },
           'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire', 'Hertfordshire'].map(county => ({
             '@type': 'State',
@@ -2571,7 +2583,18 @@ function generateStructuredData(company: Company) {
               '@type': 'Brand',
               'name': company.name
             },
-            'category': ['Sales Agent Services', 'Wholesale Products', 'East Anglia Retail']
+            'category': ['Sales Agent Services', 'Wholesale Products', 'East Anglia Retail'],
+            'offers': {
+              '@type': 'Offer',
+              'priceCurrency': 'GBP',
+              'price': '0.00',
+              'availability': 'https://schema.org/InStock',
+              'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
+              'seller': {
+                '@type': 'Organization',
+                'name': 'East Anglian Sales LTD'
+              }
+            }
           },
           'areaServed': ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire', 'Hertfordshire'].map(county => ({
             '@type': 'State',

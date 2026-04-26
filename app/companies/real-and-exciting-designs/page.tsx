@@ -134,7 +134,18 @@ function generateStructuredData(company: typeof companies[0]) {
             '@type': 'Brand',
             'name': 'Real and Exciting Designs'
           },
-          'category': ['Greeting Cards', 'Gift Wrap', 'Notebooks', 'Stationery', 'East Anglia Retail']
+          'category': ['Greeting Cards', 'Gift Wrap', 'Notebooks', 'Stationery', 'East Anglia Retail'],
+          'offers': {
+            '@type': 'Offer',
+            'priceCurrency': 'GBP',
+            'price': '0.00',
+            'availability': 'https://schema.org/InStock',
+            'url': 'https://www.easalesltd.co.uk/companies/real-and-exciting-designs',
+            'seller': {
+              '@type': 'Organization',
+              'name': 'East Anglian Sales LTD'
+            }
+          }
         },
         'areaServed': counties.map(county => ({
           '@type': 'State',
