@@ -5,6 +5,15 @@ import Link from 'next/link';
 import { useState } from 'react';
 import FadeInOnScroll from '../components/FadeInOnScroll';
 
+/** Screen-reader-friendly alt; keeps filename wording (e.g. stationary product range). */
+function altForDisplaySolutionImage(sectionTitle: string, filename: string): string {
+  const stem = filename.replace(/\.(png|jpe?g)$/i, '');
+  const expanded = stem
+    .replace(/\bFSDU\b/g, 'floor standing display unit')
+    .replace(/\bCDU\b/g, 'counter display unit');
+  return `${sectionTitle}: ${expanded}`;
+}
+
 export default function DisplaySolutionsClient() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
@@ -19,7 +28,7 @@ export default function DisplaySolutionsClient() {
         >
           <Image
             src={`/images/display-solutions/${image}`}
-            alt={`${title} - ${image.replace('.png', '')}`}
+            alt={altForDisplaySolutionImage(title, image)}
             fill
             className="object-cover rounded-lg shadow-md"
           />
@@ -225,7 +234,7 @@ export default function DisplaySolutionsClient() {
               <div className="relative h-[60vh] w-full">
                 <Image
                   src={`/images/display-solutions/${selectedImage}`}
-                  alt={selectedImage.replace('.png', '')}
+                  alt={altForDisplaySolutionImage('Display solution', selectedImage)}
                   fill
                   className="object-contain rounded-lg"
                   sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, 800px"
