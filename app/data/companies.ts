@@ -57,7 +57,7 @@ export const companies: Company[] = [
     logoUrl: "/images/logos/MINT-PUBLISHING-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1nCipeZFu9PpqIMJoHcYbUXqdvvFcYrNd?usp=drive_link",
     websiteUrl: "https://www.mintpublishing.co.uk",
-    videos: ["/videos/companies/mint-publishing/trade show.mov"],
+    videos: ["/videos/companies/mint-publishing/trade show.mp4"],
     brandLogos: [
       "/images/logos/MINT-PUBLISHING-placeholder.png"
     ]
@@ -70,7 +70,7 @@ export const companies: Company[] = [
     logoUrl: "/images/logos/museums-galleries-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/14VzcZeRwdH5RTVK5JDyovfrMr7YSdT0D?usp=drive_link",
     websiteUrl: "https://www.museums.co.uk",
-    videos: ["/videos/companies/museums-and-galleries/trade-show.mov"],
+    videos: ["/videos/companies/museums-and-galleries/trade-show.mp4"],
     brandLogos: [
       "/images/logos/museums-galleries-placeholder.png"
     ]
