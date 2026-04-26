@@ -3533,12 +3533,28 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (screen !== 'game' || outcome !== null) return;
 
     let raf = 0;
+    let lastStepTs = 0;
+    const SIM_STEP_MS = 1000 / 60;
+    const MAX_STEP_GAP_MS = 1000 / 15;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', CTX_2D_OPTS);
     if (!ctx) return;
 
-    const tick = () => {
+    const tick = (ts: number) => {
+      if (lastStepTs === 0) lastStepTs = ts;
+      const elapsed = ts - lastStepTs;
+      if (elapsed < SIM_STEP_MS) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      if (elapsed > MAX_STEP_GAP_MS) {
+        // Clamp huge timing gaps (tab switches/throttling) to avoid simulation spikes.
+        lastStepTs = ts - SIM_STEP_MS;
+      } else {
+        lastStepTs = ts;
+      }
+
       const W = canvas.width;
       const H = canvas.height;
       if (W < 2 || H < 2) {
