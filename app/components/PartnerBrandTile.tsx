@@ -18,7 +18,7 @@ export default function PartnerBrandTile({ company }: { company: Company }) {
     <Link
       href={`/companies/${company.slug}`}
       prefetch
-      className="group flex h-full min-h-0 w-full flex-col overflow-hidden rounded-lg bg-white/90 backdrop-blur-sm shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+      className="group flex h-full min-h-0 w-full flex-col overflow-hidden rounded-lg bg-white/90 backdrop-blur-sm shadow-lg transition-shadow duration-300 hover:shadow-xl motion-safe:transition-transform motion-safe:duration-300 motion-safe:hover:-translate-y-1"
     >
       <div
         className={`flex aspect-[3/2] w-full shrink-0 items-center justify-center overflow-hidden p-6 ${
@@ -30,7 +30,7 @@ export default function PartnerBrandTile({ company }: { company: Company }) {
           alt={partnerBrandLogoAlt(company.name)}
           loading="lazy"
           decoding="async"
-          className={`max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105 ${
+          className={`max-h-full max-w-full object-contain motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-105 ${
             invertLightMarkOnDarkTile ? 'invert' : ''
           }`}
         />

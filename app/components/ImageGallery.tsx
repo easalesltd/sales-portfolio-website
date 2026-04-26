@@ -88,6 +88,8 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
           type="button"
           className="absolute inset-0 z-[1] cursor-zoom-in border-0 p-0 bg-transparent text-left"
           aria-label="Open image full screen"
+          aria-haspopup="dialog"
+          aria-expanded={lightboxOpen}
           onClick={openLightbox}
         />
 

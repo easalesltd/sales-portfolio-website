@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 export type FadeInDirection = 'up' | 'down' | 'left' | 'right';
 
@@ -49,7 +49,13 @@ export default function FadeInOnScroll({
   className = '',
   direction = 'up',
 }: FadeInOnScrollProps) {
+  const prefersReducedMotion = useReducedMotion();
   const variants = getVariants(direction);
+
+  // useReducedMotion() is null before hydration; keep motion until explicitly true.
+  if (prefersReducedMotion === true) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div

@@ -397,7 +397,7 @@ export default function ShowcaseSlideshow() {
   return (
     <div 
       ref={containerRef}
-      className="relative min-h-0 min-w-0 w-full h-full overflow-hidden"
+      className="relative min-h-0 min-w-0 w-full h-full overflow-hidden ring-0 transition-shadow duration-300 md:hover:ring-2 md:hover:ring-white/20"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}

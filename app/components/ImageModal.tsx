@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 interface ImageModalProps {
@@ -14,11 +14,22 @@ interface ImageModalProps {
   totalImages?: number;
 }
 
-export default function ImageModal({ isOpen, onClose, imageSrc, alt, onPrevious, onNext, currentIndex, totalImages }: ImageModalProps) {
+export default function ImageModal({
+  isOpen,
+  onClose,
+  imageSrc,
+  alt,
+  onPrevious,
+  onNext,
+  currentIndex,
+  totalImages,
+}: ImageModalProps) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-  // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -32,7 +43,7 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt, onPrevious,
 
   const onTouchEndHandler = () => {
     if (!touchStart || !touchEnd) return;
-    
+
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
@@ -45,35 +56,88 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt, onPrevious,
     }
   };
 
+  const getFocusableElements = useCallback((): HTMLElement[] => {
+    const root = dialogRef.current;
+    if (!root) return [];
+    const selector =
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    return Array.from(root.querySelectorAll<HTMLElement>(selector)).filter(
+      (el) => !el.hasAttribute('disabled') && el.tabIndex !== -1
+    );
+  }, []);
+
   useEffect(() => {
+    if (!isOpen) return;
+
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+
+    const focusId = window.requestAnimationFrame(() => {
+      closeButtonRef.current?.focus();
+    });
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        e.preventDefault();
         onClose();
-      } else if (e.key === 'ArrowLeft' && onPrevious) {
+        return;
+      }
+      if (e.key === 'ArrowLeft' && onPrevious) {
         onPrevious();
-      } else if (e.key === 'ArrowRight' && onNext) {
+        return;
+      }
+      if (e.key === 'ArrowRight' && onNext) {
         onNext();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      const focusables = getFocusableElements();
+      if (focusables.length === 0) return;
+
+      if (focusables.length === 1) {
+        e.preventDefault();
+        focusables[0].focus();
+        return;
+      }
+
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | undefined;
+
+      if (e.shiftKey) {
+        if (active === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else if (active === last) {
+        e.preventDefault();
+        first.focus();
       }
     };
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
+    document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
 
     return () => {
+      window.cancelAnimationFrame(focusId);
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      previouslyFocusedRef.current?.focus({ preventScroll: true });
+      previouslyFocusedRef.current = null;
     };
-  }, [isOpen, onClose, onPrevious, onNext]);
+  }, [isOpen, onClose, onPrevious, onNext, getFocusableElements]);
 
   if (!isOpen) return null;
 
   return (
     <div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Enlarged image"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4"
       onClick={onClose}
-      onTouchEnd={e => {
+      onTouchEnd={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
         }
@@ -81,18 +145,20 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt, onPrevious,
     >
       <div
         className="relative w-full h-full max-w-[95vw] max-h-[95vh] flex items-center justify-center"
-        onClick={e => e.stopPropagation()}
-        onTouchEnd={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
       >
         <button
-          onClick={e => {
+          ref={closeButtonRef}
+          type="button"
+          onClick={(e) => {
             e.stopPropagation();
             onClose();
           }}
-          onTouchStart={e => {
+          onTouchStart={(e) => {
             e.stopPropagation();
           }}
-          onTouchEnd={e => {
+          onTouchEnd={(e) => {
             e.stopPropagation();
             e.preventDefault();
             onClose();
@@ -106,24 +172,23 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt, onPrevious,
           </svg>
         </button>
 
-        {/* Image counter */}
         {currentIndex !== undefined && totalImages !== undefined && (
-          <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm z-10">
+          <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm z-10" aria-live="polite">
             {currentIndex + 1} / {totalImages}
           </div>
         )}
 
-        {/* Previous button */}
         {onPrevious && (
           <button
-            onClick={e => {
+            type="button"
+            onClick={(e) => {
               e.stopPropagation();
               onPrevious();
             }}
-            onTouchStart={e => {
+            onTouchStart={(e) => {
               e.stopPropagation();
             }}
-            onTouchEnd={e => {
+            onTouchEnd={(e) => {
               e.stopPropagation();
               e.preventDefault();
               onPrevious();
@@ -138,17 +203,17 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt, onPrevious,
           </button>
         )}
 
-        {/* Next button */}
         {onNext && (
           <button
-            onClick={e => {
+            type="button"
+            onClick={(e) => {
               e.stopPropagation();
               onNext();
             }}
-            onTouchStart={e => {
+            onTouchStart={(e) => {
               e.stopPropagation();
             }}
-            onTouchEnd={e => {
+            onTouchEnd={(e) => {
               e.stopPropagation();
               e.preventDefault();
               onNext();
@@ -162,7 +227,7 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt, onPrevious,
             </svg>
           </button>
         )}
-        <div 
+        <div
           className="relative w-full h-full flex items-center justify-center"
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
@@ -181,4 +246,4 @@ export default function ImageModal({ isOpen, onClose, imageSrc, alt, onPrevious,
       </div>
     </div>
   );
-} 
+}
