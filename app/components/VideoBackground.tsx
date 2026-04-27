@@ -57,8 +57,8 @@ export default function VideoBackground({
   }, [playbackRate, videoUrl]);
 
   return (
-    <div className="relative w-full">
-      <div className="absolute inset-0 bg-black/20 pointer-events-none">
+    <div className="relative h-full min-h-0 w-full">
+      <div className="pointer-events-none absolute inset-0 bg-black/20">
         <video
           key={videoUrl}
           ref={videoRef}
@@ -79,7 +79,7 @@ export default function VideoBackground({
         </video>
       </div>
 
-      <div className="relative z-10 w-full">{children}</div>
+      <div className="relative z-10 h-full min-h-0 w-full">{children}</div>
     </div>
   );
 }
