@@ -14,11 +14,11 @@ export default function MobileMenu() {
   const [isDisplaySolutionsExpanded, setIsDisplaySolutionsExpanded] = useState(false);
 
   const aboutNavItems = [
-    { name: 'Meet Dave', href: '/about' },
-    { name: 'Contact Dave', href: '/about/contact' },
+    { name: 'About Dave', href: '/about' },
     { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
     { name: 'Blog / Press', href: '/blog' },
     { name: 'Recipes', href: '/recipes' },
+    { name: 'Contact Dave', href: '/about/contact' },
   ] as const;
 
   useEffect(() => {

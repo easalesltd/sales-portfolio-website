@@ -12,11 +12,11 @@ export default function AboutDropdown() {
   const pathname = usePathname();
 
   const aboutItems = [
-    { name: 'Meet Dave', href: '/about' },
-    { name: 'Contact Dave', href: '/about/contact' },
+    { name: 'About Dave', href: '/about' },
     { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
     { name: 'Blog / Press', href: '/blog' },
-    { name: 'Recipes', href: '/recipes' }
+    { name: 'Recipes', href: '/recipes' },
+    { name: 'Contact Dave', href: '/about/contact' },
   ];
 
   const handleMouseEnter = () => {
