@@ -1,6 +1,4 @@
 'use client';
-
-import Image from 'next/image';
 import { useState } from 'react';
 import ImageModal from "../components/ImageModal";
 import VideoBackground from "../components/VideoBackground";
@@ -123,12 +121,12 @@ export default function AboutPageClient() {
                 className="relative min-w-[260px] h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer snap-center flex-shrink-0"
                 onClick={() => handleImageClick(index)}
               >
-                <Image
+                <img
                   src={img.src}
                   alt={img.alt}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-300"
-                  sizes="260px"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
             ))}
@@ -178,12 +176,12 @@ export default function AboutPageClient() {
                     className="relative min-w-0 w-full aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                     onClick={() => handleImageClick(index)}
                   >
-                    <Image
+                    <img
                       src={img.src}
                       alt={img.alt}
-                      fill
-                      sizes="(max-width: 1280px) 25vw, 280px"
-                      className="object-cover object-center hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover object-center hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                 ))}
