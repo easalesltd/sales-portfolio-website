@@ -65,6 +65,12 @@ To start the production server:
 npm run start
 ```
 
+## Bing + IndexNow
+
+For Bing verification and IndexNow submission setup on this stack, see:
+
+- `BING_INDEXNOW_SETUP.md`
+
 ## Project Structure
 
 - `/app` - Next.js application pages and components

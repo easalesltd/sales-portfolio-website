@@ -111,6 +111,16 @@ export const metadata: Metadata = {
     ],
   },
   manifest: '/site.webmanifest',
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_CODE || undefined,
+    ...(process.env.NEXT_PUBLIC_BING_VERIFICATION_CODE
+      ? {
+          other: {
+            'msvalidate.01': process.env.NEXT_PUBLIC_BING_VERIFICATION_CODE,
+          },
+        }
+      : {}),
+  },
   keywords: [
     // General Sales Agent Terms (Non-Location Specific)
     "Greeting Card Sales Agent",
