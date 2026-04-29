@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough Bread, Mince Pies & Chocolate Christmas Puddings | East Anglian Sales",
+  title: "Dave Langdon's Favourite Recipes | East Anglian Sales",
   description:
     "Baking recipes from Dave Langdon, greeting card agent — sourdough, mince pies & chocolate puds for customer gifts. East Anglia. East Anglian Sales Ltd.",
   keywords: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     "festive baking recipes"
   ],
   openGraph: {
-    title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough & Mince Pies",
+    title: "Dave Langdon's Favourite Recipes | East Anglian Sales",
     description:
       "Baking recipes from Dave Langdon, greeting card agent — sourdough, mince pies & chocolate puds for customer gifts. East Anglia. East Anglian Sales Ltd.",
     type: "website",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dave Langdon & David Langdon's Favourite Recipes | Sourdough & Mince Pies",
+    title: "Dave Langdon's Favourite Recipes | East Anglian Sales",
     description:
       "Baking recipes from Dave Langdon, greeting card agent — sourdough, mince pies & chocolate puds for customer gifts. East Anglia. East Anglian Sales Ltd.",
     images: ["https://www.easalesltd.co.uk/images/recipes/20251125_083621.jpg"]

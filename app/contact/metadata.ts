@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact East Anglian Sales LTD | David Langdon & Dave Langdon - Request a Visit from Your Local Agent",
+  title: "Contact Dave Langdon | East Anglian Sales",
   description:
     "Get in touch with Dave Langdon, greeting card and gift sales agent for East Anglia. Call, email or connect on LinkedIn to arrange a visit to your shop or garden centre.",
   keywords: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     "display solutions contact"
   ],
   openGraph: {
-    title: "Contact East Anglian Sales LTD | David Langdon & Dave Langdon - Request a Visit from Your Local Agent",
+    title: "Contact Dave Langdon | East Anglian Sales",
     description:
       "Get in touch with Dave Langdon, greeting card and gift sales agent for East Anglia. Call, email or connect on LinkedIn to arrange a visit to your shop or garden centre.",
     type: "website",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact East Anglian Sales LTD | David Langdon & Dave Langdon - Request a Visit",
+    title: "Contact Dave Langdon | East Anglian Sales",
     description:
       "Get in touch with Dave Langdon, greeting card and gift sales agent for East Anglia. Call, email or connect on LinkedIn to arrange a visit to your shop or garden centre.",
     images: [

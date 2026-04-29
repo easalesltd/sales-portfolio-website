@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { HOME_PAGE_META_DESCRIPTION } from "./lib/home-page-meta-description";
 
 export const metadata: Metadata = {
-  title: "Dave Langdon | Greeting Card and Gift Sales Agent East Anglia | East Anglian Sales Ltd",
+  title: "Dave Langdon | Greeting Card & Gift Sales Agent",
   description: HOME_PAGE_META_DESCRIPTION,
   keywords: [
     // Dave Langdon & David Langdon - Personal Brand Keywords (Comprehensive)
@@ -663,7 +663,7 @@ export const metadata: Metadata = {
     "sales process maintenance"
   ].join(', '),
   openGraph: {
-    title: "David Langdon & Dave Langdon - UK Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia",
+    title: "Dave Langdon | Greeting Card & Gift Sales Agent",
     description: HOME_PAGE_META_DESCRIPTION,
     type: "website",
     locale: "en_GB",
@@ -692,7 +692,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "David Langdon & Dave Langdon - UK Greeting Card Sales Agent & Gift Sales Agent | East of England, East Anglia",
+    title: "Dave Langdon | Greeting Card & Gift Sales Agent",
     description: HOME_PAGE_META_DESCRIPTION,
     images: [
       "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",

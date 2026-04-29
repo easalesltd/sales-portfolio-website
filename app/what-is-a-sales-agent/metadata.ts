@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'What is a Sales Agent? | Greeting Card & Gift Sales Agent | East Anglia',
+  title: 'What is a Sales Agent? | East Anglian Sales',
   description:
     'What is a sales agent? Greeting card reps, territories & brands — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Plain guide.',
   keywords: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     'gift wholesale agent',
   ],
   openGraph: {
-    title: 'What is a Sales Agent? | Greeting Card & Gift Sales | East Anglian Sales LTD',
+    title: 'What is a Sales Agent? | East Anglian Sales',
     description:
       'What is a sales agent? Greeting card reps, territories & brands — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Plain guide.',
     type: 'website',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'What is a Sales Agent? | Greeting Card & Gift Sales | East Anglia',
+    title: 'What is a Sales Agent? | East Anglian Sales',
     description:
       'What is a sales agent? Greeting card reps, territories & brands — Dave Langdon, East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire & Hertfordshire. Plain guide.',
     images: ['https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg'],

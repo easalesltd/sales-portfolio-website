@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About East Anglian Sales LTD | David Langdon & Dave Langdon - Wholesale Cards & Gifts Supplier in East Anglia",
+  title: "About Dave Langdon | East Anglian Sales",
   description:
     "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "Cambridgeshire retail supplier"
   ],
   openGraph: {
-    title: "About East Anglian Sales LTD | David Langdon & Dave Langdon - Your Local Wholesale Partner in East Anglia",
+    title: "About Dave Langdon | East Anglian Sales",
     description:
       "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
     type: "website",
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About East Anglian Sales LTD | Your Local Wholesale Partner",
+    title: "About Dave Langdon | East Anglian Sales",
     description:
       "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
     images: [

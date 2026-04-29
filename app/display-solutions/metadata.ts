@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays | East Anglian Sales LTD",
+  title: "Greeting Card Display Solutions | East Anglian Sales",
   description:
     "Professional greeting card display solutions for independent retailers across East Anglia. Dave Langdon supplies and installs branded card stands and POS for shops and garden centres.",
   keywords: [
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     "retail card displays East Anglia"
   ],
   openGraph: {
-    title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays | East Anglian Sales LTD",
+    title: "Greeting Card Display Solutions | East Anglian Sales",
     description:
       "Professional greeting card display solutions for independent retailers across East Anglia. Dave Langdon supplies and installs branded card stands and POS for shops and garden centres.",
     type: "website",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Greeting Card Display Solutions | Dave Langdon & David Langdon - Free Spinners & Bespoke Wall Displays",
+    title: "Greeting Card Display Solutions | East Anglian Sales",
     description:
       "Professional greeting card display solutions for independent retailers across East Anglia. Dave Langdon supplies and installs branded card stands and POS for shops and garden centres.",
     images: ["https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg"]
