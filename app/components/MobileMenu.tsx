@@ -18,7 +18,7 @@ export default function MobileMenu() {
     { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
     { name: 'Blog / Press', href: '/blog' },
     { name: 'Recipes', href: '/recipes' },
-    { name: 'Contact Dave', href: '/about/contact' },
+    { name: 'Contact Dave', href: '/contact' },
   ] as const;
 
   useEffect(() => {

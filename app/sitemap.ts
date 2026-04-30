@@ -20,12 +20,12 @@ type StaticRoute = {
 const STATIC_ROUTES: StaticRoute[] = [
   { pathname: '/', sourceFile: 'page.tsx', priority: 1.0, changeFrequency: 'weekly' },
   { pathname: '/about', sourceFile: 'about/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
-  { pathname: '/about/contact', sourceFile: 'about/contact/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
   { pathname: '/what-is-a-sales-agent', sourceFile: 'what-is-a-sales-agent/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
   { pathname: '/temporary-rep-cover', sourceFile: 'temporary-rep-cover/page.tsx', priority: 0.9, changeFrequency: 'monthly' },
   { pathname: '/display-solutions', sourceFile: 'display-solutions/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
   { pathname: '/display-solutions/bespoke-confectionery-displays', sourceFile: 'display-solutions/bespoke-confectionery-displays/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
   { pathname: '/contact', sourceFile: 'contact/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
+  { pathname: '/site-index', sourceFile: 'site-index/page.tsx', priority: 0.4, changeFrequency: 'monthly' },
   { pathname: '/blog', sourceFile: 'blog/page.tsx', priority: 0.75, changeFrequency: 'monthly' },
   { pathname: '/recipes', sourceFile: 'recipes/page.tsx', priority: 0.7, changeFrequency: 'monthly' },
 ];

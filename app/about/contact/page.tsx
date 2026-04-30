@@ -4,11 +4,11 @@ import AboutContactClient from './AboutContactClient';
 const contactSchema = {
   '@context': 'https://schema.org',
   '@type': 'ContactPage',
-  '@id': 'https://www.easalesltd.co.uk/about/contact#contactpage',
+  '@id': 'https://www.easalesltd.co.uk/contact#contactpage',
   name: 'Contact Dave Langdon',
   description:
     'Direct contact details for Dave Langdon, sales agent for East Anglian Sales LTD.',
-  url: 'https://www.easalesltd.co.uk/about/contact',
+  url: 'https://www.easalesltd.co.uk/contact',
   mainEntity: {
     '@type': 'Person',
     name: 'Dave Langdon',

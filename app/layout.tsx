@@ -1137,6 +1137,11 @@ export default async function RootLayout({
                 </a>
               </div>
             </div>
+            <div className="mt-8 border-t border-gray-200 pt-5 text-center text-sm text-gray-600 dark:border-neutral-800 dark:text-neutral-400">
+              <Link href="/site-index" className="hover:underline">
+                Site Index
+              </Link>
+            </div>
           </div>
         </footer>
       </body>

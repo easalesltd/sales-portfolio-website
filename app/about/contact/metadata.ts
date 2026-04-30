@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
-    url: "https://www.easalesltd.co.uk/about/contact",
+    url: "https://www.easalesltd.co.uk/contact",
   },
   twitter: {
     card: "summary",
@@ -28,6 +28,10 @@ export const metadata: Metadata = {
       "Get in touch with Dave Langdon, greeting card and gift sales agent for East Anglia. Call, email or connect on LinkedIn to arrange a visit to your shop or garden centre.",
   },
   alternates: {
-    canonical: "https://www.easalesltd.co.uk/about/contact",
+    canonical: "https://www.easalesltd.co.uk/contact",
+  },
+  robots: {
+    index: false,
+    follow: true,
   },
 };

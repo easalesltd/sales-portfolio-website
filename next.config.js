@@ -30,6 +30,11 @@ const nextConfig = {
         destination: '/display-solutions/bespoke-confectionery-displays',
         permanent: true,
       },
+      {
+        source: '/about/contact',
+        destination: '/contact',
+        permanent: true,
+      },
     ]
   },
   async headers() {
