@@ -4178,11 +4178,21 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       <div
         className={`flex w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl max-h-[96dvh] min-h-0 ${screen === 'game' ? 'min-h-[min(82dvh,96dvh)] sm:min-h-0' : 'lg:max-h-[min(90vh,820px)]'}`}
       >
-        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-neutral-700 px-3 py-2 sm:px-4 sm:py-2.5">
-          <h2 id="sales-agent-dash-title" className="text-base font-semibold text-white sm:text-lg">
-            Sales Agent Dash
-          </h2>
-          <div className="flex items-center gap-2">
+        <header className="relative shrink-0 overflow-hidden border-b border-neutral-700">
+          <div className="flex justify-center bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-900 px-3 pb-4 pt-14 sm:px-5 sm:pb-5 sm:pt-16">
+            <h2
+              id="sales-agent-dash-title"
+              className="m-0 mt-2 flex w-full min-w-0 max-w-full justify-center sm:mt-3"
+            >
+              <img
+                src="/images/Game/Sales-Agent-Dash-01-05-2026.png"
+                alt="Sales Agent Dash"
+                className="h-auto w-full max-w-full object-contain object-center max-h-[min(32vh,240px)] sm:max-h-[min(34vh,280px)]"
+                decoding="async"
+              />
+            </h2>
+          </div>
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex justify-end gap-1.5 px-2 pt-2 sm:gap-2 sm:px-3 sm:pt-3">
             <button
               type="button"
               onClick={() => {
@@ -4196,19 +4206,19 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
                 });
               }}
               aria-pressed={audioEnabled}
-              className="rounded-md border border-neutral-600 px-3 py-1.5 text-sm text-white hover:bg-neutral-800"
+              className="pointer-events-auto rounded-lg border border-white/25 bg-neutral-950/75 px-2.5 py-1.5 text-xs font-medium text-white shadow-[0_2px_14px_rgba(0,0,0,0.45)] backdrop-blur-md hover:bg-neutral-900/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/80 sm:px-3 sm:text-sm"
             >
               Audio: {audioEnabled ? 'On' : 'Off'}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md border border-neutral-600 px-3 py-1.5 text-sm text-white hover:bg-neutral-800"
+              className="pointer-events-auto rounded-lg border border-white/25 bg-neutral-950/75 px-2.5 py-1.5 text-xs font-medium text-white shadow-[0_2px_14px_rgba(0,0,0,0.45)] backdrop-blur-md hover:bg-neutral-900/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/80 sm:px-3 sm:text-sm"
             >
               Close
             </button>
           </div>
-        </div>
+        </header>
 
         <div
           ref={mainScrollRef}
