@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { getCspNonce } from '@/app/lib/csp-nonce';
 import { companies } from '@/app/data/companies';
 import { partnerBrandLogoAlt } from '@/app/lib/partner-brand-logo-alt';
+import { jsonLdMerchantOfferComplianceFields } from '@/app/lib/json-ld-merchant-offer-fields';
 import OrderForm from '../[slug]/OrderForm'
 import ImageGallery from '../../components/ImageGallery'
 
@@ -99,6 +100,7 @@ function generateCompanyMetadata(company: typeof companies[0]): Metadata {
 }
 
 function generateStructuredData(company: typeof companies[0]) {
+  const offerCompliance = jsonLdMerchantOfferComplianceFields()
   return {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
@@ -137,6 +139,7 @@ function generateStructuredData(company: typeof companies[0]) {
           'category': ['Greeting Cards', 'Gift Wrap', 'Notebooks', 'Stationery', 'East Anglia Retail'],
           'offers': {
             '@type': 'Offer',
+            ...offerCompliance,
             'priceCurrency': 'GBP',
             'price': '0.00',
             'availability': 'https://schema.org/InStock',

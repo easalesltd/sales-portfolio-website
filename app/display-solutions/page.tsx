@@ -1,5 +1,8 @@
 import { getCspNonce } from '@/app/lib/csp-nonce';
+import { jsonLdMerchantOfferComplianceFields } from '@/app/lib/json-ld-merchant-offer-fields';
 import DisplaySolutionsClient from './DisplaySolutionsClient';
+
+const offerCompliance = jsonLdMerchantOfferComplianceFields();
 
 const displayBrand = {
   '@type': 'Brand',
@@ -40,6 +43,7 @@ const structuredData = {
           category: ['Retail Displays', 'Card Spinners', 'Free Displays', 'Greeting Card Solutions'],
           offers: {
             '@type': 'Offer',
+            ...offerCompliance,
             price: '0',
             priceCurrency: 'GBP',
             availability: 'https://schema.org/InStock',
@@ -61,6 +65,7 @@ const structuredData = {
           category: ['Retail Displays', 'Card Spinners', 'Affordable Displays', 'Greeting Card Solutions'],
           offers: {
             '@type': 'Offer',
+            ...offerCompliance,
             priceSpecification: {
               '@type': 'PriceSpecification',
               price: '50',
@@ -88,6 +93,7 @@ const structuredData = {
           category: ['Retail Displays', 'Wall Displays', 'Bespoke Solutions', 'Greeting Card Solutions'],
           offers: {
             '@type': 'Offer',
+            ...offerCompliance,
             priceSpecification: {
               '@type': 'PriceSpecification',
               price: '200',

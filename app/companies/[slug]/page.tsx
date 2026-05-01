@@ -6,6 +6,7 @@ import { companies } from '../../data/companies'
 import VideoBackground from '../../components/VideoBackground'
 import { Company } from '@/app/lib/types'
 import { partnerBrandLogoAlt } from '@/app/lib/partner-brand-logo-alt'
+import { jsonLdMerchantOfferComplianceFields } from '@/app/lib/json-ld-merchant-offer-fields'
 
 const OrderForm = dynamic(() => import('./OrderForm'), {
   loading: () => (
@@ -2118,7 +2119,20 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   return content;
 }
 
+const SITE_ORIGIN = 'https://www.easalesltd.co.uk';
+
+/** Product snippets require `image`; use logo + optional hero product shot per brand. */
+function productSchemaImages(company: Company): string[] {
+  const logo = `${SITE_ORIGIN}${company.logoUrl}`;
+  const heroBySlug: Partial<Record<Company['slug'], string>> = {
+    'peppermint-grove': `${SITE_ORIGIN}/images/companies/peppermint-grove/PGA_Uk_Diffuser_Category_d8e301ee-42b8-4ef0-9d68-5221f68c83b3.jpeg`,
+  };
+  const hero = heroBySlug[company.slug];
+  return hero && hero !== logo ? [hero, logo] : [logo];
+}
+
 function generateStructuredData(company: Company) {
+  const offerCompliance = jsonLdMerchantOfferComplianceFields()
   const companyStructuredData = {
     'museums-and-galleries': {
       name: 'Museums and Galleries Greeting Cards - Art & Design-led Cards Supplier in East Anglia, Hertfordshire & Cambridgeshire',
@@ -2498,7 +2512,7 @@ function generateStructuredData(company: Company) {
       'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
       'logo': {
         '@type': 'ImageObject',
-        'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
+        'url': `${SITE_ORIGIN}${company.logoUrl}`,
         'width': '800',
         'height': '600'
       },
@@ -2520,6 +2534,7 @@ function generateStructuredData(company: Company) {
             '@type': 'Product',
             'name': `${company.name} Products`,
             'description': data.description,
+            'image': productSchemaImages(company),
             'brand': {
               '@type': 'Brand',
               'name': company.name
@@ -2527,6 +2542,7 @@ function generateStructuredData(company: Company) {
             'category': data.categories,
             'offers': {
               '@type': 'Offer',
+              ...offerCompliance,
               'priceCurrency': 'GBP',
               'price': '0.00',
               'availability': 'https://schema.org/InStock',
@@ -2556,7 +2572,7 @@ function generateStructuredData(company: Company) {
     'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
     'logo': {
       '@type': 'ImageObject',
-      'url': `https://www.easalesltd.co.uk${company.logoUrl}`,
+      'url': `${SITE_ORIGIN}${company.logoUrl}`,
       'width': '800',
       'height': '600'
     },
@@ -2579,6 +2595,7 @@ function generateStructuredData(company: Company) {
             '@type': 'Product',
             'name': `${company.name} Products`,
             'description': company.description,
+            'image': productSchemaImages(company),
             'brand': {
               '@type': 'Brand',
               'name': company.name
@@ -2586,6 +2603,7 @@ function generateStructuredData(company: Company) {
             'category': ['Sales Agent Services', 'Wholesale Products', 'East Anglia Retail'],
             'offers': {
               '@type': 'Offer',
+              ...offerCompliance,
               'priceCurrency': 'GBP',
               'price': '0.00',
               'availability': 'https://schema.org/InStock',
