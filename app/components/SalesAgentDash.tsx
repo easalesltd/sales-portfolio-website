@@ -4239,15 +4239,15 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         className={`flex w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl max-h-[96dvh] min-h-0 ${screen === 'game' ? 'min-h-[min(82dvh,96dvh)] sm:min-h-0' : 'lg:max-h-[min(90vh,820px)]'}`}
       >
         <header className="relative shrink-0 overflow-hidden border-b border-neutral-700">
-          <div className="flex justify-center bg-black px-3 pb-4 pt-14 sm:px-5 sm:pb-5 sm:pt-16">
+          <div className="flex justify-center bg-black px-3 pb-2 pt-10 sm:px-5 sm:pb-3 sm:pt-11">
             <h2
               id="sales-agent-dash-title"
-              className="m-0 mt-2 flex w-full min-w-0 max-w-full justify-center sm:mt-3"
+              className="m-0 mt-1 flex w-full min-w-0 max-w-full justify-center sm:mt-1.5"
             >
               <img
                 src="/images/Game/Sales-Agent-Dash-01-05-2026-Photoroom.png"
                 alt="Sales Agent Dash"
-                className="h-auto w-full max-w-full object-contain object-center max-h-[min(32vh,240px)] sm:max-h-[min(34vh,280px)]"
+                className="h-auto w-full max-w-full object-contain object-center max-h-[min(22vh,168px)] sm:max-h-[min(24vh,188px)]"
                 decoding="async"
               />
             </h2>
