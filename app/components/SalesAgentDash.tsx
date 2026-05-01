@@ -201,6 +201,8 @@ const GAME_MUSIC_VOLUME = 0.35;
 const DISCO_MUSIC_VOLUME = 0.45;
 const LAUGH_VOLUME = 0.8;
 const ORDER_PICKUP_VOLUME = 0.55;
+/** Extra gain while disco/hell BGM is loud (Harrogate Xmas disco, etc.). */
+const ORDER_PICKUP_VOLUME_DISCO_MULT = 1.5;
 /** Inaudible WAV — use for gesture unlock only so priming never touches death/order clips (avoids stray blips). */
 const SILENT_WAV_DATA_URL =
   'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==';
@@ -2865,6 +2867,36 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   }, []);
 
   /**
+   * Safari/WebKit often requires a user-gesture `play()` per decoded asset. Prime order SFX right after
+   * the silent unlock so collects work on Harrogate (and every level), not only after other clips ran.
+   */
+  const primeOrderPickupAfterUnlock = useCallback(async () => {
+    if (!audioEnabledRef.current) return;
+    ensureOrderPickupElements();
+    const pool = orderPickupPoolRef.current;
+    for (const a of pool) {
+      const baseVol = ORDER_PICKUP_VOLUME;
+      try {
+        a.muted = true;
+        a.volume = 0;
+        a.currentTime = 0;
+        await a.play();
+        a.pause();
+        a.currentTime = 0;
+      } catch {
+        // ignore — real collects still try playOrderPickup + one-shot fallback
+      } finally {
+        try {
+          a.muted = false;
+          a.volume = baseVol;
+        } catch {
+          /* ignore */
+        }
+      }
+    }
+  }, [ensureOrderPickupElements]);
+
+  /**
    * One gesture-triggered `play()` unlocks HTMLAudioElement for the page.
    * Must not use death/order assets — muted real clips still leak a blip on some browsers when restarting a run.
    */
@@ -2907,6 +2939,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     if (!pool.length) return;
     const idx = Math.floor(Math.random() * pool.length);
     const a = pool[idx]!;
+    const mode = musicModeRef.current;
+    const vol = Math.min(
+      1,
+      ORDER_PICKUP_VOLUME *
+        (mode === 'disco' || mode === 'hell' ? ORDER_PICKUP_VOLUME_DISCO_MULT : 1)
+    );
     for (let i = 0; i < pool.length; i++) {
       if (i !== idx) {
         pool[i]!.pause();
@@ -2915,13 +2953,26 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
     a.pause();
     a.currentTime = 0;
+    a.muted = false;
+    a.volume = vol;
+    const srcFallback = ORDER_PICKUP_SRCS[idx] ?? ORDER_PICKUP_SRCS[0]!;
     const p = a.play();
     p.catch(() => {
       requestAnimationFrame(() => {
         try {
           a.pause();
           a.currentTime = 0;
-          void a.play().catch(() => {});
+          void a.play().catch(() => {
+            try {
+              const one = new Audio(srcFallback);
+              one.preload = 'auto';
+              one.loop = false;
+              one.volume = vol;
+              void one.play().catch(() => {});
+            } catch {
+              // ignore
+            }
+          });
         } catch {
           // ignore
         }
@@ -3338,6 +3389,9 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       void (async () => {
         try {
           await primeHtmlAudioUnlockSilently(true);
+          if (audioEnabledRef.current) {
+            await primeOrderPickupAfterUnlock();
+          }
         } finally {
           if (audioPrimeGenerationRef.current === gen) {
             primingOneShotAudioRef.current = false;
@@ -3362,7 +3416,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         requestAnimationFrame(snap);
       });
     }
-  }, [pauseAllLaugh, pauseAllOrderPickup, primeHtmlAudioUnlockSilently, setMusicMode]);
+  }, [
+    pauseAllLaugh,
+    pauseAllOrderPickup,
+    primeHtmlAudioUnlockSilently,
+    primeOrderPickupAfterUnlock,
+    setMusicMode,
+  ]);
 
   /** After "Play again", DOM shrinks — scroll once layout has removed the game-over block so the canvas is visible. */
   const prevOutcomeForMainScrollRef = useRef<null | 'lost'>(null);
@@ -4179,13 +4239,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         className={`flex w-full max-w-2xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl max-h-[96dvh] min-h-0 ${screen === 'game' ? 'min-h-[min(82dvh,96dvh)] sm:min-h-0' : 'lg:max-h-[min(90vh,820px)]'}`}
       >
         <header className="relative shrink-0 overflow-hidden border-b border-neutral-700">
-          <div className="flex justify-center bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-900 px-3 pb-4 pt-14 sm:px-5 sm:pb-5 sm:pt-16">
+          <div className="flex justify-center bg-black px-3 pb-4 pt-14 sm:px-5 sm:pb-5 sm:pt-16">
             <h2
               id="sales-agent-dash-title"
               className="m-0 mt-2 flex w-full min-w-0 max-w-full justify-center sm:mt-3"
             >
               <img
-                src="/images/Game/Sales-Agent-Dash-01-05-2026.png"
+                src="/images/Game/Sales-Agent-Dash-01-05-2026-Photoroom.png"
                 alt="Sales Agent Dash"
                 className="h-auto w-full max-w-full object-contain object-center max-h-[min(32vh,240px)] sm:max-h-[min(34vh,280px)]"
                 decoding="async"
@@ -4198,9 +4258,12 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
               onClick={() => {
                 setAudioEnabled((v) => {
                   const next = !v;
-                  // When enabling audio, prime silently from this click gesture.
+                  // When enabling audio, prime silently from this click gesture, then order SFX (Safari).
                   if (next) {
-                    void primeHtmlAudioUnlockSilently(true);
+                    void (async () => {
+                      await primeHtmlAudioUnlockSilently(true);
+                      await primeOrderPickupAfterUnlock();
+                    })();
                   }
                   return next;
                 });

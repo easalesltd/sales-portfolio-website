@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
+import { notFound } from 'next/navigation'
 import { getCspNonce } from '@/app/lib/csp-nonce'
 import { companies } from '../../data/companies'
 import VideoBackground from '../../components/VideoBackground'
@@ -57,10 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const resolvedParams = await Promise.resolve(params);
   const company = companies.find(c => c.slug === resolvedParams.slug);
   if (!company) {
-    return {
-      title: 'Company Not Found',
-      description: 'The requested company page could not be found.'
-    };
+    notFound();
   }
 
   // Special cases for each company
@@ -1650,7 +1648,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const resolvedParams = await Promise.resolve(params);
   const company = companies.find(c => c.slug === resolvedParams.slug);
   if (!company) {
-    return <div>Company not found</div>;
+    notFound();
   }
 
   const nonce = await getCspNonce();
