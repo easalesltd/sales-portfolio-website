@@ -114,11 +114,11 @@ export default function AboutPageClient() {
         </div>
 
         <FadeInOnScroll className="block lg:hidden py-6" direction="up">
-          <div className="overflow-x-auto flex gap-4 px-4 snap-x snap-mandatory">
+          <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-4">
             {aboutImages.map((img, index) => (
               <div
                 key={`mobile-${index}`}
-                className="relative min-w-[260px] h-48 rounded-lg overflow-hidden shadow-lg cursor-pointer snap-center flex-shrink-0"
+                className="relative h-48 w-[260px] shrink-0 snap-center overflow-hidden rounded-lg shadow-lg cursor-pointer min-h-0 min-w-0"
                 onClick={() => handleImageClick(index)}
               >
                 <img
@@ -126,7 +126,7 @@ export default function AboutPageClient() {
                   alt={img.alt}
                   loading="lazy"
                   decoding="async"
-                  className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+                  className="h-full w-full max-h-full max-w-full object-cover object-center transition-transform duration-300 md:hover:scale-105"
                 />
               </div>
             ))}
