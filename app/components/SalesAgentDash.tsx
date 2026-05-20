@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { startTransition, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BONUS_COLLECTIBLE_SRCS } from '@/app/data/bonus-game-collectibles';
 import { companies } from '@/app/data/companies';
 import { type GameLevelId } from '@/app/lib/game-levels';
@@ -111,18 +111,18 @@ function tradeJumpObstacleHitTuning(level: GameLevelId): {
 
 /** No disco below this floor score. */
 const DISCO_MIN_SCORE = 3000;
+/** Start loading disco BGM metadata shortly before the segment (avoids a hitch on the threshold frame). */
+const DISCO_PREWARM_SCORE = DISCO_MIN_SCORE - 280;
 /** Per-frame lerp toward 0/1 so disco overlays ease in/out (BGM still switches once — avoids per-frame `play()` jank). */
 const DISCO_VISUAL_BLEND_RATE = 0.11;
-/** Wall-clock fallback if `HTMLAudioElement.duration` is not ready yet (matches compressed assets, ffprobe). */
-function discoTrackFallbackDurationSec(level: GameLevelId): number {
-  switch (level) {
-    case 'harrogate':
-      return 11.911;
-    case 'nec':
-      return 17.856;
-    default:
-      return 44.608;
-  }
+/** On the Road + Spring Fair (NEC): cap disco segment length (full clips are longer on disk). */
+const DISCO_SEGMENT_CAP_SEC = 15;
+/** Harrogate disco clip length (under cap — plays in full). */
+const DISCO_HARROGATE_SEGMENT_SEC = 11.936;
+/** How long the disco segment runs (audio + visuals); wall-clock when metadata is missing. */
+function discoSegmentDurationSec(level: GameLevelId): number {
+  if (level === 'harrogate') return DISCO_HARROGATE_SEGMENT_SEC;
+  return DISCO_SEGMENT_CAP_SEC;
 }
 
 // Game audio lives under `public/` so it's served from the site root (`/Audio/...`).
@@ -136,7 +136,7 @@ const HARROGATE_DISCO_MUSIC_SRC = encodeURI('/Audio/Xmas Disco Mode.m4a');
 const BONUS_GAME_MUSIC_SRC = encodeURI('/Audio/Bonus Round Music.m4a');
 const BONUS_HELL_MUSIC_SRC = encodeURI('/Audio/Bonus Round Hell.m4a');
 /** Wall-clock fallback length (`Bonus Round Hell.m4a` compressed AAC ~49k). */
-const BONUS_HELL_TRACK_FALLBACK_SEC = 20.827;
+const BONUS_HELL_TRACK_FALLBACK_SEC = 20.832;
 
 function gameMusicSrcForLevel(level: GameLevelId): string {
   if (level === 'harrogate') return HARROGATE_GAME_MUSIC_SRC;
@@ -1361,6 +1361,7 @@ const BONUS_FIRE_SWAY_PX = 16;
 const BONUS_FIRE_SWAY_FREQ = 0.0095;
 /** Bonus Hell Mode (replaces disco there): score gate, lasts one Hell track. */
 const BONUS_HELL_MIN_SCORE = 5000;
+const BONUS_HELL_PREWARM_SCORE = BONUS_HELL_MIN_SCORE - 280;
 const HELL_FIRE_VISUAL_MULT = 1.14;
 const HELL_FIRE_COLLISION_MULT = 1.12;
 const HELL_FIRE_SWAY_MULT = 1.28;
@@ -1580,7 +1581,7 @@ function drawOrderPickup(
     const r = 4;
     ctx.save();
     ctx.shadowColor = 'rgba(250, 204, 21, 0.75)';
-    ctx.shadowBlur = 14;
+    ctx.shadowBlur = 6;
     ctx.shadowOffsetY = 0;
     const g = ctx.createLinearGradient(x, top, x + w, top + h);
     g.addColorStop(0, '#fcd34d');
@@ -1927,7 +1928,7 @@ function drawObstacle(
       const em = Math.max(44, Math.min(84, Math.floor(th * 1.02)));
       ctx.font = `${em}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",system-ui,sans-serif`;
       ctx.shadowColor = 'rgba(255, 130, 40, 1)';
-      ctx.shadowBlur = 14;
+      ctx.shadowBlur = 6;
       ctx.fillText('🔥', cx, bottom + 4);
       ctx.shadowBlur = 0;
       ctx.fillText('🔥', cx, bottom + 4);
@@ -2436,9 +2437,9 @@ function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: n
   ctx.fillStyle = baseGrad;
   ctx.fillRect(cx - ballR - 1, ballCy - ballR - 1, dim + 2, dim + 2);
 
-  const cell = Math.max(3, ballR / 13);
-  for (let iy = -ballR; iy <= ballR; iy += cell * 0.88) {
-    for (let ix = -ballR; ix <= ballR; ix += cell * 0.95) {
+  const cell = Math.max(4, ballR / 9);
+  for (let iy = -ballR; iy <= ballR; iy += cell * 0.92) {
+    for (let ix = -ballR; ix <= ballR; ix += cell) {
       const fx = ix + cell * 0.48;
       const fy = iy + cell * 0.44;
       const d2 = fx * fx + fy * fy;
@@ -2448,13 +2449,10 @@ function drawDiscoBall(ctx: CanvasRenderingContext2D, W: number, dropProgress: n
       const hue = (ang * 57.2957795 + dist * 140 + t * 72 + fy) % 360;
       const sat = 78 + 18 * Math.sin(ang * 2 + t * 3);
       const lit = 36 + 42 * (1 - dist * 0.55) + 14 * Math.sin(ang * 3 + dist * 6);
-      const cw = cell * 0.9;
-      const ch = cell * 0.86;
+      const cw = cell * 0.92;
+      const ch = cell * 0.88;
       ctx.fillStyle = `hsl(${hue}, ${Math.min(96, Math.max(55, sat))}%, ${Math.min(88, Math.max(22, lit))}%)`;
       ctx.fillRect(cx + ix, ballCy + iy, cw, ch);
-      ctx.strokeStyle = 'rgba(15,23,42,0.22)';
-      ctx.lineWidth = 0.55;
-      ctx.strokeRect(cx + ix + 0.35, ballCy + iy + 0.35, cw - 0.7, ch - 0.7);
     }
   }
 
@@ -2754,6 +2752,16 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const primingOneShotAudioRef = useRef(false);
   /** Bumps on each `startGame`; only the latest prime sequence may start BGM. */
   const audioPrimeGenerationRef = useRef(0);
+  /** Play order SFX after canvas paint so collect frames stay smooth. */
+  const pendingOrderPickupRef = useRef(false);
+  /** Cached HUD strings — `measureText` + `toLocaleString` only when floor score changes. */
+  const hudTextCacheRef = useRef({
+    scoreFloor: -1,
+    venueLabel: '',
+    scoreText: '',
+    bestText: '',
+    hudW: 120,
+  });
 
   // Audio: start normal music when the run starts; switch to disco during disco segments.
   const gameMusicRef = useRef<HTMLAudioElement | null>(null);
@@ -2762,29 +2770,38 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
   const musicModeRef = useRef<'none' | 'game' | 'disco' | 'hell'>('none');
   const htmlAudioUnlockRef = useRef<HTMLAudioElement | null>(null);
 
-  const ensureMusicElements = useCallback(() => {
-    // Only create the elements on the client (this is a `use client` component).
-    if (!gameMusicRef.current) {
-      const a = new Audio(GAME_MUSIC_SRC);
-      a.loop = true;
-      a.preload = 'auto';
-      a.volume = GAME_MUSIC_VOLUME;
-      gameMusicRef.current = a;
-    }
-    if (!discoMusicRef.current) {
-      const a = new Audio(DISCO_MUSIC_SRC);
-      a.loop = false;
-      a.preload = 'auto';
-      a.volume = DISCO_MUSIC_VOLUME;
-      discoMusicRef.current = a;
-    }
-    if (!bonusHellMusicRef.current) {
-      const a = new Audio(BONUS_HELL_MUSIC_SRC);
-      a.loop = false;
-      a.preload = 'auto';
-      a.volume = DISCO_MUSIC_VOLUME;
-      bonusHellMusicRef.current = a;
-    }
+  const ensureGameMusicElement = useCallback(() => {
+    if (gameMusicRef.current) return;
+    const level = activeGameLevelRef.current;
+    const src = gameMusicSrcForLevel(level);
+    const a = new Audio(src);
+    a.loop = true;
+    a.preload = 'metadata';
+    a.volume = GAME_MUSIC_VOLUME;
+    a.dataset.salesDashBgm = src;
+    gameMusicRef.current = a;
+  }, []);
+
+  const ensureDiscoMusicElement = useCallback(() => {
+    if (discoMusicRef.current) return;
+    const level = activeGameLevelRef.current;
+    const src = discoMusicSrcForLevel(level);
+    const a = new Audio(src);
+    a.loop = false;
+    a.preload = 'metadata';
+    a.volume = DISCO_MUSIC_VOLUME;
+    a.dataset.salesDashDisco = src;
+    discoMusicRef.current = a;
+  }, []);
+
+  const ensureHellMusicElement = useCallback(() => {
+    if (bonusHellMusicRef.current) return;
+    const a = new Audio(BONUS_HELL_MUSIC_SRC);
+    a.loop = false;
+    a.preload = 'metadata';
+    a.volume = DISCO_MUSIC_VOLUME;
+    a.dataset.salesDashHell = BONUS_HELL_MUSIC_SRC;
+    bonusHellMusicRef.current = a;
   }, []);
 
   const setMusicMode = useCallback((mode: 'none' | 'game' | 'disco' | 'hell') => {
@@ -2803,22 +2820,16 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       return;
     }
 
-    // For 'game'/'disco'/'hell', ensure elements exist before attempting to play.
-    ensureMusicElements();
-
-    const gameAudio2 = gameMusicRef.current;
-    const discoAudio2 = discoMusicRef.current;
-    const hellAudio2 = bonusHellMusicRef.current;
-    if (!gameAudio2 || !discoAudio2 || !hellAudio2) return;
-
     if (mode === 'game') {
+      ensureGameMusicElement();
+      const gameAudio2 = gameMusicRef.current;
+      if (!gameAudio2) return;
       syncGameBgmElement(gameAudio2, activeGameLevelRef.current);
       gameAudio2.volume = GAME_MUSIC_VOLUME;
-      discoAudio2.volume = DISCO_MUSIC_VOLUME;
-      discoAudio2.pause();
-      discoAudio2.currentTime = 0;
-      hellAudio2.pause();
-      hellAudio2.currentTime = 0;
+      discoMusicRef.current?.pause();
+      if (discoMusicRef.current) discoMusicRef.current.currentTime = 0;
+      bonusHellMusicRef.current?.pause();
+      if (bonusHellMusicRef.current) bonusHellMusicRef.current.currentTime = 0;
       if (previousMode !== 'disco' && previousMode !== 'hell') {
         gameAudio2.currentTime = 0;
       }
@@ -2830,26 +2841,34 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     }
 
     if (mode === 'hell') {
+      ensureHellMusicElement();
+      const hellAudio2 = bonusHellMusicRef.current;
+      if (!hellAudio2) return;
       syncBonusHellBgmElement(hellAudio2);
       hellAudio2.volume = DISCO_MUSIC_VOLUME;
-      discoAudio2.pause();
-      discoAudio2.currentTime = 0;
-      gameAudio2.pause();
+      discoMusicRef.current?.pause();
+      if (discoMusicRef.current) discoMusicRef.current.currentTime = 0;
+      gameMusicRef.current?.pause();
       hellAudio2.currentTime = 0;
       void hellAudio2.play().catch(() => {});
       return;
     }
 
     // mode === 'disco' — pause main music but keep its timeline for when disco ends.
+    ensureGameMusicElement();
+    ensureDiscoMusicElement();
+    const gameAudio2 = gameMusicRef.current;
+    const discoAudio2 = discoMusicRef.current;
+    if (!gameAudio2 || !discoAudio2) return;
     gameAudio2.volume = GAME_MUSIC_VOLUME;
     syncDiscoBgmElement(discoAudio2, activeGameLevelRef.current);
     discoAudio2.volume = DISCO_MUSIC_VOLUME;
-    hellAudio2.pause();
-    hellAudio2.currentTime = 0;
+    bonusHellMusicRef.current?.pause();
+    if (bonusHellMusicRef.current) bonusHellMusicRef.current.currentTime = 0;
     gameAudio2.pause();
     discoAudio2.currentTime = 0;
     void discoAudio2.play().catch(() => {});
-  }, [ensureMusicElements]);
+  }, [ensureGameMusicElement, ensureDiscoMusicElement, ensureHellMusicElement]);
 
   const orderPickupPoolRef = useRef<HTMLAudioElement[]>([]);
 
@@ -2859,7 +2878,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     pool.length = 0;
     for (const src of ORDER_PICKUP_SRCS) {
       const a = new Audio(src);
-      a.preload = 'auto';
+      a.preload = 'metadata';
       a.loop = false;
       a.volume = ORDER_PICKUP_VOLUME;
       pool.push(a);
@@ -2965,7 +2984,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           void a.play().catch(() => {
             try {
               const one = new Audio(srcFallback);
-              one.preload = 'auto';
+              one.preload = 'metadata';
               one.loop = false;
               one.volume = vol;
               void one.play().catch(() => {});
@@ -2980,26 +2999,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     });
   }, [ensureOrderPickupElements]);
 
-  const laughAudioPoolRef = useRef<HTMLAudioElement[]>([]);
+  const deathLaughAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  const ensureLaughElements = useCallback(() => {
-    const pool = laughAudioPoolRef.current;
-    if (pool.length === DEATH_LAUGH_SRCS.length) return;
-    pool.length = 0;
-    for (const src of DEATH_LAUGH_SRCS) {
-      const a = new Audio(src);
-      a.preload = 'auto';
-      a.loop = false;
-      a.volume = LAUGH_VOLUME;
-      pool.push(a);
-    }
-  }, []);
-
-  const pauseAllLaugh = useCallback(() => {
-    for (const a of laughAudioPoolRef.current) {
-      a.pause();
-      a.currentTime = 0;
-    }
+  const pauseDeathLaugh = useCallback(() => {
+    const a = deathLaughAudioRef.current;
+    if (!a) return;
+    a.pause();
+    a.currentTime = 0;
   }, []);
 
   const playLaugh = useCallback(() => {
@@ -3014,16 +3020,18 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     discoVisualBlendRef.current = 0;
     pauseAllOrderPickup();
     if (!audioEnabledRef.current) return;
-    ensureLaughElements();
-    const pool = laughAudioPoolRef.current;
-    if (!pool.length) return;
-    const idx = Math.floor(Math.random() * pool.length);
-    const a = pool[idx]!;
-    for (let i = 0; i < pool.length; i++) {
-      if (i !== idx) {
-        pool[i]!.pause();
-        pool[i]!.currentTime = 0;
-      }
+    if (!deathLaughAudioRef.current) {
+      const a = new Audio();
+      a.preload = 'none';
+      a.loop = false;
+      a.volume = LAUGH_VOLUME;
+      deathLaughAudioRef.current = a;
+    }
+    const a = deathLaughAudioRef.current!;
+    const src = DEATH_LAUGH_SRCS[Math.floor(Math.random() * DEATH_LAUGH_SRCS.length)]!;
+    if (a.src !== src && !a.src.endsWith(src)) {
+      a.src = src;
+      a.load();
     }
     a.pause();
     a.currentTime = 0;
@@ -3039,7 +3047,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
         }
       });
     });
-  }, [ensureLaughElements, pauseAllOrderPickup]);
+  }, [pauseAllOrderPickup]);
 
   useEffect(() => {
     // If audio is turned off, stop any currently playing tracks immediately.
@@ -3048,11 +3056,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     discoMusicRef.current?.pause();
     bonusHellMusicRef.current?.pause();
     htmlAudioUnlockRef.current?.pause();
-    pauseAllLaugh();
+    pauseDeathLaugh();
     pauseAllOrderPickup();
     musicModeRef.current = 'none';
     discoVisualBlendRef.current = 0;
-  }, [audioEnabled, pauseAllLaugh, pauseAllOrderPickup]);
+  }, [audioEnabled, pauseDeathLaugh, pauseAllOrderPickup]);
 
   useEffect(() => {
     // Safety: stop audio if the component unmounts.
@@ -3061,10 +3069,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       discoMusicRef.current?.pause();
       bonusHellMusicRef.current?.pause();
       htmlAudioUnlockRef.current?.pause();
-      pauseAllLaugh();
+      pauseDeathLaugh();
       pauseAllOrderPickup();
     };
-  }, [pauseAllLaugh, pauseAllOrderPickup]);
+  }, [pauseDeathLaugh, pauseAllOrderPickup]);
 
   useEffect(() => {
     trackSalesAgentDashOpen();
@@ -3149,7 +3157,6 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       }
 
       const displayScore = Math.floor(scoreRef.current);
-      const venueLabel = hudVenueLabel(activeGameLevelRef.current, scoreRef.current);
       const venueHue = hudVenueHue(activeGameLevelRef.current, scoreRef.current);
       const bestForLevel = personalBestHudRef.current;
       const hudPadL = 10;
@@ -3157,15 +3164,21 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       const hudX = 8;
       const hudY = 8;
       const textX = hudX + hudPadL;
-      ctx.font = 'bold 12px system-ui, sans-serif';
-      const wVenue = ctx.measureText(venueLabel).width;
-      ctx.font = 'bold 13px system-ui, sans-serif';
-      const wScore = ctx.measureText(`Score ${displayScore.toLocaleString()}`).width;
-      ctx.font = '11px system-ui, sans-serif';
-      const wBest = ctx.measureText(`Best ${bestForLevel.toLocaleString()}`).width;
-      const hudW = Math.ceil(
-        Math.max(wVenue, wScore, wBest) + hudPadL + hudPadR
-      );
+      const hudCache = hudTextCacheRef.current;
+      if (hudCache.scoreFloor !== displayScore) {
+        hudCache.scoreFloor = displayScore;
+        hudCache.venueLabel = hudVenueLabel(activeGameLevelRef.current, scoreRef.current);
+        hudCache.scoreText = `Score ${displayScore.toLocaleString()}`;
+        hudCache.bestText = `Best ${bestForLevel.toLocaleString()}`;
+        ctx.font = 'bold 12px system-ui, sans-serif';
+        const wVenue = ctx.measureText(hudCache.venueLabel).width;
+        ctx.font = 'bold 13px system-ui, sans-serif';
+        const wScore = ctx.measureText(hudCache.scoreText).width;
+        ctx.font = '11px system-ui, sans-serif';
+        const wBest = ctx.measureText(hudCache.bestText).width;
+        hudCache.hudW = Math.ceil(Math.max(wVenue, wScore, wBest) + hudPadL + hudPadR);
+      }
+      const hudW = hudCache.hudW;
       ctx.fillStyle = 'rgba(255,255,255,0.94)';
       roundRectPath(ctx, hudX, hudY, hudW, 58, 8);
       ctx.fill();
@@ -3174,13 +3187,13 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       ctx.stroke();
       ctx.fillStyle = venueHue;
       ctx.font = 'bold 12px system-ui, sans-serif';
-      ctx.fillText(venueLabel, textX, 24);
+      ctx.fillText(hudCache.venueLabel, textX, 24);
       ctx.fillStyle = '#1a1a1a';
       ctx.font = 'bold 13px system-ui, sans-serif';
-      ctx.fillText(`Score ${displayScore.toLocaleString()}`, textX, 42);
+      ctx.fillText(hudCache.scoreText, textX, 42);
       ctx.font = '11px system-ui, sans-serif';
       ctx.fillStyle = '#52525b';
-      ctx.fillText(`Best ${bestForLevel.toLocaleString()}`, textX, 56);
+      ctx.fillText(hudCache.bestText, textX, 56);
 
       const niceFrames = niceOrderMessageFramesRef.current;
       if (niceFrames > 0) {
@@ -3378,8 +3391,10 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
     setLosePhrase(null);
     setLbSubmittedThisRun(false);
     setLbSubmitError(null);
-    pauseAllLaugh();
+    pauseDeathLaugh();
     pauseAllOrderPickup();
+    pendingOrderPickupRef.current = false;
+    hudTextCacheRef.current.scoreFloor = -1;
     discoVisualBlendRef.current = 0;
     setScreen('game');
     // Unlock one-shots with a silent clip only, then start BGM after (avoids overlapping `play()` / stray stings).
@@ -3417,7 +3432,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       });
     }
   }, [
-    pauseAllLaugh,
+    pauseDeathLaugh,
     pauseAllOrderPickup,
     primeHtmlAudioUnlockSilently,
     primeOrderPickupAfterUnlock,
@@ -3684,7 +3699,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
       } else if (dSeg === 'idle') {
         if (sFloor >= DISCO_MIN_SCORE) {
           discoSegmentRef.current = 'playing';
-          const fallMs = discoTrackFallbackDurationSec(lvlAudio) * 1000 + 800;
+          const fallMs = discoSegmentDurationSec(lvlAudio) * 1000 + 800;
           discoWallEndMsRef.current = performance.now() + fallMs;
           discoSegmentStartWallMsRef.current = performance.now();
         }
@@ -3701,10 +3716,11 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           trackDone =
             performance.now() >=
             discoSegmentStartWallMsRef.current +
-              discoTrackFallbackDurationSec(lvlAudio) * 1000;
+              discoSegmentDurationSec(lvlAudio) * 1000;
         } else if (durOk) {
+          const segSec = discoSegmentDurationSec(lvlAudio);
           trackDone =
-            aDisco!.ended || aDisco!.currentTime >= aDisco!.duration - 0.12;
+            aDisco!.ended || aDisco!.currentTime >= segSec - 0.12;
         } else {
           trackDone = performance.now() >= discoWallEndMsRef.current;
         }
@@ -3738,8 +3754,24 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
             ? 'disco'
             : 'game'
         : 'none';
-      if (!primingOneShotAudioRef.current && musicModeRef.current !== desiredMode) {
-        setMusicMode(desiredMode);
+
+      if (audioEnabledRef.current && !primingOneShotAudioRef.current) {
+        if (
+          lvlAudio !== 'bonus' &&
+          sFloor >= DISCO_PREWARM_SCORE &&
+          sFloor < DISCO_MIN_SCORE + 120 &&
+          discoSegmentRef.current === 'idle'
+        ) {
+          ensureDiscoMusicElement();
+        }
+        if (
+          lvlAudio === 'bonus' &&
+          sFloor >= BONUS_HELL_PREWARM_SCORE &&
+          sFloor < BONUS_HELL_MIN_SCORE + 120 &&
+          bonusHellSegmentRef.current === 'idle'
+        ) {
+          ensureHellMusicElement();
+        }
       }
 
       const obsGap = obstacleSpawnGapPx(runLevel);
@@ -4067,7 +4099,7 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           playerTop < orderTopY + ord.h - collectPad
         ) {
           ordersRef.current.splice(i, 1);
-          playOrderPickup();
+          pendingOrderPickupRef.current = true;
           if (ord.isMysteryBox) {
             const roll = rollBonusMysteryEffect();
             if (roll === 'jackpot') {
@@ -4145,19 +4177,29 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
           const nextHi = Math.max(prevHi, final);
           writeHighScoreForLevel(lvl, nextHi);
           lostDuringRunRef.current = true;
-          setHighScore(nextHi);
-          setLastRunScore(final);
-          setLastRunLevel(lvl);
-          setWasRecord(final > prevHi);
-          setLosePhrase(randomLosePhrase());
           paintGameFrame(ctx, canvas);
           playLaugh();
-          setOutcome('lost');
+          startTransition(() => {
+            setHighScore(nextHi);
+            setLastRunScore(final);
+            setLastRunLevel(lvl);
+            setWasRecord(final > prevHi);
+            setLosePhrase(randomLosePhrase());
+            setOutcome('lost');
+          });
           return;
         }
       }
 
       paintGameFrame(ctx, canvas);
+
+      if (!primingOneShotAudioRef.current && musicModeRef.current !== desiredMode) {
+        setMusicMode(desiredMode);
+      }
+      if (pendingOrderPickupRef.current) {
+        pendingOrderPickupRef.current = false;
+        playOrderPickup();
+      }
 
       if (niceOrderMessageFramesRef.current > 0) {
         niceOrderMessageFramesRef.current -= 1;
@@ -4177,7 +4219,16 @@ export default function SalesAgentDash({ onClose }: { onClose: () => void }) {
 
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [screen, outcome, paintGameFrame, playLaugh, playOrderPickup, setMusicMode]);
+  }, [
+    screen,
+    outcome,
+    paintGameFrame,
+    playLaugh,
+    playOrderPickup,
+    setMusicMode,
+    ensureDiscoMusicElement,
+    ensureHellMusicElement,
+  ]);
 
   useEffect(() => {
     // Ensure music never plays in the menu state or after a loss.
