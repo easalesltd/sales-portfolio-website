@@ -20,6 +20,8 @@
     "compress:bonus-audio": "bash scripts/compress-bonus-round-music.sh",
     "compress:bonus-hell-audio": "bash scripts/compress-bonus-hell-music.sh",
     "compress:game-audio": "bash scripts/compress-game-audio.sh",
+    "optimize:images": "node scripts/optimize-public-images.mjs",
+    "optimize:images:large": "node scripts/optimize-public-images.mjs --aggressive",
     "seo:indexnow": "node scripts/submit-indexnow.mjs"
   },
   "dependencies": {

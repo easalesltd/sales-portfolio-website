@@ -4,18 +4,24 @@ import BespokeConfectioneryDisplaysClient from './BespokeConfectioneryDisplaysCl
 const PAGE_URL =
   'https://www.easalesltd.co.uk/display-solutions/bespoke-confectionery-displays';
 
+const CCCO_NAME = 'The Cambridge Confectionery Company';
+
 const plasticFreeServiceJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   name: 'Plastic free bespoke confectionery displays and impulse sweet till supply',
   provider: {
     '@type': 'Organization',
+    name: CCCO_NAME,
+  },
+  serviceOperator: {
+    '@type': 'Organization',
     name: 'East Anglian Sales LTD',
     url: 'https://www.easalesltd.co.uk',
   },
   areaServed: ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire', 'East Anglia'],
   description:
-    'Plastic free supplier of impulse sweet till and pick-and-mix displays for attractions and gift shops. Bespoke compostable labels on wood pulp pick-up bags — 50 sweet varieties, compostable in soil, with display stands for museum, heritage, garden centre and visitor attraction retail.',
+    'The Cambridge Confectionery Company supplies plastic free impulse sweet till and pick-and-mix displays for attractions and gift shops. Bespoke compostable labels on wood pulp pick-up bags — 50 sweet varieties, compostable in soil. Available in East Anglia through East Anglian Sales LTD.',
   serviceType: [
     'Plastic free confectionery supplier',
     'Impulse sweet till',
@@ -42,7 +48,7 @@ const plasticFreeFaqJsonLd = {
       name: 'Do you supply impulse sweet till displays?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. We supply impulse sweet till and pick-and-mix displays for attractions and gift shops across East Anglia, with plastic free bags and bespoke or Cambridge branded labelling.',
+        text: 'Yes. The Cambridge Confectionery Company supplies impulse sweet till and pick-and-mix displays with plastic free bags and bespoke or Cambridge branded labelling, available across East Anglia through East Anglian Sales LTD.',
       },
     },
     {
@@ -50,7 +56,7 @@ const plasticFreeFaqJsonLd = {
       name: 'How many sweet varieties are available?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'We offer 50 varieties of sweets in plastic free pick-up bags, with bespoke compostable labels or faster Cambridge branded options.',
+        text: 'The Cambridge Confectionery Company offers 50 varieties of sweets in plastic free pick-up bags, with bespoke compostable labels or faster Cambridge branded options.',
       },
     },
     {
@@ -58,7 +64,7 @@ const plasticFreeFaqJsonLd = {
       name: 'Where do you supply plastic free confectionery displays?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'East Anglian Sales LTD covers Suffolk, Norfolk, Essex and Cambridgeshire for museums, heritage sites, visitor attractions, garden centres and destination retail.',
+        text: 'The Cambridge Confectionery Company supplies the range; East Anglian Sales LTD is the agent covering Suffolk, Norfolk, Essex and Cambridgeshire for museums, heritage sites, visitor attractions, garden centres and destination retail.',
       },
     },
   ],
@@ -68,8 +74,10 @@ export const metadata: Metadata = {
   title:
     'Plastic Free Bespoke Confectionery Displays & Impulse Sweet Tills | East Anglian Sales LTD',
   description:
-    'Plastic free supplier of bespoke confectionery displays and impulse sweet till solutions across East Anglia. Compostable wood pulp pick-up bags, 50 sweet varieties, bespoke labelling and ready-to-install stands for attractions and gift shops.',
+    'Bespoke and Cambridge branded confectionery displays from The Cambridge Confectionery Company — plastic free wood pulp bags, compostable labels, impulse sweet tills. Sold in East Anglia via East Anglian Sales LTD.',
   keywords: [
+    'The Cambridge Confectionery Company',
+    'Cambridge Confectionery Company plastic free sweets',
     'plastic free confectionery supplier',
     'plastic free sweet bags',
     'plastic free pick and mix',
@@ -96,7 +104,7 @@ export const metadata: Metadata = {
     title:
       'Plastic Free Bespoke Confectionery & Impulse Sweet Tills | East Anglian Sales LTD',
     description:
-      'Plastic free supplier of impulse sweet till displays, compostable wood pulp bags and bespoke labelling for attractions retailers across East Anglia.',
+      'The Cambridge Confectionery Company — plastic free impulse sweet till displays, compostable wood pulp bags and bespoke labelling. East Anglia agent: East Anglian Sales LTD.',
     url: 'https://www.easalesltd.co.uk/display-solutions/bespoke-confectionery-displays',
     type: 'article',
     locale: 'en_GB',

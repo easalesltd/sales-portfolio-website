@@ -44,3 +44,9 @@ deploy/.next/cache/
 # local perf audit artifacts
 .tmp-lh-home.json
 .tmp-lighthouse*/
+
+# camera originals — use optimised JPEG/WebP in repo instead
+**/*.HEIC
+**/*.heic
+**/*.HEIF
+**/*.heif
