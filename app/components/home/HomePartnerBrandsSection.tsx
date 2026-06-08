@@ -17,10 +17,7 @@ export default function HomePartnerBrandsSection({ companies }: Props) {
         <div className="py-20">
           <div className="max-w-7xl mx-auto px-4">
             <FadeInOnScroll>
-              <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Our Partner Brands</h2>
-            </FadeInOnScroll>
-            <FadeInOnScroll delay={0.2}>
-              <h3 className="text-xl text-center mb-12 text-gray-700">Quality Products from Leading Suppliers</h3>
+              <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">Our Partner Brands</h2>
             </FadeInOnScroll>
             <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3">
               {companies.map((company, index) => (
