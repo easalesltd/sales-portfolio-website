@@ -25,6 +25,8 @@ const STATIC_ROUTES: StaticRoute[] = [
   { pathname: '/display-solutions', sourceFile: 'display-solutions/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
   { pathname: '/display-solutions/bespoke-confectionery-displays', sourceFile: 'display-solutions/bespoke-confectionery-displays/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
   { pathname: '/contact', sourceFile: 'contact/page.tsx', priority: 0.8, changeFrequency: 'monthly' },
+  { pathname: '/privacy', sourceFile: 'privacy/page.tsx', priority: 0.3, changeFrequency: 'yearly' },
+  { pathname: '/cookies', sourceFile: 'cookies/page.tsx', priority: 0.3, changeFrequency: 'yearly' },
   { pathname: '/site-index', sourceFile: 'site-index/page.tsx', priority: 0.4, changeFrequency: 'monthly' },
   { pathname: '/blog', sourceFile: 'blog/page.tsx', priority: 0.75, changeFrequency: 'monthly' },
   { pathname: '/recipes', sourceFile: 'recipes/page.tsx', priority: 0.7, changeFrequency: 'monthly' },

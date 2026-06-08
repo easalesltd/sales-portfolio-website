@@ -13,6 +13,9 @@ import MobileRequestButton from './components/MobileRequestButton';
 import HeaderLogo from './components/HeaderLogo';
 import AboutDropdown from './components/AboutDropdown';
 import GoogleWebVitals from './components/GoogleWebVitals';
+import CookieConsentBanner from './components/CookieConsentBanner';
+import CookieSettingsButton from './components/CookieSettingsButton';
+import { buildGoogleConsentDefaultScript } from './lib/cookie-consent';
 import {
   GCA_MEMBER_LOGO_PATH,
   HOME_PAGE_META_DESCRIPTION,
@@ -1021,21 +1024,23 @@ export default async function RootLayout({
         <GoogleWebVitals />
         {gaMeasurementId ? (
           <>
+            <Script id="google-consent-default" strategy="beforeInteractive" nonce={nonce}>
+              {buildGoogleConsentDefaultScript()}
+            </Script>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
-              strategy="lazyOnload"
+              strategy="afterInteractive"
               nonce={nonce}
             />
-            <Script id="google-analytics" strategy="lazyOnload" nonce={nonce}>
+            <Script id="google-analytics" strategy="afterInteractive" nonce={nonce}>
               {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 gtag('config', '${gaMeasurementId}');
               `}
             </Script>
           </>
         ) : null}
+        {gaMeasurementId ? <CookieConsentBanner /> : null}
         <header className="sticky top-0 z-50 w-full bg-white dark:bg-neutral-950 border-b border-gray-100 dark:border-neutral-800 transition-colors duration-300 pt-[max(0.125rem,env(safe-area-inset-top))] pb-1.5 md:pt-4 md:pb-3">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/*
@@ -1135,6 +1140,27 @@ export default async function RootLayout({
                     sizes="(max-width: 640px) 70vw, 280px"
                   />
                 </a>
+              </div>
+            </div>
+            <div className="mt-10 border-t border-gray-200 pt-8 text-center text-sm text-gray-600 dark:border-neutral-800 dark:text-neutral-400">
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                <Link href="/privacy" className="underline underline-offset-2 hover:text-neutral-950 hover:no-underline dark:hover:text-neutral-100">
+                  Privacy
+                </Link>
+                <span aria-hidden className="text-gray-300 dark:text-neutral-700">
+                  |
+                </span>
+                <Link href="/cookies" className="underline underline-offset-2 hover:text-neutral-950 hover:no-underline dark:hover:text-neutral-100">
+                  Cookies
+                </Link>
+                {gaMeasurementId ? (
+                  <>
+                    <span aria-hidden className="text-gray-300 dark:text-neutral-700">
+                      |
+                    </span>
+                    <CookieSettingsButton />
+                  </>
+                ) : null}
               </div>
             </div>
           </div>

@@ -29,6 +29,8 @@ const corePages = [
   { href: '/display-solutions/bespoke-confectionery-displays', label: 'Bespoke Confectionery Displays' },
   { href: '/temporary-rep-cover', label: 'Temporary Rep Cover' },
   { href: '/contact', label: 'Contact' },
+  { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/cookies', label: 'Cookie Policy' },
   { href: '/blog', label: 'Blog / Press' },
   { href: '/recipes', label: 'Recipes' },
 ] as const;
