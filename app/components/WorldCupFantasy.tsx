@@ -280,7 +280,7 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
           <button
             type="button"
             onClick={() => setEnlarged('crest')}
-            className="relative w-[4.5rem] min-h-28 shrink-0 cursor-zoom-in self-stretch overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-950/80 p-1 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:w-24 sm:min-h-32 sm:p-1.5"
+            className="relative w-[4.5rem] min-h-28 shrink-0 cursor-zoom-in self-stretch overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:w-24 sm:min-h-32"
             aria-label={`View enlarged ${managerLabel} club crest`}
           >
             <Image
@@ -288,7 +288,7 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
               alt={`${managerLabel} club crest`}
               fill
               sizes="(max-width: 640px) 72px, 96px"
-              className="object-contain p-0.5"
+              className="object-cover object-center"
             />
           </button>
         </div>
