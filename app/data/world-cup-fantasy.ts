@@ -162,9 +162,9 @@ export const WORLD_CUP_FANTASY_SCORING = {
   highScoringBonus: 1,
   /** −1 pt for each red card (including second-yellow / YELLOW_RED) shown by the API. */
   redCardPenalty: -1,
-  /** −3 pts when the team concedes 3 or more goals in a match. */
+  /** −1 pt when the team concedes 3 or more goals in a match. */
   highConcededPenaltyMinGoals: 3,
-  highConcededPenalty: -3,
+  highConcededPenalty: -1,
 } as const;
 
 /**

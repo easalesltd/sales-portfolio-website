@@ -14,7 +14,7 @@ const SCORING_RULES = [
   '3 pts win',
   '1 pt draw',
   '+1 for 3+ goals',
-  '−3 for 3+ conceded',
+  '−1 for 3+ conceded',
   '−1 per red card',
 ] as const;
 
