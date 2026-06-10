@@ -86,6 +86,8 @@ export type WorldCupFantasyPlayer = {
   teamName?: string;
   /** Manager portrait shown in the player squad section. */
   managerImage: string;
+  /** Fantasy club crest shown beside the manager portrait. */
+  clubCrest: string;
   teams: readonly string[];
   draftNote: string;
 };
@@ -102,6 +104,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Ash',
     teamName: 'FC Cajuicey',
     managerImage: '/images/world-cup-fantasy/managers/ash.png',
+    clubCrest: '/images/world-cup-fantasy/crests/ash.png',
     teams: ['ESP', 'NED', 'JPN', 'ECU', 'GHA', 'CZE', 'NZL', 'UZB'],
     draftNote:
       'Spain and the Netherlands carry the headline acts, Japan bring pace from Asia, and Ghana plus Czechia offer steady group-stage points — with New Zealand and Uzbekistan as the wildcard juice.',
@@ -111,6 +114,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Jon',
     teamName: 'Team Noah',
     managerImage: '/images/world-cup-fantasy/managers/jon.png',
+    clubCrest: '/images/world-cup-fantasy/crests/jon.png',
     teams: ['BRA', 'USA', 'MAR', 'SWE', 'CIV', 'RSA', 'JOR', 'CUW'],
     draftNote:
       'Brazil and the USA lead Team Noah, Morocco and Sweden bring proven tournament pedigree, Ivory Coast and South Africa add African fire — Jordan and Curaçao are the long-shot charm.',
@@ -120,6 +124,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Nest',
     teamName: 'Summer Soul Vibes UTD',
     managerImage: '/images/world-cup-fantasy/managers/nest.png',
+    clubCrest: '/images/world-cup-fantasy/crests/nest.png',
     teams: ['ENG', 'BEL', 'SUI', 'NOR', 'SCO', 'TUN', 'KSA', 'CPV'],
     draftNote:
       'England and Belgium set the vibe, Switzerland and Norway keep the European groove going, Scotland brings passion, and Cape Verde is the soulful wildcard from the Atlantic.',
@@ -129,6 +134,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Chris',
     teamName: 'Saka Potatoes',
     managerImage: '/images/world-cup-fantasy/managers/chris.png',
+    clubCrest: '/images/world-cup-fantasy/crests/chris.png',
     teams: ['FRA', 'MEX', 'COL', 'AUS', 'TUR', 'BIH', 'IRQ', 'HAI'],
     draftNote:
       'France and Mexico are the heavy hitters, Colombia and Australia cover the Americas and Pacific, Turkey and Bosnia add Balkan grit — Iraq and Haiti are pure upside.',
@@ -138,6 +144,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Scott',
     teamName: 'Town Syndrome',
     managerImage: '/images/world-cup-fantasy/managers/scott.png',
+    clubCrest: '/images/world-cup-fantasy/crests/scott.png',
     teams: ['ARG', 'CRO', 'URU', 'AUT', 'CAN', 'EGY', 'PAR', 'QAT'],
     draftNote:
       'Argentina and Croatia are the crown jewels, Uruguay and Austria add steady continental class, Canada brings host energy, and Qatar is the ultimate lottery ticket.',
@@ -147,6 +154,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Dave',
     teamName: 'Creamy Creamers FC',
     managerImage: '/images/world-cup-fantasy/managers/dave.png',
+    clubCrest: '/images/world-cup-fantasy/crests/dave.png',
     teams: ['GER', 'POR', 'SEN', 'KOR', 'IRN', 'ALG', 'PAN', 'COD'],
     draftNote:
       'Germany and Portugal cream the competition on paper, Senegal and South Korea add knockout nous, Algeria and Iran keep the Middle East covered — Panama and Congo DR are the dreamers.',

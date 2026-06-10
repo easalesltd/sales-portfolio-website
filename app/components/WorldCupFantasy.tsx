@@ -195,14 +195,16 @@ function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
   );
 }
 
-function ManagerImageLightbox({
+function ImageLightbox({
   src,
   label,
   onClose,
+  aspectClass = 'aspect-[3/4]',
 }: {
   src: string;
   label: string;
   onClose: () => void;
+  aspectClass?: string;
 }) {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -218,7 +220,7 @@ function ManagerImageLightbox({
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label={`${label} — enlarged photo`}
+      aria-label={`${label} — enlarged`}
     >
       <button
         type="button"
@@ -228,7 +230,9 @@ function ManagerImageLightbox({
         Close
       </button>
       <div className="w-full max-w-xs sm:max-w-sm" onClick={(event) => event.stopPropagation()}>
-        <div className="relative aspect-[3/4] max-h-[80dvh] w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950">
+        <div
+          className={`relative ${aspectClass} max-h-[80dvh] w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950`}
+        >
           <Image src={src} alt={label} fill sizes="(max-width: 640px) 320px, 384px" className="object-contain" />
         </div>
         <p className="mt-3 text-center text-sm font-medium text-white">{label}</p>
@@ -239,7 +243,7 @@ function ManagerImageLightbox({
 
 function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStanding }) {
   const managerLabel = player.teamName ?? player.name;
-  const [enlarged, setEnlarged] = useState(false);
+  const [enlarged, setEnlarged] = useState<'manager' | 'crest' | null>(null);
 
   return (
     <article className="rounded-lg border border-neutral-700 bg-neutral-950/40">
@@ -247,7 +251,7 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
         <div className="flex gap-3 sm:gap-4">
           <button
             type="button"
-            onClick={() => setEnlarged(true)}
+            onClick={() => setEnlarged('manager')}
             className="relative w-[4.5rem] min-h-28 shrink-0 cursor-zoom-in self-stretch overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:w-24 sm:min-h-32"
             aria-label={`View enlarged photo of ${managerLabel}`}
           >
@@ -273,16 +277,38 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
             <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
             <p className="mt-2 text-xs text-neutral-300">{player.teams.map(formatTeamLabel).join(' · ')}</p>
           </div>
+          <button
+            type="button"
+            onClick={() => setEnlarged('crest')}
+            className="relative w-[4.5rem] min-h-28 shrink-0 cursor-zoom-in self-stretch overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-950/80 p-1 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:w-24 sm:min-h-32 sm:p-1.5"
+            aria-label={`View enlarged ${managerLabel} club crest`}
+          >
+            <Image
+              src={player.clubCrest}
+              alt={`${managerLabel} club crest`}
+              fill
+              sizes="(max-width: 640px) 72px, 96px"
+              className="object-contain p-0.5"
+            />
+          </button>
         </div>
       </div>
       <div className="border-t border-neutral-800 px-3 pb-3 pt-2 sm:px-4">
         <TeamMiniTable teams={player.teamBreakdown} />
       </div>
-      {enlarged ? (
-        <ManagerImageLightbox
+      {enlarged === 'manager' ? (
+        <ImageLightbox
           src={player.managerImage}
           label={managerLabel}
-          onClose={() => setEnlarged(false)}
+          onClose={() => setEnlarged(null)}
+        />
+      ) : null}
+      {enlarged === 'crest' ? (
+        <ImageLightbox
+          src={player.clubCrest}
+          label={`${managerLabel} crest`}
+          aspectClass="aspect-square"
+          onClose={() => setEnlarged(null)}
         />
       ) : null}
     </article>
