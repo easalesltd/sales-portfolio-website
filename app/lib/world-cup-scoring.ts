@@ -48,6 +48,7 @@ export type PlayerStanding = {
   id: string;
   name: string;
   teamName: string | null;
+  managerImage: string;
   teams: string[];
   teamCount: number;
   draftNote: string;
@@ -169,6 +170,7 @@ export function computeStandings(
     id: player.id,
     name: player.name,
     teamName: player.teamName ?? null,
+    managerImage: player.managerImage,
     teams: [...player.teams],
     teamCount: player.teams.length,
     draftNote: player.draftNote,

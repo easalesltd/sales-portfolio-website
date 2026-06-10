@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { formatTeamLabel } from '@/app/data/world-cup-fantasy';
 import type { WorldCupFantasyResponse } from '@/app/api/world-cup-fantasy/route';
@@ -8,6 +9,30 @@ import type { PlayerStanding, TeamStanding } from '@/app/lib/world-cup-scoring';
 type Props = {
   onClose: () => void;
 };
+
+const SCORING_RULES = [
+  '3 pts win',
+  '1 pt draw',
+  '+1 for 3+ goals',
+  '−3 for 3+ conceded',
+  '−1 per red card',
+] as const;
+
+function ScoringRulesBlock() {
+  return (
+    <div className="mt-3 rounded-lg border border-neutral-700/80 bg-neutral-950/50 px-3 py-2.5 sm:px-4 sm:py-3">
+      <h4 className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500 sm:text-xs">Scoring</h4>
+      <ul className="mt-2 space-y-1.5 text-xs text-neutral-300 sm:text-sm">
+        {SCORING_RULES.map((rule) => (
+          <li key={rule} className="flex items-start gap-2 leading-snug">
+            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-teal-400" aria-hidden />
+            {rule}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 function formatSyncedAt(timestamp: number | null): string {
   if (timestamp == null) return 'Not synced yet';
@@ -92,22 +117,35 @@ function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
 }
 
 function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStanding }) {
+  const managerLabel = player.teamName ?? player.name;
+
   return (
     <article className="rounded-lg border border-neutral-700 bg-neutral-950/40">
       <div className="px-4 py-3">
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-xs font-bold text-teal-300">
-              {rank}
-            </span>
-            <PlayerIdentity player={player} heading />
-            <span className="text-sm font-semibold tabular-nums text-teal-300">{player.points} pts</span>
-            <span className="text-xs text-neutral-500">
-              {player.teamCount} teams · W{player.wins} D{player.draws} L{player.losses}
-            </span>
+        <div className="flex gap-3 sm:gap-4">
+          <div className="relative h-28 w-[4.5rem] shrink-0 overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 sm:h-32 sm:w-24">
+            <Image
+              src={player.managerImage}
+              alt={`${managerLabel} manager`}
+              fill
+              sizes="(max-width: 640px) 72px, 96px"
+              className="object-cover object-top"
+            />
           </div>
-          <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
-          <p className="mt-2 text-xs text-neutral-300">{player.teams.map(formatTeamLabel).join(' · ')}</p>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-xs font-bold text-teal-300">
+                {rank}
+              </span>
+              <PlayerIdentity player={player} heading />
+              <span className="text-sm font-semibold tabular-nums text-teal-300">{player.points} pts</span>
+              <span className="text-xs text-neutral-500">
+                {player.teamCount} teams · W{player.wins} D{player.draws} L{player.losses}
+              </span>
+            </div>
+            <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
+            <p className="mt-2 text-xs text-neutral-300">{player.teams.map(formatTeamLabel).join(' · ')}</p>
+          </div>
         </div>
       </div>
       <div className="border-t border-neutral-800 px-3 pb-3 pt-2 sm:px-4">
@@ -154,31 +192,28 @@ export default function WorldCupFantasy({ onClose }: Props) {
       aria-labelledby="world-cup-fantasy-title"
     >
       <div className="flex max-h-[96dvh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl">
-        <header className="flex shrink-0 items-start justify-between gap-3 border-b border-neutral-700 px-4 py-4 sm:px-5">
-          <div className="min-w-0">
-            <h2 id="world-cup-fantasy-title" className="text-lg font-bold text-white sm:text-xl">
+        <header className="shrink-0 border-b border-neutral-700 px-4 py-4 sm:px-5">
+          <div className="flex items-start justify-between gap-3">
+            <h2 id="world-cup-fantasy-title" className="min-w-0 text-lg font-bold leading-tight text-white sm:text-xl">
               World Cup Sweepstake 2026
             </h2>
-            <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">
-              3 pts win · 1 pt draw · +1 if your team scores 3+ · −3 if your team concedes 3+ · −1 per red card
-            </p>
-          </div>
-          <div className="flex shrink-0 gap-2">
-            <button
-              type="button"
-              onClick={() => void load(true)}
-              disabled={refreshing}
-              className="rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 disabled:opacity-50 sm:text-sm"
-            >
-              {refreshing ? 'Updating…' : 'Refresh scores'}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 sm:text-sm"
-            >
-              Close
-            </button>
+            <div className="flex shrink-0 gap-2">
+              <button
+                type="button"
+                onClick={() => void load(true)}
+                disabled={refreshing}
+                className="rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 disabled:opacity-50 sm:text-sm"
+              >
+                {refreshing ? 'Updating…' : 'Refresh scores'}
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 sm:text-sm"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </header>
 
@@ -250,6 +285,7 @@ export default function WorldCupFantasy({ onClose }: Props) {
                     </tbody>
                   </table>
                 </div>
+                <ScoringRulesBlock />
               </section>
 
               <section>
