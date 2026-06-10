@@ -77,6 +77,85 @@ function PlayerIdentity({
   return <span className="font-medium text-white">{player.name}</span>;
 }
 
+function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
+  return (
+    <>
+      <ul className="space-y-2 sm:hidden">
+        {standings.map((row, index) => {
+          const extras = [
+            `W${row.wins}`,
+            `D${row.draws}`,
+            `L${row.losses}`,
+            row.bonusPoints !== 0 ? `Bonus ${row.bonusPoints > 0 ? '+' : ''}${row.bonusPoints}` : null,
+            row.redCards > 0 ? `Reds −${row.redCards}` : null,
+          ]
+            .filter(Boolean)
+            .join(' · ');
+
+          return (
+            <li
+              key={row.id}
+              className={`rounded-lg border px-3 py-2.5 ${
+                index === 0
+                  ? 'border-teal-900/40 bg-teal-950/20'
+                  : 'border-neutral-700 bg-neutral-950/40'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 items-start gap-2">
+                  <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-800 text-xs font-bold text-teal-300">
+                    {index + 1}
+                  </span>
+                  <PlayerIdentity player={row} heading />
+                </div>
+                <span className="shrink-0 text-base font-bold tabular-nums text-teal-300">{row.points} pts</span>
+              </div>
+              <p className="mt-1.5 pl-8 text-xs text-neutral-500">{extras}</p>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="hidden overflow-x-auto rounded-lg border border-neutral-700 sm:block">
+        <table className="min-w-full text-left text-sm">
+          <thead className="bg-neutral-950 text-neutral-400">
+            <tr>
+              <th className="px-3 py-2 font-medium">#</th>
+              <th className="px-3 py-2 font-medium">Player</th>
+              <th className="px-3 py-2 font-medium">Teams</th>
+              <th className="px-3 py-2 font-medium text-right">W</th>
+              <th className="px-3 py-2 font-medium text-right">D</th>
+              <th className="px-3 py-2 font-medium text-right">L</th>
+              <th className="px-3 py-2 font-medium text-right">Bonus</th>
+              <th className="px-3 py-2 font-medium text-right">Reds</th>
+              <th className="px-3 py-2 font-medium text-right">Pts</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-neutral-800 text-neutral-100">
+            {standings.map((row, index) => (
+              <tr key={row.id} className={index === 0 ? 'bg-teal-950/20' : undefined}>
+                <td className="px-3 py-2 text-neutral-400">{index + 1}</td>
+                <td className="px-3 py-2 font-medium">
+                  <PlayerIdentity player={row} />
+                </td>
+                <td className="px-3 py-2 text-neutral-300">{row.teamCount} teams</td>
+                <td className="px-3 py-2 text-right tabular-nums">{row.wins}</td>
+                <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
+                <td className="px-3 py-2 text-right tabular-nums">{row.losses}</td>
+                <td className="px-3 py-2 text-right tabular-nums">{row.bonusPoints}</td>
+                <td className="px-3 py-2 text-right tabular-nums text-red-300">
+                  {row.redCards > 0 ? `−${row.redCards}` : '0'}
+                </td>
+                <td className="px-3 py-2 text-right font-semibold tabular-nums">{row.points}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
+}
+
 function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
   return (
     <div className="overflow-x-auto rounded-md border border-neutral-700/80">
@@ -304,42 +383,7 @@ export default function WorldCupFantasy({ onClose }: Props) {
 
               <section>
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Overall standings</h3>
-                <div className="overflow-x-auto rounded-lg border border-neutral-700">
-                  <table className="min-w-full text-left text-sm">
-                    <thead className="bg-neutral-950 text-neutral-400">
-                      <tr>
-                        <th className="px-3 py-2 font-medium">#</th>
-                        <th className="px-3 py-2 font-medium">Player</th>
-                        <th className="px-3 py-2 font-medium">Teams</th>
-                        <th className="px-3 py-2 font-medium text-right">W</th>
-                        <th className="px-3 py-2 font-medium text-right">D</th>
-                        <th className="px-3 py-2 font-medium text-right">L</th>
-                        <th className="px-3 py-2 font-medium text-right">Bonus</th>
-                        <th className="px-3 py-2 font-medium text-right">Reds</th>
-                        <th className="px-3 py-2 font-medium text-right">Pts</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-neutral-800 text-neutral-100">
-                      {data.standings.map((row, index) => (
-                        <tr key={row.id} className={index === 0 ? 'bg-teal-950/20' : undefined}>
-                          <td className="px-3 py-2 text-neutral-400">{index + 1}</td>
-                          <td className="px-3 py-2 font-medium">
-                            <PlayerIdentity player={row} />
-                          </td>
-                          <td className="px-3 py-2 text-neutral-300">{row.teamCount} teams</td>
-                          <td className="px-3 py-2 text-right tabular-nums">{row.wins}</td>
-                          <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
-                          <td className="px-3 py-2 text-right tabular-nums">{row.losses}</td>
-                          <td className="px-3 py-2 text-right tabular-nums">{row.bonusPoints}</td>
-                          <td className="px-3 py-2 text-right tabular-nums text-red-300">
-                            {row.redCards > 0 ? `−${row.redCards}` : '0'}
-                          </td>
-                          <td className="px-3 py-2 text-right font-semibold tabular-nums">{row.points}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <OverallStandings standings={data.standings} />
                 <ScoringRulesBlock />
               </section>
 
