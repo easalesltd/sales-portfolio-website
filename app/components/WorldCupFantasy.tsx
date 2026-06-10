@@ -116,14 +116,62 @@ function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
   );
 }
 
+function ManagerImageLightbox({
+  src,
+  label,
+  onClose,
+}: {
+  src: string;
+  label: string;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[110] flex items-center justify-center bg-black/90 p-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${label} — enlarged photo`}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute right-4 top-4 rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 sm:text-sm"
+      >
+        Close
+      </button>
+      <div className="w-full max-w-xs sm:max-w-sm" onClick={(event) => event.stopPropagation()}>
+        <div className="relative aspect-[3/4] max-h-[80dvh] w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950">
+          <Image src={src} alt={label} fill sizes="(max-width: 640px) 320px, 384px" className="object-contain" />
+        </div>
+        <p className="mt-3 text-center text-sm font-medium text-white">{label}</p>
+      </div>
+    </div>
+  );
+}
+
 function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStanding }) {
   const managerLabel = player.teamName ?? player.name;
+  const [enlarged, setEnlarged] = useState(false);
 
   return (
     <article className="rounded-lg border border-neutral-700 bg-neutral-950/40">
       <div className="px-4 py-3">
         <div className="flex gap-3 sm:gap-4">
-          <div className="relative h-28 w-[4.5rem] shrink-0 overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 sm:h-32 sm:w-24">
+          <button
+            type="button"
+            onClick={() => setEnlarged(true)}
+            className="relative h-28 w-[4.5rem] shrink-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:h-32 sm:w-24"
+            aria-label={`View enlarged photo of ${managerLabel}`}
+          >
             <Image
               src={player.managerImage}
               alt={`${managerLabel} manager`}
@@ -131,7 +179,7 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
               sizes="(max-width: 640px) 72px, 96px"
               className="object-cover object-top"
             />
-          </div>
+          </button>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-xs font-bold text-teal-300">
@@ -151,6 +199,13 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
       <div className="border-t border-neutral-800 px-3 pb-3 pt-2 sm:px-4">
         <TeamMiniTable teams={player.teamBreakdown} />
       </div>
+      {enlarged ? (
+        <ManagerImageLightbox
+          src={player.managerImage}
+          label={managerLabel}
+          onClose={() => setEnlarged(false)}
+        />
+      ) : null}
     </article>
   );
 }
