@@ -7,15 +7,19 @@ import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const SalesAgentDash = dynamic(() => import('./SalesAgentDash'), { ssr: false });
+const WorldCupFantasy = dynamic(() => import('./WorldCupFantasy'), { ssr: false });
 
 const DOUBLE_CLICK_MS = 340;
+const TRIPLE_CLICK_MS = 520;
+const TRIPLE_DECISION_MS = 380;
 const NAV_DELAY_MS = 300;
 
 export default function HeaderLogo() {
   const router = useRouter();
-  const [gameOpen, setGameOpen] = useState(false);
+  const [dashOpen, setDashOpen] = useState(false);
+  const [worldCupOpen, setWorldCupOpen] = useState(false);
   const navTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastDownRef = useRef(0);
+  const clickTimesRef = useRef<number[]>([]);
 
   useEffect(() => {
     return () => {
@@ -33,30 +37,43 @@ export default function HeaderLogo() {
         navTimerRef.current = null;
       }
 
-      if (now - lastDownRef.current < DOUBLE_CLICK_MS) {
-        lastDownRef.current = 0;
-        setGameOpen(true);
+      clickTimesRef.current = clickTimesRef.current.filter((t) => now - t < TRIPLE_CLICK_MS);
+      clickTimesRef.current.push(now);
+      const times = clickTimesRef.current;
+
+      if (times.length >= 3) {
+        clickTimesRef.current = [];
+        setWorldCupOpen(true);
         return;
       }
 
-      lastDownRef.current = now;
-      navTimerRef.current = setTimeout(() => {
-        navTimerRef.current = null;
-        lastDownRef.current = 0;
-        router.push('/');
-      }, NAV_DELAY_MS);
+      if (times.length === 2 && times[1] - times[0] < DOUBLE_CLICK_MS) {
+        navTimerRef.current = setTimeout(() => {
+          navTimerRef.current = null;
+          if (clickTimesRef.current.length === 2) {
+            clickTimesRef.current = [];
+            setDashOpen(true);
+          }
+        }, TRIPLE_DECISION_MS);
+        return;
+      }
+
+      if (times.length === 1) {
+        navTimerRef.current = setTimeout(() => {
+          navTimerRef.current = null;
+          if (clickTimesRef.current.length === 1) {
+            clickTimesRef.current = [];
+            router.push('/');
+          }
+        }, NAV_DELAY_MS);
+      }
     },
     [router]
   );
 
   return (
     <>
-      <Link
-        href="/"
-        className="flex items-center select-none"
-        onClick={onLogoClick}
-        title="Home (double-click quickly for a hidden game)"
-      >
+      <Link href="/" className="flex items-center select-none" onClick={onLogoClick}>
         <Image
           src="/images/logo.webp"
           alt="East Anglian Sales LTD Logo"
@@ -69,7 +86,8 @@ export default function HeaderLogo() {
           draggable={false}
         />
       </Link>
-      {gameOpen ? <SalesAgentDash onClose={() => setGameOpen(false)} /> : null}
+      {dashOpen ? <SalesAgentDash onClose={() => setDashOpen(false)} /> : null}
+      {worldCupOpen ? <WorldCupFantasy onClose={() => setWorldCupOpen(false)} /> : null}
     </>
   );
 }
