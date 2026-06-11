@@ -34,14 +34,6 @@ function ScoringRulesBlock() {
   );
 }
 
-function formatSyncedAt(timestamp: number | null): string {
-  if (timestamp == null) return 'Not synced yet';
-  return new Date(timestamp).toLocaleString('en-GB', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  });
-}
-
 function formatMatchScore(homeGoals: number | null, awayGoals: number | null): string {
   if (homeGoals == null || awayGoals == null) return '–';
   return `${homeGoals}–${awayGoals}`;
@@ -374,16 +366,9 @@ export default function WorldCupFantasy({ onClose }: Props) {
 
               <div className="rounded-lg border border-neutral-700 bg-neutral-950/50 px-4 py-3 text-xs text-neutral-400 sm:text-sm">
                 <p>
-                  Last score sync: <span className="text-neutral-200">{formatSyncedAt(data.lastSyncedAt)}</span>
+                  Scores are updated manually after full-time. Previous results stay recorded, so only newly finished
+                  matches need adding.
                 </p>
-                {!data.apiConfigured ? (
-                  <p className="mt-2 text-amber-200/90">
-                    Auto-sync is off — add <code className="text-amber-100">FOOTBALL_DATA_API_TOKEN</code> on the server.
-                  </p>
-                ) : null}
-                {data.syncError ? (
-                  <p className="mt-2 text-red-200">Latest sync failed: {data.syncError}</p>
-                ) : null}
                 <p className="mt-2">
                   Finished matches tracked: <span className="text-neutral-200">{data.finishedMatchCount}</span>
                 </p>

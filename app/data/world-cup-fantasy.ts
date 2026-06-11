@@ -1,5 +1,5 @@
 /**
- * Secret sweepstake config — football-data.org `tla` codes (plus aliases) for score matching.
+ * Secret sweepstake config — team codes plus aliases for score matching.
  */
 export type WorldCupTeamMeta = {
   code: string;
@@ -168,7 +168,7 @@ export const WORLD_CUP_FANTASY_SCORING = {
   /** +1 when the team scores strictly more than 2 goals (i.e. 3+). */
   highScoringBonusMinGoals: 3,
   highScoringBonus: 1,
-  /** −1 pt for each red card (including second-yellow / YELLOW_RED) shown by the API. */
+  /** −1 pt for each red card (including second-yellow dismissals) in the final result. */
   redCardPenalty: -1,
   /** −1 pt when the team concedes 3 or more goals in a match. */
   highConcededPenaltyMinGoals: 3,
@@ -176,8 +176,9 @@ export const WORLD_CUP_FANTASY_SCORING = {
 } as const;
 
 /**
- * Optional manual results when the API is unavailable or ahead of sync.
- * `id` should be unique; use `manual-1`, `manual-2`, etc.
+ * Manual results ledger.
+ * Add only newly finished matches here, and leave previous entries as the source of truth.
+ * `id` should be unique; use a stable date/team key such as `2026-06-11-mex-rsa`.
  */
 export type WorldCupFantasyManualMatch = {
   id: string;
@@ -193,8 +194,8 @@ export type WorldCupFantasyManualMatch = {
 
 export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMatch[] = [
   {
-    /** Pinned verified final result for football-data.org match 537327. */
-    id: '537327',
+    /** Verified final result. */
+    id: '2026-06-11-mex-rsa',
     utcDate: '2026-06-11T19:00:00Z',
     homeTeam: { name: 'Mexico', tla: 'MEX' },
     awayTeam: { name: 'South Africa', tla: 'RSA' },
