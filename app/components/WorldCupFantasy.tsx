@@ -43,6 +43,27 @@ function playerDisplayLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): 
   return player.teamName ?? player.name;
 }
 
+function RedCardTally({ count }: { count: number }) {
+  return (
+    <span className="text-red-300">
+      Red <span className="font-semibold">{count}</span>
+    </span>
+  );
+}
+
+function FormSummary({
+  wins,
+  draws,
+  losses,
+  redCards,
+}: Pick<PlayerStanding, 'wins' | 'draws' | 'losses' | 'redCards'>) {
+  return (
+    <>
+      W{wins} D{draws} L{losses} <RedCardTally count={redCards} />
+    </>
+  );
+}
+
 function PlayerIdentity({
   player,
   heading = false,
@@ -92,7 +113,12 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 {playerDisplayLabel(row)}
               </span>
               <span className="shrink-0 text-[10px] tabular-nums text-neutral-500">
-                W{row.wins} D{row.draws} L{row.losses}
+                <FormSummary
+                  wins={row.wins}
+                  draws={row.draws}
+                  losses={row.losses}
+                  redCards={row.redCards}
+                />
               </span>
               <span className="w-7 shrink-0 text-right text-xs font-bold tabular-nums text-teal-300">
                 {row.points}
@@ -113,7 +139,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
               <th className="px-3 py-2 font-medium text-right">D</th>
               <th className="px-3 py-2 font-medium text-right">L</th>
               <th className="px-3 py-2 font-medium text-right">Bonus</th>
-              <th className="px-3 py-2 font-medium text-right">Reds</th>
+              <th className="px-3 py-2 font-medium text-right">Red</th>
               <th className="px-3 py-2 font-medium text-right">Pts</th>
             </tr>
           </thead>
@@ -129,9 +155,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.losses}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.bonusPoints}</td>
-                <td className="px-3 py-2 text-right tabular-nums text-red-300">
-                  {row.redCards > 0 ? `−${row.redCards}` : '0'}
-                </td>
+                <td className="px-3 py-2 text-right tabular-nums text-red-300">{row.redCards}</td>
                 <td className="px-3 py-2 text-right font-semibold tabular-nums">{row.points}</td>
               </tr>
             ))}
@@ -169,9 +193,7 @@ function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
               <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.draws}</td>
               <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.losses}</td>
               <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.bonusPoints}</td>
-              <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">
-                {team.redCards > 0 ? `−${team.redCards}` : '0'}
-              </td>
+              <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">{team.redCards}</td>
               <td className="px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3">{team.points}</td>
             </tr>
           ))}
@@ -257,7 +279,13 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
               <PlayerIdentity player={player} heading />
               <span className="text-sm font-semibold tabular-nums text-teal-300">{player.points} pts</span>
               <span className="text-xs text-neutral-500">
-                {player.teamCount} teams · W{player.wins} D{player.draws} L{player.losses}
+                {player.teamCount} teams ·{' '}
+                <FormSummary
+                  wins={player.wins}
+                  draws={player.draws}
+                  losses={player.losses}
+                  redCards={player.redCards}
+                />
               </span>
             </div>
             <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
