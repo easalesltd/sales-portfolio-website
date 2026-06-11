@@ -81,17 +81,18 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
-        <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+        <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
           <span>#</span>
           <span>Club</span>
           <span className="text-right">Form</span>
+          <span className="w-7 text-right">Red</span>
           <span className="w-7 text-right">Pts</span>
         </div>
         <ul className="divide-y divide-neutral-800">
           {standings.map((row, index) => (
             <li
               key={row.id}
-              className={`grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto] items-center gap-x-2 px-2 py-1 ${
+              className={`grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
                 index === 0 ? 'bg-teal-950/20' : 'bg-neutral-950/40'
               }`}
             >
@@ -101,6 +102,9 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
               </span>
               <span className="shrink-0 text-[10px] tabular-nums text-neutral-500">
                 W{row.wins} D{row.draws} L{row.losses}
+              </span>
+              <span className="w-7 shrink-0 text-right text-xs tabular-nums text-red-300">
+                {row.redCards > 0 ? `−${row.redCards}` : '0'}
               </span>
               <span className="w-7 shrink-0 text-right text-xs font-bold tabular-nums text-teal-300">
                 {row.points}
