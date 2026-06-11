@@ -191,4 +191,16 @@ export type WorldCupFantasyManualMatch = {
   awayRedCards?: number;
 };
 
-export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMatch[] = [];
+export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMatch[] = [
+  {
+    /** Overrides football-data.org match 537327 until the API populates fullTime scores. */
+    id: '537327',
+    utcDate: '2026-06-11T19:00:00Z',
+    homeTeam: { name: 'Mexico', tla: 'MEX' },
+    awayTeam: { name: 'South Africa', tla: 'RSA' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 1,
+    awayRedCards: 2,
+  },
+];

@@ -39,7 +39,9 @@ export async function GET(req: Request) {
     forceRefresh,
   });
   const { standings, recentScoringMatches } = computeStandings(WORLD_CUP_FANTASY_PLAYERS, matches);
-  const finishedMatchCount = matches.filter((m) => m.status === 'FINISHED').length;
+  const finishedMatchCount = matches.filter(
+    (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
+  ).length;
 
   const body: WorldCupFantasyResponse = {
     ok: true,
