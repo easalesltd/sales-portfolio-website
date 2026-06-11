@@ -193,7 +193,7 @@ export type WorldCupFantasyManualMatch = {
 
 export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMatch[] = [
   {
-    /** Overrides football-data.org match 537327 until the API populates fullTime scores. */
+    /** Pinned verified final result for football-data.org match 537327. */
     id: '537327',
     utcDate: '2026-06-11T19:00:00Z',
     homeTeam: { name: 'Mexico', tla: 'MEX' },

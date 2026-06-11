@@ -312,17 +312,14 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
 export default function WorldCupFantasy({ onClose }: Props) {
   const [data, setData] = useState<WorldCupFantasyResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async (refresh = false) => {
-    if (refresh) setRefreshing(true);
-    else setLoading(true);
+  const load = useCallback(async () => {
+    setLoading(true);
     setError(null);
 
     try {
-      const url = refresh ? '/api/world-cup-fantasy?refresh=1' : '/api/world-cup-fantasy';
-      const response = await fetch(url, { cache: 'no-store' });
+      const response = await fetch('/api/world-cup-fantasy', { cache: 'no-store' });
       if (!response.ok) throw new Error(`Request failed (${response.status})`);
       const payload = (await response.json()) as WorldCupFantasyResponse;
       setData(payload);
@@ -330,12 +327,11 @@ export default function WorldCupFantasy({ onClose }: Props) {
       setError(e instanceof Error ? e.message : 'Could not load standings');
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   }, []);
 
   useEffect(() => {
-    void load(false);
+    void load();
   }, [load]);
 
   return (
@@ -352,14 +348,6 @@ export default function WorldCupFantasy({ onClose }: Props) {
               World Cup Sweepstake 2026
             </h2>
             <div className="flex shrink-0 gap-2">
-              <button
-                type="button"
-                onClick={() => void load(true)}
-                disabled={refreshing}
-                className="rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 disabled:opacity-50 sm:text-sm"
-              >
-                {refreshing ? 'Updating…' : 'Refresh scores'}
-              </button>
               <button
                 type="button"
                 onClick={onClose}
