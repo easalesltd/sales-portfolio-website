@@ -80,41 +80,35 @@ function PlayerIdentity({
 function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
   return (
     <>
-      <ul className="space-y-2 sm:hidden">
-        {standings.map((row, index) => {
-          const extras = [
-            `W${row.wins}`,
-            `D${row.draws}`,
-            `L${row.losses}`,
-            row.bonusPoints !== 0 ? `Bonus ${row.bonusPoints > 0 ? '+' : ''}${row.bonusPoints}` : null,
-            row.redCards > 0 ? `Reds −${row.redCards}` : null,
-          ]
-            .filter(Boolean)
-            .join(' · ');
-
-          return (
+      <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
+        <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+          <span>#</span>
+          <span>Club</span>
+          <span className="text-right">Form</span>
+          <span className="w-7 text-right">Pts</span>
+        </div>
+        <ul className="divide-y divide-neutral-800">
+          {standings.map((row, index) => (
             <li
               key={row.id}
-              className={`rounded-lg border px-3 py-2.5 ${
-                index === 0
-                  ? 'border-teal-900/40 bg-teal-950/20'
-                  : 'border-neutral-700 bg-neutral-950/40'
+              className={`grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto] items-center gap-x-2 px-2 py-1 ${
+                index === 0 ? 'bg-teal-950/20' : 'bg-neutral-950/40'
               }`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex min-w-0 items-start gap-2">
-                  <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-800 text-xs font-bold text-teal-300">
-                    {index + 1}
-                  </span>
-                  <PlayerIdentity player={row} heading />
-                </div>
-                <span className="shrink-0 text-base font-bold tabular-nums text-teal-300">{row.points} pts</span>
-              </div>
-              <p className="mt-1.5 pl-8 text-xs text-neutral-500">{extras}</p>
+              <span className="text-[11px] tabular-nums text-neutral-400">{index + 1}</span>
+              <span className="truncate text-xs font-medium text-white">
+                {playerDisplayLabel(row)}
+              </span>
+              <span className="shrink-0 text-[10px] tabular-nums text-neutral-500">
+                W{row.wins} D{row.draws} L{row.losses}
+              </span>
+              <span className="w-7 shrink-0 text-right text-xs font-bold tabular-nums text-teal-300">
+                {row.points}
+              </span>
             </li>
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      </div>
 
       <div className="hidden overflow-x-auto rounded-lg border border-neutral-700 sm:block">
         <table className="min-w-full text-left text-sm">
