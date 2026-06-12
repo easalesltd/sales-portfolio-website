@@ -134,7 +134,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Chris',
     teamName: 'Saka Potatoes',
     managerImage: '/images/world-cup-fantasy/managers/chris.png',
-    clubCrest: '/images/world-cup-fantasy/crests/chris.png',
+    clubCrest: '/images/world-cup-fantasy/crests/saka-potatoes.png',
     teams: ['FRA', 'MEX', 'COL', 'AUS', 'TUR', 'BIH', 'IRQ', 'HAI'],
     draftNote:
       'France and Mexico are the heavy hitters, Colombia and Australia cover the Americas and Pacific, Turkey and Bosnia add Balkan grit — Iraq and Haiti are pure upside.',
