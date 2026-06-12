@@ -282,7 +282,7 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
                 alt={`${managerLabel} club crest`}
                 fill
                 sizes="(max-width: 640px) 45vw, 320px"
-                className="object-cover object-center"
+                className="object-contain object-center p-1.5"
               />
             </button>
           </div>
