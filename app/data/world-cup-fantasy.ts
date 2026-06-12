@@ -204,4 +204,13 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 1,
     awayRedCards: 2,
   },
+  {
+    /** Verified final result. */
+    id: '2026-06-12-kor-cze',
+    utcDate: '2026-06-12T02:00:00Z',
+    homeTeam: { name: 'South Korea', tla: 'KOR' },
+    awayTeam: { name: 'Czechia', tla: 'CZE' },
+    homeGoals: 2,
+    awayGoals: 1,
+  },
 ];
