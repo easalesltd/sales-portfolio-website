@@ -255,18 +255,18 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
   return (
     <article className="rounded-lg border border-neutral-700 bg-neutral-950/40">
       <div className="px-4 py-3">
-        <div className="flex gap-3 sm:gap-4">
+        <div className="flex items-start gap-3 sm:gap-4">
           <button
             type="button"
             onClick={() => setEnlarged('manager')}
-            className="relative w-[4.5rem] min-h-28 shrink-0 cursor-zoom-in self-stretch overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:w-24 sm:min-h-32"
+            className="relative h-24 w-[4.5rem] shrink-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:h-28 sm:w-20"
             aria-label={`View enlarged photo of ${managerLabel}`}
           >
             <Image
               src={player.managerImage}
               alt={`${managerLabel} manager`}
               fill
-              sizes="(max-width: 640px) 72px, 96px"
+              sizes="(max-width: 640px) 72px, 80px"
               className="object-cover object-center"
             />
           </button>
@@ -293,15 +293,15 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
           <button
             type="button"
             onClick={() => setEnlarged('crest')}
-            className="relative w-[4.5rem] min-h-28 shrink-0 cursor-zoom-in self-stretch overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:w-24 sm:min-h-32"
+            className="relative size-24 shrink-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-28"
             aria-label={`View enlarged ${managerLabel} club crest`}
           >
             <Image
               src={player.clubCrest}
               alt={`${managerLabel} club crest`}
               fill
-              sizes="(max-width: 640px) 72px, 96px"
-              className="object-contain object-center p-1"
+              sizes="(max-width: 640px) 96px, 112px"
+              className="object-cover object-center"
             />
           </button>
         </div>
