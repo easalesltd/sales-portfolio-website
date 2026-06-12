@@ -144,7 +144,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Scott',
     teamName: 'Objection Overruled FC',
     managerImage: '/images/world-cup-fantasy/managers/scott.png',
-    clubCrest: '/images/world-cup-fantasy/crests/objection-overruled-v2.png',
+    clubCrest: '/images/world-cup-fantasy/crests/objection-overruled-v3.png',
     teams: ['ARG', 'CRO', 'URU', 'AUT', 'CAN', 'EGY', 'PAR', 'QAT'],
     draftNote:
       'Argentina and Croatia are the crown jewels, Uruguay and Austria add steady continental class, Canada brings host energy, and Qatar is the ultimate lottery ticket.',
