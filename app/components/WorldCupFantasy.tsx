@@ -43,6 +43,11 @@ function playerDisplayLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): 
   return player.teamName ?? player.name;
 }
 
+function formatGoalDifference(goalDifference: number): string {
+  if (goalDifference > 0) return `+${goalDifference}`;
+  return String(goalDifference);
+}
+
 function RedCardTally({ count }: { count: number }) {
   return (
     <span className="text-red-300">
@@ -94,18 +99,19 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
-        <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+        <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
           <span>#</span>
           <span>Club</span>
           <span className="text-right">Form</span>
           <span className="w-7 text-right">Red</span>
+          <span className="w-8 text-right">GD</span>
           <span className="w-7 text-right">Pts</span>
         </div>
         <ul className="divide-y divide-neutral-800">
           {standings.map((row, index) => (
             <li
               key={row.id}
-              className={`grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
+              className={`grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
                 index === 0 ? 'bg-teal-950/20' : 'bg-neutral-950/40'
               }`}
             >
@@ -118,6 +124,9 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
               </span>
               <span className="w-7 shrink-0 text-right text-xs tabular-nums text-red-300">
                 {row.redCards}
+              </span>
+              <span className="w-8 shrink-0 text-right text-xs tabular-nums text-neutral-200">
+                {formatGoalDifference(row.goalDifference)}
               </span>
               <span className="w-7 shrink-0 text-right text-xs font-bold tabular-nums text-teal-300">
                 {row.points}
@@ -138,6 +147,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
               <th className="px-3 py-2 font-medium text-right">D</th>
               <th className="px-3 py-2 font-medium text-right">L</th>
               <th className="px-3 py-2 font-medium text-right">Bonus</th>
+              <th className="px-3 py-2 font-medium text-right">GD</th>
               <th className="px-3 py-2 font-medium text-right">Red</th>
               <th className="px-3 py-2 font-medium text-right">Pts</th>
             </tr>
@@ -154,6 +164,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.losses}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.bonusPoints}</td>
+                <td className="px-3 py-2 text-right tabular-nums">{formatGoalDifference(row.goalDifference)}</td>
                 <td className="px-3 py-2 text-right tabular-nums text-red-300">{row.redCards}</td>
                 <td className="px-3 py-2 text-right font-semibold tabular-nums">{row.points}</td>
               </tr>
@@ -177,6 +188,7 @@ function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
             <th className="px-2 py-1.5 font-medium text-right sm:px-3">D</th>
             <th className="px-2 py-1.5 font-medium text-right sm:px-3">L</th>
             <th className="px-2 py-1.5 font-medium text-right sm:px-3">Bonus</th>
+            <th className="px-2 py-1.5 font-medium text-right sm:px-3">GD</th>
             <th className="px-2 py-1.5 font-medium text-right sm:px-3">Red</th>
             <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pts</th>
           </tr>
@@ -192,6 +204,9 @@ function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
               <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.draws}</td>
               <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.losses}</td>
               <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.bonusPoints}</td>
+              <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">
+                {formatGoalDifference(team.goalDifference)}
+              </td>
               <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">{team.redCards}</td>
               <td className="px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3">{team.points}</td>
             </tr>
@@ -292,6 +307,9 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
               </span>
               <PlayerIdentity player={player} heading />
               <span className="text-sm font-semibold tabular-nums text-teal-300">{player.points} pts</span>
+              <span className="text-xs font-medium tabular-nums text-neutral-300">
+                GD {formatGoalDifference(player.goalDifference)}
+              </span>
               <span className="text-xs text-neutral-500">
                 {player.teamCount} teams ·{' '}
                 <FormSummary

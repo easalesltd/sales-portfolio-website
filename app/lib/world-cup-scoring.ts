@@ -36,6 +36,9 @@ export type TeamStanding = {
   name: string;
   flag: string;
   points: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDifference: number;
   wins: number;
   draws: number;
   losses: number;
@@ -55,6 +58,9 @@ export type PlayerStanding = {
   draftNote: string;
   teamBreakdown: TeamStanding[];
   points: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDifference: number;
   wins: number;
   draws: number;
   losses: number;
@@ -183,6 +189,9 @@ export function computeStandings(
         name: meta?.name ?? code,
         flag: meta?.flag ?? '',
         points: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        goalDifference: 0,
         wins: 0,
         draws: 0,
         losses: 0,
@@ -192,6 +201,9 @@ export function computeStandings(
       };
     }),
     points: 0,
+    goalsFor: 0,
+    goalsAgainst: 0,
+    goalDifference: 0,
     wins: 0,
     draws: 0,
     losses: 0,
@@ -223,6 +235,12 @@ export function computeStandings(
 
         row.points += scored.total;
         teamRow.points += scored.total;
+        row.goalsFor += scored.goalsFor;
+        teamRow.goalsFor += scored.goalsFor;
+        row.goalsAgainst += scored.goalsAgainst;
+        teamRow.goalsAgainst += scored.goalsAgainst;
+        row.goalDifference = row.goalsFor - row.goalsAgainst;
+        teamRow.goalDifference = teamRow.goalsFor - teamRow.goalsAgainst;
         row.bonusPoints += scored.bonus;
         teamRow.bonusPoints += scored.bonus;
         row.redCards += scored.redCards;
@@ -244,7 +262,13 @@ export function computeStandings(
     }
   }
 
-  standings.sort((a, b) => b.points - a.points || b.bonusPoints - a.bonusPoints || a.name.localeCompare(b.name));
+  standings.sort(
+    (a, b) =>
+      b.points - a.points ||
+      b.goalDifference - a.goalDifference ||
+      b.bonusPoints - a.bonusPoints ||
+      a.name.localeCompare(b.name)
+  );
 
   const recentScoringMatches: MatchPointsEntry[] = finished
     .slice(-12)
