@@ -213,4 +213,13 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 2,
     awayGoals: 1,
   },
+  {
+    /** Verified final result. */
+    id: '2026-06-12-can-bih',
+    utcDate: '2026-06-12T19:00:00Z',
+    homeTeam: { name: 'Canada', tla: 'CAN' },
+    awayTeam: { name: 'Bosnia-Herzegovina', tla: 'BIH' },
+    homeGoals: 1,
+    awayGoals: 1,
+  },
 ];
