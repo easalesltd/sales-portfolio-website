@@ -255,22 +255,38 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
   return (
     <article className="rounded-lg border border-neutral-700 bg-neutral-950/40">
       <div className="px-4 py-3">
-        <div className="flex items-start gap-3 sm:gap-4">
-          <button
-            type="button"
-            onClick={() => setEnlarged('manager')}
-            className="relative h-24 w-[4.5rem] shrink-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:h-28 sm:w-20"
-            aria-label={`View enlarged photo of ${managerLabel}`}
-          >
-            <Image
-              src={player.managerImage}
-              alt={`${managerLabel} manager`}
-              fill
-              sizes="(max-width: 640px) 72px, 80px"
-              className="object-cover object-center"
-            />
-          </button>
-          <div className="min-w-0 flex-1">
+        <div className="space-y-3">
+          <div className="flex gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={() => setEnlarged('manager')}
+              className="relative size-20 shrink-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-24"
+              aria-label={`View enlarged photo of ${managerLabel}`}
+            >
+              <Image
+                src={player.managerImage}
+                alt={`${managerLabel} manager`}
+                fill
+                sizes="(max-width: 640px) 80px, 96px"
+                className="object-cover object-center"
+              />
+            </button>
+            <button
+              type="button"
+              onClick={() => setEnlarged('crest')}
+              className="relative size-20 shrink-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-24"
+              aria-label={`View enlarged ${managerLabel} club crest`}
+            >
+              <Image
+                src={player.clubCrest}
+                alt={`${managerLabel} club crest`}
+                fill
+                sizes="(max-width: 640px) 80px, 96px"
+                className="object-cover object-center"
+              />
+            </button>
+          </div>
+          <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-xs font-bold text-teal-300">
                 {rank}
@@ -290,20 +306,6 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
             <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
             <p className="mt-2 text-xs text-neutral-300">{player.teams.map(formatTeamLabel).join(' · ')}</p>
           </div>
-          <button
-            type="button"
-            onClick={() => setEnlarged('crest')}
-            className="relative size-24 shrink-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-28"
-            aria-label={`View enlarged ${managerLabel} club crest`}
-          >
-            <Image
-              src={player.clubCrest}
-              alt={`${managerLabel} club crest`}
-              fill
-              sizes="(max-width: 640px) 96px, 112px"
-              className="object-cover object-center"
-            />
-          </button>
         </div>
       </div>
       <div className="border-t border-neutral-800 px-3 pb-3 pt-2 sm:px-4">
