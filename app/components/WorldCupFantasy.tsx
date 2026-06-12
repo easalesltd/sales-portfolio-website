@@ -256,33 +256,32 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
     <article className="rounded-lg border border-neutral-700 bg-neutral-950/40">
       <div className="px-4 py-3">
         <div className="space-y-3">
-          <div className="grid w-full grid-cols-2 gap-2 sm:w-fit sm:gap-3">
+          <div className="grid w-full grid-cols-2 gap-2 sm:mx-auto sm:w-fit sm:gap-3">
             <button
               type="button"
               onClick={() => setEnlarged('manager')}
-              className="relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-28 md:size-32"
+              className="relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 md:size-36"
               aria-label={`View enlarged photo of ${managerLabel}`}
             >
               <Image
                 src={player.managerImage}
                 alt={`${managerLabel} manager`}
                 fill
-                sizes="(max-width: 640px) 45vw, 128px"
+                sizes="(max-width: 640px) 45vw, 144px"
                 className="object-cover object-center"
               />
             </button>
             <button
               type="button"
               onClick={() => setEnlarged('crest')}
-              className="relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-28 md:size-32"
+              className="flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 p-1.5 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 sm:p-2 md:size-36"
               aria-label={`View enlarged ${managerLabel} club crest`}
             >
-              <Image
+              {/* Native img keeps circular crests centred in the tile on desktop. */}
+              <img
                 src={player.clubCrest}
-                alt={`${managerLabel} club crest`}
-                fill
-                sizes="(max-width: 640px) 45vw, 128px"
-                className="object-contain object-center p-2"
+                alt=""
+                className="max-h-full max-w-full object-contain"
               />
             </button>
           </div>
