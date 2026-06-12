@@ -142,7 +142,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
     id: 'scott',
     name: 'Scott',
-    teamName: 'Town Syndrome',
+    teamName: 'Objection Overruled FC',
     managerImage: '/images/world-cup-fantasy/managers/scott.png',
     clubCrest: '/images/world-cup-fantasy/crests/scott.png',
     teams: ['ARG', 'CRO', 'URU', 'AUT', 'CAN', 'EGY', 'PAR', 'QAT'],
