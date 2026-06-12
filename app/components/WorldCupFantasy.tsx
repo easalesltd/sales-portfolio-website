@@ -114,7 +114,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 {playerDisplayLabel(row)}
               </span>
               <span className="shrink-0 text-[10px] tabular-nums text-neutral-500">
-                W{row.wins} D{row.draws} L{row.losses}
+                P{row.playedMatches} W{row.wins} D{row.draws} L{row.losses}
               </span>
               <span className="w-7 shrink-0 text-right text-xs tabular-nums text-red-300">
                 {row.redCards}
