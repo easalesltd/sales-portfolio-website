@@ -114,7 +114,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Jon',
     teamName: 'Team Noah',
     managerImage: '/images/world-cup-fantasy/managers/jon.png',
-    clubCrest: '/images/world-cup-fantasy/crests/jon.png',
+    clubCrest: '/images/world-cup-fantasy/crests/team-noah-fc.png',
     teams: ['BRA', 'USA', 'MAR', 'SWE', 'CIV', 'RSA', 'JOR', 'CUW'],
     draftNote:
       'Brazil and the USA lead Team Noah, Morocco and Sweden bring proven tournament pedigree, Ivory Coast and South Africa add African fire — Jordan and Curaçao are the long-shot charm.',
