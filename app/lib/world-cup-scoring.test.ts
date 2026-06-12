@@ -1,3 +1,4 @@
+import { describe, expect, it } from '@jest/globals';
 import { computeStandings, type WorldCupMatchResult } from '@/app/lib/world-cup-scoring';
 import type { WorldCupFantasyPlayer } from '@/app/data/world-cup-fantasy';
 
