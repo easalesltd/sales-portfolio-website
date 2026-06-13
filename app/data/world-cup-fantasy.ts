@@ -222,4 +222,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 1,
     awayGoals: 1,
   },
+  {
+    /** Verified final result. */
+    id: '2026-06-13-usa-par',
+    utcDate: '2026-06-13T01:00:00Z',
+    homeTeam: { name: 'USA', tla: 'USA' },
+    awayTeam: { name: 'Paraguay', tla: 'PAR' },
+    homeGoals: 4,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
