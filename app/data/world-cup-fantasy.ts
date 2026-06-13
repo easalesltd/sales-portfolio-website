@@ -233,4 +233,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result. */
+    id: '2026-06-13-qat-sui',
+    utcDate: '2026-06-13T19:00:00Z',
+    homeTeam: { name: 'Qatar', tla: 'QAT' },
+    awayTeam: { name: 'Switzerland', tla: 'SUI' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
