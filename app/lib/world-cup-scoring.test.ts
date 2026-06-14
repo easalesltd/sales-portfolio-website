@@ -23,6 +23,18 @@ const players: readonly WorldCupFantasyPlayer[] = [
   },
 ];
 
+const teamTablePlayers: readonly WorldCupFantasyPlayer[] = [
+  {
+    id: 'saka-potatoes',
+    name: 'Chris',
+    teamName: 'Saka Potatoes',
+    managerImage: '',
+    clubCrest: '',
+    teams: ['MEX', 'KOR', 'BRA'],
+    draftNote: '',
+  },
+];
+
 const matches: WorldCupMatchResult[] = [
   {
     id: 'mex-win',
@@ -48,6 +60,21 @@ const matches: WorldCupMatchResult[] = [
   },
 ];
 
+const teamTableMatches: WorldCupMatchResult[] = [
+  ...matches,
+  {
+    id: 'bra-draw',
+    utcDate: '2026-06-12T18:00:00Z',
+    status: 'FINISHED',
+    homeTeam: { name: 'Brazil', tla: 'BRA' },
+    awayTeam: { name: 'Morocco', tla: 'MAR' },
+    homeGoals: 3,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+];
+
 describe('computeStandings', () => {
   it('uses goal difference to order players tied on points', () => {
     const { standings } = computeStandings(players, matches);
@@ -65,5 +92,14 @@ describe('computeStandings', () => {
       goalsAgainst: 0,
       goalDifference: 1,
     });
+  });
+
+  it('orders each player team table by points and goal difference', () => {
+    const { standings } = computeStandings(teamTablePlayers, teamTableMatches);
+    const chris = standings.find((row) => row.id === 'saka-potatoes');
+
+    expect(chris?.teamBreakdown.map((team) => team.code)).toEqual(['KOR', 'MEX', 'BRA']);
+    expect(chris?.teamBreakdown.map((team) => team.points)).toEqual([3, 3, 1]);
+    expect(chris?.teamBreakdown.map((team) => team.goalDifference)).toEqual([2, 1, 0]);
   });
 });

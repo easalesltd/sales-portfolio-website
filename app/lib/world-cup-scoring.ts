@@ -75,6 +75,18 @@ export type MatchPointsEntry = {
   byPlayer: Record<string, number>;
 };
 
+function compareByStandingsOrder(
+  a: Pick<TeamStanding | PlayerStanding, 'points' | 'goalDifference' | 'bonusPoints' | 'name'>,
+  b: Pick<TeamStanding | PlayerStanding, 'points' | 'goalDifference' | 'bonusPoints' | 'name'>
+): number {
+  return (
+    b.points - a.points ||
+    b.goalDifference - a.goalDifference ||
+    b.bonusPoints - a.bonusPoints ||
+    a.name.localeCompare(b.name)
+  );
+}
+
 export function scoreTeamMatch(
   teamGoals: number,
   opponentGoals: number,
@@ -262,13 +274,11 @@ export function computeStandings(
     }
   }
 
-  standings.sort(
-    (a, b) =>
-      b.points - a.points ||
-      b.goalDifference - a.goalDifference ||
-      b.bonusPoints - a.bonusPoints ||
-      a.name.localeCompare(b.name)
-  );
+  for (const row of standings) {
+    row.teamBreakdown.sort(compareByStandingsOrder);
+  }
+
+  standings.sort(compareByStandingsOrder);
 
   const recentScoringMatches: MatchPointsEntry[] = finished
     .slice(-12)
