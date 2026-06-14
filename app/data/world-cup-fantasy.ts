@@ -244,4 +244,26 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result. */
+    id: '2026-06-13-bra-mar',
+    utcDate: '2026-06-13T22:00:00Z',
+    homeTeam: { name: 'Brazil', tla: 'BRA' },
+    awayTeam: { name: 'Morocco', tla: 'MAR' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-14-hai-sco',
+    utcDate: '2026-06-14T01:00:00Z',
+    homeTeam: { name: 'Haiti', tla: 'HAI' },
+    awayTeam: { name: 'Scotland', tla: 'SCO' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
