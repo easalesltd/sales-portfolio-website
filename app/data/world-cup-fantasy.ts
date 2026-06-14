@@ -99,7 +99,7 @@ export const WORLD_CUP_SWEEPSTAKE_FAIRNESS =
   'All 48 qualified nations were ranked by strength, then split in a serpentine (snake) draft — so every player gets one elite pick, one mid-tier side, and one long shot per round. Nobody ends up with eight outsiders.';
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  "Dave's Creamy Creamers FC are top because Germany gave Curaçao a proper hiding. Ash's FC Cajuicey owned both halves of Netherlands-Japan and still only shuffled into fifth, which is a heroic waste of paperwork. Scott's Objection Overruled FC are bottom after Paraguay got leathered by the USA and Qatar served up another beige 1-1; the judge has seen enough, case dismissed.";
+  "Dave is top because Germany gave Curaçao a proper hiding. Ash owned both halves of Netherlands-Japan and still only shuffled into fifth, which is a heroic waste of paperwork. Scott's Objection Overruled FC are bottom after Paraguay got leathered by the USA and Qatar served up another beige 1-1; the judge has seen enough, case dismissed.";
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
