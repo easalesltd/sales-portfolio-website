@@ -288,4 +288,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result. */
+    id: '2026-06-14-ned-jpn',
+    utcDate: '2026-06-14T20:00:00Z',
+    homeTeam: { name: 'Netherlands', tla: 'NED' },
+    awayTeam: { name: 'Japan', tla: 'JPN' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
