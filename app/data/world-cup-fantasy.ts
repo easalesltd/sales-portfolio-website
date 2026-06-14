@@ -266,4 +266,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result. */
+    id: '2026-06-14-aus-tur',
+    utcDate: '2026-06-14T04:00:00Z',
+    homeTeam: { name: 'Australia', tla: 'AUS' },
+    awayTeam: { name: 'Turkey', tla: 'TUR' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
