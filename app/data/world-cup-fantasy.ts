@@ -277,4 +277,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result. */
+    id: '2026-06-14-ger-cuw',
+    utcDate: '2026-06-14T17:00:00Z',
+    homeTeam: { name: 'Germany', tla: 'GER' },
+    awayTeam: { name: 'Curaçao', tla: 'CUW' },
+    homeGoals: 7,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
