@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import {
+  WORLD_CUP_FANTASY_DAILY_UPDATE,
   WORLD_CUP_FANTASY_MANUAL_MATCHES,
   WORLD_CUP_FANTASY_PLAYERS,
   WORLD_CUP_FANTASY_SCORING,
@@ -18,6 +19,7 @@ export const runtime = 'nodejs';
 export type WorldCupFantasyResponse = {
   ok: true;
   scoring: typeof WORLD_CUP_FANTASY_SCORING;
+  dailyUpdate: string;
   sweepstakeIntro: string;
   sweepstakeFairness: string;
   standings: PlayerStanding[];
@@ -35,6 +37,7 @@ export async function GET() {
   const body: WorldCupFantasyResponse = {
     ok: true,
     scoring: WORLD_CUP_FANTASY_SCORING,
+    dailyUpdate: WORLD_CUP_FANTASY_DAILY_UPDATE,
     sweepstakeIntro: WORLD_CUP_SWEEPSTAKE_INTRO,
     sweepstakeFairness: WORLD_CUP_SWEEPSTAKE_FAIRNESS,
     standings,

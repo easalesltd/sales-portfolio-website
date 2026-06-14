@@ -98,6 +98,9 @@ export const WORLD_CUP_SWEEPSTAKE_INTRO =
 export const WORLD_CUP_SWEEPSTAKE_FAIRNESS =
   'All 48 qualified nations were ranked by strength, then split in a serpentine (snake) draft — so every player gets one elite pick, one mid-tier side, and one long shot per round. Nobody ends up with eight outsiders.';
 
+export const WORLD_CUP_FANTASY_DAILY_UPDATE =
+  'Dave is top because Germany treated Curaçao like a training cone exercise. Ash somehow got both sides of Netherlands-Japan and still only escaped fifth, which feels greedy but not especially effective. Scott is currently holding the wooden spoon, mainly because Paraguay got absolutely folded by the USA and his other teams are serving beige 1-1 energy instead of rescue points.';
+
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
     id: 'ash',
