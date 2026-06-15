@@ -69,6 +69,9 @@ export type PlayerStanding = {
   redCards: number;
   redCardPoints: number;
   playedMatches: number;
+  previousRank: number | null;
+  /** Positive means the player moved up the table since the previous finished result. */
+  rankChange: number;
 };
 
 export type MatchPointsEntry = {
@@ -254,14 +257,10 @@ export function resolveManagerImageForStandings(
   return player.managerImage;
 }
 
-export function computeStandings(
+function buildStandingsSnapshot(
   players: readonly WorldCupFantasyPlayer[],
-  matches: WorldCupMatchResult[]
-): { standings: PlayerStanding[]; recentScoringMatches: MatchPointsEntry[] } {
-  const finished = matches.filter(
-    (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
-  );
-
+  finished: WorldCupMatchResult[]
+): PlayerStanding[] {
   const standings: PlayerStanding[] = players.map((player) => ({
     id: player.id,
     name: player.name,
@@ -300,6 +299,8 @@ export function computeStandings(
     redCards: 0,
     redCardPoints: 0,
     playedMatches: 0,
+    previousRank: null,
+    rankChange: 0,
   }));
 
   const byId = new Map(standings.map((row) => [row.id, row]));
@@ -364,6 +365,31 @@ export function computeStandings(
       row.managerImage = resolveManagerImageForStandings(player, index, standings.length);
     }
   });
+
+  return standings;
+}
+
+export function computeStandings(
+  players: readonly WorldCupFantasyPlayer[],
+  matches: WorldCupMatchResult[]
+): { standings: PlayerStanding[]; recentScoringMatches: MatchPointsEntry[] } {
+  const finished = matches.filter(
+    (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
+  );
+
+  const standings = buildStandingsSnapshot(players, finished);
+
+  if (finished.length > 1) {
+    const previousStandings = buildStandingsSnapshot(players, finished.slice(0, -1));
+    const previousRanks = new Map(previousStandings.map((row, index) => [row.id, index + 1]));
+
+    standings.forEach((row, index) => {
+      const currentRank = index + 1;
+      const previousRank = previousRanks.get(row.id) ?? null;
+      row.previousRank = previousRank;
+      row.rankChange = previousRank == null ? 0 : previousRank - currentRank;
+    });
+  }
 
   const recentScoringMatches: MatchPointsEntry[] = finished
     .slice(-12)
