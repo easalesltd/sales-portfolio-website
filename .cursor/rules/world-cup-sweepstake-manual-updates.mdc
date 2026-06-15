@@ -19,7 +19,7 @@ When asked to update the World Cup sweepstake scores:
   - -1 for 3+ conceded
   - -1 per red card
 - If no new matches are finished, leave the ledger unchanged.
-- Keep `WORLD_CUP_FANTASY_DAILY_UPDATE` fresh whenever the table changes. It appears above the standings as “Daily update”; make it current, relevant, and funny in a British football/pub-table tone: dry, lightly savage, and more "proper hiding" than American sports-banter. Roast whoever is bottom and blame the teams that lost or underperformed that day. Player names and assigned team names are optional seasoning: use them sparingly when they improve the joke, not in every line by default.
+- Keep `WORLD_CUP_FANTASY_DAILY_UPDATE` fresh whenever the table changes. It appears above the standings as “Daily update”; make it current, relevant, and funny in a British football/pub-table tone: dry, lightly savage, and never too American-sports-banter. Roast whoever is bottom and blame the teams that lost or underperformed that day, but vary the phrasing so the same joke or stock phrase does not appear every update. Player names and assigned team names are optional seasoning: use them sparingly when they improve the joke, not in every line by default.
 - When summarising an update, include the current league table and mirror the same fresh, relevant, British-toned roast from the Daily update section.
 - This request is normally intended to update the live site. After adding score-only ledger updates and verifying the app still builds, push the change through to `origin/main` unless the user explicitly asks for PR-only work or says not to deploy.
 - If a feature branch was used first, fast-forward `main` from it rather than leaving the update only on the feature branch:

@@ -99,7 +99,7 @@ export const WORLD_CUP_SWEEPSTAKE_FAIRNESS =
   'All 48 qualified nations were ranked by strength, then split in a serpentine (snake) draft — so every player gets one elite pick, one mid-tier side, and one long shot per round. Nobody ends up with eight outsiders.';
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Jon has stormed top after Ivory Coast nicked it late and Sweden gave Tunisia a proper hiding. Dave is still lurking with Germany doing the heavy lifting, Ash got mugged by a 90th-minute Ecuador sickener, and Scott remains bottom with Paraguay and Qatar offering all the structural support of a wet paper bag.';
+  'Jon has stormed top after Ivory Coast nicked it late and Sweden took Tunisia apart before breakfast. Dave is still lurking with Germany doing the heavy lifting, Ash got mugged by a 90th-minute Ecuador sickener, and Scott remains bottom with Paraguay and Qatar offering all the structural support of a wet paper bag.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
