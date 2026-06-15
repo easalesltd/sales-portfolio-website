@@ -13,6 +13,7 @@ When asked to update the World Cup sweepstake scores:
 - When checking external score sources, use each assigned team's code, display name, and `searchNames` variants from `WORLD_CUP_TEAM_BY_CODE` / `getWorldCupTeamSearchTerms()` so alternate spellings are not missed (for example Ivory Coast / Côte d'Ivoire, Cape Verde / Cabo Verde, Turkey / Türkiye, South Korea / Korea Republic, Iran / IR Iran).
 - Add only final results: home/away teams, final goals, and red-card tallies for each team.
 - Count red-card dismissals in the tally, including second-yellow dismissals where reported.
+- Keep `WORLD_CUP_FANTASY_FIXTURES` fresh whenever adding scores. If a newly recorded result means an upcoming fixture has just finished or disappeared from the “Today’s upcoming fixtures” box, add the next known upcoming sweepstake fixture(s) for the current UTC day so the box above the standings keeps rolling forward with managers involved.
 - Do not manually edit player totals or standings. The app applies the scoring rules from `WORLD_CUP_FANTASY_SCORING` via `computeStandings()`:
   - 3 pts win
   - 1 pt draw

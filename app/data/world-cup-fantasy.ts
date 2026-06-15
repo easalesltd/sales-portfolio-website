@@ -248,6 +248,10 @@ export type WorldCupFantasyFixture = {
   awayTeam: { name: string; tla: string };
 };
 
+/**
+ * Upcoming fixtures shown above the standings.
+ * Keep this rolling forward during score updates so today's box stays useful.
+ */
 export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
   {
     id: '2026-06-15-esp-cpv',
