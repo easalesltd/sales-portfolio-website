@@ -253,6 +253,36 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     homeTeam: { name: 'Saudi Arabia', tla: 'KSA' },
     awayTeam: { name: 'Uruguay', tla: 'URU' },
   },
+  {
+    id: '2026-06-16-irn-nzl',
+    utcDate: '2026-06-16T04:00:00Z',
+    homeTeam: { name: 'Iran', tla: 'IRN' },
+    awayTeam: { name: 'New Zealand', tla: 'NZL' },
+  },
+  {
+    id: '2026-06-16-fra-sen',
+    utcDate: '2026-06-16T19:00:00Z',
+    homeTeam: { name: 'France', tla: 'FRA' },
+    awayTeam: { name: 'Senegal', tla: 'SEN' },
+  },
+  {
+    id: '2026-06-16-irq-nor',
+    utcDate: '2026-06-16T22:00:00Z',
+    homeTeam: { name: 'Iraq', tla: 'IRQ' },
+    awayTeam: { name: 'Norway', tla: 'NOR' },
+  },
+  {
+    id: '2026-06-17-arg-alg',
+    utcDate: '2026-06-17T01:00:00Z',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Algeria', tla: 'ALG' },
+  },
+  {
+    id: '2026-06-17-aut-jor',
+    utcDate: '2026-06-17T04:00:00Z',
+    homeTeam: { name: 'Austria', tla: 'AUT' },
+    awayTeam: { name: 'Jordan', tla: 'JOR' },
+  },
 ];
 
 export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMatch[] = [

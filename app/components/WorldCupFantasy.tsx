@@ -48,7 +48,10 @@ function fixtureManagerLabel(manager: Pick<FixtureManager, 'name' | 'teamName'>)
 }
 
 function formatFixtureKickoff(utcDate: string): string {
-  return new Date(utcDate).toLocaleTimeString('en-GB', {
+  return new Date(utcDate).toLocaleString('en-GB', {
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
     hour: '2-digit',
     minute: '2-digit',
     timeZone: 'UTC',
@@ -102,12 +105,12 @@ function UpcomingFixtures({ fixtures }: { fixtures: UpcomingFixtureEntry[] }) {
   return (
     <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-4 py-3">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">Today&apos;s upcoming fixtures</h3>
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">Upcoming sweepstake fixtures</h3>
         <span className="text-xs text-sky-300/80">Kickoff times shown in GMT</span>
       </div>
 
       {fixtures.length === 0 ? (
-        <p className="mt-2 text-sm text-neutral-300">No more sweepstake fixtures scheduled for today.</p>
+        <p className="mt-2 text-sm text-neutral-300">No upcoming sweepstake fixtures scheduled yet.</p>
       ) : (
         <ul className="mt-3 space-y-2">
           {fixtures.map((fixture) => (

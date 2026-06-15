@@ -8,7 +8,7 @@ import {
 } from '@/app/data/world-cup-fantasy';
 import {
   computeStandings,
-  getTodayUpcomingFixtures,
+  getUpcomingFixtures,
   manualMatchToResult,
   type MatchPointsEntry,
   type PlayerStanding,
@@ -30,7 +30,7 @@ export type WorldCupFantasyResponse = {
 export async function GET() {
   const matches = WORLD_CUP_FANTASY_MANUAL_MATCHES.map(manualMatchToResult);
   const { standings, recentScoringMatches } = computeStandings(WORLD_CUP_FANTASY_PLAYERS, matches);
-  const upcomingFixtures = getTodayUpcomingFixtures(WORLD_CUP_FANTASY_FIXTURES, WORLD_CUP_FANTASY_PLAYERS);
+  const upcomingFixtures = getUpcomingFixtures(WORLD_CUP_FANTASY_FIXTURES, WORLD_CUP_FANTASY_PLAYERS);
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   ).length;

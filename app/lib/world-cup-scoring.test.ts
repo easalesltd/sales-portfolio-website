@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import {
   computeStandings,
-  getTodayUpcomingFixtures,
+  getUpcomingFixtures,
   resolveManagerImageForStandings,
   type WorldCupMatchResult,
 } from '@/app/lib/world-cup-scoring';
@@ -158,7 +158,7 @@ describe('computeStandings', () => {
   });
 
   it("returns today's upcoming fixtures with involved managers", () => {
-    const fixtures = getTodayUpcomingFixtures(
+    const fixtures = getUpcomingFixtures(
       WORLD_CUP_FANTASY_FIXTURES,
       WORLD_CUP_FANTASY_PLAYERS,
       new Date('2026-06-15T20:58:00Z')
@@ -173,13 +173,23 @@ describe('computeStandings', () => {
     });
   });
 
-  it("excludes today's fixtures once their kickoff has passed", () => {
-    const fixtures = getTodayUpcomingFixtures(
+  it("rolls over to the next fixture date once today's fixtures have passed", () => {
+    const fixtures = getUpcomingFixtures(
       WORLD_CUP_FANTASY_FIXTURES,
       WORLD_CUP_FANTASY_PLAYERS,
       new Date('2026-06-15T22:30:00Z')
     );
 
-    expect(fixtures.map((fixture) => fixture.id)).toEqual([]);
+    expect(fixtures.map((fixture) => fixture.id)).toEqual([
+      '2026-06-16-irn-nzl',
+      '2026-06-16-fra-sen',
+      '2026-06-16-irq-nor',
+    ]);
+    expect(fixtures[0]).toMatchObject({
+      homeTeam: { tla: 'IRN', name: 'Iran' },
+      awayTeam: { tla: 'NZL', name: 'New Zealand' },
+      homeManagers: [{ id: 'dave', teamCode: 'IRN' }],
+      awayManagers: [{ id: 'ash', teamCode: 'NZL' }],
+    });
   });
 });

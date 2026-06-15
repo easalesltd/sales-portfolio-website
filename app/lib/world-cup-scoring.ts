@@ -200,7 +200,21 @@ function fixtureTeamWithFlag(team: WorldCupFantasyFixture['homeTeam']): Upcoming
   };
 }
 
-export function getTodayUpcomingFixtures(
+function upcomingFixtureEntry(
+  fixture: WorldCupFantasyFixture,
+  players: readonly WorldCupFantasyPlayer[]
+): UpcomingFixtureEntry {
+  return {
+    id: fixture.id,
+    utcDate: fixture.utcDate,
+    homeTeam: fixtureTeamWithFlag(fixture.homeTeam),
+    awayTeam: fixtureTeamWithFlag(fixture.awayTeam),
+    homeManagers: managersForTeam(players, fixture.homeTeam.tla),
+    awayManagers: managersForTeam(players, fixture.awayTeam.tla),
+  };
+}
+
+export function getUpcomingFixtures(
   fixtures: readonly WorldCupFantasyFixture[],
   players: readonly WorldCupFantasyPlayer[],
   now = new Date()
@@ -208,17 +222,21 @@ export function getTodayUpcomingFixtures(
   const today = utcDateKey(now);
   const nowMs = now.getTime();
 
-  return fixtures
-    .filter((fixture) => fixture.utcDate.slice(0, 10) === today && Date.parse(fixture.utcDate) > nowMs)
-    .sort((a, b) => a.utcDate.localeCompare(b.utcDate))
-    .map((fixture) => ({
-      id: fixture.id,
-      utcDate: fixture.utcDate,
-      homeTeam: fixtureTeamWithFlag(fixture.homeTeam),
-      awayTeam: fixtureTeamWithFlag(fixture.awayTeam),
-      homeManagers: managersForTeam(players, fixture.homeTeam.tla),
-      awayManagers: managersForTeam(players, fixture.awayTeam.tla),
-    }));
+  const futureFixtures = fixtures
+    .filter((fixture) => Date.parse(fixture.utcDate) > nowMs)
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
+
+  const todayFixtures = futureFixtures.filter((fixture) => fixture.utcDate.slice(0, 10) === today);
+  if (todayFixtures.length > 0) {
+    return todayFixtures.map((fixture) => upcomingFixtureEntry(fixture, players));
+  }
+
+  const nextFixtureDate = futureFixtures[0]?.utcDate.slice(0, 10);
+  if (!nextFixtureDate) return [];
+
+  return futureFixtures
+    .filter((fixture) => fixture.utcDate.slice(0, 10) === nextFixtureDate)
+    .map((fixture) => upcomingFixtureEntry(fixture, players));
 }
 
 function resolvePlayerTeamInMatch(match: WorldCupMatchResult, playerTeamCode: string): {
