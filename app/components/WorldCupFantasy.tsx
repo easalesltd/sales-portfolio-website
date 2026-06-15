@@ -103,7 +103,7 @@ function UpcomingFixtures({ fixtures }: { fixtures: UpcomingFixtureEntry[] }) {
     <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-4 py-3">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">Today&apos;s upcoming fixtures</h3>
-        <span className="text-xs text-sky-300/80">Kickoff times shown in UTC</span>
+        <span className="text-xs text-sky-300/80">Kickoff times shown in GMT</span>
       </div>
 
       {fixtures.length === 0 ? (
