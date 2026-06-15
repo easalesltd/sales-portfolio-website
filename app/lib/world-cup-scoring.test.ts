@@ -161,29 +161,25 @@ describe('computeStandings', () => {
     const fixtures = getTodayUpcomingFixtures(
       WORLD_CUP_FANTASY_FIXTURES,
       WORLD_CUP_FANTASY_PLAYERS,
-      new Date('2026-06-15T18:01:00Z')
+      new Date('2026-06-15T20:58:00Z')
     );
 
-    expect(fixtures.map((fixture) => fixture.id)).toEqual(['2026-06-15-bel-egy', '2026-06-15-ksa-uru']);
+    expect(fixtures.map((fixture) => fixture.id)).toEqual(['2026-06-15-ksa-uru']);
     expect(fixtures[0]).toMatchObject({
-      homeTeam: { tla: 'BEL', name: 'Belgium' },
-      awayTeam: { tla: 'EGY', name: 'Egypt' },
-      homeManagers: [{ id: 'nest', teamCode: 'BEL' }],
-      awayManagers: [{ id: 'scott', teamCode: 'EGY' }],
-    });
-    expect(fixtures[1]).toMatchObject({
+      homeTeam: { tla: 'KSA', name: 'Saudi Arabia' },
+      awayTeam: { tla: 'URU', name: 'Uruguay' },
       homeManagers: [{ id: 'nest', teamCode: 'KSA' }],
       awayManagers: [{ id: 'scott', teamCode: 'URU' }],
     });
   });
 
-  it("excludes today's fixtures once kickoff has passed", () => {
+  it("excludes today's fixtures once their kickoff has passed", () => {
     const fixtures = getTodayUpcomingFixtures(
       WORLD_CUP_FANTASY_FIXTURES,
       WORLD_CUP_FANTASY_PLAYERS,
-      new Date('2026-06-15T19:30:00Z')
+      new Date('2026-06-15T22:30:00Z')
     );
 
-    expect(fixtures.map((fixture) => fixture.id)).toEqual(['2026-06-15-ksa-uru']);
+    expect(fixtures.map((fixture) => fixture.id)).toEqual([]);
   });
 });

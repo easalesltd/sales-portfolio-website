@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Cape Verde have just parked a blue bus across Atlanta and Spain spent 90 minutes trying to pick the lock with a breadstick. Ash gets a point but not much dignity from his elite pick, Nest pockets one like finding a tenner in last night’s jeans, and Scott is still bottom waiting for Egypt or Uruguay to perform emergency plumbing on this table.';
+  'Belgium and Egypt have split the points like two blokes arguing over the last roast potato, which nudges Nest and Scott forward without troubling the concept of momentum. Scott is still bottom, but Egypt at least handed him a small stool to stand on while Uruguay limber up to see if they can locate the rest of his dignity.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -247,12 +247,6 @@ export type WorldCupFantasyFixture = {
  * Keep this rolling forward during score updates so today's box stays useful.
  */
 export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
-  {
-    id: '2026-06-15-bel-egy',
-    utcDate: '2026-06-15T19:00:00Z',
-    homeTeam: { name: 'Belgium', tla: 'BEL' },
-    awayTeam: { name: 'Egypt', tla: 'EGY' },
-  },
   {
     id: '2026-06-15-ksa-uru',
     utcDate: '2026-06-15T22:00:00Z',
@@ -398,6 +392,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Cape Verde', tla: 'CPV' },
     homeGoals: 0,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-15-bel-egy',
+    utcDate: '2026-06-15T19:00:00Z',
+    homeTeam: { name: 'Belgium', tla: 'BEL' },
+    awayTeam: { name: 'Egypt', tla: 'EGY' },
+    homeGoals: 1,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
