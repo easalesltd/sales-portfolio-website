@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Jon has stormed top after Ivory Coast nicked it late and Sweden took Tunisia apart before breakfast. Dave is still lurking with Germany doing the heavy lifting, Ash got mugged by a 90th-minute Ecuador sickener, and Scott remains bottom with Paraguay and Qatar offering all the structural support of a wet paper bag.';
+  'Cape Verde have just parked a blue bus across Atlanta and Spain spent 90 minutes trying to pick the lock with a breadstick. Ash gets a point but not much dignity from his elite pick, Nest pockets one like finding a tenner in last night’s jeans, and Scott is still bottom waiting for Egypt or Uruguay to perform emergency plumbing on this table.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -247,12 +247,6 @@ export type WorldCupFantasyFixture = {
  * Keep this rolling forward during score updates so today's box stays useful.
  */
 export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
-  {
-    id: '2026-06-15-esp-cpv',
-    utcDate: '2026-06-15T16:00:00Z',
-    homeTeam: { name: 'Spain', tla: 'ESP' },
-    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
-  },
   {
     id: '2026-06-15-bel-egy',
     utcDate: '2026-06-15T19:00:00Z',
@@ -393,6 +387,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Tunisia', tla: 'TUN' },
     homeGoals: 5,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-15-esp-cpv',
+    utcDate: '2026-06-15T16:00:00Z',
+    homeTeam: { name: 'Spain', tla: 'ESP' },
+    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
+    homeGoals: 0,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },

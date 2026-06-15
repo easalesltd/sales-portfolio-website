@@ -161,25 +161,17 @@ describe('computeStandings', () => {
     const fixtures = getTodayUpcomingFixtures(
       WORLD_CUP_FANTASY_FIXTURES,
       WORLD_CUP_FANTASY_PLAYERS,
-      new Date('2026-06-15T14:00:00Z')
+      new Date('2026-06-15T18:01:00Z')
     );
 
-    expect(fixtures.map((fixture) => fixture.id)).toEqual([
-      '2026-06-15-esp-cpv',
-      '2026-06-15-bel-egy',
-      '2026-06-15-ksa-uru',
-    ]);
+    expect(fixtures.map((fixture) => fixture.id)).toEqual(['2026-06-15-bel-egy', '2026-06-15-ksa-uru']);
     expect(fixtures[0]).toMatchObject({
-      homeTeam: { tla: 'ESP', name: 'Spain' },
-      awayTeam: { tla: 'CPV', name: 'Cape Verde' },
-      homeManagers: [{ id: 'ash', name: 'Ash', teamName: 'FC Cajuicey', teamCode: 'ESP' }],
-      awayManagers: [{ id: 'nest', name: 'Nest', teamName: 'Summer Soul Vibes UTD', teamCode: 'CPV' }],
-    });
-    expect(fixtures[1]).toMatchObject({
+      homeTeam: { tla: 'BEL', name: 'Belgium' },
+      awayTeam: { tla: 'EGY', name: 'Egypt' },
       homeManagers: [{ id: 'nest', teamCode: 'BEL' }],
       awayManagers: [{ id: 'scott', teamCode: 'EGY' }],
     });
-    expect(fixtures[2]).toMatchObject({
+    expect(fixtures[1]).toMatchObject({
       homeManagers: [{ id: 'nest', teamCode: 'KSA' }],
       awayManagers: [{ id: 'scott', teamCode: 'URU' }],
     });
