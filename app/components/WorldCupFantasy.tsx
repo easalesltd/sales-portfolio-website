@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { formatTeamLabel } from '@/app/data/world-cup-fantasy';
 import type { WorldCupFantasyResponse } from '@/app/api/world-cup-fantasy/route';
-import type { PlayerStanding, TeamStanding } from '@/app/lib/world-cup-scoring';
+import type { FixtureManager, PlayerStanding, TeamStanding, UpcomingFixtureEntry } from '@/app/lib/world-cup-scoring';
 
 type Props = {
   onClose: () => void;
@@ -43,6 +43,18 @@ function playerDisplayLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): 
   return player.teamName ?? player.name;
 }
 
+function fixtureManagerLabel(manager: Pick<FixtureManager, 'name' | 'teamName'>): string {
+  return manager.teamName ? `${manager.teamName} (${manager.name})` : manager.name;
+}
+
+function formatFixtureKickoff(utcDate: string): string {
+  return new Date(utcDate).toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'UTC',
+  });
+}
+
 function formatGoalDifference(goalDifference: number): string {
   if (goalDifference > 0) return `+${goalDifference}`;
   return String(goalDifference);
@@ -66,6 +78,62 @@ function FormSummary({
     <>
       W{wins} D{draws} L{losses} <RedCardTally count={redCards} />
     </>
+  );
+}
+
+function FixtureTeamManagers({ managers }: { managers: FixtureManager[] }) {
+  if (managers.length === 0) {
+    return <span className="text-neutral-500">No manager</span>;
+  }
+
+  return (
+    <>
+      {managers.map((manager, index) => (
+        <span key={`${manager.id}-${manager.teamCode}`}>
+          {index > 0 ? <span className="text-neutral-600"> · </span> : null}
+          <span>{fixtureManagerLabel(manager)}</span>
+        </span>
+      ))}
+    </>
+  );
+}
+
+function UpcomingFixtures({ fixtures }: { fixtures: UpcomingFixtureEntry[] }) {
+  return (
+    <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-4 py-3">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">Today&apos;s upcoming fixtures</h3>
+        <span className="text-xs text-sky-300/80">Kickoff times shown in UTC</span>
+      </div>
+
+      {fixtures.length === 0 ? (
+        <p className="mt-2 text-sm text-neutral-300">No more sweepstake fixtures scheduled for today.</p>
+      ) : (
+        <ul className="mt-3 space-y-2">
+          {fixtures.map((fixture) => (
+            <li key={fixture.id} className="rounded-lg border border-sky-900/60 bg-neutral-950/40 px-3 py-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+                <span className="font-semibold tabular-nums text-sky-200">{formatFixtureKickoff(fixture.utcDate)}</span>
+                <span className="text-neutral-100">
+                  {fixture.homeTeam.flag} {fixture.homeTeam.name}{' '}
+                  <span className="text-neutral-500">vs</span> {fixture.awayTeam.flag} {fixture.awayTeam.name}
+                </span>
+              </div>
+              <div className="mt-2 grid gap-1.5 text-xs text-neutral-300 sm:grid-cols-2">
+                <p>
+                  <span className="font-medium text-neutral-100">{fixture.homeTeam.tla}</span>{' '}
+                  <FixtureTeamManagers managers={fixture.homeManagers} />
+                </p>
+                <p>
+                  <span className="font-medium text-neutral-100">{fixture.awayTeam.tla}</span>{' '}
+                  <FixtureTeamManagers managers={fixture.awayManagers} />
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
 
@@ -424,6 +492,8 @@ export default function WorldCupFantasy({ onClose }: Props) {
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-amber-200">Daily update</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
               </section>
+
+              <UpcomingFixtures fixtures={data.upcomingFixtures} />
 
               <section>
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Overall standings</h3>

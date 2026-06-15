@@ -241,6 +241,34 @@ export type WorldCupFantasyManualMatch = {
   awayRedCards?: number;
 };
 
+export type WorldCupFantasyFixture = {
+  id: string;
+  utcDate: string;
+  homeTeam: { name: string; tla: string };
+  awayTeam: { name: string; tla: string };
+};
+
+export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
+  {
+    id: '2026-06-15-esp-cpv',
+    utcDate: '2026-06-15T16:00:00Z',
+    homeTeam: { name: 'Spain', tla: 'ESP' },
+    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
+  },
+  {
+    id: '2026-06-15-bel-egy',
+    utcDate: '2026-06-15T19:00:00Z',
+    homeTeam: { name: 'Belgium', tla: 'BEL' },
+    awayTeam: { name: 'Egypt', tla: 'EGY' },
+  },
+  {
+    id: '2026-06-15-ksa-uru',
+    utcDate: '2026-06-15T22:00:00Z',
+    homeTeam: { name: 'Saudi Arabia', tla: 'KSA' },
+    awayTeam: { name: 'Uruguay', tla: 'URU' },
+  },
+];
+
 export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMatch[] = [
   {
     /** Verified final result. */

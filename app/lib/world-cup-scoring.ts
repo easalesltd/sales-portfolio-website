@@ -2,6 +2,7 @@ import {
   WORLD_CUP_FANTASY_SCORING,
   WORLD_CUP_TEAM_BY_CODE,
   teamCodeMatches,
+  type WorldCupFantasyFixture,
   type WorldCupFantasyManualMatch,
   type WorldCupFantasyPlayer,
 } from '@/app/data/world-cup-fantasy';
@@ -73,6 +74,22 @@ export type PlayerStanding = {
 export type MatchPointsEntry = {
   match: WorldCupMatchResult;
   byPlayer: Record<string, number>;
+};
+
+export type FixtureManager = {
+  id: string;
+  name: string;
+  teamName: string | null;
+  teamCode: string;
+};
+
+export type UpcomingFixtureEntry = {
+  id: string;
+  utcDate: string;
+  homeTeam: { name: string; tla: string; flag: string };
+  awayTeam: { name: string; tla: string; flag: string };
+  homeManagers: FixtureManager[];
+  awayManagers: FixtureManager[];
 };
 
 function compareByStandingsOrder(
@@ -156,6 +173,52 @@ export function mergeWorldCupMatches(
       awayRedCards: match.awayRedCards ?? 0,
     }))
     .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
+}
+
+function utcDateKey(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+function managersForTeam(
+  players: readonly WorldCupFantasyPlayer[],
+  teamCode: string
+): FixtureManager[] {
+  return players
+    .filter((player) => player.teams.some((code) => teamCodeMatches(teamCode, code)))
+    .map((player) => ({
+      id: player.id,
+      name: player.name,
+      teamName: player.teamName ?? null,
+      teamCode,
+    }));
+}
+
+function fixtureTeamWithFlag(team: WorldCupFantasyFixture['homeTeam']): UpcomingFixtureEntry['homeTeam'] {
+  return {
+    ...team,
+    flag: WORLD_CUP_TEAM_BY_CODE[team.tla]?.flag ?? '',
+  };
+}
+
+export function getTodayUpcomingFixtures(
+  fixtures: readonly WorldCupFantasyFixture[],
+  players: readonly WorldCupFantasyPlayer[],
+  now = new Date()
+): UpcomingFixtureEntry[] {
+  const today = utcDateKey(now);
+  const nowMs = now.getTime();
+
+  return fixtures
+    .filter((fixture) => fixture.utcDate.slice(0, 10) === today && Date.parse(fixture.utcDate) > nowMs)
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate))
+    .map((fixture) => ({
+      id: fixture.id,
+      utcDate: fixture.utcDate,
+      homeTeam: fixtureTeamWithFlag(fixture.homeTeam),
+      awayTeam: fixtureTeamWithFlag(fixture.awayTeam),
+      homeManagers: managersForTeam(players, fixture.homeTeam.tla),
+      awayManagers: managersForTeam(players, fixture.awayTeam.tla),
+    }));
 }
 
 function resolvePlayerTeamInMatch(match: WorldCupMatchResult, playerTeamCode: string): {

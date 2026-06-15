@@ -1,7 +1,8 @@
 import { describe, expect, it } from '@jest/globals';
-import { computeStandings, type WorldCupMatchResult } from '@/app/lib/world-cup-scoring';
+import { computeStandings, getTodayUpcomingFixtures, type WorldCupMatchResult } from '@/app/lib/world-cup-scoring';
 import {
   getWorldCupTeamSearchTerms,
+  WORLD_CUP_FANTASY_FIXTURES,
   WORLD_CUP_FANTASY_PLAYERS,
   WORLD_CUP_TEAM_BY_CODE,
   type WorldCupFantasyPlayer,
@@ -129,5 +130,43 @@ describe('computeStandings', () => {
     expect(getWorldCupTeamSearchTerms('KOR')).toEqual(
       expect.arrayContaining(['KOR', 'South Korea', 'Korea Republic'])
     );
+  });
+
+  it("returns today's upcoming fixtures with involved managers", () => {
+    const fixtures = getTodayUpcomingFixtures(
+      WORLD_CUP_FANTASY_FIXTURES,
+      WORLD_CUP_FANTASY_PLAYERS,
+      new Date('2026-06-15T14:00:00Z')
+    );
+
+    expect(fixtures.map((fixture) => fixture.id)).toEqual([
+      '2026-06-15-esp-cpv',
+      '2026-06-15-bel-egy',
+      '2026-06-15-ksa-uru',
+    ]);
+    expect(fixtures[0]).toMatchObject({
+      homeTeam: { tla: 'ESP', name: 'Spain' },
+      awayTeam: { tla: 'CPV', name: 'Cape Verde' },
+      homeManagers: [{ id: 'ash', name: 'Ash', teamName: 'FC Cajuicey', teamCode: 'ESP' }],
+      awayManagers: [{ id: 'nest', name: 'Nest', teamName: 'Summer Soul Vibes UTD', teamCode: 'CPV' }],
+    });
+    expect(fixtures[1]).toMatchObject({
+      homeManagers: [{ id: 'nest', teamCode: 'BEL' }],
+      awayManagers: [{ id: 'scott', teamCode: 'EGY' }],
+    });
+    expect(fixtures[2]).toMatchObject({
+      homeManagers: [{ id: 'nest', teamCode: 'KSA' }],
+      awayManagers: [{ id: 'scott', teamCode: 'URU' }],
+    });
+  });
+
+  it("excludes today's fixtures once kickoff has passed", () => {
+    const fixtures = getTodayUpcomingFixtures(
+      WORLD_CUP_FANTASY_FIXTURES,
+      WORLD_CUP_FANTASY_PLAYERS,
+      new Date('2026-06-15T19:30:00Z')
+    );
+
+    expect(fixtures.map((fixture) => fixture.id)).toEqual(['2026-06-15-ksa-uru']);
   });
 });
