@@ -99,7 +99,7 @@ export const WORLD_CUP_SWEEPSTAKE_FAIRNESS =
   'All 48 qualified nations were ranked by strength, then split in a serpentine (snake) draft — so every player gets one elite pick, one mid-tier side, and one long shot per round. Nobody ends up with eight outsiders.';
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  "Dave is top because Germany gave Curaçao a proper hiding. Ash owned both halves of Netherlands-Japan and still only shuffled into fifth, which is a heroic waste of paperwork. Scott's Objection Overruled FC are bottom after Paraguay got leathered by the USA and Qatar served up another beige 1-1; the judge has seen enough, case dismissed.";
+  'Jon has stormed top after Ivory Coast nicked it late and Sweden gave Tunisia a proper hiding. Dave is still lurking with Germany doing the heavy lifting, Ash got mugged by a 90th-minute Ecuador sickener, and Scott remains bottom with Paraguay and Qatar offering all the structural support of a wet paper bag.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -299,6 +299,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Japan', tla: 'JPN' },
     homeGoals: 2,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-14-civ-ecu',
+    utcDate: '2026-06-14T23:00:00Z',
+    homeTeam: { name: 'Ivory Coast', tla: 'CIV' },
+    awayTeam: { name: 'Ecuador', tla: 'ECU' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-15-swe-tun',
+    utcDate: '2026-06-15T02:00:00Z',
+    homeTeam: { name: 'Sweden', tla: 'SWE' },
+    awayTeam: { name: 'Tunisia', tla: 'TUN' },
+    homeGoals: 5,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
