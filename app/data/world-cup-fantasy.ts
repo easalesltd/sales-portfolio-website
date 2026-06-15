@@ -255,7 +255,7 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
   },
   {
     id: '2026-06-16-irn-nzl',
-    utcDate: '2026-06-16T04:00:00Z',
+    utcDate: '2026-06-16T01:00:00Z',
     homeTeam: { name: 'Iran', tla: 'IRN' },
     awayTeam: { name: 'New Zealand', tla: 'NZL' },
   },
