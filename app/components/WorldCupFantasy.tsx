@@ -472,12 +472,6 @@ export default function WorldCupFantasy({ onClose }: Props) {
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (
             <div className="space-y-6">
-              <section className="rounded-lg border border-teal-900/50 bg-teal-950/20 px-4 py-3">
-                <h3 className="text-sm font-semibold text-teal-200">The sweepstake</h3>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-200">{data.sweepstakeIntro}</p>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-400">{data.sweepstakeFairness}</p>
-              </section>
-
               <div className="rounded-lg border border-neutral-700 bg-neutral-950/50 px-4 py-3 text-xs text-neutral-400 sm:text-sm">
                 <p>
                   Scores are updated manually after full-time. Previous results stay recorded, so only newly finished
