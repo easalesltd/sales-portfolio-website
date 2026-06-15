@@ -116,13 +116,28 @@ describe('computeStandings', () => {
       goalsFor: 2,
       goalsAgainst: 0,
       goalDifference: 2,
+      previousRank: 2,
+      rankChange: 1,
     });
     expect(standings[1]).toMatchObject({
       points: 3,
       goalsFor: 1,
       goalsAgainst: 0,
       goalDifference: 1,
+      previousRank: 1,
+      rankChange: -1,
     });
+  });
+
+  it('does not mark rank movement before any matches are scored', () => {
+    const { standings } = computeStandings(players, []);
+
+    expect(standings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: 'higher-gd', previousRank: null, rankChange: 0 }),
+        expect.objectContaining({ id: 'saka-potatoes', previousRank: null, rankChange: 0 }),
+      ])
+    );
   });
 
   it('orders each player team table by points and goal difference', () => {
