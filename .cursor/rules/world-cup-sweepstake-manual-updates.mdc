@@ -10,6 +10,7 @@ When asked to update the World Cup sweepstake scores:
 - Use `app/data/world-cup-fantasy.ts` and append to `WORLD_CUP_FANTASY_MANUAL_MATCHES`.
 - Only look for **newly finished** World Cup matches that are not already in the manual ledger.
 - Do **not** re-check or re-verify matches already recorded in `WORLD_CUP_FANTASY_MANUAL_MATCHES`; those entries are the source of truth.
+- When checking external score sources, use each assigned team's code, display name, and `searchNames` variants from `WORLD_CUP_TEAM_BY_CODE` / `getWorldCupTeamSearchTerms()` so alternate spellings are not missed (for example Ivory Coast / Côte d'Ivoire, Cape Verde / Cabo Verde, Turkey / Türkiye, South Korea / Korea Republic, Iran / IR Iran).
 - Add only final results: home/away teams, final goals, and red-card tallies for each team.
 - Count red-card dismissals in the tally, including second-yellow dismissals where reported.
 - Do not manually edit player totals or standings. The app applies the scoring rules from `WORLD_CUP_FANTASY_SCORING` via `computeStandings()`:

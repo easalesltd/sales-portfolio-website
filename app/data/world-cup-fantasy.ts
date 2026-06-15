@@ -7,11 +7,18 @@ export type WorldCupTeamMeta = {
   flag: string;
   /** Extra API codes that should count as this team. */
   aliases?: readonly string[];
+  /** Common official/source spellings to use when manually checking score sites. */
+  searchNames?: readonly string[];
 };
 
 export const WORLD_CUP_TEAM_BY_CODE: Record<string, WorldCupTeamMeta> = {
   ARG: { code: 'ARG', name: 'Argentina', flag: '🇦🇷' },
-  USA: { code: 'USA', name: 'USA', flag: '🇺🇸' },
+  USA: {
+    code: 'USA',
+    name: 'USA',
+    flag: '🇺🇸',
+    searchNames: ['United States', 'United States of America'],
+  },
   SUI: { code: 'SUI', name: 'Switzerland', flag: '🇨🇭', aliases: ['SWI'] },
   TUN: { code: 'TUN', name: 'Tunisia', flag: '🇹🇳' },
   CRC: { code: 'CRC', name: 'Costa Rica', flag: '🇨🇷', aliases: ['COS'] },
@@ -23,24 +30,46 @@ export const WORLD_CUP_TEAM_BY_CODE: Record<string, WorldCupTeamMeta> = {
   QAT: { code: 'QAT', name: 'Qatar', flag: '🇶🇦' },
   FRA: { code: 'FRA', name: 'France', flag: '🇫🇷' },
   JPN: { code: 'JPN', name: 'Japan', flag: '🇯🇵', aliases: ['JAP'] },
-  KOR: { code: 'KOR', name: 'South Korea', flag: '🇰🇷' },
+  KOR: {
+    code: 'KOR',
+    name: 'South Korea',
+    flag: '🇰🇷',
+    searchNames: ['Korea Republic', 'Republic of Korea'],
+  },
   CMR: { code: 'CMR', name: 'Cameroon', flag: '🇨🇲' },
   CAN: { code: 'CAN', name: 'Canada', flag: '🇨🇦' },
   ESP: { code: 'ESP', name: 'Spain', flag: '🇪🇸' },
-  NED: { code: 'NED', name: 'Netherlands', flag: '🇳🇱', aliases: ['HOL'] },
+  NED: {
+    code: 'NED',
+    name: 'Netherlands',
+    flag: '🇳🇱',
+    aliases: ['HOL'],
+    searchNames: ['Holland'],
+  },
   ECU: { code: 'ECU', name: 'Ecuador', flag: '🇪🇨' },
   GHA: { code: 'GHA', name: 'Ghana', flag: '🇬🇭' },
   COL: { code: 'COL', name: 'Colombia', flag: '🇨🇴' },
   SWE: { code: 'SWE', name: 'Sweden', flag: '🇸🇪' },
   SCO: { code: 'SCO', name: 'Scotland', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿' },
   NOR: { code: 'NOR', name: 'Norway', flag: '🇳🇴' },
-  TUR: { code: 'TUR', name: 'Turkey', flag: '🇹🇷' },
-  CIV: { code: 'CIV', name: 'Ivory Coast', flag: '🇨🇮' },
+  TUR: { code: 'TUR', name: 'Turkey', flag: '🇹🇷', searchNames: ['Türkiye', 'Turkiye'] },
+  CIV: {
+    code: 'CIV',
+    name: 'Ivory Coast',
+    flag: '🇨🇮',
+    searchNames: ["Côte d'Ivoire", "Cote d'Ivoire"],
+  },
   WAL: { code: 'WAL', name: 'Wales', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', aliases: ['WLS'] },
   ENG: { code: 'ENG', name: 'England', flag: '🏴󠁧󠁢󠁥󠁮󠁧󠁿' },
   CRO: { code: 'CRO', name: 'Croatia', flag: '🇭🇷' },
   URU: { code: 'URU', name: 'Uruguay', flag: '🇺🇾', aliases: ['URY'] },
-  IRN: { code: 'IRN', name: 'Iran', flag: '🇮🇷', aliases: ['IRA'] },
+  IRN: {
+    code: 'IRN',
+    name: 'Iran',
+    flag: '🇮🇷',
+    aliases: ['IRA'],
+    searchNames: ['IR Iran', 'Islamic Republic of Iran'],
+  },
   AUS: { code: 'AUS', name: 'Australia', flag: '🇦🇺' },
   SRB: { code: 'SRB', name: 'Serbia', flag: '🇷🇸', aliases: ['SER'] },
   POR: { code: 'POR', name: 'Portugal', flag: '🇵🇹' },
@@ -50,11 +79,21 @@ export const WORLD_CUP_TEAM_BY_CODE: Record<string, WorldCupTeamMeta> = {
   DEN: { code: 'DEN', name: 'Denmark', flag: '🇩🇰' },
   ALG: { code: 'ALG', name: 'Algeria', flag: '🇩🇿' },
   AUT: { code: 'AUT', name: 'Austria', flag: '🇦🇹' },
-  BIH: { code: 'BIH', name: 'Bosnia-Herzegovina', flag: '🇧🇦' },
-  COD: { code: 'COD', name: 'Congo DR', flag: '🇨🇩' },
-  CPV: { code: 'CPV', name: 'Cape Verde', flag: '🇨🇻' },
-  CUW: { code: 'CUW', name: 'Curaçao', flag: '🇨🇼' },
-  CZE: { code: 'CZE', name: 'Czechia', flag: '🇨🇿' },
+  BIH: {
+    code: 'BIH',
+    name: 'Bosnia-Herzegovina',
+    flag: '🇧🇦',
+    searchNames: ['Bosnia and Herzegovina'],
+  },
+  COD: {
+    code: 'COD',
+    name: 'Congo DR',
+    flag: '🇨🇩',
+    searchNames: ['DR Congo', 'Democratic Republic of the Congo'],
+  },
+  CPV: { code: 'CPV', name: 'Cape Verde', flag: '🇨🇻', searchNames: ['Cabo Verde'] },
+  CUW: { code: 'CUW', name: 'Curaçao', flag: '🇨🇼', searchNames: ['Curacao'] },
+  CZE: { code: 'CZE', name: 'Czechia', flag: '🇨🇿', searchNames: ['Czech Republic'] },
   EGY: { code: 'EGY', name: 'Egypt', flag: '🇪🇬' },
   HAI: { code: 'HAI', name: 'Haiti', flag: '🇭🇹' },
   IRQ: { code: 'IRQ', name: 'Iraq', flag: '🇮🇶' },
@@ -71,6 +110,13 @@ export function teamCodeMatches(matchTla: string, playerTeamCode: string): boole
   const normalized = matchTla.trim().toUpperCase();
   if (playerTeamCode.toUpperCase() === normalized) return true;
   return (meta?.aliases ?? []).some((alias) => alias.toUpperCase() === normalized);
+}
+
+export function getWorldCupTeamSearchTerms(code: string): string[] {
+  const meta = WORLD_CUP_TEAM_BY_CODE[code];
+  if (!meta) return [code];
+
+  return [...new Set([meta.code, meta.name, ...(meta.aliases ?? []), ...(meta.searchNames ?? [])])];
 }
 
 export function formatTeamLabel(code: string): string {

@@ -1,6 +1,11 @@
 import { describe, expect, it } from '@jest/globals';
 import { computeStandings, type WorldCupMatchResult } from '@/app/lib/world-cup-scoring';
-import type { WorldCupFantasyPlayer } from '@/app/data/world-cup-fantasy';
+import {
+  getWorldCupTeamSearchTerms,
+  WORLD_CUP_FANTASY_PLAYERS,
+  WORLD_CUP_TEAM_BY_CODE,
+  type WorldCupFantasyPlayer,
+} from '@/app/data/world-cup-fantasy';
 
 const players: readonly WorldCupFantasyPlayer[] = [
   {
@@ -101,5 +106,28 @@ describe('computeStandings', () => {
     expect(chris?.teamBreakdown.map((team) => team.code)).toEqual(['KOR', 'MEX', 'BRA']);
     expect(chris?.teamBreakdown.map((team) => team.points)).toEqual([3, 3, 1]);
     expect(chris?.teamBreakdown.map((team) => team.goalDifference)).toEqual([2, 1, 0]);
+  });
+
+  it('has metadata for every assigned sweepstake team', () => {
+    const assignedCodes = new Set(WORLD_CUP_FANTASY_PLAYERS.flatMap((player) => player.teams));
+
+    for (const code of assignedCodes) {
+      expect(WORLD_CUP_TEAM_BY_CODE[code]).toBeDefined();
+    }
+  });
+
+  it('lists common source spellings for manual score checks', () => {
+    expect(getWorldCupTeamSearchTerms('CIV')).toEqual(
+      expect.arrayContaining(['CIV', 'Ivory Coast', "Côte d'Ivoire", "Cote d'Ivoire"])
+    );
+    expect(getWorldCupTeamSearchTerms('CPV')).toEqual(
+      expect.arrayContaining(['CPV', 'Cape Verde', 'Cabo Verde'])
+    );
+    expect(getWorldCupTeamSearchTerms('TUR')).toEqual(
+      expect.arrayContaining(['TUR', 'Turkey', 'Türkiye', 'Turkiye'])
+    );
+    expect(getWorldCupTeamSearchTerms('KOR')).toEqual(
+      expect.arrayContaining(['KOR', 'South Korea', 'Korea Republic'])
+    );
   });
 });
