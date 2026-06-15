@@ -472,16 +472,6 @@ export default function WorldCupFantasy({ onClose }: Props) {
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (
             <div className="space-y-6">
-              <div className="rounded-lg border border-neutral-700 bg-neutral-950/50 px-4 py-3 text-xs text-neutral-400 sm:text-sm">
-                <p>
-                  Scores are updated manually after full-time. Previous results stay recorded, so only newly finished
-                  matches need adding.
-                </p>
-                <p className="mt-2">
-                  Finished matches tracked: <span className="text-neutral-200">{data.finishedMatchCount}</span>
-                </p>
-              </div>
-
               <section className="rounded-lg border border-amber-800/60 bg-amber-950/20 px-4 py-3">
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-amber-200">Daily update</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
@@ -540,6 +530,16 @@ export default function WorldCupFantasy({ onClose }: Props) {
                   </ul>
                 )}
               </section>
+
+              <div className="rounded-lg border border-neutral-700 bg-neutral-950/50 px-4 py-3 text-xs text-neutral-400 sm:text-sm">
+                <p>
+                  Scores are updated manually after full-time. Previous results stay recorded, so only newly finished
+                  matches need adding.
+                </p>
+                <p className="mt-2">
+                  Finished matches tracked: <span className="text-neutral-200">{data.finishedMatchCount}</span>
+                </p>
+              </div>
             </div>
           ) : null}
         </div>
