@@ -177,6 +177,20 @@ function teamPointsInMatch(match: WorldCupMatchResult, playerTeamCode: string): 
   return scoreTeamMatch(goalsFor, goalsAgainst, redCards).total;
 }
 
+export function resolveManagerImageForStandings(
+  player: Pick<WorldCupFantasyPlayer, 'id' | 'managerImage'>,
+  rankIndex: number,
+  playerCount: number
+): string {
+  if (playerCount > 1 && rankIndex === 0) {
+    return `/images/world-cup-fantasy/managers/${player.id}-top.png`;
+  }
+  if (playerCount > 1 && rankIndex === playerCount - 1) {
+    return `/images/world-cup-fantasy/managers/${player.id}-bottom.png`;
+  }
+  return player.managerImage;
+}
+
 export function computeStandings(
   players: readonly WorldCupFantasyPlayer[],
   matches: WorldCupMatchResult[]
@@ -279,6 +293,14 @@ export function computeStandings(
   }
 
   standings.sort(compareByStandingsOrder);
+
+  const playerById = new Map(players.map((player) => [player.id, player]));
+  standings.forEach((row, index) => {
+    const player = playerById.get(row.id);
+    if (player) {
+      row.managerImage = resolveManagerImageForStandings(player, index, standings.length);
+    }
+  });
 
   const recentScoringMatches: MatchPointsEntry[] = finished
     .slice(-12)

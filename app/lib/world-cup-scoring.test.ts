@@ -1,5 +1,9 @@
 import { describe, expect, it } from '@jest/globals';
-import { computeStandings, type WorldCupMatchResult } from '@/app/lib/world-cup-scoring';
+import {
+  computeStandings,
+  resolveManagerImageForStandings,
+  type WorldCupMatchResult,
+} from '@/app/lib/world-cup-scoring';
 import {
   getWorldCupTeamSearchTerms,
   WORLD_CUP_FANTASY_PLAYERS,
@@ -79,6 +83,26 @@ const teamTableMatches: WorldCupMatchResult[] = [
     awayRedCards: 0,
   },
 ];
+
+describe('resolveManagerImageForStandings', () => {
+  const player = { id: 'jon', managerImage: '/images/world-cup-fantasy/managers/jon.png' };
+
+  it('uses top image for first place', () => {
+    expect(resolveManagerImageForStandings(player, 0, 6)).toBe(
+      '/images/world-cup-fantasy/managers/jon-top.png'
+    );
+  });
+
+  it('uses bottom image for last place', () => {
+    expect(resolveManagerImageForStandings(player, 5, 6)).toBe(
+      '/images/world-cup-fantasy/managers/jon-bottom.png'
+    );
+  });
+
+  it('uses default image for middle positions', () => {
+    expect(resolveManagerImageForStandings(player, 2, 6)).toBe(player.managerImage);
+  });
+});
 
 describe('computeStandings', () => {
   it('uses goal difference to order players tied on points', () => {
