@@ -214,6 +214,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
               <th className="px-3 py-2 font-medium">#</th>
               <th className="px-3 py-2 font-medium">Player</th>
               <th className="px-3 py-2 font-medium">Teams</th>
+              <th className="px-3 py-2 font-medium text-right">Pld</th>
               <th className="px-3 py-2 font-medium text-right">W</th>
               <th className="px-3 py-2 font-medium text-right">D</th>
               <th className="px-3 py-2 font-medium text-right">L</th>
@@ -231,6 +232,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                   <PlayerIdentity player={row} />
                 </td>
                 <td className="px-3 py-2 text-neutral-300">{row.teamCount} teams</td>
+                <td className="px-3 py-2 text-right tabular-nums">{row.playedMatches}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.wins}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.losses}</td>
