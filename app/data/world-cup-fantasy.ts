@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'So far today, Iran and New Zealand have served up a 2-2 draw, because apparently nobody in Group G is legally allowed to win a football match. Dave gets a tidy point from Iran, Ash gets one from the Kiwis, and Scott remains bottom with the grim persistence of a pub carpet stain.';
+  'So far today, Iran and New Zealand have served up a 2-2 draw, because apparently nobody in Group G is legally allowed to win a football match. Dave gets a tidy point from Iran and Ash gets one from the Kiwis, while Scott remains bottom with the grim persistence of a pub carpet stain; at this point last place has stopped being a position and started forwarding his post.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
