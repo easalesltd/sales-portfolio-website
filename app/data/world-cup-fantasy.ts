@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'So far today, Iran and New Zealand have served up a 2-2 draw, because apparently nobody in Group G is legally allowed to win a football match. Dave gets a tidy point from Iran and Ash gets one from the Kiwis, while Scott remains bottom with the grim persistence of a pub carpet stain; at this point last place has stopped being a position and started forwarding his post.';
+  'France have finally remembered they are France, turning Senegal over 3-1 and giving Chris a four-point shove up the table. Dave, meanwhile, gets mugged by the three-conceded penalty, which is what happens when Senegal spend stoppage time defending like someone has hidden the keys to the minibus in their six-yard box.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -455,6 +455,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'New Zealand', tla: 'NZL' },
     homeGoals: 2,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-16-fra-sen',
+    utcDate: '2026-06-16T19:00:00Z',
+    homeTeam: { name: 'France', tla: 'FRA' },
+    awayTeam: { name: 'Senegal', tla: 'SEN' },
+    homeGoals: 3,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
