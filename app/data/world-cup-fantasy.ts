@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Saudi Arabia and Uruguay have shared the points after spending the evening treating a winner like a suspicious kebab. Nest pockets one, Scott pockets one, and Scott still stays bottom on goal difference, which is less a comeback than finding 20p under the fruit machine and calling it a pension plan.';
+  'Iran and New Zealand have served up a 2-2 draw, because apparently nobody in Group G is legally allowed to win a football match. Dave gets a tidy point from Iran, Ash gets one from the Kiwis, and Scott remains bottom with the grim persistence of a pub carpet stain.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -444,6 +444,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Uruguay', tla: 'URU' },
     homeGoals: 1,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-16-irn-nzl',
+    utcDate: '2026-06-16T01:00:00Z',
+    homeTeam: { name: 'Iran', tla: 'IRN' },
+    awayTeam: { name: 'New Zealand', tla: 'NZL' },
+    homeGoals: 2,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
