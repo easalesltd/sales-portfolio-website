@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Belgium and Egypt have split the points like two blokes arguing over the last roast potato, which nudges Nest and Scott forward without troubling the concept of momentum. Scott is still bottom, but Egypt at least handed him a small stool to stand on while Uruguay limber up to see if they can locate the rest of his dignity.';
+  'Saudi Arabia and Uruguay have shared the points after spending the evening treating a winner like a suspicious kebab. Nest pockets one, Scott pockets one, and Scott still stays bottom on goal difference, which is less a comeback than finding 20p under the fruit machine and calling it a pension plan.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -431,6 +431,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     utcDate: '2026-06-15T19:00:00Z',
     homeTeam: { name: 'Belgium', tla: 'BEL' },
     awayTeam: { name: 'Egypt', tla: 'EGY' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-15-ksa-uru',
+    utcDate: '2026-06-15T22:00:00Z',
+    homeTeam: { name: 'Saudi Arabia', tla: 'KSA' },
+    awayTeam: { name: 'Uruguay', tla: 'URU' },
     homeGoals: 1,
     awayGoals: 1,
     homeRedCards: 0,
