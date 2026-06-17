@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Austria have done Jordan 3-1, which gives Scott the full four-point pub coupon and charges Jon a one-point tax for defensive nonsense. Scott is suddenly top, somehow, which is either a redemption arc or proof the competition has been left unattended near the fruit machine.';
+  'Argentina thumped Algeria 3-0, Austria swatted Jordan 3-1, and Portugal managed to turn 75% possession into a 1-1 pub sigh against Congo DR. Dave pockets two draw points because both sides were his, which is very efficient beige admin, while Ash is still bottom with four points and a face like the fixture list has reported him to trading standards.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -522,6 +522,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Austria', tla: 'AUT' },
     awayTeam: { name: 'Jordan', tla: 'JOR' },
     homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-17-por-cod',
+    utcDate: '2026-06-17T17:00:00Z',
+    homeTeam: { name: 'Portugal', tla: 'POR' },
+    awayTeam: { name: 'Congo DR', tla: 'COD' },
+    homeGoals: 1,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
