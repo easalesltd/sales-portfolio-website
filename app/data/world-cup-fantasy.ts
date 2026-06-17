@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'France have finally remembered they are France, turning Senegal over 3-1 and giving Chris a four-point shove up the table. Dave, meanwhile, gets mugged by the three-conceded penalty, which is what happens when Senegal spend stoppage time defending like someone has hidden the keys to the minibus in their six-yard box.';
+  'Norway and Argentina have both handed out three-goal hidings, which is lovely for Nest and Scott and absolute council-bin juice for Chris and Dave. Scott has finally climbed out of the cellar on Messi fumes, leaving Ash bottom despite doing nothing wrong, which is generally how the pub table punishes innocence.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -282,6 +282,30 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-17T04:00:00Z',
     homeTeam: { name: 'Austria', tla: 'AUT' },
     awayTeam: { name: 'Jordan', tla: 'JOR' },
+  },
+  {
+    id: '2026-06-17-por-cod',
+    utcDate: '2026-06-17T17:00:00Z',
+    homeTeam: { name: 'Portugal', tla: 'POR' },
+    awayTeam: { name: 'Congo DR', tla: 'COD' },
+  },
+  {
+    id: '2026-06-17-eng-cro',
+    utcDate: '2026-06-17T20:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Croatia', tla: 'CRO' },
+  },
+  {
+    id: '2026-06-17-gha-pan',
+    utcDate: '2026-06-17T23:00:00Z',
+    homeTeam: { name: 'Ghana', tla: 'GHA' },
+    awayTeam: { name: 'Panama', tla: 'PAN' },
+  },
+  {
+    id: '2026-06-18-uzb-col',
+    utcDate: '2026-06-18T02:00:00Z',
+    homeTeam: { name: 'Uzbekistan', tla: 'UZB' },
+    awayTeam: { name: 'Colombia', tla: 'COL' },
   },
 ];
 
@@ -466,6 +490,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Senegal', tla: 'SEN' },
     homeGoals: 3,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-16-irq-nor',
+    utcDate: '2026-06-16T22:00:00Z',
+    homeTeam: { name: 'Iraq', tla: 'IRQ' },
+    awayTeam: { name: 'Norway', tla: 'NOR' },
+    homeGoals: 1,
+    awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-17-arg-alg',
+    utcDate: '2026-06-17T01:00:00Z',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Algeria', tla: 'ALG' },
+    homeGoals: 3,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
