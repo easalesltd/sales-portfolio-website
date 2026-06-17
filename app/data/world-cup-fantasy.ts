@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Norway and Argentina have both handed out three-goal hidings, which is lovely for Nest and Scott and absolute council-bin juice for Chris and Dave. Scott has finally climbed out of the cellar on Messi fumes, leaving Ash bottom despite doing nothing wrong, which is generally how the pub table punishes innocence.';
+  'Austria have done Jordan 3-1, which gives Scott the full four-point pub coupon and charges Jon a one-point tax for defensive nonsense. Scott is suddenly top, somehow, which is either a redemption arc or proof the competition has been left unattended near the fruit machine.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -512,6 +512,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Algeria', tla: 'ALG' },
     homeGoals: 3,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-17-aut-jor',
+    utcDate: '2026-06-17T04:00:00Z',
+    homeTeam: { name: 'Austria', tla: 'AUT' },
+    awayTeam: { name: 'Jordan', tla: 'JOR' },
+    homeGoals: 3,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
