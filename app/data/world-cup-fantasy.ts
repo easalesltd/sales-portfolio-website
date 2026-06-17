@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Argentina thumped Algeria 3-0, Austria swatted Jordan 3-1, and Portugal managed to turn 75% possession into a 1-1 pub sigh against Congo DR. Dave pockets two draw points because both sides were his, which is very efficient beige admin, while Ash is still bottom with four points and a face like the fixture list has reported him to trading standards.';
+  'Argentina flattened Algeria 3-0, Austria dealt with Jordan 3-1, Portugal and Congo DR made Dave two draw points in a 1-1 spreadsheet cuddle, then England beat Croatia 4-2 to send Nest top. Scott gets nothing from Croatia conceding four; if only he had Spider-Man in goal, I could have given him a bonus point. Ash remains bottom on four, currently less a title charge and more a damp beer mat with fixtures printed on it.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -534,6 +534,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Congo DR', tla: 'COD' },
     homeGoals: 1,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-17-eng-cro',
+    utcDate: '2026-06-17T20:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Croatia', tla: 'CRO' },
+    homeGoals: 4,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
