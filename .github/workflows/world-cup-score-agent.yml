@@ -1,0 +1,155 @@
+name: World Cup Score Agent
+
+on:
+  schedule:
+    # Known sweepstake kick-off slots are 01:00, 02:00, 04:00, 16:00, 17:00,
+    # 19:00, 20:00, 22:00, and 23:00 UTC. The agent checks 130 minutes later.
+    - cron: '10 0 * * *'
+    - cron: '10 1 * * *'
+    - cron: '10 3 * * *'
+    - cron: '10 4 * * *'
+    - cron: '10 6 * * *'
+    - cron: '10 18 * * *'
+    - cron: '10 19 * * *'
+    - cron: '10 21 * * *'
+    - cron: '10 22 * * *'
+  workflow_dispatch:
+    inputs:
+      force_agent:
+        description: Run the Cursor agent even if no fixture is currently due
+        required: false
+        type: boolean
+        default: false
+      lookback_minutes:
+        description: Minutes of expected-final-whistle history to consider
+        required: false
+        type: string
+        default: '480'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: world-cup-score-agent
+  cancel-in-progress: false
+
+jobs:
+  update-scores:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Check whether a score update is due
+        id: due
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.force_agent }}" == "true" ]]; then
+            export WORLD_CUP_FORCE_AGENT=1
+          fi
+
+          export WORLD_CUP_DUE_LOOKBACK_MINUTES="${{ inputs.lookback_minutes || '480' }}"
+          node scripts/world-cup-due-fixtures.cjs
+
+      - name: Skip when no fixture should be final yet
+        if: steps.due.outputs.due != 'true'
+        run: echo "No score update is due."
+
+      - name: Explain missing Cursor API key
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY == ''
+        run: |
+          echo "::warning::CURSOR_API_KEY is not configured, so the scheduled score agent cannot run."
+          echo "Add a repository Actions secret named CURSOR_API_KEY to enable automatic score updates."
+
+      - name: Install dependencies
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        run: npm ci
+
+      - name: Install Cursor CLI
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
+
+      - name: Run Cursor score-update agent
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        env:
+          DUE_FIXTURES: ${{ steps.due.outputs.fixtures }}
+          UPDATE_DELAY_MINUTES: ${{ steps.due.outputs.update_delay_minutes }}
+        run: |
+          cat > /tmp/world-cup-score-agent-prompt.txt <<PROMPT
+          Update the World Cup sweepstake scores for this repository.
+
+          Follow .cursor/rules/world-cup-sweepstake-manual-updates.mdc exactly:
+          - update only app/data/world-cup-fantasy.ts
+          - append only newly finished matches to WORLD_CUP_FANTASY_MANUAL_MATCHES
+          - keep WORLD_CUP_FANTASY_FIXTURES rolling forward
+          - refresh WORLD_CUP_FANTASY_DAILY_UPDATE when the table changes
+          - use final results only, including red-card and second-yellow dismissal tallies
+
+          This scheduled run was triggered because the following fixture(s) should be final now:
+          ${DUE_FIXTURES}
+
+          The expected result check delay is ${UPDATE_DELAY_MINUTES} minutes after kick-off.
+          If a listed fixture is not final in reliable public sources yet, leave it unchanged.
+          Do not commit, push, create branches, create PRs, or post comments. The workflow handles git operations.
+          PROMPT
+
+          agent -p --force "$(cat /tmp/world-cup-score-agent-prompt.txt)" --output-format text
+
+      - name: Validate changed files
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          changed_files="$(git diff --name-only)"
+          if [[ -z "$changed_files" ]]; then
+            echo "No files changed."
+            exit 0
+          fi
+
+          echo "$changed_files"
+          disallowed=""
+          while IFS= read -r changed_file; do
+            if [[ "$changed_file" != "app/data/world-cup-fantasy.ts" ]]; then
+              disallowed="${disallowed}${changed_file}"$'\n'
+            fi
+          done <<< "$changed_files"
+
+          if [[ -n "$disallowed" ]]; then
+            echo "::error::The score agent changed files outside app/data/world-cup-fantasy.ts:"
+            echo "$disallowed"
+            exit 1
+          fi
+
+      - name: Build
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          if git diff --quiet; then
+            echo "No score changes to build."
+          else
+            npm run build
+          fi
+
+      - name: Commit and push score update
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          if git diff --quiet; then
+            echo "No score changes to commit."
+            exit 0
+          fi
+
+          git config user.name "cursor-score-agent"
+          git config user.email "cursor-score-agent@users.noreply.github.com"
+          git add app/data/world-cup-fantasy.ts
+          git commit -m "Update World Cup sweepstake scores"
+          git push origin HEAD:main
