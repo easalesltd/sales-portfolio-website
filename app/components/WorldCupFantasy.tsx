@@ -4,7 +4,13 @@ import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { formatTeamLabel } from '@/app/data/world-cup-fantasy';
 import type { WorldCupFantasyResponse } from '@/app/api/world-cup-fantasy/route';
-import type { FixtureManager, PlayerStanding, TeamStanding, UpcomingFixtureEntry } from '@/app/lib/world-cup-scoring';
+import type {
+  FixtureManager,
+  MatchPointsEntry,
+  PlayerStanding,
+  TeamStanding,
+  UpcomingFixtureEntry,
+} from '@/app/lib/world-cup-scoring';
 
 type Props = {
   onClose: () => void;
@@ -37,6 +43,14 @@ function ScoringRulesBlock() {
 function formatMatchScore(homeGoals: number | null, awayGoals: number | null): string {
   if (homeGoals == null || awayGoals == null) return '–';
   return `${homeGoals}–${awayGoals}`;
+}
+
+function formatResultTickerDate(utcDate: string): string {
+  return new Date(utcDate).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    timeZone: 'UTC',
+  });
 }
 
 function playerDisplayLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): string {
@@ -136,6 +150,71 @@ function UpcomingFixtures({ fixtures }: { fixtures: UpcomingFixtureEntry[] }) {
           ))}
         </ul>
       )}
+    </section>
+  );
+}
+
+function LatestResultsTicker({
+  matches,
+  standings,
+}: {
+  matches: MatchPointsEntry[];
+  standings: PlayerStanding[];
+}) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const resultCount = matches.length;
+
+  useEffect(() => {
+    if (resultCount <= 1) {
+      setActiveIndex(0);
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % resultCount);
+    }, 4500);
+
+    return () => window.clearInterval(interval);
+  }, [resultCount]);
+
+  useEffect(() => {
+    if (activeIndex >= resultCount) setActiveIndex(0);
+  }, [activeIndex, resultCount]);
+
+  if (resultCount === 0) return null;
+
+  const { match, byPlayer } = matches[activeIndex];
+  const scorers = standings
+    .filter((player) => byPlayer[player.id] != null)
+    .map((player) => {
+      const points = byPlayer[player.id]!;
+      return `${playerDisplayLabel(player)} ${points >= 0 ? '+' : ''}${points}`;
+    })
+    .join(' · ');
+
+  return (
+    <section className="flex justify-center" aria-label="Latest sweepstake results ticker">
+      <div
+        className="w-fit max-w-full rounded-xl border border-lime-400/40 bg-neutral-950 px-3 py-2 shadow-[0_0_22px_rgba(132,204,22,0.18)] sm:px-4"
+        aria-live="polite"
+      >
+        <div className="flex items-center justify-between gap-3 text-[9px] font-semibold uppercase tracking-[0.28em] text-lime-500/80">
+          <span>Latest result</span>
+          <span className="tabular-nums">{formatResultTickerDate(match.utcDate)}</span>
+        </div>
+        <div className="mt-1 rounded-md border border-lime-900/80 bg-black px-3 py-2 [background-image:radial-gradient(rgba(132,204,22,0.16)_1px,transparent_1px)] [background-size:4px_4px]">
+          <div className="flex items-center justify-center gap-2 font-mono text-lg font-bold tracking-[0.16em] text-lime-300 [text-shadow:0_0_12px_rgba(132,204,22,0.9)] sm:text-2xl">
+            <span>{match.homeTeam.tla}</span>
+            <span className="rounded border border-lime-500/40 bg-lime-400/10 px-2 tabular-nums">
+              {formatMatchScore(match.homeGoals, match.awayGoals)}
+            </span>
+            <span>{match.awayTeam.tla}</span>
+          </div>
+        </div>
+        {scorers ? (
+          <p className="mt-1.5 truncate text-center text-[11px] font-medium text-teal-200 sm:text-xs">{scorers}</p>
+        ) : null}
+      </div>
     </section>
   );
 }
@@ -477,6 +556,8 @@ export default function WorldCupFantasy({ onClose }: Props) {
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (
             <div className="space-y-6">
+              <LatestResultsTicker matches={data.recentScoringMatches} standings={data.standings} />
+
               <section className="rounded-lg border border-amber-800/60 bg-amber-950/20 px-4 py-3">
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-amber-200">Daily update</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
