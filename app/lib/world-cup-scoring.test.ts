@@ -125,6 +125,21 @@ describe('computeStandings', () => {
     });
   });
 
+  it('tracks rank movement since the previous finished result', () => {
+    const { standings } = computeStandings(players, matches);
+
+    expect(
+      standings.map((row) => ({
+        id: row.id,
+        previousRank: row.previousRank,
+        rankChange: row.rankChange,
+      }))
+    ).toEqual([
+      { id: 'higher-gd', previousRank: 2, rankChange: 1 },
+      { id: 'saka-potatoes', previousRank: 1, rankChange: -1 },
+    ]);
+  });
+
   it('orders each player team table by points and goal difference', () => {
     const { standings } = computeStandings(teamTablePlayers, teamTableMatches);
     const chris = standings.find((row) => row.id === 'saka-potatoes');
