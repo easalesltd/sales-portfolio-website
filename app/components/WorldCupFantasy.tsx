@@ -172,7 +172,7 @@ function LatestResultsTicker({
 
     const interval = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % resultCount);
-    }, 4500);
+    }, 3600);
 
     return () => window.clearInterval(interval);
   }, [resultCount]);
