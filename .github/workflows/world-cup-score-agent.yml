@@ -4,9 +4,10 @@ on:
   schedule:
     # Known sweepstake kick-off slots are 01:00, 02:00, 04:00, 16:00, 17:00,
     # 19:00, 20:00, 22:00, and 23:00 UTC. The due script skips runs
-    # until 130 minutes after kick-off, then repeated checks catch late
-    # final whistles, slow public score sources, and delayed GitHub schedules.
-    - cron: '10,25,40,55 0-7,18-23 * * *'
+    # until 130 minutes after kick-off, then repeated checks cover the full
+    # 8-hour lookback for late final whistles, slow public score sources,
+    # and delayed GitHub schedules.
+    - cron: '10,25,40,55 0-14,18-23 * * *'
   workflow_dispatch:
     inputs:
       force_agent:
