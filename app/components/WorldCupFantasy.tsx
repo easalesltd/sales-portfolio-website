@@ -559,7 +559,7 @@ export default function WorldCupFantasy({ onClose }: Props) {
               <LatestResultsTicker matches={data.recentScoringMatches} standings={data.standings} />
 
               <section className="rounded-lg border border-amber-800/60 bg-amber-950/20 px-4 py-3">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-amber-200">Daily update</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-amber-200">Daily roast</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
               </section>
 
