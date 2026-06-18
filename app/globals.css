@@ -41,12 +41,37 @@
   animation: arcade-menu-pulse 1.05s ease-in-out infinite;
 }
 
+@keyframes world-cup-scoreboard-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.world-cup-scoreboard-marquee {
+  animation: world-cup-scoreboard-scroll 34s linear infinite;
+}
+
+.world-cup-scoreboard-marquee:hover {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-arcade-menu-pulse {
     animation: none;
     box-shadow:
       0 0 0 1px rgba(45, 212, 191, 0.55),
       0 0 16px rgba(34, 211, 238, 0.22);
+  }
+
+  .world-cup-scoreboard-marquee {
+    animation: none;
+  }
+
+  .world-cup-scoreboard-marquee [aria-hidden='true'] {
+    display: none;
   }
 }
 

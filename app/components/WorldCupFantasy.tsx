@@ -183,27 +183,27 @@ function LatestResultsTicker({
 
   if (resultCount === 0) return null;
 
-  const { match, byPlayer } = matches[activeIndex];
-  const scorers = standings
-    .filter((player) => byPlayer[player.id] != null)
-    .map((player) => {
-      const points = byPlayer[player.id]!;
-      return `${playerDisplayLabel(player)} ${points >= 0 ? '+' : ''}${points}`;
-    })
-    .join(' · ');
+  const renderResultCard = (entry: MatchPointsEntry, index: number) => {
+    const { match, byPlayer } = entry;
+    const scorers = standings
+      .filter((player) => byPlayer[player.id] != null)
+      .map((player) => {
+        const points = byPlayer[player.id]!;
+        return `${playerDisplayLabel(player)} ${points >= 0 ? '+' : ''}${points}`;
+      })
+      .join(' · ');
 
-  return (
-    <section className="flex justify-center" aria-label="Latest sweepstake results ticker">
-      <div
-        className="w-fit max-w-full rounded-xl border border-lime-400/40 bg-neutral-950 px-3 py-2 shadow-[0_0_22px_rgba(132,204,22,0.18)] sm:px-4"
-        aria-live="polite"
+    return (
+      <article
+        key={`${match.id}-${index}`}
+        className="min-w-[17rem] shrink-0 rounded-lg border border-lime-500/35 bg-neutral-950 px-3 py-2 shadow-[0_0_18px_rgba(132,204,22,0.14)] md:min-w-[21rem] xl:min-w-[24rem]"
       >
-        <div className="flex items-center justify-between gap-3 text-[9px] font-semibold uppercase tracking-[0.28em] text-lime-500/80">
+        <div className="flex items-center justify-between gap-3 text-[9px] font-semibold uppercase tracking-[0.26em] text-lime-500/80">
           <span>Latest result</span>
           <span className="tabular-nums">{formatResultTickerDate(match.utcDate)}</span>
         </div>
         <div className="mt-1 rounded-md border border-lime-900/80 bg-black px-3 py-2 [background-image:radial-gradient(rgba(132,204,22,0.16)_1px,transparent_1px)] [background-size:4px_4px]">
-          <div className="flex items-center justify-center gap-2 font-mono text-lg font-bold tracking-[0.16em] text-lime-300 [text-shadow:0_0_12px_rgba(132,204,22,0.9)] sm:text-2xl">
+          <div className="flex items-center justify-center gap-2 font-mono text-lg font-bold tracking-[0.16em] text-lime-300 [text-shadow:0_0_12px_rgba(132,204,22,0.9)] sm:text-xl xl:text-2xl">
             <span>{match.homeTeam.tla}</span>
             <span className="rounded border border-lime-500/40 bg-lime-400/10 px-2 tabular-nums">
               {formatMatchScore(match.homeGoals, match.awayGoals)}
@@ -214,6 +214,39 @@ function LatestResultsTicker({
         {scorers ? (
           <p className="mt-1.5 truncate text-center text-[11px] font-medium text-teal-200 sm:text-xs">{scorers}</p>
         ) : null}
+      </article>
+    );
+  };
+
+  return (
+    <section className="w-full" aria-label="Latest sweepstake results ticker">
+      <div className="flex justify-center sm:hidden" aria-live="polite">
+        {renderResultCard(matches[activeIndex], activeIndex)}
+      </div>
+
+      <div className="hidden overflow-hidden rounded-xl border border-lime-400/40 bg-neutral-950 px-3 py-3 shadow-[0_0_26px_rgba(132,204,22,0.18)] motion-reduce:overflow-x-auto sm:block lg:px-4">
+        <div className="mb-2 flex items-center justify-between gap-3 px-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-lime-500/80">
+          <span>Latest results</span>
+          <span className="hidden text-lime-300/70 md:inline">Continuous feed</span>
+        </div>
+        <div className="relative overflow-hidden rounded-lg border border-lime-900/60 bg-black/75 py-2 motion-reduce:overflow-x-auto">
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 bg-gradient-to-r from-black to-transparent motion-reduce:hidden"
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 bg-gradient-to-l from-black to-transparent motion-reduce:hidden"
+            aria-hidden
+          />
+          <div className="world-cup-scoreboard-marquee flex w-max px-3">
+            <div className="flex shrink-0 gap-3 pr-3">
+              {matches.map((entry, index) => renderResultCard(entry, index))}
+            </div>
+            <div className="flex shrink-0 gap-3 pr-3" aria-hidden="true">
+              {matches.map((entry, index) => renderResultCard(entry, index + resultCount))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -531,7 +564,7 @@ export default function WorldCupFantasy({ onClose }: Props) {
       aria-modal="true"
       aria-labelledby="world-cup-fantasy-title"
     >
-      <div className="flex max-h-[96dvh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl">
+      <div className="flex max-h-[96dvh] w-full max-w-7xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl">
         <header className="shrink-0 border-b border-neutral-700 px-4 py-4 sm:px-5">
           <div className="flex items-start justify-between gap-3">
             <h2 id="world-cup-fantasy-title" className="min-w-0 text-lg font-bold leading-tight text-white sm:text-xl">
