@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Colombia turned Uzbekistan over 3-1, giving Chris four useful points and Ash a minus-one sandwich for conceding three, before Czechia scored early, froze like a pub side defending a fruit machine, and let South Africa nick a 1-1 draw from the spot. Ash got the Czechia point back, which is less a comeback than finding your own wallet, and still props up the table on seven. Jon takes a South Africa point, Nest stays top, and Dave remains mostly decorative.';
+  'Three games, three moods on Thursday: Colombia mugged Uzbekistan 3-1 so Chris banked four and Ash ate a concession penalty, Czechia and South Africa shared a tepid 1-1 that gave Jon and Ash a point apiece, then Switzerland waited for Bosnia to go down to ten men before running in four — Nest cashes four, Chris’s Bosnia pick takes minus two for the red card and shipping four. Ash remains nailed to the foot of the table on seven like a pub quiz trophy nobody wants, while Nest pulls clear on seventeen.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -314,12 +314,6 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     awayTeam: { name: 'South Africa', tla: 'RSA' },
   },
   {
-    id: '2026-06-18-sui-bih',
-    utcDate: '2026-06-18T19:00:00Z',
-    homeTeam: { name: 'Switzerland', tla: 'SUI' },
-    awayTeam: { name: 'Bosnia-Herzegovina', tla: 'BIH' },
-  },
-  {
     id: '2026-06-18-can-qat',
     utcDate: '2026-06-18T22:00:00Z',
     homeTeam: { name: 'Canada', tla: 'CAN' },
@@ -330,6 +324,30 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-19T01:00:00Z',
     homeTeam: { name: 'Mexico', tla: 'MEX' },
     awayTeam: { name: 'South Korea', tla: 'KOR' },
+  },
+  {
+    id: '2026-06-19-usa-aus',
+    utcDate: '2026-06-19T19:00:00Z',
+    homeTeam: { name: 'USA', tla: 'USA' },
+    awayTeam: { name: 'Australia', tla: 'AUS' },
+  },
+  {
+    id: '2026-06-19-sco-mar',
+    utcDate: '2026-06-19T22:00:00Z',
+    homeTeam: { name: 'Scotland', tla: 'SCO' },
+    awayTeam: { name: 'Morocco', tla: 'MAR' },
+  },
+  {
+    id: '2026-06-19-bra-hai',
+    utcDate: '2026-06-20T01:00:00Z',
+    homeTeam: { name: 'Brazil', tla: 'BRA' },
+    awayTeam: { name: 'Haiti', tla: 'HAI' },
+  },
+  {
+    id: '2026-06-19-tur-par',
+    utcDate: '2026-06-20T03:00:00Z',
+    homeTeam: { name: 'Turkey', tla: 'TUR' },
+    awayTeam: { name: 'Paraguay', tla: 'PAR' },
   },
 ];
 
@@ -604,5 +622,16 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-18-sui-bih',
+    utcDate: '2026-06-18T19:00:00Z',
+    homeTeam: { name: 'Switzerland', tla: 'SUI' },
+    awayTeam: { name: 'Bosnia-Herzegovina', tla: 'BIH' },
+    homeGoals: 4,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
   },
 ];
