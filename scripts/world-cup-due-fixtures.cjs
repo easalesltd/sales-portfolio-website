@@ -6,9 +6,10 @@ const path = require('node:path');
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
 
-// A 90-minute match plus half-time and usual stoppage is roughly 115 minutes.
-// The extra buffer lets public result sources settle before the agent checks.
-const DEFAULT_UPDATE_DELAY_MINUTES = 130;
+// A 90-minute match plus half-time usually lands in the 110-120 minute window.
+// Start at the early edge so the first automated check matches normal full-time estimates;
+// later scheduled runs keep retrying if stoppage time or public score sources lag.
+const DEFAULT_UPDATE_DELAY_MINUTES = 110;
 const DEFAULT_LOOKBACK_MINUTES = 8 * 60;
 
 const updateDelayMinutes = Number.parseInt(
