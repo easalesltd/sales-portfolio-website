@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Ghana nicked it 1-0 against Panama so late the fourth official probably wanted overtime, then Colombia beat Uzbekistan 3-1 with a 99th-minute flourish. Ash got three points from Ghana, immediately watched Uzbekistan hand one back for conceding three, and still remains bottom; a brief climb from the cellar followed by stepping on a rake, very on-brand. Chris banks four Colombian points, Nest keeps the top seat warm, and Dave gets precisely nothing from Panama beyond another reason to sigh into a pint.';
+  'Colombia turned Uzbekistan over 3-1, giving Chris four useful points and Ash a minus-one sandwich for conceding three, before Czechia scored early, froze like a pub side defending a fruit machine, and let South Africa nick a 1-1 draw from the spot. Ash got the Czechia point back, which is less a comeback than finding your own wallet, and still props up the table on seven. Jon takes a South Africa point, Nest stays top, and Dave remains mostly decorative.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -591,6 +591,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Colombia', tla: 'COL' },
     homeGoals: 1,
     awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-18-cze-rsa',
+    utcDate: '2026-06-18T16:00:00Z',
+    homeTeam: { name: 'Czechia', tla: 'CZE' },
+    awayTeam: { name: 'South Africa', tla: 'RSA' },
+    homeGoals: 1,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
