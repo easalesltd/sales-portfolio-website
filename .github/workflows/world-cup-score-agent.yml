@@ -63,14 +63,36 @@ jobs:
           node scripts/world-cup-due-fixtures.cjs
 
       - name: Skip when no fixture should be final yet
-        if: steps.due.outputs.due != 'true'
+        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced != 'true'
         run: echo "No score update is due."
 
       - name: Explain missing Cursor API key
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY == ''
+        if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && env.CURSOR_API_KEY == ''
         run: |
           echo "::warning::CURSOR_API_KEY is not configured, so the scheduled score agent cannot run."
           echo "Add a repository Actions secret named CURSOR_API_KEY to enable automatic score updates."
+
+      - name: Install Cursor CLI for forced smoke test
+        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          curl https://cursor.com/install -fsS | bash
+          echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
+
+      - name: Run Cursor credential smoke test
+        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          agent -p --force "Credential smoke test only. Reply with one short sentence confirming the Cursor agent can run. Do not inspect score websites and do not modify files." --output-format text
+
+      - name: Ensure forced smoke test did not change files
+        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          if ! git diff --quiet; then
+            echo "::error::Forced smoke test changed files unexpectedly."
+            git diff --name-only
+            exit 1
+          fi
+
+          echo "Cursor credential smoke test passed without file changes."
 
       - name: Install dependencies
         if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''

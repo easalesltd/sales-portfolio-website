@@ -84,10 +84,11 @@ const dueFixtures = fixtures.filter((fixture) => {
   return dueAt <= now && now.getTime() - dueAt.getTime() <= lookbackMs;
 });
 
-const due = forceAgent || dueFixtures.length > 0;
+const hasDueFixtures = dueFixtures.length > 0;
 const fixtureList = dueFixtures.map(formatFixture).join('\n');
 
-setOutput('due', due ? 'true' : 'false');
+setOutput('due', hasDueFixtures ? 'true' : 'false');
+setOutput('forced', forceAgent ? 'true' : 'false');
 setOutput('fixtures', fixtureList);
 setOutput('update_delay_minutes', `${updateDelayMinutes}`);
 setOutput('lookback_minutes', `${lookbackMinutes}`);
