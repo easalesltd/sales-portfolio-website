@@ -308,11 +308,31 @@ function PlayerIdentity({
   return <span className="font-medium text-white">{player.name}</span>;
 }
 
+function RankMovementIndicator({ change }: { change: number }) {
+  if (change === 0) return null;
+
+  const movedUp = change > 0;
+  const places = Math.abs(change);
+  const label = `${movedUp ? 'Moved up' : 'Moved down'} ${places} ${places === 1 ? 'place' : 'places'}`;
+
+  return (
+    <span
+      aria-label={label}
+      title={label}
+      className={`ml-1 text-[10px] leading-none ${
+        movedUp ? 'text-emerald-400' : 'text-red-400'
+      }`}
+    >
+      {movedUp ? '▲' : '▼'}
+    </span>
+  );
+}
+
 function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
-        <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+        <div className="grid grid-cols-[2.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
           <span>#</span>
           <span>Club</span>
           <span className="text-right">Form</span>
@@ -324,11 +344,14 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
           {standings.map((row, index) => (
             <li
               key={row.id}
-              className={`grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
+              className={`grid grid-cols-[2.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
                 index === 0 ? 'bg-teal-950/20' : 'bg-neutral-950/40'
               }`}
             >
-              <span className="text-[11px] tabular-nums text-neutral-400">{index + 1}</span>
+              <span className="flex items-center text-[11px] tabular-nums text-neutral-400">
+                {index + 1}
+                <RankMovementIndicator change={row.rankChange} />
+              </span>
               <span className="truncate text-xs font-medium text-white">
                 {playerDisplayLabel(row)}
               </span>
@@ -369,7 +392,12 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
           <tbody className="divide-y divide-neutral-800 text-neutral-100">
             {standings.map((row, index) => (
               <tr key={row.id} className={index === 0 ? 'bg-teal-950/20' : undefined}>
-                <td className="px-3 py-2 text-neutral-400">{index + 1}</td>
+                <td className="px-3 py-2 text-neutral-400">
+                  <span className="inline-flex min-w-8 items-center tabular-nums">
+                    {index + 1}
+                    <RankMovementIndicator change={row.rankChange} />
+                  </span>
+                </td>
                 <td className="px-3 py-2 font-medium">
                   <PlayerIdentity player={row} />
                 </td>

@@ -69,6 +69,8 @@ export type PlayerStanding = {
   redCards: number;
   redCardPoints: number;
   playedMatches: number;
+  previousRank: number | null;
+  rankChange: number;
 };
 
 export type MatchPointsEntry = {
@@ -102,6 +104,10 @@ function compareByStandingsOrder(
     b.bonusPoints - a.bonusPoints ||
     a.name.localeCompare(b.name)
   );
+}
+
+function isScoringMatch(match: WorldCupMatchResult): boolean {
+  return match.status === 'FINISHED' && match.homeGoals != null && match.awayGoals != null;
 }
 
 export function scoreTeamMatch(
@@ -272,14 +278,10 @@ export function resolveManagerImageForStandings(
   return player.managerImage;
 }
 
-export function computeStandings(
+function buildStandings(
   players: readonly WorldCupFantasyPlayer[],
-  matches: WorldCupMatchResult[]
-): { standings: PlayerStanding[]; recentScoringMatches: MatchPointsEntry[] } {
-  const finished = matches.filter(
-    (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
-  );
-
+  finished: WorldCupMatchResult[]
+): PlayerStanding[] {
   const standings: PlayerStanding[] = players.map((player) => ({
     id: player.id,
     name: player.name,
@@ -318,6 +320,8 @@ export function computeStandings(
     redCards: 0,
     redCardPoints: 0,
     playedMatches: 0,
+    previousRank: null,
+    rankChange: 0,
   }));
 
   const byId = new Map(standings.map((row) => [row.id, row]));
@@ -375,8 +379,41 @@ export function computeStandings(
 
   standings.sort(compareByStandingsOrder);
 
+  return standings;
+}
+
+function ranksBeforeLatestMatch(
+  players: readonly WorldCupFantasyPlayer[],
+  finished: WorldCupMatchResult[]
+): Map<string, number> {
+  if (finished.length === 0) return new Map();
+
+  const latestMatch = finished.reduce((latest, match) =>
+    match.utcDate >= latest.utcDate ? match : latest
+  );
+  const standingsBeforeLatest = buildStandings(
+    players,
+    finished.filter((match) => match.id !== latestMatch.id)
+  );
+
+  return new Map(standingsBeforeLatest.map((row, index) => [row.id, index + 1]));
+}
+
+export function computeStandings(
+  players: readonly WorldCupFantasyPlayer[],
+  matches: WorldCupMatchResult[]
+): { standings: PlayerStanding[]; recentScoringMatches: MatchPointsEntry[] } {
+  const finished = matches.filter(isScoringMatch);
+  const standings = buildStandings(players, finished);
+  const previousRanks = ranksBeforeLatestMatch(players, finished);
+
   const playerById = new Map(players.map((player) => [player.id, player]));
   standings.forEach((row, index) => {
+    const currentRank = index + 1;
+    const previousRank = previousRanks.get(row.id) ?? null;
+    row.previousRank = previousRank;
+    row.rankChange = previousRank == null ? 0 : previousRank - currentRank;
+
     const player = playerById.get(row.id);
     if (player) {
       row.managerImage = resolveManagerImageForStandings(player, index, standings.length);
