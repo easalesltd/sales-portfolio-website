@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Argentina flattened Algeria 3-0, Austria dealt with Jordan 3-1, Portugal and Congo DR made Dave two draw points in a 1-1 spreadsheet cuddle, then England beat Croatia 4-2 to send Nest top. Scott gets nothing from Croatia conceding four; if only he had Spider-Man in goal, I could have given him a bonus point. Ash remains bottom on four, currently less a title charge and more a damp beer mat with fixtures printed on it.';
+  'Ghana nicked it 1-0 against Panama so late the fourth official probably wanted overtime, then Colombia beat Uzbekistan 3-1 with a 99th-minute flourish. Ash got three points from Ghana, immediately watched Uzbekistan hand one back for conceding three, and still remains bottom; a brief climb from the cellar followed by stepping on a rake, very on-brand. Chris banks four Colombian points, Nest keeps the top seat warm, and Dave gets precisely nothing from Panama beyond another reason to sigh into a pint.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -306,6 +306,30 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-18T02:00:00Z',
     homeTeam: { name: 'Uzbekistan', tla: 'UZB' },
     awayTeam: { name: 'Colombia', tla: 'COL' },
+  },
+  {
+    id: '2026-06-18-cze-rsa',
+    utcDate: '2026-06-18T16:00:00Z',
+    homeTeam: { name: 'Czechia', tla: 'CZE' },
+    awayTeam: { name: 'South Africa', tla: 'RSA' },
+  },
+  {
+    id: '2026-06-18-sui-bih',
+    utcDate: '2026-06-18T19:00:00Z',
+    homeTeam: { name: 'Switzerland', tla: 'SUI' },
+    awayTeam: { name: 'Bosnia-Herzegovina', tla: 'BIH' },
+  },
+  {
+    id: '2026-06-18-can-qat',
+    utcDate: '2026-06-18T22:00:00Z',
+    homeTeam: { name: 'Canada', tla: 'CAN' },
+    awayTeam: { name: 'Qatar', tla: 'QAT' },
+  },
+  {
+    id: '2026-06-19-mex-kor',
+    utcDate: '2026-06-19T01:00:00Z',
+    homeTeam: { name: 'Mexico', tla: 'MEX' },
+    awayTeam: { name: 'South Korea', tla: 'KOR' },
   },
 ];
 
@@ -545,6 +569,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Croatia', tla: 'CRO' },
     homeGoals: 4,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-17-gha-pan',
+    utcDate: '2026-06-17T23:00:00Z',
+    homeTeam: { name: 'Ghana', tla: 'GHA' },
+    awayTeam: { name: 'Panama', tla: 'PAN' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-18-uzb-col',
+    utcDate: '2026-06-18T02:00:00Z',
+    homeTeam: { name: 'Uzbekistan', tla: 'UZB' },
+    awayTeam: { name: 'Colombia', tla: 'COL' },
+    homeGoals: 1,
+    awayGoals: 3,
     homeRedCards: 0,
     awayRedCards: 0,
   },
