@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Colombia put three past Uzbekistan in the small hours, then Czechia edged South Africa 1-0 in Atlanta with Krejčí doing the damage — two Group-stage slogs on the same GMT day, neither one a classic. Ash finally climbed off the floor thanks to a Czech win, though Uzbekistan\'s leaky defence still cost him a point; Dave, meanwhile, has slid into last with South Africa blanking again and nothing coming back from the afternoon. Jon\'s Bafana remain toothless, Chris pocketed Colombian bonus points earlier, and Nest is still sat pretty at the top like he owns the pub.';
+  'Ghana nicked it 1-0 against Panama so late the fourth official probably wanted overtime, then Colombia beat Uzbekistan 3-1 with a 99th-minute flourish. Ash got three points from Ghana, immediately watched Uzbekistan hand one back for conceding three, and still remains bottom; a brief climb from the cellar followed by stepping on a rake, very on-brand. Chris banks four Colombian points, Nest keeps the top seat warm, and Dave gets precisely nothing from Panama beyond another reason to sigh into a pint.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -591,17 +591,6 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Colombia', tla: 'COL' },
     homeGoals: 1,
     awayGoals: 3,
-    homeRedCards: 0,
-    awayRedCards: 0,
-  },
-  {
-    /** Verified final result. */
-    id: '2026-06-18-cze-rsa',
-    utcDate: '2026-06-18T16:00:00Z',
-    homeTeam: { name: 'Czechia', tla: 'CZE' },
-    awayTeam: { name: 'South Africa', tla: 'RSA' },
-    homeGoals: 1,
-    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
