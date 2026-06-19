@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Four Thursday fixtures, four different flavours of misery: Colombia mugged Uzbekistan 3-1 so Chris banked four and Ash ate a concession penalty, Czechia and South Africa shared a tepid 1-1 that gave Jon and Ash a point apiece, Switzerland waited for Bosnia to go down to ten men before running in four, then Canada pasted nine-man Qatar 6-0. Nest is out front on eighteen, Chris and Scott are bickering over eleven apiece, Dave has slipped to eight, and Ash remains nailed to the foot on seven like a sticky pub carpet.';
+  'Early doors on Friday and Mexico clipped South Korea 1-0 after Kim Seung-gyu bottled a routine header — Romo punished the keeper, Chris pocketed three, and Dave\'s Korea came home with nothing. Nest remains out in front on eighteen, Chris has climbed to fourteen, Scott sits on eleven, Jon ten, Dave eight, and Ash is still propping up the table on seven like the dregs at closing time.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -644,5 +644,16 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 2,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-19-mex-kor',
+    utcDate: '2026-06-19T01:00:00Z',
+    homeTeam: { name: 'Mexico', tla: 'MEX' },
+    awayTeam: { name: 'South Korea', tla: 'KOR' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
 ];
