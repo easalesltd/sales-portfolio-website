@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Friday finally coughed up the USA result: Mexico nicked South Korea 1-0, then the States saw off Australia 2-0 without needing fireworks or even a red-card circus. Nest is still top on eighteen, Chris has fourteen, Jon is back in the conversation on thirteen, Scott has eleven, Dave eight, and Ash remains marooned on seven — the kind of table position that makes the landlord turn the telly off out of mercy.';
+  'Friday finally coughed up the USA result: Mexico nicked South Korea 1-0, then the States saw off Australia 2-0 without needing fireworks or even a red-card circus. Nest is still top on eighteen, Chris has fourteen, Jon is back in the conversation on thirteen, Scott has eleven, Dave eight, and Ash remains marooned on seven — a campaign with all the forward momentum of a full-back trying to take a throw-in while being booed by his own bench.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
