@@ -114,6 +114,7 @@ jobs:
           - append only newly finished matches to WORLD_CUP_FANTASY_MANUAL_MATCHES
           - keep WORLD_CUP_FANTASY_FIXTURES rolling forward
           - refresh WORLD_CUP_FANTASY_DAILY_UPDATE when the table changes
+          - keep roasts varied; do not repeat the same premise, phrase, or pub-style gag
           - use final results only, including red-card and second-yellow dismissal tallies
           - after editing the ledger/roast, run npm run world-cup:standings and make every
             player total, leader/bottom claim, and tie claim in the roast and summary match
