@@ -104,6 +104,7 @@ jobs:
         env:
           DUE_FIXTURES: ${{ steps.due.outputs.fixtures }}
           UPDATE_DELAY_MINUTES: ${{ steps.due.outputs.update_delay_minutes }}
+          DUE_LEAD_MINUTES: ${{ steps.due.outputs.due_lead_minutes }}
         run: |
           cat > /tmp/world-cup-score-agent-prompt.txt <<PROMPT
           Update the World Cup sweepstake scores for this repository.
@@ -118,10 +119,13 @@ jobs:
             player total, leader/bottom claim, and tie claim in the roast and summary match
             that computed output exactly
 
-          This scheduled run was triggered because the following fixture(s) should be final now:
+          This scheduled run was triggered because the following fixture(s) should be final now,
+          or are inside the schedule lead window:
           ${DUE_FIXTURES}
 
           The expected result check delay is ${UPDATE_DELAY_MINUTES} minutes after kick-off.
+          The due checker may run up to ${DUE_LEAD_MINUTES} minutes before that delay to cover
+          delayed or skipped GitHub cron slots.
           If a listed fixture is not final in reliable public sources yet, leave it unchanged.
           Do not commit, push, create branches, create PRs, or post comments. The workflow handles git operations.
           PROMPT

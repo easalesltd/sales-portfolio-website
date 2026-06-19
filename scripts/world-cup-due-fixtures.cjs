@@ -10,10 +10,17 @@ const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
 // Start at the early edge so the first automated check matches normal full-time estimates;
 // later scheduled runs keep retrying if stoppage time or public score sources lag.
 const DEFAULT_UPDATE_DELAY_MINUTES = 110;
+// GitHub scheduled workflows can arrive late or skip individual cron slots. Let a run that
+// lands just before the nominal due time ask the agent to check reliable sources anyway.
+const DEFAULT_DUE_LEAD_MINUTES = 10;
 const DEFAULT_LOOKBACK_MINUTES = 8 * 60;
 
 const updateDelayMinutes = Number.parseInt(
   process.env.WORLD_CUP_UPDATE_DELAY_MINUTES || `${DEFAULT_UPDATE_DELAY_MINUTES}`,
+  10,
+);
+const dueLeadMinutes = Number.parseInt(
+  process.env.WORLD_CUP_DUE_LEAD_MINUTES || `${DEFAULT_DUE_LEAD_MINUTES}`,
   10,
 );
 const lookbackMinutes = Number.parseInt(
@@ -71,6 +78,7 @@ function setOutput(name, value) {
 const fixtures = parseFixtures();
 const recordedMatchIds = parseRecordedMatchIds();
 const updateDelayMs = updateDelayMinutes * 60 * 1000;
+const dueLeadMs = dueLeadMinutes * 60 * 1000;
 const lookbackMs = lookbackMinutes * 60 * 1000;
 
 const dueFixtures = fixtures.filter((fixture) => {
@@ -82,7 +90,10 @@ const dueFixtures = fixtures.filter((fixture) => {
   }
 
   const dueAt = new Date(kickoff.getTime() + updateDelayMs);
-  return dueAt <= now && now.getTime() - dueAt.getTime() <= lookbackMs;
+  return (
+    dueAt.getTime() <= now.getTime() + dueLeadMs &&
+    now.getTime() - dueAt.getTime() <= lookbackMs
+  );
 });
 
 const hasDueFixtures = dueFixtures.length > 0;
@@ -92,6 +103,7 @@ setOutput('due', hasDueFixtures ? 'true' : 'false');
 setOutput('forced', forceAgent ? 'true' : 'false');
 setOutput('fixtures', fixtureList);
 setOutput('update_delay_minutes', `${updateDelayMinutes}`);
+setOutput('due_lead_minutes', `${dueLeadMinutes}`);
 setOutput('lookback_minutes', `${lookbackMinutes}`);
 
 if (dueFixtures.length > 0) {
@@ -106,3 +118,4 @@ if (dueFixtures.length > 0) {
 }
 
 console.log(`Expected result check delay: ${updateDelayMinutes} minutes after kick-off.`);
+console.log(`Due check lead window: ${dueLeadMinutes} minutes.`);
