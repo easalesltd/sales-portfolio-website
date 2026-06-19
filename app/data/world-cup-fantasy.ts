@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Early doors on Friday and Mexico clipped South Korea 1-0 after Kim Seung-gyu bottled a routine header — Romo punished the keeper, Chris pocketed three, and Dave\'s Korea came home with nothing. Nest remains out in front on eighteen, Chris has climbed to fourteen, Scott sits on eleven, Jon ten, Dave eight, and Ash is still propping up the table on seven like the dregs at closing time.';
+  'Friday finally coughed up the USA result: Mexico nicked South Korea 1-0, then the States saw off Australia 2-0 without needing fireworks or even a red-card circus. Nest is still top on eighteen, Chris has fourteen, Jon is back in the conversation on thirteen, Scott has eleven, Dave eight, and Ash remains marooned on seven — the kind of table position that makes the landlord turn the telly off out of mercy.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -348,6 +348,30 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-20T03:00:00Z',
     homeTeam: { name: 'Turkey', tla: 'TUR' },
     awayTeam: { name: 'Paraguay', tla: 'PAR' },
+  },
+  {
+    id: '2026-06-20-ned-swe',
+    utcDate: '2026-06-20T17:00:00Z',
+    homeTeam: { name: 'Netherlands', tla: 'NED' },
+    awayTeam: { name: 'Sweden', tla: 'SWE' },
+  },
+  {
+    id: '2026-06-20-ger-civ',
+    utcDate: '2026-06-20T20:00:00Z',
+    homeTeam: { name: 'Germany', tla: 'GER' },
+    awayTeam: { name: 'Ivory Coast', tla: 'CIV' },
+  },
+  {
+    id: '2026-06-20-ecu-cuw',
+    utcDate: '2026-06-21T00:00:00Z',
+    homeTeam: { name: 'Ecuador', tla: 'ECU' },
+    awayTeam: { name: 'Curaçao', tla: 'CUW' },
+  },
+  {
+    id: '2026-06-20-tun-jpn',
+    utcDate: '2026-06-21T03:00:00Z',
+    homeTeam: { name: 'Tunisia', tla: 'TUN' },
+    awayTeam: { name: 'Japan', tla: 'JPN' },
   },
 ];
 
@@ -652,6 +676,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Mexico', tla: 'MEX' },
     awayTeam: { name: 'South Korea', tla: 'KOR' },
     homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-19-usa-aus',
+    utcDate: '2026-06-19T19:00:00Z',
+    homeTeam: { name: 'USA', tla: 'USA' },
+    awayTeam: { name: 'Australia', tla: 'AUS' },
+    homeGoals: 2,
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
