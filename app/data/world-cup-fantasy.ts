@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Three games, three moods on Thursday: Colombia mugged Uzbekistan 3-1 so Chris banked four and Ash ate a concession penalty, Czechia and South Africa shared a tepid 1-1 that gave Jon and Ash a point apiece, then Switzerland waited for Bosnia to go down to ten men before running in four — Nest cashes four, Chris’s Bosnia pick takes minus two for the red card and shipping four. Ash remains nailed to the foot of the table on seven like a pub quiz trophy nobody wants, while Nest pulls clear on seventeen.';
+  'Four Thursday fixtures, four different flavours of misery: Colombia mugged Uzbekistan 3-1 so Chris banked four and Ash ate a concession penalty, Czechia and South Africa shared a tepid 1-1 that gave Jon and Ash a point apiece, Switzerland waited for Bosnia to go down to ten men before running in four — Nest cashes, Chris’s Bosnia pick takes minus two for the red card and shipping four — then Canada pasted nine-man Qatar 6-0, with Scott’s hosts grabbing four and his lottery ticket bleeding three for two reds and six shipped. Ash remains nailed to the foot on seven like a sticky pub carpet, Nest leads on fifteen, and Scott has sneaked level with Chris on eleven.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -633,5 +633,16 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 1,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-18-can-qat',
+    utcDate: '2026-06-18T22:00:00Z',
+    homeTeam: { name: 'Canada', tla: 'CAN' },
+    awayTeam: { name: 'Qatar', tla: 'QAT' },
+    homeGoals: 6,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 2,
   },
 ];
