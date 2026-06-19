@@ -114,6 +114,9 @@ jobs:
           - keep WORLD_CUP_FANTASY_FIXTURES rolling forward
           - refresh WORLD_CUP_FANTASY_DAILY_UPDATE when the table changes
           - use final results only, including red-card and second-yellow dismissal tallies
+          - after editing the ledger/roast, run npm run world-cup:standings and make every
+            player total, leader/bottom claim, and tie claim in the roast and summary match
+            that computed output exactly
 
           This scheduled run was triggered because the following fixture(s) should be final now:
           ${DUE_FIXTURES}
@@ -124,6 +127,10 @@ jobs:
           PROMPT
 
           agent -p --force "$(cat /tmp/world-cup-score-agent-prompt.txt)" --output-format text
+
+      - name: Print computed standings
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        run: npm run world-cup:standings
 
       - name: Validate changed files
         if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
