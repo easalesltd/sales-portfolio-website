@@ -24,6 +24,7 @@
     "optimize:images:large": "node scripts/optimize-public-images.mjs --aggressive",
     "seo:indexnow": "node scripts/submit-indexnow.mjs",
     "world-cup:standings": "node scripts/world-cup-standings-summary.cjs",
+    "world-cup:validate": "node scripts/world-cup-validate-manual-matches.cjs",
     "english-pyramid:standings": "node scripts/english-pyramid-standings-summary.cjs",
     "english-pyramid:due": "node scripts/english-pyramid-due-fixtures.cjs"
   },

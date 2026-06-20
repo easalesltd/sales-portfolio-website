@@ -6,13 +6,12 @@ const path = require('node:path');
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
 
-// A 90-minute match plus half-time usually lands in the 110-120 minute window.
-// Start at the early edge so the first automated check matches normal full-time estimates;
-// later scheduled runs keep retrying if stoppage time or public score sources lag.
-const DEFAULT_UPDATE_DELAY_MINUTES = 110;
-// GitHub scheduled workflows can arrive late or skip individual cron slots. Let a run that
-// lands just before the nominal due time ask the agent to check reliable sources anyway.
-const DEFAULT_DUE_LEAD_MINUTES = 10;
+// Wait beyond the normal full-time estimate so stoppage-time goals and public
+// score feeds have settled before an agent is allowed to record a final score.
+const DEFAULT_UPDATE_DELAY_MINUTES = 130;
+// Do not run before the finality buffer. GitHub scheduled workflows can arrive
+// late and later cron slots will still catch the fixture inside the lookback.
+const DEFAULT_DUE_LEAD_MINUTES = 0;
 const DEFAULT_LOOKBACK_MINUTES = 8 * 60;
 
 const updateDelayMinutes = Number.parseInt(

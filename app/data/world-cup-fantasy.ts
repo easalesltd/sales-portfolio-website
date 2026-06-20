@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Saturday across the Americas looked like three different films spliced together: Brazil treated Haiti like a warm-up drill, the Netherlands dismantled Sweden with five goals and the subtlety of a sledgehammer, Paraguay stole Turkey\'s lunch money despite finishing with ten men, and Toronto turned into a VAR seminar where Germany spent half the night celebrating goals that never counted before Undav finally made one stick — a 1-1 draw that rescued a point for Dave and Jon alike. Jon leads on twenty, Nest has eighteen, Scott and Chris are both on thirteen, Ash sits on eleven, and Dave is still bottom on nine, clinging to the table like a man who knows the next disallowed goal is probably his.';
+  'Saturday across the Americas looked like the fixture computer had been left alone with a grudge: Brazil gave Haiti the kind of 3-0 lecture nobody asked for, the Netherlands put five through Sweden like they were auditioning defenders from a car boot sale, Paraguay nicked Turkey despite the mandatory red-card nonsense, and Germany spent so long having goals scratched off in Toronto that Undav had to come back in added time and write the ending himself. Jon still leads on nineteen, Nest is breathing down his neck on eighteen, Scott and Chris are both on thirteen, Ash and Dave sit level on eleven, and Dave is still sixth in the table because even a Germany winner arrives with a tiny admin fee.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -759,7 +759,7 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     utcDate: '2026-06-20T20:00:00Z',
     homeTeam: { name: 'Germany', tla: 'GER' },
     awayTeam: { name: 'Ivory Coast', tla: 'CIV' },
-    homeGoals: 1,
+    homeGoals: 2,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,

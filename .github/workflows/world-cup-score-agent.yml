@@ -2,11 +2,10 @@ name: World Cup Score Agent
 
 on:
   schedule:
-    # Normal full-time is usually 110-120 minutes after kick-off, so the due
-    # script starts at +110 and this schedule includes :50 and :00 checks for
-    # any top-of-hour fixture, then regular retries across the full 8-hour
-    # lookback for stoppage time, slow public score sources, and delayed
-    # GitHub schedules.
+    # The due script waits beyond the normal full-time estimate so stoppage-time
+    # goals and public score feeds have settled before an agent records results.
+    # Frequent cron slots keep retrying across the full 8-hour lookback for
+    # delayed GitHub schedules and slow public score sources.
     - cron: '0,10,20,30,40,50 * * * *'
   workflow_dispatch:
     inputs:
@@ -116,6 +115,9 @@ jobs:
           - refresh WORLD_CUP_FANTASY_DAILY_UPDATE when the table changes
           - keep roasts varied; do not repeat the same premise, phrase, or pub-style gag
           - use final results only, including red-card and second-yellow dismissal tallies
+          - only record a score when reliable sources explicitly show it as final/full-time;
+            if a source is still live, in progress, or does not clearly say full-time/final,
+            leave the fixture unchanged
           - after editing the ledger/roast, run npm run world-cup:standings and make every
             player total, leader/bottom claim, and tie claim in the roast and summary match
             that computed output exactly
@@ -136,6 +138,10 @@ jobs:
       - name: Print computed standings
         if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
         run: npm run world-cup:standings
+
+      - name: Validate manual World Cup results
+        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        run: npm run world-cup:validate
 
       - name: Validate changed files
         if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
