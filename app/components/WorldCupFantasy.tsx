@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
-import { formatTeamLabel } from '@/app/data/world-cup-fantasy';
+import { formatTeamLabel as formatWorldCupTeamLabel } from '@/app/data/world-cup-fantasy';
 import type { WorldCupFantasyResponse } from '@/app/api/world-cup-fantasy/route';
+import type { EnglishPyramidFantasyResponse } from '@/app/api/english-pyramid-fantasy/route';
 import type {
   FixtureManager,
   MatchPointsEntry,
@@ -12,10 +13,39 @@ import type {
   TeamStanding,
   UpcomingFixtureEntry,
 } from '@/app/lib/world-cup-scoring';
-import { getTeamMatchDisplay, matchInvolvesTeam } from '@/app/lib/world-cup-scoring';
+import { getTeamMatchDisplay as getWorldCupTeamMatchDisplay, matchInvolvesTeam as worldCupMatchInvolvesTeam } from '@/app/lib/world-cup-scoring';
+
+type SweepstakeResponse = WorldCupFantasyResponse | EnglishPyramidFantasyResponse;
+
+type MatchScoringHelpers = {
+  matchInvolvesTeam: (
+    match: MatchPointsEntry['match'],
+    teamCode: string
+  ) => boolean;
+  getTeamMatchDisplay: (
+    match: MatchPointsEntry['match'],
+    teamCode: string
+  ) => TeamMatchDisplay | null;
+};
 
 type Props = {
   onClose: () => void;
+  apiPath?: string;
+  title?: string;
+  formatTeamLabel?: (code: string) => string;
+  scoringRules?: readonly string[];
+  bonusColumnLabel?: string;
+  matchScoringHelpers?: MatchScoringHelpers;
+  noResultsMessage?: string;
+  resultsUpdateNote?: string;
+};
+
+const DEFAULT_API_PATH = '/api/world-cup-fantasy';
+const DEFAULT_TITLE = 'World Cup Sweepstake 2026';
+
+const DEFAULT_MATCH_SCORING_HELPERS: MatchScoringHelpers = {
+  matchInvolvesTeam: worldCupMatchInvolvesTeam,
+  getTeamMatchDisplay: getWorldCupTeamMatchDisplay,
 };
 
 const SCORING_RULES = [
@@ -26,12 +56,12 @@ const SCORING_RULES = [
   '−1 per red card',
 ] as const;
 
-function ScoringRulesBlock() {
+function ScoringRulesBlock({ rules = SCORING_RULES }: { rules?: readonly string[] }) {
   return (
     <div className="mt-3 rounded-lg border border-neutral-700/80 bg-neutral-950/50 px-3 py-2.5 sm:px-4 sm:py-3">
       <h4 className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500 sm:text-xs">Scoring</h4>
       <ul className="mt-2 space-y-1.5 text-xs text-neutral-300 sm:text-sm">
-        {SCORING_RULES.map((rule) => (
+        {rules.map((rule) => (
           <li key={rule} className="flex items-start gap-2 leading-snug">
             <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-teal-400" aria-hidden />
             {rule}
@@ -379,10 +409,14 @@ function formatTeamMatchDate(utcDate: string): string {
   });
 }
 
-function teamMatchDisplaysForTeam(teamCode: string, matches: MatchPointsEntry[]): TeamMatchDisplay[] {
+function teamMatchDisplaysForTeam(
+  teamCode: string,
+  matches: MatchPointsEntry[],
+  helpers: MatchScoringHelpers
+): TeamMatchDisplay[] {
   return matches
-    .filter(({ match }) => matchInvolvesTeam(match, teamCode))
-    .map(({ match }) => getTeamMatchDisplay(match, teamCode))
+    .filter(({ match }) => helpers.matchInvolvesTeam(match, teamCode))
+    .map(({ match }) => helpers.getTeamMatchDisplay(match, teamCode))
     .filter((entry): entry is TeamMatchDisplay => entry != null)
     .sort((a, b) => b.utcDate.localeCompare(a.utcDate));
 }
@@ -390,10 +424,14 @@ function teamMatchDisplaysForTeam(teamCode: string, matches: MatchPointsEntry[])
 function TeamResultsPanel({
   team,
   results,
+  formatTeamLabel,
 }: {
   team: TeamStanding;
   results: TeamMatchDisplay[];
+  formatTeamLabel?: (code: string) => string;
 }) {
+  const teamLabel = formatTeamLabel ? formatTeamLabel(team.code) : `${team.flag} ${team.name}`;
+
   return (
     <div
       className="rounded-md border border-teal-800/50 bg-neutral-950/80 px-3 py-2"
@@ -401,7 +439,7 @@ function TeamResultsPanel({
       aria-label={`${team.name} results`}
     >
       <p className="text-[10px] font-semibold uppercase tracking-wide text-teal-300/90">
-        {team.flag} {team.name} results
+        {teamLabel} results
       </p>
       {results.length === 0 ? (
         <p className="mt-2 text-xs text-neutral-400">No finished matches yet.</p>
@@ -426,6 +464,9 @@ function TeamResultsPanel({
               <span className="shrink-0 font-semibold tabular-nums text-teal-300">
                 {result.points >= 0 ? '+' : ''}
                 {result.points} pts
+                {result.pointsBreakdown ? (
+                  <span className="ml-1 font-normal text-neutral-500">({result.pointsBreakdown})</span>
+                ) : null}
               </span>
             </li>
           ))}
@@ -442,9 +483,15 @@ function prefersFinePointerHover(): boolean {
 function TeamMiniTable({
   teams,
   scoringMatches,
+  matchScoringHelpers,
+  formatTeamLabel,
+  bonusColumnLabel = 'Bonus',
 }: {
   teams: TeamStanding[];
   scoringMatches: MatchPointsEntry[];
+  matchScoringHelpers: MatchScoringHelpers;
+  formatTeamLabel?: (code: string) => string;
+  bonusColumnLabel?: string;
 }) {
   const [pinnedTeamCode, setPinnedTeamCode] = useState<string | null>(null);
   const [hoverTeamCode, setHoverTeamCode] = useState<string | null>(null);
@@ -456,7 +503,9 @@ function TeamMiniTable({
 
   const displayTeamCode = pinnedTeamCode ?? hoverTeamCode;
   const displayTeam = teams.find((team) => team.code === displayTeamCode);
-  const displayResults = displayTeam ? teamMatchDisplaysForTeam(displayTeam.code, scoringMatches) : [];
+  const displayResults = displayTeam
+    ? teamMatchDisplaysForTeam(displayTeam.code, scoringMatches, matchScoringHelpers)
+    : [];
 
   return (
     <div className="rounded-md border border-neutral-700/80">
@@ -478,7 +527,7 @@ function TeamMiniTable({
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">W</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">D</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">L</th>
-                <th className="px-2 py-1.5 font-medium text-right sm:px-3">Bonus</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">{bonusColumnLabel}</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">GD</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">Red</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pts</th>
@@ -507,7 +556,7 @@ function TeamMiniTable({
                         aria-controls="team-results-panel"
                         className="-mx-1 rounded px-1 text-left transition hover:text-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
                       >
-                        {team.flag} {team.name}
+                        {formatTeamLabel ? formatTeamLabel(team.code) : `${team.flag} ${team.name}`}
                       </button>
                     </td>
                     <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.playedMatches}</td>
@@ -586,10 +635,16 @@ function PlayerSquadCard({
   rank,
   player,
   scoringMatches,
+  formatTeamLabel,
+  matchScoringHelpers,
+  bonusColumnLabel,
 }: {
   rank: number;
   player: PlayerStanding;
   scoringMatches: MatchPointsEntry[];
+  formatTeamLabel: (code: string) => string;
+  matchScoringHelpers: MatchScoringHelpers;
+  bonusColumnLabel?: string;
 }) {
   const managerLabel = player.teamName ?? player.name;
   const [enlarged, setEnlarged] = useState<'manager' | 'crest' | null>(null);
@@ -653,7 +708,13 @@ function PlayerSquadCard({
         </div>
       </div>
       <div className="border-t border-neutral-800 px-3 pb-3 pt-2 sm:px-4">
-        <TeamMiniTable teams={player.teamBreakdown} scoringMatches={scoringMatches} />
+        <TeamMiniTable
+          teams={player.teamBreakdown}
+          scoringMatches={scoringMatches}
+          matchScoringHelpers={matchScoringHelpers}
+          formatTeamLabel={formatTeamLabel}
+          bonusColumnLabel={bonusColumnLabel}
+        />
       </div>
       {enlarged === 'manager' ? (
         <ImageLightbox
@@ -674,8 +735,18 @@ function PlayerSquadCard({
   );
 }
 
-export default function WorldCupFantasy({ onClose }: Props) {
-  const [data, setData] = useState<WorldCupFantasyResponse | null>(null);
+export default function WorldCupFantasy({
+  onClose,
+  apiPath = DEFAULT_API_PATH,
+  title = DEFAULT_TITLE,
+  formatTeamLabel = formatWorldCupTeamLabel,
+  scoringRules = SCORING_RULES,
+  bonusColumnLabel = 'Bonus',
+  matchScoringHelpers = DEFAULT_MATCH_SCORING_HELPERS,
+  noResultsMessage = 'No finished matches yet — check back once the World Cup starts.',
+  resultsUpdateNote = 'Scores are updated manually after full-time. Previous results stay recorded, so only newly finished matches need adding.',
+}: Props) {
+  const [data, setData] = useState<SweepstakeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -684,16 +755,16 @@ export default function WorldCupFantasy({ onClose }: Props) {
     setError(null);
 
     try {
-      const response = await fetch('/api/world-cup-fantasy', { cache: 'no-store' });
+      const response = await fetch(apiPath, { cache: 'no-store' });
       if (!response.ok) throw new Error(`Request failed (${response.status})`);
-      const payload = (await response.json()) as WorldCupFantasyResponse;
+      const payload = (await response.json()) as SweepstakeResponse;
       setData(payload);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not load standings');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [apiPath]);
 
   useEffect(() => {
     void load();
@@ -710,7 +781,7 @@ export default function WorldCupFantasy({ onClose }: Props) {
         <header className="shrink-0 border-b border-neutral-700 px-4 py-4 sm:px-5">
           <div className="flex items-start justify-between gap-3">
             <h2 id="world-cup-fantasy-title" className="min-w-0 text-lg font-bold leading-tight text-white sm:text-xl">
-              World Cup Sweepstake 2026
+              {title}
             </h2>
             <div className="flex shrink-0 gap-2">
               <button
@@ -743,7 +814,7 @@ export default function WorldCupFantasy({ onClose }: Props) {
               <section>
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Overall standings</h3>
                 <OverallStandings standings={data.standings} />
-                <ScoringRulesBlock />
+                <ScoringRulesBlock rules={scoringRules} />
               </section>
 
               <section>
@@ -755,6 +826,9 @@ export default function WorldCupFantasy({ onClose }: Props) {
                       rank={index + 1}
                       player={player}
                       scoringMatches={data.allScoringMatches}
+                      formatTeamLabel={formatTeamLabel}
+                      matchScoringHelpers={matchScoringHelpers}
+                      bonusColumnLabel={bonusColumnLabel}
                     />
                   ))}
                 </div>
@@ -763,7 +837,7 @@ export default function WorldCupFantasy({ onClose }: Props) {
               <section>
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Recent results</h3>
                 {data.recentScoringMatches.length === 0 ? (
-                  <p className="text-sm text-neutral-400">No finished matches yet — check back once the World Cup starts.</p>
+                  <p className="text-sm text-neutral-400">{noResultsMessage}</p>
                 ) : (
                   <ul className="space-y-2">
                     {data.recentScoringMatches.map(({ match, byPlayer }) => {
@@ -798,10 +872,7 @@ export default function WorldCupFantasy({ onClose }: Props) {
               </section>
 
               <div className="rounded-lg border border-neutral-700 bg-neutral-950/50 px-4 py-3 text-xs text-neutral-400 sm:text-sm">
-                <p>
-                  Scores are updated manually after full-time. Previous results stay recorded, so only newly finished
-                  matches need adding.
-                </p>
+                <p>{resultsUpdateNote}</p>
                 <p className="mt-2">
                   Finished matches tracked: <span className="text-neutral-200">{data.finishedMatchCount}</span>
                 </p>

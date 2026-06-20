@@ -1,13 +1,16 @@
 import {
-  WORLD_CUP_FANTASY_SCORING,
-  WORLD_CUP_TEAM_BY_CODE,
+  ENGLISH_PYRAMID_FANTASY_SCORING,
+  ENGLISH_PYRAMID_TEAM_BY_CODE,
+  ENGLISH_PYRAMID_DIVISIONS,
   teamCodeMatches,
-  type WorldCupFantasyFixture,
-  type WorldCupFantasyManualMatch,
-  type WorldCupFantasyPlayer,
-} from '@/app/data/world-cup-fantasy';
+  type EnglishPyramidFixture,
+  type EnglishPyramidManualMatch,
+  type EnglishPyramidFantasyPlayer,
+} from '@/app/data/english-pyramid-fantasy';
 
-export type WorldCupMatchResult = {
+const DIVISION_LABEL_BY_ID = Object.fromEntries(ENGLISH_PYRAMID_DIVISIONS.map((d) => [d.id, d.label]));
+
+export type EnglishPyramidMatchResult = {
   id: string;
   utcDate: string;
   status: string;
@@ -23,6 +26,7 @@ export type WorldCupMatchResult = {
 export type TeamMatchScore = {
   points: number;
   bonus: number;
+  cleanSheetBonus: number;
   redCardPenalty: number;
   concededPenalty: number;
   total: number;
@@ -72,7 +76,7 @@ export type PlayerStanding = {
 };
 
 export type MatchPointsEntry = {
-  match: WorldCupMatchResult;
+  match: EnglishPyramidMatchResult;
   byPlayer: Record<string, number>;
 };
 
@@ -110,34 +114,37 @@ export function scoreTeamMatch(
   redCards = 0
 ): TeamMatchScore {
   let outcome: TeamMatchScore['outcome'] = 'loss';
-  let points: number = WORLD_CUP_FANTASY_SCORING.loss;
+  let points: number = ENGLISH_PYRAMID_FANTASY_SCORING.loss;
 
   if (teamGoals > opponentGoals) {
     outcome = 'win';
-    points = WORLD_CUP_FANTASY_SCORING.win;
+    points = ENGLISH_PYRAMID_FANTASY_SCORING.win;
   } else if (teamGoals === opponentGoals) {
     outcome = 'draw';
-    points = WORLD_CUP_FANTASY_SCORING.draw;
+    points = ENGLISH_PYRAMID_FANTASY_SCORING.draw;
   }
 
   const bonus =
-    teamGoals >= WORLD_CUP_FANTASY_SCORING.highScoringBonusMinGoals
-      ? WORLD_CUP_FANTASY_SCORING.highScoringBonus
+    teamGoals >= ENGLISH_PYRAMID_FANTASY_SCORING.highScoringBonusMinGoals
+      ? ENGLISH_PYRAMID_FANTASY_SCORING.highScoringBonus
       : 0;
 
-  const redCardPenalty = redCards * WORLD_CUP_FANTASY_SCORING.redCardPenalty;
+  const cleanSheetBonus = opponentGoals === 0 ? ENGLISH_PYRAMID_FANTASY_SCORING.cleanSheetBonus : 0;
+
+  const redCardPenalty = redCards * ENGLISH_PYRAMID_FANTASY_SCORING.redCardPenalty;
 
   const concededPenalty =
-    opponentGoals >= WORLD_CUP_FANTASY_SCORING.highConcededPenaltyMinGoals
-      ? WORLD_CUP_FANTASY_SCORING.highConcededPenalty
+    opponentGoals >= ENGLISH_PYRAMID_FANTASY_SCORING.highConcededPenaltyMinGoals
+      ? ENGLISH_PYRAMID_FANTASY_SCORING.highConcededPenalty
       : 0;
 
   return {
     points,
     bonus,
+    cleanSheetBonus,
     redCardPenalty,
     concededPenalty,
-    total: points + bonus + redCardPenalty + concededPenalty,
+    total: points + bonus + cleanSheetBonus + redCardPenalty + concededPenalty,
     outcome,
     goalsFor: teamGoals,
     goalsAgainst: opponentGoals,
@@ -145,7 +152,7 @@ export function scoreTeamMatch(
   };
 }
 
-export function manualMatchToResult(match: WorldCupFantasyManualMatch): WorldCupMatchResult {
+export function manualMatchToResult(match: EnglishPyramidManualMatch): EnglishPyramidMatchResult {
   return {
     id: match.id,
     utcDate: match.utcDate,
@@ -160,10 +167,10 @@ export function manualMatchToResult(match: WorldCupFantasyManualMatch): WorldCup
 }
 
 export function mergeWorldCupMatches(
-  apiMatches: WorldCupMatchResult[],
-  manualMatches: WorldCupMatchResult[]
-): WorldCupMatchResult[] {
-  const byId = new Map<string, WorldCupMatchResult>();
+  apiMatches: EnglishPyramidMatchResult[],
+  manualMatches: EnglishPyramidMatchResult[]
+): EnglishPyramidMatchResult[] {
+  const byId = new Map<string, EnglishPyramidMatchResult>();
   for (const match of apiMatches) byId.set(match.id, match);
   for (const match of manualMatches) byId.set(match.id, match);
   return [...byId.values()]
@@ -180,7 +187,7 @@ function utcDateKey(date: Date): string {
 }
 
 function managersForTeam(
-  players: readonly WorldCupFantasyPlayer[],
+  players: readonly EnglishPyramidFantasyPlayer[],
   teamCode: string
 ): FixtureManager[] {
   return players
@@ -193,30 +200,31 @@ function managersForTeam(
     }));
 }
 
-function fixtureTeamWithFlag(team: WorldCupFantasyFixture['homeTeam']): UpcomingFixtureEntry['homeTeam'] {
+function fixtureTeamWithMeta(team: EnglishPyramidFixture['homeTeam']): UpcomingFixtureEntry['homeTeam'] {
+  const meta = ENGLISH_PYRAMID_TEAM_BY_CODE[team.tla];
   return {
     ...team,
-    flag: WORLD_CUP_TEAM_BY_CODE[team.tla]?.flag ?? '',
+    flag: meta ? (DIVISION_LABEL_BY_ID[meta.divisionId]?.slice(0, 3).toUpperCase() ?? meta.divisionId) : '',
   };
 }
 
 function upcomingFixtureEntry(
-  fixture: WorldCupFantasyFixture,
-  players: readonly WorldCupFantasyPlayer[]
+  fixture: EnglishPyramidFixture,
+  players: readonly EnglishPyramidFantasyPlayer[]
 ): UpcomingFixtureEntry {
   return {
     id: fixture.id,
     utcDate: fixture.utcDate,
-    homeTeam: fixtureTeamWithFlag(fixture.homeTeam),
-    awayTeam: fixtureTeamWithFlag(fixture.awayTeam),
+    homeTeam: fixtureTeamWithMeta(fixture.homeTeam),
+    awayTeam: fixtureTeamWithMeta(fixture.awayTeam),
     homeManagers: managersForTeam(players, fixture.homeTeam.tla),
     awayManagers: managersForTeam(players, fixture.awayTeam.tla),
   };
 }
 
 export function getUpcomingFixtures(
-  fixtures: readonly WorldCupFantasyFixture[],
-  players: readonly WorldCupFantasyPlayer[],
+  fixtures: readonly EnglishPyramidFixture[],
+  players: readonly EnglishPyramidFantasyPlayer[],
   now = new Date()
 ): UpcomingFixtureEntry[] {
   const today = utcDateKey(now);
@@ -239,7 +247,7 @@ export function getUpcomingFixtures(
     .map((fixture) => upcomingFixtureEntry(fixture, players));
 }
 
-function resolvePlayerTeamInMatch(match: WorldCupMatchResult, playerTeamCode: string): {
+function resolvePlayerTeamInMatch(match: EnglishPyramidMatchResult, playerTeamCode: string): {
   isHome: boolean;
 } | null {
   if (teamCodeMatches(match.homeTeam.tla, playerTeamCode)) return { isHome: true };
@@ -247,7 +255,7 @@ function resolvePlayerTeamInMatch(match: WorldCupMatchResult, playerTeamCode: st
   return null;
 }
 
-export function teamPointsInMatch(match: WorldCupMatchResult, playerTeamCode: string): number {
+export function teamPointsInMatch(match: EnglishPyramidMatchResult, playerTeamCode: string): number {
   if (match.homeGoals == null || match.awayGoals == null) return 0;
   const side = resolvePlayerTeamInMatch(match, playerTeamCode);
   if (!side) return 0;
@@ -258,7 +266,7 @@ export function teamPointsInMatch(match: WorldCupMatchResult, playerTeamCode: st
   return scoreTeamMatch(goalsFor, goalsAgainst, redCards).total;
 }
 
-export function matchInvolvesTeam(match: WorldCupMatchResult, teamCode: string): boolean {
+export function matchInvolvesTeam(match: EnglishPyramidMatchResult, teamCode: string): boolean {
   return resolvePlayerTeamInMatch(match, teamCode) != null;
 }
 
@@ -271,13 +279,21 @@ export type TeamMatchDisplay = {
   goalsFor: number;
   goalsAgainst: number;
   points: number;
-  /** Optional breakdown, e.g. "3 + CS + 3+" for English pyramid. */
   pointsBreakdown?: string;
   redCards: number;
   isHome: boolean;
 };
 
-export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string): TeamMatchDisplay | null {
+function formatEnglishPyramidPointsBreakdown(scored: TeamMatchScore): string {
+  const parts = [`${scored.points}`];
+  if (scored.cleanSheetBonus > 0) parts.push('CS');
+  if (scored.bonus > 0) parts.push('3+');
+  if (scored.concededPenalty < 0) parts.push('−conc');
+  if (scored.redCardPenalty < 0) parts.push(`${scored.redCardPenalty} red`);
+  return parts.join(' · ');
+}
+
+export function getTeamMatchDisplay(match: EnglishPyramidMatchResult, teamCode: string): TeamMatchDisplay | null {
   if (match.homeGoals == null || match.awayGoals == null) return null;
 
   const side = resolvePlayerTeamInMatch(match, teamCode);
@@ -287,25 +303,27 @@ export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string
   const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
   const opponent = side.isHome ? match.awayTeam : match.homeTeam;
-  const opponentMeta = WORLD_CUP_TEAM_BY_CODE[opponent.tla];
+  const opponentMeta = ENGLISH_PYRAMID_TEAM_BY_CODE[opponent.tla];
+  const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards);
 
   return {
     matchId: match.id,
     utcDate: match.utcDate,
     opponentName: opponent.name,
     opponentTla: opponent.tla,
-    opponentFlag: opponentMeta?.flag ?? '',
+    opponentFlag: opponentMeta ? (DIVISION_LABEL_BY_ID[opponentMeta.divisionId] ?? '') : '',
     goalsFor,
     goalsAgainst,
-    points: scoreTeamMatch(goalsFor, goalsAgainst, redCards).total,
+    points: scored.total,
+    pointsBreakdown: formatEnglishPyramidPointsBreakdown(scored),
     redCards,
     isHome: side.isHome,
   };
 }
 
 export function buildScoringMatchEntries(
-  players: readonly WorldCupFantasyPlayer[],
-  matches: WorldCupMatchResult[]
+  players: readonly EnglishPyramidFantasyPlayer[],
+  matches: EnglishPyramidMatchResult[]
 ): MatchPointsEntry[] {
   const finished = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
@@ -325,7 +343,7 @@ export function buildScoringMatchEntries(
 }
 
 export function resolveManagerImageForStandings(
-  player: Pick<WorldCupFantasyPlayer, 'id' | 'managerImage'>,
+  player: Pick<EnglishPyramidFantasyPlayer, 'id' | 'managerImage'>,
   rankIndex: number,
   playerCount: number
 ): string {
@@ -339,8 +357,8 @@ export function resolveManagerImageForStandings(
 }
 
 export function computeStandings(
-  players: readonly WorldCupFantasyPlayer[],
-  matches: WorldCupMatchResult[]
+  players: readonly EnglishPyramidFantasyPlayer[],
+  matches: EnglishPyramidMatchResult[]
 ): {
   standings: PlayerStanding[];
   allScoringMatches: MatchPointsEntry[];
@@ -360,11 +378,11 @@ export function computeStandings(
     teamCount: player.teams.length,
     draftNote: player.draftNote,
     teamBreakdown: player.teams.map((code) => {
-      const meta = WORLD_CUP_TEAM_BY_CODE[code];
+      const meta = ENGLISH_PYRAMID_TEAM_BY_CODE[code];
       return {
         code,
         name: meta?.name ?? code,
-        flag: meta?.flag ?? '',
+        flag: meta?.divisionId ?? '',
         points: 0,
         goalsFor: 0,
         goalsAgainst: 0,
@@ -418,8 +436,8 @@ export function computeStandings(
         teamRow.goalsAgainst += scored.goalsAgainst;
         row.goalDifference = row.goalsFor - row.goalsAgainst;
         teamRow.goalDifference = teamRow.goalsFor - teamRow.goalsAgainst;
-        row.bonusPoints += scored.bonus;
-        teamRow.bonusPoints += scored.bonus;
+        row.bonusPoints += scored.bonus + scored.cleanSheetBonus;
+        teamRow.bonusPoints += scored.bonus + scored.cleanSheetBonus;
         row.redCards += scored.redCards;
         teamRow.redCards += scored.redCards;
         row.redCardPoints += scored.redCardPenalty;

@@ -1,0 +1,48 @@
+---
+description: English pyramid sweepstake — manual results and deploy workflow
+alwaysApply: true
+---
+
+# English pyramid sweepstake
+
+Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyramid-fantasy.ts`.
+
+## Structure
+
+- Seven managers, **seven clubs each** — one from each division (Premier League → National League South).
+- Draft used **pre-season outright winner betting odds** within each division (lower decimal = stronger favourite). Each manager gets **exactly one pick at each odds rank** (1st favourite through 7th) spread across the seven divisions.
+- Scoring (`ENGLISH_PYRAMID_FANTASY_SCORING`): **3** win, **1** draw, **+1** clean sheet, **+1** for 3+ goals scored, **−1** for 3+ conceded, **−1** per red card.
+
+## Fixtures and kick-off times
+
+- Maintain `ENGLISH_PYRAMID_FIXTURES` with upcoming games involving our **49 clubs** across all seven divisions.
+- Store `utcDate` as **UTC ISO-8601** (`2026-08-09T14:00:00Z`) converted from the **Europe/London** kick-off (handles GMT/BST).
+- Typical UK kick-offs: **12:30**, **15:00**, **17:30** (weekend), **19:45** / **20:00** (midweek). Full-time is usually ~115 minutes later.
+- Fixture ids: stable keys such as `2026-08-09-ars-che` (date + home code + away code).
+- When recording a result, roll fixtures forward — add the next known upcoming sweepstake fixture(s) so the UI keeps showing what is next.
+
+## Manual / agent score updates
+
+When asked to update English pyramid scores (or by the scheduled GitHub workflow):
+
+- Append finished **league** matches to `ENGLISH_PYRAMID_MANUAL_MATCHES` only — one ledger for all seven divisions.
+- Only look for **newly finished** games not already in the manual ledger. Do not re-verify recorded entries.
+- Use team codes from `ENGLISH_PYRAMID_TEAM_BY_CODE` / `getEnglishPyramidTeamSearchTerms()` (club name variants for matching).
+- Check reliable UK sources: BBC Sport, Sky Sports, official league/club sites, Flashscore.
+- Add only final results: home/away teams (`tla` code), final goals, red-card tallies (including second-yellow dismissals).
+- Do not hand-edit standings — `computeStandings()` in `app/lib/english-pyramid-scoring.ts` derives totals.
+- After any ledger change, run `npm run english-pyramid:standings` and use that output as the only source for totals and leader/bottom wording in `ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE`.
+- Refresh `ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE` when the table changes (British football roast tone; avoid repeating the same gag).
+- Push to **`origin/main`** unless the user asks for PR-only work.
+
+## Scheduled workflow
+
+`.github/workflows/english-pyramid-score-agent.yml` runs on UK matchday windows (Europe/London), not US World Cup hours:
+
+- **Weekends**: frequent checks ~14:10–22:50 London for 12:30 / 15:00 / 17:30 / evening KO batches.
+- **Midweek**: checks ~21:00–22:50 London for 19:45 / 20:00 KOs.
+- `scripts/english-pyramid-due-fixtures.cjs` decides when to trigger based on fixture kick-offs + 115 minute delay, with a matchday sweep fallback.
+
+## Example Slack / agent prompt
+
+> Sync English pyramid sweepstake scores. Find newly finished matches for our 49 clubs across PL → NL South, append to `ENGLISH_PYRAMID_MANUAL_MATCHES`, refresh fixtures and daily roast, merge to main, push origin/main.
