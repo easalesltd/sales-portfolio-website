@@ -592,11 +592,13 @@ function ImageLightbox({
   label,
   onClose,
   aspectClass = 'aspect-[3/4]',
+  imageClassName = '',
 }: {
   src: string;
   label: string;
   onClose: () => void;
   aspectClass?: string;
+  imageClassName?: string;
 }) {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -623,9 +625,15 @@ function ImageLightbox({
       </button>
       <div className="w-full max-w-xs sm:max-w-sm" onClick={(event) => event.stopPropagation()}>
         <div
-          className={`relative ${aspectClass} max-h-[80dvh] w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950`}
+          className={`relative ${aspectClass} max-h-[calc(100dvh-7rem)] w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950`}
         >
-          <Image src={src} alt={label} fill sizes="(max-width: 640px) 320px, 384px" className="object-contain" />
+          <Image
+            src={src}
+            alt={label}
+            fill
+            sizes="(max-width: 640px) 320px, 384px"
+            className={`object-contain ${imageClassName}`}
+          />
         </div>
         <p className="mt-3 text-center text-sm font-medium text-white">{label}</p>
       </div>
@@ -673,7 +681,7 @@ function PlayerSquadCard({
             <button
               type="button"
               onClick={() => setEnlarged('crest')}
-              className="flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 p-1.5 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 sm:p-2 md:size-36"
+              className="flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 p-2.5 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 sm:p-3 md:size-36"
               aria-label={`View enlarged ${managerLabel} club crest`}
             >
               {/* Native img keeps circular crests centred in the tile on desktop. */}
@@ -730,6 +738,7 @@ function PlayerSquadCard({
           src={player.clubCrest}
           label={`${managerLabel} crest`}
           aspectClass="aspect-square"
+          imageClassName="p-3 sm:p-4"
           onClose={() => setEnlarged(null)}
         />
       ) : null}
