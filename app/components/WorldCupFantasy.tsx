@@ -117,65 +117,43 @@ function FixtureTeamManagers({ managers }: { managers: FixtureManager[] }) {
   );
 }
 
-function FixtureTeamBlock({
-  team,
-  managers,
-  align = 'left',
-}: {
-  team: UpcomingFixtureEntry['homeTeam'];
-  managers: FixtureManager[];
-  align?: 'left' | 'right';
-}) {
-  return (
-    <div
-      className={`rounded-md border border-sky-900/50 bg-neutral-950/40 px-3 py-2 ${
-        align === 'right' ? 'md:text-right' : ''
-      }`}
-    >
-      <p className="text-sm font-medium leading-snug text-neutral-100">
-        {team.flag} {team.name}
-      </p>
-      <p className="mt-1 text-xs leading-snug text-neutral-300">
-        <FixtureTeamManagers managers={managers} />
-      </p>
-    </div>
-  );
-}
-
 function UpcomingFixtures({ fixtures }: { fixtures: UpcomingFixtureEntry[] }) {
   return (
-    <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-4 py-3">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
+    <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-3 py-2.5 sm:px-4 sm:py-3">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">Upcoming sweepstake fixtures</h3>
-        <span className="text-xs text-sky-300/80">Kickoff times shown in GMT</span>
+        <span className="text-[10px] text-sky-300/80 sm:text-xs">Kickoffs in GMT</span>
       </div>
 
       {fixtures.length === 0 ? (
         <p className="mt-2 text-sm text-neutral-300">No upcoming sweepstake fixtures scheduled yet.</p>
       ) : (
-        <ul className="mt-3 space-y-2">
+        <ul className="mt-2 divide-y divide-sky-900/40 rounded-md border border-sky-900/50 bg-neutral-950/40">
           {fixtures.map((fixture) => (
-            <li key={fixture.id} className="rounded-lg border border-sky-900/60 bg-neutral-950/40 px-3 py-2">
-              <div className="flex flex-wrap items-center justify-between gap-2 text-sm md:grid md:grid-cols-[minmax(8rem,0.85fr)_minmax(0,2.4fr)] md:gap-4">
-                <span className="font-semibold tabular-nums text-sky-200">{formatFixtureKickoff(fixture.utcDate)}</span>
-                <span className="text-neutral-100 md:hidden">
-                  {fixture.homeTeam.flag} {fixture.homeTeam.name}{' '}
-                  <span className="text-neutral-500">vs</span> {fixture.awayTeam.flag} {fixture.awayTeam.name}
-                </span>
-                <div className="hidden min-w-0 items-stretch gap-3 md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center">
-                  <FixtureTeamBlock team={fixture.homeTeam} managers={fixture.homeManagers} />
-                  <span className="text-xs font-semibold uppercase tracking-wide text-neutral-500">vs</span>
-                  <FixtureTeamBlock team={fixture.awayTeam} managers={fixture.awayManagers} align="right" />
-                </div>
-              </div>
-              <div className="mt-2 grid gap-1.5 text-xs text-neutral-300 sm:grid-cols-2 md:hidden">
-                <p>
-                  <span className="font-medium text-neutral-100">{fixture.homeTeam.tla}</span>{' '}
-                  <FixtureTeamManagers managers={fixture.homeManagers} />
-                </p>
-                <p>
-                  <span className="font-medium text-neutral-100">{fixture.awayTeam.tla}</span>{' '}
-                  <FixtureTeamManagers managers={fixture.awayManagers} />
+            <li key={fixture.id} className="px-3 py-2">
+              <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">
+                <time
+                  dateTime={fixture.utcDate}
+                  className="shrink-0 text-xs font-semibold tabular-nums leading-snug text-sky-200 sm:w-[8.75rem]"
+                >
+                  {formatFixtureKickoff(fixture.utcDate)}
+                </time>
+                <p className="min-w-0 flex-1 text-sm leading-snug text-neutral-100">
+                  <span className="font-medium">
+                    {fixture.homeTeam.flag} {fixture.homeTeam.name}
+                  </span>
+                  <span className="text-neutral-600"> · </span>
+                  <span className="text-xs text-neutral-400">
+                    <FixtureTeamManagers managers={fixture.homeManagers} />
+                  </span>
+                  <span className="mx-1.5 text-neutral-600">v</span>
+                  <span className="font-medium">
+                    {fixture.awayTeam.flag} {fixture.awayTeam.name}
+                  </span>
+                  <span className="text-neutral-600"> · </span>
+                  <span className="text-xs text-neutral-400">
+                    <FixtureTeamManagers managers={fixture.awayManagers} />
+                  </span>
                 </p>
               </div>
             </li>
