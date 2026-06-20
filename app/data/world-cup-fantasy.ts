@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Friday closed the books in three acts: Mexico edged South Korea 1-0, the USA brushed Australia aside 2-0, and Morocco left Scotland chasing shadows after Saibari scored inside two minutes — the sort of kick-off where the opposition are still reading the team sheet. Nest leads on eighteen, Jon has surged to sixteen, Chris is on fourteen, Scott has eleven, Dave eight, and Ash remains bottom on seven, still waiting for a proper haul while everyone else\'s flags keep lighting up behind them.';
+  'Saturday dawned in Philadelphia with Brazil doing the sensible thing and burying Haiti before half-time — Cunha twice and Vinícius once, all inside forty-five minutes, which is the sort of professional ruthlessness Haiti simply never matched. Chris\'s lot shipped three without reply and barely a sniff of a chance; the sort of outing that makes your wildcard feel less like upside and more like a charity case. Jon leads on twenty, Nest has eighteen, Chris is on thirteen, Scott eleven, Dave eight, and Ash remains bottom on seven — still marooned while Brazil\'s early blitz sends someone else to the summit.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -699,6 +699,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Morocco', tla: 'MAR' },
     homeGoals: 0,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-19-bra-hai',
+    utcDate: '2026-06-20T01:00:00Z',
+    homeTeam: { name: 'Brazil', tla: 'BRA' },
+    awayTeam: { name: 'Haiti', tla: 'HAI' },
+    homeGoals: 3,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
