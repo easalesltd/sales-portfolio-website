@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Houston turned into a demolition site as the Netherlands put five past Sweden with the casual brutality of a team that had finally remembered orange is a colour, not a mood; Brazil were equally cold against Haiti, and Paraguay pinched Turkey despite shipping a daft red card for the sort of tackle that gets replayed in referee-training PowerPoints. Jon leads on nineteen, Nest has eighteen, Scott and Chris are both on thirteen, Ash climbs to eleven after Holland\'s rampage, and Dave is still bottom on eight — a Germany-Ivory Coast evening the only thing standing between him and full relegation to the group-chat mute list.';
+  'Saturday across the Americas looked like three different films spliced together: Brazil treated Haiti like a warm-up drill, the Netherlands dismantled Sweden with five goals and the subtlety of a sledgehammer, Paraguay stole Turkey\'s lunch money despite finishing with ten men, and Toronto turned into a VAR seminar where Germany spent half the night celebrating goals that never counted before Undav finally made one stick — a 1-1 draw that rescued a point for Dave and Jon alike. Jon leads on twenty, Nest has eighteen, Scott and Chris are both on thirteen, Ash sits on eleven, and Dave is still bottom on nine, clinging to the table like a man who knows the next disallowed goal is probably his.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -356,12 +356,6 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     awayTeam: { name: 'Sweden', tla: 'SWE' },
   },
   {
-    id: '2026-06-20-ger-civ',
-    utcDate: '2026-06-20T20:00:00Z',
-    homeTeam: { name: 'Germany', tla: 'GER' },
-    awayTeam: { name: 'Ivory Coast', tla: 'CIV' },
-  },
-  {
     id: '2026-06-20-ecu-cuw',
     utcDate: '2026-06-21T00:00:00Z',
     homeTeam: { name: 'Ecuador', tla: 'ECU' },
@@ -372,6 +366,30 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-21T03:00:00Z',
     homeTeam: { name: 'Tunisia', tla: 'TUN' },
     awayTeam: { name: 'Japan', tla: 'JPN' },
+  },
+  {
+    id: '2026-06-21-esp-ksa',
+    utcDate: '2026-06-21T16:00:00Z',
+    homeTeam: { name: 'Spain', tla: 'ESP' },
+    awayTeam: { name: 'Saudi Arabia', tla: 'KSA' },
+  },
+  {
+    id: '2026-06-21-bel-irn',
+    utcDate: '2026-06-21T19:00:00Z',
+    homeTeam: { name: 'Belgium', tla: 'BEL' },
+    awayTeam: { name: 'Iran', tla: 'IRN' },
+  },
+  {
+    id: '2026-06-21-uru-cpv',
+    utcDate: '2026-06-21T22:00:00Z',
+    homeTeam: { name: 'Uruguay', tla: 'URU' },
+    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
+  },
+  {
+    id: '2026-06-21-nzl-egy',
+    utcDate: '2026-06-22T04:00:00Z',
+    homeTeam: { name: 'New Zealand', tla: 'NZL' },
+    awayTeam: { name: 'Egypt', tla: 'EGY' },
   },
 ];
 
@@ -731,6 +749,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Netherlands', tla: 'NED' },
     awayTeam: { name: 'Sweden', tla: 'SWE' },
     homeGoals: 5,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-20-ger-civ',
+    utcDate: '2026-06-20T20:00:00Z',
+    homeTeam: { name: 'Germany', tla: 'GER' },
+    awayTeam: { name: 'Ivory Coast', tla: 'CIV' },
+    homeGoals: 1,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
