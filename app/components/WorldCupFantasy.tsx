@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { formatTeamLabel } from '@/app/data/world-cup-fantasy';
 import type { WorldCupFantasyResponse } from '@/app/api/world-cup-fantasy/route';
 import type {
@@ -412,19 +412,13 @@ function teamMatchDisplaysForTeam(teamCode: string, matches: MatchPointsEntry[])
 function TeamResultsPanel({
   team,
   results,
-  layout,
 }: {
   team: TeamStanding;
   results: TeamMatchDisplay[];
-  layout: 'inline' | 'popover';
 }) {
   return (
     <div
-      className={
-        layout === 'popover'
-          ? 'absolute left-0 top-full z-30 mt-1 w-[min(20rem,calc(100vw-2rem))] rounded-lg border border-teal-700/60 bg-neutral-950 px-3 py-2 shadow-xl'
-          : 'rounded-md border border-teal-800/50 bg-neutral-950/80 px-3 py-2'
-      }
+      className="rounded-md border border-teal-800/50 bg-neutral-950/80 px-3 py-2"
       role="region"
       aria-label={`${team.name} results`}
     >
@@ -463,6 +457,10 @@ function TeamResultsPanel({
   );
 }
 
+function prefersFinePointerHover(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
 function TeamMiniTable({
   teams,
   scoringMatches,
@@ -474,83 +472,88 @@ function TeamMiniTable({
   const [hoverTeamCode, setHoverTeamCode] = useState<string | null>(null);
 
   const toggleTeam = (teamCode: string) => {
+    setHoverTeamCode(null);
     setPinnedTeamCode((current) => (current === teamCode ? null : teamCode));
   };
 
+  const displayTeamCode = pinnedTeamCode ?? hoverTeamCode;
+  const displayTeam = teams.find((team) => team.code === displayTeamCode);
+  const displayResults = displayTeam ? teamMatchDisplaysForTeam(displayTeam.code, scoringMatches) : [];
+
   return (
-    <div className="overflow-x-auto rounded-md border border-neutral-700/80">
+    <div className="rounded-md border border-neutral-700/80">
       <p className="border-b border-neutral-800 bg-neutral-950/80 px-2 py-1.5 text-[10px] text-neutral-500 sm:px-3">
         <span className="hidden sm:inline">Hover a team for results · </span>
         Tap a team for results
       </p>
-      <table className="min-w-full text-left text-xs sm:text-sm">
-        <thead className="bg-neutral-950/80 text-neutral-400">
-          <tr>
-            <th className="px-2 py-1.5 font-medium sm:px-3">Team</th>
-            <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pld</th>
-            <th className="px-2 py-1.5 font-medium text-right sm:px-3">W</th>
-            <th className="px-2 py-1.5 font-medium text-right sm:px-3">D</th>
-            <th className="px-2 py-1.5 font-medium text-right sm:px-3">L</th>
-            <th className="px-2 py-1.5 font-medium text-right sm:px-3">Bonus</th>
-            <th className="px-2 py-1.5 font-medium text-right sm:px-3">GD</th>
-            <th className="px-2 py-1.5 font-medium text-right sm:px-3">Red</th>
-            <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pts</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-neutral-800 text-neutral-100">
-          {teams.map((team) => {
-            const results = teamMatchDisplaysForTeam(team.code, scoringMatches);
-            const isPinned = pinnedTeamCode === team.code;
-            const isHovered = hoverTeamCode === team.code;
-            const showInline = isPinned;
-            const showPopover = isHovered && !isPinned;
+      <div
+        onMouseLeave={() => {
+          if (prefersFinePointerHover() && pinnedTeamCode == null) setHoverTeamCode(null);
+        }}
+      >
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-left text-xs sm:text-sm">
+            <thead className="bg-neutral-950/80 text-neutral-400">
+              <tr>
+                <th className="px-2 py-1.5 font-medium sm:px-3">Team</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pld</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">W</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">D</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">L</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">Bonus</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">GD</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">Red</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pts</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-neutral-800 text-neutral-100">
+              {teams.map((team) => {
+                const isPinned = pinnedTeamCode === team.code;
+                const isHighlighted = displayTeamCode === team.code;
 
-            return (
-              <Fragment key={team.code}>
-                <tr
-                  className={`relative transition-colors ${
-                    isPinned || isHovered ? 'bg-teal-950/25' : 'hover:bg-neutral-900/50'
-                  }`}
-                  onMouseEnter={() => setHoverTeamCode(team.code)}
-                  onMouseLeave={() => setHoverTeamCode((current) => (current === team.code ? null : current))}
-                >
-                  <td className="relative px-2 py-1.5 sm:px-3">
-                    <button
-                      type="button"
-                      onClick={() => toggleTeam(team.code)}
-                      aria-expanded={isPinned}
-                      aria-controls={`team-results-${team.code}`}
-                      className="-mx-1 rounded px-1 text-left transition hover:text-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
-                    >
-                      {team.flag} {team.name}
-                    </button>
-                    {showPopover ? (
-                      <TeamResultsPanel team={team} results={results} layout="popover" />
-                    ) : null}
-                  </td>
-                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.playedMatches}</td>
-                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.wins}</td>
-                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.draws}</td>
-                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.losses}</td>
-                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.bonusPoints}</td>
-                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">
-                    {formatGoalDifference(team.goalDifference)}
-                  </td>
-                  <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">{team.redCards}</td>
-                  <td className="px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3">{team.points}</td>
-                </tr>
-                {showInline ? (
-                  <tr id={`team-results-${team.code}`}>
-                    <td colSpan={9} className="px-2 pb-2 pt-0 sm:px-3">
-                      <TeamResultsPanel team={team} results={results} layout="inline" />
+                return (
+                  <tr
+                    key={team.code}
+                    className={`transition-colors ${
+                      isHighlighted ? 'bg-teal-950/25' : 'hover:bg-neutral-900/50'
+                    }`}
+                    onMouseEnter={() => {
+                      if (prefersFinePointerHover()) setHoverTeamCode(team.code);
+                    }}
+                  >
+                    <td className="px-2 py-1.5 sm:px-3">
+                      <button
+                        type="button"
+                        onClick={() => toggleTeam(team.code)}
+                        aria-expanded={isPinned}
+                        aria-controls="team-results-panel"
+                        className="-mx-1 rounded px-1 text-left transition hover:text-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
+                      >
+                        {team.flag} {team.name}
+                      </button>
                     </td>
+                    <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.playedMatches}</td>
+                    <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.wins}</td>
+                    <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.draws}</td>
+                    <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.losses}</td>
+                    <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.bonusPoints}</td>
+                    <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">
+                      {formatGoalDifference(team.goalDifference)}
+                    </td>
+                    <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">{team.redCards}</td>
+                    <td className="px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3">{team.points}</td>
                   </tr>
-                ) : null}
-              </Fragment>
-            );
-          })}
-        </tbody>
-      </table>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        {displayTeam ? (
+          <div id="team-results-panel" className="border-t border-neutral-800 px-2 py-2 sm:px-3">
+            <TeamResultsPanel team={displayTeam} results={displayResults} />
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
