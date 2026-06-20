@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import {
   computeStandings,
+  getTeamMatchDisplay,
   getUpcomingFixtures,
   resolveManagerImageForStandings,
   type WorldCupMatchResult,
@@ -191,5 +192,18 @@ describe('computeStandings', () => {
       homeManagers: [{ id: 'dave', teamCode: 'IRN' }],
       awayManagers: [{ id: 'ash', teamCode: 'NZL' }],
     });
+  });
+
+  it('builds per-team match summaries for result panels', () => {
+    const match = matches[0];
+    const display = getTeamMatchDisplay(match, 'MEX');
+
+    expect(display).toMatchObject({
+      opponentTla: 'RSA',
+      goalsFor: 1,
+      goalsAgainst: 0,
+      points: 3,
+    });
+    expect(getTeamMatchDisplay(match, 'BRA')).toBeNull();
   });
 });

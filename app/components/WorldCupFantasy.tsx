@@ -1,16 +1,18 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { formatTeamLabel } from '@/app/data/world-cup-fantasy';
 import type { WorldCupFantasyResponse } from '@/app/api/world-cup-fantasy/route';
 import type {
   FixtureManager,
   MatchPointsEntry,
   PlayerStanding,
+  TeamMatchDisplay,
   TeamStanding,
   UpcomingFixtureEntry,
 } from '@/app/lib/world-cup-scoring';
+import { getTeamMatchDisplay, matchInvolvesTeam } from '@/app/lib/world-cup-scoring';
 
 type Props = {
   onClose: () => void;
@@ -391,9 +393,96 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
   );
 }
 
-function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
+function formatTeamMatchDate(utcDate: string): string {
+  return new Date(utcDate).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    timeZone: 'UTC',
+  });
+}
+
+function teamMatchDisplaysForTeam(teamCode: string, matches: MatchPointsEntry[]): TeamMatchDisplay[] {
+  return matches
+    .filter(({ match }) => matchInvolvesTeam(match, teamCode))
+    .map(({ match }) => getTeamMatchDisplay(match, teamCode))
+    .filter((entry): entry is TeamMatchDisplay => entry != null)
+    .sort((a, b) => b.utcDate.localeCompare(a.utcDate));
+}
+
+function TeamResultsPanel({
+  team,
+  results,
+  layout,
+}: {
+  team: TeamStanding;
+  results: TeamMatchDisplay[];
+  layout: 'inline' | 'popover';
+}) {
+  return (
+    <div
+      className={
+        layout === 'popover'
+          ? 'absolute left-0 top-full z-30 mt-1 w-[min(20rem,calc(100vw-2rem))] rounded-lg border border-teal-700/60 bg-neutral-950 px-3 py-2 shadow-xl'
+          : 'rounded-md border border-teal-800/50 bg-neutral-950/80 px-3 py-2'
+      }
+      role="region"
+      aria-label={`${team.name} results`}
+    >
+      <p className="text-[10px] font-semibold uppercase tracking-wide text-teal-300/90">
+        {team.flag} {team.name} results
+      </p>
+      {results.length === 0 ? (
+        <p className="mt-2 text-xs text-neutral-400">No finished matches yet.</p>
+      ) : (
+        <ul className="mt-2 space-y-1.5">
+          {results.map((result) => (
+            <li
+              key={result.matchId}
+              className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 text-xs text-neutral-100"
+            >
+              <span className="min-w-0">
+                <span className="text-neutral-500">{formatTeamMatchDate(result.utcDate)}</span>{' '}
+                <span className="text-neutral-400">{result.isHome ? 'vs' : '@'}</span>{' '}
+                {result.opponentFlag} {result.opponentTla}{' '}
+                <span className="font-medium tabular-nums">
+                  {result.goalsFor}–{result.goalsAgainst}
+                </span>
+                {result.redCards > 0 ? (
+                  <span className="ml-1 text-red-300">({result.redCards} red)</span>
+                ) : null}
+              </span>
+              <span className="shrink-0 font-semibold tabular-nums text-teal-300">
+                {result.points >= 0 ? '+' : ''}
+                {result.points} pts
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function TeamMiniTable({
+  teams,
+  scoringMatches,
+}: {
+  teams: TeamStanding[];
+  scoringMatches: MatchPointsEntry[];
+}) {
+  const [pinnedTeamCode, setPinnedTeamCode] = useState<string | null>(null);
+  const [hoverTeamCode, setHoverTeamCode] = useState<string | null>(null);
+
+  const toggleTeam = (teamCode: string) => {
+    setPinnedTeamCode((current) => (current === teamCode ? null : teamCode));
+  };
+
   return (
     <div className="overflow-x-auto rounded-md border border-neutral-700/80">
+      <p className="border-b border-neutral-800 bg-neutral-950/80 px-2 py-1.5 text-[10px] text-neutral-500 sm:px-3">
+        <span className="hidden sm:inline">Hover a team for results · </span>
+        Tap a team for results
+      </p>
       <table className="min-w-full text-left text-xs sm:text-sm">
         <thead className="bg-neutral-950/80 text-neutral-400">
           <tr>
@@ -409,23 +498,57 @@ function TeamMiniTable({ teams }: { teams: TeamStanding[] }) {
           </tr>
         </thead>
         <tbody className="divide-y divide-neutral-800 text-neutral-100">
-          {teams.map((team) => (
-            <tr key={team.code}>
-              <td className="px-2 py-1.5 sm:px-3">
-                {team.flag} {team.name}
-              </td>
-              <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.playedMatches}</td>
-              <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.wins}</td>
-              <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.draws}</td>
-              <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.losses}</td>
-              <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.bonusPoints}</td>
-              <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">
-                {formatGoalDifference(team.goalDifference)}
-              </td>
-              <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">{team.redCards}</td>
-              <td className="px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3">{team.points}</td>
-            </tr>
-          ))}
+          {teams.map((team) => {
+            const results = teamMatchDisplaysForTeam(team.code, scoringMatches);
+            const isPinned = pinnedTeamCode === team.code;
+            const isHovered = hoverTeamCode === team.code;
+            const showInline = isPinned;
+            const showPopover = isHovered && !isPinned;
+
+            return (
+              <Fragment key={team.code}>
+                <tr
+                  className={`relative transition-colors ${
+                    isPinned || isHovered ? 'bg-teal-950/25' : 'hover:bg-neutral-900/50'
+                  }`}
+                  onMouseEnter={() => setHoverTeamCode(team.code)}
+                  onMouseLeave={() => setHoverTeamCode((current) => (current === team.code ? null : current))}
+                >
+                  <td className="relative px-2 py-1.5 sm:px-3">
+                    <button
+                      type="button"
+                      onClick={() => toggleTeam(team.code)}
+                      aria-expanded={isPinned}
+                      aria-controls={`team-results-${team.code}`}
+                      className="-mx-1 rounded px-1 text-left transition hover:text-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
+                    >
+                      {team.flag} {team.name}
+                    </button>
+                    {showPopover ? (
+                      <TeamResultsPanel team={team} results={results} layout="popover" />
+                    ) : null}
+                  </td>
+                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.playedMatches}</td>
+                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.wins}</td>
+                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.draws}</td>
+                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.losses}</td>
+                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.bonusPoints}</td>
+                  <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">
+                    {formatGoalDifference(team.goalDifference)}
+                  </td>
+                  <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">{team.redCards}</td>
+                  <td className="px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3">{team.points}</td>
+                </tr>
+                {showInline ? (
+                  <tr id={`team-results-${team.code}`}>
+                    <td colSpan={9} className="px-2 pb-2 pt-0 sm:px-3">
+                      <TeamResultsPanel team={team} results={results} layout="inline" />
+                    </td>
+                  </tr>
+                ) : null}
+              </Fragment>
+            );
+          })}
         </tbody>
       </table>
     </div>
@@ -478,7 +601,15 @@ function ImageLightbox({
   );
 }
 
-function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStanding }) {
+function PlayerSquadCard({
+  rank,
+  player,
+  scoringMatches,
+}: {
+  rank: number;
+  player: PlayerStanding;
+  scoringMatches: MatchPointsEntry[];
+}) {
   const managerLabel = player.teamName ?? player.name;
   const [enlarged, setEnlarged] = useState<'manager' | 'crest' | null>(null);
 
@@ -541,7 +672,7 @@ function PlayerSquadCard({ rank, player }: { rank: number; player: PlayerStandin
         </div>
       </div>
       <div className="border-t border-neutral-800 px-3 pb-3 pt-2 sm:px-4">
-        <TeamMiniTable teams={player.teamBreakdown} />
+        <TeamMiniTable teams={player.teamBreakdown} scoringMatches={scoringMatches} />
       </div>
       {enlarged === 'manager' ? (
         <ImageLightbox
@@ -638,7 +769,12 @@ export default function WorldCupFantasy({ onClose }: Props) {
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Player squads</h3>
                 <div className="space-y-3">
                   {data.standings.map((player, index) => (
-                    <PlayerSquadCard key={player.id} rank={index + 1} player={player} />
+                    <PlayerSquadCard
+                      key={player.id}
+                      rank={index + 1}
+                      player={player}
+                      scoringMatches={data.allScoringMatches}
+                    />
                   ))}
                 </div>
               </section>

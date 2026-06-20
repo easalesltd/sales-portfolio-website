@@ -247,7 +247,7 @@ function resolvePlayerTeamInMatch(match: WorldCupMatchResult, playerTeamCode: st
   return null;
 }
 
-function teamPointsInMatch(match: WorldCupMatchResult, playerTeamCode: string): number {
+export function teamPointsInMatch(match: WorldCupMatchResult, playerTeamCode: string): number {
   if (match.homeGoals == null || match.awayGoals == null) return 0;
   const side = resolvePlayerTeamInMatch(match, playerTeamCode);
   if (!side) return 0;
@@ -256,6 +256,70 @@ function teamPointsInMatch(match: WorldCupMatchResult, playerTeamCode: string): 
   const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
   return scoreTeamMatch(goalsFor, goalsAgainst, redCards).total;
+}
+
+export function matchInvolvesTeam(match: WorldCupMatchResult, teamCode: string): boolean {
+  return resolvePlayerTeamInMatch(match, teamCode) != null;
+}
+
+export type TeamMatchDisplay = {
+  matchId: string;
+  utcDate: string;
+  opponentName: string;
+  opponentTla: string;
+  opponentFlag: string;
+  goalsFor: number;
+  goalsAgainst: number;
+  points: number;
+  redCards: number;
+  isHome: boolean;
+};
+
+export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string): TeamMatchDisplay | null {
+  if (match.homeGoals == null || match.awayGoals == null) return null;
+
+  const side = resolvePlayerTeamInMatch(match, teamCode);
+  if (!side) return null;
+
+  const goalsFor = side.isHome ? match.homeGoals : match.awayGoals;
+  const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
+  const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
+  const opponent = side.isHome ? match.awayTeam : match.homeTeam;
+  const opponentMeta = WORLD_CUP_TEAM_BY_CODE[opponent.tla];
+
+  return {
+    matchId: match.id,
+    utcDate: match.utcDate,
+    opponentName: opponent.name,
+    opponentTla: opponent.tla,
+    opponentFlag: opponentMeta?.flag ?? '',
+    goalsFor,
+    goalsAgainst,
+    points: scoreTeamMatch(goalsFor, goalsAgainst, redCards).total,
+    redCards,
+    isHome: side.isHome,
+  };
+}
+
+export function buildScoringMatchEntries(
+  players: readonly WorldCupFantasyPlayer[],
+  matches: WorldCupMatchResult[]
+): MatchPointsEntry[] {
+  const finished = matches.filter(
+    (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
+  );
+
+  return finished
+    .slice()
+    .reverse()
+    .map((match) => {
+      const byPlayer: Record<string, number> = {};
+      for (const player of players) {
+        const pts = player.teams.reduce((sum, team) => sum + teamPointsInMatch(match, team), 0);
+        if (pts !== 0) byPlayer[player.id] = pts;
+      }
+      return { match, byPlayer };
+    });
 }
 
 export function resolveManagerImageForStandings(
@@ -275,7 +339,11 @@ export function resolveManagerImageForStandings(
 export function computeStandings(
   players: readonly WorldCupFantasyPlayer[],
   matches: WorldCupMatchResult[]
-): { standings: PlayerStanding[]; recentScoringMatches: MatchPointsEntry[] } {
+): {
+  standings: PlayerStanding[];
+  allScoringMatches: MatchPointsEntry[];
+  recentScoringMatches: MatchPointsEntry[];
+} {
   const finished = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   );
@@ -383,17 +451,8 @@ export function computeStandings(
     }
   });
 
-  const recentScoringMatches: MatchPointsEntry[] = finished
-    .slice(-12)
-    .reverse()
-    .map((match) => {
-      const byPlayer: Record<string, number> = {};
-      for (const player of players) {
-        const pts = player.teams.reduce((sum, team) => sum + teamPointsInMatch(match, team), 0);
-        if (pts !== 0) byPlayer[player.id] = pts;
-      }
-      return { match, byPlayer };
-    });
+  const allScoringMatches = buildScoringMatchEntries(players, finished);
+  const recentScoringMatches = allScoringMatches.slice(0, 12);
 
-  return { standings, recentScoringMatches };
+  return { standings, allScoringMatches, recentScoringMatches };
 }
