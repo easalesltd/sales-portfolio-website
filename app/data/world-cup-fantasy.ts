@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Friday finally coughed up the USA result: Mexico nicked South Korea 1-0, then the States saw off Australia 2-0 without needing fireworks or even a red-card circus. Nest is still top on eighteen, Chris has fourteen, Jon is back in the conversation on thirteen, Scott has eleven, Dave eight, and Ash remains marooned on seven — a campaign with all the forward momentum of a full-back trying to take a throw-in while being booed by his own bench.';
+  'Friday closed the books in three acts: Mexico edged South Korea 1-0, the USA brushed Australia aside 2-0, and Morocco left Scotland chasing shadows after Saibari scored inside two minutes — the sort of kick-off where the opposition are still reading the team sheet. Nest leads on eighteen, Jon has surged to sixteen, Chris is on fourteen, Scott has eleven, Dave eight, and Ash remains bottom on seven, still waiting for a proper haul while everyone else\'s flags keep lighting up behind them.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -688,6 +688,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Australia', tla: 'AUS' },
     homeGoals: 2,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-19-sco-mar',
+    utcDate: '2026-06-19T22:00:00Z',
+    homeTeam: { name: 'Scotland', tla: 'SCO' },
+    awayTeam: { name: 'Morocco', tla: 'MAR' },
+    homeGoals: 0,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
