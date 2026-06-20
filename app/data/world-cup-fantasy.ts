@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'The overnight results arrived with all the subtlety of a centre-back clearing his own advertising hoarding: Morocco pinched Scotland 1-0, Brazil finally remembered they are Brazil and battered Haiti 3-0, and Paraguay beat Turkey 1-0 despite Miguel Almirón getting himself sent off for the sort of daftness normally reserved for experimental VAR training videos. Jon storms top on twenty, Nest has eighteen, Scott and Chris are both on thirteen, Dave has eight, and Ash is still on seven — a campaign so lifeless the tactics board has started pretending it is a coaster.';
+  'Houston turned into a demolition site as the Netherlands put five past Sweden with the casual brutality of a team that had finally remembered orange is a colour, not a mood; Brazil were equally cold against Haiti, and Paraguay pinched Turkey despite shipping a daft red card for the sort of tackle that gets replayed in referee-training PowerPoints. Jon leads on nineteen, Nest has eighteen, Scott and Chris are both on thirteen, Ash climbs to eleven after Holland\'s rampage, and Dave is still bottom on eight — a Germany-Ivory Coast evening the only thing standing between him and full relegation to the group-chat mute list.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -723,5 +723,16 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 1,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-20-ned-swe',
+    utcDate: '2026-06-20T17:00:00Z',
+    homeTeam: { name: 'Netherlands', tla: 'NED' },
+    awayTeam: { name: 'Sweden', tla: 'SWE' },
+    homeGoals: 5,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
 ];
