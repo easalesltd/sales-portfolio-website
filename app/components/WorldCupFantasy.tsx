@@ -32,6 +32,8 @@ type Props = {
   onClose: () => void;
   apiPath?: string;
   title?: string;
+  headerImage?: string;
+  headerImageAlt?: string;
   formatTeamLabel?: (code: string) => string;
   scoringRules?: readonly string[];
   bonusColumnLabel?: string;
@@ -739,6 +741,8 @@ export default function WorldCupFantasy({
   onClose,
   apiPath = DEFAULT_API_PATH,
   title = DEFAULT_TITLE,
+  headerImage,
+  headerImageAlt = '',
   formatTeamLabel = formatWorldCupTeamLabel,
   scoringRules = SCORING_RULES,
   bonusColumnLabel = 'Bonus',
@@ -780,9 +784,27 @@ export default function WorldCupFantasy({
       <div className="flex max-h-[96dvh] w-full max-w-7xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl">
         <header className="shrink-0 border-b border-neutral-700 px-4 py-4 sm:px-5">
           <div className="flex items-start justify-between gap-3">
-            <h2 id="world-cup-fantasy-title" className="min-w-0 text-lg font-bold leading-tight text-white sm:text-xl">
-              {title}
-            </h2>
+            <div className="min-w-0 flex-1">
+              {headerImage ? (
+                <div className="flex max-h-28 items-center sm:max-h-36">
+                  {/* Native img keeps the wide crest centred without next/image fill quirks. */}
+                  <img
+                    src={headerImage}
+                    alt={headerImageAlt || title}
+                    className="max-h-28 w-auto max-w-full object-contain object-left sm:max-h-36"
+                  />
+                </div>
+              ) : (
+                <h2 id="world-cup-fantasy-title" className="text-lg font-bold leading-tight text-white sm:text-xl">
+                  {title}
+                </h2>
+              )}
+              {headerImage ? (
+                <h2 id="world-cup-fantasy-title" className="sr-only">
+                  {headerImageAlt || title}
+                </h2>
+              ) : null}
+            </div>
             <div className="flex shrink-0 gap-2">
               <button
                 type="button"

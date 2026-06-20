@@ -23,6 +23,8 @@ export default function EnglishPyramidFantasy({ onClose }: Props) {
       onClose={onClose}
       apiPath="/api/english-pyramid-fantasy"
       title="English Pyramid Sweepstake 2026/27"
+      headerImage="/images/english-pyramid-fantasy/league-header.png"
+      headerImageAlt="English Pyramid Football Fantasy League"
       formatTeamLabel={formatTeamLabel}
       scoringRules={ENGLISH_PYRAMID_SCORING_RULES}
       bonusColumnLabel="Bonus (CS/3+)"

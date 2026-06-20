@@ -156,7 +156,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   'Within each division, clubs were ranked 1–7 by pre-season outright winner betting odds. Each manager gets exactly one pick at each rank — one favourite, one second favourite, and so on — spread across the seven divisions, so nobody stacks all the favourites or all the long shots.';
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Season opens soon — no league results in the ledger yet. When the 2026/27 campaigns kick off, this roast will start naming names.';
+  'Season opens soon — no league results in the ledger yet. When the 2026/27 campaigns kick off, this roast will start naming names. lol at Scott already being last.';
 
 export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlayer[] = [
   {
