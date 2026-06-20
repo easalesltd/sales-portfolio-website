@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Saturday dawned in Philadelphia with Brazil doing the sensible thing and burying Haiti before half-time — Cunha twice and Vinícius once, all inside forty-five minutes, which is the sort of professional ruthlessness Haiti simply never matched. Chris\'s lot shipped three without reply and barely a sniff of a chance; the sort of outing that makes your wildcard feel less like upside and more like a charity case. Jon leads on twenty, Nest has eighteen, Chris is on thirteen, Scott eleven, Dave eight, and Ash remains bottom on seven — still marooned while Brazil\'s early blitz sends someone else to the summit.';
+  'The overnight results arrived with all the subtlety of a centre-back clearing his own advertising hoarding: Morocco pinched Scotland 1-0, Brazil finally remembered they are Brazil and battered Haiti 3-0, and Paraguay beat Turkey 1-0 despite Miguel Almirón getting himself sent off for the sort of daftness normally reserved for experimental VAR training videos. Jon storms top on twenty, Nest has eighteen, Scott and Chris are both on thirteen, Dave has eight, and Ash is still on seven — a campaign so lifeless the tactics board has started pretending it is a coaster.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -712,5 +712,16 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-19-tur-par',
+    utcDate: '2026-06-20T03:00:00Z',
+    homeTeam: { name: 'Turkey', tla: 'TUR' },
+    awayTeam: { name: 'Paraguay', tla: 'PAR' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
   },
 ];
