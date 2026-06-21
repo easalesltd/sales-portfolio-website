@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Sunday has already served up Ecuador turning a shooting gallery into a nil-nil tax write-off, then Tunisia obligingly standing around while Japan carved them into sushi-grade slices in Monterrey. Jon still leads on twenty, Nest has sagged to seventeen after Tunisia conceded four with all the resistance of a wet paper programme, Ash is breathing down her neck on sixteen, Scott and Chris remain marooned on thirteen, and Dave is still bottom on eleven, watching this whole mess like a man hoping VAR can review his draft.';
+  'Sunday has turned into a tactics board being slowly set on fire: Ecuador and Curaçao produced a nil-nil so sterile it needed a medical swab, Japan filleted Tunisia 4-0, and Spain finally remembered they are meant to be Spain by walloping Saudi Arabia 4-0. Ash and Jon are level on twenty, Nest has slipped to sixteen, Scott and Chris are still parked on thirteen, and Dave remains bottom on eleven, wearing the thousand-yard stare of a manager whose halftime team talk has just been forwarded to HR.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -783,6 +783,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Japan', tla: 'JPN' },
     homeGoals: 0,
     awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-21-esp-ksa',
+    utcDate: '2026-06-21T16:00:00Z',
+    homeTeam: { name: 'Spain', tla: 'ESP' },
+    awayTeam: { name: 'Saudi Arabia', tla: 'KSA' },
+    homeGoals: 4,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
