@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Sunday opened in Kansas City with Ecuador firing twenty-seven shots at a goalkeeper who looked like he had been smuggled in from a training-camp protest, yet Curaçao still crawled out with a 0-0 and their first World Cup point while Ash and Jon each banked a solitary draw token for the privilege of watching it. Jon leads on twenty, Nest trails on eighteen, Scott and Chris share thirteen, Ash is up to twelve, Dave sits on eleven at the foot of the table, and the only thing more embarrassed than Ecuador’s finishing is Dave still being propped up by Germany’s admin department.';
+  'Sunday has already served up Ecuador turning a shooting gallery into a nil-nil tax write-off, then Tunisia obligingly standing around while Japan carved them into sushi-grade slices in Monterrey. Jon still leads on twenty, Nest has sagged to seventeen after Tunisia conceded four with all the resistance of a wet paper programme, Ash is breathing down her neck on sixteen, Scott and Chris remain marooned on thirteen, and Dave is still bottom on eleven, watching this whole mess like a man hoping VAR can review his draft.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -772,6 +772,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Curaçao', tla: 'CUW' },
     homeGoals: 0,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-20-tun-jpn',
+    utcDate: '2026-06-21T03:00:00Z',
+    homeTeam: { name: 'Tunisia', tla: 'TUN' },
+    awayTeam: { name: 'Japan', tla: 'JPN' },
+    homeGoals: 0,
+    awayGoals: 4,
     homeRedCards: 0,
     awayRedCards: 0,
   },
