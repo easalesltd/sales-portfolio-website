@@ -44,6 +44,12 @@ type Props = {
 
 const DEFAULT_API_PATH = '/api/world-cup-fantasy';
 const DEFAULT_TITLE = 'World Cup Sweepstake 2026';
+/** Bust browser / image-optimizer cache when manager portrait files are replaced. */
+const SWEEPSTAKE_MANAGER_PHOTO_VERSION = '20260621';
+
+function managerPhotoSrc(path: string): string {
+  return `${path}?v=${SWEEPSTAKE_MANAGER_PHOTO_VERSION}`;
+}
 
 const DEFAULT_MATCH_SCORING_HELPERS: MatchScoringHelpers = {
   matchInvolvesTeam: worldCupMatchInvolvesTeam,
@@ -593,12 +599,14 @@ function ImageLightbox({
   onClose,
   aspectClass = 'aspect-[3/4]',
   imageClassName = '',
+  useNativeImage = false,
 }: {
   src: string;
   label: string;
   onClose: () => void;
   aspectClass?: string;
   imageClassName?: string;
+  useNativeImage?: boolean;
 }) {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -625,15 +633,25 @@ function ImageLightbox({
       </button>
       <div className="w-full max-w-xs sm:max-w-sm" onClick={(event) => event.stopPropagation()}>
         <div
-          className={`relative ${aspectClass} max-h-[calc(100dvh-7rem)] w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950`}
+          className={`relative ${aspectClass} max-h-[calc(100dvh-7rem)] w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950 ${
+            useNativeImage ? 'flex items-center justify-center' : ''
+          }`}
         >
-          <Image
-            src={src}
-            alt={label}
-            fill
-            sizes="(max-width: 640px) 320px, 384px"
-            className={`object-contain ${imageClassName}`}
-          />
+          {useNativeImage ? (
+            <img
+              src={src}
+              alt={label}
+              className={`max-h-[calc(100dvh-7rem)] max-w-full object-contain ${imageClassName}`}
+            />
+          ) : (
+            <Image
+              src={src}
+              alt={label}
+              fill
+              sizes="(max-width: 640px) 320px, 384px"
+              className={`object-contain ${imageClassName}`}
+            />
+          )}
         </div>
         <p className="mt-3 text-center text-sm font-medium text-white">{label}</p>
       </div>
@@ -667,15 +685,14 @@ function PlayerSquadCard({
             <button
               type="button"
               onClick={() => setEnlarged('manager')}
-              className="relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 md:size-36"
+              className="relative flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 md:size-36"
               aria-label={`View enlarged photo of ${managerLabel}`}
             >
-              <Image
-                src={player.managerImage}
+              {/* Native img avoids stale next/image optimizer cache after portrait swaps. */}
+              <img
+                src={managerPhotoSrc(player.managerImage)}
                 alt={`${managerLabel} manager`}
-                fill
-                sizes="(max-width: 640px) 45vw, 144px"
-                className="object-cover object-center"
+                className="h-full w-full object-cover object-center"
               />
             </button>
             <button
@@ -728,8 +745,9 @@ function PlayerSquadCard({
       </div>
       {enlarged === 'manager' ? (
         <ImageLightbox
-          src={player.managerImage}
+          src={managerPhotoSrc(player.managerImage)}
           label={managerLabel}
+          useNativeImage
           onClose={() => setEnlarged(null)}
         />
       ) : null}
