@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Saturday across the Americas looked like the fixture computer had been left alone with a grudge: Brazil gave Haiti the kind of 3-0 lecture nobody asked for, the Netherlands put five through Sweden like they were auditioning defenders from a car boot sale, Paraguay nicked Turkey despite the mandatory red-card nonsense, and Germany spent so long having goals scratched off in Toronto that Undav had to come back in added time and write the ending himself. Jon still leads on nineteen, Nest is breathing down his neck on eighteen, Scott and Chris are both on thirteen, Ash and Dave sit level on eleven, and Dave is still sixth in the table because even a Germany winner arrives with a tiny admin fee.';
+  'Sunday opened in Kansas City with Ecuador firing twenty-seven shots at a goalkeeper who looked like he had been smuggled in from a training-camp protest, yet Curaçao still crawled out with a 0-0 and their first World Cup point while Ash and Jon each banked a solitary draw token for the privilege of watching it. Jon leads on twenty, Nest trails on eighteen, Scott and Chris share thirteen, Ash is up to twelve, Dave sits on eleven at the foot of the table, and the only thing more embarrassed than Ecuador’s finishing is Dave still being propped up by Germany’s admin department.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -761,6 +761,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Ivory Coast', tla: 'CIV' },
     homeGoals: 2,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-20-ecu-cuw',
+    utcDate: '2026-06-21T00:00:00Z',
+    homeTeam: { name: 'Ecuador', tla: 'ECU' },
+    awayTeam: { name: 'Curaçao', tla: 'CUW' },
+    homeGoals: 0,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
