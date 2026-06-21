@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Sunday has turned into a tactics board being slowly set on fire: Ecuador and Curaçao produced a nil-nil so sterile it needed a medical swab, Japan filleted Tunisia 4-0, and Spain finally remembered they are meant to be Spain by walloping Saudi Arabia 4-0. Ash and Jon are level on twenty, Nest has slipped to sixteen, Scott and Chris are still parked on thirteen, and Dave remains bottom on eleven, wearing the thousand-yard stare of a manager whose halftime team talk has just been forwarded to HR.';
+  'Sunday has delivered the sort of World Cup highlights reel you would hide from the coaching badges examiner: Ecuador and Curaçao served up a 0-0 with all the cutting edge of a wet envelope, Japan took Tunisia apart 4-0, Spain flattened Saudi Arabia by the same score, and Belgium still could not beat Iran after kindly donating Nathan Ngoy to the disciplinary committee. Ash and Jon remain locked on 20, Nest is third on 16, Scott and Chris sit on 13, and Dave is still bottom on 12, clinging to Iran’s point like it is the last working clipboard in a doomed technical area.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -795,6 +795,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 4,
     awayGoals: 0,
     homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-21-bel-irn',
+    utcDate: '2026-06-21T19:00:00Z',
+    homeTeam: { name: 'Belgium', tla: 'BEL' },
+    awayTeam: { name: 'Iran', tla: 'IRN' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 1,
     awayRedCards: 0,
   },
 ];
