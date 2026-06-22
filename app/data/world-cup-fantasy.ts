@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Monday has opened with New Zealand performing the classic small-nation party trick of taking the lead and then spending the second half looking for the emergency exits: Egypt won 3-1, Salah finally found the big tournament button, and Ash has been charged a point for defensive negligence. Jon is now alone at the top on 20, Ash has slipped to 19, Scott rockets to 18 on Egypt’s three-goal burst, Nest sits on 17, Chris is marooned on 13, and Dave remains bottom on 12, still giving off the energy of a substitute warming up in jeans.';
+  'Monday has become a self-inflicted coaching seminar: New Zealand took the lead against Egypt and then spent the second half defending like someone had unplugged the tactics tablet, before Argentina beat Austria 2-0 and let Scott profit from one of his own teams mugging another. Scott is top on 21 after Messi turned the closing minutes into a testimonial, Jon is second on 20, Ash sits third on 19, Nest has 17, Chris is stranded on 13, and Dave remains bottom on 12, staring at the table like a fourth official who has lost the batteries for the board.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -833,6 +833,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Egypt', tla: 'EGY' },
     homeGoals: 1,
     awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-22-arg-aut',
+    utcDate: '2026-06-22T17:00:00Z',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Austria', tla: 'AUT' },
+    homeGoals: 2,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
