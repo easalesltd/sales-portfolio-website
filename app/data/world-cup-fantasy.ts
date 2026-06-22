@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Sunday has delivered the sort of World Cup highlights reel you would hide from the coaching badges examiner: Ecuador and Curaçao served up a 0-0 with all the cutting edge of a wet envelope, Japan took Tunisia apart 4-0, Spain flattened Saudi Arabia by the same score, and Belgium still could not beat Iran after kindly donating Nathan Ngoy to the disciplinary committee. Ash and Jon remain locked on 20, Nest is third on 16, Scott and Chris sit on 13, and Dave is still bottom on 12, clinging to Iran’s point like it is the last working clipboard in a doomed technical area.';
+  'Sunday closed with Uruguay treating a 2-2 draw against Cape Verde like a tactical masterclass, which is generous when Muslera and Olivera were auditioning for a blooper reel: Ecuador and Curaçao had already bored everyone rigid at 0-0, Japan had filleted Tunisia 4-0, Spain had done the same to Saudi Arabia, and Belgium had somehow drawn Iran after sending Ngoy off. Nest climbs to 17 on Cape Verde’s stubbornness, Scott nudges to 14 on Uruguay’s point, Ash and Jon still share top spot on 20, Chris stays on 13, and Dave remains rooted to the bottom on 12 — still propping up the table on Iran’s solitary draw like a man defending a parking ticket at tribunal.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -380,16 +380,22 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     awayTeam: { name: 'Iran', tla: 'IRN' },
   },
   {
-    id: '2026-06-21-uru-cpv',
-    utcDate: '2026-06-21T22:00:00Z',
-    homeTeam: { name: 'Uruguay', tla: 'URU' },
-    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
-  },
-  {
     id: '2026-06-21-nzl-egy',
     utcDate: '2026-06-22T04:00:00Z',
     homeTeam: { name: 'New Zealand', tla: 'NZL' },
     awayTeam: { name: 'Egypt', tla: 'EGY' },
+  },
+  {
+    id: '2026-06-22-arg-aut',
+    utcDate: '2026-06-22T17:00:00Z',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Austria', tla: 'AUT' },
+  },
+  {
+    id: '2026-06-22-fra-irq',
+    utcDate: '2026-06-22T21:00:00Z',
+    homeTeam: { name: 'France', tla: 'FRA' },
+    awayTeam: { name: 'Iraq', tla: 'IRQ' },
   },
 ];
 
@@ -806,6 +812,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 0,
     awayGoals: 0,
     homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-21-uru-cpv',
+    utcDate: '2026-06-21T22:00:00Z',
+    homeTeam: { name: 'Uruguay', tla: 'URU' },
+    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
     awayRedCards: 0,
   },
 ];
