@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Sunday closed with Uruguay treating a 2-2 draw against Cape Verde like a tactical masterclass, which is generous when Muslera and Olivera were auditioning for a blooper reel: Ecuador and Curaçao had already bored everyone rigid at 0-0, Japan had filleted Tunisia 4-0, Spain had done the same to Saudi Arabia, and Belgium had somehow drawn Iran after sending Ngoy off. Nest climbs to 17 on Cape Verde’s stubbornness, Scott nudges to 14 on Uruguay’s point, Ash and Jon still share top spot on 20, Chris stays on 13, and Dave remains rooted to the bottom on 12 — still propping up the table on Iran’s solitary draw like a man defending a parking ticket at tribunal.';
+  'Monday has opened with New Zealand performing the classic small-nation party trick of taking the lead and then spending the second half looking for the emergency exits: Egypt won 3-1, Salah finally found the big tournament button, and Ash has been charged a point for defensive negligence. Jon is now alone at the top on 20, Ash has slipped to 19, Scott rockets to 18 on Egypt’s three-goal burst, Nest sits on 17, Chris is marooned on 13, and Dave remains bottom on 12, still giving off the energy of a substitute warming up in jeans.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -380,8 +380,8 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     awayTeam: { name: 'Iran', tla: 'IRN' },
   },
   {
-    id: '2026-06-21-nzl-egy',
-    utcDate: '2026-06-22T04:00:00Z',
+    id: '2026-06-22-nzl-egy',
+    utcDate: '2026-06-22T01:00:00Z',
     homeTeam: { name: 'New Zealand', tla: 'NZL' },
     awayTeam: { name: 'Egypt', tla: 'EGY' },
   },
@@ -822,6 +822,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Cape Verde', tla: 'CPV' },
     homeGoals: 2,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-22-nzl-egy',
+    utcDate: '2026-06-22T01:00:00Z',
+    homeTeam: { name: 'New Zealand', tla: 'NZL' },
+    awayTeam: { name: 'Egypt', tla: 'EGY' },
+    homeGoals: 1,
+    awayGoals: 3,
     homeRedCards: 0,
     awayRedCards: 0,
   },
