@@ -85,6 +85,35 @@ function formatMatchScore(homeGoals: number | null, awayGoals: number | null): s
   return `${homeGoals}–${awayGoals}`;
 }
 
+function matchOutcomeLetter(goalsFor: number, goalsAgainst: number): 'W' | 'L' | 'D' {
+  if (goalsFor > goalsAgainst) return 'W';
+  if (goalsFor < goalsAgainst) return 'L';
+  return 'D';
+}
+
+function MatchOutcomeLetter({ outcome }: { outcome: 'W' | 'L' | 'D' }) {
+  const tone =
+    outcome === 'W' ? 'text-lime-400' : outcome === 'L' ? 'text-red-400' : 'text-neutral-400';
+
+  return (
+    <span className={`font-semibold tabular-nums ${tone}`} aria-label={outcome === 'W' ? 'Win' : outcome === 'L' ? 'Loss' : 'Draw'}>
+      {outcome}
+    </span>
+  );
+}
+
+function playerMatchOutcome(
+  match: MatchPointsEntry['match'],
+  teamCodes: readonly string[],
+  helpers: MatchScoringHelpers
+): 'W' | 'L' | 'D' | null {
+  for (const code of teamCodes) {
+    const display = helpers.getTeamMatchDisplay(match, code);
+    if (display) return matchOutcomeLetter(display.goalsFor, display.goalsAgainst);
+  }
+  return null;
+}
+
 function formatResultTickerDate(utcDate: string): string {
   return new Date(utcDate).toLocaleDateString('en-GB', {
     day: '2-digit',
@@ -464,7 +493,8 @@ function TeamResultsPanel({
                 {result.opponentFlag} {result.opponentTla}{' '}
                 <span className="font-medium tabular-nums">
                   {result.goalsFor}–{result.goalsAgainst}
-                </span>
+                </span>{' '}
+                <MatchOutcomeLetter outcome={matchOutcomeLetter(result.goalsFor, result.goalsAgainst)} />
                 {result.redCards > 0 ? (
                   <span className="ml-1 text-red-300">({result.redCards} red)</span>
                 ) : null}
@@ -890,13 +920,7 @@ export default function WorldCupFantasy({
                 ) : (
                   <ul className="space-y-2">
                     {data.recentScoringMatches.map(({ match, byPlayer }) => {
-                      const scorers = data.standings
-                        .filter((player) => byPlayer[player.id] != null)
-                        .map(
-                          (player) =>
-                            `${playerDisplayLabel(player)} ${byPlayer[player.id]! >= 0 ? '+' : ''}${byPlayer[player.id]}`
-                        )
-                        .join(' · ');
+                      const scoringPlayers = data.standings.filter((player) => byPlayer[player.id] != null);
 
                       return (
                         <li
@@ -912,7 +936,23 @@ export default function WorldCupFantasy({
                               {new Date(match.utcDate).toLocaleDateString('en-GB')}
                             </span>
                           </div>
-                          {scorers ? <p className="mt-1 text-xs text-teal-300">{scorers}</p> : null}
+                          {scoringPlayers.length > 0 ? (
+                            <p className="mt-1 text-xs text-teal-300">
+                              {scoringPlayers.map((player, index) => {
+                                const points = byPlayer[player.id]!;
+                                const outcome = playerMatchOutcome(match, player.teams, matchScoringHelpers);
+                                return (
+                                  <span key={player.id}>
+                                    {index > 0 ? ' · ' : null}
+                                    {playerDisplayLabel(player)}{' '}
+                                    {outcome ? <MatchOutcomeLetter outcome={outcome} /> : null}{' '}
+                                    {points >= 0 ? '+' : ''}
+                                    {points}
+                                  </span>
+                                );
+                              })}
+                            </p>
+                          ) : null}
                         </li>
                       );
                     })}
