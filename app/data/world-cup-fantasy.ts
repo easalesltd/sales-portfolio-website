@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Monday has become a self-inflicted coaching seminar: New Zealand took the lead against Egypt and then spent the second half defending like someone had unplugged the tactics tablet, before Argentina beat Austria 2-0 and let Scott profit from one of his own teams mugging another. Scott is top on 21 after Messi turned the closing minutes into a testimonial, Jon is second on 20, Ash sits third on 19, Nest has 17, Chris is stranded on 13, and Dave remains bottom on 12, staring at the table like a fourth official who has lost the batteries for the board.';
+  'The overnight shift has arrived wearing muddy boots and a grin: France swatted Iraq aside 3-0, somehow giving Chris points with one hand and docking him with the other, before Norway beat Senegal 3-2 in a match Dave will be submitting to the authorities as evidence of emotional vandalism. Scott and Nest now share top spot on 21, Jon is tucked in behind on 20, Ash has 19, Chris has climbed to 16, and Dave is bottom on 11, looking less like a manager and more like the bloke sent to retrieve balls from behind the goal after training.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -396,6 +396,42 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-22T21:00:00Z',
     homeTeam: { name: 'France', tla: 'FRA' },
     awayTeam: { name: 'Iraq', tla: 'IRQ' },
+  },
+  {
+    id: '2026-06-23-nor-sen',
+    utcDate: '2026-06-23T00:00:00Z',
+    homeTeam: { name: 'Norway', tla: 'NOR' },
+    awayTeam: { name: 'Senegal', tla: 'SEN' },
+  },
+  {
+    id: '2026-06-23-jor-alg',
+    utcDate: '2026-06-23T03:00:00Z',
+    homeTeam: { name: 'Jordan', tla: 'JOR' },
+    awayTeam: { name: 'Algeria', tla: 'ALG' },
+  },
+  {
+    id: '2026-06-23-por-uzb',
+    utcDate: '2026-06-23T17:00:00Z',
+    homeTeam: { name: 'Portugal', tla: 'POR' },
+    awayTeam: { name: 'Uzbekistan', tla: 'UZB' },
+  },
+  {
+    id: '2026-06-23-eng-gha',
+    utcDate: '2026-06-23T20:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Ghana', tla: 'GHA' },
+  },
+  {
+    id: '2026-06-23-pan-cro',
+    utcDate: '2026-06-23T23:00:00Z',
+    homeTeam: { name: 'Panama', tla: 'PAN' },
+    awayTeam: { name: 'Croatia', tla: 'CRO' },
+  },
+  {
+    id: '2026-06-24-col-cod',
+    utcDate: '2026-06-24T02:00:00Z',
+    homeTeam: { name: 'Colombia', tla: 'COL' },
+    awayTeam: { name: 'Congo DR', tla: 'COD' },
   },
 ];
 
@@ -844,6 +880,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Austria', tla: 'AUT' },
     homeGoals: 2,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-22-fra-irq',
+    utcDate: '2026-06-22T21:00:00Z',
+    homeTeam: { name: 'France', tla: 'FRA' },
+    awayTeam: { name: 'Iraq', tla: 'IRQ' },
+    homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-23-nor-sen',
+    utcDate: '2026-06-23T00:00:00Z',
+    homeTeam: { name: 'Norway', tla: 'NOR' },
+    awayTeam: { name: 'Senegal', tla: 'SEN' },
+    homeGoals: 3,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
