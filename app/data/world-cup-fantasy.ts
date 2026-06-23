@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Tuesday morning has gone full set-piece counselling session: Norway edged Senegal 3-2 to drag Dave through another hedge backwards, then Algeria came from behind to beat Jordan 2-1 and gave him three points with the enthusiasm of a rescue dinghy arriving after the ship has already sunk. Scott and Nest still share top spot on 21, Jon sits on 20 after Jordan folded like a cheap tactics board, Ash has 19, Chris has 16, and Dave is bottom on 14, proudly polishing the wooden spoon as if it is tournament silverware.';
+  'Tuesday has turned into a one-sided group-stage punishment drill: Portugal pasted Uzbekistan 5-0, which gave Dave a proper scoreboard sugar rush while Ash watched Uzbekistan defend like traffic cones with passports. Scott and Nest still share top spot on 21, Jon is right behind on 20, Ash and Dave are now level on 18 after opposite ends of the same hiding, and Chris is bottom on 16, looking like the assistant manager asked to explain the heat map while the dressing room is on fire.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -913,6 +913,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Algeria', tla: 'ALG' },
     homeGoals: 1,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-23-por-uzb',
+    utcDate: '2026-06-23T17:00:00Z',
+    homeTeam: { name: 'Portugal', tla: 'POR' },
+    awayTeam: { name: 'Uzbekistan', tla: 'UZB' },
+    homeGoals: 5,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
