@@ -13,6 +13,11 @@ Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyram
 - Draft used **pre-season outright winner betting odds** within each division (lower decimal = stronger favourite). Each manager gets **exactly one pick at each odds rank** (1st favourite through 7th) spread across the seven divisions.
 - Scoring (`ENGLISH_PYRAMID_FANTASY_SCORING`): **3** win, **1** draw, **+1** clean sheet, **+1** for 3+ goals scored, **−1** for 3+ conceded, **−1** per red card.
 
+## Shared UI
+
+- `EnglishPyramidFantasy.tsx` wraps `WorldCupFantasy.tsx` with pyramid data, scoring helpers, and copy. UI improvements (W/L/D on results, bonus/penalty labels on team lines, manager photo cache busting, lightbox, etc.) belong in `WorldCupFantasy.tsx` and apply to **both** sweepstakes automatically.
+- Per-game scoring display uses `getTeamMatchDisplay()` from `app/lib/english-pyramid-scoring.ts` (clean sheet bonus included).
+
 ## Fixtures and kick-off times
 
 - Maintain `ENGLISH_PYRAMID_FIXTURES` with upcoming games involving our **49 clubs** across all seven divisions.

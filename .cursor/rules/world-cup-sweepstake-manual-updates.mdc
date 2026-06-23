@@ -5,6 +5,10 @@ alwaysApply: true
 
 # World Cup sweepstake manual updates
 
+## Shared UI
+
+- `WorldCupFantasy.tsx` is the shared sweepstake modal. The English pyramid game reuses it via `EnglishPyramidFantasy.tsx`. UI changes (W/L/D on results, bonus/penalty labels, manager photos, lightbox, etc.) should be made once in `WorldCupFantasy.tsx` unless a game needs different copy via props.
+
 When asked to update the World Cup sweepstake scores:
 
 - Use `app/data/world-cup-fantasy.ts` and append to `WORLD_CUP_FANTASY_MANUAL_MATCHES`.

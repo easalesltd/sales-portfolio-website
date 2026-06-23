@@ -160,6 +160,39 @@ function playerMatchOutcome(
   return null;
 }
 
+function MatchScoringPlayersLine({
+  players,
+  byPlayer,
+  match,
+  matchScoringHelpers,
+}: {
+  players: PlayerStanding[];
+  byPlayer: Record<string, number>;
+  match: MatchPointsEntry['match'];
+  matchScoringHelpers: MatchScoringHelpers;
+}) {
+  const scoringPlayers = players.filter((player) => byPlayer[player.id] != null);
+  if (scoringPlayers.length === 0) return null;
+
+  return (
+    <>
+      {scoringPlayers.map((player, index) => {
+        const points = byPlayer[player.id]!;
+        const outcome = playerMatchOutcome(match, player.teams, matchScoringHelpers);
+        return (
+          <span key={player.id}>
+            {index > 0 ? ' · ' : null}
+            {playerDisplayLabel(player)}{' '}
+            {outcome ? <MatchOutcomeLetter outcome={outcome} /> : null}{' '}
+            {points >= 0 ? '+' : ''}
+            {points}
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
 function formatResultTickerDate(utcDate: string): string {
   return new Date(utcDate).toLocaleDateString('en-GB', {
     day: '2-digit',
@@ -280,9 +313,11 @@ function UpcomingFixtures({ fixtures }: { fixtures: UpcomingFixtureEntry[] }) {
 function LatestResultsTicker({
   matches,
   standings,
+  matchScoringHelpers,
 }: {
   matches: MatchPointsEntry[];
   standings: PlayerStanding[];
+  matchScoringHelpers: MatchScoringHelpers;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const resultCount = matches.length;
@@ -308,13 +343,7 @@ function LatestResultsTicker({
 
   const renderResultCard = (entry: MatchPointsEntry, index: number) => {
     const { match, byPlayer } = entry;
-    const scorers = standings
-      .filter((player) => byPlayer[player.id] != null)
-      .map((player) => {
-        const points = byPlayer[player.id]!;
-        return `${playerDisplayLabel(player)} ${points >= 0 ? '+' : ''}${points}`;
-      })
-      .join(' · ');
+    const scoringPlayers = standings.filter((player) => byPlayer[player.id] != null);
 
     return (
       <article
@@ -334,8 +363,15 @@ function LatestResultsTicker({
             <span>{match.awayTeam.tla}</span>
           </div>
         </div>
-        {scorers ? (
-          <p className="mt-1.5 truncate text-center text-[11px] font-medium text-teal-200 sm:text-xs">{scorers}</p>
+        {scoringPlayers.length > 0 ? (
+          <p className="mt-1.5 truncate text-center text-[11px] font-medium text-teal-200 sm:text-xs">
+            <MatchScoringPlayersLine
+              players={standings}
+              byPlayer={byPlayer}
+              match={match}
+              matchScoringHelpers={matchScoringHelpers}
+            />
+          </p>
         ) : null}
       </article>
     );
@@ -922,7 +958,11 @@ export default function WorldCupFantasy({
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (
             <div className="space-y-6">
-              <LatestResultsTicker matches={data.recentScoringMatches} standings={data.standings} />
+              <LatestResultsTicker
+                matches={data.recentScoringMatches}
+                standings={data.standings}
+                matchScoringHelpers={matchScoringHelpers}
+              />
 
               <section className="rounded-lg border border-amber-800/60 bg-amber-950/20 px-4 py-3">
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-amber-200">Daily roast</h3>
@@ -979,19 +1019,12 @@ export default function WorldCupFantasy({
                           </div>
                           {scoringPlayers.length > 0 ? (
                             <p className="mt-1 text-xs text-teal-300">
-                              {scoringPlayers.map((player, index) => {
-                                const points = byPlayer[player.id]!;
-                                const outcome = playerMatchOutcome(match, player.teams, matchScoringHelpers);
-                                return (
-                                  <span key={player.id}>
-                                    {index > 0 ? ' · ' : null}
-                                    {playerDisplayLabel(player)}{' '}
-                                    {outcome ? <MatchOutcomeLetter outcome={outcome} /> : null}{' '}
-                                    {points >= 0 ? '+' : ''}
-                                    {points}
-                                  </span>
-                                );
-                              })}
+                              <MatchScoringPlayersLine
+                                players={data.standings}
+                                byPlayer={byPlayer}
+                                match={match}
+                                matchScoringHelpers={matchScoringHelpers}
+                              />
                             </p>
                           ) : null}
                         </li>
