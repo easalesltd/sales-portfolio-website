@@ -273,6 +273,12 @@ export type TeamMatchDisplay = {
   points: number;
   /** Optional breakdown, e.g. "3 + CS + 3+" for English pyramid. */
   pointsBreakdown?: string;
+  /** +1 when the team scores 3+ goals. */
+  scoringBonus?: number;
+  /** +1 clean sheet bonus (English pyramid). */
+  cleanSheetBonus?: number;
+  /** −1 when the team concedes 3+ goals. */
+  concededPenalty?: number;
   redCards: number;
   isHome: boolean;
 };
@@ -288,6 +294,7 @@ export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
   const opponent = side.isHome ? match.awayTeam : match.homeTeam;
   const opponentMeta = WORLD_CUP_TEAM_BY_CODE[opponent.tla];
+  const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards);
 
   return {
     matchId: match.id,
@@ -297,7 +304,9 @@ export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string
     opponentFlag: opponentMeta?.flag ?? '',
     goalsFor,
     goalsAgainst,
-    points: scoreTeamMatch(goalsFor, goalsAgainst, redCards).total,
+    points: scored.total,
+    scoringBonus: scored.bonus > 0 ? scored.bonus : undefined,
+    concededPenalty: scored.concededPenalty < 0 ? scored.concededPenalty : undefined,
     redCards,
     isHome: side.isHome,
   };

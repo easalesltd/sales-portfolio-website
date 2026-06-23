@@ -102,6 +102,52 @@ function MatchOutcomeLetter({ outcome }: { outcome: 'W' | 'L' | 'D' }) {
   );
 }
 
+function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
+  const items: { key: string; label: string; className: string }[] = [];
+
+  if (result.scoringBonus && result.scoringBonus > 0) {
+    items.push({
+      key: 'scored',
+      label: `(+${result.scoringBonus}, ${result.goalsFor} goals scored)`,
+      className: 'text-lime-400',
+    });
+  }
+  if (result.cleanSheetBonus && result.cleanSheetBonus > 0) {
+    items.push({
+      key: 'cs',
+      label: `(+${result.cleanSheetBonus}, clean sheet)`,
+      className: 'text-lime-400',
+    });
+  }
+  if (result.concededPenalty && result.concededPenalty < 0) {
+    items.push({
+      key: 'conc',
+      label: `(${result.concededPenalty}, ${result.goalsAgainst} goals conceded)`,
+      className: 'text-red-300',
+    });
+  }
+  if (result.redCards > 0) {
+    const penalty = -result.redCards;
+    items.push({
+      key: 'red',
+      label: `(${penalty}, ${result.redCards === 1 ? 'red card' : 'red cards'})`,
+      className: 'text-red-300',
+    });
+  }
+
+  if (items.length === 0) return null;
+
+  return (
+    <span className="ml-1 inline-flex flex-wrap gap-x-1">
+      {items.map((item) => (
+        <span key={item.key} className={item.className}>
+          {item.label}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 function playerMatchOutcome(
   match: MatchPointsEntry['match'],
   teamCodes: readonly string[],
@@ -495,16 +541,11 @@ function TeamResultsPanel({
                   {result.goalsFor}–{result.goalsAgainst}
                 </span>{' '}
                 <MatchOutcomeLetter outcome={matchOutcomeLetter(result.goalsFor, result.goalsAgainst)} />
-                {result.redCards > 0 ? (
-                  <span className="ml-1 text-red-300">({result.redCards} red)</span>
-                ) : null}
+                <TeamMatchAdjustments result={result} />
               </span>
               <span className="shrink-0 font-semibold tabular-nums text-teal-300">
                 {result.points >= 0 ? '+' : ''}
                 {result.points} pts
-                {result.pointsBreakdown ? (
-                  <span className="ml-1 font-normal text-neutral-500">({result.pointsBreakdown})</span>
-                ) : null}
               </span>
             </li>
           ))}

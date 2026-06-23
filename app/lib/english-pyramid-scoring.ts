@@ -280,6 +280,12 @@ export type TeamMatchDisplay = {
   goalsAgainst: number;
   points: number;
   pointsBreakdown?: string;
+  /** +1 when the team scores 3+ goals. */
+  scoringBonus?: number;
+  /** +1 clean sheet bonus. */
+  cleanSheetBonus?: number;
+  /** −1 when the team concedes 3+ goals. */
+  concededPenalty?: number;
   redCards: number;
   isHome: boolean;
 };
@@ -316,6 +322,9 @@ export function getTeamMatchDisplay(match: EnglishPyramidMatchResult, teamCode: 
     goalsAgainst,
     points: scored.total,
     pointsBreakdown: formatEnglishPyramidPointsBreakdown(scored),
+    scoringBonus: scored.bonus > 0 ? scored.bonus : undefined,
+    cleanSheetBonus: scored.cleanSheetBonus > 0 ? scored.cleanSheetBonus : undefined,
+    concededPenalty: scored.concededPenalty < 0 ? scored.concededPenalty : undefined,
     redCards,
     isHome: side.isHome,
   };
