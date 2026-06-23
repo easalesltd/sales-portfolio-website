@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Tuesday has turned into a one-sided group-stage punishment drill: Portugal pasted Uzbekistan 5-0, which gave Dave a proper scoreboard sugar rush while Ash watched Uzbekistan defend like traffic cones with passports. Scott and Nest still share top spot on 21, Jon is right behind on 20, Ash and Dave are now level on 18 after opposite ends of the same hiding, and Chris is bottom on 16, looking like the assistant manager asked to explain the heat map while the dressing room is on fire.';
+  'Tuesday has gone from punishment drill to tactical sleep clinic: Portugal had already pasted Uzbekistan 5-0, then England and Ghana produced a 0-0 so low on end product it should be made to train with the cones. Nest is now top on 22, Scott is second on 21, Jon sits on 20, Ash has edged to 19, Dave has 18, and Chris is bottom on 16, holding the clipboard upside down and hoping nobody asks where the goals went.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -923,6 +923,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Portugal', tla: 'POR' },
     awayTeam: { name: 'Uzbekistan', tla: 'UZB' },
     homeGoals: 5,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-23-eng-gha',
+    utcDate: '2026-06-23T20:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Ghana', tla: 'GHA' },
+    homeGoals: 0,
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
