@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'The overnight shift has arrived wearing muddy boots and a grin: France swatted Iraq aside 3-0, somehow giving Chris points with one hand and docking him with the other, before Norway beat Senegal 3-2 in a match Dave will be submitting to the authorities as evidence of emotional vandalism. Scott and Nest now share top spot on 21, Jon is tucked in behind on 20, Ash has 19, Chris has climbed to 16, and Dave is bottom on 11, looking less like a manager and more like the bloke sent to retrieve balls from behind the goal after training.';
+  'Tuesday morning has gone full set-piece counselling session: Norway edged Senegal 3-2 to drag Dave through another hedge backwards, then Algeria came from behind to beat Jordan 2-1 and gave him three points with the enthusiasm of a rescue dinghy arriving after the ship has already sunk. Scott and Nest still share top spot on 21, Jon sits on 20 after Jordan folded like a cheap tactics board, Ash has 19, Chris has 16, and Dave is bottom on 14, proudly polishing the wooden spoon as if it is tournament silverware.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -901,6 +901,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Norway', tla: 'NOR' },
     awayTeam: { name: 'Senegal', tla: 'SEN' },
     homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-23-jor-alg',
+    utcDate: '2026-06-23T03:00:00Z',
+    homeTeam: { name: 'Jordan', tla: 'JOR' },
+    awayTeam: { name: 'Algeria', tla: 'ALG' },
+    homeGoals: 1,
     awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
