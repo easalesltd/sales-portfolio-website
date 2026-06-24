@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Tuesday has gone from punishment drill to tactical sleep clinic: Portugal had already pasted Uzbekistan 5-0, then England and Ghana produced a 0-0 so low on end product it should be made to train with the cones. Nest is now top on 22, Scott is second on 21, Jon sits on 20, Ash has edged to 19, Dave has 18, and Chris is bottom on 16, holding the clipboard upside down and hoping nobody asks where the goals went.';
+  'Wednesday has opened with the night shift handing out points like loose change from a tracksuit pocket: Croatia nicked a 1-0 off Panama, then Colombia did the same to Congo DR, two tiny scorelines causing maximum fantasy-admin paperwork. Scott is top on 24 thanks to Croatia’s late-accountancy football, Nest is second on 22, Jon has 20, Ash and Chris are level on 19, and Dave is bottom on 18, staring at Panama and Congo DR like they have both just missed an open goal in his living room.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -432,6 +432,42 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-24T02:00:00Z',
     homeTeam: { name: 'Colombia', tla: 'COL' },
     awayTeam: { name: 'Congo DR', tla: 'COD' },
+  },
+  {
+    id: '2026-06-24-sui-can',
+    utcDate: '2026-06-24T19:00:00Z',
+    homeTeam: { name: 'Switzerland', tla: 'SUI' },
+    awayTeam: { name: 'Canada', tla: 'CAN' },
+  },
+  {
+    id: '2026-06-24-bih-qat',
+    utcDate: '2026-06-24T19:00:00Z',
+    homeTeam: { name: 'Bosnia-Herzegovina', tla: 'BIH' },
+    awayTeam: { name: 'Qatar', tla: 'QAT' },
+  },
+  {
+    id: '2026-06-24-sco-bra',
+    utcDate: '2026-06-24T22:00:00Z',
+    homeTeam: { name: 'Scotland', tla: 'SCO' },
+    awayTeam: { name: 'Brazil', tla: 'BRA' },
+  },
+  {
+    id: '2026-06-24-mar-hai',
+    utcDate: '2026-06-24T22:00:00Z',
+    homeTeam: { name: 'Morocco', tla: 'MAR' },
+    awayTeam: { name: 'Haiti', tla: 'HAI' },
+  },
+  {
+    id: '2026-06-24-cze-mex',
+    utcDate: '2026-06-25T01:00:00Z',
+    homeTeam: { name: 'Czechia', tla: 'CZE' },
+    awayTeam: { name: 'Mexico', tla: 'MEX' },
+  },
+  {
+    id: '2026-06-24-rsa-kor',
+    utcDate: '2026-06-25T01:00:00Z',
+    homeTeam: { name: 'South Africa', tla: 'RSA' },
+    awayTeam: { name: 'South Korea', tla: 'KOR' },
   },
 ];
 
@@ -934,6 +970,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'England', tla: 'ENG' },
     awayTeam: { name: 'Ghana', tla: 'GHA' },
     homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-23-pan-cro',
+    utcDate: '2026-06-23T23:00:00Z',
+    homeTeam: { name: 'Panama', tla: 'PAN' },
+    awayTeam: { name: 'Croatia', tla: 'CRO' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-24-col-cod',
+    utcDate: '2026-06-24T02:00:00Z',
+    homeTeam: { name: 'Colombia', tla: 'COL' },
+    awayTeam: { name: 'Congo DR', tla: 'COD' },
+    homeGoals: 1,
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
