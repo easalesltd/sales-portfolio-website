@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Wednesday ran the full gamut from Seattle’s graveyard shift to Vancouver’s Group B curtain-raiser: Croatia and Colombia both squeezed out 1-0 wins over Panama and Congo DR, then Switzerland edged Canada 2-1 and Bosnia put three past Qatar to settle the evening. Nest leads on 25, Scott and Chris are locked on 23 after Chris watched Canada and Qatar leak points again, Jon stays on 20 despite Switzerland doing him a favour, Ash has 19, and Dave remains bottom on 18 — Bosnia’s three-goal haul was welcome, but not enough to lift him off the floor.';
+  'Wednesday served up three results and zero ambiguity: Colombia edged Congo DR, Switzerland held off Canada, and Bosnia put three past Qatar without breaking sweat. Nest leads on 25 after Switzerland did the business, Chris and Scott are level on 23 — Chris cashing in on Colombia and a three-goal Bosnia burst, Scott watching Canada and Qatar leak points on the same evening — Jon has 20, Ash has 19, and Dave stays bottom on 18 with Congo DR contributing absolutely nothing.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
