@@ -467,3 +467,64 @@ export function computeStandings(
 
   return { standings, allScoringMatches, recentScoringMatches };
 }
+
+export type PlayerProgressPoint = {
+  index: number;
+  label: string;
+  utcDate: string;
+  total: number;
+};
+
+export type PlayerProgressSeries = {
+  playerId: string;
+  label: string;
+  crest: string;
+  points: PlayerProgressPoint[];
+  currentTotal: number;
+};
+
+export function buildPlayerProgressSeries(
+  players: readonly Pick<PlayerStanding, 'id' | 'name' | 'teamName' | 'clubCrest'>[],
+  scoringMatches: MatchPointsEntry[]
+): PlayerProgressSeries[] {
+  const chronological = [...scoringMatches].reverse();
+  const snapshots: Record<string, number>[] = [
+    Object.fromEntries(players.map((player) => [player.id, 0])),
+  ];
+
+  for (const entry of chronological) {
+    const next = { ...snapshots[snapshots.length - 1] };
+    for (const player of players) {
+      next[player.id] += entry.byPlayer[player.id] ?? 0;
+    }
+    snapshots.push(next);
+  }
+
+  const pointsTimeline: Omit<PlayerProgressPoint, 'total'>[] = [
+    { index: 0, label: 'Start', utcDate: chronological[0]?.match.utcDate ?? '' },
+    ...chronological.map((entry, matchIndex) => ({
+      index: matchIndex + 1,
+      label: new Date(entry.match.utcDate).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        timeZone: 'UTC',
+      }),
+      utcDate: entry.match.utcDate,
+    })),
+  ];
+
+  return players.map((player) => {
+    const points = pointsTimeline.map((point, index) => ({
+      ...point,
+      total: snapshots[index][player.id] ?? 0,
+    }));
+
+    return {
+      playerId: player.id,
+      label: player.teamName ?? player.name,
+      crest: player.clubCrest,
+      points,
+      currentTotal: snapshots[snapshots.length - 1][player.id] ?? 0,
+    };
+  });
+}

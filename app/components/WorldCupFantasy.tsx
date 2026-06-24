@@ -13,7 +13,11 @@ import type {
   TeamStanding,
   UpcomingFixtureEntry,
 } from '@/app/lib/world-cup-scoring';
-import { getTeamMatchDisplay as getWorldCupTeamMatchDisplay, matchInvolvesTeam as worldCupMatchInvolvesTeam } from '@/app/lib/world-cup-scoring';
+import {
+  buildPlayerProgressSeries,
+  getTeamMatchDisplay as getWorldCupTeamMatchDisplay,
+  matchInvolvesTeam as worldCupMatchInvolvesTeam,
+} from '@/app/lib/world-cup-scoring';
 
 type SweepstakeResponse = WorldCupFantasyResponse | EnglishPyramidFantasyResponse;
 
@@ -40,6 +44,8 @@ type Props = {
   matchScoringHelpers?: MatchScoringHelpers;
   noResultsMessage?: string;
   resultsUpdateNote?: string;
+  progressChartTitle?: string;
+  progressChartDescription?: string;
 };
 
 const DEFAULT_API_PATH = '/api/world-cup-fantasy';
@@ -63,6 +69,23 @@ const SCORING_RULES = [
   '−1 for 3+ conceded',
   '−1 per red card',
 ] as const;
+
+const PROGRESS_LINE_COLORS = [
+  '#2dd4bf',
+  '#84cc16',
+  '#38bdf8',
+  '#fbbf24',
+  '#f87171',
+  '#c084fc',
+  '#fb923c',
+] as const;
+
+const PROGRESS_CHART = {
+  height: 300,
+  xStep: 14,
+  crestSize: 24,
+  padding: { top: 28, right: 32, bottom: 40, left: 44 },
+} as const;
 
 function ScoringRulesBlock({ rules = SCORING_RULES }: { rules?: readonly string[] }) {
   return (
@@ -435,6 +458,151 @@ function PlayerIdentity({
   }
 
   return <span className="font-medium text-white">{player.name}</span>;
+}
+
+function progressLineColor(index: number): string {
+  return PROGRESS_LINE_COLORS[index % PROGRESS_LINE_COLORS.length];
+}
+
+function StandingsProgressChart({
+  standings,
+  scoringMatches,
+}: {
+  standings: PlayerStanding[];
+  scoringMatches: MatchPointsEntry[];
+}) {
+  const finishedMatchCount = scoringMatches.length;
+  if (finishedMatchCount === 0) {
+    return (
+      <p className="mt-2 text-sm text-neutral-400">Progress chart fills in once the first results are recorded.</p>
+    );
+  }
+
+  const series = buildPlayerProgressSeries(standings, scoringMatches);
+  const pointCount = series[0]?.points.length ?? 0;
+  const { height, xStep, crestSize, padding } = PROGRESS_CHART;
+  const chartWidth = padding.left + padding.right + Math.max(1, pointCount - 1) * xStep;
+  const plotHeight = height - padding.top - padding.bottom;
+  const allTotals = series.flatMap((row) => row.points.map((point) => point.total));
+  const yMax = Math.max(...allTotals, 1);
+  const yMin = Math.min(0, ...allTotals);
+  const yRange = Math.max(yMax - yMin, 1);
+
+  const xForIndex = (index: number) => padding.left + index * xStep;
+  const yForTotal = (total: number) =>
+    padding.top + plotHeight - ((total - yMin) / yRange) * plotHeight;
+
+  const yTicks = Array.from({ length: 5 }, (_, tickIndex) => {
+    const value = yMin + (yRange * tickIndex) / 4;
+    return { value: Math.round(value), y: yForTotal(value) };
+  });
+
+  const xLabelStride = Math.max(1, Math.ceil((pointCount - 1) / 8));
+  const xLabels = series[0]?.points.filter((_, index) => index === 0 || index % xLabelStride === 0 || index === pointCount - 1) ?? [];
+
+  return (
+    <div className="mt-3 space-y-3">
+      <div className="overflow-x-auto rounded-lg border border-neutral-700/80 bg-neutral-950/50">
+        <svg
+          role="img"
+          aria-label="Cumulative fantasy points by manager across the tournament"
+          viewBox={`0 0 ${chartWidth} ${height}`}
+          className="min-w-full"
+          style={{ width: Math.max(chartWidth, 320), height }}
+        >
+          {yTicks.map((tick) => (
+            <g key={tick.value}>
+              <line
+                x1={padding.left}
+                x2={chartWidth - padding.right}
+                y1={tick.y}
+                y2={tick.y}
+                stroke="rgba(115,115,115,0.25)"
+                strokeDasharray="4 4"
+              />
+              <text
+                x={padding.left - 8}
+                y={tick.y + 4}
+                textAnchor="end"
+                className="fill-neutral-500 text-[10px]"
+              >
+                {tick.value}
+              </text>
+            </g>
+          ))}
+
+          {xLabels.map((point) => (
+            <text
+              key={`${point.index}-${point.label}`}
+              x={xForIndex(point.index)}
+              y={height - 12}
+              textAnchor="middle"
+              className="fill-neutral-500 text-[10px]"
+            >
+              {point.label}
+            </text>
+          ))}
+
+          {series.map((row, seriesIndex) => {
+            const color = progressLineColor(seriesIndex);
+            const path = row.points
+              .map((point, index) => {
+                const x = xForIndex(index);
+                const y = yForTotal(point.total);
+                return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
+              })
+              .join(' ');
+            const last = row.points[row.points.length - 1];
+            const markerX = xForIndex(last.index);
+            const markerY = yForTotal(last.total);
+            const clipId = `progress-crest-${row.playerId}`;
+
+            return (
+              <g key={row.playerId}>
+                <path d={path} fill="none" stroke={color} strokeWidth={2.25} strokeLinejoin="round" strokeLinecap="round" />
+                <circle cx={markerX} cy={markerY} r={crestSize / 2 + 2} fill="#0a0a0a" stroke={color} strokeWidth={2} />
+                <defs>
+                  <clipPath id={clipId}>
+                    <circle cx={markerX} cy={markerY} r={crestSize / 2 - 1} />
+                  </clipPath>
+                </defs>
+                <image
+                  href={row.crest}
+                  x={markerX - crestSize / 2}
+                  y={markerY - crestSize / 2}
+                  width={crestSize}
+                  height={crestSize}
+                  clipPath={`url(#${clipId})`}
+                  preserveAspectRatio="xMidYMid meet"
+                />
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-neutral-300">
+        {series
+          .slice()
+          .sort((a, b) => b.currentTotal - a.currentTotal)
+          .map((row) => {
+            const colorIndex = series.findIndex((entry) => entry.playerId === row.playerId);
+            return (
+              <li key={row.playerId} className="flex items-center gap-2">
+                <span
+                  className="inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-900"
+                  style={{ boxShadow: `0 0 0 1px ${progressLineColor(colorIndex)}` }}
+                >
+                  <img src={row.crest} alt="" className="max-h-full max-w-full object-contain p-0.5" />
+                </span>
+                <span className="font-medium text-white">{row.label}</span>
+                <span className="tabular-nums text-teal-300">{row.currentTotal} pts</span>
+              </li>
+            );
+          })}
+      </ul>
+    </div>
+  );
 }
 
 function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
@@ -883,6 +1051,8 @@ export default function WorldCupFantasy({
   matchScoringHelpers = DEFAULT_MATCH_SCORING_HELPERS,
   noResultsMessage = 'No finished matches yet — check back once the World Cup starts.',
   resultsUpdateNote = 'Scores are updated manually after full-time. Previous results stay recorded, so only newly finished matches need adding.',
+  progressChartTitle = 'Tournament progress',
+  progressChartDescription = 'Cumulative points after each recorded result — crest marks current total.',
 }: Props) {
   const [data, setData] = useState<SweepstakeResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -975,6 +1145,12 @@ export default function WorldCupFantasy({
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Overall standings</h3>
                 <OverallStandings standings={data.standings} />
                 <ScoringRulesBlock rules={scoringRules} />
+              </section>
+
+              <section>
+                <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-teal-300">{progressChartTitle}</h3>
+                <p className="text-xs text-neutral-500">{progressChartDescription}</p>
+                <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
               </section>
 
               <section>

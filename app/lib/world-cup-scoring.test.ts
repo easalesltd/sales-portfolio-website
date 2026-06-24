@@ -1,5 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import {
+  buildPlayerProgressSeries,
   computeStandings,
   getTeamMatchDisplay,
   getUpcomingFixtures,
@@ -205,5 +206,21 @@ describe('computeStandings', () => {
       points: 3,
     });
     expect(getTeamMatchDisplay(match, 'BRA')).toBeNull();
+  });
+});
+
+describe('buildPlayerProgressSeries', () => {
+  it('builds cumulative totals in chronological order', () => {
+    const { allScoringMatches } = computeStandings(players, matches);
+    const series = buildPlayerProgressSeries(players, allScoringMatches);
+
+    expect(series).toHaveLength(2);
+    const chris = series.find((row) => row.playerId === 'saka-potatoes');
+    const higherGd = series.find((row) => row.playerId === 'higher-gd');
+
+    expect(chris?.points.map((point) => point.total)).toEqual([0, 3, 3]);
+    expect(higherGd?.points.map((point) => point.total)).toEqual([0, 0, 3]);
+    expect(chris?.currentTotal).toBe(3);
+    expect(higherGd?.currentTotal).toBe(3);
   });
 });
