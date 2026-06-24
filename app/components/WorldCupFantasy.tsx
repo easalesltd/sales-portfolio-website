@@ -489,7 +489,6 @@ function StandingsProgressChart({
   const series = buildPlayerProgressSeries(standings, scoringMatches);
   const pointCount = series[0]?.points.length ?? 0;
   const { height, xStep, crestSize, lineWidth, yHeadroomPoints, padding } = PROGRESS_CHART;
-  const chartWidth = padding.left + padding.right + Math.max(1, pointCount - 1) * xStep;
   const plotHeight = height - padding.top - padding.bottom;
   const allTotals = series.flatMap((row) => row.points.map((point) => point.total));
   const dataMin = Math.min(...allTotals);
@@ -498,7 +497,6 @@ function StandingsProgressChart({
   const yMax = dataMax + yHeadroomPoints;
   const yRange = Math.max(yMax - yMin, 1);
   const selectedSeries = selectedPlayerId ? series.find((row) => row.playerId === selectedPlayerId) : null;
-  const selectedStanding = selectedPlayerId ? standings.find((row) => row.id === selectedPlayerId) : null;
 
   const xForIndex = (index: number) => padding.left + index * xStep;
   const yForTotal = (total: number) =>
@@ -516,27 +514,17 @@ function StandingsProgressChart({
     setSelectedPlayerId((current) => (current === playerId ? null : playerId));
   };
 
+  const selectedStanding = selectedPlayerId ? standings.find((row) => row.id === selectedPlayerId) : null;
+  const selectedLabelText =
+    selectedSeries && selectedStanding
+      ? `${selectedStanding.teamName ?? selectedSeries.label} · ${selectedSeries.currentTotal} pts`
+      : '';
+  const selectedLabelWidth = selectedLabelText ? Math.max(108, selectedLabelText.length * 6.2 + 20) : 0;
+  const chartWidth =
+    padding.left + padding.right + selectedLabelWidth + Math.max(1, pointCount - 1) * xStep;
+
   return (
     <div className="mt-3 space-y-3">
-      <div
-        className={`min-h-[2.5rem] rounded-md border px-3 py-2 text-sm ${
-          selectedSeries && selectedStanding
-            ? 'border-teal-700/60 bg-teal-950/30 text-white'
-            : 'border-transparent bg-transparent text-neutral-500'
-        }`}
-        aria-live="polite"
-      >
-        {selectedSeries && selectedStanding ? (
-          <span>
-            <span className="font-semibold text-teal-200">{progressTeamLabel(selectedStanding)}</span>
-            <span className="text-neutral-400"> — </span>
-            <span className="tabular-nums text-teal-300">{selectedSeries.currentTotal} pts</span>
-          </span>
-        ) : (
-          <span className="text-xs sm:text-sm">Tap a crest on the chart to see the team name.</span>
-        )}
-      </div>
-
       <div className="overflow-x-auto overflow-y-visible rounded-lg border border-neutral-700/80 bg-neutral-950/50">
         <svg
           role="img"
@@ -593,7 +581,11 @@ function StandingsProgressChart({
             const markerY = yForTotal(last.total);
             const clipId = `progress-crest-${row.playerId}`;
             const standing = standings.find((entry) => entry.id === row.playerId);
+            const teamName = standing?.teamName ?? row.label;
             const teamLabel = standing ? progressTeamLabel(standing) : row.label;
+            const labelX = markerX + crestSize / 2 + 8;
+            const labelText = `${teamName} · ${row.currentTotal} pts`;
+            const labelWidth = Math.max(96, labelText.length * 6.2 + 16);
 
             return (
               <g key={row.playerId} opacity={selectedPlayerId && !isSelected ? 0.35 : 1}>
@@ -650,11 +642,39 @@ function StandingsProgressChart({
                     pointerEvents="none"
                   />
                 </g>
+                {isSelected ? (
+                  <g aria-hidden={false} pointerEvents="none">
+                    <rect
+                      x={labelX}
+                      y={markerY - 13}
+                      width={labelWidth}
+                      height={26}
+                      rx={6}
+                      fill="#0a0a0a"
+                      stroke={color}
+                      strokeWidth={1.5}
+                    />
+                    <text
+                      x={labelX + 8}
+                      y={markerY + 4}
+                      className="fill-white text-[11px] font-semibold"
+                    >
+                      {teamName}
+                      <tspan className="fill-teal-300" dx={6}>
+                        {row.currentTotal} pts
+                      </tspan>
+                    </text>
+                  </g>
+                ) : null}
               </g>
             );
           })}
         </svg>
       </div>
+
+      <p className="text-xs text-neutral-500">
+        Tap a crest on the chart to see the team name and current points.
+      </p>
 
       <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-neutral-300">
         {series
