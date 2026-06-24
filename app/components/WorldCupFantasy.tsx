@@ -81,10 +81,11 @@ const PROGRESS_LINE_COLORS = [
 ] as const;
 
 const PROGRESS_CHART = {
-  height: 300,
-  xStep: 14,
-  crestSize: 24,
-  padding: { top: 28, right: 32, bottom: 40, left: 44 },
+  height: 320,
+  xStep: 24,
+  crestSize: 28,
+  lineWidth: 3,
+  padding: { top: 32, right: 40, bottom: 44, left: 44 },
 } as const;
 
 function ScoringRulesBlock({ rules = SCORING_RULES }: { rules?: readonly string[] }) {
@@ -464,6 +465,10 @@ function progressLineColor(index: number): string {
   return PROGRESS_LINE_COLORS[index % PROGRESS_LINE_COLORS.length];
 }
 
+function progressTeamLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): string {
+  return player.teamName ? `${player.teamName} (${player.name})` : player.name;
+}
+
 function StandingsProgressChart({
   standings,
   scoringMatches,
@@ -471,7 +476,9 @@ function StandingsProgressChart({
   standings: PlayerStanding[];
   scoringMatches: MatchPointsEntry[];
 }) {
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const finishedMatchCount = scoringMatches.length;
+
   if (finishedMatchCount === 0) {
     return (
       <p className="mt-2 text-sm text-neutral-400">Progress chart fills in once the first results are recorded.</p>
@@ -480,13 +487,15 @@ function StandingsProgressChart({
 
   const series = buildPlayerProgressSeries(standings, scoringMatches);
   const pointCount = series[0]?.points.length ?? 0;
-  const { height, xStep, crestSize, padding } = PROGRESS_CHART;
+  const { height, xStep, crestSize, lineWidth, padding } = PROGRESS_CHART;
   const chartWidth = padding.left + padding.right + Math.max(1, pointCount - 1) * xStep;
   const plotHeight = height - padding.top - padding.bottom;
   const allTotals = series.flatMap((row) => row.points.map((point) => point.total));
   const yMax = Math.max(...allTotals, 1);
   const yMin = Math.min(0, ...allTotals);
   const yRange = Math.max(yMax - yMin, 1);
+  const selectedSeries = selectedPlayerId ? series.find((row) => row.playerId === selectedPlayerId) : null;
+  const selectedStanding = selectedPlayerId ? standings.find((row) => row.id === selectedPlayerId) : null;
 
   const xForIndex = (index: number) => padding.left + index * xStep;
   const yForTotal = (total: number) =>
@@ -497,18 +506,41 @@ function StandingsProgressChart({
     return { value: Math.round(value), y: yForTotal(value) };
   });
 
-  const xLabelStride = Math.max(1, Math.ceil((pointCount - 1) / 8));
+  const xLabelStride = Math.max(1, Math.ceil((pointCount - 1) / 10));
   const xLabels = series[0]?.points.filter((_, index) => index === 0 || index % xLabelStride === 0 || index === pointCount - 1) ?? [];
+
+  const toggleSelectedPlayer = (playerId: string) => {
+    setSelectedPlayerId((current) => (current === playerId ? null : playerId));
+  };
 
   return (
     <div className="mt-3 space-y-3">
+      <div
+        className={`min-h-[2.5rem] rounded-md border px-3 py-2 text-sm ${
+          selectedSeries && selectedStanding
+            ? 'border-teal-700/60 bg-teal-950/30 text-white'
+            : 'border-transparent bg-transparent text-neutral-500'
+        }`}
+        aria-live="polite"
+      >
+        {selectedSeries && selectedStanding ? (
+          <span>
+            <span className="font-semibold text-teal-200">{progressTeamLabel(selectedStanding)}</span>
+            <span className="text-neutral-400"> — </span>
+            <span className="tabular-nums text-teal-300">{selectedSeries.currentTotal} pts</span>
+          </span>
+        ) : (
+          <span className="text-xs sm:text-sm">Tap a crest on the chart to see the team name.</span>
+        )}
+      </div>
+
       <div className="overflow-x-auto rounded-lg border border-neutral-700/80 bg-neutral-950/50">
         <svg
           role="img"
           aria-label="Cumulative fantasy points by manager across the tournament"
           viewBox={`0 0 ${chartWidth} ${height}`}
-          className="min-w-full"
-          style={{ width: Math.max(chartWidth, 320), height }}
+          className="block min-w-full"
+          style={{ width: chartWidth, height, minWidth: '100%' }}
         >
           {yTicks.map((tick) => (
             <g key={tick.value}>
@@ -545,6 +577,7 @@ function StandingsProgressChart({
 
           {series.map((row, seriesIndex) => {
             const color = progressLineColor(seriesIndex);
+            const isSelected = selectedPlayerId === row.playerId;
             const path = row.points
               .map((point, index) => {
                 const x = xForIndex(index);
@@ -556,25 +589,64 @@ function StandingsProgressChart({
             const markerX = xForIndex(last.index);
             const markerY = yForTotal(last.total);
             const clipId = `progress-crest-${row.playerId}`;
+            const standing = standings.find((entry) => entry.id === row.playerId);
+            const teamLabel = standing ? progressTeamLabel(standing) : row.label;
 
             return (
-              <g key={row.playerId}>
-                <path d={path} fill="none" stroke={color} strokeWidth={2.25} strokeLinejoin="round" strokeLinecap="round" />
-                <circle cx={markerX} cy={markerY} r={crestSize / 2 + 2} fill="#0a0a0a" stroke={color} strokeWidth={2} />
-                <defs>
-                  <clipPath id={clipId}>
-                    <circle cx={markerX} cy={markerY} r={crestSize / 2 - 1} />
-                  </clipPath>
-                </defs>
-                <image
-                  href={row.crest}
-                  x={markerX - crestSize / 2}
-                  y={markerY - crestSize / 2}
-                  width={crestSize}
-                  height={crestSize}
-                  clipPath={`url(#${clipId})`}
-                  preserveAspectRatio="xMidYMid meet"
+              <g key={row.playerId} opacity={selectedPlayerId && !isSelected ? 0.35 : 1}>
+                <path
+                  d={path}
+                  fill="none"
+                  stroke={color}
+                  strokeWidth={isSelected ? lineWidth + 1.5 : lineWidth}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
                 />
+                <g
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${teamLabel}, ${row.currentTotal} points`}
+                  aria-pressed={isSelected}
+                  className="cursor-pointer outline-none"
+                  onClick={() => toggleSelectedPlayer(row.playerId)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      toggleSelectedPlayer(row.playerId);
+                    }
+                  }}
+                >
+                  <circle
+                    cx={markerX}
+                    cy={markerY}
+                    r={crestSize / 2 + 10}
+                    fill="transparent"
+                    stroke="transparent"
+                  />
+                  <circle
+                    cx={markerX}
+                    cy={markerY}
+                    r={crestSize / 2 + 2}
+                    fill="#0a0a0a"
+                    stroke={color}
+                    strokeWidth={isSelected ? 3 : 2}
+                  />
+                  <defs>
+                    <clipPath id={clipId}>
+                      <circle cx={markerX} cy={markerY} r={crestSize / 2 - 1} />
+                    </clipPath>
+                  </defs>
+                  <image
+                    href={row.crest}
+                    x={markerX - crestSize / 2}
+                    y={markerY - crestSize / 2}
+                    width={crestSize}
+                    height={crestSize}
+                    clipPath={`url(#${clipId})`}
+                    preserveAspectRatio="xMidYMid meet"
+                    pointerEvents="none"
+                  />
+                </g>
               </g>
             );
           })}
@@ -587,15 +659,22 @@ function StandingsProgressChart({
           .sort((a, b) => b.currentTotal - a.currentTotal)
           .map((row) => {
             const colorIndex = series.findIndex((entry) => entry.playerId === row.playerId);
+            const standing = standings.find((entry) => entry.id === row.playerId);
             return (
               <li key={row.playerId} className="flex items-center gap-2">
-                <span
-                  className="inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-900"
+                <button
+                  type="button"
+                  onClick={() => toggleSelectedPlayer(row.playerId)}
+                  className={`inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-neutral-900 transition hover:scale-105 ${
+                    selectedPlayerId === row.playerId ? 'border-teal-400 ring-2 ring-teal-500/40' : 'border-neutral-700'
+                  }`}
                   style={{ boxShadow: `0 0 0 1px ${progressLineColor(colorIndex)}` }}
+                  aria-label={standing ? progressTeamLabel(standing) : row.label}
+                  aria-pressed={selectedPlayerId === row.playerId}
                 >
                   <img src={row.crest} alt="" className="max-h-full max-w-full object-contain p-0.5" />
-                </span>
-                <span className="font-medium text-white">{row.label}</span>
+                </button>
+                <span className="font-medium text-white">{standing ? progressTeamLabel(standing) : row.label}</span>
                 <span className="tabular-nums text-teal-300">{row.currentTotal} pts</span>
               </li>
             );
