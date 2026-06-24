@@ -8,13 +8,11 @@ import {
 } from '@/app/data/world-cup-fantasy';
 import {
   computeStandings,
-  getTodaysResults,
-  getUpcomingFixtures,
+  getMatchdaySchedule,
   manualMatchToResult,
   type MatchPointsEntry,
+  type MatchdaySchedule,
   type PlayerStanding,
-  type TodaysResultEntry,
-  type UpcomingFixtureEntry,
 } from '@/app/lib/world-cup-scoring';
 
 export const runtime = 'nodejs';
@@ -24,8 +22,7 @@ export type WorldCupFantasyResponse = {
   scoring: typeof WORLD_CUP_FANTASY_SCORING;
   dailyUpdate: string;
   standings: PlayerStanding[];
-  upcomingFixtures: UpcomingFixtureEntry[];
-  todaysResults: TodaysResultEntry[];
+  matchdaySchedule: MatchdaySchedule;
   allScoringMatches: MatchPointsEntry[];
   recentScoringMatches: MatchPointsEntry[];
   finishedMatchCount: number;
@@ -37,8 +34,11 @@ export async function GET() {
     WORLD_CUP_FANTASY_PLAYERS,
     matches
   );
-  const upcomingFixtures = getUpcomingFixtures(WORLD_CUP_FANTASY_FIXTURES, WORLD_CUP_FANTASY_PLAYERS);
-  const todaysResults = getTodaysResults(allScoringMatches, WORLD_CUP_FANTASY_PLAYERS);
+  const matchdaySchedule = getMatchdaySchedule(
+    WORLD_CUP_FANTASY_FIXTURES,
+    matches,
+    WORLD_CUP_FANTASY_PLAYERS
+  );
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   ).length;
@@ -48,8 +48,7 @@ export async function GET() {
     scoring: WORLD_CUP_FANTASY_SCORING,
     dailyUpdate: WORLD_CUP_FANTASY_DAILY_UPDATE,
     standings,
-    upcomingFixtures,
-    todaysResults,
+    matchdaySchedule,
     allScoringMatches,
     recentScoringMatches,
     finishedMatchCount,

@@ -10,13 +10,11 @@ import {
 } from '@/app/data/english-pyramid-fantasy';
 import {
   computeStandings,
-  getTodaysResults,
-  getUpcomingFixtures,
+  getMatchdaySchedule,
   manualMatchToResult,
   type MatchPointsEntry,
+  type MatchdaySchedule,
   type PlayerStanding,
-  type TodaysResultEntry,
-  type UpcomingFixtureEntry,
 } from '@/app/lib/english-pyramid-scoring';
 
 export const runtime = 'nodejs';
@@ -29,8 +27,7 @@ export type EnglishPyramidFantasyResponse = {
   sweepstakeIntro: string;
   sweepstakeFairness: string;
   standings: PlayerStanding[];
-  upcomingFixtures: UpcomingFixtureEntry[];
-  todaysResults: TodaysResultEntry[];
+  matchdaySchedule: MatchdaySchedule;
   allScoringMatches: MatchPointsEntry[];
   recentScoringMatches: MatchPointsEntry[];
   finishedMatchCount: number;
@@ -42,8 +39,11 @@ export async function GET() {
     ENGLISH_PYRAMID_FANTASY_PLAYERS,
     matches
   );
-  const upcomingFixtures = getUpcomingFixtures(ENGLISH_PYRAMID_FIXTURES, ENGLISH_PYRAMID_FANTASY_PLAYERS);
-  const todaysResults = getTodaysResults(allScoringMatches, ENGLISH_PYRAMID_FANTASY_PLAYERS);
+  const matchdaySchedule = getMatchdaySchedule(
+    ENGLISH_PYRAMID_FIXTURES,
+    matches,
+    ENGLISH_PYRAMID_FANTASY_PLAYERS
+  );
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   ).length;
@@ -56,8 +56,7 @@ export async function GET() {
     sweepstakeIntro: ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
     sweepstakeFairness: ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
     standings,
-    upcomingFixtures,
-    todaysResults,
+    matchdaySchedule,
     allScoringMatches,
     recentScoringMatches,
     finishedMatchCount,

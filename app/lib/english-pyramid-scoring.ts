@@ -101,6 +101,19 @@ export type TodaysResultEntry = UpcomingFixtureEntry & {
   awayGoals: number;
 };
 
+export type MatchdayEntryStatus = 'upcoming' | 'in-play' | 'finished';
+
+export type MatchdayEntry = UpcomingFixtureEntry & {
+  status: MatchdayEntryStatus;
+  homeGoals?: number;
+  awayGoals?: number;
+};
+
+export type MatchdaySchedule = {
+  date: string;
+  entries: MatchdayEntry[];
+};
+
 function compareByStandingsOrder(
   a: Pick<TeamStanding | PlayerStanding, 'points' | 'goalDifference' | 'bonusPoints' | 'name'>,
   b: Pick<TeamStanding | PlayerStanding, 'points' | 'goalDifference' | 'bonusPoints' | 'name'>
@@ -257,6 +270,63 @@ export function getTodaysResults(
     )
     .map(({ match }) => resultEntryFromMatch(match, players))
     .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
+}
+
+function resolveMatchdayDate(
+  fixtures: readonly EnglishPyramidFixture[],
+  now: Date
+): string {
+  const today = utcDateKey(now);
+  if (fixtures.some((fixture) => fixture.utcDate.slice(0, 10) === today)) {
+    return today;
+  }
+
+  const nowMs = now.getTime();
+  const nextFixture = [...fixtures]
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate))
+    .find((fixture) => Date.parse(fixture.utcDate) > nowMs);
+
+  return nextFixture?.utcDate.slice(0, 10) ?? today;
+}
+
+export function getMatchdaySchedule(
+  fixtures: readonly EnglishPyramidFixture[],
+  recordedMatches: readonly EnglishPyramidMatchResult[],
+  players: readonly EnglishPyramidFantasyPlayer[],
+  now = new Date()
+): MatchdaySchedule {
+  const matchdayDate = resolveMatchdayDate(fixtures, now);
+  const nowMs = now.getTime();
+  const recordedById = new Map(
+    recordedMatches
+      .filter((match) => match.homeGoals != null && match.awayGoals != null)
+      .map((match) => [match.id, match] as const)
+  );
+
+  const entries = fixtures
+    .filter((fixture) => fixture.utcDate.slice(0, 10) === matchdayDate)
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate))
+    .map((fixture) => {
+      const base = upcomingFixtureEntry(fixture, players);
+      const recorded = recordedById.get(fixture.id);
+
+      if (recorded) {
+        return {
+          ...base,
+          status: 'finished' as const,
+          homeGoals: recorded.homeGoals!,
+          awayGoals: recorded.awayGoals!,
+        };
+      }
+
+      if (Date.parse(fixture.utcDate) <= nowMs) {
+        return { ...base, status: 'in-play' as const };
+      }
+
+      return { ...base, status: 'upcoming' as const };
+    });
+
+  return { date: matchdayDate, entries };
 }
 
 export function getUpcomingFixtures(

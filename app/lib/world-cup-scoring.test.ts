@@ -3,6 +3,7 @@ import {
   buildPlayerProgressSeries,
   computeStandings,
   getTeamMatchDisplay,
+  getMatchdaySchedule,
   getUpcomingFixtures,
   resolveManagerImageForStandings,
   type WorldCupMatchResult,
@@ -10,6 +11,7 @@ import {
 import {
   getWorldCupTeamSearchTerms,
   WORLD_CUP_FANTASY_FIXTURES,
+  WORLD_CUP_FANTASY_MANUAL_MATCHES,
   WORLD_CUP_FANTASY_PLAYERS,
   WORLD_CUP_TEAM_BY_CODE,
   type WorldCupFantasyPlayer,
@@ -193,6 +195,71 @@ describe('computeStandings', () => {
       homeManagers: [{ id: 'dave', teamCode: 'IRN' }],
       awayManagers: [{ id: 'ash', teamCode: 'NZL' }],
     });
+  });
+
+  it('keeps started fixtures visible as in-play until a result is recorded', () => {
+    const recordedMatches = WORLD_CUP_FANTASY_MANUAL_MATCHES.filter(
+      (match) => match.id !== '2026-06-24-sui-can' && match.id !== '2026-06-24-bih-qat'
+    ).map((match) => ({
+      id: match.id,
+      utcDate: match.utcDate,
+      status: 'FINISHED',
+      homeTeam: match.homeTeam,
+      awayTeam: match.awayTeam,
+      homeGoals: match.homeGoals,
+      awayGoals: match.awayGoals,
+      homeRedCards: match.homeRedCards,
+      awayRedCards: match.awayRedCards,
+    }));
+
+    const schedule = getMatchdaySchedule(
+      WORLD_CUP_FANTASY_FIXTURES,
+      recordedMatches,
+      WORLD_CUP_FANTASY_PLAYERS,
+      new Date('2026-06-24T20:30:00Z')
+    );
+
+    expect(schedule.date).toBe('2026-06-24');
+    expect(schedule.entries.find((entry) => entry.id === '2026-06-24-sui-can')).toMatchObject({
+      status: 'in-play',
+    });
+    expect(schedule.entries.find((entry) => entry.id === '2026-06-24-bih-qat')).toMatchObject({
+      status: 'in-play',
+    });
+    expect(schedule.entries.find((entry) => entry.id === '2026-06-24-col-cod')).toMatchObject({
+      status: 'finished',
+      homeGoals: 1,
+      awayGoals: 0,
+    });
+  });
+
+  it('combines upcoming, in-play, and finished fixtures on one matchday list', () => {
+    const recordedMatches = WORLD_CUP_FANTASY_MANUAL_MATCHES.map((match) => ({
+      id: match.id,
+      utcDate: match.utcDate,
+      status: 'FINISHED',
+      homeTeam: match.homeTeam,
+      awayTeam: match.awayTeam,
+      homeGoals: match.homeGoals,
+      awayGoals: match.awayGoals,
+      homeRedCards: match.homeRedCards,
+      awayRedCards: match.awayRedCards,
+    }));
+
+    const schedule = getMatchdaySchedule(
+      WORLD_CUP_FANTASY_FIXTURES,
+      recordedMatches,
+      WORLD_CUP_FANTASY_PLAYERS,
+      new Date('2026-06-24T21:30:00Z')
+    );
+
+    expect(schedule.entries.map((entry) => entry.status)).toEqual([
+      'finished',
+      'finished',
+      'finished',
+      'upcoming',
+      'upcoming',
+    ]);
   });
 
   it('builds per-team match summaries for result panels', () => {
