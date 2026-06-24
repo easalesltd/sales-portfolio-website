@@ -6,7 +6,7 @@ on:
     # goals and public score feeds have settled before an agent records results.
     # Frequent cron slots keep retrying across the full 24-hour lookback for
     # delayed GitHub schedules and slow public score sources.
-    - cron: '0,10,20,30,40,50 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       force_agent:

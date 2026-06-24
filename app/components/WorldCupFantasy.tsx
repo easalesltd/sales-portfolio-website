@@ -1319,7 +1319,7 @@ export default function WorldCupFantasy({
   bonusColumnLabel = 'Bonus',
   matchScoringHelpers = DEFAULT_MATCH_SCORING_HELPERS,
   noResultsMessage = 'No finished matches yet — check back once the World Cup starts.',
-  resultsUpdateNote = 'Scores are updated manually after full-time. Previous results stay recorded, so only newly finished matches need adding.',
+  resultsUpdateNote = 'Fixtures flip to In play at kick-off and refresh here every minute. Full-time scores land automatically after the match, usually within about two hours.',
   progressChartTitle = 'Tournament progress',
   progressChartDescription = 'Cumulative points after each recorded result — crest marks current total.',
 }: Props) {
@@ -1327,8 +1327,10 @@ export default function WorldCupFantasy({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  const load = useCallback(async (options?: { silent?: boolean }) => {
+    if (!options?.silent) {
+      setLoading(true);
+    }
     setError(null);
 
     try {
@@ -1339,12 +1341,20 @@ export default function WorldCupFantasy({
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Could not load standings');
     } finally {
-      setLoading(false);
+      if (!options?.silent) {
+        setLoading(false);
+      }
     }
   }, [apiPath]);
 
   useEffect(() => {
     void load();
+
+    const interval = window.setInterval(() => {
+      void load({ silent: true });
+    }, 60_000);
+
+    return () => window.clearInterval(interval);
   }, [load]);
 
   return (

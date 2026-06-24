@@ -7,7 +7,7 @@ const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
 const source = fs.readFileSync(dataPath, 'utf8');
 
-const DEFAULT_RESULT_FINALITY_BUFFER_MINUTES = 130;
+const DEFAULT_RESULT_FINALITY_BUFFER_MINUTES = 110;
 
 const resultFinalityBufferMinutes = Number.parseInt(
   process.env.WORLD_CUP_RESULT_FINALITY_BUFFER_MINUTES ||

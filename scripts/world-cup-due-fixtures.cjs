@@ -8,7 +8,7 @@ const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
 
 // Wait beyond the normal full-time estimate so stoppage-time goals and public
 // score feeds have settled before an agent is allowed to record a final score.
-const DEFAULT_UPDATE_DELAY_MINUTES = 130;
+const DEFAULT_UPDATE_DELAY_MINUTES = 110;
 // Do not run before the finality buffer. GitHub scheduled workflows can arrive
 // late and later cron slots will still catch the fixture inside the lookback.
 const DEFAULT_DUE_LEAD_MINUTES = 0;
