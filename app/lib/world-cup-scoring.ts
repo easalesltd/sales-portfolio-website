@@ -103,6 +103,9 @@ export type MatchdayEntry = UpcomingFixtureEntry & {
   status: MatchdayEntryStatus;
   homeGoals?: number;
   awayGoals?: number;
+  liveHomeGoals?: number;
+  liveAwayGoals?: number;
+  livePeriod?: string;
 };
 
 export type MatchdaySchedule = {

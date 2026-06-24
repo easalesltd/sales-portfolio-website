@@ -14,6 +14,7 @@ import {
   type MatchdaySchedule,
   type PlayerStanding,
 } from '@/app/lib/world-cup-scoring';
+import { enrichMatchdayScheduleWithLiveScores } from '@/app/lib/world-cup-live-scores';
 
 export const runtime = 'nodejs';
 
@@ -34,10 +35,8 @@ export async function GET() {
     WORLD_CUP_FANTASY_PLAYERS,
     matches
   );
-  const matchdaySchedule = getMatchdaySchedule(
-    WORLD_CUP_FANTASY_FIXTURES,
-    matches,
-    WORLD_CUP_FANTASY_PLAYERS
+  const matchdaySchedule = await enrichMatchdayScheduleWithLiveScores(
+    getMatchdaySchedule(WORLD_CUP_FANTASY_FIXTURES, matches, WORLD_CUP_FANTASY_PLAYERS)
   );
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null

@@ -350,11 +350,17 @@ function MatchdayDayNavButton({
   );
 }
 
-function MatchdayStatusBadge({ status }: { status: MatchdayEntry['status'] }) {
+function MatchdayStatusBadge({
+  status,
+  livePeriod,
+}: {
+  status: MatchdayEntry['status'];
+  livePeriod?: string;
+}) {
   if (status === 'in-play') {
     return (
       <span className="mt-0.5 block text-[10px] font-semibold uppercase tracking-wide text-emerald-400 sm:text-xs">
-        In play
+        {livePeriod && !/^full time$/i.test(livePeriod) ? livePeriod : 'In play'}
       </span>
     );
   }
@@ -383,6 +389,12 @@ function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
       {entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null ? (
         <span className="mx-1.5 font-semibold tabular-nums text-sky-100">
           {formatMatchScore(entry.homeGoals, entry.awayGoals)}
+        </span>
+      ) : entry.status === 'in-play' &&
+        entry.liveHomeGoals != null &&
+        entry.liveAwayGoals != null ? (
+        <span className="mx-1.5 font-semibold tabular-nums text-emerald-300">
+          {formatMatchScore(entry.liveHomeGoals, entry.liveAwayGoals)}
         </span>
       ) : entry.status === 'in-play' ? (
         <span className="mx-1.5 font-semibold text-emerald-400">v</span>
@@ -476,7 +488,7 @@ function MatchdaySchedule({
                     >
                       {formatFixtureKickoff(entry.utcDate)}
                     </time>
-                    <MatchdayStatusBadge status={entry.status} />
+                    <MatchdayStatusBadge status={entry.status} livePeriod={entry.livePeriod} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <MatchdayFixtureLine entry={entry} />
@@ -1319,7 +1331,7 @@ export default function WorldCupFantasy({
   bonusColumnLabel = 'Bonus',
   matchScoringHelpers = DEFAULT_MATCH_SCORING_HELPERS,
   noResultsMessage = 'No finished matches yet — check back once the World Cup starts.',
-  resultsUpdateNote = 'Fixtures flip to In play at kick-off and refresh here every minute. Full-time scores land automatically after the match, usually within about two hours.',
+  resultsUpdateNote = 'Fixtures flip to In play at kick-off and refresh here every minute with live scores when available. Full-time points land automatically after the match.',
   progressChartTitle = 'Tournament progress',
   progressChartDescription = 'Cumulative points after each recorded result — crest marks current total.',
 }: Props) {
