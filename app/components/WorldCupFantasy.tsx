@@ -369,8 +369,19 @@ function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
   );
 }
 
-function MatchdaySchedule({ schedule }: { schedule: MatchdayScheduleData }) {
+function MatchdaySchedule({
+  schedule,
+  standings,
+  scoringMatches,
+  matchScoringHelpers,
+}: {
+  schedule: MatchdayScheduleData;
+  standings: PlayerStanding[];
+  scoringMatches: MatchPointsEntry[];
+  matchScoringHelpers: MatchScoringHelpers;
+}) {
   const { date, entries } = schedule;
+  const scoringByMatchId = new Map(scoringMatches.map((entry) => [entry.match.id, entry] as const));
 
   return (
     <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-3 py-2.5 sm:px-4 sm:py-3">
@@ -385,27 +396,46 @@ function MatchdaySchedule({ schedule }: { schedule: MatchdayScheduleData }) {
         <p className="mt-2 text-sm text-neutral-300">No sweepstake fixtures scheduled yet.</p>
       ) : (
         <ul className="mt-2 divide-y divide-sky-900/40 rounded-md border border-sky-900/50 bg-neutral-950/40">
-          {entries.map((entry) => (
-            <li
-              key={entry.id}
-              className={`px-3 py-2 ${entry.status === 'in-play' ? 'bg-emerald-950/20' : ''}`}
-            >
-              <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">
-                <div className="shrink-0 sm:w-[8.75rem]">
-                  <time
-                    dateTime={entry.utcDate}
-                    className={`text-xs font-semibold tabular-nums leading-snug ${
-                      entry.status === 'in-play' ? 'text-emerald-300' : 'text-sky-200'
-                    }`}
-                  >
-                    {formatFixtureKickoff(entry.utcDate)}
-                  </time>
-                  <MatchdayStatusBadge status={entry.status} />
+          {entries.map((entry) => {
+            const scoringEntry = entry.status === 'finished' ? scoringByMatchId.get(entry.id) : undefined;
+            const scoringPlayers = scoringEntry
+              ? standings.filter((player) => scoringEntry.byPlayer[player.id] != null)
+              : [];
+
+            return (
+              <li
+                key={entry.id}
+                className={`px-3 py-2 ${entry.status === 'in-play' ? 'bg-emerald-950/20' : ''}`}
+              >
+                <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:gap-3">
+                  <div className="shrink-0 sm:w-[8.75rem]">
+                    <time
+                      dateTime={entry.utcDate}
+                      className={`text-xs font-semibold tabular-nums leading-snug ${
+                        entry.status === 'in-play' ? 'text-emerald-300' : 'text-sky-200'
+                      }`}
+                    >
+                      {formatFixtureKickoff(entry.utcDate)}
+                    </time>
+                    <MatchdayStatusBadge status={entry.status} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <MatchdayFixtureLine entry={entry} />
+                    {scoringPlayers.length > 0 && scoringEntry ? (
+                      <p className="mt-1 text-xs font-medium text-teal-200">
+                        <MatchScoringPlayersLine
+                          players={standings}
+                          byPlayer={scoringEntry.byPlayer}
+                          match={scoringEntry.match}
+                          matchScoringHelpers={matchScoringHelpers}
+                        />
+                      </p>
+                    ) : null}
+                  </div>
                 </div>
-                <MatchdayFixtureLine entry={entry} />
-              </div>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>
@@ -1319,7 +1349,12 @@ export default function WorldCupFantasy({
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
               </section>
 
-              <MatchdaySchedule schedule={data.matchdaySchedule} />
+              <MatchdaySchedule
+                schedule={data.matchdaySchedule}
+                standings={data.standings}
+                scoringMatches={data.allScoringMatches}
+                matchScoringHelpers={matchScoringHelpers}
+              />
 
               <section>
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Overall standings</h3>
