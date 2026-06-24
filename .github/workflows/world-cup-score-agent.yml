@@ -121,6 +121,8 @@ jobs:
           - after editing the ledger/roast, run npm run world-cup:standings and make every
             player total, leader/bottom claim, and tie claim in the roast and summary match
             that computed output exactly
+          - run npm run world-cup:validate before finishing; fix any daily-roast validation
+            errors (wrong day, wrong manager/country links, missing teams, or incorrect totals)
 
           This scheduled run was triggered because the following fixture(s) should be final now,
           or are inside the schedule lead window:
