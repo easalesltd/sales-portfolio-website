@@ -81,13 +81,35 @@ const PROGRESS_LINE_COLORS = [
 ] as const;
 
 const PROGRESS_CHART = {
-  height: 540,
   xStep: 16,
-  crestSize: 28,
   lineWidth: 3,
   yHeadroomPoints: 3,
-  padding: { top: 40, right: 40, bottom: 48, left: 44 },
 } as const;
+
+const PROGRESS_CHART_LAYOUTS = {
+  mobile: { height: 288, crestSize: 24, padding: { top: 28, right: 36, bottom: 36, left: 40 } },
+  tablet: { height: 400, crestSize: 26, padding: { top: 34, right: 38, bottom: 42, left: 42 } },
+  desktop: { height: 520, crestSize: 28, padding: { top: 40, right: 40, bottom: 48, left: 44 } },
+} as const;
+
+function useProgressChartLayout() {
+  const [layout, setLayout] = useState(PROGRESS_CHART_LAYOUTS.desktop);
+
+  useEffect(() => {
+    const update = () => {
+      const width = window.innerWidth;
+      if (width < 640) setLayout(PROGRESS_CHART_LAYOUTS.mobile);
+      else if (width < 1024) setLayout(PROGRESS_CHART_LAYOUTS.tablet);
+      else setLayout(PROGRESS_CHART_LAYOUTS.desktop);
+    };
+
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  return layout;
+}
 
 function ScoringRulesBlock({ rules = SCORING_RULES }: { rules?: readonly string[] }) {
   return (
@@ -478,6 +500,8 @@ function StandingsProgressChart({
   scoringMatches: MatchPointsEntry[];
 }) {
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const { height, crestSize, padding } = useProgressChartLayout();
+  const { xStep, lineWidth, yHeadroomPoints } = PROGRESS_CHART;
   const finishedMatchCount = scoringMatches.length;
 
   if (finishedMatchCount === 0) {
@@ -488,7 +512,6 @@ function StandingsProgressChart({
 
   const series = buildPlayerProgressSeries(standings, scoringMatches);
   const pointCount = series[0]?.points.length ?? 0;
-  const { height, xStep, crestSize, lineWidth, yHeadroomPoints, padding } = PROGRESS_CHART;
   const plotHeight = height - padding.top - padding.bottom;
   const allTotals = series.flatMap((row) => row.points.map((point) => point.total));
   const dataMin = Math.min(...allTotals);
@@ -531,7 +554,7 @@ function StandingsProgressChart({
           aria-label="Cumulative fantasy points by manager across the tournament"
           viewBox={`0 0 ${chartWidth} ${height}`}
           className="block min-w-full"
-          style={{ width: chartWidth, height, minHeight: height, minWidth: '100%' }}
+          style={{ width: chartWidth, height, minWidth: '100%' }}
         >
           {yTicks.map((tick) => (
             <g key={tick.value}>
