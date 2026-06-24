@@ -92,8 +92,10 @@ const PROGRESS_CHART_LAYOUTS = {
   desktop: { height: 520, crestSize: 28, padding: { top: 40, right: 40, bottom: 48, left: 44 } },
 } as const;
 
+type ProgressChartLayout = (typeof PROGRESS_CHART_LAYOUTS)[keyof typeof PROGRESS_CHART_LAYOUTS];
+
 function useProgressChartLayout() {
-  const [layout, setLayout] = useState(PROGRESS_CHART_LAYOUTS.desktop);
+  const [layout, setLayout] = useState<ProgressChartLayout>(PROGRESS_CHART_LAYOUTS.desktop);
 
   useEffect(() => {
     const update = () => {
