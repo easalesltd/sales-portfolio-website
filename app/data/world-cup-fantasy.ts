@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Wednesday has opened with the night shift handing out points like loose change from a tracksuit pocket: Croatia nicked a 1-0 off Panama, then Colombia did the same to Congo DR, two tiny scorelines causing maximum fantasy-admin paperwork. Scott is top on 24 thanks to Croatia’s late-accountancy football, Nest is second on 22, Jon has 20, Ash and Chris are level on 19, and Dave is bottom on 18, staring at Panama and Congo DR like they have both just missed an open goal in his living room.';
+  'Wednesday ran the full gamut from Seattle’s graveyard shift to Vancouver’s Group B curtain-raiser: Croatia and Colombia both squeezed out 1-0 wins over Panama and Congo DR, then Switzerland edged Canada 2-1 and Bosnia put three past Qatar to settle the evening. Nest leads on 25, Scott and Chris are locked on 23 after Chris watched Canada and Qatar leak points again, Jon stays on 20 despite Switzerland doing him a favour, Ash has 19, and Dave remains bottom on 18 — Bosnia’s three-goal haul was welcome, but not enough to lift him off the floor.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1101,6 +1101,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Congo DR', tla: 'COD' },
     homeGoals: 1,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-24-sui-can',
+    utcDate: '2026-06-24T19:00:00Z',
+    homeTeam: { name: 'Switzerland', tla: 'SUI' },
+    awayTeam: { name: 'Canada', tla: 'CAN' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-24-bih-qat',
+    utcDate: '2026-06-24T19:00:00Z',
+    homeTeam: { name: 'Bosnia-Herzegovina', tla: 'BIH' },
+    awayTeam: { name: 'Qatar', tla: 'QAT' },
+    homeGoals: 3,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
