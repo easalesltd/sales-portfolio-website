@@ -12,7 +12,7 @@ const DEFAULT_UPDATE_DELAY_MINUTES = 130;
 // Do not run before the finality buffer. GitHub scheduled workflows can arrive
 // late and later cron slots will still catch the fixture inside the lookback.
 const DEFAULT_DUE_LEAD_MINUTES = 0;
-const DEFAULT_LOOKBACK_MINUTES = 8 * 60;
+const DEFAULT_LOOKBACK_MINUTES = 24 * 60;
 
 const updateDelayMinutes = Number.parseInt(
   process.env.WORLD_CUP_UPDATE_DELAY_MINUTES || `${DEFAULT_UPDATE_DELAY_MINUTES}`,

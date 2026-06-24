@@ -4,7 +4,7 @@ on:
   schedule:
     # The due script waits beyond the normal full-time estimate so stoppage-time
     # goals and public score feeds have settled before an agent records results.
-    # Frequent cron slots keep retrying across the full 8-hour lookback for
+    # Frequent cron slots keep retrying across the full 24-hour lookback for
     # delayed GitHub schedules and slow public score sources.
     - cron: '0,10,20,30,40,50 * * * *'
   workflow_dispatch:
@@ -18,7 +18,7 @@ on:
         description: Minutes of expected-final-whistle history to consider
         required: false
         type: string
-        default: '480'
+        default: '1440'
 
 permissions:
   contents: write
@@ -53,7 +53,7 @@ jobs:
             export WORLD_CUP_FORCE_AGENT=1
           fi
 
-          export WORLD_CUP_DUE_LOOKBACK_MINUTES="${{ inputs.lookback_minutes || '480' }}"
+          export WORLD_CUP_DUE_LOOKBACK_MINUTES="${{ inputs.lookback_minutes || '1440' }}"
           node scripts/world-cup-due-fixtures.cjs
 
       - name: Skip when no fixture should be final yet
@@ -111,7 +111,7 @@ jobs:
           Follow .cursor/rules/world-cup-sweepstake-manual-updates.mdc exactly:
           - update only app/data/world-cup-fantasy.ts
           - append only newly finished matches to WORLD_CUP_FANTASY_MANUAL_MATCHES
-          - keep WORLD_CUP_FANTASY_FIXTURES rolling forward
+          - keep WORLD_CUP_FANTASY_FIXTURES populated with the full known schedule of remaining sweepstake-relevant fixtures
           - refresh WORLD_CUP_FANTASY_DAILY_UPDATE when the table changes
           - keep roasts varied; do not repeat the same premise, phrase, or pub-style gag
           - use final results only, including red-card and second-yellow dismissal tallies
