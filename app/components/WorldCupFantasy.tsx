@@ -11,6 +11,7 @@ import type {
   PlayerStanding,
   TeamMatchDisplay,
   TeamStanding,
+  TodaysResultEntry,
   UpcomingFixtureEntry,
 } from '@/app/lib/world-cup-scoring';
 import {
@@ -348,6 +349,55 @@ function UpcomingFixtures({ fixtures }: { fixtures: UpcomingFixtureEntry[] }) {
                   <span className="text-neutral-600"> · </span>
                   <span className="text-xs text-neutral-400">
                     <FixtureTeamManagers managers={fixture.awayManagers} />
+                  </span>
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+function TodaysResults({ results }: { results: TodaysResultEntry[] }) {
+  return (
+    <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-3 py-2.5 sm:px-4 sm:py-3">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">Today&apos;s sweepstake results</h3>
+        <span className="text-[10px] text-sky-300/80 sm:text-xs">Full-time scores in GMT</span>
+      </div>
+
+      {results.length === 0 ? (
+        <p className="mt-2 text-sm text-neutral-300">No sweepstake results recorded today yet.</p>
+      ) : (
+        <ul className="mt-2 divide-y divide-sky-900/40 rounded-md border border-sky-900/50 bg-neutral-950/40">
+          {results.map((result) => (
+            <li key={result.id} className="px-3 py-2">
+              <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3">
+                <time
+                  dateTime={result.utcDate}
+                  className="shrink-0 text-xs font-semibold tabular-nums leading-snug text-sky-200 sm:w-[8.75rem]"
+                >
+                  {formatFixtureKickoff(result.utcDate)}
+                </time>
+                <p className="min-w-0 flex-1 text-sm leading-snug text-neutral-100">
+                  <span className="font-medium">
+                    {result.homeTeam.flag} {result.homeTeam.name}
+                  </span>
+                  <span className="text-neutral-600"> · </span>
+                  <span className="text-xs text-neutral-400">
+                    <FixtureTeamManagers managers={result.homeManagers} />
+                  </span>
+                  <span className="mx-1.5 font-semibold tabular-nums text-sky-100">
+                    {formatMatchScore(result.homeGoals, result.awayGoals)}
+                  </span>
+                  <span className="font-medium">
+                    {result.awayTeam.flag} {result.awayTeam.name}
+                  </span>
+                  <span className="text-neutral-600"> · </span>
+                  <span className="text-xs text-neutral-400">
+                    <FixtureTeamManagers managers={result.awayManagers} />
                   </span>
                 </p>
               </div>
@@ -1266,7 +1316,10 @@ export default function WorldCupFantasy({
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
               </section>
 
-              <UpcomingFixtures fixtures={data.upcomingFixtures} />
+              <div className="space-y-3">
+                <UpcomingFixtures fixtures={data.upcomingFixtures} />
+                <TodaysResults results={data.todaysResults} />
+              </div>
 
               <section>
                 <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Overall standings</h3>

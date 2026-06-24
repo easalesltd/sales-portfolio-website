@@ -96,6 +96,11 @@ export type UpcomingFixtureEntry = {
   awayManagers: FixtureManager[];
 };
 
+export type TodaysResultEntry = UpcomingFixtureEntry & {
+  homeGoals: number;
+  awayGoals: number;
+};
+
 function compareByStandingsOrder(
   a: Pick<TeamStanding | PlayerStanding, 'points' | 'goalDifference' | 'bonusPoints' | 'name'>,
   b: Pick<TeamStanding | PlayerStanding, 'points' | 'goalDifference' | 'bonusPoints' | 'name'>
@@ -220,6 +225,38 @@ function upcomingFixtureEntry(
     homeManagers: managersForTeam(players, fixture.homeTeam.tla),
     awayManagers: managersForTeam(players, fixture.awayTeam.tla),
   };
+}
+
+function resultEntryFromMatch(
+  match: EnglishPyramidMatchResult,
+  players: readonly EnglishPyramidFantasyPlayer[]
+): TodaysResultEntry {
+  return {
+    id: match.id,
+    utcDate: match.utcDate,
+    homeTeam: fixtureTeamWithMeta(match.homeTeam),
+    awayTeam: fixtureTeamWithMeta(match.awayTeam),
+    homeManagers: managersForTeam(players, match.homeTeam.tla),
+    awayManagers: managersForTeam(players, match.awayTeam.tla),
+    homeGoals: match.homeGoals!,
+    awayGoals: match.awayGoals!,
+  };
+}
+
+export function getTodaysResults(
+  scoringMatches: MatchPointsEntry[],
+  players: readonly EnglishPyramidFantasyPlayer[],
+  now = new Date()
+): TodaysResultEntry[] {
+  const today = utcDateKey(now);
+
+  return scoringMatches
+    .filter(
+      ({ match }) =>
+        match.utcDate.slice(0, 10) === today && match.homeGoals != null && match.awayGoals != null
+    )
+    .map(({ match }) => resultEntryFromMatch(match, players))
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
 }
 
 export function getUpcomingFixtures(

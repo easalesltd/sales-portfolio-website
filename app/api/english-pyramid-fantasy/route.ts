@@ -10,10 +10,12 @@ import {
 } from '@/app/data/english-pyramid-fantasy';
 import {
   computeStandings,
+  getTodaysResults,
   getUpcomingFixtures,
   manualMatchToResult,
   type MatchPointsEntry,
   type PlayerStanding,
+  type TodaysResultEntry,
   type UpcomingFixtureEntry,
 } from '@/app/lib/english-pyramid-scoring';
 
@@ -28,6 +30,7 @@ export type EnglishPyramidFantasyResponse = {
   sweepstakeFairness: string;
   standings: PlayerStanding[];
   upcomingFixtures: UpcomingFixtureEntry[];
+  todaysResults: TodaysResultEntry[];
   allScoringMatches: MatchPointsEntry[];
   recentScoringMatches: MatchPointsEntry[];
   finishedMatchCount: number;
@@ -40,6 +43,7 @@ export async function GET() {
     matches
   );
   const upcomingFixtures = getUpcomingFixtures(ENGLISH_PYRAMID_FIXTURES, ENGLISH_PYRAMID_FANTASY_PLAYERS);
+  const todaysResults = getTodaysResults(allScoringMatches, ENGLISH_PYRAMID_FANTASY_PLAYERS);
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   ).length;
@@ -53,6 +57,7 @@ export async function GET() {
     sweepstakeFairness: ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
     standings,
     upcomingFixtures,
+    todaysResults,
     allScoringMatches,
     recentScoringMatches,
     finishedMatchCount,
