@@ -106,8 +106,9 @@ export type MatchdayEntry = UpcomingFixtureEntry & {
 };
 
 export type MatchdaySchedule = {
-  date: string;
-  entries: MatchdayEntry[];
+  defaultDate: string;
+  fixtureDates: string[];
+  schedulesByDate: Record<string, MatchdayEntry[]>;
 };
 
 function compareByStandingsOrder(
@@ -287,21 +288,22 @@ function resolveMatchdayDate(
   return nextFixture?.utcDate.slice(0, 10) ?? today;
 }
 
-export function getMatchdaySchedule(
-  fixtures: readonly WorldCupFantasyFixture[],
-  recordedMatches: readonly WorldCupMatchResult[],
-  players: readonly WorldCupFantasyPlayer[],
-  now = new Date()
-): MatchdaySchedule {
-  const matchdayDate = resolveMatchdayDate(fixtures, now);
-  const nowMs = now.getTime();
-  const recordedById = new Map(
-    recordedMatches
-      .filter((match) => match.homeGoals != null && match.awayGoals != null)
-      .map((match) => [match.id, match] as const)
-  );
+function getFixtureDates(fixtures: readonly WorldCupFantasyFixture[]): string[] {
+  const dates = new Set<string>();
+  for (const fixture of fixtures) {
+    dates.add(fixture.utcDate.slice(0, 10));
+  }
+  return [...dates].sort();
+}
 
-  const entries = fixtures
+function buildMatchdayEntriesForDate(
+  fixtures: readonly WorldCupFantasyFixture[],
+  recordedById: Map<string, WorldCupMatchResult>,
+  players: readonly WorldCupFantasyPlayer[],
+  matchdayDate: string,
+  nowMs: number
+): MatchdayEntry[] {
+  return fixtures
     .filter((fixture) => fixture.utcDate.slice(0, 10) === matchdayDate)
     .sort((a, b) => a.utcDate.localeCompare(b.utcDate))
     .map((fixture) => {
@@ -323,8 +325,35 @@ export function getMatchdaySchedule(
 
       return { ...base, status: 'upcoming' as const };
     });
+}
 
-  return { date: matchdayDate, entries };
+export function getMatchdaySchedule(
+  fixtures: readonly WorldCupFantasyFixture[],
+  recordedMatches: readonly WorldCupMatchResult[],
+  players: readonly WorldCupFantasyPlayer[],
+  now = new Date()
+): MatchdaySchedule {
+  const fixtureDates = getFixtureDates(fixtures);
+  const defaultDate = resolveMatchdayDate(fixtures, now);
+  const nowMs = now.getTime();
+  const recordedById = new Map(
+    recordedMatches
+      .filter((match) => match.homeGoals != null && match.awayGoals != null)
+      .map((match) => [match.id, match] as const)
+  );
+
+  const schedulesByDate: Record<string, MatchdayEntry[]> = {};
+  for (const date of fixtureDates) {
+    schedulesByDate[date] = buildMatchdayEntriesForDate(
+      fixtures,
+      recordedById,
+      players,
+      date,
+      nowMs
+    );
+  }
+
+  return { defaultDate, fixtureDates, schedulesByDate };
 }
 
 export function getUpcomingFixtures(

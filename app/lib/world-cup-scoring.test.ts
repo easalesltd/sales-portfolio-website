@@ -219,14 +219,14 @@ describe('computeStandings', () => {
       new Date('2026-06-24T20:30:00Z')
     );
 
-    expect(schedule.date).toBe('2026-06-24');
-    expect(schedule.entries.find((entry) => entry.id === '2026-06-24-sui-can')).toMatchObject({
+    expect(schedule.defaultDate).toBe('2026-06-24');
+    expect(schedule.schedulesByDate['2026-06-24'].find((entry) => entry.id === '2026-06-24-sui-can')).toMatchObject({
       status: 'in-play',
     });
-    expect(schedule.entries.find((entry) => entry.id === '2026-06-24-bih-qat')).toMatchObject({
+    expect(schedule.schedulesByDate['2026-06-24'].find((entry) => entry.id === '2026-06-24-bih-qat')).toMatchObject({
       status: 'in-play',
     });
-    expect(schedule.entries.find((entry) => entry.id === '2026-06-24-col-cod')).toMatchObject({
+    expect(schedule.schedulesByDate['2026-06-24'].find((entry) => entry.id === '2026-06-24-col-cod')).toMatchObject({
       status: 'finished',
       homeGoals: 1,
       awayGoals: 0,
@@ -253,13 +253,28 @@ describe('computeStandings', () => {
       new Date('2026-06-24T21:30:00Z')
     );
 
-    expect(schedule.entries.map((entry) => entry.status)).toEqual([
+    expect(schedule.schedulesByDate['2026-06-24'].map((entry) => entry.status)).toEqual([
       'finished',
       'finished',
       'finished',
       'upcoming',
       'upcoming',
     ]);
+  });
+
+  it('lists only fixture dates that have sweepstake matches scheduled', () => {
+    const schedule = getMatchdaySchedule(
+      WORLD_CUP_FANTASY_FIXTURES,
+      [],
+      WORLD_CUP_FANTASY_PLAYERS,
+      new Date('2026-06-24T12:00:00Z')
+    );
+
+    expect(schedule.fixtureDates.length).toBeGreaterThan(1);
+    expect(schedule.fixtureDates).toEqual([...schedule.fixtureDates].sort());
+    for (const date of schedule.fixtureDates) {
+      expect(schedule.schedulesByDate[date]?.length).toBeGreaterThan(0);
+    }
   });
 
   it('builds per-team match summaries for result panels', () => {

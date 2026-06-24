@@ -313,10 +313,41 @@ function FixtureTeamManagers({ managers }: { managers: FixtureManager[] }) {
   );
 }
 
-function formatMatchdayHeading(date: string): string {
+function formatMatchdayLabel(date: string): string {
   const today = new Date().toISOString().slice(0, 10);
-  if (date === today) return "Today's sweepstake matches";
-  return 'Upcoming sweepstake fixtures';
+  const formatted = new Date(`${date}T12:00:00Z`).toLocaleDateString('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+  if (date === today) return `Today · ${formatted}`;
+  return formatted;
+}
+
+function MatchdayDayNavButton({
+  direction,
+  disabled,
+  onClick,
+}: {
+  direction: 'previous' | 'next';
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  const label = direction === 'previous' ? 'Previous matchday' : 'Next matchday';
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-sky-700/70 bg-sky-950/50 text-sm font-semibold text-sky-100 transition hover:bg-sky-900/60 disabled:cursor-not-allowed disabled:border-neutral-800 disabled:bg-neutral-950/40 disabled:text-neutral-600"
+    >
+      {direction === 'previous' ? '←' : '→'}
+    </button>
+  );
 }
 
 function MatchdayStatusBadge({ status }: { status: MatchdayEntry['status'] }) {
@@ -380,20 +411,48 @@ function MatchdaySchedule({
   scoringMatches: MatchPointsEntry[];
   matchScoringHelpers: MatchScoringHelpers;
 }) {
-  const { date, entries } = schedule;
+  const [selectedDate, setSelectedDate] = useState(schedule.defaultDate);
   const scoringByMatchId = new Map(scoringMatches.map((entry) => [entry.match.id, entry] as const));
+  const selectedIndex = schedule.fixtureDates.indexOf(selectedDate);
+  const canGoPrevious = selectedIndex > 0;
+  const canGoNext = selectedIndex >= 0 && selectedIndex < schedule.fixtureDates.length - 1;
+  const entries = schedule.schedulesByDate[selectedDate] ?? [];
+
+  useEffect(() => {
+    setSelectedDate(schedule.defaultDate);
+  }, [schedule.defaultDate]);
 
   return (
     <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-3 py-2.5 sm:px-4 sm:py-3">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">
-          {formatMatchdayHeading(date)}
-        </h3>
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+        <div className="flex min-w-0 items-center gap-2">
+          {schedule.fixtureDates.length > 1 ? (
+            <>
+              <MatchdayDayNavButton
+                direction="previous"
+                disabled={!canGoPrevious}
+                onClick={() => setSelectedDate(schedule.fixtureDates[selectedIndex - 1])}
+              />
+              <h3 className="min-w-0 text-sm font-semibold uppercase tracking-wide text-sky-200">
+                {formatMatchdayLabel(selectedDate)}
+              </h3>
+              <MatchdayDayNavButton
+                direction="next"
+                disabled={!canGoNext}
+                onClick={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
+              />
+            </>
+          ) : (
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">
+              {formatMatchdayLabel(selectedDate)}
+            </h3>
+          )}
+        </div>
         <span className="text-[10px] text-sky-300/80 sm:text-xs">Kickoffs in GMT · scores after full time</span>
       </div>
 
       {entries.length === 0 ? (
-        <p className="mt-2 text-sm text-neutral-300">No sweepstake fixtures scheduled yet.</p>
+        <p className="mt-2 text-sm text-neutral-300">No sweepstake fixtures scheduled for this day.</p>
       ) : (
         <ul className="mt-2 divide-y divide-sky-900/40 rounded-md border border-sky-900/50 bg-neutral-950/40">
           {entries.map((entry) => {
