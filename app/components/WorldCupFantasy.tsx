@@ -81,11 +81,12 @@ const PROGRESS_LINE_COLORS = [
 ] as const;
 
 const PROGRESS_CHART = {
-  height: 320,
-  xStep: 24,
+  height: 540,
+  xStep: 16,
   crestSize: 28,
   lineWidth: 3,
-  padding: { top: 32, right: 40, bottom: 44, left: 44 },
+  yHeadroomPoints: 3,
+  padding: { top: 40, right: 40, bottom: 48, left: 44 },
 } as const;
 
 function ScoringRulesBlock({ rules = SCORING_RULES }: { rules?: readonly string[] }) {
@@ -487,12 +488,14 @@ function StandingsProgressChart({
 
   const series = buildPlayerProgressSeries(standings, scoringMatches);
   const pointCount = series[0]?.points.length ?? 0;
-  const { height, xStep, crestSize, lineWidth, padding } = PROGRESS_CHART;
+  const { height, xStep, crestSize, lineWidth, yHeadroomPoints, padding } = PROGRESS_CHART;
   const chartWidth = padding.left + padding.right + Math.max(1, pointCount - 1) * xStep;
   const plotHeight = height - padding.top - padding.bottom;
   const allTotals = series.flatMap((row) => row.points.map((point) => point.total));
-  const yMax = Math.max(...allTotals, 1);
-  const yMin = Math.min(0, ...allTotals);
+  const dataMin = Math.min(...allTotals);
+  const dataMax = Math.max(...allTotals, 1);
+  const yMin = Math.min(0, dataMin - 1);
+  const yMax = dataMax + yHeadroomPoints;
   const yRange = Math.max(yMax - yMin, 1);
   const selectedSeries = selectedPlayerId ? series.find((row) => row.playerId === selectedPlayerId) : null;
   const selectedStanding = selectedPlayerId ? standings.find((row) => row.id === selectedPlayerId) : null;
@@ -534,13 +537,13 @@ function StandingsProgressChart({
         )}
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-neutral-700/80 bg-neutral-950/50">
+      <div className="overflow-x-auto overflow-y-visible rounded-lg border border-neutral-700/80 bg-neutral-950/50">
         <svg
           role="img"
           aria-label="Cumulative fantasy points by manager across the tournament"
           viewBox={`0 0 ${chartWidth} ${height}`}
           className="block min-w-full"
-          style={{ width: chartWidth, height, minWidth: '100%' }}
+          style={{ width: chartWidth, height, minHeight: height, minWidth: '100%' }}
         >
           {yTicks.map((tick) => (
             <g key={tick.value}>
