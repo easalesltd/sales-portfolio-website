@@ -1,7 +1,11 @@
 import { unstable_cache } from 'next/cache';
 import { WORLD_CUP_TEAM_BY_CODE } from '@/app/data/world-cup-fantasy';
 import { gameLeaderboardRedis } from '@/app/lib/game-leaderboard-redis';
-import type { MatchdayEntry, MatchdaySchedule } from '@/app/lib/world-cup-scoring';
+import type {
+  MatchdayEntry,
+  MatchdaySchedule,
+  WorldCupMatchResult,
+} from '@/app/lib/world-cup-scoring';
 
 const ESPN_SCOREBOARD_URL =
   'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
@@ -162,6 +166,34 @@ async function getCachedScoreboardEvents(): Promise<EspnScoreboardEvent[]> {
   return events;
 }
 
+export function isEspnFullTimePeriod(period: string): boolean {
+  const normalized = period.trim().toLowerCase();
+  if (!normalized) return false;
+
+  return (
+    normalized === 'ft' ||
+    normalized === 'full time' ||
+    normalized === 'final' ||
+    normalized.startsWith('status_full') ||
+    /^full.?time\b/.test(normalized) ||
+    /\bft\b/.test(normalized)
+  );
+}
+
+function provisionalMatchFromFinishedEntry(entry: MatchdayEntry): WorldCupMatchResult {
+  return {
+    id: entry.id,
+    utcDate: entry.utcDate,
+    status: 'FINISHED',
+    homeTeam: { name: entry.homeTeam.name, tla: entry.homeTeam.tla },
+    awayTeam: { name: entry.awayTeam.name, tla: entry.awayTeam.tla },
+    homeGoals: entry.homeGoals!,
+    awayGoals: entry.awayGoals!,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  };
+}
+
 export function matchLiveScoreForFixture(
   fixture: Pick<MatchdayEntry, 'homeTeam' | 'awayTeam'>,
   events: readonly EspnScoreboardEvent[]
@@ -180,23 +212,12 @@ export function matchLiveScoreForFixture(
   };
 }
 
-export async function enrichMatchdayScheduleWithLiveScores(
-  schedule: MatchdaySchedule
-): Promise<MatchdaySchedule> {
-  const inPlayEntries = Object.values(schedule.schedulesByDate)
-    .flat()
-    .filter((entry) => entry.status === 'in-play');
-
-  if (inPlayEntries.length === 0) return schedule;
-
-  let events: EspnScoreboardEvent[] = [];
-  try {
-    events = await getCachedScoreboardEvents();
-  } catch {
-    return schedule;
-  }
-
+export function applyLiveScoresToSchedule(
+  schedule: MatchdaySchedule,
+  events: readonly EspnScoreboardEvent[]
+): LiveScoresEnrichment {
   const schedulesByDate: Record<string, MatchdayEntry[]> = {};
+  const provisionalMatches: WorldCupMatchResult[] = [];
 
   for (const [date, entries] of Object.entries(schedule.schedulesByDate)) {
     schedulesByDate[date] = entries.map((entry) => {
@@ -204,6 +225,17 @@ export async function enrichMatchdayScheduleWithLiveScores(
 
       const live = matchLiveScoreForFixture(entry, events);
       if (!live) return entry;
+
+      if (isEspnFullTimePeriod(live.period)) {
+        const finishedEntry: MatchdayEntry = {
+          ...entry,
+          status: 'finished',
+          homeGoals: live.homeGoals,
+          awayGoals: live.awayGoals,
+        };
+        provisionalMatches.push(provisionalMatchFromFinishedEntry(finishedEntry));
+        return finishedEntry;
+      }
 
       return {
         ...entry,
@@ -214,5 +246,34 @@ export async function enrichMatchdayScheduleWithLiveScores(
     });
   }
 
-  return { ...schedule, schedulesByDate };
+  return {
+    schedule: { ...schedule, schedulesByDate },
+    provisionalMatches,
+  };
+}
+
+export type LiveScoresEnrichment = {
+  schedule: MatchdaySchedule;
+  provisionalMatches: WorldCupMatchResult[];
+};
+
+export async function enrichMatchdayScheduleWithLiveScores(
+  schedule: MatchdaySchedule
+): Promise<LiveScoresEnrichment> {
+  const inPlayEntries = Object.values(schedule.schedulesByDate)
+    .flat()
+    .filter((entry) => entry.status === 'in-play');
+
+  if (inPlayEntries.length === 0) {
+    return { schedule, provisionalMatches: [] };
+  }
+
+  let events: EspnScoreboardEvent[] = [];
+  try {
+    events = await getCachedScoreboardEvents();
+  } catch {
+    return { schedule, provisionalMatches: [] };
+  }
+
+  return applyLiveScoresToSchedule(schedule, events);
 }

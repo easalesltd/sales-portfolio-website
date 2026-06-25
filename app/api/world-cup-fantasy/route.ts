@@ -30,13 +30,22 @@ export type WorldCupFantasyResponse = {
 };
 
 export async function GET() {
-  const matches = WORLD_CUP_FANTASY_MANUAL_MATCHES.map(manualMatchToResult);
+  const recordedMatches = WORLD_CUP_FANTASY_MANUAL_MATCHES.map(manualMatchToResult);
+  const recordedMatchIds = new Set(recordedMatches.map((match) => match.id));
+  const baseSchedule = getMatchdaySchedule(
+    WORLD_CUP_FANTASY_FIXTURES,
+    recordedMatches,
+    WORLD_CUP_FANTASY_PLAYERS
+  );
+  const { schedule: matchdaySchedule, provisionalMatches } =
+    await enrichMatchdayScheduleWithLiveScores(baseSchedule);
+  const matches = [
+    ...recordedMatches,
+    ...provisionalMatches.filter((match) => !recordedMatchIds.has(match.id)),
+  ];
   const { standings, allScoringMatches, recentScoringMatches } = computeStandings(
     WORLD_CUP_FANTASY_PLAYERS,
     matches
-  );
-  const matchdaySchedule = await enrichMatchdayScheduleWithLiveScores(
-    getMatchdaySchedule(WORLD_CUP_FANTASY_FIXTURES, matches, WORLD_CUP_FANTASY_PLAYERS)
   );
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null

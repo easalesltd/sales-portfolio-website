@@ -1331,7 +1331,7 @@ export default function WorldCupFantasy({
   bonusColumnLabel = 'Bonus',
   matchScoringHelpers = DEFAULT_MATCH_SCORING_HELPERS,
   noResultsMessage = 'No finished matches yet — check back once the World Cup starts.',
-  resultsUpdateNote = 'Fixtures flip to In play at kick-off and refresh here every minute with live scores when available. Full-time points land automatically after the match.',
+  resultsUpdateNote = 'Fixtures flip to In play at kick-off and refresh here every minute with live scores when available. Points appear when ESPN reports FT; the ledger still commits automatically later.',
   progressChartTitle = 'Tournament progress',
   progressChartDescription = 'Cumulative points after each recorded result — crest marks current total.',
 }: Props) {
