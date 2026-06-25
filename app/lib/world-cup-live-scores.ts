@@ -1,4 +1,3 @@
-import { unstable_cache } from 'next/cache';
 import { WORLD_CUP_TEAM_BY_CODE } from '@/app/data/world-cup-fantasy';
 import { gameLeaderboardRedis } from '@/app/lib/game-leaderboard-redis';
 import type {
@@ -11,6 +10,13 @@ const ESPN_SCOREBOARD_URL =
   'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard';
 const REDIS_CACHE_KEY = 'world-cup:espn-scoreboard:v1';
 const CACHE_TTL_SECONDS = 90;
+
+type MemoryScoreboardCache = {
+  events: EspnScoreboardEvent[];
+  fetchedAtMs: number;
+};
+
+let memoryScoreboardCache: MemoryScoreboardCache | null = null;
 
 const IGNORED_ESPN_STATUSES = new Set([
   'scheduled',
@@ -112,7 +118,8 @@ export function parseEspnScoreboard(payload: unknown): EspnScoreboardEvent[] {
 async function fetchEspnScoreboardEvents(): Promise<EspnScoreboardEvent[]> {
   const response = await fetch(ESPN_SCOREBOARD_URL, {
     headers: { Accept: 'application/json' },
-    next: { revalidate: CACHE_TTL_SECONDS },
+    // Own Redis/memory cache handles TTL; avoid Next.js data cache serving stale kickoff scoreboards.
+    cache: 'no-store',
   });
 
   if (!response.ok) {
@@ -128,7 +135,7 @@ async function readCachedScoreboardFromRedis(): Promise<EspnScoreboardEvent[] | 
 
   try {
     const cached = await redis.get<EspnScoreboardEvent[]>(REDIS_CACHE_KEY);
-    return Array.isArray(cached) ? cached : null;
+    return Array.isArray(cached) && cached.length > 0 ? cached : null;
   } catch {
     return null;
   }
@@ -136,7 +143,7 @@ async function readCachedScoreboardFromRedis(): Promise<EspnScoreboardEvent[] | 
 
 async function writeCachedScoreboardToRedis(events: EspnScoreboardEvent[]): Promise<void> {
   const redis = gameLeaderboardRedis();
-  if (!redis) return;
+  if (!redis || events.length === 0) return;
 
   try {
     await redis.set(REDIS_CACHE_KEY, events, { ex: CACHE_TTL_SECONDS });
@@ -145,22 +152,31 @@ async function writeCachedScoreboardToRedis(events: EspnScoreboardEvent[]): Prom
   }
 }
 
-const getCachedScoreboardWithoutRedis = unstable_cache(
-  async () => fetchEspnScoreboardEvents(),
-  ['world-cup-espn-scoreboard'],
-  { revalidate: CACHE_TTL_SECONDS }
-);
+function readMemoryScoreboardCache(): EspnScoreboardEvent[] | null {
+  if (!memoryScoreboardCache || memoryScoreboardCache.events.length === 0) return null;
+
+  const ageMs = Date.now() - memoryScoreboardCache.fetchedAtMs;
+  if (ageMs >= CACHE_TTL_SECONDS * 1000) return null;
+
+  return memoryScoreboardCache.events;
+}
+
+function writeMemoryScoreboardCache(events: EspnScoreboardEvent[]): void {
+  if (events.length === 0) return;
+  memoryScoreboardCache = { events, fetchedAtMs: Date.now() };
+}
 
 async function getCachedScoreboardEvents(): Promise<EspnScoreboardEvent[]> {
-  const cached = await readCachedScoreboardFromRedis();
-  if (cached) return cached;
+  const redisCached = await readCachedScoreboardFromRedis();
+  if (redisCached) return redisCached;
 
-  const events = gameLeaderboardRedis()
-    ? await fetchEspnScoreboardEvents()
-    : await getCachedScoreboardWithoutRedis();
+  const memoryCached = readMemoryScoreboardCache();
+  if (memoryCached) return memoryCached;
 
-  if (gameLeaderboardRedis()) {
+  const events = await fetchEspnScoreboardEvents();
+  if (events.length > 0) {
     await writeCachedScoreboardToRedis(events);
+    writeMemoryScoreboardCache(events);
   }
 
   return events;
