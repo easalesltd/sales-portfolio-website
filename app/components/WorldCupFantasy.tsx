@@ -1156,6 +1156,7 @@ function ImageLightbox({
   aspectClass = 'aspect-[3/4]',
   imageClassName = '',
   useNativeImage = false,
+  useBackgroundImage = false,
 }: {
   src: string;
   label: string;
@@ -1163,6 +1164,7 @@ function ImageLightbox({
   aspectClass?: string;
   imageClassName?: string;
   useNativeImage?: boolean;
+  useBackgroundImage?: boolean;
 }) {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -1193,9 +1195,16 @@ function ImageLightbox({
             aspectClass === 'aspect-square'
               ? 'aspect-square'
               : `${aspectClass} max-h-[calc(100dvh-7rem)]`
-          } ${useNativeImage ? 'flex items-center justify-center' : ''}`}
+          } ${useNativeImage || useBackgroundImage ? 'flex items-center justify-center' : ''}`}
         >
-          {useNativeImage ? (
+          {useBackgroundImage ? (
+            <span
+              className={`absolute inset-3 block bg-contain bg-center bg-no-repeat sm:inset-4 ${imageClassName}`}
+              style={{ backgroundImage: `url(${src})` }}
+              role="img"
+              aria-label={label}
+            />
+          ) : useNativeImage ? (
             <img
               src={src}
               alt={label}
@@ -1259,15 +1268,12 @@ function PlayerSquadCard({
               className="relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 md:size-36"
               aria-label={`View enlarged ${managerLabel} club crest`}
             >
-              <span className="absolute inset-0 flex items-center justify-center p-2.5 sm:p-3">
-                {/* Match PartnerBrandTile: max-* + object-contain only — never h-full w-full on crests. */}
-                <img
-                  src={player.clubCrest}
-                  alt=""
-                  decoding="async"
-                  className="max-h-full max-w-full object-contain"
-                />
-              </span>
+              {/* background-size: contain cannot stretch — avoids img flex sizing bugs on mobile */}
+              <span
+                className="absolute inset-2.5 block bg-contain bg-center bg-no-repeat sm:inset-3"
+                style={{ backgroundImage: `url(${player.clubCrest})` }}
+                aria-hidden
+              />
             </button>
           </div>
           <div className="min-w-0">
@@ -1317,8 +1323,7 @@ function PlayerSquadCard({
           src={player.clubCrest}
           label={`${managerLabel} crest`}
           aspectClass="aspect-square"
-          imageClassName="p-3 sm:p-4"
-          useNativeImage
+          useBackgroundImage
           onClose={() => setEnlarged(null)}
         />
       ) : null}

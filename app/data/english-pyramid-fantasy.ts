@@ -224,7 +224,7 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
     name: 'Ben',
     teamName: 'Mulletman FC',
     managerImage: '/images/world-cup-fantasy/managers/ben.png',
-    clubCrest: '/images/world-cup-fantasy/crests/mulletman-fc.png',
+    clubCrest: '/images/world-cup-fantasy/crests/mulletman-fc.png?v=5',
     teams: ['NEW', 'WHU', 'SHW', 'ROT', 'BORE', 'DAR', 'EBB'],
     draftNote:
       'Newcastle as the #7 Premier League pick, but West Ham #1 in the Championship and Wednesday #2 in League One — Rotherham, Boreham Wood and Darlington fill the ladder, Ebbsfleet the southern long shot.',
