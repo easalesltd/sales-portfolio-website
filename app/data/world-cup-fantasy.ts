@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Group C signed off like a split-screen disaster reel: Colombia squeezed past Congo DR, Switzerland edged Canada, Bosnia hammered Qatar, Brazil strolled through Scotland 3-0, and Morocco needed late errands to put Haiti away 4-2. Jon leads on 28 after Brazil and Morocco did the heavy lifting; Nest has 24 with Scotland shipping three at the back; Scott has 23; Chris has 22 as Haiti leaked four; Ash has 19; and Dave stays bottom on 18 — Congo DR still contributing absolutely nothing.';
+  'Group A signed off with co-host fireworks and a Bafana reboot: Mexico beat Czechia 3-0 at the Azteca to finish unbeaten, and South Africa edged South Korea 1-0 in Monterrey to reach the knockouts. Jon leads on 31 now South Africa finally look alive; Chris has 26 with Mexico hoovering up another win; Nest has 24; Scott has 23; Dave has 18; and Ash stays bottom on 18 — Czechia leaked three and South Korea went blank.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -576,6 +576,12 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-28T02:00:00Z',
     homeTeam: { name: 'Jordan', tla: 'JOR' },
     awayTeam: { name: 'Argentina', tla: 'ARG' },
+  },
+  {
+    id: '2026-06-28-can-rsa',
+    utcDate: '2026-06-28T19:00:00Z',
+    homeTeam: { name: 'Canada', tla: 'CAN' },
+    awayTeam: { name: 'South Africa', tla: 'RSA' },
   },
 ];
 
@@ -1145,6 +1151,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Haiti', tla: 'HAI' },
     homeGoals: 4,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-24-cze-mex',
+    utcDate: '2026-06-25T01:00:00Z',
+    homeTeam: { name: 'Czechia', tla: 'CZE' },
+    awayTeam: { name: 'Mexico', tla: 'MEX' },
+    homeGoals: 0,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-24-rsa-kor',
+    utcDate: '2026-06-25T01:00:00Z',
+    homeTeam: { name: 'South Africa', tla: 'RSA' },
+    awayTeam: { name: 'South Korea', tla: 'KOR' },
+    homeGoals: 1,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
