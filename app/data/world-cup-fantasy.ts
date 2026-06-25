@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Group A signed off with co-host fireworks and a Bafana reboot: Mexico beat Czechia 3-0 at the Azteca to finish unbeaten, and South Africa edged South Korea 1-0 in Monterrey to reach the knockouts. Jon leads on 31 now South Africa finally look alive; Chris has 26 with Mexico hoovering up another win; Nest has 24; Scott has 23; Dave has 18; and Ash stays bottom on 18 — Czechia leaked three and South Korea went blank.';
+  'Group stages kept the receipts: Mexico beat Czechia 3-0, South Africa edged South Korea 1-0, Ivory Coast sent Curaçao home 2-0, and Ecuador stunned Germany 2-1 to scramble Group E. Jon leads on 34 with Ivory Coast qualified and South Africa still alive; Chris has 26 with Mexico finishing strong; Nest has 24; Scott has 23; Ash has 21 after Ecuador’s shock; and Dave remains bottom on 18 as Germany slipped and Czechia leaked three.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1173,6 +1173,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'South Korea', tla: 'KOR' },
     homeGoals: 1,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-25-cuw-civ',
+    utcDate: '2026-06-25T20:00:00Z',
+    homeTeam: { name: 'Curaçao', tla: 'CUW' },
+    awayTeam: { name: 'Ivory Coast', tla: 'CIV' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-25-ecu-ger',
+    utcDate: '2026-06-25T20:00:00Z',
+    homeTeam: { name: 'Ecuador', tla: 'ECU' },
+    awayTeam: { name: 'Germany', tla: 'GER' },
+    homeGoals: 2,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
