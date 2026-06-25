@@ -1256,15 +1256,18 @@ function PlayerSquadCard({
             <button
               type="button"
               onClick={() => setEnlarged('crest')}
-              className="relative flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 p-2.5 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 sm:p-3 md:size-36"
+              className="relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 md:size-36"
               aria-label={`View enlarged ${managerLabel} club crest`}
             >
-              {/* Native img + object-contain keeps non-square crest pixels undistorted in the square tile. */}
-              <img
-                src={player.clubCrest}
-                alt=""
-                className="block h-full w-full object-contain object-center"
-              />
+              <span className="absolute inset-0 flex items-center justify-center p-2.5 sm:p-3">
+                {/* Match PartnerBrandTile: max-* + object-contain only — never h-full w-full on crests. */}
+                <img
+                  src={player.clubCrest}
+                  alt=""
+                  decoding="async"
+                  className="max-h-full max-w-full object-contain"
+                />
+              </span>
             </button>
           </div>
           <div className="min-w-0">
