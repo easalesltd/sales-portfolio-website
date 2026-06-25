@@ -1189,15 +1189,17 @@ function ImageLightbox({
       </button>
       <div className="w-full max-w-xs sm:max-w-sm" onClick={(event) => event.stopPropagation()}>
         <div
-          className={`relative ${aspectClass} max-h-[calc(100dvh-7rem)] w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950 ${
-            useNativeImage ? 'flex items-center justify-center' : ''
-          }`}
+          className={`relative w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950 ${
+            aspectClass === 'aspect-square'
+              ? 'aspect-square'
+              : `${aspectClass} max-h-[calc(100dvh-7rem)]`
+          } ${useNativeImage ? 'flex items-center justify-center' : ''}`}
         >
           {useNativeImage ? (
             <img
               src={src}
               alt={label}
-              className={`max-h-[calc(100dvh-7rem)] max-w-full object-contain ${imageClassName}`}
+              className={`max-h-full max-w-full object-contain ${imageClassName}`}
             />
           ) : (
             <Image
@@ -1313,6 +1315,7 @@ function PlayerSquadCard({
           label={`${managerLabel} crest`}
           aspectClass="aspect-square"
           imageClassName="p-3 sm:p-4"
+          useNativeImage
           onClose={() => setEnlarged(null)}
         />
       ) : null}
