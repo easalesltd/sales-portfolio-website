@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Wednesday served up three results and zero ambiguity: Colombia edged Congo DR, Switzerland held off Canada, and Bosnia put three past Qatar without breaking sweat. Nest leads on 25 after Switzerland did the business, Chris and Scott are level on 23 — Chris cashing in on Colombia and a three-goal Bosnia burst, Scott watching Canada and Qatar leak points on the same evening — Jon has 20, Ash has 19, and Dave stays bottom on 18 with Congo DR contributing absolutely nothing.';
+  'Group C signed off like a split-screen disaster reel: Colombia squeezed past Congo DR, Switzerland edged Canada, Bosnia hammered Qatar, Brazil strolled through Scotland 3-0, and Morocco needed late errands to put Haiti away 4-2. Jon leads on 28 after Brazil and Morocco did the heavy lifting; Nest has 24 with Scotland shipping three at the back; Scott has 23; Chris has 22 as Haiti leaked four; Ash has 19; and Dave stays bottom on 18 — Congo DR still contributing absolutely nothing.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1123,6 +1123,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Qatar', tla: 'QAT' },
     homeGoals: 3,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-24-sco-bra',
+    utcDate: '2026-06-24T22:00:00Z',
+    homeTeam: { name: 'Scotland', tla: 'SCO' },
+    awayTeam: { name: 'Brazil', tla: 'BRA' },
+    homeGoals: 0,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-24-mar-hai',
+    utcDate: '2026-06-24T22:00:00Z',
+    homeTeam: { name: 'Morocco', tla: 'MAR' },
+    awayTeam: { name: 'Haiti', tla: 'HAI' },
+    homeGoals: 4,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
