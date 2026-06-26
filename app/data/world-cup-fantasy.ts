@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Group D closed under the California floodlights with two wildly different moods: Turkey snatched a 3-2 win over the USA thanks to Kaan Ayhan\'s last-kick winner, while Paraguay and Australia played out a nervous 0-0 that sent the Socceroos through and left Paraguay sweating on the maths. Jon leads on 34 despite the USA shipping three; Chris has 31 after Turkey hit three and Australia drew; Scott has 24 from Paraguay\'s stalemate; and Dave remains bottom on 18, watching everyone else seal their groups while his points tally sits still.';
+  'Friday across two time zones felt like three different tournaments colliding: Turkey hunted down the USA 3-2 with a last-gasp winner, Paraguay and Australia ground out a tense 0-0 that did nobody\'s nerves any favours, France put four past a rotated Norway without breaking sweat, and Senegal demolished Iraq 5-0 after the Iraqis went down to ten men. Jon leads on 34 despite the USA shipping three; Chris has 33 from France\'s rout and Iraq\'s red-card misery; Scott has 24 after Paraguay\'s stalemate; and Nest remains bottom on 22, haunted by Norway shipping four while everyone else in Group I found a way to move the needle.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1241,5 +1241,27 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-26-nor-fra',
+    utcDate: '2026-06-26T19:00:00Z',
+    homeTeam: { name: 'Norway', tla: 'NOR' },
+    awayTeam: { name: 'France', tla: 'FRA' },
+    homeGoals: 1,
+    awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-26-sen-irq',
+    utcDate: '2026-06-26T19:00:00Z',
+    homeTeam: { name: 'Senegal', tla: 'SEN' },
+    awayTeam: { name: 'Iraq', tla: 'IRQ' },
+    homeGoals: 5,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
   },
 ];
