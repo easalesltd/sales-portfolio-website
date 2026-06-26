@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Group stages kept the receipts: Mexico beat Czechia 3-0, South Africa edged South Korea 1-0, Ivory Coast sent Curaçao home 2-0, and Ecuador stunned Germany 2-1 to scramble Group E. Jon leads on 34 with Ivory Coast qualified and South Africa still alive; Chris has 26 with Mexico finishing strong; Nest has 24; Scott has 23; Ash has 21 after Ecuador’s shock; and Dave remains bottom on 18 as Germany slipped and Czechia leaked three.';
+  'The last full group-day felt like a tactical meltdown montage: Mexico hammered Czechia 3-0, South Africa scraped past South Korea 1-0, Ivory Coast brushed Curaçao aside 2-0, Ecuador knocked Germany over 2-1, Japan and Sweden settled 1-1 to survive Group F, and the Netherlands beat Tunisia 3-1 to top the group. Jon leads on 35; Ash and Chris are level on 26 after Japan drew and the Netherlands hit three; Scott has 23; Nest has 23 as Tunisia conceded three again; and Dave remains bottom on 18, still haunted by Germany.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1195,6 +1195,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Germany', tla: 'GER' },
     homeGoals: 2,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-25-jpn-swe',
+    utcDate: '2026-06-25T23:00:00Z',
+    homeTeam: { name: 'Japan', tla: 'JPN' },
+    awayTeam: { name: 'Sweden', tla: 'SWE' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-25-tun-ned',
+    utcDate: '2026-06-25T23:00:00Z',
+    homeTeam: { name: 'Tunisia', tla: 'TUN' },
+    awayTeam: { name: 'Netherlands', tla: 'NED' },
+    homeGoals: 1,
+    awayGoals: 3,
     homeRedCards: 0,
     awayRedCards: 0,
   },
