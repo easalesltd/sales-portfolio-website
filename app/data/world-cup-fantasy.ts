@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'The last full group-day felt like a tactical meltdown montage: Mexico hammered Czechia 3-0, South Africa scraped past South Korea 1-0, Ivory Coast brushed Curaçao aside 2-0, Ecuador knocked Germany over 2-1, Japan and Sweden settled 1-1 to survive Group F, and the Netherlands beat Tunisia 3-1 to top the group. Jon leads on 35; Ash and Chris are level on 26 after Japan drew and the Netherlands hit three; Scott has 23; Nest has 23 as Tunisia conceded three again; and Dave remains bottom on 18, still haunted by Germany.';
+  'Group D closed under the California floodlights with two wildly different moods: Turkey snatched a 3-2 win over the USA thanks to Kaan Ayhan\'s last-kick winner, while Paraguay and Australia played out a nervous 0-0 that sent the Socceroos through and left Paraguay sweating on the maths. Jon leads on 34 despite the USA shipping three; Chris has 31 after Turkey hit three and Australia drew; Scott has 24 from Paraguay\'s stalemate; and Dave remains bottom on 18, watching everyone else seal their groups while his points tally sits still.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1217,6 +1217,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Netherlands', tla: 'NED' },
     homeGoals: 1,
     awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-25-tur-usa',
+    utcDate: '2026-06-26T02:00:00Z',
+    homeTeam: { name: 'Turkey', tla: 'TUR' },
+    awayTeam: { name: 'USA', tla: 'USA' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-25-par-aus',
+    utcDate: '2026-06-26T02:00:00Z',
+    homeTeam: { name: 'Paraguay', tla: 'PAR' },
+    awayTeam: { name: 'Australia', tla: 'AUS' },
+    homeGoals: 0,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
