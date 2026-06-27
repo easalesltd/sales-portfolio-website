@@ -1,5 +1,24 @@
 import { describe, expect, it } from '@jest/globals';
-import { scoreTeamMatch } from '@/app/lib/english-pyramid-scoring';
+import {
+  ENGLISH_PYRAMID_FANTASY_PLAYERS,
+  ENGLISH_PYRAMID_FIXTURES,
+} from '@/app/data/english-pyramid-fantasy';
+import { getMatchdaySchedule, scoreTeamMatch } from '@/app/lib/english-pyramid-scoring';
+
+describe('english-pyramid matchday schedule', () => {
+  it('opens on the first fixture date before the season starts', () => {
+    const schedule = getMatchdaySchedule(
+      ENGLISH_PYRAMID_FIXTURES,
+      [],
+      ENGLISH_PYRAMID_FANTASY_PLAYERS,
+      new Date('2026-06-27T12:00:00Z')
+    );
+
+    expect(schedule.defaultDate).toBe('2026-08-15');
+    expect(schedule.fixtureDates[0]).toBe('2026-08-15');
+    expect(schedule.schedulesByDate['2026-08-15']).toHaveLength(3);
+  });
+});
 
 describe('english-pyramid scoreTeamMatch', () => {
   it('awards 3 for a win', () => {
