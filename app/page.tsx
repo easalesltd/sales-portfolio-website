@@ -1,7 +1,24 @@
+import type { Metadata } from 'next';
 import { companies } from './data/companies';
+import { HOME_PAGE_META_DESCRIPTION } from './lib/home-page-meta-description';
 import HomeAboutSection from './components/home/HomeAboutSection';
 import HomeHeroSlideshow from './components/home/HomeHeroSlideshow';
 import HomePartnerBrandsSection from './components/home/HomePartnerBrandsSection';
+
+export const metadata: Metadata = {
+  title: {
+    absolute: 'East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent',
+  },
+  description: HOME_PAGE_META_DESCRIPTION,
+  openGraph: {
+    title: 'East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent',
+    description: HOME_PAGE_META_DESCRIPTION,
+  },
+  twitter: {
+    title: 'East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent',
+    description: HOME_PAGE_META_DESCRIPTION,
+  },
+};
 
 export default function HomePage() {
   return (

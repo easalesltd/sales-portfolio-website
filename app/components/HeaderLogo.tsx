@@ -82,10 +82,10 @@ export default function HeaderLogo() {
 
   return (
     <>
-      <Link href="/" className="flex items-center select-none" onClick={onLogoClick}>
+      <Link href="/" className="flex items-center select-none" onClick={onLogoClick} aria-label="East Anglian Sales LTD home">
         <Image
           src="/images/logo.webp"
-          alt="East Anglian Sales LTD Logo"
+          alt="East Anglian Sales LTD"
           width={100}
           height={67}
           className="object-contain brightness-0 dark:invert"

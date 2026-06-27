@@ -30,7 +30,7 @@ export default function LogoTestPage() {
           <div className="border border-gray-200 rounded-lg p-4" style={{ width: size, height: size }}>
             <Image
               src="/images/logo.svg"
-              alt="East Anglian Sales Ltd Logo"
+              alt="East Anglian Sales LTD"
               width={size}
               height={size}
               style={{ width: size, height: size }}

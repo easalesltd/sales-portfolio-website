@@ -678,7 +678,7 @@ export default async function RootLayout({
                 "@type": "WebPage",
                 "@id": "https://www.easalesltd.co.uk/#webpage",
                 "url": "https://www.easalesltd.co.uk",
-                "name": "Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia",
+                "name": "East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent",
                 "description": HOME_PAGE_META_DESCRIPTION,
                 "inLanguage": "en-GB",
                 "isPartOf": {

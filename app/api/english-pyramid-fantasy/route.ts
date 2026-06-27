@@ -8,6 +8,7 @@ import {
   ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
   ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
 } from '@/app/data/english-pyramid-fantasy';
+import { enrichMatchdayScheduleWithLiveScores } from '@/app/lib/english-pyramid-live-scores';
 import {
   computeStandings,
   getMatchdaySchedule,
@@ -34,15 +35,22 @@ export type EnglishPyramidFantasyResponse = {
 };
 
 export async function GET() {
-  const matches = ENGLISH_PYRAMID_MANUAL_MATCHES.map(manualMatchToResult);
+  const recordedMatches = ENGLISH_PYRAMID_MANUAL_MATCHES.map(manualMatchToResult);
+  const recordedMatchIds = new Set(recordedMatches.map((match) => match.id));
+  const baseSchedule = getMatchdaySchedule(
+    ENGLISH_PYRAMID_FIXTURES,
+    recordedMatches,
+    ENGLISH_PYRAMID_FANTASY_PLAYERS
+  );
+  const { schedule: matchdaySchedule, provisionalMatches } =
+    await enrichMatchdayScheduleWithLiveScores(baseSchedule);
+  const matches = [
+    ...recordedMatches,
+    ...provisionalMatches.filter((match) => !recordedMatchIds.has(match.id)),
+  ];
   const { standings, allScoringMatches, recentScoringMatches } = computeStandings(
     ENGLISH_PYRAMID_FANTASY_PLAYERS,
     matches
-  );
-  const matchdaySchedule = getMatchdaySchedule(
-    ENGLISH_PYRAMID_FIXTURES,
-    matches,
-    ENGLISH_PYRAMID_FANTASY_PLAYERS
   );
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null

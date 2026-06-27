@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import type { Company } from '../data/companies';
+import { partnerBrandAgentDescription } from '../lib/partner-brand-agent-description';
 import { partnerBrandLogoAlt } from '../lib/partner-brand-logo-alt';
 
 /**
@@ -37,7 +38,9 @@ export default function PartnerBrandTile({ company }: { company: Company }) {
       </div>
       <div className="flex min-h-[140px] flex-grow flex-col justify-start bg-white/90 p-6 backdrop-blur-sm">
         <h3 className="mb-2 text-center text-xl font-semibold text-gray-900">{company.name}</h3>
-        <p className="text-center text-sm leading-relaxed text-gray-700">{company.description}</p>
+        <p className="text-center text-sm leading-relaxed text-gray-700">
+          {partnerBrandAgentDescription(company)}
+        </p>
       </div>
     </Link>
   );

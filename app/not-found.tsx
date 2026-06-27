@@ -7,10 +7,10 @@ export default function NotFound() {
       <div className="max-w-2xl w-full text-center">
         {/* Logo */}
         <div className="mb-8 flex justify-center">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center" aria-label="East Anglian Sales LTD home">
             <Image
               src="/images/logo.webp"
-              alt="East Anglian Sales LTD Logo"
+              alt="East Anglian Sales LTD"
               width={150}
               height={100}
               className="object-contain brightness-0"

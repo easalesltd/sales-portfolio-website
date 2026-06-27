@@ -7,6 +7,7 @@ import { companies } from '../../data/companies'
 import VideoBackground from '../../components/VideoBackground'
 import { Company } from '@/app/lib/types'
 import { partnerBrandLogoAlt } from '@/app/lib/partner-brand-logo-alt'
+import { partnerBrandAgentDescription } from '@/app/lib/partner-brand-agent-description'
 import { jsonLdMerchantOfferComplianceFields } from '@/app/lib/json-ld-merchant-offer-fields'
 
 const OrderForm = dynamic(() => import('./OrderForm'), {
@@ -1392,7 +1393,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     'star-editions': {
       title: 'David Langdon & Dave Langdon - Star Editions Sales Agent | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
       description:
-        'Star Editions wholesale greeting cards and licensed gifts supplied by Dave Langdon across East Anglia. Includes Richard Briggs and Dave Thompson ranges, with 5-day UK turnaround.',
+        'Star Editions wholesale greeting cards and licensed gifts supplied by Dave Langdon, East Anglian Sales agent, across Suffolk, Norfolk, Essex and Cambridgeshire. Richard Briggs and Dave Thompson ranges.',
       keywords: [
         'Dave Langdon Star Editions',
         'David Langdon Star Editions',
@@ -1487,7 +1488,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const metaDescription =
       'description' in metadata && typeof metadata.description === 'string'
         ? metadata.description
-        : `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`;
+        : partnerBrandAgentDescription(company);
     return {
       title: metadata.title,
       description: metaDescription,
@@ -1508,7 +1509,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Special case for Museums and Galleries
   if (resolvedParams.slug === 'museums-and-galleries') {
     const title = 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia';
-    const description = `Official Museums and Galleries sales agent and wholesale supplier in East Anglia. ${company.description}`;
+    const description = partnerBrandAgentDescription(company);
     const keywords = sanitizeKeywords([
       'museums and galleries sales agent',
       'museums and galleries agent',
@@ -1605,7 +1606,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   // Generate metadata from company data if not present
   const title = `${company.name} Sales Agent | Wholesale Supplier in East Anglia`;
-  const description = `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`;
+  const description = partnerBrandAgentDescription(company);
   const keywords = `${company.name}, sales agent, wholesale supplier, East Anglia, ${company.name.toLowerCase()} cards, ${company.name.toLowerCase()} gifts`;
 
   return {
@@ -2506,7 +2507,7 @@ function generateStructuredData(company: Company) {
       '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
       '@id': `https://www.easalesltd.co.uk/companies/${company.slug}#organization`,
       'name': data.name,
-      'description': `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${data.description}`,
+      'description': partnerBrandAgentDescription(company),
       'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
       'logo': {
         '@type': 'ImageObject',
@@ -2566,7 +2567,7 @@ function generateStructuredData(company: Company) {
     '@type': ['Organization', 'LocalBusiness', 'WholesaleStore', 'SalesAgent'],
     '@id': `https://www.easalesltd.co.uk/companies/${company.slug}#organization`,
     'name': `${company.name} Sales Agent - Wholesale Supplier in East Anglia`,
-    'description': `Official ${company.name} sales agent and wholesale supplier in East Anglia. ${company.description}`,
+    'description': partnerBrandAgentDescription(company),
     'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
     'logo': {
       '@type': 'ImageObject',
@@ -2592,7 +2593,7 @@ function generateStructuredData(company: Company) {
           'itemOffered': {
             '@type': 'Product',
             'name': `${company.name} Products`,
-            'description': company.description,
+            'description': partnerBrandAgentDescription(company),
             'image': productSchemaImages(company),
             'brand': {
               '@type': 'Brand',
