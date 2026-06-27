@@ -32,7 +32,9 @@ function videoSourcesForPath(src: string): { src: string; type: string }[] {
 export default function ShowroomVideo({ videoSrc, posterSrc }: ShowroomVideoProps) {
   const handlePlay = () => {
     // Pause background video when showroom tour starts
-    const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
+    const backgroundVideo = document.querySelector(
+      'video[data-decorative-background]'
+    ) as HTMLVideoElement | null;
     if (backgroundVideo) {
       backgroundVideo.pause();
     }
@@ -40,7 +42,9 @@ export default function ShowroomVideo({ videoSrc, posterSrc }: ShowroomVideoProp
 
   const handlePause = () => {
     // Resume background video when showroom tour is paused
-    const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
+    const backgroundVideo = document.querySelector(
+      'video[data-decorative-background]'
+    ) as HTMLVideoElement | null;
     if (backgroundVideo) {
       backgroundVideo.play().catch(() => {
         // Handle play failure silently
@@ -50,7 +54,9 @@ export default function ShowroomVideo({ videoSrc, posterSrc }: ShowroomVideoProp
 
   const handleEnded = () => {
     // Resume background video when showroom tour ends
-    const backgroundVideo = document.querySelector('video[autoplay]') as HTMLVideoElement;
+    const backgroundVideo = document.querySelector(
+      'video[data-decorative-background]'
+    ) as HTMLVideoElement | null;
     if (backgroundVideo) {
       backgroundVideo.play().catch(() => {
         // Handle play failure silently

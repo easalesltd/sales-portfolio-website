@@ -13,7 +13,10 @@ type Props = {
 export default function HomePartnerBrandsSection({ companies }: Props) {
   return (
     <div id="partner-brands" className="relative min-h-screen">
-      <VideoBackground videoUrl="/videos/brands-background.mp4">
+      <VideoBackground
+        videoUrl="/videos/brands-background.mp4"
+        posterUrl="/images/brands-background.jpg"
+      >
         <div className="py-20">
           <div className="max-w-7xl mx-auto px-4">
             <FadeInOnScroll>

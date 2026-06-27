@@ -6,74 +6,91 @@ interface VideoBackgroundProps {
   videoUrl: string;
   children: React.ReactNode;
   fadeIn?: boolean;
-  playbackRate?: number; // Speed multiplier (0.5 = half speed, 2 = double speed)
+  playbackRate?: number;
+  /** Poster frame while the video buffer loads. */
+  posterUrl?: string;
 }
 
+/**
+ * Decorative muted background video. Files must be video-only (no audio track) so
+ * iOS/Android do not pause Spotify/Apple Music when playback starts.
+ */
 export default function VideoBackground({
   videoUrl,
   children,
   fadeIn = false,
   playbackRate = 1.0,
+  posterUrl,
 }: VideoBackgroundProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isInView, setIsInView] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { rootMargin: '120px', threshold: 0.01 }
+    );
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
     video.playsInline = true;
     video.playbackRate = playbackRate;
 
-    const attemptPlay = () => {
+    if (!isInView) {
+      video.pause();
+      return;
+    }
+
+    const startPlayback = () => {
+      setIsLoaded(true);
       void video.play().catch(() => {
-        // Keep silent; browsers can still block autoplay in rare cases.
+        // Autoplay can still be blocked in strict browser policies.
       });
     };
 
-    const handleLoadedData = () => {
-      setIsLoaded(true);
-      attemptPlay();
-    };
-    const handleCanPlay = () => attemptPlay();
-
-    video.addEventListener('loadeddata', handleLoadedData);
-    video.addEventListener('canplay', handleCanPlay);
-
-    // Always force a source reload after client navigation to avoid first-load no-play race.
-    video.load();
     if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-      handleLoadedData();
-    } else {
-      attemptPlay();
+      startPlayback();
+      return;
     }
 
-    return () => {
-      video.removeEventListener('loadeddata', handleLoadedData);
-      video.removeEventListener('canplay', handleCanPlay);
-      video.pause();
-    };
-  }, [playbackRate, videoUrl]);
+    video.addEventListener('loadeddata', startPlayback, { once: true });
+    return () => video.removeEventListener('loadeddata', startPlayback);
+  }, [isInView, playbackRate, videoUrl]);
+
+  const backdropClass = `h-full w-full object-cover ${isLoaded ? 'opacity-20' : 'opacity-0'}`;
+  const backdropTransition = fadeIn ? 'opacity 1s ease-in' : 'none';
 
   return (
-    <div className="relative h-full min-h-0 w-full">
+    <div ref={containerRef} className="relative h-full min-h-0 w-full">
       <div className="pointer-events-none absolute inset-0 bg-black/20">
         <video
           key={videoUrl}
           ref={videoRef}
-          className={`w-full h-full object-cover ${isLoaded ? 'opacity-20' : 'opacity-0'}`}
-          style={{
-            transition: fadeIn ? 'opacity 1s ease-in' : 'none',
-          }}
+          className={backdropClass}
+          style={{ transition: backdropTransition }}
+          poster={posterUrl}
+          data-decorative-background
           muted
           playsInline
           loop
-          autoPlay
-          preload="metadata"
-          x-webkit-airplay="deny"
+          preload={isInView ? 'metadata' : 'none'}
           disablePictureInPicture
-          controlsList="nodownload noplaybackrate"
+          controlsList="nodownload noplaybackrate nofullscreen"
+          aria-hidden
+          tabIndex={-1}
         >
           <source src={videoUrl} type="video/mp4" />
         </video>

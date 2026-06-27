@@ -53,7 +53,10 @@ export default function TemporaryRepCoverPage() {
     <div className="min-h-screen">
       {/* Hero Section with Video Background */}
       <div className="h-[40vh] md:h-[60vh] min-h-[300px] w-full relative overflow-hidden">
-        <VideoBackground videoUrl="/videos/brands-background.mp4">
+        <VideoBackground
+          videoUrl="/videos/brands-background.mp4"
+          posterUrl="/images/brands-background.jpg"
+        >
           <div className="w-full h-full flex items-center justify-center bg-black/40">
             <div className="text-center px-4 max-w-4xl">
               <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
