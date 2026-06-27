@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Friday across two time zones felt like three different tournaments colliding: Turkey hunted down the USA 3-2 with a last-gasp winner, Paraguay and Australia ground out a tense 0-0 that did nobody\'s nerves any favours, France put four past a rotated Norway without breaking sweat, and Senegal demolished Iraq 5-0 after the Iraqis went down to ten men. Jon leads on 34 despite the USA shipping three; Chris has 33 from France\'s rout and Iraq\'s red-card misery; Scott has 24 after Paraguay\'s stalemate; and Nest remains bottom on 22, haunted by Norway shipping four while everyone else in Group I found a way to move the needle.';
+  'Group H signed off like bad theatre: Cape Verde drew 0-0 with Saudi Arabia to reach the last 32 on debut, the Saudis bowed out goalless and grateful for the mercy of full time, and Spain beat Uruguay 1-0 to win the group after Canobbio saw red and both benches nearly came to blows. Nest finally clawed a draw apiece from Cape Verde and Saudi Arabia, Scott lost out as Uruguay went down to ten men, and Ash collected Spain\'s three. Jon leads on 34; Dave remains bottom on 22.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -582,6 +582,12 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-28T19:00:00Z',
     homeTeam: { name: 'Canada', tla: 'CAN' },
     awayTeam: { name: 'South Africa', tla: 'RSA' },
+  },
+  {
+    id: '2026-07-03-arg-cpv',
+    utcDate: '2026-07-03T22:00:00Z',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
   },
 ];
 
@@ -1263,5 +1269,27 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 1,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-26-cpv-ksa',
+    utcDate: '2026-06-27T00:00:00Z',
+    homeTeam: { name: 'Cape Verde', tla: 'CPV' },
+    awayTeam: { name: 'Saudi Arabia', tla: 'KSA' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-26-uru-esp',
+    utcDate: '2026-06-27T00:00:00Z',
+    homeTeam: { name: 'Uruguay', tla: 'URU' },
+    awayTeam: { name: 'Spain', tla: 'ESP' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 1,
+    awayRedCards: 0,
   },
 ];
