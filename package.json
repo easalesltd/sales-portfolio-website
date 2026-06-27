@@ -27,7 +27,8 @@
     "world-cup:validate": "node scripts/world-cup-validate-manual-matches.cjs && node scripts/world-cup-validate-daily-roast.cjs",
     "english-pyramid:standings": "node scripts/english-pyramid-standings-summary.cjs",
     "english-pyramid:due": "node scripts/english-pyramid-due-fixtures.cjs",
-    "english-pyramid:fetch-fixtures": "node scripts/english-pyramid-fetch-fixtures.cjs"
+    "english-pyramid:fetch-fixtures": "node scripts/english-pyramid-fetch-fixtures.cjs",
+    "english-pyramid:check-fixtures": "node scripts/english-pyramid-check-fixtures.cjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

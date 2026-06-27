@@ -14,6 +14,8 @@ describe('english-pyramid-live-scores', () => {
     expect(normalizeEspnAbbrevToTeamCode('eng.1', 'MNC')).toBe('MCI');
     expect(normalizeEspnAbbrevToTeamCode('eng.4', 'CHES')).toBe('CHS');
     expect(normalizeEspnAbbrevToTeamCode('eng.5', 'BOR')).toBe('BORE');
+    expect(normalizeEspnAbbrevToTeamCode('eng.4', 'NEW')).toBe('NEW');
+    expect(normalizeEspnAbbrevToTeamCode('eng.1', 'NEW')).toBe('NEW');
   });
 
   it('parses in-progress ESPN events but skips scheduled fixtures', () => {

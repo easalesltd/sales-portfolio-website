@@ -72,8 +72,8 @@ export function normalizeEspnAbbrevToTeamCode(slug: string, abbrev: string): str
   const upper = abbrev.trim().toUpperCase();
   const mapped = ESPN_ABBREV_BY_SLUG[slug]?.[upper];
   if (mapped) return mapped;
-  if (ENGLISH_PYRAMID_TEAM_BY_CODE[upper]) return upper;
-  return null;
+  // Opponent abbrev only — do not alias across leagues (eng.4 NEW = Newport County).
+  return upper;
 }
 
 export function espnSlugForTeamCode(code: string): string | null {

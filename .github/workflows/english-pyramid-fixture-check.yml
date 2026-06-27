@@ -1,0 +1,77 @@
+name: English Pyramid Fixture Check
+
+on:
+  schedule:
+    # Monday 06:00 UTC — catch post-weekend reschedules / international break updates.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      auto_refresh:
+        description: Write refreshed fixtures to the repo when ESPN differs
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: english-pyramid-fixture-check
+  cancel-in-progress: false
+
+jobs:
+  check-fixtures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Compare fixtures with ESPN (league only)
+        id: check
+        run: |
+          set +e
+          node scripts/english-pyramid-check-fixtures.cjs | tee fixture-check.log
+          code=$?
+          if [[ "$code" -eq 0 ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Refresh fixtures when ESPN changed
+        if: steps.check.outputs.changed == 'true' && (github.event_name == 'schedule' || inputs.auto_refresh == true)
+        run: npm run english-pyramid:fetch-fixtures -- --write
+
+      - name: Commit fixture refresh
+        if: steps.check.outputs.changed == 'true' && (github.event_name == 'schedule' || inputs.auto_refresh == true)
+        run: |
+          if git diff --quiet; then
+            echo "No file changes after refresh."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/data/english-pyramid-fantasy.ts
+          git commit -m "$(cat <<'EOF'
+Refresh English pyramid league fixtures from ESPN.
+
+Weekly check picked up kick-off or schedule changes (league matches only; cup ties excluded).
+EOF
+)"
+          git push origin main
+
+      - name: Report when fixtures differ but auto refresh is off
+        if: steps.check.outputs.changed == 'true' && github.event_name == 'workflow_dispatch' && inputs.auto_refresh != true
+        run: |
+          echo "::warning::ESPN league fixtures differ from the repo. Run npm run english-pyramid:fetch-fixtures -- --write locally or re-run this workflow with auto_refresh enabled."
+          cat fixture-check.log

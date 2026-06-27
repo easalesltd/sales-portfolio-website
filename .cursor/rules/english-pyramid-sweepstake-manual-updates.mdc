@@ -20,8 +20,12 @@ Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyram
 
 ## Fixtures and kick-off times
 
-- Maintain `ENGLISH_PYRAMID_FIXTURES` with upcoming games involving our **49 clubs** across all seven divisions.
-- Refresh the bulk schedule with `npm run english-pyramid:fetch-fixtures -- --write` (ESPN: PL → L2 today; NL when ESPN publishes 2026/27; NL North/South manual).
+- Maintain `ENGLISH_PYRAMID_FIXTURES` with **every league match** involving our **49 clubs** (not just games between sweepstake clubs).
+- Refresh the bulk schedule with `npm run english-pyramid:fetch-fixtures -- --write` (ESPN: PL → NL when published; NL North/South manual).
+- **League only** — cup ties (FA Cup, League Cup, etc.) are excluded automatically (season slug + single-leg pair filter).
+- Weekly GitHub Action `.github/workflows/english-pyramid-fixture-check.yml` compares ESPN to the repo and auto-refreshes when kick-offs move (international breaks, postponements).
+- Manual drift check: `npm run english-pyramid:check-fixtures` (add `--write` to apply).
+- First matchday opens on the earliest fixture date in the ledger (e.g. Championship often kicks off Friday before the main Saturday batch).
 - Store `utcDate` as **UTC ISO-8601** (`2026-08-09T14:00:00Z`) converted from the **Europe/London** kick-off (handles GMT/BST).
 - Typical UK kick-offs: **12:30**, **15:00**, **17:30** (weekend), **19:45** / **20:00** (midweek). Full-time is usually ~115 minutes later.
 - Fixture ids: stable keys such as `2026-08-09-ars-che` (date + home code + away code).
