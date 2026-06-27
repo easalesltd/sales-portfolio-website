@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Four Pacific time-zone finales landed on the same GMT night: Cape Verde and Saudi Arabia played out a bloodless 0-0 that put the Islanders into the knockouts and sent the Saudis out, Spain beat Uruguay 1-0 to win Group H, Egypt and Iran traded blows in a 1-1 draw that took VAR to sort out the finale, and Belgium hammered New Zealand 5-1 to stroll through Group G as top dogs. Nest hoovered up Belgium\'s bumper return plus a point each from Cape Verde and Saudi Arabia, Scott salvaged a draw from Egypt, Dave cashed Iran\'s point, and Ash took Spain\'s win but paid for New Zealand leaking five. Jon leads on 34; Dave remains bottom on 23.';
+  'GMT 27 June sprawled across Group G, H, and L like a tactical homework assignment nobody wanted: Cape Verde and Saudi Arabia played out a sterile 0-0 that sent the Islanders into the knockouts and dumped the Saudis, Spain edged Uruguay 1-0 to seal Group H, Egypt and Iran shared a VAR-scrutinised 1-1, Belgium pasted New Zealand 5-1 to swagger out of Group G, England roused themselves after the break to beat Panama 2-0 and top Group L, and Croatia ground out a 2-1 win over Ghana in Philadelphia for second — leaving Panama the tournament\'s first side without a goal and Ghana clinging to third. Nest collected England plus Cape Verde and Belgium, Scott grabbed Croatia and Egypt, Dave clung to Iran\'s point but saw Panama finish stone dead last, and Ash took Spain\'s win while Ghana\'s defeat hurt. Jon leads on 34; Dave remains bottom on 23.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -582,6 +582,12 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-06-28T19:00:00Z',
     homeTeam: { name: 'Canada', tla: 'CAN' },
     awayTeam: { name: 'South Africa', tla: 'RSA' },
+  },
+  {
+    id: '2026-07-01-eng-sen',
+    utcDate: '2026-07-01T16:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Senegal', tla: 'SEN' },
   },
   {
     id: '2026-07-03-arg-cpv',
@@ -1311,6 +1317,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Belgium', tla: 'BEL' },
     homeGoals: 1,
     awayGoals: 5,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-27-pan-eng',
+    utcDate: '2026-06-27T21:00:00Z',
+    homeTeam: { name: 'Panama', tla: 'PAN' },
+    awayTeam: { name: 'England', tla: 'ENG' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-27-cro-gha',
+    utcDate: '2026-06-27T21:00:00Z',
+    homeTeam: { name: 'Croatia', tla: 'CRO' },
+    awayTeam: { name: 'Ghana', tla: 'GHA' },
+    homeGoals: 2,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
