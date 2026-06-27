@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Group H signed off like bad theatre: Cape Verde drew 0-0 with Saudi Arabia to reach the last 32 on debut, the Saudis bowed out goalless and grateful for the mercy of full time, and Spain beat Uruguay 1-0 to win the group after Canobbio saw red and both benches nearly came to blows. Nest finally clawed a draw apiece from Cape Verde and Saudi Arabia, Scott lost out as Uruguay went down to ten men, and Ash collected Spain\'s three. Jon leads on 34; Dave remains bottom on 22.';
+  'Four Pacific time-zone finales landed on the same GMT night: Cape Verde and Saudi Arabia played out a bloodless 0-0 that put the Islanders into the knockouts and sent the Saudis out, Spain beat Uruguay 1-0 to win Group H, Egypt and Iran traded blows in a 1-1 draw that took VAR to sort out the finale, and Belgium hammered New Zealand 5-1 to stroll through Group G as top dogs. Nest hoovered up Belgium\'s bumper return plus a point each from Cape Verde and Saudi Arabia, Scott salvaged a draw from Egypt, Dave cashed Iran\'s point, and Ash took Spain\'s win but paid for New Zealand leaking five. Jon leads on 34; Dave remains bottom on 23.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1290,6 +1290,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 0,
     awayGoals: 1,
     homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-26-egy-irn',
+    utcDate: '2026-06-27T03:00:00Z',
+    homeTeam: { name: 'Egypt', tla: 'EGY' },
+    awayTeam: { name: 'Iran', tla: 'IRN' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-26-nzl-bel',
+    utcDate: '2026-06-27T03:00:00Z',
+    homeTeam: { name: 'New Zealand', tla: 'NZL' },
+    awayTeam: { name: 'Belgium', tla: 'BEL' },
+    homeGoals: 1,
+    awayGoals: 5,
+    homeRedCards: 0,
     awayRedCards: 0,
   },
 ];
