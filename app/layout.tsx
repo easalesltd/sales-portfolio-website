@@ -589,6 +589,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.easalesltd.co.uk"),
   generator: "Next.js",
   applicationName: "East Anglian Sales LTD",
+  appleWebApp: {
+    capable: true,
+    title: 'EA Sales',
+    statusBarStyle: 'default',
+  },
   referrer: "origin-when-cross-origin",
   creator: "Dave Langdon",
   publisher: "East Anglian Sales LTD",
@@ -651,16 +656,7 @@ export default async function RootLayout({
         {/* Sitemap */}
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
         
-        {/* Touch Icon and Web App Declarations */}
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="EA Sales" />
-        <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/favicons/favicon-152x152.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="167x167" href="/favicons/favicon-167x167.png" />
-        <link rel="apple-touch-icon" sizes="120x120" href="/favicons/favicon-120x120.png" />
-        <meta name="application-name" content="EA Sales" />
+        {/* Touch icons and web app title come from metadata.icons / metadata.appleWebApp */}
         <meta name="theme-color" content="#ffffff" />
         <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="msapplication-TileImage" content="/favicons/msapplication-TileImage.png" />

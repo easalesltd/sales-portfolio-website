@@ -16,8 +16,14 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [{ url: `${assetBase}/icon-192.png`, sizes: '192x192', type: 'image/png' }],
-    apple: [{ url: `${assetBase}/apple-touch-icon.png`, sizes: '180x180', type: 'image/png' }],
+    icon: [
+      { url: `${assetBase}/icon-192.png`, sizes: '192x192', type: 'image/png' },
+      { url: `${assetBase}/icon-512.png`, sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: `${assetBase}/apple-touch-icon.png`, sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: [{ url: `${assetBase}/apple-touch-icon.png`, type: 'image/png' }],
   },
   manifest: `${assetBase}/manifest.webmanifest`,
   appleWebApp: {
