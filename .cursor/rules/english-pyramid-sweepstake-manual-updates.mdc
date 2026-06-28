@@ -22,6 +22,7 @@ Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyram
 
 - Maintain `ENGLISH_PYRAMID_FIXTURES` with **every league match** involving our **49 clubs** (not just games between sweepstake clubs).
 - Refresh the bulk schedule with `npm run english-pyramid:fetch-fixtures -- --write` (ESPN: PL → NL when published; NL North/South manual).
+- **National League (tier 5)** fixtures typically publish around **10 July** each summer. `.github/workflows/english-pyramid-fixture-check.yml` polls ESPN twice daily **10–20 July** (plus weekly Mondays) and auto-commits when eng.5 fixtures appear.
 - **League only** — cup ties (FA Cup, League Cup, etc.) are excluded automatically (season slug + single-leg pair filter).
 - Weekly GitHub Action `.github/workflows/english-pyramid-fixture-check.yml` compares ESPN to the repo and auto-refreshes when kick-offs move (international breaks, postponements).
 - Manual drift check: `npm run english-pyramid:check-fixtures` (add `--write` to apply).

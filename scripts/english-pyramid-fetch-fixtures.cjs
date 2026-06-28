@@ -48,7 +48,7 @@ async function main() {
     process.stderr.write(`Count warnings (ESPN gaps): ${countWarnings.join(', ')}\n`);
   }
   process.stderr.write(
-    'Note: National League North/South (14 clubs) are not on ESPN — add those fixtures manually when available.\n'
+    `Note: National League (eng.5) fixtures usually publish around 10 July — GitHub Actions polls ESPN 10–20 July and weekly thereafter. NL North/South (14 clubs) are not on ESPN; add those fixtures manually when available.\n`
   );
   process.stderr.write('Cup ties are excluded — league competition only.\n');
 

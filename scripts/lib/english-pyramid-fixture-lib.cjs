@@ -7,6 +7,12 @@ const dataPath = path.join(repoRoot, 'app/data/english-pyramid-fantasy.ts');
 /** 2026/27 season — ignore prior-season dates ESPN still returns on some calendars. */
 const SEASON_START_ISO = '2026-07-01T00:00:00Z';
 
+/** National League (eng.5) fixtures typically publish around this date each summer. */
+const NATIONAL_LEAGUE_FIXTURES_RELEASE_DATE = '2026-07-10';
+
+/** Our seven National League sweepstake clubs (ESPN eng.5 when published). */
+const NL_SWEEPSTAKE_CODES = ['CAR', 'STD', 'FGR', 'BORE', 'HPL', 'SCU', 'YOR'];
+
 const LEAGUE_SLUGS = ['eng.1', 'eng.2', 'eng.3', 'eng.4', 'eng.5'];
 
 /** ESPN abbreviation → sweepstake code (our clubs only, per league slug). */
@@ -398,6 +404,36 @@ function expectedMatchesForTeamCode(code) {
   return teamDivision ? EXPECTED_LEAGUE_MATCHES_BY_DIVISION[teamDivision] : null;
 }
 
+function utcDateKey(date = new Date()) {
+  return date.toISOString().slice(0, 10);
+}
+
+function isOnOrAfterNlReleaseDate(now = new Date()) {
+  return utcDateKey(now) >= NATIONAL_LEAGUE_FIXTURES_RELEASE_DATE;
+}
+
+function summarizeNlFixtureStatus(localFixtures, remoteFixtures, now = new Date()) {
+  const localCounts = summarizePerTeam(localFixtures);
+  const remoteCounts = summarizePerTeam(remoteFixtures);
+  const missingLocal = NL_SWEEPSTAKE_CODES.filter((code) => (localCounts[code] ?? 0) === 0);
+  const availableRemote = NL_SWEEPSTAKE_CODES.filter((code) => (remoteCounts[code] ?? 0) > 0);
+  const pendingRelease = !isOnOrAfterNlReleaseDate(now);
+  const awaitingEspn =
+    isOnOrAfterNlReleaseDate(now) && missingLocal.length > 0 && availableRemote.length === 0;
+  const readyToImport =
+    isOnOrAfterNlReleaseDate(now) &&
+    availableRemote.some((code) => (localCounts[code] ?? 0) < (remoteCounts[code] ?? 0));
+
+  return {
+    releaseDate: NATIONAL_LEAGUE_FIXTURES_RELEASE_DATE,
+    pendingRelease,
+    awaitingEspn,
+    readyToImport,
+    missingLocal,
+    availableRemote,
+  };
+}
+
 const SWEEPSTAKE_DIVISION_BY_CODE = {
   MCI: 'PL', MUN: 'PL', ARS: 'PL', AVL: 'PL', CHE: 'PL', LIV: 'PL', NEW: 'PL',
   WHU: 'CH', WOL: 'CH', BUR: 'CH', MID: 'CH', BIR: 'CH', SHU: 'CH', SOU: 'CH',
@@ -411,6 +447,8 @@ module.exports = {
   dataPath,
   ESPN_ABBREV_BY_SLUG,
   LEAGUE_SLUGS,
+  NL_SWEEPSTAKE_CODES,
+  NATIONAL_LEAGUE_FIXTURES_RELEASE_DATE,
   OUR_CODES,
   SEASON_START_ISO,
   TEAM_NAME_BY_CODE,
@@ -418,8 +456,10 @@ module.exports = {
   fetchAllLeagueFixtures,
   fetchLeagueFixtures,
   formatFixtureBlock,
+  isOnOrAfterNlReleaseDate,
   parseFixturesFromSource,
   expectedMatchesForTeamCode,
+  summarizeNlFixtureStatus,
   summarizePerTeam,
   writeFixturesToDataFile,
 };

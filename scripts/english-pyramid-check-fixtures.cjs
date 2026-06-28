@@ -6,6 +6,7 @@ const {
   compareFixtureLists,
   fetchAllLeagueFixtures,
   parseFixturesFromSource,
+  summarizeNlFixtureStatus,
   summarizePerTeam,
   writeFixturesToDataFile,
 } = require('./lib/english-pyramid-fixture-lib.cjs');
@@ -25,12 +26,31 @@ async function main() {
   const localFixtures = parseFixturesFromSource();
   const { fixtures: remoteFixtures, bySlug } = await fetchAllLeagueFixtures();
   const diff = compareFixtureLists(localFixtures, remoteFixtures);
+  const nlStatus = summarizeNlFixtureStatus(localFixtures, remoteFixtures);
 
   console.log(`Local fixtures: ${localFixtures.length}`);
   console.log(`ESPN league fixtures: ${remoteFixtures.length}`);
   for (const [slug, count] of Object.entries(bySlug)) {
     console.log(`  ${slug}: ${count}`);
   }
+
+  if (nlStatus.pendingRelease) {
+    console.log(
+      `\nNational League fixtures usually publish on ${nlStatus.releaseDate}; automatic refresh runs from that date.`
+    );
+  } else if (nlStatus.awaitingEspn) {
+    console.log(
+      `\nNational League release date has passed but ESPN eng.5 still has no fixtures for: ${nlStatus.missingLocal.join(', ')}`
+    );
+  } else if (nlStatus.readyToImport) {
+    console.log(
+      `\nNational League fixtures are available on ESPN for: ${nlStatus.availableRemote.join(', ')}`
+    );
+  }
+
+  setOutput('nl_pending', nlStatus.pendingRelease ? 'true' : 'false');
+  setOutput('nl_awaiting_espn', nlStatus.awaitingEspn ? 'true' : 'false');
+  setOutput('nl_ready', nlStatus.readyToImport ? 'true' : 'false');
 
   const localCounts = summarizePerTeam(localFixtures);
   const remoteCounts = summarizePerTeam(remoteFixtures);
