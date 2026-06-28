@@ -140,7 +140,8 @@ function compareByStandingsOrder(
 export function scoreTeamMatch(
   teamGoals: number,
   opponentGoals: number,
-  redCards = 0
+  redCards = 0,
+  options?: { knockout?: boolean }
 ): TeamMatchScore {
   let outcome: TeamMatchScore['outcome'] = 'loss';
   let points: number = WORLD_CUP_FANTASY_SCORING.loss;
@@ -150,7 +151,9 @@ export function scoreTeamMatch(
     points = WORLD_CUP_FANTASY_SCORING.win;
   } else if (teamGoals === opponentGoals) {
     outcome = 'draw';
-    points = WORLD_CUP_FANTASY_SCORING.draw;
+    points = options?.knockout
+      ? WORLD_CUP_FANTASY_SCORING.knockoutDraw
+      : WORLD_CUP_FANTASY_SCORING.draw;
   }
 
   const bonus =
@@ -176,6 +179,23 @@ export function scoreTeamMatch(
     goalsAgainst: opponentGoals,
     redCards,
   };
+}
+
+export function tagKnockoutMatchStages(
+  matches: readonly WorldCupMatchResult[],
+  baseFixtures: readonly WorldCupFantasyFixture[]
+): WorldCupMatchResult[] {
+  const knockoutMatchIds = new Set(
+    knockoutFixturesForElimination(baseFixtures, matches).map((fixture) => fixture.id)
+  );
+
+  return matches.map((match) =>
+    knockoutMatchIds.has(match.id) ? { ...match, stage: 'knockout' } : match
+  );
+}
+
+export function isKnockoutMatchResult(match: Pick<WorldCupMatchResult, 'stage'>): boolean {
+  return match.stage === 'knockout';
 }
 
 export function manualMatchToResult(match: WorldCupFantasyManualMatch): WorldCupMatchResult {
@@ -429,7 +449,9 @@ export function teamPointsInMatch(match: WorldCupMatchResult, playerTeamCode: st
   const goalsFor = side.isHome ? match.homeGoals : match.awayGoals;
   const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
-  return scoreTeamMatch(goalsFor, goalsAgainst, redCards).total;
+  return scoreTeamMatch(goalsFor, goalsAgainst, redCards, {
+    knockout: isKnockoutMatchResult(match),
+  }).total;
 }
 
 export function matchInvolvesTeam(match: WorldCupMatchResult, teamCode: string): boolean {
@@ -468,7 +490,9 @@ export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
   const opponent = side.isHome ? match.awayTeam : match.homeTeam;
   const opponentMeta = WORLD_CUP_TEAM_BY_CODE[opponent.tla];
-  const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards);
+  const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards, {
+    knockout: isKnockoutMatchResult(match),
+  });
 
   return {
     matchId: match.id,
@@ -579,7 +603,8 @@ export function computeStandings(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   );
   const allTeamCodes = [...new Set(players.flatMap((player) => player.teams))];
-  const eliminatedTeamCodes = computeEliminatedTeamCodes(allTeamCodes, baseFixtures, matches);
+  const scoredMatches = tagKnockoutMatchStages(finished, baseFixtures);
+  const eliminatedTeamCodes = computeEliminatedTeamCodes(allTeamCodes, baseFixtures, scoredMatches);
 
   const standings: PlayerStanding[] = players.map((player) => ({
     id: player.id,
@@ -624,7 +649,7 @@ export function computeStandings(
 
   const byId = new Map(standings.map((row) => [row.id, row]));
 
-  for (const match of finished) {
+  for (const match of scoredMatches) {
     for (const player of players) {
       const row = byId.get(player.id);
       if (!row) continue;
@@ -638,7 +663,9 @@ export function computeStandings(
         const goalsFor = side.isHome ? match.homeGoals! : match.awayGoals!;
         const goalsAgainst = side.isHome ? match.awayGoals! : match.homeGoals!;
         const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
-        const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards);
+        const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards, {
+          knockout: isKnockoutMatchResult(match),
+        });
         const teamRow = teamRows.get(teamCode);
         if (!teamRow) continue;
 
@@ -685,7 +712,7 @@ export function computeStandings(
     }
   });
 
-  const allScoringMatches = buildScoringMatchEntries(players, finished);
+  const allScoringMatches = buildScoringMatchEntries(players, scoredMatches);
   const recentScoringMatches = allScoringMatches.slice(0, 12);
 
   return { standings, allScoringMatches, recentScoringMatches };

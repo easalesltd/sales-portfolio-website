@@ -208,6 +208,8 @@ export const WORLD_CUP_FANTASY_SCORING = {
   win: 3,
   draw: 1,
   loss: 0,
+  /** Knockout ties — no draw points; final result after ET/pens only. */
+  knockoutDraw: 0,
   /** +1 when the team scores strictly more than 2 goals (i.e. 3+). */
   highScoringBonusMinGoals: 3,
   highScoringBonus: 1,

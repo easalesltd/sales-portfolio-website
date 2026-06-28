@@ -7,6 +7,7 @@ import {
   getMatchdaySchedule,
   getUpcomingFixtures,
   resolveManagerImageForStandings,
+  scoreTeamMatch,
   type WorldCupMatchResult,
 } from '@/app/lib/world-cup-scoring';
 import {
@@ -109,6 +110,23 @@ describe('resolveManagerImageForStandings', () => {
 
   it('uses default image for middle positions', () => {
     expect(resolveManagerImageForStandings(player, 2, 6)).toBe(player.managerImage);
+  });
+});
+
+describe('scoreTeamMatch', () => {
+  it('awards group-stage draw points', () => {
+    expect(scoreTeamMatch(1, 1).total).toBe(1);
+  });
+
+  it('awards knockout win and loss without draw points', () => {
+    expect(scoreTeamMatch(2, 1, 0, { knockout: true }).total).toBe(3);
+    expect(scoreTeamMatch(1, 2, 0, { knockout: true }).total).toBe(0);
+    expect(scoreTeamMatch(1, 1, 0, { knockout: true }).total).toBe(0);
+  });
+
+  it('still applies goal and red-card adjustments in knockouts', () => {
+    expect(scoreTeamMatch(4, 2, 0, { knockout: true }).total).toBe(4);
+    expect(scoreTeamMatch(1, 4, 1, { knockout: true }).total).toBe(-2);
   });
 });
 

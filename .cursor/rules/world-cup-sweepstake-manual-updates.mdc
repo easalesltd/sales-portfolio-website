@@ -22,11 +22,11 @@ When asked to update the World Cup sweepstake scores:
 - When appending knockout results to `WORLD_CUP_FANTASY_MANUAL_MATCHES`, use the stable fixture id from the schedule/bracket (`2026-06-28-rsa-can` for R32, `2026-07-04-r16-1` for R16, etc.). Losers are marked eliminated automatically once the final score is in the ledger.
 - Keep the tournament progress graph fresh on every score update. The graph in `WorldCupFantasy.tsx` is driven from the manual match ledger via `computeStandings()` / `allScoringMatches`, so appending every newly finished result is the graph update; if a future graph-specific data source is introduced, update it in the same score-update commit. Do not leave the graph stale while the table/roast has moved on.
 - Do not manually edit player totals or standings. The app applies the scoring rules from `WORLD_CUP_FANTASY_SCORING` via `computeStandings()`:
-  - 3 pts win
-  - 1 pt draw
-  - +1 for 3+ goals
-  - -1 for 3+ conceded
-  - -1 per red card
+  - Group stage: 3 pts win, 1 pt draw
+  - Knockout ties: 3 pts win, 0 pts loss (record the final result after ET/pens — no draw points)
+  - +1 for 3+ goals scored (group and knockout)
+  - -1 for 3+ conceded (group and knockout)
+  - -1 per red card (group and knockout)
 - After adding or changing any ledger entry, run `npm run world-cup:standings` and use that computed output as the only source for player totals, leader/bottom claims, and tie wording in both `WORLD_CUP_FANTASY_DAILY_UPDATE` and the final summary. Do not calculate standings in your head, infer them from the latest match only, or write phrases like “leads on X”, “level on X”, “bottom on X”, or “up to X” unless the number/name pairing appears in the computed standings output.
 - After every roast edit, run `npm run world-cup:validate` (which includes `scripts/world-cup-validate-daily-roast.cjs`). The roast must cover **only** the latest GMT matchday in the manual ledger: mention every team that played that day, mention no team from another day, and never link a manager to a country they do not own in `WORLD_CUP_FANTASY_PLAYERS`. If validation fails, fix the roast before pushing.
 - If no new matches are finished, leave the ledger unchanged.

@@ -64,10 +64,10 @@ const DEFAULT_MATCH_SCORING_HELPERS: MatchScoringHelpers = {
 };
 
 const SCORING_RULES = [
-  '3 pts win',
-  '1 pt draw',
-  '+1 for 3+ goals',
-  '−1 for 3+ conceded',
+  'Group stage: 3 pts win · 1 pt draw',
+  'Knockout: 3 pts win · 0 pts loss (ET/pens count)',
+  '+1 for 3+ goals scored',
+  '−1 for 3+ goals conceded',
   '−1 per red card',
 ] as const;
 

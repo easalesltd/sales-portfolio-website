@@ -6,6 +6,11 @@ const path = require('node:path');
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
 const source = fs.readFileSync(dataPath, 'utf8');
+const {
+  parseKnockoutMatchIds,
+  isKnockoutMatchId,
+  scoreTeamMatch,
+} = require('./lib/world-cup-scoring-lib.cjs');
 
 function extractConstArray(name) {
   const match = source.match(new RegExp(`export const ${name}[\\s\\S]*?= \\[([\\s\\S]*?)\\n\\](?: as const)?;`));
@@ -231,15 +236,7 @@ function parseTeamAliases(teamMeta) {
   return aliases;
 }
 
-function scoreTeamMatch(goalsFor, goalsAgainst, redCards) {
-  let total = goalsFor > goalsAgainst ? 3 : goalsFor === goalsAgainst ? 1 : 0;
-  if (goalsFor >= 3) total += 1;
-  if (goalsAgainst >= 3) total -= 1;
-  total -= redCards;
-  return total;
-}
-
-function computeStandings(players, matches, aliases) {
+function computeStandings(players, matches, aliases, knockoutMatchIds) {
   const standings = players.map((player) => ({
     name: player.name,
     points: 0,
@@ -249,6 +246,7 @@ function computeStandings(players, matches, aliases) {
   }));
 
   for (const match of matches) {
+    const isKnockout = isKnockoutMatchId(match.id, knockoutMatchIds);
     for (const [index, player] of players.entries()) {
       for (const teamCode of player.teams) {
         const isHome = teamCodeMatches(match.homeTla, teamCode, aliases);
@@ -258,7 +256,7 @@ function computeStandings(players, matches, aliases) {
         const goalsFor = isHome ? match.homeGoals : match.awayGoals;
         const goalsAgainst = isHome ? match.awayGoals : match.homeGoals;
         const redCards = isHome ? match.homeRedCards : match.awayRedCards;
-        standings[index].points += scoreTeamMatch(goalsFor, goalsAgainst, redCards);
+        standings[index].points += scoreTeamMatch(goalsFor, goalsAgainst, redCards, isKnockout);
         standings[index].goalsFor += goalsFor;
         standings[index].goalsAgainst += goalsAgainst;
         if (goalsFor >= 3) standings[index].bonusPoints += 1;
@@ -430,7 +428,8 @@ function loadValidationContext() {
   const teamMeta = parseTeamMeta();
   const players = parsePlayers();
   const manualMatches = parseManualMatches();
-  const standings = computeStandings(players, manualMatches, parseTeamAliases(teamMeta));
+  const knockoutMatchIds = parseKnockoutMatchIds(extractConstArray('WORLD_CUP_FANTASY_FIXTURES'));
+  const standings = computeStandings(players, manualMatches, parseTeamAliases(teamMeta), knockoutMatchIds);
   const roast = extractConstString('WORLD_CUP_FANTASY_DAILY_UPDATE');
 
   return { roast, players, manualMatches, standings, teamMeta };
