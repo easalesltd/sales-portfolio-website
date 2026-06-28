@@ -4,7 +4,7 @@ import { ENGLISH_PYRAMID_SWEEPSTAKE_PATH } from '@/app/lib/english-pyramid-sweep
 const assetBase = ENGLISH_PYRAMID_SWEEPSTAKE_PATH;
 
 export const metadata: Metadata = {
-  title: 'EPFFL',
+  title: { absolute: 'EPFFL' },
   description: 'Private league standings for players.',
   robots: {
     index: false,
