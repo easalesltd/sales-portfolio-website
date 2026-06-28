@@ -189,7 +189,7 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
     name: 'Nest',
     teamName: 'The Pterotractoryls',
     managerImage: '/images/world-cup-fantasy/managers/nest.png',
-    clubCrest: '/images/world-cup-fantasy/crests/nest.png',
+    clubCrest: '/images/world-cup-fantasy/crests/the-pterotractoryls-fc.png?v=1',
     teams: ['LIV', 'MID', 'PLY', 'SAL', 'YOR', 'SSH', 'TOR'],
     draftNote:
       'Liverpool #3 in the top flight, Middlesbrough and Plymouth carry promotion hope, Salford and York add grit — South Shields and Torquay bring the soulful long shots.',
