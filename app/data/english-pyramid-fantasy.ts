@@ -187,7 +187,7 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
   {
     id: 'nest',
     name: 'Nest',
-    teamName: 'Summer Soul Vibes UTD',
+    teamName: 'The Pterotractoryls',
     managerImage: '/images/world-cup-fantasy/managers/nest.png',
     clubCrest: '/images/world-cup-fantasy/crests/nest.png',
     teams: ['LIV', 'MID', 'PLY', 'SAL', 'YOR', 'SSH', 'TOR'],
