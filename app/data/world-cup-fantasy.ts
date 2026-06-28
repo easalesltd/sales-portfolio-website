@@ -101,8 +101,8 @@ export const WORLD_CUP_TEAM_BY_CODE: Record<string, WorldCupTeamMeta> = {
   NZL: { code: 'NZL', name: 'New Zealand', flag: '🇳🇿' },
   PAN: { code: 'PAN', name: 'Panama', flag: '🇵🇦' },
   PAR: { code: 'PAR', name: 'Paraguay', flag: '🇵🇾' },
-  RSA: { code: 'RSA', name: 'South Africa', flag: '🇿🇦' },
   UZB: { code: 'UZB', name: 'Uzbekistan', flag: '🇺🇿' },
+  RSA: { code: 'RSA', name: 'South Africa', flag: '🇿🇦' },
 };
 
 export function teamCodeMatches(matchTla: string, playerTeamCode: string): boolean {
@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 27 June sprawled across Group G, H, and L like a tactical homework assignment nobody wanted: Cape Verde and Saudi Arabia played out a sterile 0-0 that sent the Islanders into the knockouts and dumped the Saudis, Spain edged Uruguay 1-0 to seal Group H, Egypt and Iran shared a VAR-scrutinised 1-1, Belgium pasted New Zealand 5-1 to swagger out of Group G, England roused themselves after the break to beat Panama 2-0 and top Group L, and Croatia ground out a 2-1 win over Ghana in Philadelphia for second — leaving Panama the tournament\'s first side without a goal and Ghana clinging to third. Nest collected England plus Cape Verde and Belgium, Scott grabbed Croatia and Egypt, Dave clung to Iran\'s point but saw Panama finish stone dead last, and Ash took Spain\'s win while Ghana\'s defeat hurt. Jon leads on 34; Dave remains bottom on 23.';
+  'GMT 27 June closed the group stage like a stadium tannoy that refuses to stop: Cape Verde and Saudi Arabia stared each other out for a 0-0 that sent the Islanders through and left the Saudis going home, Uruguay lost 1-0 to Spain with a red card thrown in for garnish, Egypt and Iran played out a scrappy 1-1, Belgium hammered New Zealand 5-1 to leave Group G looking orderly, England beat Panama 2-0 to top Group L while Panama finished without scoring, Croatia edged Ghana 2-1 in Philadelphia, Colombia and Portugal played out a goalless Miami stalemate that still crowned Colombia Group K winners, and Congo DR rallied from behind to beat Uzbekistan 3-1 in Atlanta and sneak into the knockouts as Uzbekistan bow out winless. Chris grabbed Colombia\'s point, Dave finally woke up with Portugal\'s draw and Congo DR\'s comeback, Nest banked England, Cape Verde and Belgium, Scott took Croatia and Egypt\'s share, and Ash got Spain\'s win but watched Ghana fold and Uzbekistan ship three. Jon and Chris are level on 34; Ash remains bottom on 27.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -594,6 +594,24 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     utcDate: '2026-07-03T22:00:00Z',
     homeTeam: { name: 'Argentina', tla: 'ARG' },
     awayTeam: { name: 'Cape Verde', tla: 'CPV' },
+  },
+  {
+    id: '2026-07-01-eng-cod',
+    utcDate: '2026-07-01T16:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Congo DR', tla: 'COD' },
+  },
+  {
+    id: '2026-07-02-por-cro',
+    utcDate: '2026-07-02T23:00:00Z',
+    homeTeam: { name: 'Portugal', tla: 'POR' },
+    awayTeam: { name: 'Croatia', tla: 'CRO' },
+  },
+  {
+    id: '2026-07-04-col-gha',
+    utcDate: '2026-07-04T01:30:00Z',
+    homeTeam: { name: 'Colombia', tla: 'COL' },
+    awayTeam: { name: 'Ghana', tla: 'GHA' },
   },
 ];
 
@@ -1338,6 +1356,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Croatia', tla: 'CRO' },
     awayTeam: { name: 'Ghana', tla: 'GHA' },
     homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-27-col-por',
+    utcDate: '2026-06-27T23:30:00Z',
+    homeTeam: { name: 'Colombia', tla: 'COL' },
+    awayTeam: { name: 'Portugal', tla: 'POR' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-27-cod-uzb',
+    utcDate: '2026-06-27T23:30:00Z',
+    homeTeam: { name: 'Congo DR', tla: 'COD' },
+    awayTeam: { name: 'Uzbekistan', tla: 'UZB' },
+    homeGoals: 3,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
