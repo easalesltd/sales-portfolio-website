@@ -899,6 +899,12 @@ function StandingsProgressChart({
   );
 }
 
+function teamsLeftLabel(row: PlayerStanding): string {
+  const alive = row.teamBreakdown.filter((team) => !team.eliminated).length;
+  if (alive === row.teamCount) return `${row.teamCount} teams`;
+  return `${alive} left`;
+}
+
 function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
   return (
     <>
@@ -964,7 +970,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 <td className="px-3 py-2 font-medium">
                   <PlayerIdentity player={row} />
                 </td>
-                <td className="px-3 py-2 text-neutral-300">{row.teamCount} teams</td>
+                <td className="px-3 py-2 text-neutral-300">{teamsLeftLabel(row)}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.playedMatches}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.wins}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
