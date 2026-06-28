@@ -4,7 +4,7 @@ import { ENGLISH_PYRAMID_SWEEPSTAKE_PATH } from '@/app/lib/english-pyramid-sweep
 const assetBase = ENGLISH_PYRAMID_SWEEPSTAKE_PATH;
 
 export const metadata: Metadata = {
-  title: 'English Pyramid Sweepstake',
+  title: 'EPFFL',
   description: 'Private league standings for players.',
   robots: {
     index: false,
@@ -26,9 +26,10 @@ export const metadata: Metadata = {
     shortcut: [{ url: `${assetBase}/apple-touch-icon.png`, type: 'image/png' }],
   },
   manifest: `${assetBase}/manifest.webmanifest`,
+  applicationName: 'EPFFL',
   appleWebApp: {
     capable: true,
-    title: 'Pyramid Sweepstake',
+    title: 'EPFFL',
     statusBarStyle: 'black-translucent',
   },
 };
