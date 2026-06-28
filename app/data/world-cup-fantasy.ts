@@ -101,8 +101,8 @@ export const WORLD_CUP_TEAM_BY_CODE: Record<string, WorldCupTeamMeta> = {
   NZL: { code: 'NZL', name: 'New Zealand', flag: '🇳🇿' },
   PAN: { code: 'PAN', name: 'Panama', flag: '🇵🇦' },
   PAR: { code: 'PAR', name: 'Paraguay', flag: '🇵🇾' },
-  UZB: { code: 'UZB', name: 'Uzbekistan', flag: '🇺🇿' },
   RSA: { code: 'RSA', name: 'South Africa', flag: '🇿🇦' },
+  UZB: { code: 'UZB', name: 'Uzbekistan', flag: '🇺🇿' },
 };
 
 export function teamCodeMatches(matchTla: string, playerTeamCode: string): boolean {
@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 28 June closed the group stage like a Hollywood rewrite nobody asked for: Algeria and Austria served up six goals in Kansas City, Mahrez looked to have sealed it at 3-2 in the 93rd minute before Kalajdzic nodded a 96th-minute equaliser and turned a knockout qualification into pure chaos, while in Dallas Jordan pulled one back through Al-Taamari only for Messi to finish off a 3-1 defeat that completed Argentina\'s perfect nine-point sweep and left the debutants winless. Dave banked Algeria\'s chaotic draw, Scott cleaned up with Austria\'s share and Argentina\'s four-goal night, and Jon watched Jordan ship three again. From here it\'s survival football — Chris leads on 34 with six teams still alive, Scott has six too, and everyone else is nursing five as the bracket fills in. Ash remains bottom on 27; the knockouts are where the pretenders get found out.';
+  'GMT 28 June felt like two different tournaments stitched together: Kansas City served up a six-goal qualification farce as Algeria and Austria traded late drama until Kalajdzic rescued a 3-3 draw from Mahrez\'s 93rd-minute lead, Dallas saw Argentina wrap a flawless group with a 3-1 win over Jordan that killed off the debutants, and Los Angeles closed the day with the first knockout tie — Canada leaving it until the 92nd minute as Eustaquio thumped home the only goal to send South Africa home. Scott leads on 35 with six teams still breathing after Canada\'s late rescue and Argentina\'s four-goal night, Dave banked Algeria\'s chaos, and Jon watched Jordan leak three again before South Africa parked the bus for 91 minutes and still got eliminated. Ash remains bottom on 27; the bracket does not care how brave your defending looked.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1485,6 +1485,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Argentina', tla: 'ARG' },
     homeGoals: 1,
     awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-28-rsa-can',
+    utcDate: '2026-06-28T19:00:00Z',
+    homeTeam: { name: 'South Africa', tla: 'RSA' },
+    awayTeam: { name: 'Canada', tla: 'CAN' },
+    homeGoals: 0,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
