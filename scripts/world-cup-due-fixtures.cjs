@@ -46,7 +46,7 @@ function extractConstArray(name) {
 function parseFixtures() {
   const fixturesSource = extractConstArray('WORLD_CUP_FANTASY_FIXTURES');
   const fixturePattern =
-    /id: '([^']+)',\s*utcDate: '([^']+)',\s*homeTeam: \{ name: '([^']+)', tla: '([^']+)' \},\s*awayTeam: \{ name: '([^']+)', tla: '([^']+)' \}/g;
+    /id: '([^']+)',\s*utcDate: '([^']+)',(?:\s*stage: '[^']+',)?\s*homeTeam: \{ name: '([^']+)', tla: '([^']+)' \},\s*awayTeam: \{ name: '([^']+)', tla: '([^']+)' \}/g;
 
   return [...fixturesSource.matchAll(fixturePattern)].map((match) => ({
     id: match[1],
@@ -82,6 +82,7 @@ const lookbackMs = lookbackMinutes * 60 * 1000;
 
 const dueFixtures = fixtures.filter((fixture) => {
   if (recordedMatchIds.has(fixture.id)) return false;
+  if (fixture.homeTla === 'TBD' || fixture.awayTla === 'TBD') return false;
 
   const kickoff = new Date(fixture.utcDate);
   if (Number.isNaN(kickoff.getTime())) {

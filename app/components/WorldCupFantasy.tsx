@@ -377,38 +377,51 @@ function MatchdayStatusBadge({
 }
 
 function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
+  const homeIsPlaceholder = entry.placeholderSide === 'home' || entry.placeholderSide === 'both';
+  const awayIsPlaceholder = entry.placeholderSide === 'away' || entry.placeholderSide === 'both';
+
   return (
-    <p className="min-w-0 flex-1 text-sm leading-snug text-neutral-100">
-      <span className="font-medium">
-        {entry.homeTeam.flag} {entry.homeTeam.name}
-      </span>
-      <span className="text-neutral-600"> · </span>
-      <span className="text-xs text-neutral-400">
-        <FixtureTeamManagers managers={entry.homeManagers} />
-      </span>
-      {entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null ? (
-        <span className="mx-1.5 font-semibold tabular-nums text-sky-100">
-          {formatMatchScore(entry.homeGoals, entry.awayGoals)}
+    <div className="min-w-0 flex-1">
+      {entry.roundLabel ? (
+        <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-amber-300/90">
+          {entry.roundLabel}
+        </p>
+      ) : null}
+      <p className="text-sm leading-snug text-neutral-100">
+        <span className={`font-medium ${homeIsPlaceholder ? 'italic text-neutral-400' : ''}`}>
+          {entry.homeTeam.flag} {entry.homeTeam.name}
         </span>
-      ) : entry.status === 'in-play' &&
-        entry.liveHomeGoals != null &&
-        entry.liveAwayGoals != null ? (
-        <span className="mx-1.5 font-semibold tabular-nums text-emerald-300">
-          {formatMatchScore(entry.liveHomeGoals, entry.liveAwayGoals)}
+        <span className="text-neutral-600"> · </span>
+        <span className="text-xs text-neutral-400">
+          {!homeIsPlaceholder ? <FixtureTeamManagers managers={entry.homeManagers} /> : null}
         </span>
-      ) : entry.status === 'in-play' ? (
-        <span className="mx-1.5 font-semibold text-emerald-400">v</span>
-      ) : (
-        <span className="mx-1.5 text-neutral-600">v</span>
-      )}
-      <span className="font-medium">
-        {entry.awayTeam.flag} {entry.awayTeam.name}
-      </span>
-      <span className="text-neutral-600"> · </span>
-      <span className="text-xs text-neutral-400">
-        <FixtureTeamManagers managers={entry.awayManagers} />
-      </span>
-    </p>
+        {entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null ? (
+          <span className="mx-1.5 font-semibold tabular-nums text-sky-100">
+            {formatMatchScore(entry.homeGoals, entry.awayGoals)}
+          </span>
+        ) : entry.status === 'in-play' &&
+          entry.liveHomeGoals != null &&
+          entry.liveAwayGoals != null ? (
+          <span className="mx-1.5 font-semibold tabular-nums text-emerald-300">
+            {formatMatchScore(entry.liveHomeGoals, entry.liveAwayGoals)}
+          </span>
+        ) : entry.status === 'in-play' ? (
+          <span className="mx-1.5 font-semibold text-emerald-400">v</span>
+        ) : (
+          <span className="mx-1.5 text-neutral-600">v</span>
+        )}
+        <span className={`font-medium ${awayIsPlaceholder ? 'italic text-neutral-400' : ''}`}>
+          {entry.awayTeam.flag} {entry.awayTeam.name}
+        </span>
+        <span className="text-neutral-600"> · </span>
+        <span className="text-xs text-neutral-400">
+          {!awayIsPlaceholder ? <FixtureTeamManagers managers={entry.awayManagers} /> : null}
+        </span>
+      </p>
+      {entry.status === 'finished' && entry.winnerPathLabel ? (
+        <p className="mt-1 text-[11px] text-amber-200/80">Winner → {entry.winnerPathLabel}</p>
+      ) : null}
+    </div>
   );
 }
 
@@ -1101,12 +1114,17 @@ function TeamMiniTable({
               {teams.map((team) => {
                 const isPinned = pinnedTeamCode === team.code;
                 const isHighlighted = displayTeamCode === team.code;
+                const isEliminated = team.eliminated === true;
 
                 return (
                   <tr
                     key={team.code}
                     className={`transition-colors ${
-                      isHighlighted ? 'bg-teal-950/25' : 'hover:bg-neutral-900/50'
+                      isEliminated
+                        ? 'bg-red-950/15 text-red-300/90'
+                        : isHighlighted
+                          ? 'bg-teal-950/25'
+                          : 'hover:bg-neutral-900/50'
                     }`}
                     onMouseEnter={() => {
                       if (prefersFinePointerHover()) setHoverTeamCode(team.code);
@@ -1118,9 +1136,16 @@ function TeamMiniTable({
                         onClick={() => toggleTeam(team.code)}
                         aria-expanded={isPinned}
                         aria-controls="team-results-panel"
-                        className="-mx-1 rounded px-1 text-left transition hover:text-teal-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
+                        className={`-mx-1 rounded px-1 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 ${
+                          isEliminated ? 'text-red-300 hover:text-red-200' : 'hover:text-teal-200'
+                        }`}
                       >
                         {formatTeamLabel ? formatTeamLabel(team.code) : `${team.flag} ${team.name}`}
+                        {isEliminated ? (
+                          <span className="ml-1.5 text-[10px] font-semibold uppercase tracking-wide text-red-400">
+                            Eliminated
+                          </span>
+                        ) : null}
                       </button>
                     </td>
                     <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.playedMatches}</td>
@@ -1132,7 +1157,13 @@ function TeamMiniTable({
                       {formatGoalDifference(team.goalDifference)}
                     </td>
                     <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">{team.redCards}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3">{team.points}</td>
+                    <td
+                      className={`px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3 ${
+                        isEliminated ? 'text-red-300/80' : ''
+                      }`}
+                    >
+                      {team.points}
+                    </td>
                   </tr>
                 );
               })}
@@ -1287,7 +1318,8 @@ function PlayerSquadCard({
                 GD {formatGoalDifference(player.goalDifference)}
               </span>
               <span className="text-xs text-neutral-500">
-                {player.teamCount} teams ·{' '}
+                {player.teamBreakdown.filter((team) => !team.eliminated).length} alive ·{' '}
+                {player.teamBreakdown.filter((team) => team.eliminated).length} out ·{' '}
                 <FormSummary
                   wins={player.wins}
                   draws={player.draws}

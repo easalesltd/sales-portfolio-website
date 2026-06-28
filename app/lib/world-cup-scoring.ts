@@ -6,6 +6,12 @@ import {
   type WorldCupFantasyManualMatch,
   type WorldCupFantasyPlayer,
 } from '@/app/data/world-cup-fantasy';
+import {
+  isPlaceholderTeamTla,
+  KNOCKOUT_ROUND_LABELS,
+  knockoutFixturesForElimination,
+  teamCodeInResolvedFixture,
+} from '@/app/lib/world-cup-knockout-bracket';
 
 export type WorldCupMatchResult = {
   id: string;
@@ -46,6 +52,8 @@ export type TeamStanding = {
   bonusPoints: number;
   redCards: number;
   playedMatches: number;
+  /** Out of the World Cup (group exit or knockout loss). */
+  eliminated?: boolean;
 };
 
 export type PlayerStanding = {
@@ -106,6 +114,9 @@ export type MatchdayEntry = UpcomingFixtureEntry & {
   liveHomeGoals?: number;
   liveAwayGoals?: number;
   livePeriod?: string;
+  roundLabel?: string;
+  winnerPathLabel?: string;
+  placeholderSide?: 'home' | 'away' | 'both';
 };
 
 export type MatchdaySchedule = {
@@ -216,9 +227,30 @@ function managersForTeam(
 }
 
 function fixtureTeamWithFlag(team: WorldCupFantasyFixture['homeTeam']): UpcomingFixtureEntry['homeTeam'] {
+  if (isPlaceholderTeamTla(team.tla)) {
+    return { ...team, flag: '❓' };
+  }
+
   return {
     ...team,
     flag: WORLD_CUP_TEAM_BY_CODE[team.tla]?.flag ?? '',
+  };
+}
+
+
+function matchdayEntryFromFixture(
+  fixture: WorldCupFantasyFixture,
+  players: readonly WorldCupFantasyPlayer[],
+  status: MatchdayEntryStatus,
+  extras: Partial<MatchdayEntry> = {}
+): MatchdayEntry {
+  return {
+    ...upcomingFixtureEntry(fixture, players),
+    status,
+    roundLabel: fixture.round ? KNOCKOUT_ROUND_LABELS[fixture.round] : undefined,
+    winnerPathLabel: fixture.winnerPathLabel,
+    placeholderSide: fixture.placeholderSide,
+    ...extras,
   };
 }
 
@@ -310,23 +342,20 @@ function buildMatchdayEntriesForDate(
     .filter((fixture) => fixture.utcDate.slice(0, 10) === matchdayDate)
     .sort((a, b) => a.utcDate.localeCompare(b.utcDate))
     .map((fixture) => {
-      const base = upcomingFixtureEntry(fixture, players);
       const recorded = recordedById.get(fixture.id);
 
       if (recorded) {
-        return {
-          ...base,
-          status: 'finished' as const,
+        return matchdayEntryFromFixture(fixture, players, 'finished', {
           homeGoals: recorded.homeGoals!,
           awayGoals: recorded.awayGoals!,
-        };
+        });
       }
 
       if (Date.parse(fixture.utcDate) <= nowMs) {
-        return { ...base, status: 'in-play' as const };
+        return matchdayEntryFromFixture(fixture, players, 'in-play');
       }
 
-      return { ...base, status: 'upcoming' as const };
+      return matchdayEntryFromFixture(fixture, players, 'upcoming');
     });
 }
 
@@ -478,6 +507,51 @@ export function buildScoringMatchEntries(
     });
 }
 
+export function isKnockoutFixture(fixture: Pick<WorldCupFantasyFixture, 'utcDate' | 'stage'>): boolean {
+  return fixture.stage === 'knockout';
+}
+
+export function computeEliminatedTeamCodes(
+  teamCodes: readonly string[],
+  baseFixtures: readonly WorldCupFantasyFixture[],
+  matches: readonly WorldCupMatchResult[]
+): Set<string> {
+  const knockoutFixtures = knockoutFixturesForElimination(baseFixtures, matches);
+  if (knockoutFixtures.length === 0) return new Set();
+
+  const knockoutTeams = new Set<string>();
+  for (const fixture of knockoutFixtures) {
+    for (const code of teamCodes) {
+      if (teamCodeInResolvedFixture(fixture, code)) {
+        knockoutTeams.add(code);
+      }
+    }
+  }
+
+  const eliminated = new Set<string>();
+  for (const code of teamCodes) {
+    if (!knockoutTeams.has(code)) eliminated.add(code);
+  }
+
+  const knockoutFixtureIds = new Set(knockoutFixtures.map((fixture) => fixture.id));
+
+  for (const match of matches) {
+    if (!knockoutFixtureIds.has(match.id)) continue;
+    if (match.homeGoals == null || match.awayGoals == null || match.homeGoals === match.awayGoals) continue;
+
+    for (const code of teamCodes) {
+      const side = resolvePlayerTeamInMatch(match, code);
+      if (!side) continue;
+
+      const goalsFor = side.isHome ? match.homeGoals : match.awayGoals;
+      const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
+      if (goalsFor < goalsAgainst) eliminated.add(code);
+    }
+  }
+
+  return eliminated;
+}
+
 export function resolveManagerImageForStandings(
   player: Pick<WorldCupFantasyPlayer, 'id' | 'managerImage'>,
   rankIndex: number,
@@ -494,7 +568,8 @@ export function resolveManagerImageForStandings(
 
 export function computeStandings(
   players: readonly WorldCupFantasyPlayer[],
-  matches: WorldCupMatchResult[]
+  matches: WorldCupMatchResult[],
+  baseFixtures: readonly WorldCupFantasyFixture[] = []
 ): {
   standings: PlayerStanding[];
   allScoringMatches: MatchPointsEntry[];
@@ -503,6 +578,8 @@ export function computeStandings(
   const finished = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   );
+  const allTeamCodes = [...new Set(players.flatMap((player) => player.teams))];
+  const eliminatedTeamCodes = computeEliminatedTeamCodes(allTeamCodes, baseFixtures, matches);
 
   const standings: PlayerStanding[] = players.map((player) => ({
     id: player.id,
@@ -529,6 +606,7 @@ export function computeStandings(
         bonusPoints: 0,
         redCards: 0,
         playedMatches: 0,
+        eliminated: eliminatedTeamCodes.has(code),
       };
     }),
     points: 0,

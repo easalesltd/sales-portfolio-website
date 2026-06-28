@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import {
   buildPlayerProgressSeries,
+  computeEliminatedTeamCodes,
   computeStandings,
   getTeamMatchDisplay,
   getMatchdaySchedule,
@@ -14,6 +15,7 @@ import {
   WORLD_CUP_FANTASY_MANUAL_MATCHES,
   WORLD_CUP_FANTASY_PLAYERS,
   WORLD_CUP_TEAM_BY_CODE,
+  type WorldCupFantasyFixture,
   type WorldCupFantasyPlayer,
 } from '@/app/data/world-cup-fantasy';
 
@@ -288,6 +290,61 @@ describe('computeStandings', () => {
       points: 3,
     });
     expect(getTeamMatchDisplay(match, 'BRA')).toBeNull();
+  });
+});
+
+describe('computeEliminatedTeamCodes', () => {
+  const knockoutFixtures: WorldCupFantasyFixture[] = [
+    {
+      id: '2026-06-28-rsa-can',
+      utcDate: '2026-06-28T19:00:00Z',
+      stage: 'knockout',
+      homeTeam: { name: 'South Africa', tla: 'RSA' },
+      awayTeam: { name: 'Canada', tla: 'CAN' },
+    },
+    {
+      id: '2026-06-29-bra-jpn',
+      utcDate: '2026-06-29T17:00:00Z',
+      stage: 'knockout',
+      homeTeam: { name: 'Brazil', tla: 'BRA' },
+      awayTeam: { name: 'Japan', tla: 'JPN' },
+    },
+  ];
+
+  it('marks teams missing from the knockout bracket as eliminated', () => {
+    const eliminated = computeEliminatedTeamCodes(['RSA', 'CAN', 'BRA', 'JPN', 'KOR'], knockoutFixtures, []);
+
+    expect([...eliminated].sort()).toEqual(['KOR']);
+  });
+
+  it('marks knockout losers once the tie is finished', () => {
+    const knockoutResult: WorldCupMatchResult = {
+      id: '2026-06-28-rsa-can',
+      utcDate: '2026-06-28T19:00:00Z',
+      status: 'FINISHED',
+      homeTeam: { name: 'South Africa', tla: 'RSA' },
+      awayTeam: { name: 'Canada', tla: 'CAN' },
+      homeGoals: 0,
+      awayGoals: 2,
+      homeRedCards: 0,
+      awayRedCards: 0,
+    };
+
+    const eliminated = computeEliminatedTeamCodes(['RSA', 'CAN', 'BRA'], knockoutFixtures, [knockoutResult]);
+
+    expect(eliminated.has('RSA')).toBe(true);
+    expect(eliminated.has('CAN')).toBe(false);
+    expect(eliminated.has('BRA')).toBe(false);
+  });
+
+  it('flags group-stage exits across the live sweepstake roster', () => {
+    const allTeamCodes = [...new Set(WORLD_CUP_FANTASY_PLAYERS.flatMap((player) => player.teams))];
+    const eliminated = computeEliminatedTeamCodes(allTeamCodes, WORLD_CUP_FANTASY_FIXTURES, []);
+
+    expect(eliminated.size).toBe(16);
+    expect(eliminated.has('KSA')).toBe(true);
+    expect(eliminated.has('ARG')).toBe(false);
+    expect(eliminated.has('CPV')).toBe(false);
   });
 });
 

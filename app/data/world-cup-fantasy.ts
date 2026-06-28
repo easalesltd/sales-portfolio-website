@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 28 June closed the group stage like a Hollywood rewrite nobody asked for: Algeria and Austria served up six goals in Kansas City, Mahrez looked to have sealed it at 3-2 in the 93rd minute before Kalajdzic nodded a 96th-minute equaliser and turned a knockout qualification into pure chaos, while in Dallas Jordan pulled one back through Al-Taamari only for Messi to finish off a 3-1 defeat that completed Argentina\'s perfect nine-point sweep and left the debutants winless. Dave banked Algeria\'s chaotic draw, Scott cleaned up with Austria\'s share and Argentina\'s four-goal night, and Jon watched Jordan ship three again. Chris leads on 34; Ash remains bottom on 27.';
+  'GMT 28 June closed the group stage like a Hollywood rewrite nobody asked for: Algeria and Austria served up six goals in Kansas City, Mahrez looked to have sealed it at 3-2 in the 93rd minute before Kalajdzic nodded a 96th-minute equaliser and turned a knockout qualification into pure chaos, while in Dallas Jordan pulled one back through Al-Taamari only for Messi to finish off a 3-1 defeat that completed Argentina\'s perfect nine-point sweep and left the debutants winless. Dave banked Algeria\'s chaotic draw, Scott cleaned up with Austria\'s share and Argentina\'s four-goal night, and Jon watched Jordan ship three again. From here it\'s survival football — Chris leads on 34 with six teams still alive, Scott has six too, and everyone else is nursing five as the bracket fills in. Ash remains bottom on 27; the knockouts are where the pretenders get found out.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -238,8 +238,14 @@ export type WorldCupFantasyManualMatch = {
 export type WorldCupFantasyFixture = {
   id: string;
   utcDate: string;
+  /** Knockout ties from the round of 32 onward (group games omit this). */
+  stage?: 'knockout';
+  round?: 'R32' | 'R16' | 'QF' | 'SF' | 'F' | '3P';
   homeTeam: { name: string; tla: string };
   awayTeam: { name: string; tla: string };
+  /** Populated on resolved bracket ties once a winner is known. */
+  winnerPathLabel?: string;
+  placeholderSide?: 'home' | 'away' | 'both';
 };
 
 /**
@@ -578,50 +584,114 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     awayTeam: { name: 'Argentina', tla: 'ARG' },
   },
   {
-    id: '2026-06-28-can-rsa',
+    id: '2026-06-28-rsa-can',
     utcDate: '2026-06-28T19:00:00Z',
-    homeTeam: { name: 'Canada', tla: 'CAN' },
-    awayTeam: { name: 'South Africa', tla: 'RSA' },
+    stage: 'knockout',
+    homeTeam: { name: 'South Africa', tla: 'RSA' },
+    awayTeam: { name: 'Canada', tla: 'CAN' },
   },
   {
-    id: '2026-07-01-eng-sen',
-    utcDate: '2026-07-01T16:00:00Z',
-    homeTeam: { name: 'England', tla: 'ENG' },
-    awayTeam: { name: 'Senegal', tla: 'SEN' },
+    id: '2026-06-29-bra-jpn',
+    utcDate: '2026-06-29T17:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Brazil', tla: 'BRA' },
+    awayTeam: { name: 'Japan', tla: 'JPN' },
   },
   {
-    id: '2026-07-03-arg-cpv',
-    utcDate: '2026-07-03T22:00:00Z',
-    homeTeam: { name: 'Argentina', tla: 'ARG' },
-    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
+    id: '2026-06-29-ger-par',
+    utcDate: '2026-06-29T20:30:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Germany', tla: 'GER' },
+    awayTeam: { name: 'Paraguay', tla: 'PAR' },
+  },
+  {
+    id: '2026-06-30-ned-mar',
+    utcDate: '2026-06-30T01:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Netherlands', tla: 'NED' },
+    awayTeam: { name: 'Morocco', tla: 'MAR' },
+  },
+  {
+    id: '2026-06-30-civ-nor',
+    utcDate: '2026-06-30T17:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Ivory Coast', tla: 'CIV' },
+    awayTeam: { name: 'Norway', tla: 'NOR' },
+  },
+  {
+    id: '2026-06-30-fra-swe',
+    utcDate: '2026-06-30T21:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'France', tla: 'FRA' },
+    awayTeam: { name: 'Sweden', tla: 'SWE' },
+  },
+  {
+    id: '2026-07-01-mex-ecu',
+    utcDate: '2026-07-01T01:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Mexico', tla: 'MEX' },
+    awayTeam: { name: 'Ecuador', tla: 'ECU' },
   },
   {
     id: '2026-07-01-eng-cod',
     utcDate: '2026-07-01T16:00:00Z',
+    stage: 'knockout',
     homeTeam: { name: 'England', tla: 'ENG' },
     awayTeam: { name: 'Congo DR', tla: 'COD' },
   },
   {
+    id: '2026-07-01-bel-sen',
+    utcDate: '2026-07-01T20:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Belgium', tla: 'BEL' },
+    awayTeam: { name: 'Senegal', tla: 'SEN' },
+  },
+  {
+    id: '2026-07-02-usa-bih',
+    utcDate: '2026-07-02T00:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'USA', tla: 'USA' },
+    awayTeam: { name: 'Bosnia-Herzegovina', tla: 'BIH' },
+  },
+  {
     id: '2026-07-02-esp-aut',
-    utcDate: '2026-07-02T22:00:00Z',
+    utcDate: '2026-07-02T19:00:00Z',
+    stage: 'knockout',
     homeTeam: { name: 'Spain', tla: 'ESP' },
     awayTeam: { name: 'Austria', tla: 'AUT' },
   },
   {
     id: '2026-07-02-por-cro',
     utcDate: '2026-07-02T23:00:00Z',
+    stage: 'knockout',
     homeTeam: { name: 'Portugal', tla: 'POR' },
     awayTeam: { name: 'Croatia', tla: 'CRO' },
   },
   {
     id: '2026-07-03-sui-alg',
-    utcDate: '2026-07-03T06:00:00Z',
+    utcDate: '2026-07-03T03:00:00Z',
+    stage: 'knockout',
     homeTeam: { name: 'Switzerland', tla: 'SUI' },
     awayTeam: { name: 'Algeria', tla: 'ALG' },
   },
   {
+    id: '2026-07-03-aus-egy',
+    utcDate: '2026-07-03T18:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Australia', tla: 'AUS' },
+    awayTeam: { name: 'Egypt', tla: 'EGY' },
+  },
+  {
+    id: '2026-07-03-arg-cpv',
+    utcDate: '2026-07-03T22:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
+  },
+  {
     id: '2026-07-04-col-gha',
     utcDate: '2026-07-04T01:30:00Z',
+    stage: 'knockout',
     homeTeam: { name: 'Colombia', tla: 'COL' },
     awayTeam: { name: 'Ghana', tla: 'GHA' },
   },

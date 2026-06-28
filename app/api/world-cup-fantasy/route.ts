@@ -14,6 +14,7 @@ import {
   type MatchdaySchedule,
   type PlayerStanding,
 } from '@/app/lib/world-cup-scoring';
+import { resolveWorldCupScheduleFixtures } from '@/app/lib/world-cup-knockout-bracket';
 import { enrichMatchdayScheduleWithLiveScores } from '@/app/lib/world-cup-live-scores';
 
 export const runtime = 'nodejs';
@@ -32,8 +33,9 @@ export type WorldCupFantasyResponse = {
 export async function GET() {
   const recordedMatches = WORLD_CUP_FANTASY_MANUAL_MATCHES.map(manualMatchToResult);
   const recordedMatchIds = new Set(recordedMatches.map((match) => match.id));
+  const scheduleFixtures = resolveWorldCupScheduleFixtures(WORLD_CUP_FANTASY_FIXTURES, recordedMatches);
   const baseSchedule = getMatchdaySchedule(
-    WORLD_CUP_FANTASY_FIXTURES,
+    scheduleFixtures,
     recordedMatches,
     WORLD_CUP_FANTASY_PLAYERS
   );
@@ -45,7 +47,8 @@ export async function GET() {
   ];
   const { standings, allScoringMatches, recentScoringMatches } = computeStandings(
     WORLD_CUP_FANTASY_PLAYERS,
-    matches
+    matches,
+    WORLD_CUP_FANTASY_FIXTURES
   );
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
