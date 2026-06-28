@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 27 June closed the group stage like a stadium tannoy that refuses to stop: Cape Verde and Saudi Arabia stared each other out for a 0-0 that sent the Islanders through and left the Saudis going home, Uruguay lost 1-0 to Spain with a red card thrown in for garnish, Egypt and Iran played out a scrappy 1-1, Belgium hammered New Zealand 5-1 to leave Group G looking orderly, England beat Panama 2-0 to top Group L while Panama finished without scoring, Croatia edged Ghana 2-1 in Philadelphia, Colombia and Portugal played out a goalless Miami stalemate that still crowned Colombia Group K winners, and Congo DR rallied from behind to beat Uzbekistan 3-1 in Atlanta and sneak into the knockouts as Uzbekistan bow out winless. Chris grabbed Colombia\'s point, Dave finally woke up with Portugal\'s draw and Congo DR\'s comeback, Nest banked England, Cape Verde and Belgium, Scott took Croatia and Egypt\'s share, and Ash got Spain\'s win but watched Ghana fold and Uzbekistan ship three. Jon and Chris are level on 34; Ash remains bottom on 27.';
+  'GMT 28 June closed the group stage like a Hollywood rewrite nobody asked for: Algeria and Austria served up six goals in Kansas City, Mahrez looked to have sealed it at 3-2 in the 93rd minute before Kalajdzic nodded a 96th-minute equaliser and turned a knockout qualification into pure chaos, while in Dallas Jordan pulled one back through Al-Taamari only for Messi to finish off a 3-1 defeat that completed Argentina\'s perfect nine-point sweep and left the debutants winless. Dave banked Algeria\'s chaotic draw, Scott cleaned up with Austria\'s share and Argentina\'s four-goal night, and Jon watched Jordan ship three again. Chris leads on 34; Ash remains bottom on 27.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -602,10 +602,22 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     awayTeam: { name: 'Congo DR', tla: 'COD' },
   },
   {
+    id: '2026-07-02-esp-aut',
+    utcDate: '2026-07-02T22:00:00Z',
+    homeTeam: { name: 'Spain', tla: 'ESP' },
+    awayTeam: { name: 'Austria', tla: 'AUT' },
+  },
+  {
     id: '2026-07-02-por-cro',
     utcDate: '2026-07-02T23:00:00Z',
     homeTeam: { name: 'Portugal', tla: 'POR' },
     awayTeam: { name: 'Croatia', tla: 'CRO' },
+  },
+  {
+    id: '2026-07-03-sui-alg',
+    utcDate: '2026-07-03T06:00:00Z',
+    homeTeam: { name: 'Switzerland', tla: 'SUI' },
+    awayTeam: { name: 'Algeria', tla: 'ALG' },
   },
   {
     id: '2026-07-04-col-gha',
@@ -1379,6 +1391,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Uzbekistan', tla: 'UZB' },
     homeGoals: 3,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-27-alg-aut',
+    utcDate: '2026-06-28T02:00:00Z',
+    homeTeam: { name: 'Algeria', tla: 'ALG' },
+    awayTeam: { name: 'Austria', tla: 'AUT' },
+    homeGoals: 3,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-27-jor-arg',
+    utcDate: '2026-06-28T02:00:00Z',
+    homeTeam: { name: 'Jordan', tla: 'JOR' },
+    awayTeam: { name: 'Argentina', tla: 'ARG' },
+    homeGoals: 1,
+    awayGoals: 3,
     homeRedCards: 0,
     awayRedCards: 0,
   },
