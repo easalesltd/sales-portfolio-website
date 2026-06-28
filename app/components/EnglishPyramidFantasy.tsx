@@ -5,7 +5,8 @@ import { getTeamMatchDisplay, matchInvolvesTeam } from '@/app/lib/english-pyrami
 import WorldCupFantasy from './WorldCupFantasy';
 
 type Props = {
-  onClose: () => void;
+  onClose?: () => void;
+  standalone?: boolean;
 };
 
 const ENGLISH_PYRAMID_SCORING_RULES = [
@@ -17,10 +18,12 @@ const ENGLISH_PYRAMID_SCORING_RULES = [
   '−1 per red card',
 ] as const;
 
-export default function EnglishPyramidFantasy({ onClose }: Props) {
+export default function EnglishPyramidFantasy({ onClose, standalone = false }: Props) {
   return (
     <WorldCupFantasy
       onClose={onClose}
+      standalone={standalone}
+      themeId="english-pyramid"
       apiPath="/api/english-pyramid-fantasy"
       title="English Pyramid Sweepstake 2026/27"
       headerImage="/images/english-pyramid-fantasy/league-header.png"

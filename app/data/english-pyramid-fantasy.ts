@@ -139,6 +139,11 @@ export function formatTeamLabel(code: string): string {
   return division ? `${meta.name} (${division})` : meta.name;
 }
 
+/** Squad table label — club name only; division shown as a separate badge in the UI. */
+export function formatTeamNameShort(code: string): string {
+  return ENGLISH_PYRAMID_TEAM_BY_CODE[code]?.name ?? code;
+}
+
 export type EnglishPyramidFantasyPlayer = {
   id: string;
   name: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, type CSSProperties } from 'react';
 import { formatTeamLabel as formatWorldCupTeamLabel } from '@/app/data/world-cup-fantasy';
 import type { WorldCupFantasyResponse } from '@/app/api/world-cup-fantasy/route';
 import type { EnglishPyramidFantasyResponse } from '@/app/api/english-pyramid-fantasy/route';
@@ -19,6 +19,14 @@ import {
   getTeamMatchDisplay as getWorldCupTeamMatchDisplay,
   matchInvolvesTeam as worldCupMatchInvolvesTeam,
 } from '@/app/lib/world-cup-scoring';
+import type { SweepstakeFantasyThemeId } from '@/app/lib/sweepstake-fantasy-theme';
+import { formatTeamNameShort } from '@/app/data/english-pyramid-fantasy';
+import { useLiveGoalAlerts } from '@/app/hooks/useLiveGoalAlerts';
+import DivisionBadge from './english-pyramid/DivisionBadge';
+import EnglishPyramidShareButton from './english-pyramid/EnglishPyramidShareButton';
+import LiveGoalAlertsToggle from './english-pyramid/LiveGoalAlertsToggle';
+import MatchdayHeroStrip from './english-pyramid/MatchdayHeroStrip';
+import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeContext';
 
 type SweepstakeResponse = WorldCupFantasyResponse | EnglishPyramidFantasyResponse;
 
@@ -34,7 +42,8 @@ type MatchScoringHelpers = {
 };
 
 type Props = {
-  onClose: () => void;
+  onClose?: () => void;
+  standalone?: boolean;
   apiPath?: string;
   title?: string;
   headerImage?: string;
@@ -47,6 +56,7 @@ type Props = {
   resultsUpdateNote?: string;
   progressChartTitle?: string;
   progressChartDescription?: string;
+  themeId?: SweepstakeFantasyThemeId;
 };
 
 const DEFAULT_API_PATH = '/api/world-cup-fantasy';
@@ -69,16 +79,6 @@ const SCORING_RULES = [
   '+1 for 3+ goals scored',
   '−1 for 3+ goals conceded',
   '−1 per red card',
-] as const;
-
-const PROGRESS_LINE_COLORS = [
-  '#2dd4bf',
-  '#84cc16',
-  '#38bdf8',
-  '#fbbf24',
-  '#f87171',
-  '#c084fc',
-  '#fb923c',
 ] as const;
 
 const PROGRESS_CHART = {
@@ -115,13 +115,15 @@ function useProgressChartLayout() {
 }
 
 function ScoringRulesBlock({ rules = SCORING_RULES }: { rules?: readonly string[] }) {
+  const t = useSweepstakeTheme();
+
   return (
-    <div className="mt-3 rounded-lg border border-neutral-700/80 bg-neutral-950/50 px-3 py-2.5 sm:px-4 sm:py-3">
-      <h4 className="text-[10px] font-semibold uppercase tracking-wide text-neutral-500 sm:text-xs">Scoring</h4>
+    <div className={t.c.scoringSection}>
+      <h4 className={t.c.scoringHeading}>Scoring</h4>
       <ul className="mt-2 space-y-1.5 text-xs text-neutral-300 sm:text-sm">
         {rules.map((rule) => (
           <li key={rule} className="flex items-start gap-2 leading-snug">
-            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-teal-400" aria-hidden />
+            <span className={t.c.scoringBullet} aria-hidden />
             {rule}
           </li>
         ))}
@@ -142,8 +144,9 @@ function matchOutcomeLetter(goalsFor: number, goalsAgainst: number): 'W' | 'L' |
 }
 
 function MatchOutcomeLetter({ outcome }: { outcome: 'W' | 'L' | 'D' }) {
+  const t = useSweepstakeTheme();
   const tone =
-    outcome === 'W' ? 'text-lime-400' : outcome === 'L' ? 'text-red-400' : 'text-neutral-400';
+    outcome === 'W' ? t.c.positive : outcome === 'L' ? 'text-red-400' : 'text-neutral-400';
 
   return (
     <span className={`font-semibold tabular-nums ${tone}`} aria-label={outcome === 'W' ? 'Win' : outcome === 'L' ? 'Loss' : 'Draw'}>
@@ -153,20 +156,21 @@ function MatchOutcomeLetter({ outcome }: { outcome: 'W' | 'L' | 'D' }) {
 }
 
 function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
+  const t = useSweepstakeTheme();
   const items: { key: string; label: string; className: string }[] = [];
 
   if (result.scoringBonus && result.scoringBonus > 0) {
     items.push({
       key: 'scored',
       label: `(+${result.scoringBonus}, ${result.goalsFor} goals scored)`,
-      className: 'text-lime-400',
+      className: t.c.positive,
     });
   }
   if (result.cleanSheetBonus && result.cleanSheetBonus > 0) {
     items.push({
       key: 'cs',
       label: `(+${result.cleanSheetBonus}, clean sheet)`,
-      className: 'text-lime-400',
+      className: t.c.positive,
     });
   }
   if (result.concededPenalty && result.concededPenalty < 0) {
@@ -335,6 +339,7 @@ function MatchdayDayNavButton({
   disabled: boolean;
   onClick: () => void;
 }) {
+  const t = useSweepstakeTheme();
   const label = direction === 'previous' ? 'Previous matchday' : 'Next matchday';
 
   return (
@@ -343,7 +348,7 @@ function MatchdayDayNavButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-sky-700/70 bg-sky-950/50 text-sm font-semibold text-sky-100 transition hover:bg-sky-900/60 disabled:cursor-not-allowed disabled:border-neutral-800 disabled:bg-neutral-950/40 disabled:text-neutral-600"
+      className={t.c.navBtn}
     >
       {direction === 'previous' ? '←' : '→'}
     </button>
@@ -357,35 +362,32 @@ function MatchdayStatusBadge({
   status: MatchdayEntry['status'];
   livePeriod?: string;
 }) {
+  const t = useSweepstakeTheme();
+
   if (status === 'in-play') {
     return (
-      <span className="mt-0.5 block text-[10px] font-semibold uppercase tracking-wide text-emerald-400 sm:text-xs">
+      <span className={t.c.fixturesInPlay}>
         {livePeriod && !/^full time$/i.test(livePeriod) ? livePeriod : 'In play'}
       </span>
     );
   }
 
   if (status === 'finished') {
-    return (
-      <span className="mt-0.5 block text-[10px] font-semibold uppercase tracking-wide text-sky-300/80 sm:text-xs">
-        Full time
-      </span>
-    );
+    return <span className={t.c.fixturesFt}>Full time</span>;
   }
 
   return null;
 }
 
 function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
+  const t = useSweepstakeTheme();
   const homeIsPlaceholder = entry.placeholderSide === 'home' || entry.placeholderSide === 'both';
   const awayIsPlaceholder = entry.placeholderSide === 'away' || entry.placeholderSide === 'both';
 
   return (
     <div className="min-w-0 flex-1">
       {entry.roundLabel ? (
-        <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-amber-300/90">
-          {entry.roundLabel}
-        </p>
+        <p className={t.c.fixturesRound}>{entry.roundLabel}</p>
       ) : null}
       <p className="text-sm leading-snug text-neutral-100">
         <span className={`font-medium ${homeIsPlaceholder ? 'italic text-neutral-400' : ''}`}>
@@ -396,17 +398,17 @@ function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
           {!homeIsPlaceholder ? <FixtureTeamManagers managers={entry.homeManagers} /> : null}
         </span>
         {entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null ? (
-          <span className="mx-1.5 font-semibold tabular-nums text-sky-100">
+          <span className={t.c.fixturesScore}>
             {formatMatchScore(entry.homeGoals, entry.awayGoals)}
           </span>
         ) : entry.status === 'in-play' &&
           entry.liveHomeGoals != null &&
           entry.liveAwayGoals != null ? (
-          <span className="mx-1.5 font-semibold tabular-nums text-emerald-300">
+          <span className={t.c.fixturesLiveScore}>
             {formatMatchScore(entry.liveHomeGoals, entry.liveAwayGoals)}
           </span>
         ) : entry.status === 'in-play' ? (
-          <span className="mx-1.5 font-semibold text-emerald-400">v</span>
+          <span className={`mx-1.5 font-semibold ${t.c.live}`}>v</span>
         ) : (
           <span className="mx-1.5 text-neutral-600">v</span>
         )}
@@ -419,7 +421,7 @@ function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
         </span>
       </p>
       {entry.status === 'finished' && entry.winnerPathLabel ? (
-        <p className="mt-1 text-[11px] text-amber-200/80">Winner → {entry.winnerPathLabel}</p>
+        <p className={t.c.fixturesWinnerPath}>Winner → {entry.winnerPathLabel}</p>
       ) : null}
     </div>
   );
@@ -436,6 +438,7 @@ function MatchdaySchedule({
   scoringMatches: MatchPointsEntry[];
   matchScoringHelpers: MatchScoringHelpers;
 }) {
+  const t = useSweepstakeTheme();
   const [selectedDate, setSelectedDate] = useState(schedule.defaultDate);
   const scoringByMatchId = new Map(scoringMatches.map((entry) => [entry.match.id, entry] as const));
   const selectedIndex = schedule.fixtureDates.indexOf(selectedDate);
@@ -448,7 +451,10 @@ function MatchdaySchedule({
   }, [schedule.defaultDate]);
 
   return (
-    <section className="rounded-lg border border-sky-800/60 bg-sky-950/20 px-3 py-2.5 sm:px-4 sm:py-3">
+    <section className={t.c.fixturesSection}>
+      {t.id === 'english-pyramid' ? (
+        <MatchdayHeroStrip schedule={schedule} selectedDate={selectedDate} />
+      ) : null}
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
         <div className="flex min-w-0 items-center gap-2">
           {schedule.fixtureDates.length > 1 ? (
@@ -458,28 +464,28 @@ function MatchdaySchedule({
                 disabled={!canGoPrevious}
                 onClick={() => setSelectedDate(schedule.fixtureDates[selectedIndex - 1])}
               />
-              <h3 className="min-w-0 text-sm font-semibold uppercase tracking-wide text-sky-200">
-                {formatMatchdayLabel(selectedDate)}
-              </h3>
+              {t.id === 'english-pyramid' ? (
+                <span className="min-w-0 text-xs font-medium text-[#e8dfc8]/70">Other matchdays</span>
+              ) : (
+                <h3 className={`min-w-0 ${t.c.fixturesHeading}`}>{formatMatchdayLabel(selectedDate)}</h3>
+              )}
               <MatchdayDayNavButton
                 direction="next"
                 disabled={!canGoNext}
                 onClick={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
               />
             </>
-          ) : (
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-sky-200">
-              {formatMatchdayLabel(selectedDate)}
-            </h3>
-          )}
+          ) : t.id !== 'english-pyramid' ? (
+            <h3 className={t.c.fixturesHeading}>{formatMatchdayLabel(selectedDate)}</h3>
+          ) : null}
         </div>
-        <span className="text-[10px] text-sky-300/80 sm:text-xs">Kickoffs in GMT · scores after full time</span>
+        <span className={t.c.fixturesMeta}>Kickoffs in GMT · scores after full time</span>
       </div>
 
       {entries.length === 0 ? (
         <p className="mt-2 text-sm text-neutral-300">No sweepstake fixtures scheduled for this day.</p>
       ) : (
-        <ul className="mt-2 divide-y divide-sky-900/40 rounded-md border border-sky-900/50 bg-neutral-950/40">
+        <ul className={t.c.fixturesList}>
           {entries.map((entry) => {
             const scoringEntry = entry.status === 'finished' ? scoringByMatchId.get(entry.id) : undefined;
             const scoringPlayers = scoringEntry
@@ -489,15 +495,15 @@ function MatchdaySchedule({
             return (
               <li
                 key={entry.id}
-                className={`px-3 py-2 ${entry.status === 'in-play' ? 'bg-emerald-950/20' : ''}`}
+                className={`px-3 py-2 ${entry.status === 'in-play' ? t.c.fixturesRowLive : ''}`}
               >
                 <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:gap-3">
                   <div className="shrink-0 sm:w-[8.75rem]">
                     <time
                       dateTime={entry.utcDate}
-                      className={`text-xs font-semibold tabular-nums leading-snug ${
-                        entry.status === 'in-play' ? 'text-emerald-300' : 'text-sky-200'
-                      }`}
+                      className={
+                        entry.status === 'in-play' ? t.c.fixturesKickoffLive : t.c.fixturesKickoff
+                      }
                     >
                       {formatFixtureKickoff(entry.utcDate)}
                     </time>
@@ -506,7 +512,7 @@ function MatchdaySchedule({
                   <div className="min-w-0 flex-1">
                     <MatchdayFixtureLine entry={entry} />
                     {scoringPlayers.length > 0 && scoringEntry ? (
-                      <p className="mt-1 text-xs font-medium text-teal-200">
+                      <p className={t.c.fixturesPoints}>
                         <MatchScoringPlayersLine
                           players={standings}
                           byPlayer={scoringEntry.byPlayer}
@@ -535,6 +541,7 @@ function LatestResultsTicker({
   standings: PlayerStanding[];
   matchScoringHelpers: MatchScoringHelpers;
 }) {
+  const t = useSweepstakeTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const resultCount = matches.length;
 
@@ -564,23 +571,23 @@ function LatestResultsTicker({
     return (
       <article
         key={`${match.id}-${index}`}
-        className="min-w-[17rem] shrink-0 rounded-lg border border-lime-500/35 bg-neutral-950 px-3 py-2 shadow-[0_0_18px_rgba(132,204,22,0.14)] md:min-w-[21rem] xl:min-w-[24rem]"
+        className={t.c.tickerCard}
       >
-        <div className="flex items-center justify-between gap-3 text-[9px] font-semibold uppercase tracking-[0.26em] text-lime-500/80">
+        <div className={`flex items-center justify-between gap-3 ${t.c.tickerCardLabel}`}>
           <span>Latest result</span>
           <span className="tabular-nums">{formatResultTickerDate(match.utcDate)}</span>
         </div>
-        <div className="mt-1 rounded-md border border-lime-900/80 bg-black px-3 py-2 [background-image:radial-gradient(rgba(132,204,22,0.16)_1px,transparent_1px)] [background-size:4px_4px]">
-          <div className="flex items-center justify-center gap-2 font-mono text-lg font-bold tracking-[0.16em] text-lime-300 [text-shadow:0_0_12px_rgba(132,204,22,0.9)] sm:text-xl xl:text-2xl">
+        <div className={t.c.tickerCardInner}>
+          <div className={t.c.tickerScore}>
             <span>{match.homeTeam.tla}</span>
-            <span className="rounded border border-lime-500/40 bg-lime-400/10 px-2 tabular-nums">
+            <span className={t.c.tickerScoreBadge}>
               {formatMatchScore(match.homeGoals, match.awayGoals)}
             </span>
             <span>{match.awayTeam.tla}</span>
           </div>
         </div>
         {scoringPlayers.length > 0 ? (
-          <p className="mt-1.5 truncate text-center text-[11px] font-medium text-teal-200 sm:text-xs">
+          <p className={t.c.tickerMatch}>
             <MatchScoringPlayersLine
               players={standings}
               byPlayer={byPlayer}
@@ -599,20 +606,14 @@ function LatestResultsTicker({
         {renderResultCard(matches[activeIndex], activeIndex)}
       </div>
 
-      <div className="hidden overflow-hidden rounded-xl border border-lime-400/40 bg-neutral-950 px-3 py-3 shadow-[0_0_26px_rgba(132,204,22,0.18)] motion-reduce:overflow-x-auto sm:block lg:px-4">
-        <div className="mb-2 flex items-center justify-between gap-3 px-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-lime-500/80">
+      <div className={t.c.tickerWrap}>
+        <div className={`mb-2 flex items-center justify-between gap-3 px-1 ${t.c.tickerHeader}`}>
           <span>Latest results</span>
-          <span className="hidden text-lime-300/70 md:inline">Continuous feed</span>
+          <span className={`hidden md:inline ${t.c.points}`}>Continuous feed</span>
         </div>
-        <div className="relative overflow-hidden rounded-lg border border-lime-900/60 bg-black/75 py-2 motion-reduce:overflow-x-auto">
-          <div
-            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 bg-gradient-to-r from-black to-transparent motion-reduce:hidden"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 bg-gradient-to-l from-black to-transparent motion-reduce:hidden"
-            aria-hidden
-          />
+        <div className={t.c.tickerTrack}>
+          <div className={t.c.tickerFadeL} aria-hidden />
+          <div className={t.c.tickerFadeR} aria-hidden />
           <div className="world-cup-scoreboard-marquee flex w-max px-3">
             <div className="flex shrink-0 gap-3 pr-3">
               {matches.map((entry, index) => renderResultCard(entry, index))}
@@ -653,8 +654,8 @@ function PlayerIdentity({
   return <span className="font-medium text-white">{player.name}</span>;
 }
 
-function progressLineColor(index: number): string {
-  return PROGRESS_LINE_COLORS[index % PROGRESS_LINE_COLORS.length];
+function progressLineColor(index: number, colors: readonly string[]): string {
+  return colors[index % colors.length];
 }
 
 function progressTeamLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): string {
@@ -668,6 +669,7 @@ function StandingsProgressChart({
   standings: PlayerStanding[];
   scoringMatches: MatchPointsEntry[];
 }) {
+  const t = useSweepstakeTheme();
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const { height, crestSize, padding } = useProgressChartLayout();
   const { xStep, lineWidth, yHeadroomPoints } = PROGRESS_CHART;
@@ -716,8 +718,8 @@ function StandingsProgressChart({
     padding.left + padding.right + selectedLabelWidth + Math.max(1, pointCount - 1) * xStep;
 
   return (
-    <div className="mt-3 space-y-3">
-      <div className="overflow-x-auto overflow-y-visible rounded-lg border border-neutral-700/80 bg-neutral-950/50">
+      <div className={`mt-3 space-y-3`}>
+      <div className={t.c.chartWrap}>
         <svg
           role="img"
           aria-label="Cumulative fantasy points by manager across the tournament"
@@ -759,7 +761,7 @@ function StandingsProgressChart({
           ))}
 
           {series.map((row, seriesIndex) => {
-            const color = progressLineColor(seriesIndex);
+            const color = progressLineColor(seriesIndex, t.chartLineColors);
             const isSelected = selectedPlayerId === row.playerId;
             const path = row.points
               .map((point, index) => {
@@ -852,7 +854,7 @@ function StandingsProgressChart({
                       className="fill-white text-[11px] font-semibold"
                     >
                       {teamName}
-                      <tspan className="fill-teal-300" dx={6}>
+                      <tspan fill={color} dx={6}>
                         {row.currentTotal} pts
                       </tspan>
                     </text>
@@ -881,16 +883,16 @@ function StandingsProgressChart({
                   type="button"
                   onClick={() => toggleSelectedPlayer(row.playerId)}
                   className={`inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-neutral-900 transition hover:scale-105 ${
-                    selectedPlayerId === row.playerId ? 'border-teal-400 ring-2 ring-teal-500/40' : 'border-neutral-700'
+                    selectedPlayerId === row.playerId ? t.c.chartLegendBtnSelected : t.c.chartLegendBtn
                   }`}
-                  style={{ boxShadow: `0 0 0 1px ${progressLineColor(colorIndex)}` }}
+                  style={{ boxShadow: `0 0 0 1px ${progressLineColor(colorIndex, t.chartLineColors)}` }}
                   aria-label={standing ? progressTeamLabel(standing) : row.label}
                   aria-pressed={selectedPlayerId === row.playerId}
                 >
                   <img src={row.crest} alt="" className="max-h-full max-w-full object-contain p-0.5" />
                 </button>
                 <span className="font-medium text-white">{standing ? progressTeamLabel(standing) : row.label}</span>
-                <span className="tabular-nums text-teal-300">{row.currentTotal} pts</span>
+                <span className={`tabular-nums ${t.c.chartLegendPoints}`}>{row.currentTotal} pts</span>
               </li>
             );
           })}
@@ -906,6 +908,8 @@ function teamsLeftLabel(row: PlayerStanding): string {
 }
 
 function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
+  const t = useSweepstakeTheme();
+
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
@@ -922,7 +926,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
             <li
               key={row.id}
               className={`grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
-                index === 0 ? 'bg-teal-950/20' : 'bg-neutral-950/40'
+                index === 0 ? t.c.leaderRowMobile : 'bg-neutral-950/40'
               }`}
             >
               <span className="text-[11px] tabular-nums text-neutral-400">{index + 1}</span>
@@ -938,9 +942,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
               <span className="w-8 shrink-0 text-right text-xs tabular-nums text-neutral-200">
                 {formatGoalDifference(row.goalDifference)}
               </span>
-              <span className="w-7 shrink-0 text-right text-xs font-bold tabular-nums text-teal-300">
-                {row.points}
-              </span>
+              <span className={`w-7 shrink-0 text-right ${t.c.pointsBold}`}>{row.points}</span>
             </li>
           ))}
         </ul>
@@ -965,7 +967,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
           </thead>
           <tbody className="divide-y divide-neutral-800 text-neutral-100">
             {standings.map((row, index) => (
-              <tr key={row.id} className={index === 0 ? 'bg-teal-950/20' : undefined}>
+              <tr key={row.id} className={index === 0 ? t.c.leaderRow : undefined}>
                 <td className="px-3 py-2 text-neutral-400">{index + 1}</td>
                 <td className="px-3 py-2 font-medium">
                   <PlayerIdentity player={row} />
@@ -978,7 +980,9 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 <td className="px-3 py-2 text-right tabular-nums">{row.bonusPoints}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{formatGoalDifference(row.goalDifference)}</td>
                 <td className="px-3 py-2 text-right tabular-nums text-red-300">{row.redCards}</td>
-                <td className="px-3 py-2 text-right font-semibold tabular-nums">{row.points}</td>
+                <td className={`px-3 py-2 text-right font-semibold tabular-nums ${index === 0 ? t.c.points : ''}`}>
+                  {row.points}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -1017,17 +1021,12 @@ function TeamResultsPanel({
   results: TeamMatchDisplay[];
   formatTeamLabel?: (code: string) => string;
 }) {
+  const t = useSweepstakeTheme();
   const teamLabel = formatTeamLabel ? formatTeamLabel(team.code) : `${team.flag} ${team.name}`;
 
   return (
-    <div
-      className="rounded-md border border-teal-800/50 bg-neutral-950/80 px-3 py-2"
-      role="region"
-      aria-label={`${team.name} results`}
-    >
-      <p className="text-[10px] font-semibold uppercase tracking-wide text-teal-300/90">
-        {teamLabel} results
-      </p>
+    <div className={t.c.teamResultsPanel} role="region" aria-label={`${team.name} results`}>
+      <p className={t.c.teamResultsHeading}>{teamLabel} results</p>
       {results.length === 0 ? (
         <p className="mt-2 text-xs text-neutral-400">No finished matches yet.</p>
       ) : (
@@ -1047,7 +1046,7 @@ function TeamResultsPanel({
                 <MatchOutcomeLetter outcome={matchOutcomeLetter(result.goalsFor, result.goalsAgainst)} />
                 <TeamMatchAdjustments result={result} />
               </span>
-              <span className="shrink-0 font-semibold tabular-nums text-teal-300">
+              <span className={t.c.teamResultsPoints}>
                 {result.points >= 0 ? '+' : ''}
                 {result.points} pts
               </span>
@@ -1076,6 +1075,7 @@ function TeamMiniTable({
   formatTeamLabel?: (code: string) => string;
   bonusColumnLabel?: string;
 }) {
+  const t = useSweepstakeTheme();
   const [pinnedTeamCode, setPinnedTeamCode] = useState<string | null>(null);
   const [hoverTeamCode, setHoverTeamCode] = useState<string | null>(null);
 
@@ -1129,7 +1129,7 @@ function TeamMiniTable({
                       isEliminated
                         ? 'bg-red-950/15 text-red-300/90'
                         : isHighlighted
-                          ? 'bg-teal-950/25'
+                          ? t.c.teamHighlight
                           : 'hover:bg-neutral-900/50'
                     }`}
                     onMouseEnter={() => {
@@ -1142,11 +1142,20 @@ function TeamMiniTable({
                         onClick={() => toggleTeam(team.code)}
                         aria-expanded={isPinned}
                         aria-controls="team-results-panel"
-                        className={`-mx-1 rounded px-1 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500 ${
-                          isEliminated ? 'text-red-300 hover:text-red-200' : 'hover:text-teal-200'
+                        className={`-mx-1 rounded px-1 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${t.c.accentFocus} ${
+                          isEliminated ? 'text-red-300 hover:text-red-200' : t.c.accentHover
                         }`}
                       >
-                        {formatTeamLabel ? formatTeamLabel(team.code) : `${team.flag} ${team.name}`}
+                        {t.id === 'english-pyramid' ? (
+                          <>
+                            <DivisionBadge divisionId={team.flag} />
+                            {formatTeamNameShort(team.code)}
+                          </>
+                        ) : formatTeamLabel ? (
+                          formatTeamLabel(team.code)
+                        ) : (
+                          `${team.flag} ${team.name}`
+                        )}
                         {isEliminated ? (
                           <span className="ml-1.5 text-[10px] font-semibold uppercase tracking-wide text-red-400">
                             Eliminated
@@ -1263,6 +1272,13 @@ function ImageLightbox({
   );
 }
 
+function managerPhotoFrameClass(isLeader: boolean, isLast: boolean, themeId: SweepstakeFantasyThemeId): string {
+  if (themeId !== 'english-pyramid') return '';
+  if (isLeader) return 'ring-2 ring-[#d4af37] border-[#d4af37]';
+  if (isLast) return 'ring-2 ring-[#8b2233] border-[#a83248]';
+  return '';
+}
+
 function PlayerSquadCard({
   rank,
   player,
@@ -1270,6 +1286,7 @@ function PlayerSquadCard({
   formatTeamLabel,
   matchScoringHelpers,
   bonusColumnLabel,
+  totalPlayers,
 }: {
   rank: number;
   player: PlayerStanding;
@@ -1277,19 +1294,24 @@ function PlayerSquadCard({
   formatTeamLabel: (code: string) => string;
   matchScoringHelpers: MatchScoringHelpers;
   bonusColumnLabel?: string;
+  totalPlayers: number;
 }) {
+  const t = useSweepstakeTheme();
   const managerLabel = player.teamName ?? player.name;
   const [enlarged, setEnlarged] = useState<'manager' | 'crest' | null>(null);
+  const isLeader = rank === 1;
+  const isLast = rank === totalPlayers;
+  const photoFrame = managerPhotoFrameClass(isLeader, isLast, t.id);
 
   return (
-    <article className="rounded-lg border border-neutral-700 bg-neutral-950/40">
+    <article className={isLeader ? t.c.squadCardLeader : t.c.squadCard}>
       <div className="px-4 py-3">
         <div className="space-y-3">
           <div className="grid w-full grid-cols-2 gap-2 sm:mx-auto sm:w-fit sm:gap-3">
             <button
               type="button"
               onClick={() => setEnlarged('manager')}
-              className="relative flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 md:size-36"
+              className={`${t.c.squadPhotoBtn} ${photoFrame}`}
               aria-label={`View enlarged photo of ${managerLabel}`}
             >
               {/* Native img avoids stale next/image optimizer cache after portrait swaps. */}
@@ -1302,7 +1324,7 @@ function PlayerSquadCard({
             <button
               type="button"
               onClick={() => setEnlarged('crest')}
-              className="relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 md:size-36"
+              className={`${t.c.squadPhotoBtn} ${photoFrame} relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
               aria-label={`View enlarged ${managerLabel} club crest`}
             >
               {/* background-size: contain cannot stretch — avoids img flex sizing bugs on mobile */}
@@ -1315,11 +1337,18 @@ function PlayerSquadCard({
           </div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-xs font-bold text-teal-300">
+              <span className={isLeader ? t.c.squadRankBadgeLeader : t.c.squadRankBadge}>
                 {rank}
               </span>
               <PlayerIdentity player={player} heading />
-              <span className="text-sm font-semibold tabular-nums text-teal-300">{player.points} pts</span>
+              <span className={`text-sm font-semibold tabular-nums ${t.c.points}`}>{player.points} pts</span>
+              {t.id === 'english-pyramid' ? (
+                <EnglishPyramidShareButton
+                  player={player}
+                  rank={rank}
+                  totalPlayers={totalPlayers}
+                />
+              ) : null}
               <span className="text-xs font-medium tabular-nums text-neutral-300">
                 GD {formatGoalDifference(player.goalDifference)}
               </span>
@@ -1335,7 +1364,20 @@ function PlayerSquadCard({
               </span>
             </div>
             <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
-            <p className="mt-2 text-xs text-neutral-300">{player.teams.map(formatTeamLabel).join(' · ')}</p>
+            <p className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-300">
+              {t.id === 'english-pyramid'
+                ? player.teams.map((code) => {
+                    const divisionId =
+                      player.teamBreakdown.find((team) => team.code === code)?.flag ?? '';
+                    return (
+                      <span key={code} className="inline-flex items-center">
+                        <DivisionBadge divisionId={divisionId} />
+                        {formatTeamNameShort(code)}
+                      </span>
+                    );
+                  })
+                : player.teams.map(formatTeamLabel).join(' · ')}
+            </p>
           </div>
         </div>
       </div>
@@ -1369,8 +1411,18 @@ function PlayerSquadCard({
   );
 }
 
-export default function WorldCupFantasy({
+export default function WorldCupFantasy(props: Props) {
+  const { themeId = 'world-cup', ...rest } = props;
+  return (
+    <SweepstakeThemeProvider themeId={themeId}>
+      <WorldCupFantasyView {...rest} />
+    </SweepstakeThemeProvider>
+  );
+}
+
+function WorldCupFantasyView({
   onClose,
+  standalone = false,
   apiPath = DEFAULT_API_PATH,
   title = DEFAULT_TITLE,
   headerImage,
@@ -1383,10 +1435,14 @@ export default function WorldCupFantasy({
   resultsUpdateNote = 'Fixtures flip to In play at kick-off and refresh here every minute with live scores when available. Points appear when ESPN reports FT; the ledger still commits automatically later.',
   progressChartTitle = 'Tournament progress',
   progressChartDescription = 'Cumulative points after each recorded result — crest marks current total.',
-}: Props) {
+}: Omit<Props, 'themeId'>) {
+  const t = useSweepstakeTheme();
   const [data, setData] = useState<SweepstakeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { enabled: liveAlertsEnabled, setEnabled: setLiveAlertsEnabled } = useLiveGoalAlerts(
+    t.id === 'english-pyramid' ? data?.matchdaySchedule : null
+  );
 
   const load = useCallback(async (options?: { silent?: boolean }) => {
     if (!options?.silent) {
@@ -1420,22 +1476,28 @@ export default function WorldCupFantasy({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-neutral-950/95 p-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:p-4"
-      role="dialog"
-      aria-modal="true"
+      className={
+        standalone
+          ? `fixed inset-0 z-[200] flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] ${t.c.overlayStandalone}`
+          : t.c.overlayModal
+      }
+      style={t.cssVars as CSSProperties}
+      data-sweepstake-theme={t.id}
+      role={standalone ? undefined : 'dialog'}
+      aria-modal={standalone ? undefined : true}
       aria-labelledby="world-cup-fantasy-title"
     >
-      <div className="flex max-h-[96dvh] w-full max-w-7xl flex-col overflow-hidden rounded-xl border border-neutral-600 bg-neutral-900 shadow-2xl">
-        <header className="shrink-0 border-b border-neutral-700 px-4 py-4 sm:px-5">
+      <div className={standalone ? t.c.panelStandalone : t.c.panel}>
+        <header className={t.c.header}>
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
               {headerImage ? (
-                <div className="flex max-h-28 items-center sm:max-h-36">
+                <div className={t.c.headerImageWrap}>
                   {/* Native img keeps the wide crest centred without next/image fill quirks. */}
                   <img
                     src={headerImage}
                     alt={headerImageAlt || title}
-                    className="max-h-28 w-auto max-w-full object-contain object-left sm:max-h-36"
+                    className={`max-h-28 w-auto max-w-full object-contain sm:max-h-36 ${t.id === 'english-pyramid' ? 'object-center' : 'object-left'}`}
                   />
                 </div>
               ) : (
@@ -1449,21 +1511,19 @@ export default function WorldCupFantasy({
                 </h2>
               ) : null}
             </div>
-            <div className="flex shrink-0 gap-2">
-              <button
-                type="button"
-                onClick={onClose}
-                className="rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 sm:text-sm"
-              >
-                Close
-              </button>
-            </div>
+            {!standalone && onClose ? (
+              <div className="flex shrink-0 gap-2">
+                <button type="button" onClick={onClose} className={t.c.closeBtn}>
+                  Close
+                </button>
+              </div>
+            ) : null}
           </div>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5">
+        <div className={t.c.body}>
           {loading ? (
-            <p className="text-sm text-neutral-400">Loading standings…</p>
+            <p className={t.c.loading}>Loading standings…</p>
           ) : error ? (
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (
@@ -1474,8 +1534,8 @@ export default function WorldCupFantasy({
                 matchScoringHelpers={matchScoringHelpers}
               />
 
-              <section className="rounded-lg border border-amber-800/60 bg-amber-950/20 px-4 py-3">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-amber-200">Daily roast</h3>
+              <section className={t.c.roastSection}>
+                <h3 className={t.c.roastHeading}>Daily roast</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
               </section>
 
@@ -1487,19 +1547,19 @@ export default function WorldCupFantasy({
               />
 
               <section>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Overall standings</h3>
+                <h3 className={`mb-3 ${t.c.sectionHeading}`}>Overall standings</h3>
                 <OverallStandings standings={data.standings} />
                 <ScoringRulesBlock rules={scoringRules} />
               </section>
 
               <section>
-                <h3 className="mb-1 text-sm font-semibold uppercase tracking-wide text-teal-300">{progressChartTitle}</h3>
+                <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>
                 <p className="text-xs text-neutral-500">{progressChartDescription}</p>
                 <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
               </section>
 
               <section>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Player squads</h3>
+                <h3 className={`mb-3 ${t.c.sectionHeading}`}>Player squads</h3>
                 <div className="space-y-3">
                   {data.standings.map((player, index) => (
                     <PlayerSquadCard
@@ -1510,13 +1570,14 @@ export default function WorldCupFantasy({
                       formatTeamLabel={formatTeamLabel}
                       matchScoringHelpers={matchScoringHelpers}
                       bonusColumnLabel={bonusColumnLabel}
+                      totalPlayers={data.standings.length}
                     />
                   ))}
                 </div>
               </section>
 
               <section>
-                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-teal-300">Recent results</h3>
+                <h3 className={`mb-3 ${t.c.sectionHeading}`}>Recent results</h3>
                 {data.recentScoringMatches.length === 0 ? (
                   <p className="text-sm text-neutral-400">{noResultsMessage}</p>
                 ) : (
@@ -1525,10 +1586,7 @@ export default function WorldCupFantasy({
                       const scoringPlayers = data.standings.filter((player) => byPlayer[player.id] != null);
 
                       return (
-                        <li
-                          key={match.id}
-                          className="rounded-lg border border-neutral-700 bg-neutral-950/40 px-3 py-2 text-sm"
-                        >
+                        <li key={match.id} className={t.c.recentResultItem}>
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-neutral-100">
                               {match.homeTeam.tla} {formatMatchScore(match.homeGoals, match.awayGoals)}{' '}
@@ -1539,7 +1597,7 @@ export default function WorldCupFantasy({
                             </span>
                           </div>
                           {scoringPlayers.length > 0 ? (
-                            <p className="mt-1 text-xs text-teal-300">
+                            <p className={t.c.recentResultPoints}>
                               <MatchScoringPlayersLine
                                 players={data.standings}
                                 byPlayer={byPlayer}
@@ -1555,11 +1613,17 @@ export default function WorldCupFantasy({
                 )}
               </section>
 
-              <div className="rounded-lg border border-neutral-700 bg-neutral-950/50 px-4 py-3 text-xs text-neutral-400 sm:text-sm">
+              <div className={t.c.footerNote}>
                 <p>{resultsUpdateNote}</p>
                 <p className="mt-2">
                   Finished matches tracked: <span className="text-neutral-200">{data.finishedMatchCount}</span>
                 </p>
+                {t.id === 'english-pyramid' ? (
+                  <LiveGoalAlertsToggle
+                    enabled={liveAlertsEnabled}
+                    onChange={setLiveAlertsEnabled}
+                  />
+                ) : null}
               </div>
             </div>
           ) : null}

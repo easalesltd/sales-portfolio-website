@@ -1,0 +1,24 @@
+{
+  "name": "English Pyramid Sweepstake",
+  "short_name": "Pyramid",
+  "description": "English Pyramid Football Fantasy League 2026/27",
+  "start_url": "/p/ep2627",
+  "scope": "/p/ep2627/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "/p/ep2627/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/p/ep2627/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
