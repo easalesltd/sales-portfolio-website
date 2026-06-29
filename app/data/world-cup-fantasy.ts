@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 28 June felt like two different tournaments stitched together: Kansas City served up a six-goal qualification farce as Algeria and Austria traded late drama until Kalajdzic rescued a 3-3 draw from Mahrez\'s 93rd-minute lead, Dallas saw Argentina wrap a flawless group with a 3-1 win over Jordan that killed off the debutants, and Los Angeles closed the day with the first knockout tie — Canada leaving it until the 92nd minute as Eustaquio thumped home the only goal to send South Africa home. Scott leads on 35 with six teams still breathing after Canada\'s late rescue and Argentina\'s four-goal night, Dave banked Algeria\'s chaos, and Jon watched Jordan leak three again before South Africa parked the bus for 91 minutes and still got eliminated. Ash remains bottom on 27; the bracket does not care how brave your defending looked.';
+  'GMT 29 June opened the knockout survival phase in Houston with Japan doing what Japan do at World Cups — lead a knockout tie and still get sent home — as Sano put them ahead before Casemiro and a 96th-minute Martinelli poke completed Brazil\'s trademark slow-start comeback. Jon leads on 36 after Brazil crawled over the line and Scott got bumped off the summit without kicking a ball, while Ash remains bottom on 27 now that Japan\'s annual knockout heartbreak has extinguished another of her dwindling lifelines.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -591,13 +591,6 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     stage: 'knockout',
     homeTeam: { name: 'South Africa', tla: 'RSA' },
     awayTeam: { name: 'Canada', tla: 'CAN' },
-  },
-  {
-    id: '2026-06-29-bra-jpn',
-    utcDate: '2026-06-29T17:00:00Z',
-    stage: 'knockout',
-    homeTeam: { name: 'Brazil', tla: 'BRA' },
-    awayTeam: { name: 'Japan', tla: 'JPN' },
   },
   {
     id: '2026-06-29-ger-par',
@@ -1495,6 +1488,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'South Africa', tla: 'RSA' },
     awayTeam: { name: 'Canada', tla: 'CAN' },
     homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-29-bra-jpn',
+    utcDate: '2026-06-29T17:00:00Z',
+    homeTeam: { name: 'Brazil', tla: 'BRA' },
+    awayTeam: { name: 'Japan', tla: 'JPN' },
+    homeGoals: 2,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
