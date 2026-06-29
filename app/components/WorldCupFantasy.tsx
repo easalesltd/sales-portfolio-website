@@ -22,6 +22,7 @@ import {
 import type { SweepstakeFantasyThemeId } from '@/app/lib/sweepstake-fantasy-theme';
 import { formatTeamNameShort } from '@/app/data/english-pyramid-fantasy';
 import { useLiveGoalAlerts } from '@/app/hooks/useLiveGoalAlerts';
+import { usePullToRefresh } from '@/app/hooks/usePullToRefresh';
 import DivisionBadge from './english-pyramid/DivisionBadge';
 import EnglishPyramidShareButton from './english-pyramid/EnglishPyramidShareButton';
 import LiveGoalAlertsToggle from './english-pyramid/LiveGoalAlertsToggle';
@@ -1464,6 +1465,12 @@ function WorldCupFantasyView({
     }
   }, [apiPath]);
 
+  const pullToRefreshEnabled = standalone && t.id === 'english-pyramid';
+  const { scrollRef, pullDistance, refreshing, threshold } = usePullToRefresh({
+    enabled: pullToRefreshEnabled,
+    onRefresh: () => load({ silent: true }),
+  });
+
   useEffect(() => {
     void load();
 
@@ -1521,7 +1528,33 @@ function WorldCupFantasyView({
           </div>
         </header>
 
-        <div className={t.c.body}>
+        <div ref={scrollRef} className={t.c.body}>
+          {pullToRefreshEnabled ? (
+            <div
+              className="flex items-center justify-center overflow-hidden text-xs font-medium text-[#d4af37] transition-[height] duration-200 ease-out"
+              style={{ height: refreshing ? threshold : pullDistance }}
+              aria-live="polite"
+              aria-busy={refreshing}
+            >
+              {pullDistance > 0 || refreshing ? (
+                <span className="flex items-center gap-2 py-1">
+                  {refreshing ? (
+                    <>
+                      <span
+                        className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-[#d4af37]/30 border-t-[#d4af37]"
+                        aria-hidden
+                      />
+                      Refreshing…
+                    </>
+                  ) : pullDistance >= threshold ? (
+                    'Release to refresh'
+                  ) : (
+                    'Pull to refresh'
+                  )}
+                </span>
+              ) : null}
+            </div>
+          ) : null}
           {loading ? (
             <p className={t.c.loading}>Loading standings…</p>
           ) : error ? (
