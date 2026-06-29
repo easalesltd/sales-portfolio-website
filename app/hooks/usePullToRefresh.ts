@@ -9,12 +9,12 @@ type Options = {
 };
 
 export function usePullToRefresh({ enabled, onRefresh }: Options): {
-  scrollRef: RefObject<HTMLDivElement | null>;
+  scrollRef: RefObject<HTMLDivElement>;
   pullDistance: number;
   refreshing: boolean;
   threshold: number;
 } {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [pullDistance, setPullDistance] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const pullDistanceRef = useRef(0);
