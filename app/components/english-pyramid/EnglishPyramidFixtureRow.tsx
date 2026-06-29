@@ -24,15 +24,15 @@ function FixtureSide({
   const alignClass = align === 'right' ? 'items-end text-right' : 'items-start text-left';
 
   return (
-    <div className={`flex min-w-0 flex-col gap-0.5 ${alignClass}`}>
+    <div className={`flex w-full min-w-0 flex-col gap-0.5 ${alignClass}`}>
       <div
-        className={`flex min-w-0 items-center gap-1 ${
+        className={`flex w-full min-w-0 items-center gap-1 ${
           align === 'right' ? 'justify-end' : 'justify-start'
         }`}
       >
-        {align === 'right' ? null : <DivisionBadge divisionId={divisionId} />}
+        {align === 'left' ? <DivisionBadge divisionId={divisionId} /> : null}
         <span
-          className={`font-medium leading-snug ${
+          className={`min-w-0 font-medium leading-snug ${
             compact ? 'text-xs sm:text-sm' : 'text-sm'
           } ${isPlaceholder ? 'italic text-neutral-400' : 'text-neutral-100'}`}
         >
@@ -85,7 +85,7 @@ export default function EnglishPyramidFixtureRow({
           <div className="min-w-0">{kickoff}</div>
           {statusBadge}
         </div>
-        <div className="grid grid-cols-[minmax(0,1fr)_2rem_minmax(0,1fr)] items-start gap-x-1">
+        <div className="grid w-full grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] items-start gap-x-2">
           <FixtureSide
             teamName={entry.homeTeam.name}
             divisionId={entry.homeTeam.flag}
@@ -94,13 +94,13 @@ export default function EnglishPyramidFixtureRow({
             align="right"
             compact
           />
-          <div className="flex justify-center pt-0.5">{score}</div>
+          <div className="flex justify-center self-start pt-0.5 [&_span]:mx-0">{score}</div>
           <FixtureSide
             teamName={entry.awayTeam.name}
             divisionId={entry.awayTeam.flag}
             managersLabel={awayManagersLabel}
             isPlaceholder={awayIsPlaceholder}
-            align="left"
+            align="right"
             compact
           />
         </div>

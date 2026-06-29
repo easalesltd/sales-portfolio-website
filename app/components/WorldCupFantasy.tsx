@@ -683,7 +683,7 @@ function MatchdaySchedule({
             return (
               <li
                 key={entry.id}
-                className={`px-2 py-1.5 sm:px-3 sm:py-2 ${entry.status === 'in-play' ? t.c.fixturesRowLive : ''}`}
+                className={`px-3 py-1.5 sm:px-3 sm:py-2 ${entry.status === 'in-play' ? t.c.fixturesRowLive : ''}`}
               >
                 {t.id === 'english-pyramid' ? (
                   <EnglishPyramidFixtureRow
