@@ -195,9 +195,9 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
     id: 'dave',
     name: 'Dave',
-    teamName: 'Creamy Creamers FC',
+    teamName: 'The Creamy Creamers FC',
     managerImage: '/images/world-cup-fantasy/managers/dave.png',
-    clubCrest: '/images/world-cup-fantasy/crests/dave.png',
+    clubCrest: '/images/world-cup-fantasy/crests/the-creamy-creamers-fc.png?v=1',
     teams: ['GER', 'POR', 'SEN', 'KOR', 'IRN', 'ALG', 'PAN', 'COD'],
     draftNote:
       'Germany and Portugal cream the competition on paper, Senegal and South Korea add knockout nous, Algeria and Iran keep the Middle East covered — Panama and Congo DR are the dreamers.',

@@ -217,9 +217,9 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
   {
     id: 'dave',
     name: 'Dave',
-    teamName: 'Creamy Creamers FC',
+    teamName: 'The Creamy Creamers FC',
     managerImage: '/images/world-cup-fantasy/managers/dave.png',
-    clubCrest: '/images/world-cup-fantasy/crests/dave.png',
+    clubCrest: '/images/world-cup-fantasy/crests/the-creamy-creamers-fc.png?v=1',
     teams: ['AVL', 'SHU', 'LEI', 'PVL', 'FGR', 'WRK', 'MAI'],
     draftNote:
       'Villa #6 in the Premier League but Leicester #1 in League One — Port Vale, Forest Green and Worksop cream the middle, Maidstone the southern wildcard.',
