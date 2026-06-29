@@ -13,67 +13,10 @@ const counties = ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire']
 function generateCompanyMetadata(company: typeof companies[0]): Metadata {
   const baseTitle = `Real and Exciting Designs Sales Agent | Contemporary Fashion Led Greeting Cards & Gift Wrap | Wholesale Supplier`;
   const baseDescription = `Real and Exciting Designs wholesale greeting cards and gift wrap supplied by Dave Langdon across East Anglia. Contemporary fashion-led designs, printed in England on FSC board.`;
-  
-  const locationMetadata = counties.map(county => ({
-    title: `Real and Exciting Designs Sales Agent ${county} | Contemporary Greeting Cards & Gift Wrap in ${county}`,
-    description: `Looking for a Real and Exciting Designs sales agent in ${county}? We are the official supplier of contemporary fashion led greeting cards, gift wrap, and notebooks in ${county}. Contact us for trade prices and local delivery.`,
-    keywords: [
-      `Real and Exciting Designs Sales Agent ${county}`,
-      `Real and Exciting Designs Agent ${county}`,
-      `Real and Exciting Designs ${county}`,
-      `Real and Exciting Designs ${county} wholesaler`,
-      `contemporary greeting cards ${county}`,
-      `fashion led cards ${county}`,
-      `gift wrap wholesale ${county}`,
-      `notebooks wholesale ${county}`,
-      `${county} Real and Exciting Designs distributor`,
-      `Real and Exciting Designs local supplier ${county}`,
-      `greeting cards trade prices ${county}`,
-      `${county} wholesale Real and Exciting Designs`,
-      `gift wrap retailer supplier ${county}`,
-      `${county} Real and Exciting Designs wholesale prices`,
-      `contemporary cards ${county}`,
-      `fashion led notebooks ${county}`,
-      `gift wrap wholesale ${county}`,
-      `Real and Exciting Designs trade account ${county}`,
-      `contemporary greeting cards wholesale ${county}`,
-      `fashion led gift wrap ${county}`,
-      `notebooks trade prices ${county}`,
-      `greeting cards supplier ${county}`,
-      `gift wrap supplier ${county}`,
-      `notebooks supplier ${county}`
-    ]
-  }));
 
   return {
     title: baseTitle,
     description: baseDescription,
-    keywords: [
-      ...locationMetadata.flatMap(m => m.keywords),
-      'Real and Exciting Designs Sales Agent',
-      'Real and Exciting Designs Agent East Anglia',
-      'Real and Exciting Designs wholesale',
-      'contemporary greeting cards supplier',
-      'fashion led cards wholesale',
-      'gift wrap trade prices',
-      'Real and Exciting Designs distributor',
-      'greeting cards wholesale prices',
-      'gift wrap supplier',
-      'East Anglia notebooks wholesale',
-      'East Anglian greeting cards supplier',
-      'local gift wrap supplier',
-      'contemporary greeting cards wholesale',
-      'fashion led notebooks supplier',
-      'gift wrap wholesale',
-      'notebooks products',
-      'contemporary cards East Anglia',
-      'fashion led gift wrap UK',
-      'notebooks wholesale UK',
-      'Real and Exciting Designs greeting cards',
-      'contemporary fashion led cards',
-      'gift wrap wholesale',
-      'notebooks supplier'
-    ],
     openGraph: {
       title: baseTitle,
       description: baseDescription,

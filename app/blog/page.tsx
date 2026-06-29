@@ -10,16 +10,6 @@ const BLOG_DESCRIPTION =
 export const metadata: Metadata = {
   title: 'Blog / Press',
   description: BLOG_DESCRIPTION,
-  keywords: [
-    'Dave Langdon',
-    'Greetings Today',
-    'Progressive Greetings',
-    'greeting card sales agent',
-    'trade press',
-    'East Anglia wholesale',
-    'blog',
-    'press',
-  ],
   openGraph: {
     type: 'website',
     title: 'Blog / Press | Dave Langdon',

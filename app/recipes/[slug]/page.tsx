@@ -24,57 +24,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
-  // Generate recipe-specific keywords based on recipe type
-  const getRecipeKeywords = (recipe: Recipe): string[] => {
-    const baseKeywords = [
-      recipe.title.toLowerCase(),
-      `${recipe.title.toLowerCase()} recipe`,
-      'Dave Langdon recipes',
-      'Dave Langdon baking recipes',
-      'East Anglian Sales recipes',
-      'business baking recipes',
-      'customer gift recipes'
-    ];
-
-    // Add sourdough-specific keywords
-    if (recipe.slug === 'sourdough-bread') {
-      return [
-        ...baseKeywords,
-        'foolproof beginners sourdough recipe',
-        'foolproof sourdough bread recipe',
-        'easy sourdough recipe for beginners',
-        'simple sourdough bread recipe',
-        'beginner friendly sourdough',
-        'sourdough recipe beginners',
-        'sourdough bread recipe easy',
-        'foolproof sourdough starter recipe'
-      ];
-    }
-
-    // Add mince pie-specific keywords (orange juice/zest and Josceline Dimbleby)
-    if (recipe.slug === 'orange-juice-pastry-mince-pies') {
-      return [
-        ...baseKeywords,
-        'orange zest mince pies',
-        'orange zest pastry recipe',
-        'orange juice pastry',
-        'orange juice in pastry',
-        'Josceline Dimbleby mince pies',
-        'Josceline Dimbleby recipe',
-        'orange zest mince pies recipe',
-        'citrus mince pies recipe',
-        'orange flavoured mince pies',
-        'orange juice mincemeat pies'
-      ];
-    }
-
-    return baseKeywords;
-  };
-
   return {
     title: `${recipe.title} | Dave's Favourite Recipes`,
     description: recipe.description,
-    keywords: getRecipeKeywords(recipe).join(', '),
     openGraph: {
       title: `${recipe.title} | Dave's Favourite Recipes`,
       description: recipe.description,

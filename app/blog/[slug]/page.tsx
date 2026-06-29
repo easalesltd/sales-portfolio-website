@@ -36,19 +36,9 @@ export async function generateMetadata({
   const docTitle = article.metaTitle ?? article.title;
   const docDescription =
     article.metaDescription ?? metaDescriptionFallback(article);
-  const keywords = [
-    'Dave Langdon',
-    'East Anglia',
-    'greeting card sales agent',
-    'greeting cards wholesale',
-    article.publication ?? '',
-    article.title.split(/[|,\u2014]/)[0]?.trim() ?? '',
-  ].filter(Boolean);
-
   return {
     title: { absolute: docTitle },
     description: docDescription,
-    keywords,
     openGraph: {
       title: docTitle,
       description: docDescription,

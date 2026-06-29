@@ -4,28 +4,6 @@ export const metadata: Metadata = {
   title: "About Dave Langdon | East Anglian Sales",
   description:
     "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
-  keywords: [
-    "East Anglian Sales LTD",
-    "Dave Langdon wholesale",
-    "David Langdon wholesale",
-    "Dave Langdon about",
-    "David Langdon about",
-    "Dave Langdon background",
-    "David Langdon background",
-    "Dave Langdon experience",
-    "David Langdon experience",
-    "East Anglia greeting cards",
-    "wholesale gifts Suffolk",
-    "card supplier Norfolk",
-    "gift wholesaler Essex",
-    "Cambridgeshire wholesale supplier",
-    "local gift supplier",
-    "East Anglian wholesale distributor",
-    "Suffolk sales agent",
-    "Norfolk trade supplier",
-    "Essex gift wholesaler",
-    "Cambridgeshire retail supplier"
-  ],
   openGraph: {
     title: "About Dave Langdon | East Anglian Sales",
     description:

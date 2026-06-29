@@ -4,31 +4,6 @@ export const metadata: Metadata = {
   title: "Contact Dave Langdon | East Anglian Sales",
   description:
     "Get in touch with Dave Langdon, greeting card and gift sales agent for East Anglia. Call, email or connect on LinkedIn to arrange a visit to your shop or garden centre.",
-  keywords: [
-    "contact East Anglian Sales",
-    "contact Dave Langdon",
-    "contact David Langdon",
-    "Dave Langdon contact",
-    "David Langdon contact",
-    "Dave Langdon phone",
-    "David Langdon phone",
-    "Dave Langdon email",
-    "David Langdon email",
-    "request agent visit",
-    "wholesale trade prices",
-    "local sales agent Suffolk",
-    "Norfolk wholesale contact",
-    "Essex gift supplier contact",
-    "Cambridgeshire retail supplier",
-    "wholesale order enquiry",
-    "trade account application",
-    "local agent visit",
-    "wholesale supplier contact",
-    "East Anglia sales agent",
-    "greeting cards wholesale contact",
-    "gift supplier enquiry",
-    "display solutions contact"
-  ],
   openGraph: {
     title: "Contact Dave Langdon | East Anglian Sales",
     description:

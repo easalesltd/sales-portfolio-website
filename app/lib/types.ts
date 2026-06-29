@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export interface CompanyMetadata extends Metadata {
   title: string;
   description: string;
-  keywords: string;
   structuredData?: any; // For JSON-LD data
 }
 
