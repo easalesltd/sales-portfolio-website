@@ -77,6 +77,8 @@ export type PlayerStanding = {
   redCards: number;
   redCardPoints: number;
   playedMatches: number;
+  /** Positive = climbed, negative = dropped, 0 = unchanged, null = no prior snapshot. */
+  rankChange?: number | null;
 };
 
 export type MatchPointsEntry = {

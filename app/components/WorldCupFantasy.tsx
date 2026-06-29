@@ -27,7 +27,9 @@ import DivisionBadge from './english-pyramid/DivisionBadge';
 import EnglishPyramidShareButton from './english-pyramid/EnglishPyramidShareButton';
 import LiveGoalAlertsToggle from './english-pyramid/LiveGoalAlertsToggle';
 import MatchdayHeroStrip from './english-pyramid/MatchdayHeroStrip';
+import EnglishPyramidFixtureRow from './english-pyramid/EnglishPyramidFixtureRow';
 import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeContext';
+import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 
 type SweepstakeResponse = WorldCupFantasyResponse | EnglishPyramidFantasyResponse;
 
@@ -147,7 +149,7 @@ function matchOutcomeLetter(goalsFor: number, goalsAgainst: number): 'W' | 'L' |
 function MatchOutcomeLetter({ outcome }: { outcome: 'W' | 'L' | 'D' }) {
   const t = useSweepstakeTheme();
   const tone =
-    outcome === 'W' ? t.c.positive : outcome === 'L' ? 'text-red-400' : 'text-neutral-400';
+    outcome === 'W' ? t.c.positive : outcome === 'L' ? t.c.negative : 'text-neutral-400';
 
   return (
     <span className={`font-semibold tabular-nums ${tone}`} aria-label={outcome === 'W' ? 'Win' : outcome === 'L' ? 'Loss' : 'Draw'}>
@@ -178,7 +180,7 @@ function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
     items.push({
       key: 'conc',
       label: `(${result.concededPenalty}, ${result.goalsAgainst} goals conceded)`,
-      className: 'text-red-300',
+      className: t.c.negative,
     });
   }
   if (result.redCards > 0) {
@@ -186,7 +188,7 @@ function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
     items.push({
       key: 'red',
       label: `(${penalty}, ${result.redCards === 1 ? 'red card' : 'red cards'})`,
-      className: 'text-red-300',
+      className: t.c.negative,
     });
   }
 
@@ -237,7 +239,7 @@ function MatchScoringPlayersLine({
         return (
           <span key={player.id}>
             {index > 0 ? ' · ' : null}
-            {playerDisplayLabel(player)}{' '}
+            <ManagerName playerId={player.id} name={playerDisplayLabel(player)} className="text-inherit font-medium" />{' '}
             {outcome ? <MatchOutcomeLetter outcome={outcome} /> : null}{' '}
             {points >= 0 ? '+' : ''}
             {points}
@@ -280,9 +282,168 @@ function formatGoalDifference(goalDifference: number): string {
   return String(goalDifference);
 }
 
-function RedCardTally({ count }: { count: number }) {
+function GoalDifferenceValue({ goalDifference }: { goalDifference: number }) {
+  const t = useSweepstakeTheme();
+  const tone =
+    goalDifference > 0
+      ? t.c.goalDifferencePositive
+      : goalDifference < 0
+        ? t.c.goalDifferenceNegative
+        : 'text-neutral-300';
+
+  return <span className={`tabular-nums ${tone}`}>{formatGoalDifference(goalDifference)}</span>;
+}
+
+function RankMovementIndicator({ change }: { change?: number | null }) {
+  const t = useSweepstakeTheme();
+
+  if (change == null) {
+    return (
+      <span className={`text-xs leading-none ${t.c.rankSame}`} aria-hidden>
+        —
+      </span>
+    );
+  }
+
+  if (change > 0) {
+    return (
+      <span
+        className={`text-[10px] font-bold leading-none ${t.c.rankUp}`}
+        aria-label={`Up ${change} ${change === 1 ? 'place' : 'places'}`}
+        title={`Up ${change}`}
+      >
+        ▲
+      </span>
+    );
+  }
+
+  if (change < 0) {
+    const drop = Math.abs(change);
+    return (
+      <span
+        className={`text-[10px] font-bold leading-none ${t.c.rankDown}`}
+        aria-label={`Down ${drop} ${drop === 1 ? 'place' : 'places'}`}
+        title={`Down ${drop}`}
+      >
+        ▼
+      </span>
+    );
+  }
+
   return (
-    <span className="text-red-300">
+    <span className={`text-xs leading-none ${t.c.rankSame}`} aria-label="No change" title="No change">
+      —
+    </span>
+  );
+}
+
+function RankWithMovement({
+  rank,
+  rankChange,
+  showMovement,
+}: {
+  rank: number;
+  rankChange?: number | null;
+  showMovement: boolean;
+}) {
+  return (
+    <span className="inline-flex items-center gap-1 tabular-nums">
+      <span>{rank}</span>
+      {showMovement ? <RankMovementIndicator change={rankChange} /> : null}
+    </span>
+  );
+}
+
+function SkeletonBlock({ className }: { className: string }) {
+  return <div className={`animate-pulse rounded-md bg-neutral-800/80 ${className}`} aria-hidden />;
+}
+
+function StandingsLoadingSkeleton() {
+  const t = useSweepstakeTheme();
+
+  return (
+    <div className="space-y-6" aria-busy="true" aria-label="Loading standings">
+      <span className="sr-only">Loading standings</span>
+
+      <div className={t.c.tickerWrap}>
+        <SkeletonBlock className="mx-1 mb-2 h-3 w-32" />
+        <div className="flex gap-3 overflow-hidden px-1 pb-1">
+          <SkeletonBlock className="h-24 min-w-[17rem] shrink-0 rounded-lg" />
+          <SkeletonBlock className="hidden h-24 min-w-[17rem] shrink-0 rounded-lg sm:block" />
+          <SkeletonBlock className="hidden h-24 min-w-[17rem] shrink-0 rounded-lg md:block" />
+        </div>
+      </div>
+
+      <div className={t.c.roastSection}>
+        <SkeletonBlock className="h-3 w-24" />
+        <SkeletonBlock className="mt-3 h-4 w-full" />
+        <SkeletonBlock className="mt-2 h-4 w-5/6" />
+      </div>
+
+      <div className={t.c.fixturesSection}>
+        <div className="flex items-center justify-between gap-3">
+          <SkeletonBlock className="h-4 w-40" />
+          <SkeletonBlock className="h-3 w-28" />
+        </div>
+        <div className={`mt-3 ${t.c.fixturesList} divide-y-0`}>
+          {[0, 1, 2, 3].map((row) => (
+            <div key={row} className="px-3 py-3">
+              <SkeletonBlock className="h-3 w-24" />
+              <SkeletonBlock className="mt-2 h-4 w-full max-w-md" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <section>
+        <SkeletonBlock className="mb-3 h-4 w-36" />
+        <div className="overflow-hidden rounded-lg border border-neutral-700">
+          <div className="hidden bg-neutral-950 px-3 py-2 sm:grid sm:grid-cols-11 sm:gap-3">
+            {Array.from({ length: 11 }).map((_, index) => (
+              <SkeletonBlock key={index} className="h-3 w-full" />
+            ))}
+          </div>
+          <div className="divide-y divide-neutral-800">
+            {Array.from({ length: 7 }).map((_, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 px-2 py-2 sm:grid-cols-11 sm:gap-3 sm:px-3"
+              >
+                <SkeletonBlock className="h-4 w-4" />
+                <SkeletonBlock className="h-4 w-full max-w-[10rem]" />
+                <SkeletonBlock className="hidden h-3 w-16 sm:block" />
+                <SkeletonBlock className="h-4 w-7" />
+                <SkeletonBlock className="h-4 w-8" />
+                <SkeletonBlock className="h-4 w-7" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <SkeletonBlock className="mb-3 h-4 w-28" />
+        <div className="space-y-3">
+          {[0, 1].map((card) => (
+            <div key={card} className={`${t.c.squadCard} px-4 py-3`}>
+              <div className="grid grid-cols-2 gap-2 sm:mx-auto sm:w-fit sm:gap-3">
+                <SkeletonBlock className="aspect-square w-full rounded-lg sm:size-32" />
+                <SkeletonBlock className="aspect-square w-full rounded-lg sm:size-32" />
+              </div>
+              <SkeletonBlock className="mt-3 h-4 w-48" />
+              <SkeletonBlock className="mt-2 h-3 w-full" />
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function RedCardTally({ count }: { count: number }) {
+  const t = useSweepstakeTheme();
+  return (
+    <span className={t.c.negative}>
       Red <span className="font-semibold">{count}</span>
     </span>
   );
@@ -311,7 +472,11 @@ function FixtureTeamManagers({ managers }: { managers: FixtureManager[] }) {
       {managers.map((manager, index) => (
         <span key={`${manager.id}-${manager.teamCode}`}>
           {index > 0 ? <span className="text-neutral-600"> · </span> : null}
-          <span>{fixtureManagerLabel(manager)}</span>
+          <ManagerName
+            playerId={manager.id}
+            name={fixtureManagerLabel(manager)}
+            className="text-inherit"
+          />
         </span>
       ))}
     </>
@@ -380,6 +545,36 @@ function MatchdayStatusBadge({
   return null;
 }
 
+function MatchdayFixtureScore({ entry }: { entry: MatchdayEntry }) {
+  const t = useSweepstakeTheme();
+
+  if (entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null) {
+    return (
+      <span className={t.c.fixturesScore}>
+        {formatMatchScore(entry.homeGoals, entry.awayGoals)}
+      </span>
+    );
+  }
+
+  if (
+    entry.status === 'in-play' &&
+    entry.liveHomeGoals != null &&
+    entry.liveAwayGoals != null
+  ) {
+    return (
+      <span className={t.c.fixturesLiveScore}>
+        {formatMatchScore(entry.liveHomeGoals, entry.liveAwayGoals)}
+      </span>
+    );
+  }
+
+  if (entry.status === 'in-play') {
+    return <span className={`font-semibold ${t.c.live}`}>v</span>;
+  }
+
+  return <span className="font-medium text-neutral-500">v</span>;
+}
+
 function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
   const t = useSweepstakeTheme();
   const homeIsPlaceholder = entry.placeholderSide === 'home' || entry.placeholderSide === 'both';
@@ -398,21 +593,7 @@ function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
         <span className="text-xs text-neutral-400">
           {!homeIsPlaceholder ? <FixtureTeamManagers managers={entry.homeManagers} /> : null}
         </span>
-        {entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null ? (
-          <span className={t.c.fixturesScore}>
-            {formatMatchScore(entry.homeGoals, entry.awayGoals)}
-          </span>
-        ) : entry.status === 'in-play' &&
-          entry.liveHomeGoals != null &&
-          entry.liveAwayGoals != null ? (
-          <span className={t.c.fixturesLiveScore}>
-            {formatMatchScore(entry.liveHomeGoals, entry.liveAwayGoals)}
-          </span>
-        ) : entry.status === 'in-play' ? (
-          <span className={`mx-1.5 font-semibold ${t.c.live}`}>v</span>
-        ) : (
-          <span className="mx-1.5 text-neutral-600">v</span>
-        )}
+        <MatchdayFixtureScore entry={entry} />
         <span className={`font-medium ${awayIsPlaceholder ? 'italic text-neutral-400' : ''}`}>
           {entry.awayTeam.flag} {entry.awayTeam.name}
         </span>
@@ -454,34 +635,40 @@ function MatchdaySchedule({
   return (
     <section className={t.c.fixturesSection}>
       {t.id === 'english-pyramid' ? (
-        <MatchdayHeroStrip schedule={schedule} selectedDate={selectedDate} />
+        <MatchdayHeroStrip
+          schedule={schedule}
+          selectedDate={selectedDate}
+          showDayNav={schedule.fixtureDates.length > 1}
+          canGoPrevious={canGoPrevious}
+          canGoNext={canGoNext}
+          onPreviousDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex - 1])}
+          onNextDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
+        />
       ) : null}
-      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-        <div className="flex min-w-0 items-center gap-2">
-          {schedule.fixtureDates.length > 1 ? (
-            <>
-              <MatchdayDayNavButton
-                direction="previous"
-                disabled={!canGoPrevious}
-                onClick={() => setSelectedDate(schedule.fixtureDates[selectedIndex - 1])}
-              />
-              {t.id === 'english-pyramid' ? (
-                <span className="min-w-0 text-xs font-medium text-[#e8dfc8]/70">Other matchdays</span>
-              ) : (
+      {t.id !== 'english-pyramid' ? (
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+          <div className="flex min-w-0 items-center gap-2">
+            {schedule.fixtureDates.length > 1 ? (
+              <>
+                <MatchdayDayNavButton
+                  direction="previous"
+                  disabled={!canGoPrevious}
+                  onClick={() => setSelectedDate(schedule.fixtureDates[selectedIndex - 1])}
+                />
                 <h3 className={`min-w-0 ${t.c.fixturesHeading}`}>{formatMatchdayLabel(selectedDate)}</h3>
-              )}
-              <MatchdayDayNavButton
-                direction="next"
-                disabled={!canGoNext}
-                onClick={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
-              />
-            </>
-          ) : t.id !== 'english-pyramid' ? (
-            <h3 className={t.c.fixturesHeading}>{formatMatchdayLabel(selectedDate)}</h3>
-          ) : null}
+                <MatchdayDayNavButton
+                  direction="next"
+                  disabled={!canGoNext}
+                  onClick={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
+                />
+              </>
+            ) : (
+              <h3 className={t.c.fixturesHeading}>{formatMatchdayLabel(selectedDate)}</h3>
+            )}
+          </div>
+          <span className={t.c.fixturesMeta}>Kickoffs in GMT · scores after full time</span>
         </div>
-        <span className={t.c.fixturesMeta}>Kickoffs in GMT · scores after full time</span>
-      </div>
+      ) : null}
 
       {entries.length === 0 ? (
         <p className="mt-2 text-sm text-neutral-300">No sweepstake fixtures scheduled for this day.</p>
@@ -496,34 +683,86 @@ function MatchdaySchedule({
             return (
               <li
                 key={entry.id}
-                className={`px-3 py-2 ${entry.status === 'in-play' ? t.c.fixturesRowLive : ''}`}
+                className={`px-2 py-1.5 sm:px-3 sm:py-2 ${entry.status === 'in-play' ? t.c.fixturesRowLive : ''}`}
               >
-                <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:gap-3">
-                  <div className="shrink-0 sm:w-[8.75rem]">
-                    <time
-                      dateTime={entry.utcDate}
-                      className={
-                        entry.status === 'in-play' ? t.c.fixturesKickoffLive : t.c.fixturesKickoff
-                      }
-                    >
-                      {formatFixtureKickoff(entry.utcDate)}
-                    </time>
-                    <MatchdayStatusBadge status={entry.status} livePeriod={entry.livePeriod} />
+                {t.id === 'english-pyramid' ? (
+                  <EnglishPyramidFixtureRow
+                    entry={entry}
+                    kickoff={
+                      <time
+                        dateTime={entry.utcDate}
+                        className={
+                          entry.status === 'in-play' ? t.c.fixturesKickoffLive : t.c.fixturesKickoff
+                        }
+                      >
+                        {formatFixtureKickoff(entry.utcDate)}
+                      </time>
+                    }
+                    statusBadge={
+                      <MatchdayStatusBadge status={entry.status} livePeriod={entry.livePeriod} />
+                    }
+                    score={<MatchdayFixtureScore entry={entry} />}
+                    homeManagersLabel={
+                      entry.placeholderSide === 'home' || entry.placeholderSide === 'both' ? null : (
+                        <FixtureTeamManagers managers={entry.homeManagers} />
+                      )
+                    }
+                    awayManagersLabel={
+                      entry.placeholderSide === 'away' || entry.placeholderSide === 'both' ? null : (
+                        <FixtureTeamManagers managers={entry.awayManagers} />
+                      )
+                    }
+                    roundLabel={
+                      entry.roundLabel ? (
+                        <p className={t.c.fixturesRound}>{entry.roundLabel}</p>
+                      ) : undefined
+                    }
+                    winnerPathLabel={
+                      entry.status === 'finished' && entry.winnerPathLabel ? (
+                        <p className={t.c.fixturesWinnerPath}>Winner → {entry.winnerPathLabel}</p>
+                      ) : undefined
+                    }
+                    pointsLine={
+                      scoringPlayers.length > 0 && scoringEntry ? (
+                        <p className={t.c.fixturesPoints}>
+                          <MatchScoringPlayersLine
+                            players={standings}
+                            byPlayer={scoringEntry.byPlayer}
+                            match={scoringEntry.match}
+                            matchScoringHelpers={matchScoringHelpers}
+                          />
+                        </p>
+                      ) : undefined
+                    }
+                  />
+                ) : (
+                  <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:gap-3">
+                    <div className="shrink-0 sm:w-[8.75rem]">
+                      <time
+                        dateTime={entry.utcDate}
+                        className={
+                          entry.status === 'in-play' ? t.c.fixturesKickoffLive : t.c.fixturesKickoff
+                        }
+                      >
+                        {formatFixtureKickoff(entry.utcDate)}
+                      </time>
+                      <MatchdayStatusBadge status={entry.status} livePeriod={entry.livePeriod} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <MatchdayFixtureLine entry={entry} />
+                      {scoringPlayers.length > 0 && scoringEntry ? (
+                        <p className={t.c.fixturesPoints}>
+                          <MatchScoringPlayersLine
+                            players={standings}
+                            byPlayer={scoringEntry.byPlayer}
+                            match={scoringEntry.match}
+                            matchScoringHelpers={matchScoringHelpers}
+                          />
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <MatchdayFixtureLine entry={entry} />
-                    {scoringPlayers.length > 0 && scoringEntry ? (
-                      <p className={t.c.fixturesPoints}>
-                        <MatchScoringPlayersLine
-                          players={standings}
-                          byPlayer={scoringEntry.byPlayer}
-                          match={scoringEntry.match}
-                          matchScoringHelpers={matchScoringHelpers}
-                        />
-                      </p>
-                    ) : null}
-                  </div>
-                </div>
+                )}
               </li>
             );
           })}
@@ -629,11 +868,30 @@ function LatestResultsTicker({
   );
 }
 
+function ManagerName({
+  playerId,
+  name,
+  className = 'text-xs font-medium',
+}: {
+  playerId: string;
+  name: string;
+  className?: string;
+}) {
+  const t = useSweepstakeTheme();
+  const color = managerColorForPlayer(playerId, t.id);
+
+  return (
+    <span className={className} style={color ? { color } : undefined}>
+      {name}
+    </span>
+  );
+}
+
 function PlayerIdentity({
   player,
   heading = false,
 }: {
-  player: Pick<PlayerStanding, 'name' | 'teamName'>;
+  player: Pick<PlayerStanding, 'id' | 'name' | 'teamName'>;
   heading?: boolean;
 }) {
   if (player.teamName) {
@@ -643,16 +901,20 @@ function PlayerIdentity({
         <Tag className={heading ? 'text-base font-semibold text-white' : 'block font-medium text-white'}>
           {player.teamName}
         </Tag>
-        <span className="block text-xs text-neutral-400">{player.name}</span>
+        <ManagerName playerId={player.id} name={player.name} />
       </span>
     );
   }
 
   if (heading) {
-    return <h4 className="text-base font-semibold text-white">{player.name}</h4>;
+    return (
+      <h4 className="text-base font-semibold text-white">
+        <ManagerName playerId={player.id} name={player.name} className="text-base font-semibold" />
+      </h4>
+    );
   }
 
-  return <span className="font-medium text-white">{player.name}</span>;
+  return <ManagerName playerId={player.id} name={player.name} className="font-medium text-base" />;
 }
 
 function progressLineColor(index: number, colors: readonly string[]): string {
@@ -910,11 +1172,12 @@ function teamsLeftLabel(row: PlayerStanding): string {
 
 function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
   const t = useSweepstakeTheme();
+  const showRankMovement = t.id === 'english-pyramid';
 
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
-        <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+        <div className="grid grid-cols-[1.75rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
           <span>#</span>
           <span>Club</span>
           <span className="text-right">Form</span>
@@ -926,22 +1189,37 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
           {standings.map((row, index) => (
             <li
               key={row.id}
-              className={`grid grid-cols-[1.25rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
+              className={`grid grid-cols-[1.75rem_minmax(0,1fr)_auto_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
                 index === 0 ? t.c.leaderRowMobile : 'bg-neutral-950/40'
               }`}
             >
-              <span className="text-[11px] tabular-nums text-neutral-400">{index + 1}</span>
-              <span className="truncate text-xs font-medium text-white">
-                {playerDisplayLabel(row)}
+              <span className="text-[11px] text-neutral-300">
+                <RankWithMovement
+                  rank={index + 1}
+                  rankChange={row.rankChange}
+                  showMovement={showRankMovement}
+                />
               </span>
-              <span className="shrink-0 text-[10px] tabular-nums text-neutral-500">
+              <span className="block min-w-0 truncate">
+                <span className="block truncate text-xs font-medium text-white">
+                  {playerDisplayLabel(row)}
+                </span>
+                {row.teamName ? (
+                  <ManagerName
+                    playerId={row.id}
+                    name={row.name}
+                    className="block text-[10px] font-medium"
+                  />
+                ) : null}
+              </span>
+              <span className="shrink-0 text-[10px] tabular-nums text-neutral-400">
                 P{row.playedMatches} W{row.wins} D{row.draws} L{row.losses}
               </span>
-              <span className="w-7 shrink-0 text-right text-xs tabular-nums text-red-300">
+              <span className={`w-7 shrink-0 text-right text-xs tabular-nums ${t.c.negative}`}>
                 {row.redCards}
               </span>
-              <span className="w-8 shrink-0 text-right text-xs tabular-nums text-neutral-200">
-                {formatGoalDifference(row.goalDifference)}
+              <span className="w-8 shrink-0 text-right text-xs">
+                <GoalDifferenceValue goalDifference={row.goalDifference} />
               </span>
               <span className={`w-7 shrink-0 text-right ${t.c.pointsBold}`}>{row.points}</span>
             </li>
@@ -969,7 +1247,13 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
           <tbody className="divide-y divide-neutral-800 text-neutral-100">
             {standings.map((row, index) => (
               <tr key={row.id} className={index === 0 ? t.c.leaderRow : undefined}>
-                <td className="px-3 py-2 text-neutral-400">{index + 1}</td>
+                <td className="px-3 py-2 text-neutral-300">
+                  <RankWithMovement
+                    rank={index + 1}
+                    rankChange={row.rankChange}
+                    showMovement={showRankMovement}
+                  />
+                </td>
                 <td className="px-3 py-2 font-medium">
                   <PlayerIdentity player={row} />
                 </td>
@@ -979,8 +1263,10 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.losses}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.bonusPoints}</td>
-                <td className="px-3 py-2 text-right tabular-nums">{formatGoalDifference(row.goalDifference)}</td>
-                <td className="px-3 py-2 text-right tabular-nums text-red-300">{row.redCards}</td>
+                <td className="px-3 py-2 text-right">
+                  <GoalDifferenceValue goalDifference={row.goalDifference} />
+                </td>
+                <td className={`px-3 py-2 text-right tabular-nums ${t.c.negative}`}>{row.redCards}</td>
                 <td className={`px-3 py-2 text-right font-semibold tabular-nums ${index === 0 ? t.c.points : ''}`}>
                   {row.points}
                 </td>
@@ -1144,7 +1430,7 @@ function TeamMiniTable({
                         aria-expanded={isPinned}
                         aria-controls="team-results-panel"
                         className={`-mx-1 rounded px-1 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${t.c.accentFocus} ${
-                          isEliminated ? 'text-red-300 hover:text-red-200' : t.c.accentHover
+                          isEliminated ? `${t.c.negative} hover:text-red-300` : t.c.accentHover
                         }`}
                       >
                         {t.id === 'english-pyramid' ? (
@@ -1158,7 +1444,7 @@ function TeamMiniTable({
                           `${team.flag} ${team.name}`
                         )}
                         {isEliminated ? (
-                          <span className="ml-1.5 text-[10px] font-semibold uppercase tracking-wide text-red-400">
+                          <span className={`ml-1.5 text-[10px] font-semibold uppercase tracking-wide ${t.c.negative}`}>
                             Eliminated
                           </span>
                         ) : null}
@@ -1170,12 +1456,14 @@ function TeamMiniTable({
                     <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.losses}</td>
                     <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.bonusPoints}</td>
                     <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">
-                      {formatGoalDifference(team.goalDifference)}
+                      <GoalDifferenceValue goalDifference={team.goalDifference} />
                     </td>
-                    <td className="px-2 py-1.5 text-right tabular-nums text-red-300 sm:px-3">{team.redCards}</td>
+                    <td className={`px-2 py-1.5 text-right tabular-nums sm:px-3 ${t.c.negative}`}>
+                      {team.redCards}
+                    </td>
                     <td
                       className={`px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3 ${
-                        isEliminated ? 'text-red-300/80' : ''
+                        isEliminated ? `${t.c.negative} opacity-90` : ''
                       }`}
                     >
                       {team.points}
@@ -1338,8 +1626,11 @@ function PlayerSquadCard({
           </div>
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <span className={isLeader ? t.c.squadRankBadgeLeader : t.c.squadRankBadge}>
-                {rank}
+              <span className="inline-flex items-center gap-1">
+                <span className={isLeader ? t.c.squadRankBadgeLeader : t.c.squadRankBadge}>{rank}</span>
+                {t.id === 'english-pyramid' ? (
+                  <RankMovementIndicator change={player.rankChange} />
+                ) : null}
               </span>
               <PlayerIdentity player={player} heading />
               <span className={`text-sm font-semibold tabular-nums ${t.c.points}`}>{player.points} pts</span>
@@ -1351,7 +1642,7 @@ function PlayerSquadCard({
                 />
               ) : null}
               <span className="text-xs font-medium tabular-nums text-neutral-300">
-                GD {formatGoalDifference(player.goalDifference)}
+                GD <GoalDifferenceValue goalDifference={player.goalDifference} />
               </span>
               <span className="text-xs text-neutral-500">
                 {player.teamBreakdown.filter((team) => !team.eliminated).length} alive ·{' '}
@@ -1556,7 +1847,7 @@ function WorldCupFantasyView({
             </div>
           ) : null}
           {loading ? (
-            <p className={t.c.loading}>Loading standings…</p>
+            <StandingsLoadingSkeleton />
           ) : error ? (
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (

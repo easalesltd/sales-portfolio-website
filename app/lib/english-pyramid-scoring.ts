@@ -73,6 +73,8 @@ export type PlayerStanding = {
   redCards: number;
   redCardPoints: number;
   playedMatches: number;
+  /** Positive = climbed, negative = dropped, 0 = unchanged, null = no prior snapshot. */
+  rankChange?: number | null;
 };
 
 export type MatchPointsEntry = {
@@ -516,6 +518,20 @@ export function computeStandings(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   );
 
+  const standings = buildStandingsFromFinished(players, finished);
+
+  attachRankChange(standings, players, finished);
+
+  const allScoringMatches = buildScoringMatchEntries(players, finished);
+  const recentScoringMatches = allScoringMatches.slice(0, 12);
+
+  return { standings, allScoringMatches, recentScoringMatches };
+}
+
+function buildStandingsFromFinished(
+  players: readonly EnglishPyramidFantasyPlayer[],
+  finished: EnglishPyramidMatchResult[]
+): PlayerStanding[] {
   const standings: PlayerStanding[] = players.map((player) => ({
     id: player.id,
     name: player.name,
@@ -619,8 +635,35 @@ export function computeStandings(
     }
   });
 
-  const allScoringMatches = buildScoringMatchEntries(players, finished);
-  const recentScoringMatches = allScoringMatches.slice(0, 12);
+  return standings;
+}
 
-  return { standings, allScoringMatches, recentScoringMatches };
+function attachRankChange(
+  standings: PlayerStanding[],
+  players: readonly EnglishPyramidFantasyPlayer[],
+  finished: EnglishPyramidMatchResult[]
+): void {
+  if (finished.length === 0) {
+    for (const row of standings) row.rankChange = null;
+    return;
+  }
+
+  const latestDate = finished.reduce((max, match) => {
+    const date = match.utcDate.slice(0, 10);
+    return date > max ? date : max;
+  }, finished[0].utcDate.slice(0, 10));
+
+  const priorFinished = finished.filter((match) => match.utcDate.slice(0, 10) < latestDate);
+  if (priorFinished.length === 0) {
+    for (const row of standings) row.rankChange = null;
+    return;
+  }
+
+  const priorStandings = buildStandingsFromFinished(players, priorFinished);
+  const priorRankById = new Map(priorStandings.map((row, index) => [row.id, index + 1]));
+
+  standings.forEach((row, index) => {
+    const priorRank = priorRankById.get(row.id);
+    row.rankChange = priorRank != null ? priorRank - (index + 1) : null;
+  });
 }

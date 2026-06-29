@@ -55,6 +55,12 @@ export type SweepstakeFantasyTheme = {
     accentRing: string;
     accentFocus: string;
     positive: string;
+    negative: string;
+    rankUp: string;
+    rankDown: string;
+    rankSame: string;
+    goalDifferencePositive: string;
+    goalDifferenceNegative: string;
     live: string;
     liveBg: string;
     teamHighlight: string;
@@ -158,6 +164,12 @@ export const worldCupFantasyTheme: SweepstakeFantasyTheme = {
     accentRing: 'border-teal-400 ring-2 ring-teal-500/40',
     accentFocus: 'focus-visible:outline-teal-500',
     positive: 'text-lime-400',
+    negative: 'text-red-400',
+    rankUp: 'text-green-400',
+    rankDown: 'text-red-400',
+    rankSame: 'text-neutral-400',
+    goalDifferencePositive: 'text-green-400',
+    goalDifferenceNegative: 'text-red-400',
     live: 'text-emerald-400',
     liveBg: 'bg-emerald-950/20',
     teamHighlight: 'bg-teal-950/25',
@@ -261,6 +273,12 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
     accentRing: 'border-[#d4af37] ring-2 ring-[#d4af37]/35',
     accentFocus: 'focus-visible:outline-[#d4af37]',
     positive: 'text-[#d4af37]',
+    negative: 'text-red-400',
+    rankUp: 'text-green-400',
+    rankDown: 'text-red-400',
+    rankSame: 'text-neutral-400',
+    goalDifferencePositive: 'text-green-400',
+    goalDifferenceNegative: 'text-red-400',
     live: 'text-emerald-400',
     liveBg: 'bg-emerald-950/15',
     teamHighlight: 'bg-[#d4af37]/10',
