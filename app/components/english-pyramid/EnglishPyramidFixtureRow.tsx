@@ -22,23 +22,32 @@ function FixtureSide({
   compact = false,
 }: FixtureSideProps) {
   const alignClass = align === 'right' ? 'items-end text-right' : 'items-start text-left';
+  const nameAlignClass = align === 'right' ? 'text-right' : 'text-left';
+  const rowAlignClass =
+    align === 'right' ? 'justify-end' : 'justify-start';
 
   return (
     <div className={`flex w-full min-w-0 flex-col gap-0.5 ${alignClass}`}>
       <div
-        className={`flex w-full min-w-0 items-center gap-1 ${
-          align === 'right' ? 'justify-end' : 'justify-start'
+        className={`flex w-full min-w-0 ${
+          compact
+            ? `flex-wrap items-end gap-x-1 gap-y-0.5 ${rowAlignClass}`
+            : `items-center gap-1 ${rowAlignClass}`
         }`}
       >
-        {align === 'left' ? <DivisionBadge divisionId={divisionId} /> : null}
+        {!compact && align === 'left' ? <DivisionBadge divisionId={divisionId} /> : null}
         <span
           className={`min-w-0 font-medium leading-snug ${
+            compact ? `basis-full ${nameAlignClass}` : ''
+          } ${
             compact ? 'text-xs sm:text-sm' : 'text-sm'
           } ${isPlaceholder ? 'italic text-neutral-400' : 'text-neutral-100'}`}
         >
           {teamName}
         </span>
-        {align === 'right' ? <DivisionBadge divisionId={divisionId} /> : null}
+        {(!compact && align === 'right') || compact ? (
+          <DivisionBadge divisionId={divisionId} className={compact ? 'mr-0' : ''} />
+        ) : null}
       </div>
       {managersLabel ? (
         <p className={`leading-snug text-neutral-400 ${compact ? 'text-[10px]' : 'text-[11px]'}`}>
