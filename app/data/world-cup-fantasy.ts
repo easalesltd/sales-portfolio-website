@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 29 June served a double helping of knockout carnage. Japan led Brazil in Houston before Casemiro and a 96th-minute Martinelli poke completed the usual rescue act and left Ash with one fewer survivor. In Foxborough, Germany contrived to lose a World Cup shootout for the first time ever after Enciso and Havertz traded headers and Tah had a winner scrubbed by VAR, as Paraguay\'s spot-kick heist delivered Scott three more points. Scott leads on 38, Dave sits on 29 with Germany eliminated, and Ash remains bottom on 27 with Japan now out of the picture.';
+  'GMT 30 June opened with Monterrey theatre: Gakpo scored through grief, Diop nodded Morocco level in stoppage time, and the Dutch then discovered that missing from twelve yards is still a Dutch disease — Kluivert and Timber fluffed their lines, Bounou denied Summerville, and Saibari buried the winner to send Morocco through on pens. Jon leads on 39 after three more from the Atlas Lions; Ash stays bottom on 27 with the Netherlands eliminated and barely any firepower left in the drawer.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1516,6 +1516,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     utcDate: '2026-06-29T20:30:00Z',
     homeTeam: { name: 'Germany', tla: 'GER' },
     awayTeam: { name: 'Paraguay', tla: 'PAR' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (1-1 aet, Morocco won 3-2 on penalties). */
+    id: '2026-06-30-ned-mar',
+    utcDate: '2026-06-30T01:00:00Z',
+    homeTeam: { name: 'Netherlands', tla: 'NED' },
+    awayTeam: { name: 'Morocco', tla: 'MAR' },
     homeGoals: 1,
     awayGoals: 2,
     homeRedCards: 0,
