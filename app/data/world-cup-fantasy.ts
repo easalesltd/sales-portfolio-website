@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 30 June opened with Monterrey theatre: Gakpo scored through grief, Diop nodded Morocco level in stoppage time, and the Dutch then discovered that missing from twelve yards is still a Dutch disease — Kluivert and Timber fluffed their lines, Bounou denied Summerville, and Saibari buried the winner to send Morocco through on pens. Jon leads on 39 after three more from the Atlas Lions; Ash stays bottom on 27 with the Netherlands eliminated and barely any firepower left in the drawer.';
+  'GMT 30 June was knockout cruelty in two time zones: Morocco survived Dutch spot-kick drama in Monterrey after the Netherlands missed from twelve yards, then Dallas served Amad Diallo heroics and a Haaland tap-in as Norway sent Ivory Coast home — Chris and Nest are level on 34 after three from the Vikings, Jon leads on 39 but loses another elephant, and Ash remains bottom on 27.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1527,6 +1527,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     utcDate: '2026-06-30T01:00:00Z',
     homeTeam: { name: 'Netherlands', tla: 'NED' },
     awayTeam: { name: 'Morocco', tla: 'MAR' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-30-civ-nor',
+    utcDate: '2026-06-30T17:00:00Z',
+    homeTeam: { name: 'Ivory Coast', tla: 'CIV' },
+    awayTeam: { name: 'Norway', tla: 'NOR' },
     homeGoals: 1,
     awayGoals: 2,
     homeRedCards: 0,
