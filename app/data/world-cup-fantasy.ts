@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 30 June was knockout cruelty in two time zones: Morocco survived Dutch spot-kick drama in Monterrey after the Netherlands missed from twelve yards, then Dallas served Amad Diallo heroics and a Haaland tap-in as Norway sent Ivory Coast home — Chris and Nest are level on 34 after three from the Vikings, Jon leads on 39 but loses another elephant, and Ash remains bottom on 27.';
+  'GMT 30 June was a survival cull dressed up as football: Morocco outlasted the Netherlands from the spot in Monterrey, Norway sent Ivory Coast packing in Arlington, and Mbappé turned New Jersey into a Les Bleus exhibition as France dismantled Sweden — Scott, Chris and Jon are level on 38 at the summit, Nest sits on 34, and Ash remains bottom on 27 with another Dutch penalty nightmare on his hands.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1540,6 +1540,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Norway', tla: 'NOR' },
     homeGoals: 1,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. */
+    id: '2026-06-30-fra-swe',
+    utcDate: '2026-06-30T21:00:00Z',
+    homeTeam: { name: 'France', tla: 'FRA' },
+    awayTeam: { name: 'Sweden', tla: 'SWE' },
+    homeGoals: 3,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
