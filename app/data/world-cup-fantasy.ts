@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 29 June opened the knockout survival phase in Houston with Japan doing what Japan do at World Cups — lead a knockout tie and still get sent home — as Sano put them ahead before Casemiro and a 96th-minute Martinelli poke completed Brazil\'s trademark slow-start comeback. Jon leads on 36 after Brazil crawled over the line and Scott got bumped off the summit without kicking a ball, while Ash remains bottom on 27 now that Japan\'s annual knockout heartbreak has extinguished another of her dwindling lifelines.';
+  'GMT 29 June served a double helping of knockout carnage. Japan led Brazil in Houston before Casemiro and a 96th-minute Martinelli poke completed the usual rescue act and left Ash with one fewer survivor. In Foxborough, Germany contrived to lose a World Cup shootout for the first time ever after Enciso and Havertz traded headers and Tah had a winner scrubbed by VAR, as Paraguay\'s spot-kick heist delivered Scott three more points. Scott leads on 38, Dave sits on 29 with Germany eliminated, and Ash remains bottom on 27 with Japan now out of the picture.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1500,6 +1500,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Japan', tla: 'JPN' },
     homeGoals: 2,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (1-1 aet, Paraguay won 4-3 on penalties). */
+    id: '2026-06-29-ger-par',
+    utcDate: '2026-06-29T20:30:00Z',
+    homeTeam: { name: 'Germany', tla: 'GER' },
+    awayTeam: { name: 'Paraguay', tla: 'PAR' },
+    homeGoals: 1,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
