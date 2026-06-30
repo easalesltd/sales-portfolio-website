@@ -2,6 +2,14 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const {
+  validateManualMatchesAgainstFixtures,
+  validateOverdueFixturesWithoutResults,
+} = require('./lib/sweepstake-ledger-validation.cjs');
+const {
+  parseKnockoutMatchIds,
+  isKnockoutMatchId,
+} = require('./lib/world-cup-scoring-lib.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
@@ -89,6 +97,19 @@ function parseManualMatches() {
   });
 }
 
+function parseFixtures() {
+  const fixturesSource = extractConstArray('WORLD_CUP_FANTASY_FIXTURES');
+  const fixturePattern =
+    /id: '([^']+)',\s*utcDate: '([^']+)',(?:\s*stage: '[^']+',)?\s*homeTeam: \{ name: '[^']+', tla: '([^']+)' \},\s*awayTeam: \{ name: '([^']+)', tla: '([^']+)' \}/g;
+
+  return [...fixturesSource.matchAll(fixturePattern)].map((match) => ({
+    id: match[1],
+    utcDate: match[2],
+    homeTla: match[3],
+    awayTla: match[5],
+  }));
+}
+
 function validateNonNegativeInteger(value, label, matchId, errors) {
   if (!Number.isInteger(value) || value < 0) {
     errors.push(`${matchId}: ${label} must be a non-negative integer`);
@@ -141,6 +162,14 @@ for (const match of manualMatches) {
   validateNonNegativeInteger(match.homeRedCards, 'homeRedCards', match.id, errors);
   validateNonNegativeInteger(match.awayRedCards, 'awayRedCards', match.id, errors);
 }
+
+const fixtures = parseFixtures();
+const fixturesSource = extractConstArray('WORLD_CUP_FANTASY_FIXTURES');
+const knockoutFixtureIds = parseKnockoutMatchIds(fixturesSource);
+validateManualMatchesAgainstFixtures(manualMatches, fixtures, errors, {
+  isKnockoutMatchId: (id) => isKnockoutMatchId(id, knockoutFixtureIds),
+});
+validateOverdueFixturesWithoutResults(seenIds, fixtures, now, resultFinalityBufferMinutes, errors);
 
 if (errors.length > 0) {
   console.error('World Cup manual match validation failed:');

@@ -33,6 +33,25 @@ type BracketTemplate = {
 };
 
 /** ESPN 2026 bracket slot for each round-of-32 fixture id (kickoff order). */
+export const WORLD_CUP_R32_FIXTURE_IDS = [
+  '2026-06-28-rsa-can',
+  '2026-06-29-bra-jpn',
+  '2026-06-29-ger-par',
+  '2026-06-30-ned-mar',
+  '2026-06-30-civ-nor',
+  '2026-06-30-fra-swe',
+  '2026-07-01-mex-ecu',
+  '2026-07-01-eng-cod',
+  '2026-07-01-bel-sen',
+  '2026-07-02-usa-bih',
+  '2026-07-02-esp-aut',
+  '2026-07-02-por-cro',
+  '2026-07-03-sui-alg',
+  '2026-07-03-aus-egy',
+  '2026-07-03-arg-cpv',
+  '2026-07-04-col-gha',
+] as const;
+
 const R32_SLOT_BY_FIXTURE_ID: Record<string, string> = {
   '2026-06-28-rsa-can': 'R32-1',
   '2026-06-29-bra-jpn': 'R32-2',

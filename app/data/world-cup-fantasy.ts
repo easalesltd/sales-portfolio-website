@@ -593,6 +593,13 @@ export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
     awayTeam: { name: 'Canada', tla: 'CAN' },
   },
   {
+    id: '2026-06-29-bra-jpn',
+    utcDate: '2026-06-29T17:00:00Z',
+    stage: 'knockout',
+    homeTeam: { name: 'Brazil', tla: 'BRA' },
+    awayTeam: { name: 'Japan', tla: 'JPN' },
+  },
+  {
     id: '2026-06-29-ger-par',
     utcDate: '2026-06-29T20:30:00Z',
     stage: 'knockout',

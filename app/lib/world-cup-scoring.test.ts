@@ -19,6 +19,8 @@ import {
   type WorldCupFantasyFixture,
   type WorldCupFantasyPlayer,
 } from '@/app/data/world-cup-fantasy';
+import { WORLD_CUP_R32_FIXTURE_IDS } from '@/app/lib/world-cup-knockout-bracket';
+import { manualMatchToResult } from '@/app/lib/world-cup-scoring';
 
 const players: readonly WorldCupFantasyPlayer[] = [
   {
@@ -363,6 +365,42 @@ describe('computeEliminatedTeamCodes', () => {
     expect(eliminated.has('KSA')).toBe(true);
     expect(eliminated.has('ARG')).toBe(false);
     expect(eliminated.has('CPV')).toBe(false);
+  });
+});
+
+describe('World Cup manual ledger integrity', () => {
+  const knockoutFixtureIds = new Set(
+    WORLD_CUP_FANTASY_FIXTURES.filter((fixture) => fixture.stage === 'knockout').map(
+      (fixture) => fixture.id
+    )
+  );
+  const r32FixtureIds = new Set<string>(WORLD_CUP_R32_FIXTURE_IDS);
+
+  function isKnockoutLedgerId(id: string): boolean {
+    return knockoutFixtureIds.has(id) || r32FixtureIds.has(id) || /-(?:r16|qf|sf|final|3p)(?:-|$)/.test(id);
+  }
+
+  it('keeps every knockout manual result in the rolling fixtures schedule', () => {
+    const fixtureIds = new Set(WORLD_CUP_FANTASY_FIXTURES.map((fixture) => fixture.id));
+
+    for (const match of WORLD_CUP_FANTASY_MANUAL_MATCHES) {
+      if (!isKnockoutLedgerId(match.id)) continue;
+      expect(fixtureIds.has(match.id)).toBe(true);
+    }
+  });
+
+  it('marks Germany out and Brazil through after the 29 June knockouts', () => {
+    const recorded = WORLD_CUP_FANTASY_MANUAL_MATCHES.map(manualMatchToResult);
+    const eliminated = computeEliminatedTeamCodes(
+      [...new Set(WORLD_CUP_FANTASY_PLAYERS.flatMap((player) => player.teams))],
+      WORLD_CUP_FANTASY_FIXTURES,
+      recorded
+    );
+
+    expect(eliminated.has('GER')).toBe(true);
+    expect(eliminated.has('BRA')).toBe(false);
+    expect(eliminated.has('JPN')).toBe(true);
+    expect(eliminated.has('PAR')).toBe(false);
   });
 });
 
