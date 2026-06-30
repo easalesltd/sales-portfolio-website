@@ -526,6 +526,15 @@ function MatchdayDayNavButton({
   );
 }
 
+function formatLiveMatchLabel(livePeriod?: string): string {
+  const trimmed = livePeriod?.trim();
+  if (trimmed && !/^full time$/i.test(trimmed) && !/^ft$/i.test(trimmed)) {
+    if (/\blive\b/i.test(trimmed)) return trimmed;
+    return `Live · ${trimmed}`;
+  }
+  return 'Live';
+}
+
 function MatchdayStatusBadge({
   status,
   livePeriod,
@@ -537,9 +546,7 @@ function MatchdayStatusBadge({
 
   if (status === 'in-play') {
     return (
-      <span className={t.c.fixturesInPlay}>
-        {livePeriod && !/^full time$/i.test(livePeriod) ? livePeriod : 'In play'}
-      </span>
+      <span className={t.c.fixturesInPlay}>{formatLiveMatchLabel(livePeriod)}</span>
     );
   }
 
