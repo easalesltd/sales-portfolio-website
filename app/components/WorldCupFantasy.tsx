@@ -407,15 +407,19 @@ function StandingsLoadingSkeleton() {
             {Array.from({ length: 7 }).map((_, index) => (
               <div
                 key={index}
-                className="grid grid-cols-[1.25rem_minmax(0,1fr)_2.25rem_auto_auto_auto_auto] items-center gap-x-2 px-2 py-2 sm:grid-cols-11 sm:gap-3 sm:px-3"
+                className="grid grid-cols-[1.75rem_minmax(0,1fr)_2rem_2.5rem] items-center gap-x-2 px-2 py-2 sm:grid-cols-11 sm:gap-3 sm:px-3"
               >
                 <SkeletonBlock className="h-4 w-4" />
-                <SkeletonBlock className="h-4 w-full max-w-[10rem]" />
-                <SkeletonBlock className="h-4 w-5 sm:hidden" />
+                <SkeletonBlock className="h-4 w-full" />
+                <SkeletonBlock className="h-4 w-5" />
+                <SkeletonBlock className="h-4 w-7" />
                 <SkeletonBlock className="hidden h-3 w-16 sm:block" />
-                <SkeletonBlock className="h-4 w-7" />
-                <SkeletonBlock className="h-4 w-8" />
-                <SkeletonBlock className="h-4 w-7" />
+                <SkeletonBlock className="hidden h-4 w-7 sm:block" />
+                <SkeletonBlock className="hidden h-4 w-7 sm:block" />
+                <SkeletonBlock className="hidden h-4 w-7 sm:block" />
+                <SkeletonBlock className="hidden h-4 w-7 sm:block" />
+                <SkeletonBlock className="hidden h-4 w-8 sm:block" />
+                <SkeletonBlock className="hidden h-4 w-7 sm:block" />
               </div>
             ))}
           </div>
@@ -1180,24 +1184,31 @@ function teamsLeftCount(row: PlayerStanding, themeId: string): number {
 function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
   const t = useSweepstakeTheme();
   const showRankMovement = t.id === 'english-pyramid';
+  const mobileGridClass =
+    t.id === 'english-pyramid'
+      ? 'grid-cols-[1.75rem_minmax(0,1fr)_auto_2.5rem]'
+      : 'grid-cols-[1.75rem_minmax(0,1fr)_2rem_2.5rem]';
 
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
-        <div className="grid grid-cols-[1.75rem_minmax(0,1fr)_2.25rem_auto_auto_auto_auto] items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+        <div
+          className={`grid ${mobileGridClass} items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500`}
+        >
           <span>#</span>
           <span>Club</span>
-          <span className="text-right">Left</span>
-          <span className="text-right">Form</span>
-          <span className="w-7 text-right">Red</span>
-          <span className="w-8 text-right">GD</span>
-          <span className="w-7 text-right">Pts</span>
+          {t.id === 'english-pyramid' ? (
+            <span className="text-right">Form</span>
+          ) : (
+            <span className="text-right">Left</span>
+          )}
+          <span className="text-right">Pts</span>
         </div>
         <ul className="divide-y divide-neutral-800">
           {standings.map((row, index) => (
             <li
               key={row.id}
-              className={`grid grid-cols-[1.75rem_minmax(0,1fr)_2.25rem_auto_auto_auto_auto] items-center gap-x-2 px-2 py-1 ${
+              className={`grid ${mobileGridClass} items-center gap-x-2 px-2 py-1.5 ${
                 index === 0 ? t.c.leaderRowMobile : 'bg-neutral-950/40'
               }`}
             >
@@ -1208,8 +1219,8 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                   showMovement={showRankMovement}
                 />
               </span>
-              <span className="block min-w-0 truncate">
-                <span className="block truncate text-xs font-medium text-white">
+              <span className="block min-w-0">
+                <span className="block text-xs font-medium leading-snug text-white">
                   {playerDisplayLabel(row)}
                 </span>
                 {row.teamName ? (
@@ -1220,22 +1231,21 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                   />
                 ) : null}
               </span>
-              <span
-                className="shrink-0 text-right text-xs font-medium tabular-nums text-neutral-200"
-                title={teamsLeftLabel(row, t.id)}
-              >
-                {teamsLeftCount(row, t.id)}
+              {t.id === 'english-pyramid' ? (
+                <span className="shrink-0 text-right text-[10px] tabular-nums text-neutral-400">
+                  W{row.wins} D{row.draws} L{row.losses}
+                </span>
+              ) : (
+                <span
+                  className="shrink-0 text-right text-xs font-medium tabular-nums text-neutral-200"
+                  title={teamsLeftLabel(row, t.id)}
+                >
+                  {teamsLeftCount(row, t.id)}
+                </span>
+              )}
+              <span className={`shrink-0 text-right text-sm tabular-nums ${t.c.pointsBold}`}>
+                {row.points}
               </span>
-              <span className="shrink-0 text-[10px] tabular-nums text-neutral-400">
-                P{row.playedMatches} W{row.wins} D{row.draws} L{row.losses}
-              </span>
-              <span className={`w-7 shrink-0 text-right text-xs tabular-nums ${t.c.negative}`}>
-                {row.redCards}
-              </span>
-              <span className="w-8 shrink-0 text-right text-xs">
-                <GoalDifferenceValue goalDifference={row.goalDifference} />
-              </span>
-              <span className={`w-7 shrink-0 text-right ${t.c.pointsBold}`}>{row.points}</span>
             </li>
           ))}
         </ul>
