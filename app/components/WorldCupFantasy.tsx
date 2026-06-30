@@ -1164,7 +1164,8 @@ function StandingsProgressChart({
   );
 }
 
-function teamsLeftLabel(row: PlayerStanding): string {
+function teamsLeftLabel(row: PlayerStanding, themeId: string): string {
+  if (themeId === 'english-pyramid') return `${row.teamCount} clubs`;
   const alive = row.teamBreakdown.filter((team) => !team.eliminated).length;
   if (alive === row.teamCount) return `${row.teamCount} teams`;
   return `${alive} left`;
@@ -1257,7 +1258,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 <td className="px-3 py-2 font-medium">
                   <PlayerIdentity player={row} />
                 </td>
-                <td className="px-3 py-2 text-neutral-300">{teamsLeftLabel(row)}</td>
+                <td className="px-3 py-2 text-neutral-300">{teamsLeftLabel(row, t.id)}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.playedMatches}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.wins}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
@@ -1645,14 +1646,25 @@ function PlayerSquadCard({
                 GD <GoalDifferenceValue goalDifference={player.goalDifference} />
               </span>
               <span className="text-xs text-neutral-500">
-                {player.teamBreakdown.filter((team) => !team.eliminated).length} alive ·{' '}
-                {player.teamBreakdown.filter((team) => team.eliminated).length} out ·{' '}
-                <FormSummary
-                  wins={player.wins}
-                  draws={player.draws}
-                  losses={player.losses}
-                  redCards={player.redCards}
-                />
+                {t.id === 'english-pyramid' ? (
+                  <FormSummary
+                    wins={player.wins}
+                    draws={player.draws}
+                    losses={player.losses}
+                    redCards={player.redCards}
+                  />
+                ) : (
+                  <>
+                    {player.teamBreakdown.filter((team) => !team.eliminated).length} alive ·{' '}
+                    {player.teamBreakdown.filter((team) => team.eliminated).length} out ·{' '}
+                    <FormSummary
+                      wins={player.wins}
+                      draws={player.draws}
+                      losses={player.losses}
+                      redCards={player.redCards}
+                    />
+                  </>
+                )}
               </span>
             </div>
             <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
