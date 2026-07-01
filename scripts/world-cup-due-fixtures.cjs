@@ -2,6 +2,13 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const {
+  buildEspnAliasMap,
+  espnDateParamFromUtcDate,
+  fetchEspnScoreboardForDate,
+  findEspnEventForFixture,
+  parseEspnScoreboard,
+} = require('./lib/world-cup-espn-scoreboard.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
@@ -67,6 +74,54 @@ function formatFixture(fixture) {
   return `${fixture.id} (${fixture.utcDate}) ${fixture.homeTla} ${fixture.homeName} vs ${fixture.awayTla} ${fixture.awayName}`;
 }
 
+function formatEspnRedCardHint(fixture, espnMatch) {
+  if (!espnMatch) return '';
+  if (espnMatch.homeRedCards === 0 && espnMatch.awayRedCards === 0) {
+    return ' ESPN reds: none reported.';
+  }
+  return ` ESPN reds: ${fixture.homeTla} ${espnMatch.homeRedCards}, ${fixture.awayTla} ${espnMatch.awayRedCards}.`;
+}
+
+async function appendEspnRedCardHints(dueFixtures) {
+  const aliasToCode = buildEspnAliasMap(source);
+  const cache = new Map();
+  const lines = [];
+
+  for (const fixture of dueFixtures) {
+    const dateParam = espnDateParamFromUtcDate(fixture.utcDate);
+    if (!dateParam) {
+      lines.push(formatFixture(fixture));
+      continue;
+    }
+
+    try {
+      if (!cache.has(dateParam)) {
+        const payload = await fetchEspnScoreboardForDate(dateParam);
+        cache.set(
+          dateParam,
+          parseEspnScoreboard(payload, aliasToCode, new Set(['scheduled', 'postponed', 'canceled', 'cancelled', 'delayed', 'suspended'])),
+        );
+      }
+
+      const espnMatch = findEspnEventForFixture(
+        cache.get(dateParam),
+        fixture.homeTla,
+        fixture.awayTla,
+      );
+      lines.push(`${formatFixture(fixture)}${formatEspnRedCardHint(fixture, espnMatch)}`);
+    } catch (error) {
+      lines.push(formatFixture(fixture));
+      console.warn(
+        `Unable to fetch ESPN red-card hint for ${fixture.id}: ${
+          error instanceof Error ? error.message : error
+        }`,
+      );
+    }
+  }
+
+  return lines.join('\n');
+}
+
 function setOutput(name, value) {
   const githubOutput = process.env.GITHUB_OUTPUT;
   if (!githubOutput) return;
@@ -97,25 +152,35 @@ const dueFixtures = fixtures.filter((fixture) => {
 });
 
 const hasDueFixtures = dueFixtures.length > 0;
-const fixtureList = dueFixtures.map(formatFixture).join('\n');
 
-setOutput('due', hasDueFixtures ? 'true' : 'false');
-setOutput('forced', forceAgent ? 'true' : 'false');
-setOutput('fixtures', fixtureList);
-setOutput('update_delay_minutes', `${updateDelayMinutes}`);
-setOutput('due_lead_minutes', `${dueLeadMinutes}`);
-setOutput('lookback_minutes', `${lookbackMinutes}`);
+async function main() {
+  const fixtureList = hasDueFixtures
+    ? await appendEspnRedCardHints(dueFixtures)
+    : '';
 
-if (dueFixtures.length > 0) {
-  console.log(`World Cup score agent is due for ${dueFixtures.length} fixture(s):`);
-  console.log(fixtureList);
-} else if (forceAgent) {
-  console.log('World Cup score agent forced by WORLD_CUP_FORCE_AGENT=1.');
-} else {
-  console.log(
-    `No unrecorded fixtures are due within the ${lookbackMinutes}-minute lookback window.`,
-  );
+  setOutput('due', hasDueFixtures ? 'true' : 'false');
+  setOutput('forced', forceAgent ? 'true' : 'false');
+  setOutput('fixtures', fixtureList);
+  setOutput('update_delay_minutes', `${updateDelayMinutes}`);
+  setOutput('due_lead_minutes', `${dueLeadMinutes}`);
+  setOutput('lookback_minutes', `${lookbackMinutes}`);
+
+  if (dueFixtures.length > 0) {
+    console.log(`World Cup score agent is due for ${dueFixtures.length} fixture(s):`);
+    console.log(fixtureList);
+  } else if (forceAgent) {
+    console.log('World Cup score agent forced by WORLD_CUP_FORCE_AGENT=1.');
+  } else {
+    console.log(
+      `No unrecorded fixtures are due within the ${lookbackMinutes}-minute lookback window.`,
+    );
+  }
+
+  console.log(`Expected result check delay: ${updateDelayMinutes} minutes after kick-off.`);
+  console.log(`Due check lead window: ${dueLeadMinutes} minutes.`);
 }
 
-console.log(`Expected result check delay: ${updateDelayMinutes} minutes after kick-off.`);
-console.log(`Due check lead window: ${dueLeadMinutes} minutes.`);
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error);
+  process.exit(1);
+});

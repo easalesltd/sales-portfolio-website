@@ -121,6 +121,9 @@ jobs:
           - refresh ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE when the table changes
           - keep roasts varied; British football tone, not American sports-banter
           - use final results only, including red-card and second-yellow dismissal tallies
+          - always set explicit homeRedCards and awayRedCards on every new ledger entry (0 when none)
+          - npm run english-pyramid:validate includes an ESPN red-card cross-check; fix any ledger/ESPN
+            mismatch before finishing
           - after editing the ledger/roast, run npm run english-pyramid:standings and make every
             player total, leader/bottom claim, and tie claim in the roast match that output exactly
 

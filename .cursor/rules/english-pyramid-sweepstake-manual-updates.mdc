@@ -42,6 +42,8 @@ When asked to update English pyramid scores (or by the scheduled GitHub workflow
 - Use team codes from `ENGLISH_PYRAMID_TEAM_BY_CODE` / `getEnglishPyramidTeamSearchTerms()` (club name variants for matching).
 - Check reliable UK sources: BBC Sport, Sky Sports, official league/club sites, Flashscore.
 - Add only final results: home/away teams (`tla` code), final goals, red-card tallies (including second-yellow dismissals).
+- Cross-check red-card tallies against ESPN before finishing any score update: run `npm run english-pyramid:validate` (includes `scripts/english-pyramid-validate-red-cards.cjs`). If ESPN reports reds for a finished ledger match and the ledger is lower, fix the ledger before pushing.
+- When appending a new manual result, always set explicit `homeRedCards` and `awayRedCards` (use `0` when none). Never omit the fields.
 - **Every manual result must exist in `ENGLISH_PYRAMID_FIXTURES` with matching home/away TLAs.** The full-season fixture list is kept in-repo (unlike the rolling World Cup schedule), so `npm run english-pyramid:validate` fails if the ledger and fixtures drift apart or if a fixture is overdue with no result.
 - Do not hand-edit standings — `computeStandings()` in `app/lib/english-pyramid-scoring.ts` derives totals.
 - After any ledger change, run `npm run english-pyramid:standings` and use that output as the only source for totals and leader/bottom wording in `ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE`.

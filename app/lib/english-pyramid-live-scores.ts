@@ -5,6 +5,7 @@ import type {
   MatchdaySchedule,
 } from '@/app/lib/english-pyramid-scoring';
 import { gameLeaderboardRedis } from '@/app/lib/game-leaderboard-redis';
+import { countRedCardsFromEspnCompetition } from '@/app/lib/world-cup-espn-scoreboard';
 import { isEspnFullTimePeriod } from '@/app/lib/world-cup-live-scores';
 
 const DIVISION_TO_ESPN_SLUG: Record<string, string> = {
@@ -47,6 +48,8 @@ export type LiveFixtureScore = {
   homeGoals: number;
   awayGoals: number;
   period: string;
+  homeRedCards: number;
+  awayRedCards: number;
 };
 
 type EspnScoreboardEvent = {
@@ -55,6 +58,8 @@ type EspnScoreboardEvent = {
   homeGoals: number;
   awayGoals: number;
   period: string;
+  homeRedCards: number;
+  awayRedCards: number;
 };
 
 type ScoreboardFetchKey = {
@@ -148,12 +153,16 @@ export function parseEspnScoreboard(slug: string, payload: unknown): EspnScorebo
     const awayTla = normalizeEspnAbbrevToTeamCode(slug, awayAbbrev);
     if (!homeTla || !awayTla) continue;
 
+    const redCards = countRedCardsFromEspnCompetition(competition);
+
     parsed.push({
       homeTla,
       awayTla,
       homeGoals,
       awayGoals,
       period: period.trim() || 'In progress',
+      homeRedCards: redCards?.homeRedCards ?? 0,
+      awayRedCards: redCards?.awayRedCards ?? 0,
     });
   }
 
@@ -240,7 +249,10 @@ async function getCachedScoreboardEvents(key: ScoreboardFetchKey): Promise<EspnS
   return events;
 }
 
-function provisionalMatchFromFinishedEntry(entry: MatchdayEntry): EnglishPyramidMatchResult {
+function provisionalMatchFromFinishedEntry(
+  entry: MatchdayEntry,
+  redCards: { homeRedCards: number; awayRedCards: number }
+): EnglishPyramidMatchResult {
   return {
     id: entry.id,
     utcDate: entry.utcDate,
@@ -249,8 +261,8 @@ function provisionalMatchFromFinishedEntry(entry: MatchdayEntry): EnglishPyramid
     awayTeam: { name: entry.awayTeam.name, tla: entry.awayTeam.tla },
     homeGoals: entry.homeGoals!,
     awayGoals: entry.awayGoals!,
-    homeRedCards: 0,
-    awayRedCards: 0,
+    homeRedCards: redCards.homeRedCards,
+    awayRedCards: redCards.awayRedCards,
   };
 }
 
@@ -269,6 +281,8 @@ export function matchLiveScoreForFixture(
     homeGoals: match.homeGoals,
     awayGoals: match.awayGoals,
     period: match.period,
+    homeRedCards: match.homeRedCards,
+    awayRedCards: match.awayRedCards,
   };
 }
 
@@ -293,7 +307,12 @@ export function applyLiveScoresToSchedule(
           homeGoals: live.homeGoals,
           awayGoals: live.awayGoals,
         };
-        provisionalMatches.push(provisionalMatchFromFinishedEntry(finishedEntry));
+        provisionalMatches.push(
+          provisionalMatchFromFinishedEntry(finishedEntry, {
+            homeRedCards: live.homeRedCards,
+            awayRedCards: live.awayRedCards,
+          })
+        );
         return finishedEntry;
       }
 

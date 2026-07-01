@@ -1,4 +1,8 @@
-import { WORLD_CUP_TEAM_BY_CODE } from '@/app/data/world-cup-fantasy';
+import {
+  findEspnEventForFixture,
+  parseEspnScoreboard as parseEspnScoreboardPayload,
+  type EspnParsedEvent,
+} from '@/app/lib/world-cup-espn-scoreboard';
 import { gameLeaderboardRedis } from '@/app/lib/game-leaderboard-redis';
 import type {
   MatchdayEntry,
@@ -12,7 +16,7 @@ const REDIS_CACHE_KEY = 'world-cup:espn-scoreboard:v1';
 const CACHE_TTL_SECONDS = 90;
 
 type MemoryScoreboardCache = {
-  events: EspnScoreboardEvent[];
+  events: EspnParsedEvent[];
   fetchedAtMs: number;
 };
 
@@ -31,94 +35,26 @@ export type LiveFixtureScore = {
   homeGoals: number;
   awayGoals: number;
   period: string;
+  homeRedCards: number;
+  awayRedCards: number;
 };
 
-type EspnScoreboardEvent = {
-  homeTla: string;
-  awayTla: string;
-  homeGoals: number;
-  awayGoals: number;
-  period: string;
-};
+export type EspnScoreboardEvent = EspnParsedEvent;
 
-function parseScore(value: string | number | undefined): number | null {
-  if (value == null) return null;
-  const parsed = Number.parseInt(String(value), 10);
-  return Number.isFinite(parsed) ? parsed : null;
+export {
+  findEspnEventForFixture,
+  normalizeEspnAbbrevToTeamCode,
+} from '@/app/lib/world-cup-espn-scoreboard';
+
+export function parseEspnScoreboard(payload: unknown): EspnParsedEvent[] {
+  return parseEspnScoreboardPayload(payload, {
+    ignoreStatuses: IGNORED_ESPN_STATUSES,
+  });
 }
 
-export function normalizeEspnAbbrevToTeamCode(abbrev: string): string {
-  const upper = abbrev.trim().toUpperCase();
-  if (WORLD_CUP_TEAM_BY_CODE[upper]) return upper;
-
-  for (const [code, meta] of Object.entries(WORLD_CUP_TEAM_BY_CODE)) {
-    if (meta.aliases?.some((alias) => alias.toUpperCase() === upper)) {
-      return code;
-    }
-  }
-
-  return upper;
-}
-
-export function parseEspnScoreboard(payload: unknown): EspnScoreboardEvent[] {
-  if (!payload || typeof payload !== 'object') return [];
-
-  const events = (payload as { events?: unknown[] }).events;
-  if (!Array.isArray(events)) return [];
-
-  const parsed: EspnScoreboardEvent[] = [];
-
-  for (const event of events) {
-    if (!event || typeof event !== 'object') continue;
-
-    const competition = (event as { competitions?: unknown[] }).competitions?.[0];
-    if (!competition || typeof competition !== 'object') continue;
-
-    const competitors = (competition as { competitors?: unknown[] }).competitors;
-    if (!Array.isArray(competitors) || competitors.length < 2) continue;
-
-    const home = competitors.find(
-      (entry) =>
-        entry &&
-        typeof entry === 'object' &&
-        (entry as { homeAway?: string }).homeAway === 'home'
-    ) as { team?: { abbreviation?: string }; score?: string | number } | undefined;
-    const away = competitors.find(
-      (entry) =>
-        entry &&
-        typeof entry === 'object' &&
-        (entry as { homeAway?: string }).homeAway === 'away'
-    ) as { team?: { abbreviation?: string }; score?: string | number } | undefined;
-
-    const homeAbbrev = home?.team?.abbreviation;
-    const awayAbbrev = away?.team?.abbreviation;
-    const homeGoals = parseScore(home?.score);
-    const awayGoals = parseScore(away?.score);
-    const period =
-      (event as { status?: { type?: { description?: string; shortDetail?: string } } }).status?.type
-        ?.shortDetail ??
-      (event as { status?: { type?: { description?: string } } }).status?.type?.description ??
-      '';
-
-    if (!homeAbbrev || !awayAbbrev || homeGoals == null || awayGoals == null) continue;
-    if (IGNORED_ESPN_STATUSES.has(period.trim().toLowerCase())) continue;
-
-    parsed.push({
-      homeTla: normalizeEspnAbbrevToTeamCode(homeAbbrev),
-      awayTla: normalizeEspnAbbrevToTeamCode(awayAbbrev),
-      homeGoals,
-      awayGoals,
-      period: period.trim() || 'In progress',
-    });
-  }
-
-  return parsed;
-}
-
-async function fetchEspnScoreboardEvents(): Promise<EspnScoreboardEvent[]> {
+async function fetchEspnScoreboardEvents(): Promise<EspnParsedEvent[]> {
   const response = await fetch(ESPN_SCOREBOARD_URL, {
     headers: { Accept: 'application/json' },
-    // Own Redis/memory cache handles TTL; avoid Next.js data cache serving stale kickoff scoreboards.
     cache: 'no-store',
   });
 
@@ -126,22 +62,24 @@ async function fetchEspnScoreboardEvents(): Promise<EspnScoreboardEvent[]> {
     throw new Error(`ESPN scoreboard request failed (${response.status})`);
   }
 
-  return parseEspnScoreboard(await response.json());
+  return parseEspnScoreboardPayload(await response.json(), {
+    ignoreStatuses: IGNORED_ESPN_STATUSES,
+  });
 }
 
-async function readCachedScoreboardFromRedis(): Promise<EspnScoreboardEvent[] | null> {
+async function readCachedScoreboardFromRedis(): Promise<EspnParsedEvent[] | null> {
   const redis = gameLeaderboardRedis();
   if (!redis) return null;
 
   try {
-    const cached = await redis.get<EspnScoreboardEvent[]>(REDIS_CACHE_KEY);
+    const cached = await redis.get<EspnParsedEvent[]>(REDIS_CACHE_KEY);
     return Array.isArray(cached) && cached.length > 0 ? cached : null;
   } catch {
     return null;
   }
 }
 
-async function writeCachedScoreboardToRedis(events: EspnScoreboardEvent[]): Promise<void> {
+async function writeCachedScoreboardToRedis(events: EspnParsedEvent[]): Promise<void> {
   const redis = gameLeaderboardRedis();
   if (!redis || events.length === 0) return;
 
@@ -152,7 +90,7 @@ async function writeCachedScoreboardToRedis(events: EspnScoreboardEvent[]): Prom
   }
 }
 
-function readMemoryScoreboardCache(): EspnScoreboardEvent[] | null {
+function readMemoryScoreboardCache(): EspnParsedEvent[] | null {
   if (!memoryScoreboardCache || memoryScoreboardCache.events.length === 0) return null;
 
   const ageMs = Date.now() - memoryScoreboardCache.fetchedAtMs;
@@ -161,12 +99,12 @@ function readMemoryScoreboardCache(): EspnScoreboardEvent[] | null {
   return memoryScoreboardCache.events;
 }
 
-function writeMemoryScoreboardCache(events: EspnScoreboardEvent[]): void {
+function writeMemoryScoreboardCache(events: EspnParsedEvent[]): void {
   if (events.length === 0) return;
   memoryScoreboardCache = { events, fetchedAtMs: Date.now() };
 }
 
-async function getCachedScoreboardEvents(): Promise<EspnScoreboardEvent[]> {
+async function getCachedScoreboardEvents(): Promise<EspnParsedEvent[]> {
   const redisCached = await readCachedScoreboardFromRedis();
   if (redisCached) return redisCached;
 
@@ -196,7 +134,10 @@ export function isEspnFullTimePeriod(period: string): boolean {
   );
 }
 
-function provisionalMatchFromFinishedEntry(entry: MatchdayEntry): WorldCupMatchResult {
+function provisionalMatchFromFinishedEntry(
+  entry: MatchdayEntry,
+  redCards: { homeRedCards: number; awayRedCards: number }
+): WorldCupMatchResult {
   return {
     id: entry.id,
     utcDate: entry.utcDate,
@@ -205,32 +146,30 @@ function provisionalMatchFromFinishedEntry(entry: MatchdayEntry): WorldCupMatchR
     awayTeam: { name: entry.awayTeam.name, tla: entry.awayTeam.tla },
     homeGoals: entry.homeGoals!,
     awayGoals: entry.awayGoals!,
-    homeRedCards: 0,
-    awayRedCards: 0,
+    homeRedCards: redCards.homeRedCards,
+    awayRedCards: redCards.awayRedCards,
   };
 }
 
 export function matchLiveScoreForFixture(
   fixture: Pick<MatchdayEntry, 'homeTeam' | 'awayTeam'>,
-  events: readonly EspnScoreboardEvent[]
+  events: readonly EspnParsedEvent[]
 ): LiveFixtureScore | null {
-  const match = events.find(
-    (event) =>
-      event.homeTla === fixture.homeTeam.tla && event.awayTla === fixture.awayTeam.tla
-  );
-
+  const match = findEspnEventForFixture(events, fixture.homeTeam.tla, fixture.awayTeam.tla);
   if (!match) return null;
 
   return {
     homeGoals: match.homeGoals,
     awayGoals: match.awayGoals,
     period: match.period,
+    homeRedCards: match.homeRedCards,
+    awayRedCards: match.awayRedCards,
   };
 }
 
 export function applyLiveScoresToSchedule(
   schedule: MatchdaySchedule,
-  events: readonly EspnScoreboardEvent[]
+  events: readonly EspnParsedEvent[]
 ): LiveScoresEnrichment {
   const schedulesByDate: Record<string, MatchdayEntry[]> = {};
   const provisionalMatches: WorldCupMatchResult[] = [];
@@ -249,7 +188,12 @@ export function applyLiveScoresToSchedule(
           homeGoals: live.homeGoals,
           awayGoals: live.awayGoals,
         };
-        provisionalMatches.push(provisionalMatchFromFinishedEntry(finishedEntry));
+        provisionalMatches.push(
+          provisionalMatchFromFinishedEntry(finishedEntry, {
+            homeRedCards: live.homeRedCards,
+            awayRedCards: live.awayRedCards,
+          })
+        );
         return finishedEntry;
       }
 
@@ -284,7 +228,7 @@ export async function enrichMatchdayScheduleWithLiveScores(
     return { schedule, provisionalMatches: [] };
   }
 
-  let events: EspnScoreboardEvent[] = [];
+  let events: EspnParsedEvent[] = [];
   try {
     events = await getCachedScoreboardEvents();
   } catch {

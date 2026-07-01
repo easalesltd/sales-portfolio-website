@@ -115,6 +115,9 @@ jobs:
           - refresh WORLD_CUP_FANTASY_DAILY_UPDATE when the table changes
           - keep roasts varied; do not repeat the same premise, phrase, or pub-style gag
           - use final results only, including red-card and second-yellow dismissal tallies
+          - always set explicit homeRedCards and awayRedCards on every new ledger entry (0 when none)
+          - npm run world-cup:validate includes an ESPN red-card cross-check; fix any ledger/ESPN
+            mismatch before finishing
           - only record a score when reliable sources explicitly show it as final/full-time;
             if a source is still live, in progress, or does not clearly say full-time/final,
             leave the fixture unchanged

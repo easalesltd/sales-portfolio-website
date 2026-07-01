@@ -53,6 +53,8 @@ describe('english-pyramid-live-scores', () => {
         homeGoals: 1,
         awayGoals: 0,
         period: 'First Half',
+        homeRedCards: 0,
+        awayRedCards: 0,
       },
     ]);
   });
@@ -70,6 +72,8 @@ describe('english-pyramid-live-scores', () => {
           homeGoals: 1,
           awayGoals: 0,
           period: 'Second Half',
+          homeRedCards: 0,
+          awayRedCards: 0,
         },
       ]
     );
@@ -78,6 +82,8 @@ describe('english-pyramid-live-scores', () => {
       homeGoals: 1,
       awayGoals: 0,
       period: 'Second Half',
+      homeRedCards: 0,
+      awayRedCards: 0,
     });
   });
 
@@ -123,6 +129,8 @@ describe('english-pyramid-live-scores', () => {
         homeGoals: 2,
         awayGoals: 1,
         period: 'FT',
+        homeRedCards: 1,
+        awayRedCards: 0,
       },
     ]);
 
@@ -137,7 +145,31 @@ describe('english-pyramid-live-scores', () => {
         status: 'FINISHED',
         homeGoals: 2,
         awayGoals: 1,
+        homeRedCards: 1,
+        awayRedCards: 0,
       }),
     ]);
+  });
+
+  it('counts red cards from ESPN competition details', () => {
+    const events = parseEspnScoreboard('eng.2', {
+      events: [
+        {
+          status: { type: { description: 'FT' } },
+          competitions: [
+            {
+              competitors: [
+                { homeAway: 'home', team: { id: '1', abbreviation: 'SHU' }, score: '2' },
+                { homeAway: 'away', team: { id: '2', abbreviation: 'BIR' }, score: '1' },
+              ],
+              details: [{ redCard: true, team: { id: '1' } }],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(events[0]?.homeRedCards).toBe(1);
+    expect(events[0]?.awayRedCards).toBe(0);
   });
 });

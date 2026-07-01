@@ -57,6 +57,8 @@ describe('world-cup-live-scores', () => {
         homeGoals: 0,
         awayGoals: 1,
         period: 'First Half',
+        homeRedCards: 0,
+        awayRedCards: 0,
       },
     ]);
   });
@@ -74,6 +76,8 @@ describe('world-cup-live-scores', () => {
           homeGoals: 0,
           awayGoals: 1,
           period: 'First Half',
+          homeRedCards: 0,
+          awayRedCards: 0,
         },
       ]
     );
@@ -82,6 +86,8 @@ describe('world-cup-live-scores', () => {
       homeGoals: 0,
       awayGoals: 1,
       period: 'First Half',
+      homeRedCards: 0,
+      awayRedCards: 0,
     });
   });
 
@@ -111,6 +117,8 @@ describe('world-cup-live-scores', () => {
         homeGoals: 0,
         awayGoals: 2,
         period: 'FT',
+        homeRedCards: 0,
+        awayRedCards: 1,
       },
     ]);
 
@@ -125,6 +133,8 @@ describe('world-cup-live-scores', () => {
         status: 'FINISHED',
         homeGoals: 0,
         awayGoals: 2,
+        homeRedCards: 0,
+        awayRedCards: 1,
       }),
     ]);
   });
