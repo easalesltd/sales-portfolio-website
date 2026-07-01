@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 1 July was two knockout nightmares on different continents: Mexico put Ecuador out 2–0 with Hincapie sent off in stoppage time, leaving Ash bottom on 26, then England needed Kane twice in the last fifteen minutes to rescue Nest from a Congo DR shock in Atlanta — Dave’s Leopards are gone, Nest climbs to 37, and Chris stays top on 41.';
+  'GMT 1 July delivered three knockout swings: Mexico cleared Ecuador 2–0 after Hincapie saw red, Kane struck twice to see England past Congo DR in Atlanta, and Belgium rescued a 2–0 deficit in Seattle when Tielemans buried a 120th-minute penalty — Senegal join Congo DR in the departure lounge, Dave watches two more teams leave, Chris and Nest are level on 41 after Belgium’s scramble, and Ash remains bottom on 26.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1573,6 +1573,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Congo DR', tla: 'COD' },
     homeGoals: 2,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Lukaku and Tielemans (89′) rescue 2–2; Tielemans pen winner (120+5′). */
+    id: '2026-07-01-bel-sen',
+    utcDate: '2026-07-01T20:00:00Z',
+    homeTeam: { name: 'Belgium', tla: 'BEL' },
+    awayTeam: { name: 'Senegal', tla: 'SEN' },
+    homeGoals: 3,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
