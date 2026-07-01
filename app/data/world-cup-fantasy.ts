@@ -165,7 +165,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
     id: 'nest',
     name: 'Nest',
-    teamName: 'Summer Soul Vibes UTD',
+    teamName: 'The Pterotractoryls',
     managerImage: '/images/world-cup-fantasy/managers/nest.png',
     clubCrest: '/images/world-cup-fantasy/crests/nest.png',
     teams: ['ENG', 'BEL', 'SUI', 'NOR', 'SCO', 'TUN', 'KSA', 'CPV'],
