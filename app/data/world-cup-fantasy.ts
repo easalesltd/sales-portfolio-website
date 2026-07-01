@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 30 June was a survival cull dressed up as football: Morocco outlasted the Netherlands from the spot in Monterrey, Norway sent Ivory Coast packing in Arlington, and Mbappé turned New Jersey into a Les Bleus exhibition as France dismantled Sweden — Scott, Chris and Jon are level on 38 at the summit, Nest sits on 34, and Ash remains bottom on 27 with another Dutch penalty nightmare on his hands.';
+  'GMT 1 July at the Azteca was a Mexican wave and an Ecuadorian meltdown: Quinones and Jimenez put El Tri two up before Piero Hincapie tried the new mouth-covering chat rule and earned a straight red in stoppage time — Chris climbs to 41 at the top after three more from Mexico, while Ash sinks to 26 at the foot with Ecuador out and another point docked for the send-off.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1553,5 +1553,16 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Piero Hincapie sent off stoppage time (mouth-covering rule). */
+    id: '2026-07-01-mex-ecu',
+    utcDate: '2026-07-01T01:00:00Z',
+    homeTeam: { name: 'Mexico', tla: 'MEX' },
+    awayTeam: { name: 'Ecuador', tla: 'ECU' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
   },
 ];
