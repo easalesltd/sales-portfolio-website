@@ -167,7 +167,7 @@ export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
     name: 'Nest',
     teamName: 'The Pterotractoryls',
     managerImage: '/images/world-cup-fantasy/managers/nest.png',
-    clubCrest: '/images/world-cup-fantasy/crests/nest.png',
+    clubCrest: '/images/world-cup-fantasy/crests/the-pterotractoryls-fc.png?v=1',
     teams: ['ENG', 'BEL', 'SUI', 'NOR', 'SCO', 'TUN', 'KSA', 'CPV'],
     draftNote:
       'England and Belgium set the vibe, Switzerland and Norway keep the European groove going, Scotland brings passion, and Cape Verde is the soulful wildcard from the Atlantic.',
