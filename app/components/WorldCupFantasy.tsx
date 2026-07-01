@@ -65,7 +65,7 @@ type Props = {
 const DEFAULT_API_PATH = '/api/world-cup-fantasy';
 const DEFAULT_TITLE = 'World Cup Sweepstake 2026';
 /** Bust browser / image-optimizer cache when manager portrait files are replaced. */
-const SWEEPSTAKE_MANAGER_PHOTO_VERSION = '20260626';
+const SWEEPSTAKE_MANAGER_PHOTO_VERSION = '20260701';
 
 function managerPhotoSrc(path: string): string {
   return `${path}?v=${SWEEPSTAKE_MANAGER_PHOTO_VERSION}`;
