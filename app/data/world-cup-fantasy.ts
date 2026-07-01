@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 1 July at the Azteca was a Mexican wave and an Ecuadorian meltdown: Quinones and Jimenez put El Tri two up before Piero Hincapie tried the new mouth-covering chat rule and earned a straight red in stoppage time — Chris climbs to 41 at the top after three more from Mexico, while Ash sinks to 26 at the foot with Ecuador out and another point docked for the send-off.';
+  'GMT 1 July was two knockout nightmares on different continents: Mexico put Ecuador out 2–0 with Hincapie sent off in stoppage time, leaving Ash bottom on 26, then England needed Kane twice in the last fifteen minutes to rescue Nest from a Congo DR shock in Atlanta — Dave’s Leopards are gone, Nest climbs to 37, and Chris stays top on 41.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1564,5 +1564,16 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 1,
+  },
+  {
+    /** Verified final result. Kane brace (75′, 86′) after Cipenga opener (7′). */
+    id: '2026-07-01-eng-cod',
+    utcDate: '2026-07-01T16:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Congo DR', tla: 'COD' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
 ];
