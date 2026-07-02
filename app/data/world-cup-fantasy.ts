@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 1 July delivered three knockout swings: Mexico cleared Ecuador 2–0 after Hincapie saw red, Kane struck twice to see England past Congo DR in Atlanta, and Belgium rescued a 2–0 deficit in Seattle when Tielemans buried a 120th-minute penalty — Senegal join Congo DR in the departure lounge, Dave watches two more teams leave, Chris and Nest are level on 41 after Belgium’s scramble, and Ash remains bottom on 26.';
+  'GMT 2 July was pure VAR theatre in Santa Clara — Balogun opened the scoring, got himself sent off for standing on an ankle like a Sunday-league centre-half, and Malik Tillman still curled a dead ball past everyone to see the USA through 2–0 while Bosnia-Herzegovina pack their bags for the flight home; Chris and Nest remain level on 41, Jon nudges up to 40 on ten-man grit, and Ash stays bottom on 26.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1585,6 +1585,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 3,
     awayGoals: 2,
     homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Balogun opener (45′), straight red (64′); Tillman free-kick seals it (82′). */
+    id: '2026-07-02-usa-bih',
+    utcDate: '2026-07-02T00:00:00Z',
+    homeTeam: { name: 'USA', tla: 'USA' },
+    awayTeam: { name: 'Bosnia-Herzegovina', tla: 'BIH' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 1,
     awayRedCards: 0,
   },
 ];
