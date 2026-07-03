@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 3 July in Vancouver was a textbook Swiss job — Embolo tapped in after Manzambi tore down the right, Ndoye lashed one in forty-eight seconds after the break, and Algeria’s Mahrez went missing again while the Nati ended an eighty-eight-year knockout drought; Nest leads on 44 off Switzerland’s clean win, Dave watches Algeria bow out, and Ash stays bottom on 30.';
+  'Two knockout exits on the same GMT calendar day — Switzerland dismantled Algeria in the early Vancouver slot, then Egypt survived a Dallas stalemate when an early strike and a calamitous own goal forced penalties and Australia missed theirs. Scott banks Egypt\'s win, Chris watches the Socceroos go home, Nest leads on 44, and Ash stays bottom on 30.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1628,6 +1628,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Algeria', tla: 'ALG' },
     homeGoals: 2,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Ashour (13′); Hany OG (55′); Egypt advance 4–2 on penalties. */
+    id: '2026-07-03-aus-egy',
+    utcDate: '2026-07-03T18:00:00Z',
+    homeTeam: { name: 'Australia', tla: 'AUS' },
+    awayTeam: { name: 'Egypt', tla: 'EGY' },
+    homeGoals: 1,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
