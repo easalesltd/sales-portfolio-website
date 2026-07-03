@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'GMT 2 July was pure VAR theatre in Santa Clara — Balogun opened the scoring, got himself sent off for standing on an ankle like a Sunday-league centre-half, and Malik Tillman still curled a dead ball past everyone to see the USA through 2–0 while Bosnia-Herzegovina pack their bags for the flight home; Chris and Nest remain level on 41, Jon nudges up to 40 on ten-man grit, and Ash stays bottom on 26.';
+  'GMT 3 July in Vancouver was a textbook Swiss job — Embolo tapped in after Manzambi tore down the right, Ndoye lashed one in forty-eight seconds after the break, and Algeria’s Mahrez went missing again while the Nati ended an eighty-eight-year knockout drought; Nest leads on 44 off Switzerland’s clean win, Dave watches Algeria bow out, and Ash stays bottom on 30.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1596,6 +1596,39 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 2,
     awayGoals: 0,
     homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Oyarzabal brace (36′, 89′); Porro header (66′). */
+    id: '2026-07-02-esp-aut',
+    utcDate: '2026-07-02T19:00:00Z',
+    homeTeam: { name: 'Spain', tla: 'ESP' },
+    awayTeam: { name: 'Austria', tla: 'AUT' },
+    homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Perisic (53′); Ronaldo pen (68′); Ramos header winner (90+4′); Gvardiol goal disallowed (VAR). */
+    id: '2026-07-02-por-cro',
+    utcDate: '2026-07-02T23:00:00Z',
+    homeTeam: { name: 'Portugal', tla: 'POR' },
+    awayTeam: { name: 'Croatia', tla: 'CRO' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Embolo (10′); Ndoye (46′). */
+    id: '2026-07-03-sui-alg',
+    utcDate: '2026-07-03T03:00:00Z',
+    homeTeam: { name: 'Switzerland', tla: 'SUI' },
+    awayTeam: { name: 'Algeria', tla: 'ALG' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
     awayRedCards: 0,
   },
 ];
