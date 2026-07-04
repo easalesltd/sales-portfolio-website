@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Three knockout ties on one GMT ledger: Switzerland beat Algeria in Vancouver, Egypt eliminated Australia on penalties in Dallas, and Argentina needed extra time and a deflected own goal to deny Cape Verde in Miami. Scott leads on 44 with the holders through and Egypt still alive, Nest loses Cape Verde but keeps Switzerland on 43, Chris absorbs Australia\'s exit, Dave\'s Algeria are gone, and Ash remains bottom on 30.';
+  'The last round-of-32 berth went to Colombia in Kansas City: Jhon Arias struck early, Ghana finished without a shot on target, and the xG gap told the story long before full time. Chris picks up knockout points from Colombia while Ash absorbs Ghana\'s exit; Scott and Chris are level on 44, Nest sits on 43, and Ash remains bottom on 30.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1650,6 +1650,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Cape Verde', tla: 'CPV' },
     homeGoals: 3,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Arias (14′); Colombia advance to face Switzerland. */
+    id: '2026-07-04-col-gha',
+    utcDate: '2026-07-04T01:30:00Z',
+    homeTeam: { name: 'Colombia', tla: 'COL' },
+    awayTeam: { name: 'Ghana', tla: 'GHA' },
+    homeGoals: 1,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
