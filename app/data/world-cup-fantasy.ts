@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Two knockout exits on the same GMT calendar day — Switzerland dismantled Algeria in the early Vancouver slot, then Egypt survived a Dallas stalemate when an early strike and a calamitous own goal forced penalties and Australia missed theirs. Scott banks Egypt\'s win, Chris watches the Socceroos go home, Nest leads on 44, and Ash stays bottom on 30.';
+  'Three knockout ties on one GMT ledger: Switzerland beat Algeria in Vancouver, Egypt eliminated Australia on penalties in Dallas, and Argentina needed extra time and a deflected own goal to deny Cape Verde in Miami. Scott leads on 44 with the holders through and Egypt still alive, Nest loses Cape Verde but keeps Switzerland on 43, Chris absorbs Australia\'s exit, Dave\'s Algeria are gone, and Ash remains bottom on 30.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1638,6 +1638,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Australia', tla: 'AUS' },
     awayTeam: { name: 'Egypt', tla: 'EGY' },
     homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Messi (29′); Duarte (59′); Martinez (103′); Cabral (103′); Borges OG (111′). AET. */
+    id: '2026-07-03-arg-cpv',
+    utcDate: '2026-07-03T22:00:00Z',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Cape Verde', tla: 'CPV' },
+    homeGoals: 3,
     awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
