@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'The last round-of-32 berth went to Colombia in Kansas City: Jhon Arias struck early, Ghana finished without a shot on target, and the xG gap told the story long before full time. Chris picks up knockout points from Colombia while Ash absorbs Ghana\'s exit; Scott and Chris are level on 44, Nest sits on 43, and Ash remains bottom on 30.';
+  'Saturday cleared the last round-of-32 slot and opened the last sixteen: Colombia saw off Ghana without a shot on target, Morocco dismantled Canada 3-0 in Dallas, and France edged Paraguay 1-0 in Los Angeles. Chris climbs to 47 on Colombia and France, Jon sits second on 44 after Morocco\'s four-point haul, Scott slips to 43 with Canada and Paraguay out, and Ash stays bottom on 30.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1661,6 +1661,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Ghana', tla: 'GHA' },
     homeGoals: 1,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. Morocco advance to face France in the quarter-finals. */
+    id: '2026-07-04-r16-1',
+    utcDate: '2026-07-04T17:00:00Z',
+    homeTeam: { name: 'Canada', tla: 'CAN' },
+    awayTeam: { name: 'Morocco', tla: 'MAR' },
+    homeGoals: 0,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result. France advance to face Morocco in the quarter-finals. */
+    id: '2026-07-04-r16-2',
+    utcDate: '2026-07-04T21:00:00Z',
+    homeTeam: { name: 'Paraguay', tla: 'PAR' },
+    awayTeam: { name: 'France', tla: 'FRA' },
+    homeGoals: 0,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },

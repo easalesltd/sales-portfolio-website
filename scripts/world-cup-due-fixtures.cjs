@@ -9,6 +9,7 @@ const {
   findEspnEventForFixture,
   parseEspnScoreboard,
 } = require('./lib/world-cup-espn-scoreboard.cjs');
+const { readDataFileSource, parseScheduleFixtures } = require('./lib/world-cup-fixtures.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
@@ -40,34 +41,16 @@ if (Number.isNaN(now.getTime())) {
   throw new Error(`Invalid WORLD_CUP_NOW value: ${process.env.WORLD_CUP_NOW}`);
 }
 
-const source = fs.readFileSync(dataPath, 'utf8');
-
-function extractConstArray(name) {
-  const match = source.match(new RegExp(`export const ${name}[\\s\\S]*?= \\[([\\s\\S]*?)\\n\\];`));
-  if (!match) {
-    throw new Error(`Unable to find ${name} in ${dataPath}`);
-  }
-  return match[1];
-}
-
-function parseFixtures() {
-  const fixturesSource = extractConstArray('WORLD_CUP_FANTASY_FIXTURES');
-  const fixturePattern =
-    /id: '([^']+)',\s*utcDate: '([^']+)',(?:\s*stage: '[^']+',)?\s*homeTeam: \{ name: '([^']+)', tla: '([^']+)' \},\s*awayTeam: \{ name: '([^']+)', tla: '([^']+)' \}/g;
-
-  return [...fixturesSource.matchAll(fixturePattern)].map((match) => ({
-    id: match[1],
-    utcDate: match[2],
-    homeName: match[3],
-    homeTla: match[4],
-    awayName: match[5],
-    awayTla: match[6],
-  }));
-}
+const source = readDataFileSource(dataPath);
 
 function parseRecordedMatchIds() {
-  const matchesSource = extractConstArray('WORLD_CUP_FANTASY_MANUAL_MATCHES');
-  return new Set([...matchesSource.matchAll(/id: '([^']+)'/g)].map((match) => match[1]));
+  const matchesSource = source.match(
+    /export const WORLD_CUP_FANTASY_MANUAL_MATCHES[\s\S]*?= \[([\s\S]*?)\n\](?: as const)?;/,
+  );
+  if (!matchesSource) {
+    throw new Error(`Unable to find WORLD_CUP_FANTASY_MANUAL_MATCHES in ${dataPath}`);
+  }
+  return new Set([...matchesSource[1].matchAll(/id: '([^']+)'/g)].map((match) => match[1]));
 }
 
 function formatFixture(fixture) {
@@ -129,7 +112,7 @@ function setOutput(name, value) {
   fs.appendFileSync(githubOutput, `${name}<<EOF\n${value}\nEOF\n`);
 }
 
-const fixtures = parseFixtures();
+const fixtures = parseScheduleFixtures(source);
 const recordedMatchIds = parseRecordedMatchIds();
 const updateDelayMs = updateDelayMinutes * 60 * 1000;
 const dueLeadMs = dueLeadMinutes * 60 * 1000;

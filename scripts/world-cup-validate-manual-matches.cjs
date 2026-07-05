@@ -10,10 +10,14 @@ const {
   parseKnockoutMatchIds,
   isKnockoutMatchId,
 } = require('./lib/world-cup-scoring-lib.cjs');
+const {
+  readDataFileSource,
+  parseScheduleFixtures,
+} = require('./lib/world-cup-fixtures.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
-const source = fs.readFileSync(dataPath, 'utf8');
+const source = readDataFileSource(dataPath);
 
 const DEFAULT_RESULT_FINALITY_BUFFER_MINUTES = 110;
 
@@ -118,6 +122,8 @@ function validateNonNegativeInteger(value, label, matchId, errors) {
 
 const teamCodes = parseTeamCodes();
 const manualMatches = parseManualMatches();
+const fixturesSource = extractConstArray('WORLD_CUP_FANTASY_FIXTURES');
+const knockoutFixtureIds = parseKnockoutMatchIds(fixturesSource);
 const seenIds = new Set();
 const errors = [];
 
@@ -127,7 +133,10 @@ for (const match of manualMatches) {
   }
   seenIds.add(match.id);
 
-  if (!/^\d{4}-\d{2}-\d{2}-[a-z0-9]{3}-[a-z0-9]{3}$/.test(match.id)) {
+  if (
+    !isKnockoutMatchId(match.id, knockoutFixtureIds) &&
+    !/^\d{4}-\d{2}-\d{2}-[a-z0-9]{3}-[a-z0-9]{3}$/.test(match.id)
+  ) {
     errors.push(`${match.id}: id should use yyyy-mm-dd-home-away format`);
   }
 
@@ -163,9 +172,7 @@ for (const match of manualMatches) {
   validateNonNegativeInteger(match.awayRedCards, 'awayRedCards', match.id, errors);
 }
 
-const fixtures = parseFixtures();
-const fixturesSource = extractConstArray('WORLD_CUP_FANTASY_FIXTURES');
-const knockoutFixtureIds = parseKnockoutMatchIds(fixturesSource);
+const fixtures = parseScheduleFixtures(source);
 validateManualMatchesAgainstFixtures(manualMatches, fixtures, errors, {
   isKnockoutMatchId: (id) => isKnockoutMatchId(id, knockoutFixtureIds),
 });
