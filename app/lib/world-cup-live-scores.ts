@@ -1,4 +1,8 @@
 import {
+  isEspnFinalPeriod,
+  isEspnFullTimePeriod,
+} from '@/app/lib/world-cup-espn-finals';
+import {
   findEspnEventForFixture,
   parseEspnScoreboard as parseEspnScoreboardPayload,
   type EspnParsedEvent,
@@ -120,10 +124,7 @@ async function getCachedScoreboardEvents(): Promise<EspnParsedEvent[]> {
   return events;
 }
 
-export {
-  isEspnFinalPeriod,
-  isEspnFullTimePeriod,
-} from '@/app/lib/world-cup-espn-finals';
+export { isEspnFinalPeriod, isEspnFullTimePeriod };
 
 function provisionalMatchFromFinishedEntry(
   entry: MatchdayEntry,
@@ -172,7 +173,7 @@ export function applyLiveScoresToSchedule(
       const live = matchLiveScoreForFixture(entry, events);
       if (!live) return entry;
 
-      if (isEspnFullTimePeriod(live.period)) {
+      if (isEspnFinalPeriod(live.period)) {
         const finishedEntry: MatchdayEntry = {
           ...entry,
           status: 'finished',
