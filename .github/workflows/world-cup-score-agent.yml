@@ -2,23 +2,20 @@ name: World Cup Score Agent
 
 on:
   schedule:
-    # The due script waits beyond the normal full-time estimate so stoppage-time
-    # goals and public score feeds have settled before an agent records results.
-    # Frequent cron slots keep retrying across the full 24-hour lookback for
-    # delayed GitHub schedules and slow public score sources.
+    # Sync ESPN finals first, then refresh the daily roast when standings move.
     - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       force_agent:
-        description: Run the Cursor agent even if no fixture is currently due
+        description: Run the Cursor roast agent even if no fixture is currently due
         required: false
         type: boolean
         default: false
-      lookback_minutes:
-        description: Minutes of expected-final-whistle history to consider
+      skip_sync:
+        description: Skip deterministic ESPN ledger sync (roast-only run)
         required: false
-        type: string
-        default: '1440'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -46,114 +43,120 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Check whether a score update is due
+      - name: Check whether automation is due
         id: due
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.force_agent }}" == "true" ]]; then
             export WORLD_CUP_FORCE_AGENT=1
           fi
 
-          export WORLD_CUP_DUE_LOOKBACK_MINUTES="${{ inputs.lookback_minutes || '1440' }}"
           node scripts/world-cup-due-fixtures.cjs
 
       - name: Skip when no fixture should be final yet
         if: steps.due.outputs.due != 'true' && steps.due.outputs.forced != 'true'
-        run: echo "No score update is due."
-
-      - name: Explain missing Cursor API key
-        if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && env.CURSOR_API_KEY == ''
-        run: |
-          echo "::warning::CURSOR_API_KEY is not configured, so the scheduled score agent cannot run."
-          echo "Add a repository Actions secret named CURSOR_API_KEY to enable automatic score updates."
-
-      - name: Install Cursor CLI for forced smoke test
-        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          curl https://cursor.com/install -fsS | bash
-          echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
-
-      - name: Run Cursor credential smoke test
-        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          agent -p --force "Credential smoke test only. Reply with one short sentence confirming the Cursor agent can run. Do not inspect score websites and do not modify files." --output-format text
-
-      - name: Ensure forced smoke test did not change files
-        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          if ! git diff --quiet; then
-            echo "::error::Forced smoke test changed files unexpectedly."
-            git diff --name-only
-            exit 1
-          fi
-
-          echo "Cursor credential smoke test passed without file changes."
+        run: echo "No World Cup automation is due."
 
       - name: Install dependencies
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
         run: npm ci
 
+      - name: Sync finished scores from ESPN
+        if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
+        run: npm run world-cup:sync
+
+      - name: Validate synced scores
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        run: npm run world-cup:validate:scores
+
+      - name: Commit synced score updates
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        run: |
+          if git diff --quiet; then
+            echo "No score changes to commit."
+            echo "scores_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add app/data/world-cup-fantasy.ts
+            git commit -m "$(cat <<'EOF'
+Sync World Cup sweepstake scores from ESPN.
+
+Deterministic ledger append for finished fixtures; roast updates follow separately when needed.
+EOF
+)"
+            git push origin HEAD:main
+            echo "scores_changed=true" >> "$GITHUB_OUTPUT"
+          fi
+        id: scores
+
+      - name: Build after score sync
+        if: steps.scores.outputs.scores_changed == 'true'
+        run: npm run build
+
+      - name: Check whether daily roast needs refresh
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        id: roast
+        run: |
+          set +e
+          npm run world-cup:validate:roast
+          code=$?
+          if [[ "$code" -eq 0 ]]; then
+            echo "needs_roast=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "needs_roast=true" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Explain missing Cursor API key for roast refresh
+        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY == ''
+        run: |
+          echo "::warning::Daily roast is stale but CURSOR_API_KEY is not configured."
+          echo "Scores were synced if ESPN had finals; add CURSOR_API_KEY to enable automatic roast refresh."
+
       - name: Install Cursor CLI
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         run: |
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
 
-      - name: Run Cursor score-update agent
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+      - name: Run Cursor roast-update agent
+        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         env:
           DUE_FIXTURES: ${{ steps.due.outputs.fixtures }}
-          UPDATE_DELAY_MINUTES: ${{ steps.due.outputs.update_delay_minutes }}
-          DUE_LEAD_MINUTES: ${{ steps.due.outputs.due_lead_minutes }}
         run: |
-          cat > /tmp/world-cup-score-agent-prompt.txt <<PROMPT
-          Update the World Cup sweepstake scores for this repository.
+          cat > /tmp/world-cup-roast-agent-prompt.txt <<PROMPT
+          Refresh the World Cup sweepstake daily roast for this repository.
 
-          Follow .cursor/rules/world-cup-sweepstake-manual-updates.mdc exactly:
-          - update only app/data/world-cup-fantasy.ts
-          - append only newly finished matches to WORLD_CUP_FANTASY_MANUAL_MATCHES
-          - keep WORLD_CUP_FANTASY_FIXTURES populated with the full known schedule of remaining sweepstake-relevant fixtures
-          - refresh WORLD_CUP_FANTASY_DAILY_UPDATE when the table changes
+          Scores are synced automatically from ESPN — do not append or change WORLD_CUP_FANTASY_MANUAL_MATCHES
+          unless validate:scores is failing and you are fixing a specific ledger error.
+
+          Follow .cursor/rules/world-cup-sweepstake-manual-updates.mdc for roast rules:
+          - update only WORLD_CUP_FANTASY_DAILY_UPDATE in app/data/world-cup-fantasy.ts
+          - run npm run world-cup:standings and mirror computed totals exactly
+          - run npm run world-cup:validate:roast before finishing; fix any roast validation errors
           - keep roasts varied; do not repeat the same premise, phrase, or pub-style gag
-          - use final results only, including red-card and second-yellow dismissal tallies
-          - always set explicit homeRedCards and awayRedCards on every new ledger entry (0 when none)
-          - npm run world-cup:validate includes an ESPN red-card cross-check; fix any ledger/ESPN
-            mismatch before finishing
-          - only record a score when reliable sources explicitly show it as final/full-time;
-            if a source is still live, in progress, or does not clearly say full-time/final,
-            leave the fixture unchanged
-          - after editing the ledger/roast, run npm run world-cup:standings and make every
-            player total, leader/bottom claim, and tie claim in the roast and summary match
-            that computed output exactly
-          - run npm run world-cup:validate before finishing; fix any daily-roast validation
-            errors (wrong day, wrong manager/country links, missing teams, or incorrect totals)
+          - frame knockouts as survival football with eliminations and teams left alive
 
-          This scheduled run was triggered because the following fixture(s) should be final now,
-          or are inside the schedule lead window:
+          Recent fixtures that may need covering in the roast:
           ${DUE_FIXTURES}
 
-          The expected result check delay is ${UPDATE_DELAY_MINUTES} minutes after kick-off.
-          The due checker may run up to ${DUE_LEAD_MINUTES} minutes before that delay to cover
-          delayed or skipped GitHub cron slots.
-          If a listed fixture is not final in reliable public sources yet, leave it unchanged.
           Do not commit, push, create branches, create PRs, or post comments. The workflow handles git operations.
           PROMPT
 
-          agent -p --force "$(cat /tmp/world-cup-score-agent-prompt.txt)" --output-format text
+          agent -p --force "$(cat /tmp/world-cup-roast-agent-prompt.txt)" --output-format text
 
-      - name: Print computed standings
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
-        run: npm run world-cup:standings
+      - name: Validate roast update
+        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          npm run world-cup:standings
+          npm run world-cup:validate:roast
 
-      - name: Validate manual World Cup results
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
-        run: npm run world-cup:validate
-
-      - name: Validate changed files
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+      - name: Validate changed roast files
+        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         run: |
           changed_files="$(git diff --name-only)"
           if [[ -z "$changed_files" ]]; then
-            echo "No files changed."
+            echo "No roast changes produced."
             exit 0
           fi
 
@@ -166,30 +169,21 @@ jobs:
           done <<< "$changed_files"
 
           if [[ -n "$disallowed" ]]; then
-            echo "::error::The score agent changed files outside app/data/world-cup-fantasy.ts:"
+            echo "::error::The roast agent changed files outside app/data/world-cup-fantasy.ts:"
             echo "$disallowed"
             exit 1
           fi
 
-      - name: Build
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+      - name: Commit and push roast update
+        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         run: |
           if git diff --quiet; then
-            echo "No score changes to build."
-          else
-            npm run build
-          fi
-
-      - name: Commit and push score update
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          if git diff --quiet; then
-            echo "No score changes to commit."
+            echo "No roast changes to commit."
             exit 0
           fi
 
           git config user.name "cursor-score-agent"
           git config user.email "cursor-score-agent@users.noreply.github.com"
           git add app/data/world-cup-fantasy.ts
-          git commit -m "Update World Cup sweepstake scores"
+          git commit -m "Update World Cup daily roast"
           git push origin HEAD:main

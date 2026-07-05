@@ -9,6 +9,7 @@ const {
   findEspnEventForFixture,
   parseEspnScoreboard,
 } = require('./lib/world-cup-espn-scoreboard.cjs');
+const { isEspnFinalPeriod } = require('./lib/world-cup-espn-finals.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
@@ -71,20 +72,6 @@ function parseManualMatches() {
   });
 }
 
-function isEspnFullTimePeriod(period) {
-  const normalized = period.trim().toLowerCase();
-  if (!normalized) return false;
-
-  return (
-    normalized === 'ft' ||
-    normalized === 'full time' ||
-    normalized === 'final' ||
-    normalized.startsWith('status_full') ||
-    /^full.?time\b/.test(normalized) ||
-    /\bft\b/.test(normalized)
-  );
-}
-
 async function loadEspnEventsForDate(dateParam, aliasToCode, cache) {
   if (cache.has(dateParam)) return cache.get(dateParam);
 
@@ -117,7 +104,7 @@ async function main() {
 
     const espnMatch = findEspnEventForFixture(events, match.homeTla, match.awayTla);
     if (!espnMatch) continue;
-    if (!isEspnFullTimePeriod(espnMatch.period)) continue;
+    if (!isEspnFinalPeriod(espnMatch.period)) continue;
     if (espnMatch.homeGoals !== match.homeGoals || espnMatch.awayGoals !== match.awayGoals) {
       continue;
     }

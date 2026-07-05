@@ -55,6 +55,8 @@ describe('world-cup-espn-scoreboard', () => {
         period: 'FT',
         homeRedCards: 0,
         awayRedCards: 1,
+        homeWinner: false,
+        awayWinner: false,
       },
     ]);
   });

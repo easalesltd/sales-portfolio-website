@@ -4,12 +4,10 @@ on:
   schedule:
     # GitHub cron is UTC. English kick-offs are Europe/London (GMT/BST).
     # Weekend batches: 12:30 / 15:00 / 17:30 / 19:45 UK → full-time ~14:25–22:45 London.
-    # Poll every 15 minutes through that window (Sat/Sun London ≈ Sat/Sun UTC in winter;
-    # in BST, London runs one hour ahead of UTC — the due script uses Europe/London directly).
     - cron: '5,20,35,50 12-22 * * 0,6'
     # Midweek league nights: 19:45 / 20:00 UK → full-time ~21:40–22:45 London.
     - cron: '5,20,35,50 20-22 * * 1-5'
-    # Catch-up for delayed lower-league results and slow score feeds.
+    # Catch-up for delayed lower-league results and slow public score feeds.
     - cron: '30 7-11,23 * * *'
   workflow_dispatch:
     inputs:
@@ -18,11 +16,11 @@ on:
         required: false
         type: boolean
         default: false
-      lookback_minutes:
-        description: Minutes of expected-final-whistle history to consider
+      skip_sync:
+        description: Skip deterministic ESPN ledger sync (agent-only run)
         required: false
-        type: string
-        default: '480'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,60 +48,90 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Check whether a score update is due
+      - name: Check whether automation is due
         id: due
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.force_agent }}" == "true" ]]; then
             export ENGLISH_PYRAMID_FORCE_AGENT=1
           fi
 
-          export ENGLISH_PYRAMID_DUE_LOOKBACK_MINUTES="${{ inputs.lookback_minutes || '480' }}"
           node scripts/english-pyramid-due-fixtures.cjs
 
       - name: Skip when no fixture should be final yet
         if: steps.due.outputs.due != 'true' && steps.due.outputs.forced != 'true'
-        run: echo "No English pyramid score update is due."
-
-      - name: Explain missing Cursor API key
-        if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && env.CURSOR_API_KEY == ''
-        run: |
-          echo "::warning::CURSOR_API_KEY is not configured, so the scheduled score agent cannot run."
-          echo "Add a repository Actions secret named CURSOR_API_KEY to enable automatic score updates."
-
-      - name: Install Cursor CLI for forced smoke test
-        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          curl https://cursor.com/install -fsS | bash
-          echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
-
-      - name: Run Cursor credential smoke test
-        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          agent -p --force "Credential smoke test only. Reply with one short sentence confirming the Cursor agent can run. Do not inspect score websites and do not modify files." --output-format text
-
-      - name: Ensure forced smoke test did not change files
-        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          if ! git diff --quiet; then
-            echo "::error::Forced smoke test changed files unexpectedly."
-            git diff --name-only
-            exit 1
-          fi
-
-          echo "Cursor credential smoke test passed without file changes."
+        run: echo "No English pyramid automation is due."
 
       - name: Install dependencies
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
         run: npm ci
 
+      - name: Sync finished scores from ESPN
+        if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
+        id: sync
+        run: npm run english-pyramid:sync
+
+      - name: Validate synced scores
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        run: npm run english-pyramid:validate:scores
+
+      - name: Commit synced score updates
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        id: scores
+        run: |
+          if git diff --quiet; then
+            echo "No score changes to commit."
+            echo "scores_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add app/data/english-pyramid-fantasy.ts
+            git commit -m "$(cat <<'EOF'
+Sync English pyramid sweepstake scores from ESPN.
+
+Deterministic ledger append for finished league fixtures on ESPN tiers; NL North/South and matchday sweeps may still need the agent.
+EOF
+)"
+            git push origin HEAD:main
+            echo "scores_changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build after score sync
+        if: steps.scores.outputs.scores_changed == 'true'
+        run: npm run build
+
+      - name: Decide whether the Cursor agent should run
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        id: agent
+        run: |
+          needs_agent=false
+          if [[ "${{ steps.due.outputs.scan_mode }}" == "matchday" ]]; then
+            needs_agent=true
+          fi
+          if [[ "${{ steps.scores.outputs.scores_changed }}" == "true" ]]; then
+            needs_agent=true
+          fi
+          if [[ -n "${{ steps.sync.outputs.remaining_due }}" && "${{ steps.sync.outputs.remaining_due }}" != "0" ]]; then
+            needs_agent=true
+          fi
+          if [[ "${{ steps.due.outputs.forced }}" == "true" ]]; then
+            needs_agent=true
+          fi
+          echo "needs_agent=${needs_agent}" >> "$GITHUB_OUTPUT"
+
+      - name: Explain missing Cursor API key
+        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY == ''
+        run: |
+          echo "::warning::CURSOR_API_KEY is not configured."
+          echo "ESPN sync may have committed scores; add CURSOR_API_KEY for roast refresh and NL North/South results."
+
       - name: Install Cursor CLI
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         run: |
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
 
-      - name: Run Cursor score-update agent
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+      - name: Run Cursor follow-up agent
+        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         env:
           DUE_FIXTURES: ${{ steps.due.outputs.fixtures }}
           SCAN_MODE: ${{ steps.due.outputs.scan_mode }}
@@ -111,49 +139,44 @@ jobs:
           DUE_LEAD_MINUTES: ${{ steps.due.outputs.due_lead_minutes }}
           LONDON_CONTEXT: ${{ steps.due.outputs.london_context }}
         run: |
-          cat > /tmp/english-pyramid-score-agent-prompt.txt <<PROMPT
-          Update the English pyramid sweepstake scores for this repository.
+          cat > /tmp/english-pyramid-agent-prompt.txt <<PROMPT
+          Update the English pyramid sweepstake for this repository.
+
+          ESPN sync runs automatically before this step — only change ENGLISH_PYRAMID_MANUAL_MATCHES when:
+          - scan mode is matchday and reliable UK sources show finished games not yet in the ledger, or
+          - a due fixture still has no result after ESPN sync (often NL North/South or delayed feeds).
 
           Follow .cursor/rules/english-pyramid-sweepstake-manual-updates.mdc exactly:
           - update only app/data/english-pyramid-fantasy.ts
-          - append only newly finished matches to ENGLISH_PYRAMID_MANUAL_MATCHES
-          - keep ENGLISH_PYRAMID_FIXTURES rolling forward with upcoming games for our 49 clubs
+          - append only newly finished league matches with explicit homeRedCards and awayRedCards
           - refresh ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE when the table changes
           - keep roasts varied; British football tone, not American sports-banter
-          - use final results only, including red-card and second-yellow dismissal tallies
-          - always set explicit homeRedCards and awayRedCards on every new ledger entry (0 when none)
-          - npm run english-pyramid:validate includes an ESPN red-card cross-check; fix any ledger/ESPN
-            mismatch before finishing
-          - after editing the ledger/roast, run npm run english-pyramid:standings and make every
-            player total, leader/bottom claim, and tie claim in the roast match that output exactly
+          - run npm run english-pyramid:standings and mirror computed totals in the roast
+          - run npm run english-pyramid:validate:scores before finishing
 
           London context now: ${LONDON_CONTEXT}
           Scan mode: ${SCAN_MODE}
           Trigger detail:
           ${DUE_FIXTURES}
 
-          English league kick-offs are Europe/London (12:30 / 15:00 / 17:30 / 19:45 / 20:00 typical).
-          Fixture utcDate values are stored in UTC — convert from UK kick-off when adding fixtures.
           Expected result check delay is ${UPDATE_DELAY_MINUTES} minutes after kick-off.
-          The due checker may run up to ${DUE_LEAD_MINUTES} minutes before that delay.
-          When scan mode is matchday, check all seven divisions (PL → NL South) for any sweepstake
-          club whose league game finished today and is not yet in the ledger.
-          If a listed fixture is not final in reliable UK sources yet, leave it unchanged.
           Do not commit, push, create branches, create PRs, or post comments. The workflow handles git operations.
           PROMPT
 
-          agent -p --force "$(cat /tmp/english-pyramid-score-agent-prompt.txt)" --output-format text
+          agent -p --force "$(cat /tmp/english-pyramid-agent-prompt.txt)" --output-format text
 
-      - name: Print computed standings
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
-        run: npm run english-pyramid:standings
+      - name: Validate agent changes
+        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
+        run: |
+          npm run english-pyramid:standings
+          npm run english-pyramid:validate:scores
 
       - name: Validate changed files
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         run: |
           changed_files="$(git diff --name-only)"
           if [[ -z "$changed_files" ]]; then
-            echo "No files changed."
+            echo "No agent changes produced."
             exit 0
           fi
 
@@ -166,30 +189,21 @@ jobs:
           done <<< "$changed_files"
 
           if [[ -n "$disallowed" ]]; then
-            echo "::error::The score agent changed files outside app/data/english-pyramid-fantasy.ts:"
+            echo "::error::The agent changed files outside app/data/english-pyramid-fantasy.ts:"
             echo "$disallowed"
             exit 1
           fi
 
-      - name: Build
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
+      - name: Commit and push agent updates
+        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         run: |
           if git diff --quiet; then
-            echo "No score changes to build."
-          else
-            npm run build
-          fi
-
-      - name: Commit and push score update
-        if: steps.due.outputs.due == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          if git diff --quiet; then
-            echo "No score changes to commit."
+            echo "No agent changes to commit."
             exit 0
           fi
 
           git config user.name "cursor-score-agent"
           git config user.email "cursor-score-agent@users.noreply.github.com"
           git add app/data/english-pyramid-fantasy.ts
-          git commit -m "Update English pyramid sweepstake scores"
+          git commit -m "Update English pyramid sweepstake scores and roast"
           git push origin HEAD:main

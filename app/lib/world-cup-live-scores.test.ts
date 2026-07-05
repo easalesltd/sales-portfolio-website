@@ -13,6 +13,7 @@ describe('world-cup-live-scores', () => {
   it('detects ESPN full-time period strings', () => {
     expect(isEspnFullTimePeriod('FT')).toBe(true);
     expect(isEspnFullTimePeriod('Full Time')).toBe(true);
+    expect(isEspnFullTimePeriod('FT-Pens')).toBe(true);
     expect(isEspnFullTimePeriod('41\'')).toBe(false);
     expect(isEspnFullTimePeriod('HT')).toBe(false);
   });
@@ -59,6 +60,8 @@ describe('world-cup-live-scores', () => {
         period: 'First Half',
         homeRedCards: 0,
         awayRedCards: 0,
+        homeWinner: false,
+        awayWinner: false,
       },
     ]);
   });
@@ -119,6 +122,8 @@ describe('world-cup-live-scores', () => {
         period: 'FT',
         homeRedCards: 0,
         awayRedCards: 1,
+        homeWinner: false,
+        awayWinner: true,
       },
     ]);
 

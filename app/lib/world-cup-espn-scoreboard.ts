@@ -13,12 +13,15 @@ export type EspnParsedEvent = {
   period: string;
   homeRedCards: number;
   awayRedCards: number;
+  homeWinner: boolean;
+  awayWinner: boolean;
 };
 
 type EspnCompetitor = {
   homeAway?: string;
   team?: { id?: string; abbreviation?: string };
   score?: string | number;
+  winner?: boolean;
 };
 
 type EspnDetail = {
@@ -116,6 +119,8 @@ export function parseEspnScoreboardEvent(
     period: period.trim() || 'In progress',
     homeRedCards: redCards?.homeRedCards ?? 0,
     awayRedCards: redCards?.awayRedCards ?? 0,
+    homeWinner: home?.winner === true,
+    awayWinner: away?.winner === true,
   };
 }
 

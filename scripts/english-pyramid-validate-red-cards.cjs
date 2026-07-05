@@ -73,19 +73,7 @@ function parseManualMatches() {
   });
 }
 
-function isEspnFullTimePeriod(period) {
-  const normalized = period.trim().toLowerCase();
-  if (!normalized) return false;
-
-  return (
-    normalized === 'ft' ||
-    normalized === 'full time' ||
-    normalized === 'final' ||
-    normalized.startsWith('status_full') ||
-    /^full.?time\b/.test(normalized) ||
-    /\bft\b/.test(normalized)
-  );
-}
+const { isEspnFinalPeriod } = require('./lib/world-cup-espn-finals.cjs');
 
 async function loadEspnEventsForMatch(match, cache) {
   const slug = espnSlugForTeamCode(match.homeTla);
@@ -119,7 +107,7 @@ async function main() {
     }
 
     if (!espnMatch) continue;
-    if (!isEspnFullTimePeriod(espnMatch.period)) continue;
+    if (!isEspnFinalPeriod(espnMatch.period)) continue;
     if (espnMatch.homeGoals !== match.homeGoals || espnMatch.awayGoals !== match.awayGoals) {
       continue;
     }

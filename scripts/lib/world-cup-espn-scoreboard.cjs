@@ -73,6 +73,8 @@ function parseEspnScoreboardEvent(event, aliasToCode, ignoreStatuses) {
     period: period.trim() || 'In progress',
     homeRedCards: redCards?.homeRedCards ?? 0,
     awayRedCards: redCards?.awayRedCards ?? 0,
+    homeWinner: home?.winner === true,
+    awayWinner: away?.winner === true,
   };
 }
 

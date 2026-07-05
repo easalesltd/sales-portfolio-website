@@ -120,19 +120,10 @@ async function getCachedScoreboardEvents(): Promise<EspnParsedEvent[]> {
   return events;
 }
 
-export function isEspnFullTimePeriod(period: string): boolean {
-  const normalized = period.trim().toLowerCase();
-  if (!normalized) return false;
-
-  return (
-    normalized === 'ft' ||
-    normalized === 'full time' ||
-    normalized === 'final' ||
-    normalized.startsWith('status_full') ||
-    /^full.?time\b/.test(normalized) ||
-    /\bft\b/.test(normalized)
-  );
-}
+export {
+  isEspnFinalPeriod,
+  isEspnFullTimePeriod,
+} from '@/app/lib/world-cup-espn-finals';
 
 function provisionalMatchFromFinishedEntry(
   entry: MatchdayEntry,

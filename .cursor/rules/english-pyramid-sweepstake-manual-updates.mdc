@@ -52,6 +52,11 @@ When asked to update English pyramid scores (or by the scheduled GitHub workflow
 
 ## Scheduled workflow
 
+- **Scores:** `.github/workflows/english-pyramid-score-agent.yml` runs `npm run english-pyramid:sync` for due fixtures on ESPN tiers (PL → NL). NL North/South and matchday sweeps may still need the Cursor agent.
+- **Due fixtures:** `scripts/english-pyramid-due-fixtures.cjs` keeps fixtures due until recorded (no lookback expiry), with a matchday sweep fallback for same-day games.
+- **Health check:** `.github/workflows/english-pyramid-health-check.yml` runs `npm run english-pyramid:validate` on a fixed schedule and fails loudly on overdue fixtures or ESPN red-card drift.
+- **Validate split:** `npm run english-pyramid:validate:scores` (ledger + reds), `npm run english-pyramid:validate` (same — no separate roast validator yet).
+
 `.github/workflows/english-pyramid-score-agent.yml` runs on UK matchday windows (Europe/London), not US World Cup hours:
 
 - **Weekends**: frequent checks ~14:10–22:50 London for 12:30 / 15:00 / 17:30 / evening KO batches.

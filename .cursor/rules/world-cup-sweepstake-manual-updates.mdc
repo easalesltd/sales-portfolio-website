@@ -5,6 +5,14 @@ alwaysApply: true
 
 # World Cup sweepstake manual updates
 
+## Automation (GitHub Actions)
+
+- **Scores:** `.github/workflows/world-cup-score-agent.yml` runs `npm run world-cup:sync` (`scripts/world-cup-sync-ledger.cjs --write`) for every due fixture. ESPN finals are appended deterministically — do not rely on the Cursor agent for ledger scores.
+- **Due fixtures:** `scripts/world-cup-due-fixtures.cjs` keeps fixtures due until they are recorded (no 24-hour expiry). Bracket-generated R16+ ties are included via `parseScheduleFixtures()`.
+- **Roast:** the same workflow runs the Cursor agent only when `npm run world-cup:validate:roast` fails after a sync.
+- **Health check:** `.github/workflows/world-cup-health-check.yml` runs full `npm run world-cup:validate` every 30 minutes and fails loudly on overdue fixtures or stale roasts.
+- **Validate splits:** `npm run world-cup:validate:scores` (ledger + ESPN reds), `npm run world-cup:validate:roast`, `npm run world-cup:validate` (both).
+
 ## Shared UI
 
 - `WorldCupFantasy.tsx` is the shared sweepstake modal. The English pyramid game reuses it via `EnglishPyramidFantasy.tsx`. UI changes (W/L/D on results, bonus/penalty labels, manager photos, lightbox, etc.) should be made once in `WorldCupFantasy.tsx` unless a game needs different copy via props.
