@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Sunday in the last sixteen and Brazil\'s carnival ends in the cold: Norway come from behind to win 2-1 in Pasadena, knocking Jon\'s Brazilians out of the tournament. Nest jumps to 46 in second on Norway\'s three-point haul, Chris leads on 47, Scott is fourth on 43, and Ash stays bottom on 30.';
+  'Monday in the last sixteen and England hold their nerve in the small hours: Mexico take the lead twice but the Three Lions come back to win 3-2 in Foxborough, sending Nest\'s Englishmen through and knocking Dave\'s Mexicans out. Nest leads on 49, Chris is second on 46, Jon third on 44, Scott fourth on 43, and Ash stays bottom on 30.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1695,6 +1695,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 1,
     awayGoals: 2,
     homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-07-06-r16-4',
+    utcDate: '2026-07-06T01:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Mexico', tla: 'MEX' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 1,
     awayRedCards: 0,
   },
 ];
