@@ -60,7 +60,7 @@ async function loadEspnEventsForFixture(fixture, cache) {
 async function main() {
   const source = readDataFileSource(dataPath);
   const dueOptions = getDueFixtureOptionsFromEnv();
-  const dueFixtures = getDueFixtures(source, dueOptions);
+  const dueFixtures = await getDueFixtures(source, dueOptions);
   const espnCache = new Map();
   const pendingEntries = [];
   const skipped = [];
@@ -127,7 +127,7 @@ async function main() {
   }
 
   fs.writeFileSync(dataPath, updatedSource, 'utf8');
-  const remainingDue = getDueFixtures(updatedSource, dueOptions);
+  const remainingDue = await getDueFixtures(updatedSource, dueOptions);
   setOutput('synced_count', `${pendingEntries.length}`);
   setOutput('remaining_due', `${remainingDue.length}`);
   console.log(`Appended ${pendingEntries.length} English pyramid result(s) to the manual ledger.`);

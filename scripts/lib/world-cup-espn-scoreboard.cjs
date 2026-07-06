@@ -39,6 +39,7 @@ function normalizeEspnAbbrevToTeamCode(abbrev, aliasToCode) {
 }
 
 const { countRedCardsFromEspnCompetition } = require('./espn-red-cards.cjs');
+const { normalizeEspnEventDate } = require('./espn-kickoff.cjs');
 
 function parseEspnScoreboardEvent(event, aliasToCode, ignoreStatuses) {
   if (!event || typeof event !== 'object') return null;
@@ -57,6 +58,9 @@ function parseEspnScoreboardEvent(event, aliasToCode, ignoreStatuses) {
   const awayGoals = parseScore(away?.score);
   const period =
     event.status?.type?.shortDetail ?? event.status?.type?.description ?? '';
+  const utcDate = normalizeEspnEventDate(event.date);
+  const statusName = event.status?.type?.name ?? '';
+  const statusState = event.status?.type?.state ?? '';
 
   if (!homeAbbrev || !awayAbbrev || homeGoals == null || awayGoals == null) return null;
 
@@ -75,6 +79,9 @@ function parseEspnScoreboardEvent(event, aliasToCode, ignoreStatuses) {
     awayRedCards: redCards?.awayRedCards ?? 0,
     homeWinner: home?.winner === true,
     awayWinner: away?.winner === true,
+    utcDate,
+    statusName,
+    statusState,
   };
 }
 
@@ -155,8 +162,35 @@ async function fetchEspnScoreboardForDate(dateParam) {
   return response.json();
 }
 
+function normalizeEspnEventToFixtureOrientation(event, homeTla, awayTla) {
+  if (event.homeTla === homeTla && event.awayTla === awayTla) {
+    return event;
+  }
+
+  if (event.homeTla === awayTla && event.awayTla === homeTla) {
+    return {
+      ...event,
+      homeTla,
+      awayTla,
+      homeGoals: event.awayGoals,
+      awayGoals: event.homeGoals,
+      homeRedCards: event.awayRedCards,
+      awayRedCards: event.homeRedCards,
+      homeWinner: event.awayWinner,
+      awayWinner: event.homeWinner,
+    };
+  }
+
+  return null;
+}
+
 function findEspnEventForFixture(events, homeTla, awayTla) {
-  return events.find((event) => event.homeTla === homeTla && event.awayTla === awayTla);
+  for (const event of events) {
+    const normalized = normalizeEspnEventToFixtureOrientation(event, homeTla, awayTla);
+    if (normalized) return normalized;
+  }
+
+  return undefined;
 }
 
 module.exports = {

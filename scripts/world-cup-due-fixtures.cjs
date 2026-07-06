@@ -23,7 +23,7 @@ function setOutput(name, value) {
 async function main() {
   const source = readDataFileSource(dataPath);
   const dueOptions = getDueFixtureOptionsFromEnv();
-  const dueFixtures = getDueFixtures(source, dueOptions);
+  const dueFixtures = await getDueFixtures(source, dueOptions);
   const hasDueFixtures = dueFixtures.length > 0;
 
   const fixtureList = hasDueFixtures

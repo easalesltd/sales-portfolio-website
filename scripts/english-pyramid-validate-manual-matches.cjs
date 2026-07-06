@@ -5,8 +5,8 @@ const path = require('node:path');
 const { parseFixturesFromSource } = require('./lib/english-pyramid-fixture-lib.cjs');
 const {
   validateManualMatchesAgainstFixtures,
-  validateOverdueFixturesWithoutResults,
 } = require('./lib/sweepstake-ledger-validation.cjs');
+const { resolveFixtureKickoff } = require('./lib/english-pyramid-due-fixtures-lib.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/english-pyramid-fantasy.ts');
@@ -87,6 +87,40 @@ function parseManualMatches() {
   });
 }
 
+async function validateOverdueFixturesWithEspn(seenIds, fixtures, errors) {
+  const cache = new Map();
+
+  for (const fixture of fixtures) {
+    if (seenIds.has(fixture.id)) continue;
+
+    const kickoffInfo = await resolveFixtureKickoff(
+      {
+        id: fixture.id,
+        utcDate: fixture.utcDate,
+        homeTla: fixture.homeTla,
+        awayTla: fixture.awayTla,
+        homeName: fixture.homeTla,
+        awayName: fixture.awayTla,
+      },
+      now,
+      resultFinalityBufferMinutes,
+      cache,
+    );
+
+    const effectiveKickoff = new Date(kickoffInfo.effectiveUtcDate);
+    const minutesSinceKickoff = (now.getTime() - effectiveKickoff.getTime()) / 60000;
+    if (minutesSinceKickoff >= resultFinalityBufferMinutes) {
+      const delayNote = kickoffInfo.isDelayed
+        ? ` (ESPN kick-off ${kickoffInfo.effectiveUtcDate}, delayed ${kickoffInfo.delayMinutes}m from schedule)`
+        : '';
+      errors.push(
+        `${fixture.id}: kicked off ${Math.floor(minutesSinceKickoff)} minutes ago but has no manual result yet${delayNote}`,
+      );
+    }
+  }
+}
+
+async function main() {
 const manualMatches = parseManualMatches();
 const fixtures = parseFixturesFromSource(source).map((fixture) => ({
   id: fixture.id,
@@ -100,7 +134,7 @@ const errors = [];
 validateManualMatchesAgainstFixtures(manualMatches, fixtures, errors, {
   requireAllInFixtures: true,
 });
-validateOverdueFixturesWithoutResults(seenIds, fixtures, now, resultFinalityBufferMinutes, errors);
+await validateOverdueFixturesWithEspn(seenIds, fixtures, errors);
 
 if (errors.length > 0) {
   console.error('English pyramid manual match validation failed:');
@@ -113,3 +147,9 @@ if (errors.length > 0) {
 console.log(
   `Validated ${manualMatches.length} English pyramid manual match(es); result finality buffer is ${resultFinalityBufferMinutes} minutes after kick-off.`,
 );
+}
+
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error);
+  process.exit(1);
+});

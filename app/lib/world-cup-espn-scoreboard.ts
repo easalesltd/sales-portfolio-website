@@ -1,4 +1,5 @@
 import { WORLD_CUP_TEAM_BY_CODE } from '@/app/data/world-cup-fantasy';
+import { normalizeEspnEventDate } from '@/app/lib/espn-kickoff';
 
 export type EspnRedCardCounts = {
   homeRedCards: number;
@@ -15,6 +16,9 @@ export type EspnParsedEvent = {
   awayRedCards: number;
   homeWinner: boolean;
   awayWinner: boolean;
+  utcDate: string | null;
+  statusName: string;
+  statusState: string;
 };
 
 type EspnCompetitor = {
@@ -99,10 +103,15 @@ export function parseEspnScoreboardEvent(
   const homeGoals = parseScore(home?.score);
   const awayGoals = parseScore(away?.score);
   const period =
-    (event as { status?: { type?: { description?: string; shortDetail?: string } } }).status?.type
+    (event as { status?: { type?: { description?: string; shortDetail?: string; name?: string; state?: string } } }).status?.type
       ?.shortDetail ??
     (event as { status?: { type?: { description?: string } } }).status?.type?.description ??
     '';
+  const statusName =
+    (event as { status?: { type?: { name?: string } } }).status?.type?.name ?? '';
+  const statusState =
+    (event as { status?: { type?: { state?: string } } }).status?.type?.state ?? '';
+  const utcDate = normalizeEspnEventDate((event as { date?: string }).date);
 
   if (!homeAbbrev || !awayAbbrev || homeGoals == null || awayGoals == null) return null;
 
@@ -121,6 +130,9 @@ export function parseEspnScoreboardEvent(
     awayRedCards: redCards?.awayRedCards ?? 0,
     homeWinner: home?.winner === true,
     awayWinner: away?.winner === true,
+    utcDate,
+    statusName,
+    statusState,
   };
 }
 
@@ -147,5 +159,25 @@ export function findEspnEventForFixture(
   homeTla: string,
   awayTla: string
 ): EspnParsedEvent | undefined {
-  return events.find((event) => event.homeTla === homeTla && event.awayTla === awayTla);
+  for (const event of events) {
+    if (event.homeTla === homeTla && event.awayTla === awayTla) {
+      return event;
+    }
+
+    if (event.homeTla === awayTla && event.awayTla === homeTla) {
+      return {
+        ...event,
+        homeTla,
+        awayTla,
+        homeGoals: event.awayGoals,
+        awayGoals: event.homeGoals,
+        homeRedCards: event.awayRedCards,
+        awayRedCards: event.homeRedCards,
+        homeWinner: event.awayWinner,
+        awayWinner: event.homeWinner,
+      };
+    }
+  }
+
+  return undefined;
 }

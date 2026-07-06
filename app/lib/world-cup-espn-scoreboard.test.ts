@@ -57,6 +57,9 @@ describe('world-cup-espn-scoreboard', () => {
         awayRedCards: 1,
         homeWinner: false,
         awayWinner: false,
+        utcDate: null,
+        statusName: '',
+        statusState: '',
       },
     ]);
   });

@@ -4,7 +4,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {
   validateManualMatchesAgainstFixtures,
-  validateOverdueFixturesWithoutResults,
 } = require('./lib/sweepstake-ledger-validation.cjs');
 const {
   parseKnockoutMatchIds,
@@ -14,6 +13,8 @@ const {
   readDataFileSource,
   parseScheduleFixtures,
 } = require('./lib/world-cup-fixtures.cjs');
+const { resolveFixtureKickoff } = require('./lib/world-cup-due-fixtures-lib.cjs');
+const { buildEspnAliasMap } = require('./lib/world-cup-espn-scoreboard.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
@@ -120,6 +121,60 @@ function validateNonNegativeInteger(value, label, matchId, errors) {
   }
 }
 
+const IGNORED_ESPN_STATUSES = new Set([
+  'scheduled',
+  'postponed',
+  'canceled',
+  'cancelled',
+  'delayed',
+  'suspended',
+]);
+
+async function validateOverdueFixturesWithEspn(seenIds, fixtures, errors) {
+  const aliasToCode = buildEspnAliasMap(source);
+  const cache = new Map();
+
+  for (const fixture of fixtures) {
+    if (seenIds.has(fixture.id)) continue;
+
+    const homeTla = fixture.homeTla ?? fixture.homeTeam?.tla;
+    const awayTla = fixture.awayTla ?? fixture.awayTeam?.tla;
+    if (homeTla === 'TBD' || awayTla === 'TBD') continue;
+
+    const kickoff = new Date(fixture.utcDate);
+    if (Number.isNaN(kickoff.getTime())) {
+      errors.push(`${fixture.id}: invalid fixture utcDate ${fixture.utcDate}`);
+      continue;
+    }
+
+    const kickoffInfo = await resolveFixtureKickoff(
+      {
+        ...fixture,
+        homeTla,
+        awayTla,
+        homeName: fixture.homeName ?? fixture.homeTeam?.name ?? homeTla,
+        awayName: fixture.awayName ?? fixture.awayTeam?.name ?? awayTla,
+      },
+      now,
+      resultFinalityBufferMinutes,
+      aliasToCode,
+      cache,
+    );
+
+    const effectiveKickoff = new Date(kickoffInfo.effectiveUtcDate);
+    const minutesSinceKickoff = (now.getTime() - effectiveKickoff.getTime()) / 60000;
+    if (minutesSinceKickoff >= resultFinalityBufferMinutes) {
+      const delayNote = kickoffInfo.isDelayed
+        ? ` (ESPN kick-off ${kickoffInfo.effectiveUtcDate}, delayed ${kickoffInfo.delayMinutes}m from schedule)`
+        : '';
+      errors.push(
+        `${fixture.id}: kicked off ${Math.floor(minutesSinceKickoff)} minutes ago but has no manual result yet${delayNote}`,
+      );
+    }
+  }
+}
+
+async function main() {
 const teamCodes = parseTeamCodes();
 const manualMatches = parseManualMatches();
 const fixturesSource = extractConstArray('WORLD_CUP_FANTASY_FIXTURES');
@@ -176,7 +231,7 @@ const fixtures = parseScheduleFixtures(source);
 validateManualMatchesAgainstFixtures(manualMatches, fixtures, errors, {
   isKnockoutMatchId: (id) => isKnockoutMatchId(id, knockoutFixtureIds),
 });
-validateOverdueFixturesWithoutResults(seenIds, fixtures, now, resultFinalityBufferMinutes, errors);
+await validateOverdueFixturesWithEspn(seenIds, fixtures, errors);
 
 if (errors.length > 0) {
   console.error('World Cup manual match validation failed:');
@@ -189,3 +244,9 @@ if (errors.length > 0) {
 console.log(
   `Validated ${manualMatches.length} World Cup manual match(es); result finality buffer is ${resultFinalityBufferMinutes} minutes after kick-off.`,
 );
+}
+
+main().catch((error) => {
+  console.error(error instanceof Error ? error.message : error);
+  process.exit(1);
+});

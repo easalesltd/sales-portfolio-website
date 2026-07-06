@@ -62,6 +62,9 @@ describe('world-cup-live-scores', () => {
         awayRedCards: 0,
         homeWinner: false,
         awayWinner: false,
+        utcDate: null,
+        statusName: '',
+        statusState: '',
       },
     ]);
   });
@@ -124,6 +127,9 @@ describe('world-cup-live-scores', () => {
         awayRedCards: 1,
         homeWinner: false,
         awayWinner: true,
+        utcDate: '2026-06-24T19:00:00Z',
+        statusName: 'STATUS_FULL_TIME',
+        statusState: 'post',
       },
     ]);
 

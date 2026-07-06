@@ -21,7 +21,7 @@ function setOutput(name, value) {
 async function main() {
   const source = readDataFileSource();
   const dueOptions = getDueFixtureOptionsFromEnv();
-  const dueFixtures = getDueFixtures(source, dueOptions);
+  const dueFixtures = await getDueFixtures(source, dueOptions);
   const { london, ukWindow, matchdaySweepDue, matchdaySweepMessage } = getMatchdaySweepDue(
     source,
     dueFixtures,

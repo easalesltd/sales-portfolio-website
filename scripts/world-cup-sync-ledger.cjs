@@ -6,7 +6,9 @@ const {
   buildEspnAliasMap,
   findEspnMatchForFixture,
 } = require('./lib/world-cup-espn-scoreboard.cjs');
+const { updateWorldCupFixtureKickoff } = require('./lib/world-cup-fixture-kickoff.cjs');
 const {
+  applyDelayedKickoffUpdates,
   getDueFixtureOptionsFromEnv,
   getDueFixtures,
 } = require('./lib/world-cup-due-fixtures-lib.cjs');
@@ -38,9 +40,16 @@ const IGNORED_ESPN_STATUSES = new Set([
 ]);
 
 async function main() {
-  const source = readDataFileSource(dataPath);
   const dueOptions = getDueFixtureOptionsFromEnv();
-  const dueFixtures = getDueFixtures(source, dueOptions);
+
+  await applyDelayedKickoffUpdates({
+    ...dueOptions,
+    writeChanges,
+    updateKickoff: updateWorldCupFixtureKickoff,
+  });
+
+  let source = readDataFileSource(dataPath);
+  const dueFixtures = await getDueFixtures(source, dueOptions);
   const aliasToCode = buildEspnAliasMap(source);
   const espnCache = new Map();
   const fixturesSource = source.match(
@@ -50,8 +59,15 @@ async function main() {
 
   const pendingEntries = [];
   const skipped = [];
+  let kickoffFilesUpdated = false;
 
   for (const fixture of dueFixtures) {
+    if (writeChanges && fixture.kickoff?.isDelayed) {
+      if (updateWorldCupFixtureKickoff(fixture.id, fixture.kickoff.effectiveUtcDate)) {
+        kickoffFilesUpdated = true;
+      }
+    }
+
     let espnMatch;
     try {
       espnMatch = await findEspnMatchForFixture(
@@ -84,23 +100,33 @@ async function main() {
       continue;
     }
 
+    const ledgerUtcDate = fixture.kickoff?.effectiveUtcDate ?? fixture.utcDate;
+    const delayNote = fixture.kickoff?.isDelayed
+      ? ` Delayed kick-off; ESPN started ${ledgerUtcDate}.`
+      : '';
+    const comment = espnMatch.period.toLowerCase().includes('pen')
+      ? `Verified final result (ESPN sync; post-pens winner).${delayNote}`
+      : `Verified final result (ESPN sync).${delayNote}`;
+
     pendingEntries.push(
       formatManualMatchEntry(
-        fixture,
+        { ...fixture, utcDate: ledgerUtcDate },
         goals,
         {
           homeRedCards: espnMatch.homeRedCards,
           awayRedCards: espnMatch.awayRedCards,
         },
-        espnMatch.period.toLowerCase().includes('pen')
-          ? 'Verified final result (ESPN sync; post-pens winner).'
-          : 'Verified final result (ESPN sync).',
+        comment.trim(),
       ),
     );
 
     console.log(
       `Will append ${fixture.id}: ${fixture.homeTla} ${goals.homeGoals}-${goals.awayGoals} ${fixture.awayTla} (${espnMatch.period})`,
     );
+  }
+
+  if (kickoffFilesUpdated) {
+    source = readDataFileSource(dataPath);
   }
 
   if (pendingEntries.length === 0) {
@@ -114,7 +140,9 @@ async function main() {
   const updatedSource = appendManualMatches(source, pendingEntries);
 
   if (!writeChanges) {
-    console.log(`Dry run: ${pendingEntries.length} fixture(s) ready. Re-run with --write to update the ledger.`);
+    console.log(
+      `Dry run: ${pendingEntries.length} fixture(s) ready. Re-run with --write to update the ledger.`,
+    );
     return;
   }
 

@@ -8,7 +8,7 @@ alwaysApply: true
 ## Automation (GitHub Actions)
 
 - **Scores:** `.github/workflows/world-cup-score-agent.yml` runs `npm run world-cup:sync` (`scripts/world-cup-sync-ledger.cjs --write`) for every due fixture. ESPN finals are appended deterministically — do not rely on the Cursor agent for ledger scores.
-- **Due fixtures:** `scripts/world-cup-due-fixtures.cjs` keeps fixtures due until they are recorded (no 24-hour expiry). Bracket-generated R16+ ties are included via `parseScheduleFixtures()`.
+- **Due fixtures:** `scripts/world-cup-due-fixtures.cjs` keeps fixtures due until they are recorded (no 24-hour expiry). Bracket-generated R16+ ties are included via `parseScheduleFixtures()`. Delayed or rescheduled kick-offs are resolved from ESPN via `scripts/lib/espn-kickoff.cjs`, and bracket/fixture times auto-update when ESPN reports a late start.
 - **Roast:** the same workflow runs the Cursor agent only when `npm run world-cup:validate:roast` fails after a sync.
 - **Health check:** `.github/workflows/world-cup-health-check.yml` runs full `npm run world-cup:validate` every 30 minutes and fails loudly on overdue fixtures or stale roasts.
 - **Validate splits:** `npm run world-cup:validate:scores` (ledger + ESPN reds), `npm run world-cup:validate:roast`, `npm run world-cup:validate` (both).

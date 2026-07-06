@@ -14,6 +14,12 @@ const {
   parseEspnScoreboard,
 } = require('./english-pyramid-espn-scoreboard.cjs');
 const { isEspnFinalPeriod } = require('./world-cup-espn-finals.cjs');
+const {
+  formatKickoffDelayNote,
+  isFixtureDueByKickoff,
+  resolveEffectiveKickoff,
+  shouldLookupEspnKickoff,
+} = require('./espn-kickoff.cjs');
 
 const repoRoot = path.resolve(__dirname, '../..');
 const defaultDataPath = path.join(repoRoot, 'app/data/english-pyramid-fantasy.ts');
@@ -75,13 +81,7 @@ function getDueFixtureOptionsFromEnv() {
   return { updateDelayMinutes, dueLeadMinutes, now };
 }
 
-function getDueFixtures(source, options = {}) {
-  const {
-    updateDelayMinutes = DEFAULT_UPDATE_DELAY_MINUTES,
-    dueLeadMinutes = DEFAULT_DUE_LEAD_MINUTES,
-    now = new Date(),
-  } = options;
-
+function listUnrecordedFixtures(source) {
   const fixtures = parseFixturesFromSource(source).map((fixture) => ({
     id: fixture.id,
     utcDate: fixture.utcDate,
@@ -91,8 +91,6 @@ function getDueFixtures(source, options = {}) {
     awayTla: fixture.awayTeam.tla,
   }));
   const recordedMatchIds = parseRecordedMatchIds(source);
-  const updateDelayMs = updateDelayMinutes * 60 * 1000;
-  const dueLeadMs = dueLeadMinutes * 60 * 1000;
 
   return fixtures.filter((fixture) => {
     if (recordedMatchIds.has(fixture.id)) return false;
@@ -102,13 +100,59 @@ function getDueFixtures(source, options = {}) {
       throw new Error(`Invalid fixture utcDate for ${fixture.id}: ${fixture.utcDate}`);
     }
 
-    const dueAt = new Date(kickoff.getTime() + updateDelayMs);
-    return dueAt.getTime() <= now.getTime() + dueLeadMs;
+    return true;
   });
 }
 
+async function resolveFixtureKickoff(fixture, now, updateDelayMinutes, cache) {
+  const scheduledDue = isFixtureDueByKickoff(
+    fixture.utcDate,
+    now,
+    updateDelayMinutes,
+    DEFAULT_DUE_LEAD_MINUTES,
+  );
+  const needsLookup = shouldLookupEspnKickoff(fixture.utcDate, now, updateDelayMinutes);
+
+  if (!needsLookup && !scheduledDue) {
+    return resolveEffectiveKickoff(fixture.utcDate, null);
+  }
+
+  try {
+    const espnMatch = await loadEspnEventsForFixture(fixture, cache);
+    return resolveEffectiveKickoff(fixture.utcDate, espnMatch);
+  } catch (error) {
+    console.warn(
+      `Unable to resolve ESPN kick-off for ${fixture.id}: ${
+        error instanceof Error ? error.message : error
+      }`,
+    );
+    return resolveEffectiveKickoff(fixture.utcDate, null);
+  }
+}
+
+async function getDueFixtures(source, options = {}) {
+  const {
+    updateDelayMinutes = DEFAULT_UPDATE_DELAY_MINUTES,
+    dueLeadMinutes = DEFAULT_DUE_LEAD_MINUTES,
+    now = new Date(),
+  } = options;
+
+  const cache = new Map();
+  const dueFixtures = [];
+
+  for (const fixture of listUnrecordedFixtures(source)) {
+    const kickoff = await resolveFixtureKickoff(fixture, now, updateDelayMinutes, cache);
+    if (isFixtureDueByKickoff(kickoff.effectiveUtcDate, now, updateDelayMinutes, dueLeadMinutes)) {
+      dueFixtures.push({ ...fixture, kickoff });
+    }
+  }
+
+  return dueFixtures;
+}
+
 function formatFixture(fixture) {
-  return `${fixture.id} (${fixture.utcDate}) ${fixture.homeTla} ${fixture.homeName} vs ${fixture.awayTla} ${fixture.awayName}`;
+  const delayNote = fixture.kickoff ? formatKickoffDelayNote(fixture.kickoff) : '';
+  return `${fixture.id} (${fixture.utcDate}${delayNote}) ${fixture.homeTla} ${fixture.homeName} vs ${fixture.awayTla} ${fixture.awayName}`;
 }
 
 function espnSlugForFixture(fixture) {
@@ -292,7 +336,9 @@ module.exports = {
   getLondonContext,
   getMatchdaySweepDue,
   getUkResultsWindow,
+  listUnrecordedFixtures,
   parseRecordedMatchIds,
   parseSweepstakeTeamCodes,
   readDataFileSource,
+  resolveFixtureKickoff,
 };
