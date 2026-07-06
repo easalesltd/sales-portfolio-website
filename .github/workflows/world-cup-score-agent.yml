@@ -43,6 +43,18 @@ jobs:
           node-version: 20
           cache: npm
 
+      - name: Patch delayed kick-offs from ESPN
+        if: github.event_name == 'schedule'
+        run: npm run world-cup:patch-kickoffs
+
+      - name: Commit kick-off patches
+        if: github.event_name == 'schedule'
+        run: |
+          node scripts/lib/ci-git-commit.cjs \
+            --paths "app/data/world-cup-fantasy.ts,app/lib/world-cup-knockout-bracket.ts,scripts/lib/world-cup-knockout-bracket.cjs" \
+            --message "Patch delayed World Cup kick-off times from ESPN." \
+            --output-name kickoff_changed
+
       - name: Check whether automation is due
         id: due
         run: |
@@ -60,34 +72,12 @@ jobs:
         if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
         run: npm ci
 
-      - name: Sync finished scores from ESPN
+      - name: Sync finished scores and push to main
         if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
-        run: npm run world-cup:sync
-
-      - name: Commit synced score updates
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
         id: scores
         run: |
-          if git diff --quiet; then
-            echo "No score changes to commit."
-            echo "scores_changed=false" >> "$GITHUB_OUTPUT"
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add \
-              app/data/world-cup-fantasy.ts \
-              app/lib/world-cup-knockout-bracket.ts \
-              scripts/lib/world-cup-knockout-bracket.cjs
-            git commit -m "$(cat <<'EOF'
-Sync World Cup sweepstake scores from ESPN.
-
-Deterministic ledger append for finished fixtures; roast updates follow separately when needed.
-EOF
-)"
-            git pull --rebase origin main
-            git push origin HEAD:main
-            echo "scores_changed=true" >> "$GITHUB_OUTPUT"
-          fi
+          git pull --rebase origin main
+          npm run world-cup:ci-sync-commit
 
       - name: Validate synced scores
         if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
@@ -180,15 +170,11 @@ EOF
 
       - name: Commit and push roast update
         if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
+        env:
+          CI_GIT_USER_NAME: cursor-score-agent
+          CI_GIT_USER_EMAIL: cursor-score-agent@users.noreply.github.com
         run: |
-          if git diff --quiet; then
-            echo "No roast changes to commit."
-            exit 0
-          fi
-
-          git config user.name "cursor-score-agent"
-          git config user.email "cursor-score-agent@users.noreply.github.com"
-          git add app/data/world-cup-fantasy.ts
-          git commit -m "Update World Cup daily roast"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          node scripts/lib/ci-git-commit.cjs \
+            --paths "app/data/world-cup-fantasy.ts" \
+            --message "Update World Cup daily roast" \
+            --output-name roast_changed

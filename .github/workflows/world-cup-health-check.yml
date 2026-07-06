@@ -2,7 +2,7 @@ name: World Cup Health Check
 
 on:
   schedule:
-    # Self-heal missed syncs, then validate ledger and roast.
+    # Self-heal missed syncs, then validate ledger. Roast staleness is a warning only.
     - cron: '*/30 * * * *'
   workflow_dispatch:
 
@@ -33,35 +33,28 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Sync finished scores from ESPN
-        run: npm run world-cup:sync
+      - name: Self-heal score sync from ESPN
+        env:
+          WORLD_CUP_CI_COMMIT_MESSAGE: |-
+            Sync World Cup sweepstake scores from ESPN (health check).
 
-      - name: Commit synced score updates
-        id: scores
+            Deterministic ledger append for finished fixtures missed by the score agent.
         run: |
-          if git diff --quiet; then
-            echo "No score changes to commit."
-            echo "scores_changed=false" >> "$GITHUB_OUTPUT"
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add \
-              app/data/world-cup-fantasy.ts \
-              app/lib/world-cup-knockout-bracket.ts \
-              scripts/lib/world-cup-knockout-bracket.cjs
-            git commit -m "$(cat <<'EOF'
-Sync World Cup sweepstake scores from ESPN (health check).
+          git pull --rebase origin main
+          npm run world-cup:ci-sync-commit
 
-Deterministic ledger append for finished fixtures missed by the score agent.
-EOF
-)"
-            git pull --rebase origin main
-            git push origin HEAD:main
-            echo "scores_changed=true" >> "$GITHUB_OUTPUT"
+      - name: Validate World Cup ledger and ESPN reds
+        run: npm run world-cup:validate:scores
+
+      - name: Check daily roast freshness
+        run: |
+          set +e
+          npm run world-cup:validate:roast
+          code=$?
+          if [[ "$code" -ne 0 ]]; then
+            echo "::warning::World Cup daily roast is stale; the score agent should refresh it."
           fi
-
-      - name: Validate World Cup ledger, ESPN reds, and daily roast
-        run: npm run world-cup:validate
+          exit 0
 
       - name: Print standings snapshot
         if: always()

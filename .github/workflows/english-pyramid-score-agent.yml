@@ -27,7 +27,7 @@ permissions:
 
 concurrency:
   group: english-pyramid-score-agent
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   update-scores:
@@ -65,31 +65,17 @@ jobs:
         if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
         run: npm ci
 
-      - name: Sync finished scores from ESPN
+      - name: Sync finished scores and push to main
         if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
-        id: sync
-        run: npm run english-pyramid:sync
-
-      - name: Commit synced score updates
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
         id: scores
         run: |
-          if git diff --quiet; then
-            echo "No score changes to commit."
-            echo "scores_changed=false" >> "$GITHUB_OUTPUT"
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add app/data/english-pyramid-fantasy.ts
-            git commit -m "$(cat <<'EOF'
-Sync English pyramid sweepstake scores from ESPN.
+          git pull --rebase origin main
+          npm run english-pyramid:ci-sync-commit
 
-Deterministic ledger append for finished league fixtures on ESPN tiers; NL North/South and matchday sweeps may still need the agent.
-EOF
-)"
-            git push origin HEAD:main
-            echo "scores_changed=true" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Recheck due fixtures after ESPN sync
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        id: after_sync
+        run: node scripts/english-pyramid-due-fixtures.cjs
 
       - name: Validate synced scores
         if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
@@ -110,7 +96,7 @@ EOF
           if [[ "${{ steps.scores.outputs.scores_changed }}" == "true" ]]; then
             needs_agent=true
           fi
-          if [[ -n "${{ steps.sync.outputs.remaining_due }}" && "${{ steps.sync.outputs.remaining_due }}" != "0" ]]; then
+          if [[ "${{ steps.after_sync.outputs.due }}" == "true" ]]; then
             needs_agent=true
           fi
           if [[ "${{ steps.due.outputs.forced }}" == "true" ]]; then
@@ -196,14 +182,11 @@ EOF
 
       - name: Commit and push agent updates
         if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
+        env:
+          CI_GIT_USER_NAME: cursor-score-agent
+          CI_GIT_USER_EMAIL: cursor-score-agent@users.noreply.github.com
         run: |
-          if git diff --quiet; then
-            echo "No agent changes to commit."
-            exit 0
-          fi
-
-          git config user.name "cursor-score-agent"
-          git config user.email "cursor-score-agent@users.noreply.github.com"
-          git add app/data/english-pyramid-fantasy.ts
-          git commit -m "Update English pyramid sweepstake scores and roast"
-          git push origin HEAD:main
+          node scripts/lib/ci-git-commit.cjs \
+            --paths "app/data/english-pyramid-fantasy.ts" \
+            --message "Update English pyramid sweepstake scores and roast" \
+            --output-name agent_changed
