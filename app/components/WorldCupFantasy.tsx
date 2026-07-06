@@ -1153,7 +1153,12 @@ function StandingsProgressChart({
             const colorIndex = series.findIndex((entry) => entry.playerId === row.playerId);
             const standing = standings.find((entry) => entry.id === row.playerId);
             return (
-              <li key={row.playerId} className="flex items-center gap-2">
+              <li
+                key={row.playerId}
+                className={`flex items-center gap-2 ${
+                  standing?.allTeamsEliminated ? 'opacity-60 line-through decoration-red-500/70' : ''
+                }`}
+              >
                 <button
                   type="button"
                   onClick={() => toggleSelectedPlayer(row.playerId)}
@@ -1167,6 +1172,9 @@ function StandingsProgressChart({
                   <img src={row.crest} alt="" className="max-h-full max-w-full object-contain p-0.5" />
                 </button>
                 <span className="font-medium text-white">{standing ? progressTeamLabel(standing) : row.label}</span>
+                {standing?.allTeamsEliminated ? (
+                  <span className={`${t.c.squadEliminatedBadge} no-underline`}>Out</span>
+                ) : null}
                 <span className={`tabular-nums ${t.c.chartLegendPoints}`}>{row.currentTotal} pts</span>
               </li>
             );
@@ -1178,14 +1186,24 @@ function StandingsProgressChart({
 
 function teamsLeftLabel(row: PlayerStanding, themeId: string): string {
   if (themeId === 'english-pyramid') return `${row.teamCount} clubs`;
+  if (row.allTeamsEliminated) return 'Eliminated';
   const alive = row.teamBreakdown.filter((team) => !team.eliminated).length;
   if (alive === row.teamCount) return `${row.teamCount} teams`;
+  if (alive === 0) return 'Eliminated';
+  if (alive === 1) return '1 left — last hope';
   return `${alive} left`;
 }
 
-function teamsLeftCount(row: PlayerStanding, themeId: string): number {
+function teamsLeftCount(row: PlayerStanding, themeId: string): string | number {
   if (themeId === 'english-pyramid') return row.teamCount;
-  return row.teamBreakdown.filter((team) => !team.eliminated).length;
+  if (row.allTeamsEliminated) return 'OUT';
+  const alive = row.teamBreakdown.filter((team) => !team.eliminated).length;
+  if (alive === 0) return 'OUT';
+  return alive;
+}
+
+function isWorldCupPlayerEliminated(player: PlayerStanding, themeId: string): boolean {
+  return themeId === 'world-cup' && player.allTeamsEliminated === true;
 }
 
 function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
@@ -1216,7 +1234,11 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
             <li
               key={row.id}
               className={`grid ${mobileGridClass} items-center gap-x-2 px-2 py-1.5 ${
-                index === 0 ? t.c.leaderRowMobile : 'bg-neutral-950/40'
+                isWorldCupPlayerEliminated(row, t.id)
+                  ? `${t.c.standingsRowEliminated} text-red-200/90`
+                  : index === 0
+                    ? t.c.leaderRowMobile
+                    : 'bg-neutral-950/40'
               }`}
             >
               <span className="text-[11px] text-neutral-300">
@@ -1244,7 +1266,9 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 </span>
               ) : (
                 <span
-                  className="shrink-0 text-right text-xs font-medium tabular-nums text-neutral-200"
+                  className={`shrink-0 text-right text-xs font-medium tabular-nums ${
+                    isWorldCupPlayerEliminated(row, t.id) ? 'font-bold text-red-300' : 'text-neutral-200'
+                  }`}
                   title={teamsLeftLabel(row, t.id)}
                 >
                   {teamsLeftCount(row, t.id)}
@@ -1277,7 +1301,16 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
           </thead>
           <tbody className="divide-y divide-neutral-800 text-neutral-100">
             {standings.map((row, index) => (
-              <tr key={row.id} className={index === 0 ? t.c.leaderRow : undefined}>
+              <tr
+                key={row.id}
+                className={
+                  isWorldCupPlayerEliminated(row, t.id)
+                    ? `${t.c.standingsRowEliminated} text-red-100/90`
+                    : index === 0
+                      ? t.c.leaderRow
+                      : undefined
+                }
+              >
                 <td className="px-3 py-2 text-neutral-300">
                   <RankWithMovement
                     rank={index + 1}
@@ -1287,8 +1320,17 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 </td>
                 <td className="px-3 py-2 font-medium">
                   <PlayerIdentity player={row} />
+                  {isWorldCupPlayerEliminated(row, t.id) ? (
+                    <span className={`ml-2 ${t.c.squadEliminatedBadge}`}>Out</span>
+                  ) : null}
                 </td>
-                <td className="px-3 py-2 text-neutral-300">{teamsLeftLabel(row, t.id)}</td>
+                <td
+                  className={`px-3 py-2 ${
+                    isWorldCupPlayerEliminated(row, t.id) ? 'font-semibold text-red-300' : 'text-neutral-300'
+                  }`}
+                >
+                  {teamsLeftLabel(row, t.id)}
+                </td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.playedMatches}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.wins}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
@@ -1621,17 +1663,25 @@ function PlayerSquadCard({
   const [enlarged, setEnlarged] = useState<'manager' | 'crest' | null>(null);
   const isLeader = rank === 1;
   const isLast = rank === totalPlayers;
+  const isEliminated = isWorldCupPlayerEliminated(player, t.id);
   const photoFrame = managerPhotoFrameClass(isLeader, isLast, t.id);
+  const cardClass = isEliminated ? t.c.squadCardEliminated : isLeader ? t.c.squadCardLeader : t.c.squadCard;
+  const photoToneClass = isEliminated ? 'grayscale-[0.85] opacity-80' : '';
 
   return (
-    <article className={isLeader ? t.c.squadCardLeader : t.c.squadCard}>
-      <div className="px-4 py-3">
+    <article className={cardClass} aria-label={isEliminated ? `${managerLabel} eliminated from the World Cup` : undefined}>
+      {isEliminated ? (
+        <div className={t.c.squadEliminatedBanner}>
+          Eliminated — every nation out of the World Cup
+        </div>
+      ) : null}
+      <div className={`px-4 py-3 ${isEliminated ? 'opacity-95' : ''}`}>
         <div className="space-y-3">
           <div className="grid w-full grid-cols-2 gap-2 sm:mx-auto sm:w-fit sm:gap-3">
             <button
               type="button"
               onClick={() => setEnlarged('manager')}
-              className={`${t.c.squadPhotoBtn} ${photoFrame}`}
+              className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass}`}
               aria-label={`View enlarged photo of ${managerLabel}`}
             >
               {/* Native img avoids stale next/image optimizer cache after portrait swaps. */}
@@ -1644,7 +1694,7 @@ function PlayerSquadCard({
             <button
               type="button"
               onClick={() => setEnlarged('crest')}
-              className={`${t.c.squadPhotoBtn} ${photoFrame} relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
+              className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
               aria-label={`View enlarged ${managerLabel} club crest`}
             >
               {/* background-size: contain cannot stretch — avoids img flex sizing bugs on mobile */}
@@ -1664,6 +1714,7 @@ function PlayerSquadCard({
                 ) : null}
               </span>
               <PlayerIdentity player={player} heading />
+              {isEliminated ? <span className={t.c.squadEliminatedBadge}>Eliminated</span> : null}
               <span className={`text-sm font-semibold tabular-nums ${t.c.points}`}>{player.points} pts</span>
               {t.id === 'english-pyramid' ? (
                 <EnglishPyramidShareButton
@@ -1683,6 +1734,16 @@ function PlayerSquadCard({
                     losses={player.losses}
                     redCards={player.redCards}
                   />
+                ) : isEliminated ? (
+                  <span className="font-semibold text-red-300">
+                    0 alive · all {player.teamCount} nations eliminated ·{' '}
+                    <FormSummary
+                      wins={player.wins}
+                      draws={player.draws}
+                      losses={player.losses}
+                      redCards={player.redCards}
+                    />
+                  </span>
                 ) : (
                   <>
                     {player.teamBreakdown.filter((team) => !team.eliminated).length} alive ·{' '}
@@ -1698,6 +1759,13 @@ function PlayerSquadCard({
               </span>
             </div>
             <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
+            {isEliminated ? (
+              <p className="mt-2 text-sm font-medium leading-relaxed text-red-200/95">
+                {player.id === 'dave'
+                  ? 'Built the sweepstake, drafted the Creamy Creamers, and became the first manager with nobody left in the tournament. The architect of his own humiliation.'
+                  : 'Every nation in this squad is out. No more points incoming — only the scoreboard and the shame.'}
+              </p>
+            ) : null}
             <p className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-300">
               {t.id === 'english-pyramid'
                 ? player.teams.map((code) => {

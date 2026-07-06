@@ -14,7 +14,16 @@ export function isEspnFullTimePeriod(period: string): boolean {
   );
 }
 
-export function isEspnFinalPeriod(period: string): boolean {
+export function isEspnFinalPeriod(
+  period: string,
+  status?: { statusState?: string; statusName?: string }
+): boolean {
+  const state = String(status?.statusState || '').toLowerCase();
+  if (state === 'post') return true;
+
+  const statusName = String(status?.statusName || '').toUpperCase();
+  if (statusName.includes('FULL_TIME') || statusName.includes('FINAL')) return true;
+
   const normalized = period.trim().toLowerCase();
   if (!normalized) return false;
   if (isEspnFullTimePeriod(period)) return true;

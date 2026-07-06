@@ -56,6 +56,13 @@ export type TeamStanding = {
   eliminated?: boolean;
 };
 
+export function isPlayerFullyEliminated(
+  player: Pick<PlayerStanding, 'teamBreakdown'>
+): boolean {
+  const { teamBreakdown } = player;
+  return teamBreakdown.length > 0 && teamBreakdown.every((team) => team.eliminated === true);
+}
+
 export type PlayerStanding = {
   id: string;
   name: string;
@@ -79,6 +86,8 @@ export type PlayerStanding = {
   playedMatches: number;
   /** Positive = climbed, negative = dropped, 0 = unchanged, null = no prior snapshot. */
   rankChange?: number | null;
+  /** World Cup knockouts: every assigned nation is out of the tournament. */
+  allTeamsEliminated?: boolean;
 };
 
 export type MatchPointsEntry = {
@@ -581,8 +590,12 @@ export function computeEliminatedTeamCodes(
 export function resolveManagerImageForStandings(
   player: Pick<WorldCupFantasyPlayer, 'id' | 'managerImage'>,
   rankIndex: number,
-  playerCount: number
+  playerCount: number,
+  allTeamsEliminated = false
 ): string {
+  if (allTeamsEliminated && playerCount > 1) {
+    return `/images/world-cup-fantasy/managers/${player.id}-bottom.png`;
+  }
   if (playerCount > 1 && rankIndex === 0) {
     return `/images/world-cup-fantasy/managers/${player.id}-top.png`;
   }
@@ -702,6 +715,7 @@ export function computeStandings(
 
   for (const row of standings) {
     row.teamBreakdown.sort(compareByStandingsOrder);
+    row.allTeamsEliminated = isPlayerFullyEliminated(row);
   }
 
   standings.sort(compareByStandingsOrder);
@@ -710,7 +724,12 @@ export function computeStandings(
   standings.forEach((row, index) => {
     const player = playerById.get(row.id);
     if (player) {
-      row.managerImage = resolveManagerImageForStandings(player, index, standings.length);
+      row.managerImage = resolveManagerImageForStandings(
+        player,
+        index,
+        standings.length,
+        row.allTeamsEliminated === true
+      );
     }
   });
 

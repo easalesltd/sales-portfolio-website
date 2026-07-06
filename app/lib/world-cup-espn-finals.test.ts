@@ -13,6 +13,9 @@ describe('world-cup-espn-finals', () => {
     expect(isEspnFinalPeriod('FT-Pens')).toBe(true);
     expect(isEspnFinalPeriod('Final Score - After Penalties')).toBe(true);
     expect(isEspnFinalPeriod('41\'')).toBe(false);
+    expect(isEspnFinalPeriod('90\'+8\'', { statusState: 'post', statusName: 'STATUS_FULL_TIME' })).toBe(
+      true
+    );
   });
 
   it('records post-pens winners in knockout ledger scores', () => {

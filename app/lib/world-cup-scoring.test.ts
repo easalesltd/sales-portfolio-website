@@ -6,6 +6,7 @@ import {
   getTeamMatchDisplay,
   getMatchdaySchedule,
   getUpcomingFixtures,
+  isPlayerFullyEliminated,
   resolveManagerImageForStandings,
   scoreTeamMatch,
   type WorldCupMatchResult,
@@ -401,6 +402,19 @@ describe('World Cup manual ledger integrity', () => {
     expect(eliminated.has('BRA')).toBe(false);
     expect(eliminated.has('JPN')).toBe(true);
     expect(eliminated.has('PAR')).toBe(false);
+  });
+});
+
+describe('isPlayerFullyEliminated', () => {
+  it('marks Dave out once Portugal lose in the last sixteen', () => {
+    const finished = WORLD_CUP_FANTASY_MANUAL_MATCHES.map(manualMatchToResult);
+    const { standings } = computeStandings(WORLD_CUP_FANTASY_PLAYERS, finished, WORLD_CUP_FANTASY_FIXTURES);
+    const dave = standings.find((row) => row.id === 'dave');
+
+    expect(dave).toBeDefined();
+    expect(isPlayerFullyEliminated(dave!)).toBe(true);
+    expect(dave!.allTeamsEliminated).toBe(true);
+    expect(dave!.teamBreakdown.every((team) => team.eliminated)).toBe(true);
   });
 });
 

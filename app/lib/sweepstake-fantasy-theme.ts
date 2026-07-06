@@ -69,6 +69,10 @@ export type SweepstakeFantasyTheme = {
     teamResultsPoints: string;
     squadCard: string;
     squadCardLeader: string;
+    squadCardEliminated: string;
+    squadEliminatedBanner: string;
+    squadEliminatedBadge: string;
+    standingsRowEliminated: string;
     squadRankBadge: string;
     squadRankBadgeLeader: string;
     squadPhotoBtn: string;
@@ -178,6 +182,13 @@ export const worldCupFantasyTheme: SweepstakeFantasyTheme = {
     teamResultsPoints: 'shrink-0 font-semibold tabular-nums text-teal-300',
     squadCard: 'rounded-lg border border-neutral-700 bg-neutral-950/40',
     squadCardLeader: 'rounded-lg border border-teal-700/40 bg-neutral-950/40 shadow-[0_0_24px_rgba(45,212,191,0.08)]',
+    squadCardEliminated:
+      'relative overflow-hidden rounded-lg border-2 border-red-600/80 bg-red-950/35 shadow-[0_0_36px_rgba(220,38,38,0.22)]',
+    squadEliminatedBanner:
+      'border-b border-red-700/70 bg-red-900/50 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.2em] text-red-100 sm:text-sm',
+    squadEliminatedBadge:
+      'inline-flex items-center rounded border border-red-500/80 bg-red-950/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-200 sm:text-xs',
+    standingsRowEliminated: 'bg-red-950/25',
     squadRankBadge: 'inline-flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-xs font-bold text-teal-300',
     squadRankBadgeLeader:
       'inline-flex h-6 w-6 items-center justify-center rounded-full bg-teal-950 text-xs font-bold text-teal-200 ring-1 ring-teal-500/50',
@@ -288,6 +299,10 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
     squadCard: 'rounded-lg border border-[#1a2744] bg-[#0a0f1a]/40',
     squadCardLeader:
       'rounded-lg border border-[#d4af37]/35 bg-[#0a0f1a]/50 shadow-[0_0_28px_rgba(212,175,55,0.1)] ring-1 ring-[#d4af37]/20',
+    squadCardEliminated: 'rounded-lg border border-[#1a2744] bg-[#0a0f1a]/40',
+    squadEliminatedBanner: '',
+    squadEliminatedBadge: '',
+    standingsRowEliminated: '',
     squadRankBadge:
       'inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#1a2744] text-xs font-bold text-[#e8dfc8]',
     squadRankBadgeLeader:

@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Monday in the last sixteen and England hold their nerve in the small hours: Mexico take the lead twice but the Three Lions come back to win 3-2 in Foxborough, sending Nest\'s Englishmen through and knocking Dave\'s Mexicans out. Nest leads on 49, Chris is second on 46, Jon third on 44, Scott fourth on 43, and Ash stays bottom on 30.';
+  'Monday night in the last sixteen and Dave\'s tournament ends where he built it — in front of his own scoreboard. England come from behind to beat Mexico 3-2 in Foxborough, Spain edge Portugal 1-0 in East Rutherford, and The Creamy Creamers become the first squad with all eight nations eliminated: architect of the sweepstake, first manager out, still fifth on 31 with Ash bottom on 30. Nest leads on 49, Chris is second on 46, Jon third on 44, and Scott fourth on 43.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1706,6 +1706,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 3,
     awayGoals: 2,
     homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). Spain knock Portugal out; Dave's last nation gone. */
+    id: '2026-07-06-r16-5',
+    utcDate: '2026-07-06T19:00:00Z',
+    homeTeam: { name: 'Portugal', tla: 'POR' },
+    awayTeam: { name: 'Spain', tla: 'ESP' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
     awayRedCards: 0,
   },
 ];

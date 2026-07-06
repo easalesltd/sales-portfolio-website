@@ -17,7 +17,13 @@ function isEspnFullTimePeriod(period) {
   );
 }
 
-function isEspnFinalPeriod(period) {
+function isEspnFinalPeriod(period, status = {}) {
+  const state = String(status.statusState || '').toLowerCase();
+  if (state === 'post') return true;
+
+  const statusName = String(status.statusName || '').toUpperCase();
+  if (statusName.includes('FULL_TIME') || statusName.includes('FINAL')) return true;
+
   const normalized = period.trim().toLowerCase();
   if (!normalized) return false;
   if (isEspnFullTimePeriod(period)) return true;

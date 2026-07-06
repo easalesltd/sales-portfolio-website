@@ -88,7 +88,7 @@ async function main() {
       continue;
     }
 
-    if (!isEspnFinalPeriod(espnMatch.period)) {
+    if (!isEspnFinalPeriod(espnMatch.period, espnMatch)) {
       skipped.push(`${fixture.id}: ESPN status "${espnMatch.period}" is not final`);
       continue;
     }
