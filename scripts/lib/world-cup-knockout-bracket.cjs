@@ -43,7 +43,7 @@ const KNOCKOUT_BRACKET_TEMPLATES = [
   },
   {
     id: '2026-07-06-r16-4',
-    utcDate: '2026-07-06T00:00:00Z',
+    utcDate: '2026-07-06T01:00:00Z',
     round: 'R16',
     home: { kind: 'winner', slot: 'R32-8' },
     away: { kind: 'winner', slot: 'R32-7' },

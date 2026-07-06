@@ -100,6 +100,45 @@ function espnDateParamFromUtcDate(utcDate) {
   return `${y}${m}${d}`;
 }
 
+function espnDateParamsForUtcDate(utcDate) {
+  const kickoff = new Date(utcDate);
+  if (Number.isNaN(kickoff.getTime())) return [];
+
+  const params = [];
+  for (const offsetDays of [0, -1, 1]) {
+    const date = new Date(Date.UTC(
+      kickoff.getUTCFullYear(),
+      kickoff.getUTCMonth(),
+      kickoff.getUTCDate() + offsetDays,
+    ));
+    const param = espnDateParamFromUtcDate(date.toISOString());
+    if (param && !params.includes(param)) params.push(param);
+  }
+
+  return params;
+}
+
+async function findEspnMatchForFixture(fixture, aliasToCode, cache, ignoreStatuses) {
+  for (const dateParam of espnDateParamsForUtcDate(fixture.utcDate)) {
+    if (!cache.has(dateParam)) {
+      const payload = await fetchEspnScoreboardForDate(dateParam);
+      cache.set(
+        dateParam,
+        parseEspnScoreboard(payload, aliasToCode, ignoreStatuses),
+      );
+    }
+
+    const espnMatch = findEspnEventForFixture(
+      cache.get(dateParam),
+      fixture.homeTla,
+      fixture.awayTla,
+    );
+    if (espnMatch) return espnMatch;
+  }
+
+  return null;
+}
+
 async function fetchEspnScoreboardForDate(dateParam) {
   const url = dateParam
     ? `${ESPN_SCOREBOARD_URL}?dates=${dateParam}&limit=100`
@@ -125,8 +164,10 @@ module.exports = {
   buildEspnAliasMap,
   countRedCardsFromEspnCompetition,
   espnDateParamFromUtcDate,
+  espnDateParamsForUtcDate,
   fetchEspnScoreboardForDate,
   findEspnEventForFixture,
+  findEspnMatchForFixture,
   normalizeEspnAbbrevToTeamCode,
   parseEspnScoreboard,
   parseEspnScoreboardEvent,

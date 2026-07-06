@@ -2,6 +2,8 @@
  * Append English pyramid manual ledger entries to english-pyramid-fantasy.ts.
  */
 
+const { findManualMatchesArrayOpen } = require('./world-cup-ledger-write.cjs');
+
 function escapeSingleQuotes(value) {
   return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
@@ -27,19 +29,11 @@ function formatManualMatchEntry(fixture, goals, redCards, comment = 'Verified fi
 function appendManualMatches(source, entries) {
   if (entries.length === 0) return source;
 
-  const header = 'export const ENGLISH_PYRAMID_MANUAL_MATCHES';
-  const exportIndex = source.indexOf(header);
-  if (exportIndex === -1) {
-    throw new Error('Unable to locate ENGLISH_PYRAMID_MANUAL_MATCHES.');
-  }
-
-  const arrayOpen = source.indexOf('[', exportIndex);
-  if (arrayOpen === -1) {
-    throw new Error('Unable to locate ENGLISH_PYRAMID_MANUAL_MATCHES array opener.');
-  }
-
+  const exportName = 'ENGLISH_PYRAMID_MANUAL_MATCHES';
+  const arrayOpen = findManualMatchesArrayOpen(source, exportName);
   let depth = 0;
   let arrayClose = -1;
+
   for (let i = arrayOpen; i < source.length; i += 1) {
     const char = source[i];
     if (char === '[') depth += 1;
@@ -53,7 +47,7 @@ function appendManualMatches(source, entries) {
   }
 
   if (arrayClose === -1) {
-    throw new Error('Unable to locate ENGLISH_PYRAMID_MANUAL_MATCHES closing bracket.');
+    throw new Error(`Unable to locate ${exportName} closing bracket.`);
   }
 
   const block = `${entries.join('\n')}\n`;

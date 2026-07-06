@@ -5,10 +5,7 @@
 
 const {
   buildEspnAliasMap,
-  espnDateParamFromUtcDate,
-  fetchEspnScoreboardForDate,
-  findEspnEventForFixture,
-  parseEspnScoreboard,
+  findEspnMatchForFixture,
 } = require('./world-cup-espn-scoreboard.cjs');
 const { isEspnFinalPeriod } = require('./world-cup-espn-finals.cjs');
 const { readDataFileSource, parseScheduleFixtures } = require('./world-cup-fixtures.cjs');
@@ -96,30 +93,19 @@ function formatEspnHint(fixture, espnMatch) {
   return ` ESPN: ${scoreLine} (${finalTag}); ${redLine}.`;
 }
 
-async function loadEspnEventsForDate(dateParam, aliasToCode, cache) {
-  if (cache.has(dateParam)) return cache.get(dateParam);
-
-  const payload = await fetchEspnScoreboardForDate(dateParam);
-  const events = parseEspnScoreboard(payload, aliasToCode, IGNORED_ESPN_STATUSES);
-  cache.set(dateParam, events);
-  return events;
-}
-
 async function formatDueFixturesWithEspnHints(dueFixtures, source) {
   const aliasToCode = buildEspnAliasMap(source);
   const cache = new Map();
   const lines = [];
 
   for (const fixture of dueFixtures) {
-    const dateParam = espnDateParamFromUtcDate(fixture.utcDate);
-    if (!dateParam) {
-      lines.push(formatFixture(fixture));
-      continue;
-    }
-
     try {
-      const events = await loadEspnEventsForDate(dateParam, aliasToCode, cache);
-      const espnMatch = findEspnEventForFixture(events, fixture.homeTla, fixture.awayTla);
+      const espnMatch = await findEspnMatchForFixture(
+        fixture,
+        aliasToCode,
+        cache,
+        IGNORED_ESPN_STATUSES,
+      );
       lines.push(`${formatFixture(fixture)}${formatEspnHint(fixture, espnMatch)}`);
     } catch (error) {
       lines.push(formatFixture(fixture));

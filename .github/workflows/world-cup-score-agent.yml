@@ -64,12 +64,9 @@ jobs:
         if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
         run: npm run world-cup:sync
 
-      - name: Validate synced scores
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
-        run: npm run world-cup:validate:scores
-
       - name: Commit synced score updates
         if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        id: scores
         run: |
           if git diff --quiet; then
             echo "No score changes to commit."
@@ -87,7 +84,10 @@ EOF
             git push origin HEAD:main
             echo "scores_changed=true" >> "$GITHUB_OUTPUT"
           fi
-        id: scores
+
+      - name: Validate synced scores
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        run: npm run world-cup:validate:scores
 
       - name: Build after score sync
         if: steps.scores.outputs.scores_changed == 'true'

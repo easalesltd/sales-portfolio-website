@@ -70,10 +70,6 @@ jobs:
         id: sync
         run: npm run english-pyramid:sync
 
-      - name: Validate synced scores
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
-        run: npm run english-pyramid:validate:scores
-
       - name: Commit synced score updates
         if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
         id: scores
@@ -94,6 +90,10 @@ EOF
             git push origin HEAD:main
             echo "scores_changed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Validate synced scores
+        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        run: npm run english-pyramid:validate:scores
 
       - name: Build after score sync
         if: steps.scores.outputs.scores_changed == 'true'

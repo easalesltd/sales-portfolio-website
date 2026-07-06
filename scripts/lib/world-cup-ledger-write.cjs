@@ -18,28 +18,34 @@ function formatManualMatchEntry(fixture, goals, redCards, comment = 'Verified fi
     `    awayGoals: ${goals.awayGoals},`,
     `    homeRedCards: ${redCards.homeRedCards},`,
     `    awayRedCards: ${redCards.awayRedCards},`,
+    '  },',
   ];
 
-  lines.push('  },');
   return lines.join('\n');
 }
 
-function appendManualMatches(source, entries) {
-  if (entries.length === 0) return source;
-
-  const header = 'export const WORLD_CUP_FANTASY_MANUAL_MATCHES';
+function findManualMatchesArrayOpen(source, exportName) {
+  const header = `export const ${exportName}`;
   const exportIndex = source.indexOf(header);
   if (exportIndex === -1) {
-    throw new Error('Unable to locate WORLD_CUP_FANTASY_MANUAL_MATCHES.');
+    throw new Error(`Unable to locate ${exportName}.`);
   }
 
-  const arrayOpen = source.indexOf('[', exportIndex);
+  const arrayOpen = source.indexOf('= [', exportIndex);
   if (arrayOpen === -1) {
-    throw new Error('Unable to locate WORLD_CUP_FANTASY_MANUAL_MATCHES array opener.');
+    throw new Error(`Unable to locate ${exportName} array opener.`);
   }
 
+  return arrayOpen + 2;
+}
+
+function appendManualMatches(source, entries, exportName = 'WORLD_CUP_FANTASY_MANUAL_MATCHES') {
+  if (entries.length === 0) return source;
+
+  const arrayOpen = findManualMatchesArrayOpen(source, exportName);
   let depth = 0;
   let arrayClose = -1;
+
   for (let i = arrayOpen; i < source.length; i += 1) {
     const char = source[i];
     if (char === '[') depth += 1;
@@ -53,7 +59,7 @@ function appendManualMatches(source, entries) {
   }
 
   if (arrayClose === -1) {
-    throw new Error('Unable to locate WORLD_CUP_FANTASY_MANUAL_MATCHES closing bracket.');
+    throw new Error(`Unable to locate ${exportName} closing bracket.`);
   }
 
   const block = `${entries.join('\n')}\n`;
@@ -62,5 +68,6 @@ function appendManualMatches(source, entries) {
 
 module.exports = {
   appendManualMatches,
+  findManualMatchesArrayOpen,
   formatManualMatchEntry,
 };

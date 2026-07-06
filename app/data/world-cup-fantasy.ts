@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Saturday cleared the last round-of-32 slot and opened the last sixteen: Colombia saw off Ghana without a shot on target, Morocco dismantled Canada 3-0 in Dallas, and France edged Paraguay 1-0 in Los Angeles. Chris climbs to 47 on Colombia and France, Jon sits second on 44 after Morocco\'s four-point haul, Scott slips to 43 with Canada and Paraguay out, and Ash stays bottom on 30.';
+  'Sunday in the last sixteen and Brazil\'s carnival ends in the cold: Norway come from behind to win 2-1 in Pasadena, knocking Jon\'s Brazilians out of the tournament. Nest jumps to 46 in second on Norway\'s three-point haul, Chris leads on 47, Scott is fourth on 43, and Ash stays bottom on 30.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1683,6 +1683,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'France', tla: 'FRA' },
     homeGoals: 0,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). Norway knock Brazil out in the last sixteen. */
+    id: '2026-07-05-r16-3',
+    utcDate: '2026-07-05T20:00:00Z',
+    homeTeam: { name: 'Brazil', tla: 'BRA' },
+    awayTeam: { name: 'Norway', tla: 'NOR' },
+    homeGoals: 1,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },

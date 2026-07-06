@@ -4,10 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {
   buildEspnAliasMap,
-  espnDateParamFromUtcDate,
-  fetchEspnScoreboardForDate,
-  findEspnEventForFixture,
-  parseEspnScoreboard,
+  findEspnMatchForFixture,
 } = require('./lib/world-cup-espn-scoreboard.cjs');
 const {
   getDueFixtureOptionsFromEnv,
@@ -40,15 +37,6 @@ const IGNORED_ESPN_STATUSES = new Set([
   'suspended',
 ]);
 
-async function loadEspnEventsForDate(dateParam, aliasToCode, cache) {
-  if (cache.has(dateParam)) return cache.get(dateParam);
-
-  const payload = await fetchEspnScoreboardForDate(dateParam);
-  const events = parseEspnScoreboard(payload, aliasToCode, IGNORED_ESPN_STATUSES);
-  cache.set(dateParam, events);
-  return events;
-}
-
 async function main() {
   const source = readDataFileSource(dataPath);
   const dueOptions = getDueFixtureOptionsFromEnv();
@@ -64,15 +52,14 @@ async function main() {
   const skipped = [];
 
   for (const fixture of dueFixtures) {
-    const dateParam = espnDateParamFromUtcDate(fixture.utcDate);
-    if (!dateParam) {
-      skipped.push(`${fixture.id}: missing ESPN date param`);
-      continue;
-    }
-
-    let events;
+    let espnMatch;
     try {
-      events = await loadEspnEventsForDate(dateParam, aliasToCode, espnCache);
+      espnMatch = await findEspnMatchForFixture(
+        fixture,
+        aliasToCode,
+        espnCache,
+        IGNORED_ESPN_STATUSES,
+      );
     } catch (error) {
       skipped.push(
         `${fixture.id}: ESPN fetch failed (${error instanceof Error ? error.message : error})`,
@@ -80,7 +67,6 @@ async function main() {
       continue;
     }
 
-    const espnMatch = findEspnEventForFixture(events, fixture.homeTla, fixture.awayTla);
     if (!espnMatch) {
       skipped.push(`${fixture.id}: no ESPN event yet`);
       continue;
