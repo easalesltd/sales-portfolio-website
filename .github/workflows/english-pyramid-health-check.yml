@@ -25,19 +25,31 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Check if in match window
+        id: match_window
+        run: node scripts/english-pyramid-match-window-check.cjs
+
+      - name: Skip when outside match window
+        if: steps.match_window.outputs.should_run != 'true'
+        run: echo "Outside match window - skipping health check to save CI resources."
+
       - name: Sync with latest main
+        if: steps.match_window.outputs.should_run == 'true'
         run: node scripts/ci-pull-main.cjs
 
       - name: Setup Node
+        if: steps.match_window.outputs.should_run == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
       - name: Install dependencies
+        if: steps.match_window.outputs.should_run == 'true'
         run: npm ci
 
       - name: Self-heal score sync from ESPN
+        if: steps.match_window.outputs.should_run == 'true'
         env:
           ENGLISH_PYRAMID_CI_COMMIT_MESSAGE: |-
             Sync English pyramid sweepstake scores from ESPN (health check).
@@ -46,8 +58,9 @@ jobs:
         run: npm run english-pyramid:ci-sync-commit
 
       - name: Validate English pyramid ledger and ESPN reds
+        if: steps.match_window.outputs.should_run == 'true'
         run: npm run english-pyramid:validate:scores
 
       - name: Print standings snapshot
-        if: always()
+        if: steps.match_window.outputs.should_run == 'true' && always()
         run: npm run english-pyramid:standings
