@@ -2,8 +2,8 @@ name: World Cup Score Agent
 
 on:
   schedule:
-    # Sync ESPN finals first, then refresh the daily roast when standings move.
-    - cron: '*/5 * * * *'
+    # Check every 15 minutes, but only run during match windows (1hr before until 1hr after matches)
+    - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
       force_agent:
@@ -38,21 +38,31 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Check if in match window
+        id: match_window
+        run: node scripts/world-cup-match-window-check.cjs
+
+      - name: Skip when outside match window
+        if: steps.match_window.outputs.should_run != 'true'
+        run: echo "Outside match window - skipping workflow to save CI resources."
+
       - name: Sync with latest main
+        if: steps.match_window.outputs.should_run == 'true'
         run: node scripts/ci-pull-main.cjs
 
       - name: Setup Node
+        if: steps.match_window.outputs.should_run == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Patch delayed kick-offs from ESPN
-        if: github.event_name == 'schedule'
+        if: steps.match_window.outputs.should_run == 'true' && github.event_name == 'schedule'
         run: npm run world-cup:patch-kickoffs
 
       - name: Commit kick-off patches
-        if: github.event_name == 'schedule'
+        if: steps.match_window.outputs.should_run == 'true' && github.event_name == 'schedule'
         run: |
           node scripts/lib/ci-git-commit.cjs \
             --paths "app/data/world-cup-fantasy.ts,app/lib/world-cup-knockout-bracket.ts,scripts/lib/world-cup-knockout-bracket.cjs" \
@@ -61,6 +71,7 @@ jobs:
             --ledger-guard world-cup
 
       - name: Check whether automation is due
+        if: steps.match_window.outputs.should_run == 'true'
         id: due
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.force_agent }}" == "true" ]]; then
@@ -70,29 +81,29 @@ jobs:
           node scripts/world-cup-due-fixtures.cjs
 
       - name: Skip when no fixture should be final yet
-        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced != 'true'
+        if: steps.match_window.outputs.should_run == 'true' && steps.due.outputs.due != 'true' && steps.due.outputs.forced != 'true'
         run: echo "No World Cup automation is due."
 
       - name: Install dependencies
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
         run: npm ci
 
       - name: Sync finished scores and push to main
-        if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
         id: scores
         run: |
           npm run world-cup:ci-sync-commit
 
       - name: Validate synced scores
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
         run: npm run world-cup:validate:scores
 
       - name: Build after score sync
-        if: steps.scores.outputs.scores_changed == 'true'
+        if: steps.match_window.outputs.should_run == 'true' && steps.scores.outputs.scores_changed == 'true'
         run: npm run build
 
       - name: Check whether daily roast needs refresh
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
         id: roast
         run: |
           set +e
@@ -106,19 +117,19 @@ jobs:
           exit 0
 
       - name: Explain missing Cursor API key for roast refresh
-        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY == ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY == ''
         run: |
           echo "::warning::Daily roast is stale but CURSOR_API_KEY is not configured."
           echo "Scores were synced if ESPN had finals; add CURSOR_API_KEY to enable automatic roast refresh."
 
       - name: Install Cursor CLI
-        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         run: |
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
 
       - name: Run Cursor roast-update agent
-        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         env:
           DUE_FIXTURES: ${{ steps.due.outputs.fixtures }}
         run: |
@@ -144,13 +155,13 @@ jobs:
           agent -p --force "$(cat /tmp/world-cup-roast-agent-prompt.txt)" --output-format text
 
       - name: Validate roast update
-        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         run: |
           npm run world-cup:standings
           npm run world-cup:validate:roast
 
       - name: Validate changed roast files
-        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         run: |
           changed_files="$(git diff --name-only)"
           if [[ -z "$changed_files" ]]; then
@@ -173,7 +184,7 @@ jobs:
           fi
 
       - name: Commit and push roast update
-        if: steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.roast.outputs.needs_roast == 'true' && env.CURSOR_API_KEY != ''
         env:
           CI_GIT_USER_NAME: cursor-score-agent
           CI_GIT_USER_EMAIL: cursor-score-agent@users.noreply.github.com
