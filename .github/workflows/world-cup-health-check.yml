@@ -23,6 +23,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
+
+      - name: Sync with latest main
+        run: node scripts/ci-pull-main.cjs
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -39,9 +43,7 @@ jobs:
             Sync World Cup sweepstake scores from ESPN (health check).
 
             Deterministic ledger append for finished fixtures missed by the score agent.
-        run: |
-          git pull --rebase origin main
-          npm run world-cup:ci-sync-commit
+        run: npm run world-cup:ci-sync-commit
 
       - name: Validate World Cup ledger and ESPN reds
         run: npm run world-cup:validate:scores

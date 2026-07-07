@@ -24,6 +24,7 @@ function runNodeScript(relativePath, args = []) {
   }
 }
 
+runNodeScript('scripts/ci-pull-main.cjs');
 runNodeScript('scripts/world-cup-sync-ledger.cjs', ['--write']);
 
 runNodeScript('scripts/lib/ci-git-commit.cjs', [
@@ -33,4 +34,6 @@ runNodeScript('scripts/lib/ci-git-commit.cjs', [
   commitMessage,
   '--output-name',
   'scores_changed',
+  '--ledger-guard',
+  'world-cup',
 ]);

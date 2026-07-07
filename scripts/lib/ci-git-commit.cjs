@@ -7,6 +7,22 @@
 
 const { execFileSync, execSync } = require('node:child_process');
 const fs = require('node:fs');
+const path = require('node:path');
+const {
+  assertLedgerMonotonic,
+  parseManualMatchIds,
+} = require('./sweepstake-ledger-guard.cjs');
+
+const LEDGER_GUARDS = {
+  'world-cup': {
+    relativePath: 'app/data/world-cup-fantasy.ts',
+    exportName: 'WORLD_CUP_FANTASY_MANUAL_MATCHES',
+  },
+  'english-pyramid': {
+    relativePath: 'app/data/english-pyramid-fantasy.ts',
+    exportName: 'ENGLISH_PYRAMID_MANUAL_MATCHES',
+  },
+};
 
 const DEFAULT_BOT_NAME = 'github-actions[bot]';
 const DEFAULT_BOT_EMAIL = '41898282+github-actions[bot]@users.noreply.github.com';
@@ -36,6 +52,7 @@ function parseArgs(argv) {
   let remote = DEFAULT_REMOTE;
   let botName = process.env.CI_GIT_USER_NAME || DEFAULT_BOT_NAME;
   let botEmail = process.env.CI_GIT_USER_EMAIL || DEFAULT_BOT_EMAIL;
+  let ledgerGuard = '';
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -75,6 +92,10 @@ function parseArgs(argv) {
       botEmail = argv[++index];
       continue;
     }
+    if (arg === '--ledger-guard') {
+      ledgerGuard = argv[++index];
+      continue;
+    }
     throw new Error(`Unknown argument: ${arg}`);
   }
 
@@ -85,7 +106,7 @@ function parseArgs(argv) {
     throw new Error('--message is required.');
   }
 
-  return { paths, message, outputName, dryRun, maxAttempts, branch, remote, botName, botEmail };
+  return { paths, message, outputName, dryRun, maxAttempts, branch, remote, botName, botEmail, ledgerGuard };
 }
 
 function hasPathChanges(paths) {
@@ -110,6 +131,7 @@ function setGitHubOutput(name, value) {
 function pushWithRetry({ branch, remote, maxAttempts }) {
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
+      run('git', ['fetch', remote, branch]);
       run('git', ['pull', '--rebase', `${remote}/${branch}`]);
       run('git', ['push', `${remote}`, `HEAD:${branch}`]);
       return;
@@ -124,6 +146,30 @@ function pushWithRetry({ branch, remote, maxAttempts }) {
       sleep(delayMs);
     }
   }
+}
+
+function assertLedgerGuard(options) {
+  if (!options.ledgerGuard) return;
+
+  const guard = LEDGER_GUARDS[options.ledgerGuard];
+  if (!guard) {
+    throw new Error(`Unknown ledger guard: ${options.ledgerGuard}`);
+  }
+
+  const repoRoot = path.resolve(__dirname, '..', '..');
+  const filePath = path.join(repoRoot, guard.relativePath);
+  let headSource = '';
+
+  try {
+    headSource = capture('git', ['show', `HEAD:${guard.relativePath}`]);
+  } catch {
+    headSource = '';
+  }
+
+  const workSource = fs.readFileSync(filePath, 'utf8');
+  const beforeIds = headSource ? parseManualMatchIds(headSource, guard.exportName) : [];
+  const afterIds = parseManualMatchIds(workSource, guard.exportName);
+  assertLedgerMonotonic(beforeIds, afterIds, guard.exportName);
 }
 
 function main() {
@@ -144,6 +190,8 @@ function main() {
     console.log('Dry run: skipping commit and push.');
     return;
   }
+
+  assertLedgerGuard(options);
 
   run('git', ['config', 'user.name', options.botName]);
   run('git', ['config', 'user.email', options.botEmail]);

@@ -36,6 +36,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
+
+      - name: Sync with latest main
+        run: node scripts/ci-pull-main.cjs
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -53,7 +57,8 @@ jobs:
           node scripts/lib/ci-git-commit.cjs \
             --paths "app/data/world-cup-fantasy.ts,app/lib/world-cup-knockout-bracket.ts,scripts/lib/world-cup-knockout-bracket.cjs" \
             --message "Patch delayed World Cup kick-off times from ESPN." \
-            --output-name kickoff_changed
+            --output-name kickoff_changed \
+            --ledger-guard world-cup
 
       - name: Check whether automation is due
         id: due
@@ -76,7 +81,6 @@ jobs:
         if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
         id: scores
         run: |
-          git pull --rebase origin main
           npm run world-cup:ci-sync-commit
 
       - name: Validate synced scores
@@ -177,4 +181,5 @@ jobs:
           node scripts/lib/ci-git-commit.cjs \
             --paths "app/data/world-cup-fantasy.ts" \
             --message "Update World Cup daily roast" \
-            --output-name roast_changed
+            --output-name roast_changed \
+            --ledger-guard world-cup

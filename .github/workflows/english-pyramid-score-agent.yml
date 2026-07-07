@@ -41,6 +41,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
+
+      - name: Sync with latest main
+        run: node scripts/ci-pull-main.cjs
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -68,9 +72,7 @@ jobs:
       - name: Sync finished scores and push to main
         if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
         id: scores
-        run: |
-          git pull --rebase origin main
-          npm run english-pyramid:ci-sync-commit
+        run: npm run english-pyramid:ci-sync-commit
 
       - name: Recheck due fixtures after ESPN sync
         if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
@@ -189,4 +191,5 @@ jobs:
           node scripts/lib/ci-git-commit.cjs \
             --paths "app/data/english-pyramid-fantasy.ts" \
             --message "Update English pyramid sweepstake scores and roast" \
-            --output-name agent_changed
+            --output-name agent_changed \
+            --ledger-guard english-pyramid

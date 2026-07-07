@@ -3,6 +3,11 @@
  */
 
 const { findManualMatchesArrayOpen } = require('./world-cup-ledger-write.cjs');
+const {
+  assertLedgerMonotonic,
+  filterNewLedgerEntries,
+  parseManualMatchIds,
+} = require('./sweepstake-ledger-guard.cjs');
 
 function escapeSingleQuotes(value) {
   return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
@@ -27,9 +32,11 @@ function formatManualMatchEntry(fixture, goals, redCards, comment = 'Verified fi
 }
 
 function appendManualMatches(source, entries) {
-  if (entries.length === 0) return source;
-
   const exportName = 'ENGLISH_PYRAMID_MANUAL_MATCHES';
+  const newEntries = filterNewLedgerEntries(source, entries, exportName);
+  if (newEntries.length === 0) return source;
+
+  const beforeIds = parseManualMatchIds(source, exportName);
   const arrayOpen = findManualMatchesArrayOpen(source, exportName);
   let depth = 0;
   let arrayClose = -1;
@@ -50,8 +57,10 @@ function appendManualMatches(source, entries) {
     throw new Error(`Unable to locate ${exportName} closing bracket.`);
   }
 
-  const block = `${entries.join('\n')}\n`;
-  return `${source.slice(0, arrayClose)}${block}${source.slice(arrayClose)}`;
+  const block = `${newEntries.join('\n')}\n`;
+  const updatedSource = `${source.slice(0, arrayClose)}${block}${source.slice(arrayClose)}`;
+  assertLedgerMonotonic(beforeIds, parseManualMatchIds(updatedSource, exportName), exportName);
+  return updatedSource;
 }
 
 module.exports = {

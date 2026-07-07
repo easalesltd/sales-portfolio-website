@@ -22,6 +22,10 @@ const {
   formatManualMatchEntry,
 } = require('./lib/world-cup-ledger-write.cjs');
 const {
+  assertLedgerMonotonic,
+  parseManualMatchIds,
+} = require('./lib/sweepstake-ledger-guard.cjs');
+const {
   isKnockoutMatchId,
   parseKnockoutMatchIds,
 } = require('./lib/world-cup-scoring-lib.cjs');
@@ -42,13 +46,22 @@ const IGNORED_ESPN_STATUSES = new Set([
 async function main() {
   const dueOptions = getDueFixtureOptionsFromEnv();
 
+  let source = readDataFileSource(dataPath);
+  const ledgerIdsBefore = parseManualMatchIds(source, 'WORLD_CUP_FANTASY_MANUAL_MATCHES');
+
   await applyDelayedKickoffUpdates({
     ...dueOptions,
     writeChanges,
     updateKickoff: updateWorldCupFixtureKickoff,
   });
 
-  let source = readDataFileSource(dataPath);
+  source = readDataFileSource(dataPath);
+  assertLedgerMonotonic(
+    ledgerIdsBefore,
+    parseManualMatchIds(source, 'WORLD_CUP_FANTASY_MANUAL_MATCHES'),
+    'WORLD_CUP_FANTASY_MANUAL_MATCHES',
+  );
+
   const dueFixtures = await getDueFixtures(source, dueOptions);
   const aliasToCode = buildEspnAliasMap(source);
   const espnCache = new Map();
@@ -147,6 +160,12 @@ async function main() {
   }
 
   fs.writeFileSync(dataPath, updatedSource, 'utf8');
+  const writtenSource = readDataFileSource(dataPath);
+  assertLedgerMonotonic(
+    ledgerIdsBefore,
+    parseManualMatchIds(writtenSource, 'WORLD_CUP_FANTASY_MANUAL_MATCHES'),
+    'WORLD_CUP_FANTASY_MANUAL_MATCHES',
+  );
   console.log(`Appended ${pendingEntries.length} World Cup result(s) to the manual ledger.`);
 
   if (skipped.length > 0) {
