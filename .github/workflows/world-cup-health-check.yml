@@ -3,7 +3,8 @@ name: World Cup Health Check
 on:
   schedule:
     # Self-heal missed syncs, then validate ledger. Roast staleness is a warning only.
-    - cron: '*/30 * * * *'
+    # Check every hour, but only run during match windows
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -25,19 +26,31 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Check if in match window
+        id: match_window
+        run: node scripts/world-cup-match-window-check.cjs
+
+      - name: Skip when outside match window
+        if: steps.match_window.outputs.should_run != 'true'
+        run: echo "Outside match window - skipping health check to save CI resources."
+
       - name: Sync with latest main
+        if: steps.match_window.outputs.should_run == 'true'
         run: node scripts/ci-pull-main.cjs
 
       - name: Setup Node
+        if: steps.match_window.outputs.should_run == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
+        if: steps.match_window.outputs.should_run == 'true'
         run: npm ci
 
       - name: Self-heal score sync from ESPN
+        if: steps.match_window.outputs.should_run == 'true'
         env:
           WORLD_CUP_CI_COMMIT_MESSAGE: |-
             Sync World Cup sweepstake scores from ESPN (health check).
@@ -46,9 +59,11 @@ jobs:
         run: npm run world-cup:ci-sync-commit
 
       - name: Validate World Cup ledger and ESPN reds
+        if: steps.match_window.outputs.should_run == 'true'
         run: npm run world-cup:validate:scores
 
       - name: Check daily roast freshness
+        if: steps.match_window.outputs.should_run == 'true'
         run: |
           set +e
           npm run world-cup:validate:roast
@@ -59,5 +74,5 @@ jobs:
           exit 0
 
       - name: Print standings snapshot
-        if: always()
+        if: steps.match_window.outputs.should_run == 'true' && always()
         run: npm run world-cup:standings
