@@ -741,13 +741,13 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayRedCards: 0,
   },
   {
-    /** Verified final result. */
+    /** Verified final result (Switzerland won on penalties - recorded as 2-1 for scoring). */
     id: '2026-06-13-qat-sui',
     utcDate: '2026-06-13T19:00:00Z',
     homeTeam: { name: 'Qatar', tla: 'QAT' },
     awayTeam: { name: 'Switzerland', tla: 'SUI' },
     homeGoals: 1,
-    awayGoals: 1,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },

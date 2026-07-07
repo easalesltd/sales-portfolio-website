@@ -12,6 +12,7 @@ function parseKnockoutMatchIds(fixturesSource) {
 }
 
 const WORLD_CUP_R32_FIXTURE_IDS = new Set([
+  '2026-06-13-qat-sui',
   '2026-06-28-rsa-can',
   '2026-06-29-bra-jpn',
   '2026-06-29-ger-par',
