@@ -13,6 +13,20 @@ function run(args) {
   execFileSync('git', args, { stdio: 'inherit' });
 }
 
+// Configure git to use GitHub token for authentication in CI
+if (process.env.GITHUB_TOKEN) {
+  try {
+    const repoUrl = execFileSync('git', ['config', '--get', 'remote.origin.url'], { encoding: 'utf8' }).trim();
+    if (repoUrl.startsWith('https://github.com/')) {
+      const authUrl = repoUrl.replace('https://github.com/', `https://x-access-token:${process.env.GITHUB_TOKEN}@github.com/`);
+      execFileSync('git', ['remote', 'set-url', 'origin', authUrl]);
+      console.log('Configured git remote with GitHub token authentication.');
+    }
+  } catch (error) {
+    console.warn('Failed to configure git remote with token:', error instanceof Error ? error.message : error);
+  }
+}
+
 try {
   run(['fetch', remote, branch]);
   run(['pull', '--rebase', `${remote}/${branch}`]);
