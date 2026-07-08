@@ -2042,7 +2042,13 @@ function WorldCupFantasyView({
                         <li key={match.id} className={t.c.recentResultItem}>
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <span className="text-neutral-100">
-                              {match.homeTeam.tla} {formatMatchScore(match.homeGoals, match.awayGoals)}{' '}
+                              {match.homeTeam.tla}{' '}
+                              {formatMatchScore(
+                                match.homeGoals,
+                                match.awayGoals,
+                                'homePenalties' in match ? match.homePenalties : undefined,
+                                'awayPenalties' in match ? match.awayPenalties : undefined,
+                              )}{' '}
                               {match.awayTeam.tla}
                             </span>
                             <span className="text-xs text-neutral-500">

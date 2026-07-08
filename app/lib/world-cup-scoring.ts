@@ -402,6 +402,8 @@ function buildMatchdayEntriesForDate(
         return matchdayEntryFromFixture(fixture, players, 'finished', {
           homeGoals: recorded.homeGoals!,
           awayGoals: recorded.awayGoals!,
+          homePenalties: recorded.homePenalties,
+          awayPenalties: recorded.awayPenalties,
         });
       }
 
