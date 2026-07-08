@@ -24,8 +24,14 @@ function formatManualMatchEntry(fixture, goals, redCards, comment = 'Verified fi
     `    awayGoals: ${goals.awayGoals},`,
     `    homeRedCards: ${redCards.homeRedCards},`,
     `    awayRedCards: ${redCards.awayRedCards},`,
-    '  },',
   ];
+
+  if (goals.homePenalties != null && goals.awayPenalties != null) {
+    lines.push(`    homePenalties: ${goals.homePenalties},`);
+    lines.push(`    awayPenalties: ${goals.awayPenalties},`);
+  }
+
+  lines.push('  },');
 
   return lines.join('\n');
 }

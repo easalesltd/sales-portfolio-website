@@ -44,6 +44,8 @@ export type LiveFixtureScore = {
   awayRedCards: number;
   homeWinner?: boolean;
   awayWinner?: boolean;
+  homeShootoutScore?: number | null;
+  awayShootoutScore?: number | null;
 };
 
 export type EspnScoreboardEvent = EspnParsedEvent;
@@ -143,6 +145,8 @@ function provisionalMatchFromFinishedEntry(
     awayGoals: entry.awayGoals!,
     homeRedCards: redCards.homeRedCards,
     awayRedCards: redCards.awayRedCards,
+    homePenalties: entry.homePenalties,
+    awayPenalties: entry.awayPenalties,
   };
 }
 
@@ -162,6 +166,8 @@ export function matchLiveScoreForFixture(
   };
   if (match.homeWinner != null) result.homeWinner = match.homeWinner;
   if (match.awayWinner != null) result.awayWinner = match.awayWinner;
+  if (match.homeShootoutScore != null) result.homeShootoutScore = match.homeShootoutScore;
+  if (match.awayShootoutScore != null) result.awayShootoutScore = match.awayShootoutScore;
   return result;
 }
 
@@ -186,6 +192,8 @@ export function applyLiveScoresToSchedule(
             awayGoals: live.awayGoals,
             homeWinner: live.homeWinner === true,
             awayWinner: live.awayWinner === true,
+            homeShootoutScore: live.homeShootoutScore ?? null,
+            awayShootoutScore: live.awayShootoutScore ?? null,
           },
           entry.stage === 'knockout'
         );
@@ -196,6 +204,8 @@ export function applyLiveScoresToSchedule(
           status: 'finished',
           homeGoals: ledgerGoals.homeGoals,
           awayGoals: ledgerGoals.awayGoals,
+          homePenalties: ledgerGoals.homePenalties,
+          awayPenalties: ledgerGoals.awayPenalties,
         };
         provisionalMatches.push(
           provisionalMatchFromFinishedEntry(finishedEntry, {

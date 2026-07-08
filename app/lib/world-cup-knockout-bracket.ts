@@ -250,28 +250,44 @@ function normalizeTeamCode(tla: string): string {
   return upper;
 }
 
+/** True when the home side won, false when the away side won, null when undecided. */
+function matchHomeWon(match: WorldCupMatchResult): boolean | null {
+  if (match.homeGoals == null || match.awayGoals == null) return null;
+  if (match.homeGoals !== match.awayGoals) return match.homeGoals > match.awayGoals;
+
+  if (
+    match.homePenalties != null &&
+    match.awayPenalties != null &&
+    match.homePenalties !== match.awayPenalties
+  ) {
+    return match.homePenalties > match.awayPenalties;
+  }
+
+  return null;
+}
+
 function matchWinner(
   match: WorldCupMatchResult
 ): { code: string; name: string } | null {
-  if (match.homeGoals == null || match.awayGoals == null) return null;
-  if (match.homeGoals === match.awayGoals) return null;
+  const homeWon = matchHomeWon(match);
+  if (homeWon == null) return null;
 
-  const winner = match.homeGoals > match.awayGoals ? match.homeTeam : match.awayTeam;
+  const winner = homeWon ? match.homeTeam : match.awayTeam;
   return { code: normalizeTeamCode(winner.tla), name: winner.name };
 }
 
 function matchLoser(
   match: WorldCupMatchResult
 ): { code: string; name: string } | null {
-  if (match.homeGoals == null || match.awayGoals == null) return null;
-  if (match.homeGoals === match.awayGoals) return null;
+  const homeWon = matchHomeWon(match);
+  if (homeWon == null) return null;
 
-  const loser = match.homeGoals > match.awayGoals ? match.awayTeam : match.homeTeam;
+  const loser = homeWon ? match.awayTeam : match.homeTeam;
   return { code: normalizeTeamCode(loser.tla), name: loser.name };
 }
 
 function isFinishedMatch(match: WorldCupMatchResult): boolean {
-  return match.homeGoals != null && match.awayGoals != null && match.homeGoals !== match.awayGoals;
+  return matchHomeWon(match) != null;
 }
 
 function buildSlotWinners(

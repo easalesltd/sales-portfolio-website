@@ -24,6 +24,9 @@ export type WorldCupMatchResult = {
   awayGoals: number | null;
   homeRedCards: number;
   awayRedCards: number;
+  /** Penalty shootout tallies when a knockout tie was level after extra time. */
+  homePenalties?: number;
+  awayPenalties?: number;
 };
 
 export type TeamMatchScore = {
@@ -123,6 +126,8 @@ export type MatchdayEntry = UpcomingFixtureEntry & {
   stage?: string;
   homeGoals?: number;
   awayGoals?: number;
+  homePenalties?: number;
+  awayPenalties?: number;
   liveHomeGoals?: number;
   liveAwayGoals?: number;
   livePeriod?: string;
@@ -153,19 +158,33 @@ export function scoreTeamMatch(
   teamGoals: number,
   opponentGoals: number,
   redCards = 0,
-  options?: { knockout?: boolean }
+  options?: { knockout?: boolean; teamPenalties?: number | null; opponentPenalties?: number | null }
 ): TeamMatchScore {
   let outcome: TeamMatchScore['outcome'] = 'loss';
   let points: number = WORLD_CUP_FANTASY_SCORING.loss;
+
+  const teamPenalties = options?.teamPenalties;
+  const opponentPenalties = options?.opponentPenalties;
+  const decidedOnPenalties =
+    options?.knockout &&
+    teamPenalties != null &&
+    opponentPenalties != null &&
+    teamPenalties !== opponentPenalties;
 
   if (teamGoals > opponentGoals) {
     outcome = 'win';
     points = WORLD_CUP_FANTASY_SCORING.win;
   } else if (teamGoals === opponentGoals) {
-    outcome = 'draw';
-    points = options?.knockout
-      ? WORLD_CUP_FANTASY_SCORING.knockoutDraw
-      : WORLD_CUP_FANTASY_SCORING.draw;
+    if (decidedOnPenalties) {
+      const wonShootout = (teamPenalties as number) > (opponentPenalties as number);
+      outcome = wonShootout ? 'win' : 'loss';
+      points = wonShootout ? WORLD_CUP_FANTASY_SCORING.win : WORLD_CUP_FANTASY_SCORING.loss;
+    } else {
+      outcome = 'draw';
+      points = options?.knockout
+        ? WORLD_CUP_FANTASY_SCORING.knockoutDraw
+        : WORLD_CUP_FANTASY_SCORING.draw;
+    }
   }
 
   const bonus =
@@ -221,6 +240,8 @@ export function manualMatchToResult(match: WorldCupFantasyManualMatch): WorldCup
     awayGoals: match.awayGoals,
     homeRedCards: match.homeRedCards ?? 0,
     awayRedCards: match.awayRedCards ?? 0,
+    homePenalties: match.homePenalties,
+    awayPenalties: match.awayPenalties,
   };
 }
 
@@ -462,8 +483,12 @@ export function teamPointsInMatch(match: WorldCupMatchResult, playerTeamCode: st
   const goalsFor = side.isHome ? match.homeGoals : match.awayGoals;
   const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
+  const penaltiesFor = side.isHome ? match.homePenalties : match.awayPenalties;
+  const penaltiesAgainst = side.isHome ? match.awayPenalties : match.homePenalties;
   return scoreTeamMatch(goalsFor, goalsAgainst, redCards, {
     knockout: isKnockoutMatchResult(match),
+    teamPenalties: penaltiesFor,
+    opponentPenalties: penaltiesAgainst,
   }).total;
 }
 
@@ -490,6 +515,11 @@ export type TeamMatchDisplay = {
   concededPenalty?: number;
   redCards: number;
   isHome: boolean;
+  /** Win/draw/loss including a penalty-shootout decision on a level knockout tie. */
+  outcome?: 'win' | 'draw' | 'loss';
+  /** Shootout tallies when a knockout tie was decided on penalties. */
+  penaltiesFor?: number;
+  penaltiesAgainst?: number;
 };
 
 export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string): TeamMatchDisplay | null {
@@ -501,10 +531,15 @@ export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string
   const goalsFor = side.isHome ? match.homeGoals : match.awayGoals;
   const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
+  const penaltiesFor = side.isHome ? match.homePenalties : match.awayPenalties;
+  const penaltiesAgainst = side.isHome ? match.awayPenalties : match.homePenalties;
   const opponent = side.isHome ? match.awayTeam : match.homeTeam;
   const opponentMeta = WORLD_CUP_TEAM_BY_CODE[opponent.tla];
+  const decidedOnPenalties = penaltiesFor != null && penaltiesAgainst != null;
   const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards, {
     knockout: isKnockoutMatchResult(match),
+    teamPenalties: penaltiesFor,
+    opponentPenalties: penaltiesAgainst,
   });
 
   return {
@@ -520,6 +555,9 @@ export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string
     concededPenalty: scored.concededPenalty < 0 ? scored.concededPenalty : undefined,
     redCards,
     isHome: side.isHome,
+    outcome: scored.outcome,
+    penaltiesFor: decidedOnPenalties ? penaltiesFor : undefined,
+    penaltiesAgainst: decidedOnPenalties ? penaltiesAgainst : undefined,
   };
 }
 
@@ -574,15 +612,25 @@ export function computeEliminatedTeamCodes(
 
   for (const match of matches) {
     if (!knockoutFixtureIds.has(match.id)) continue;
-    if (match.homeGoals == null || match.awayGoals == null || match.homeGoals === match.awayGoals) continue;
+    if (match.homeGoals == null || match.awayGoals == null) continue;
+
+    let homeWon: boolean;
+    if (match.homeGoals !== match.awayGoals) {
+      homeWon = match.homeGoals > match.awayGoals;
+    } else if (
+      match.homePenalties != null &&
+      match.awayPenalties != null &&
+      match.homePenalties !== match.awayPenalties
+    ) {
+      homeWon = match.homePenalties > match.awayPenalties;
+    } else {
+      continue;
+    }
 
     for (const code of teamCodes) {
       const side = resolvePlayerTeamInMatch(match, code);
       if (!side) continue;
-
-      const goalsFor = side.isHome ? match.homeGoals : match.awayGoals;
-      const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
-      if (goalsFor < goalsAgainst) eliminated.add(code);
+      if (side.isHome !== homeWon) eliminated.add(code);
     }
   }
 

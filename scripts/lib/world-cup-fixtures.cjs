@@ -65,7 +65,7 @@ function readString(objectSource, pattern, label) {
 }
 
 function readNumber(objectSource, key, fallback = undefined) {
-  const match = objectSource.match(new RegExp(`${key}: (\\d+)`));
+  const match = objectSource.match(new RegExp(`(?:^|[^A-Za-z])${key}: (\\d+)`));
   if (!match) {
     if (fallback !== undefined) return fallback;
     throw new Error(`Unable to parse ${key} from manual match:\n${objectSource}`);
@@ -104,6 +104,8 @@ function parseManualMatches(source) {
       awayGoals: readNumber(objectSource, 'awayGoals'),
       homeRedCards: readNumber(objectSource, 'homeRedCards', 0),
       awayRedCards: readNumber(objectSource, 'awayRedCards', 0),
+      homePenalties: readNumber(objectSource, 'homePenalties', null),
+      awayPenalties: readNumber(objectSource, 'awayPenalties', null),
     };
   });
 }

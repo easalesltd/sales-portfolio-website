@@ -67,7 +67,7 @@ function parseTeamMeta() {
 }
 
 function readNumber(objectSource, key, fallback = 0) {
-  const match = objectSource.match(new RegExp(`${key}: (\\d+)`));
+  const match = objectSource.match(new RegExp(`(?:^|[^A-Za-z])${key}: (\\d+)`));
   return match ? Number.parseInt(match[1], 10) : fallback;
 }
 
@@ -112,6 +112,8 @@ function parseManualMatches() {
       awayGoals: readNumber(objectSource, 'awayGoals'),
       homeRedCards: readNumber(objectSource, 'homeRedCards'),
       awayRedCards: readNumber(objectSource, 'awayRedCards'),
+      homePenalties: readNumber(objectSource, 'homePenalties', null),
+      awayPenalties: readNumber(objectSource, 'awayPenalties', null),
     };
   });
 }
@@ -256,7 +258,16 @@ function computeStandings(players, matches, aliases, knockoutMatchIds) {
         const goalsFor = isHome ? match.homeGoals : match.awayGoals;
         const goalsAgainst = isHome ? match.awayGoals : match.homeGoals;
         const redCards = isHome ? match.homeRedCards : match.awayRedCards;
-        standings[index].points += scoreTeamMatch(goalsFor, goalsAgainst, redCards, isKnockout);
+        const penaltiesFor = isHome ? match.homePenalties : match.awayPenalties;
+        const penaltiesAgainst = isHome ? match.awayPenalties : match.homePenalties;
+        standings[index].points += scoreTeamMatch(
+          goalsFor,
+          goalsAgainst,
+          redCards,
+          isKnockout,
+          penaltiesFor,
+          penaltiesAgainst,
+        );
         standings[index].goalsFor += goalsFor;
         standings[index].goalsAgainst += goalsAgainst;
         if (goalsFor >= 3) standings[index].bonusPoints += 1;

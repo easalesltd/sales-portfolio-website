@@ -36,8 +36,34 @@ function isKnockoutMatchId(id, knockoutFixtureIds) {
   return /-(?:r16|qf|sf|final|3p)(?:-|$)/.test(id);
 }
 
-function scoreTeamMatch(goalsFor, goalsAgainst, redCards, isKnockout = false) {
-  let total = goalsFor > goalsAgainst ? 3 : goalsFor === goalsAgainst ? (isKnockout ? 0 : 1) : 0;
+function scoreTeamMatch(
+  goalsFor,
+  goalsAgainst,
+  redCards,
+  isKnockout = false,
+  penaltiesFor = null,
+  penaltiesAgainst = null,
+) {
+  const decidedOnPenalties =
+    isKnockout &&
+    penaltiesFor != null &&
+    penaltiesAgainst != null &&
+    penaltiesFor !== penaltiesAgainst;
+
+  let result;
+  if (goalsFor > goalsAgainst) {
+    result = 3;
+  } else if (goalsFor === goalsAgainst) {
+    if (decidedOnPenalties) {
+      result = penaltiesFor > penaltiesAgainst ? 3 : 0;
+    } else {
+      result = isKnockout ? 0 : 1;
+    }
+  } else {
+    result = 0;
+  }
+
+  let total = result;
   if (goalsFor >= 3) total += 1;
   if (goalsAgainst >= 3) total -= 1;
   total -= redCards;

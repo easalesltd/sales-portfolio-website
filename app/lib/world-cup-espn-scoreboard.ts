@@ -16,6 +16,9 @@ export type EspnParsedEvent = {
   awayRedCards: number;
   homeWinner: boolean;
   awayWinner: boolean;
+  /** Penalty shootout tallies when ESPN reports a shootout (null otherwise). */
+  homeShootoutScore: number | null;
+  awayShootoutScore: number | null;
   utcDate: string | null;
   statusName: string;
   statusState: string;
@@ -26,6 +29,7 @@ type EspnCompetitor = {
   team?: { id?: string; abbreviation?: string };
   score?: string | number;
   winner?: boolean;
+  shootoutScore?: string | number;
 };
 
 type EspnDetail = {
@@ -130,6 +134,8 @@ export function parseEspnScoreboardEvent(
     awayRedCards: redCards?.awayRedCards ?? 0,
     homeWinner: home?.winner === true,
     awayWinner: away?.winner === true,
+    homeShootoutScore: parseScore(home?.shootoutScore),
+    awayShootoutScore: parseScore(away?.shootoutScore),
     utcDate,
     statusName,
     statusState,
@@ -175,6 +181,8 @@ export function findEspnEventForFixture(
         awayRedCards: event.homeRedCards,
         homeWinner: event.awayWinner,
         awayWinner: event.homeWinner,
+        homeShootoutScore: event.awayShootoutScore,
+        awayShootoutScore: event.homeShootoutScore,
       };
     }
   }
