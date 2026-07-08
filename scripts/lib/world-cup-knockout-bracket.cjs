@@ -180,11 +180,26 @@ function normalizeTeamCode(tla, teamByCode) {
   return upper;
 }
 
-function matchWinner(match, teamByCode) {
+function matchHomeWon(match) {
   if (match.homeGoals == null || match.awayGoals == null) return null;
-  if (match.homeGoals === match.awayGoals) return null;
+  if (match.homeGoals !== match.awayGoals) return match.homeGoals > match.awayGoals;
 
-  const winner = match.homeGoals > match.awayGoals ? match.homeTeam : match.awayTeam;
+  if (
+    match.homePenalties != null &&
+    match.awayPenalties != null &&
+    match.homePenalties !== match.awayPenalties
+  ) {
+    return match.homePenalties > match.awayPenalties;
+  }
+
+  return null;
+}
+
+function matchWinner(match, teamByCode) {
+  const homeWon = matchHomeWon(match);
+  if (homeWon == null) return null;
+
+  const winner = homeWon ? match.homeTeam : match.awayTeam;
   return {
     code: normalizeTeamCode(winner.tla, teamByCode),
     name: winner.name,
@@ -192,10 +207,10 @@ function matchWinner(match, teamByCode) {
 }
 
 function matchLoser(match, teamByCode) {
-  if (match.homeGoals == null || match.awayGoals == null) return null;
-  if (match.homeGoals === match.awayGoals) return null;
+  const homeWon = matchHomeWon(match);
+  if (homeWon == null) return null;
 
-  const loser = match.homeGoals > match.awayGoals ? match.awayTeam : match.homeTeam;
+  const loser = homeWon ? match.awayTeam : match.homeTeam;
   return {
     code: normalizeTeamCode(loser.tla, teamByCode),
     name: loser.name,
@@ -203,7 +218,7 @@ function matchLoser(match, teamByCode) {
 }
 
 function isFinishedMatch(match) {
-  return match.homeGoals != null && match.awayGoals != null && match.homeGoals !== match.awayGoals;
+  return matchHomeWon(match) != null;
 }
 
 function buildSlotWinners(baseFixtures, matches, teamByCode) {

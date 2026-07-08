@@ -79,6 +79,8 @@ function parseEspnScoreboardEvent(event, aliasToCode, ignoreStatuses) {
     awayRedCards: redCards?.awayRedCards ?? 0,
     homeWinner: home?.winner === true,
     awayWinner: away?.winner === true,
+    homeShootoutScore: parseScore(home?.shootoutScore),
+    awayShootoutScore: parseScore(away?.shootoutScore),
     utcDate,
     statusName,
     statusState,
@@ -178,6 +180,8 @@ function normalizeEspnEventToFixtureOrientation(event, homeTla, awayTla) {
       awayRedCards: event.homeRedCards,
       homeWinner: event.awayWinner,
       awayWinner: event.homeWinner,
+      homeShootoutScore: event.awayShootoutScore ?? null,
+      awayShootoutScore: event.homeShootoutScore ?? null,
     };
   }
 

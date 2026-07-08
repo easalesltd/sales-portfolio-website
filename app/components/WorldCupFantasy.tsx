@@ -135,15 +135,31 @@ function ScoringRulesBlock({ rules = SCORING_RULES }: { rules?: readonly string[
   );
 }
 
-function formatMatchScore(homeGoals: number | null, awayGoals: number | null): string {
+function formatMatchScore(
+  homeGoals: number | null,
+  awayGoals: number | null,
+  homePenalties?: number | null,
+  awayPenalties?: number | null,
+): string {
   if (homeGoals == null || awayGoals == null) return '–';
-  return `${homeGoals}–${awayGoals}`;
+  const base = `${homeGoals}–${awayGoals}`;
+  if (homePenalties != null && awayPenalties != null) {
+    return `${base} (${homePenalties}–${awayPenalties} pens)`;
+  }
+  return base;
 }
 
 function matchOutcomeLetter(goalsFor: number, goalsAgainst: number): 'W' | 'L' | 'D' {
   if (goalsFor > goalsAgainst) return 'W';
   if (goalsFor < goalsAgainst) return 'L';
   return 'D';
+}
+
+function teamMatchDisplayOutcomeLetter(result: TeamMatchDisplay): 'W' | 'L' | 'D' {
+  if (result.outcome) {
+    return result.outcome === 'win' ? 'W' : result.outcome === 'loss' ? 'L' : 'D';
+  }
+  return matchOutcomeLetter(result.goalsFor, result.goalsAgainst);
 }
 
 function MatchOutcomeLetter({ outcome }: { outcome: 'W' | 'L' | 'D' }) {
@@ -212,7 +228,7 @@ function playerMatchOutcome(
 ): 'W' | 'L' | 'D' | null {
   for (const code of teamCodes) {
     const display = helpers.getTeamMatchDisplay(match, code);
-    if (display) return matchOutcomeLetter(display.goalsFor, display.goalsAgainst);
+    if (display) return teamMatchDisplayOutcomeLetter(display);
   }
   return null;
 }
@@ -563,7 +579,7 @@ function MatchdayFixtureScore({ entry }: { entry: MatchdayEntry }) {
   if (entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null) {
     return (
       <span className={t.c.fixturesScore}>
-        {formatMatchScore(entry.homeGoals, entry.awayGoals)}
+        {formatMatchScore(entry.homeGoals, entry.awayGoals, entry.homePenalties, entry.awayPenalties)}
       </span>
     );
   }
@@ -833,7 +849,7 @@ function LatestResultsTicker({
           <div className={t.c.tickerScore}>
             <span>{match.homeTeam.tla}</span>
             <span className={t.c.tickerScoreBadge}>
-              {formatMatchScore(match.homeGoals, match.awayGoals)}
+              {formatMatchScore(match.homeGoals, match.awayGoals, match.homePenalties, match.awayPenalties)}
             </span>
             <span>{match.awayTeam.tla}</span>
           </div>
@@ -1402,8 +1418,11 @@ function TeamResultsPanel({
                 {result.opponentFlag} {result.opponentTla}{' '}
                 <span className="font-medium tabular-nums">
                   {result.goalsFor}–{result.goalsAgainst}
+                  {result.penaltiesFor != null && result.penaltiesAgainst != null
+                    ? ` (${result.penaltiesFor}–${result.penaltiesAgainst} pens)`
+                    : ''}
                 </span>{' '}
-                <MatchOutcomeLetter outcome={matchOutcomeLetter(result.goalsFor, result.goalsAgainst)} />
+                <MatchOutcomeLetter outcome={teamMatchDisplayOutcomeLetter(result)} />
                 <TeamMatchAdjustments result={result} />
               </span>
               <span className={t.c.teamResultsPoints}>

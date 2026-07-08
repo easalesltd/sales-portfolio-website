@@ -45,6 +45,15 @@ function resolveLedgerGoalsFromEspnMatch(espnMatch, isKnockout) {
   let awayGoals = espnMatch.awayGoals;
 
   if (isKnockout && homeGoals === awayGoals) {
+    const homePens = espnMatch.homeShootoutScore;
+    const awayPens = espnMatch.awayShootoutScore;
+
+    // Preferred: keep the true level scoreline and record the shootout tally.
+    if (homePens != null && awayPens != null && homePens !== awayPens) {
+      return { homeGoals, awayGoals, homePenalties: homePens, awayPenalties: awayPens };
+    }
+
+    // Fallback (no shootout tally on ESPN): keep the tie decisive via winner flags.
     const homeWinner = espnMatch.homeWinner === true;
     const awayWinner = espnMatch.awayWinner === true;
 

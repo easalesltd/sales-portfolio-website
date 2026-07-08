@@ -230,11 +230,20 @@ export type WorldCupFantasyManualMatch = {
   utcDate: string;
   homeTeam: { name: string; tla: string };
   awayTeam: { name: string; tla: string };
+  /** Goals after 90 minutes and any extra time (before a shootout). */
   homeGoals: number;
   awayGoals: number;
   /** Red cards shown by this team (defaults to 0). */
   homeRedCards?: number;
   awayRedCards?: number;
+  /**
+   * Penalty shootout tallies for a knockout tie that finished level after
+   * extra time. Only set when the tie was decided on penalties; the shootout
+   * winner takes the knockout win (3 pts) even though `homeGoals`/`awayGoals`
+   * stay level.
+   */
+  homePenalties?: number;
+  awayPenalties?: number;
 };
 
 export type WorldCupFantasyFixture = {
@@ -1517,9 +1526,11 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Germany', tla: 'GER' },
     awayTeam: { name: 'Paraguay', tla: 'PAR' },
     homeGoals: 1,
-    awayGoals: 2,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
+    homePenalties: 3,
+    awayPenalties: 4,
   },
   {
     /** Verified final result (1-1 aet, Morocco won 3-2 on penalties). */
@@ -1528,9 +1539,11 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Netherlands', tla: 'NED' },
     awayTeam: { name: 'Morocco', tla: 'MAR' },
     homeGoals: 1,
-    awayGoals: 2,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
+    homePenalties: 2,
+    awayPenalties: 3,
   },
   {
     /** Verified final result. */
@@ -1638,9 +1651,11 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeTeam: { name: 'Australia', tla: 'AUS' },
     awayTeam: { name: 'Egypt', tla: 'EGY' },
     homeGoals: 1,
-    awayGoals: 2,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
+    homePenalties: 2,
+    awayPenalties: 4,
   },
   {
     /** Verified final result. Messi (29′); Duarte (59′); Martinez (103′); Cabral (103′); Borges OG (111′). AET. */
@@ -1742,14 +1757,16 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayRedCards: 0,
   },
   {
-    /** Verified final result (ESPN sync; post-pens winner). */
+    /** Verified final result (0-0 aet, Switzerland won 4-3 on penalties). */
     id: '2026-07-07-r16-8',
     utcDate: '2026-07-07T20:00:00Z',
     homeTeam: { name: 'Switzerland', tla: 'SUI' },
     awayTeam: { name: 'Colombia', tla: 'COL' },
-    homeGoals: 1,
+    homeGoals: 0,
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
+    homePenalties: 4,
+    awayPenalties: 3,
   },
 ];

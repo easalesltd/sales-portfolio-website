@@ -59,7 +59,7 @@ function parseTeamCodes() {
 }
 
 function readNumber(objectSource, key, label, fallback = undefined) {
-  const match = objectSource.match(new RegExp(`${key}: (\\d+)`));
+  const match = objectSource.match(new RegExp(`(?:^|[^A-Za-z])${key}: (\\d+)`));
   if (!match) {
     if (fallback !== undefined) return fallback;
     throw new Error(`Unable to parse ${label} from manual match:\n${objectSource}`);
@@ -98,6 +98,8 @@ function parseManualMatches() {
       awayGoals: readNumber(objectSource, 'awayGoals', 'awayGoals'),
       homeRedCards: readNumber(objectSource, 'homeRedCards', 'homeRedCards', 0),
       awayRedCards: readNumber(objectSource, 'awayRedCards', 'awayRedCards', 0),
+      homePenalties: readNumber(objectSource, 'homePenalties', 'homePenalties', null),
+      awayPenalties: readNumber(objectSource, 'awayPenalties', 'awayPenalties', null),
     };
   });
 }
@@ -118,6 +120,38 @@ function parseFixtures() {
 function validateNonNegativeInteger(value, label, matchId, errors) {
   if (!Number.isInteger(value) || value < 0) {
     errors.push(`${matchId}: ${label} must be a non-negative integer`);
+  }
+}
+
+function validatePenaltyShootout(match, knockoutFixtureIds, errors) {
+  const isKnockout = isKnockoutMatchId(match.id, knockoutFixtureIds);
+  const hasPenalties = match.homePenalties != null || match.awayPenalties != null;
+  const level = match.homeGoals === match.awayGoals;
+
+  if (hasPenalties) {
+    validateNonNegativeInteger(match.homePenalties, 'homePenalties', match.id, errors);
+    validateNonNegativeInteger(match.awayPenalties, 'awayPenalties', match.id, errors);
+
+    if (match.homePenalties == null || match.awayPenalties == null) {
+      errors.push(`${match.id}: a penalty shootout needs both homePenalties and awayPenalties`);
+    } else if (match.homePenalties === match.awayPenalties) {
+      errors.push(`${match.id}: penalty shootout cannot be a draw (${match.homePenalties}-${match.awayPenalties})`);
+    }
+
+    if (!isKnockout) {
+      errors.push(`${match.id}: penalty shootout recorded on a non-knockout match`);
+    }
+    if (!level) {
+      errors.push(
+        `${match.id}: penalty shootout recorded but the score (${match.homeGoals}-${match.awayGoals}) is not level`,
+      );
+    }
+  }
+
+  if (isKnockout && level && !hasPenalties) {
+    errors.push(
+      `${match.id}: knockout tie is level (${match.homeGoals}-${match.awayGoals}) and must record the penalty shootout (homePenalties/awayPenalties)`,
+    );
   }
 }
 
@@ -225,6 +259,8 @@ for (const match of manualMatches) {
   validateNonNegativeInteger(match.awayGoals, 'awayGoals', match.id, errors);
   validateNonNegativeInteger(match.homeRedCards, 'homeRedCards', match.id, errors);
   validateNonNegativeInteger(match.awayRedCards, 'awayRedCards', match.id, errors);
+
+  validatePenaltyShootout(match, knockoutFixtureIds, errors);
 }
 
 const fixtures = parseScheduleFixtures(source);

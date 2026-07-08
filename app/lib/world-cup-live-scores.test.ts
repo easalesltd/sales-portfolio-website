@@ -62,6 +62,8 @@ describe('world-cup-live-scores', () => {
         awayRedCards: 0,
         homeWinner: false,
         awayWinner: false,
+        homeShootoutScore: null,
+        awayShootoutScore: null,
         utcDate: null,
         statusName: '',
         statusState: '',
