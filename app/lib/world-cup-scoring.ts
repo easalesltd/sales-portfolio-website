@@ -120,6 +120,7 @@ export type MatchdayEntryStatus = 'upcoming' | 'in-play' | 'finished';
 
 export type MatchdayEntry = UpcomingFixtureEntry & {
   status: MatchdayEntryStatus;
+  stage?: string;
   homeGoals?: number;
   awayGoals?: number;
   liveHomeGoals?: number;
@@ -278,6 +279,7 @@ function matchdayEntryFromFixture(
   return {
     ...upcomingFixtureEntry(fixture, players),
     status,
+    stage: fixture.stage,
     roundLabel: fixture.round ? KNOCKOUT_ROUND_LABELS[fixture.round] : undefined,
     winnerPathLabel: fixture.winnerPathLabel,
     placeholderSide: fixture.placeholderSide,

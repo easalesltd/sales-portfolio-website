@@ -7,12 +7,21 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { readDataFileSource } = require('./lib/world-cup-fixtures.cjs');
+const {
+  parseScheduleFixtures,
+  readDataFileSource,
+} = require('./lib/world-cup-fixtures.cjs');
+const {
+  getDueFixtureOptionsFromEnv,
+  getDueFixtures,
+} = require('./lib/world-cup-due-fixtures-lib.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/world-cup-fantasy.ts');
 
-// Match window: 1 hour before first match until 1 hour after last match of the day
+// Match window: 1 hour before first match until 1 hour after last match of the day.
+// Overdue unrecorded fixtures also force a run so self-healing syncs still happen
+// after generated knockout windows have passed.
 const PRE_MATCH_BUFFER_MINUTES = 60;
 const POST_MATCH_BUFFER_MINUTES = 60;
 
@@ -31,25 +40,10 @@ function isInMatchWindow(fixtureUtcDate, now) {
   return now >= windowStart && now <= windowEnd;
 }
 
-function main() {
+async function main() {
   const source = readDataFileSource(dataPath);
-  const fixturesSource = source.match(
-    /export const WORLD_CUP_FANTASY_FIXTURES[\s\S]*?= \[([\s\S]*?)\n\];/,
-  )?.[1];
-
-  if (!fixturesSource) {
-    console.error('Unable to find WORLD_CUP_FANTASY_FIXTURES in data source.');
-    process.exit(1);
-  }
-
-  // Parse fixture dates
-  const datePattern = /utcDate:\s*'([^']+)'/g;
-  const fixtureDates = [];
-  let match;
-  
-  while ((match = datePattern.exec(fixturesSource)) !== null) {
-    fixtureDates.push(new Date(match[1]).getTime());
-  }
+  const fixtures = parseScheduleFixtures(source);
+  const fixtureDates = fixtures.map((fixture) => new Date(fixture.utcDate).getTime());
 
   if (fixtureDates.length === 0) {
     console.log('No fixtures found in schedule.');
@@ -57,7 +51,15 @@ function main() {
     process.exit(0);
   }
 
-  const now = Date.now();
+  const dueOptions = getDueFixtureOptionsFromEnv();
+  const now = dueOptions.now.getTime();
+  const dueFixtures = await getDueFixtures(source, dueOptions);
+  if (dueFixtures.length > 0) {
+    console.log(`Found ${dueFixtures.length} overdue unrecorded fixture(s) - workflow should run.`);
+    setOutput('should_run', 'true');
+    process.exit(0);
+  }
+
   const minFixtureTime = Math.min(...fixtureDates);
   const maxFixtureTime = Math.max(...fixtureDates);
 

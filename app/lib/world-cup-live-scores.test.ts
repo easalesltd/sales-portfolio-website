@@ -149,4 +149,56 @@ describe('world-cup-live-scores', () => {
       }),
     ]);
   });
+
+  it('converts ESPN penalty winners into non-level provisional knockout scores', () => {
+    const schedule: MatchdaySchedule = {
+      defaultDate: '2026-07-07',
+      fixtureDates: ['2026-07-07'],
+      schedulesByDate: {
+        '2026-07-07': [
+          {
+            id: '2026-07-07-r16-8',
+            utcDate: '2026-07-07T20:00:00Z',
+            status: 'in-play',
+            stage: 'knockout',
+            homeTeam: { name: 'Switzerland', tla: 'SUI', flag: '🇨🇭' },
+            awayTeam: { name: 'Colombia', tla: 'COL', flag: '🇨🇴' },
+            homeManagers: [],
+            awayManagers: [],
+          },
+        ],
+      },
+    };
+
+    const { schedule: enriched, provisionalMatches } = applyLiveScoresToSchedule(schedule, [
+      {
+        homeTla: 'SUI',
+        awayTla: 'COL',
+        homeGoals: 0,
+        awayGoals: 0,
+        period: 'FT-Pens',
+        homeRedCards: 0,
+        awayRedCards: 0,
+        homeWinner: true,
+        awayWinner: false,
+        utcDate: '2026-07-07T20:00:00Z',
+        statusName: 'STATUS_FULL_TIME',
+        statusState: 'post',
+      },
+    ]);
+
+    expect(enriched.schedulesByDate['2026-07-07'][0]).toMatchObject({
+      status: 'finished',
+      homeGoals: 1,
+      awayGoals: 0,
+    });
+    expect(provisionalMatches).toEqual([
+      expect.objectContaining({
+        id: '2026-07-07-r16-8',
+        status: 'FINISHED',
+        homeGoals: 1,
+        awayGoals: 0,
+      }),
+    ]);
+  });
 });

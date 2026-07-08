@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Tuesday in the last sixteen and Belgium tear the Stars and Stripes apart: the USA go down 1-4 in Atlanta, ending Jon\'s American dream while Scott\'s Belgians march on with four more points. Nest leads on 53, Chris is second on 46, Scott and Jon are level on 43, Ash is fifth on 33, and Dave\'s long-eliminated Creamy Creamers cling to 31.';
+  'Tuesday in the knockouts turned into a VAR-room migraine: Argentina edged Egypt 3-2, Belgium battered the USA 4-1, and Colombia went out to Switzerland on penalties. Nest leads on 58, Chris is second on 46 after his Colombian run ended like a team bus reversing into a bollard, Scott is third on 45, Jon has 43, Ash has 33, and Dave remains bottom on 31, still haunting the table like a manager refusing to leave the post-match interview.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -255,6 +255,12 @@ export type WorldCupFantasyFixture = {
  * Keep this rolling forward during score updates so today's box stays useful.
  */
 export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
+  {
+    id: '2026-06-13-qat-sui',
+    utcDate: '2026-06-13T19:00:00Z',
+    homeTeam: { name: 'Qatar', tla: 'QAT' },
+    awayTeam: { name: 'Switzerland', tla: 'SUI' },
+  },
   {
     id: '2026-06-15-ksa-uru',
     utcDate: '2026-06-15T22:00:00Z',
@@ -1727,6 +1733,28 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayTeam: { name: 'Belgium', tla: 'BEL' },
     homeGoals: 1,
     awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-07-07-r16-7',
+    utcDate: '2026-07-07T16:00:00Z',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Egypt', tla: 'EGY' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync; post-pens winner). */
+    id: '2026-07-07-r16-8',
+    utcDate: '2026-07-07T20:00:00Z',
+    homeTeam: { name: 'Switzerland', tla: 'SUI' },
+    awayTeam: { name: 'Colombia', tla: 'COL' },
+    homeGoals: 1,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },

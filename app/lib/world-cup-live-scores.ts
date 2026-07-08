@@ -1,6 +1,7 @@
 import {
   isEspnFinalPeriod,
   isEspnFullTimePeriod,
+  resolveLedgerGoalsFromEspnMatch,
 } from '@/app/lib/world-cup-espn-finals';
 import {
   findEspnEventForFixture,
@@ -41,6 +42,8 @@ export type LiveFixtureScore = {
   period: string;
   homeRedCards: number;
   awayRedCards: number;
+  homeWinner?: boolean;
+  awayWinner?: boolean;
 };
 
 export type EspnScoreboardEvent = EspnParsedEvent;
@@ -150,13 +153,16 @@ export function matchLiveScoreForFixture(
   const match = findEspnEventForFixture(events, fixture.homeTeam.tla, fixture.awayTeam.tla);
   if (!match) return null;
 
-  return {
+  const result: LiveFixtureScore = {
     homeGoals: match.homeGoals,
     awayGoals: match.awayGoals,
     period: match.period,
     homeRedCards: match.homeRedCards,
     awayRedCards: match.awayRedCards,
   };
+  if (match.homeWinner != null) result.homeWinner = match.homeWinner;
+  if (match.awayWinner != null) result.awayWinner = match.awayWinner;
+  return result;
 }
 
 export function applyLiveScoresToSchedule(
@@ -174,11 +180,22 @@ export function applyLiveScoresToSchedule(
       if (!live) return entry;
 
       if (isEspnFinalPeriod(live.period)) {
+        const ledgerGoals = resolveLedgerGoalsFromEspnMatch(
+          {
+            homeGoals: live.homeGoals,
+            awayGoals: live.awayGoals,
+            homeWinner: live.homeWinner === true,
+            awayWinner: live.awayWinner === true,
+          },
+          entry.stage === 'knockout'
+        );
+        if (!ledgerGoals) return entry;
+
         const finishedEntry: MatchdayEntry = {
           ...entry,
           status: 'finished',
-          homeGoals: live.homeGoals,
-          awayGoals: live.awayGoals,
+          homeGoals: ledgerGoals.homeGoals,
+          awayGoals: ledgerGoals.awayGoals,
         };
         provisionalMatches.push(
           provisionalMatchFromFinishedEntry(finishedEntry, {
