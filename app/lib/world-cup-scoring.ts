@@ -728,8 +728,12 @@ export function computeStandings(
         const goalsFor = side.isHome ? match.homeGoals! : match.awayGoals!;
         const goalsAgainst = side.isHome ? match.awayGoals! : match.homeGoals!;
         const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
+        const penaltiesFor = side.isHome ? match.homePenalties : match.awayPenalties;
+        const penaltiesAgainst = side.isHome ? match.awayPenalties : match.homePenalties;
         const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards, {
           knockout: isKnockoutMatchResult(match),
+          teamPenalties: penaltiesFor,
+          opponentPenalties: penaltiesAgainst,
         });
         const teamRow = teamRows.get(teamCode);
         if (!teamRow) continue;
