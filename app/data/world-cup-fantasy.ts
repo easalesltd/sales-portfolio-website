@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Tuesday in the knockouts turned into a VAR-room migraine: Argentina edged Egypt 3-2, Belgium battered the USA 4-1, and Colombia went out to Switzerland on penalties. Nest leads on 58, Chris is second on 46 after his Colombian run ended like a team bus reversing into a bollard, Scott is third on 45, Jon has 43, Ash has 33, and Dave remains bottom on 31, still haunting the table like a manager refusing to leave the post-match interview.';
+  'Tuesday in the knockouts turned into a VAR-room migraine: Argentina edged Egypt 3-2, Belgium battered the USA 4-1, and Colombia went out to Switzerland on penalties. Nest leads on 56, Chris and Scott are level on 46 — Chris\'s Colombian run ended like a team bus reversing into a bollard, Jon has 43, Ash has 33, and Dave remains bottom on 31, still haunting the table like a manager refusing to leave the post-match interview.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -255,12 +255,6 @@ export type WorldCupFantasyFixture = {
  * Keep this rolling forward during score updates so today's box stays useful.
  */
 export const WORLD_CUP_FANTASY_FIXTURES: readonly WorldCupFantasyFixture[] = [
-  {
-    id: '2026-06-13-qat-sui',
-    utcDate: '2026-06-13T19:00:00Z',
-    homeTeam: { name: 'Qatar', tla: 'QAT' },
-    awayTeam: { name: 'Switzerland', tla: 'SUI' },
-  },
   {
     id: '2026-06-15-ksa-uru',
     utcDate: '2026-06-15T22:00:00Z',
@@ -747,13 +741,13 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     awayRedCards: 0,
   },
   {
-    /** Verified final result (Switzerland won on penalties - recorded as 2-1 for scoring). */
+    /** Verified final result. */
     id: '2026-06-13-qat-sui',
     utcDate: '2026-06-13T19:00:00Z',
     homeTeam: { name: 'Qatar', tla: 'QAT' },
     awayTeam: { name: 'Switzerland', tla: 'SUI' },
     homeGoals: 1,
-    awayGoals: 2,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
