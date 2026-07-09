@@ -43,17 +43,28 @@ jobs:
           ref: main
           fetch-depth: 0
 
+      - name: Check if in match window
+        id: match_window
+        run: node scripts/english-pyramid-match-window-check.cjs
+
+      - name: Skip when outside match window
+        if: steps.match_window.outputs.should_run != 'true'
+        run: echo "Outside match window - skipping score agent to save CI resources."
+
       - name: Sync with latest main
+        if: steps.match_window.outputs.should_run == 'true'
         run: node scripts/ci-pull-main.cjs
 
       - name: Setup Node
+        if: steps.match_window.outputs.should_run == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Check whether automation is due
         id: due
+        if: steps.match_window.outputs.should_run == 'true'
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.force_agent }}" == "true" ]]; then
             export ENGLISH_PYRAMID_FORCE_AGENT=1
@@ -62,25 +73,25 @@ jobs:
           node scripts/english-pyramid-due-fixtures.cjs
 
       - name: Skip when no fixture should be final yet
-        if: steps.due.outputs.due != 'true' && steps.due.outputs.forced != 'true'
+        if: steps.match_window.outputs.should_run == 'true' && steps.due.outputs.due != 'true' && steps.due.outputs.forced != 'true'
         run: echo "No English pyramid automation is due."
 
       - name: Install dependencies
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
         run: npm ci
 
       - name: Sync finished scores and push to main
-        if: (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true') && (github.event_name != 'workflow_dispatch' || inputs.skip_sync != true)
         id: scores
         run: npm run english-pyramid:ci-sync-commit
 
       - name: Recheck due fixtures after ESPN sync
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
         id: after_sync
         run: node scripts/english-pyramid-due-fixtures.cjs
 
       - name: Validate synced scores
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
         run: npm run english-pyramid:validate:scores
 
       - name: Build after score sync
@@ -88,7 +99,7 @@ jobs:
         run: npm run build
 
       - name: Decide whether the Cursor agent should run
-        if: steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true'
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
         id: agent
         run: |
           needs_agent=false
@@ -107,19 +118,19 @@ jobs:
           echo "needs_agent=${needs_agent}" >> "$GITHUB_OUTPUT"
 
       - name: Explain missing Cursor API key
-        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY == ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY == ''
         run: |
           echo "::warning::CURSOR_API_KEY is not configured."
           echo "ESPN sync may have committed scores; add CURSOR_API_KEY for roast refresh and NL North/South results."
 
       - name: Install Cursor CLI
-        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         run: |
           curl https://cursor.com/install -fsS | bash
           echo "$HOME/.cursor/bin" >> "$GITHUB_PATH"
 
       - name: Run Cursor follow-up agent
-        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         env:
           DUE_FIXTURES: ${{ steps.due.outputs.fixtures }}
           SCAN_MODE: ${{ steps.due.outputs.scan_mode }}
@@ -154,13 +165,13 @@ jobs:
           agent -p --force "$(cat /tmp/english-pyramid-agent-prompt.txt)" --output-format text
 
       - name: Validate agent changes
-        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         run: |
           npm run english-pyramid:standings
           npm run english-pyramid:validate:scores
 
       - name: Validate changed files
-        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         run: |
           changed_files="$(git diff --name-only)"
           if [[ -z "$changed_files" ]]; then
@@ -183,7 +194,7 @@ jobs:
           fi
 
       - name: Commit and push agent updates
-        if: steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
+        if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
         env:
           CI_GIT_USER_NAME: cursor-score-agent
           CI_GIT_USER_EMAIL: cursor-score-agent@users.noreply.github.com
