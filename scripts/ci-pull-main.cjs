@@ -29,7 +29,7 @@ if (process.env.GITHUB_TOKEN) {
 
 try {
   run(['fetch', remote, branch]);
-  run(['pull', '--rebase', `${remote}/${branch}`]);
+  run(['pull', '--rebase', remote, branch]);
   console.log(`Checkout is up to date with ${remote}/${branch}.`);
 } catch (error) {
   console.error(error instanceof Error ? error.message : error);

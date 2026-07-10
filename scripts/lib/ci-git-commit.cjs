@@ -132,7 +132,7 @@ function pushWithRetry({ branch, remote, maxAttempts }) {
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
       run('git', ['fetch', remote, branch]);
-      run('git', ['pull', '--rebase', `${remote}/${branch}`]);
+      run('git', ['pull', '--rebase', remote, branch]);
       run('git', ['push', `${remote}`, `HEAD:${branch}`]);
       return;
     } catch (error) {
