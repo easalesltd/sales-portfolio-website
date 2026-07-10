@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Tuesday in the knockouts turned into a VAR-room migraine: Argentina edged Egypt 3-2, Belgium battered the USA 4-1, and Colombia went out to Switzerland on penalties. Nest leads on 56, Chris and Scott are level on 46 — Chris\'s Colombian run ended like a team bus reversing into a bollard, Jon has 43, Ash has 33, and Dave remains bottom on 31, still haunting the table like a manager refusing to leave the post-match interview.';
+  'Friday\'s quarter-final trimmed the survival list again: Belgium went down 1-2 to Spain in the evening slot, sending Nest\'s Belgians home while Ash pins the entire revival on Spain as his one remaining live nation. Nest leads on 56 with only three survivors left, Chris has 49, Scott has 46, Jon has 43, Ash has 36, and Dave remains bottom on 31 — every nation of his buried weeks ago, yet still welded to last place like a training cone parked on the goal-line nobody has the heart to move.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
