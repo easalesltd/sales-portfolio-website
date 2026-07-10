@@ -1769,4 +1769,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homePenalties: 4,
     awayPenalties: 3,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-07-09-qf-1',
+    utcDate: '2026-07-09T20:00:00Z',
+    homeTeam: { name: 'France', tla: 'FRA' },
+    awayTeam: { name: 'Morocco', tla: 'MAR' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
