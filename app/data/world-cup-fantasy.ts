@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Saturday\'s quarter-final was Nest versus Nest in the dugout: England needed extra time to see off Norway 2-1, so his Norwegians are out while England — also on his books — limps on as one of three nations still alive in the bracket. Nest leads on 59, Chris has 49, Scott has 46, Jon has 43, Ash has 36, and Dave remains bottom on 31 — every pick of his already eliminated, yet somehow still occupying dead last like a steward who will not unlock the gates after the stadium has been empty for a fortnight.';
+  'Sunday\'s last quarter-final was pure survival surgery: Nest\'s Switzerland were carved up 1-3 after extra time — a red card and three conceded for the exit door — while Scott\'s Argentina barge into the final four as his one nation still breathing. Nest leads on 57, Scott has 50, Chris has 49, Jon has 43, Ash has 36, and Dave remains bottom on 31, still cluttering the table like a substitute board left on the wrong number long after the fourth official has gone home.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
