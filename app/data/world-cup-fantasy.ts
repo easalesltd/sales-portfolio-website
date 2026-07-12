@@ -1791,4 +1791,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-07-11-qf-3',
+    utcDate: '2026-07-11T21:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'Norway', tla: 'NOR' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
