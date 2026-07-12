@@ -1802,4 +1802,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-07-12-qf-4',
+    utcDate: '2026-07-12T01:00:00Z',
+    homeTeam: { name: 'Switzerland', tla: 'SUI' },
+    awayTeam: { name: 'Argentina', tla: 'ARG' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
 ];
