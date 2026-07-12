@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Friday\'s quarter-final trimmed the survival list again: Belgium went down 1-2 to Spain in the evening slot, sending Nest\'s Belgians home while Ash pins the entire revival on Spain as his one remaining live nation. Nest leads on 56 with only three survivors left, Chris has 49, Scott has 46, Jon has 43, Ash has 36, and Dave remains bottom on 31 — every nation of his buried weeks ago, yet still welded to last place like a training cone parked on the goal-line nobody has the heart to move.';
+  'Saturday\'s quarter-final was Nest versus Nest in the dugout: England needed extra time to see off Norway 2-1, so his Norwegians are out while England — also on his books — limps on as one of three nations still alive in the bracket. Nest leads on 59, Chris has 49, Scott has 46, Jon has 43, Ash has 36, and Dave remains bottom on 31 — every pick of his already eliminated, yet somehow still occupying dead last like a steward who will not unlock the gates after the stadium has been empty for a fortnight.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
