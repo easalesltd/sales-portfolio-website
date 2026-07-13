@@ -89,8 +89,13 @@ export default async function BlogArticlePage({
     description: article.metaDescription ?? article.excerpt,
     articleSection: 'Blog / Press',
     datePublished: article.publishedAt,
-    ...(article.paragraphs.length > 0
-      ? { articleBody: article.paragraphs.join('\n\n') }
+    ...(article.paragraphs.length > 0 || (article.quotes && article.quotes.length > 0)
+      ? {
+          articleBody: [
+            ...(article.quotes ?? []).map((q) => `"${q}"`),
+            ...article.paragraphs,
+          ].join('\n\n'),
+        }
       : {}),
     author: {
       '@type': 'Person',
@@ -183,6 +188,19 @@ export default async function BlogArticlePage({
               priority
               className="rounded-xl"
             />
+          </div>
+        ) : null}
+
+        {article.quotes && article.quotes.length > 0 ? (
+          <div className="mt-10 space-y-4">
+            {article.quotes.map((quote) => (
+              <blockquote
+                key={quote}
+                className="border-l-4 border-teal-600/80 bg-teal-50/60 px-4 py-3 text-base italic leading-relaxed text-gray-800 dark:border-teal-400/70 dark:bg-teal-950/30 dark:text-neutral-200 sm:text-lg"
+              >
+                “{quote}”
+              </blockquote>
+            ))}
           </div>
         ) : null}
 

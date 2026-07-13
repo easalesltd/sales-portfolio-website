@@ -2,11 +2,11 @@
 
 This project already has:
 
-- `robots.txt` at `app/robots.ts`
-- `sitemap.xml` at `app/sitemap.ts`
+- `robots.txt` from `app/robots.ts` (source of truth — do **not** add a conflicting `public/robots.txt`)
+- `sitemap.xml` from `app/sitemap.ts`
 - canonical host redirects and CSP via `proxy.ts`
-
-Use the steps below to wire Bing + IndexNow end-to-end.
+- IndexNow key file committed at `public/c509aba8456d5c87cdfe9b6e74c11f7d.txt`
+- submit script: `npm run seo:indexnow`
 
 ## 1) Verify the site in Bing Webmaster Tools
 
@@ -15,65 +15,49 @@ Use the steps below to wire Bing + IndexNow end-to-end.
 3. Choose **HTML Meta Tag** verification.
 4. Copy the token value from:
    `<meta name="msvalidate.01" content="YOUR_TOKEN" />`
-5. Set environment variable:
+5. Set environment variable on Vercel (and locally if needed):
    - `NEXT_PUBLIC_BING_VERIFICATION_CODE=YOUR_TOKEN`
 6. Redeploy.
 
-This repo now outputs the Bing verification tag from `app/layout.tsx`.
+This repo outputs the Bing verification tag from `app/layout.tsx` when that env var is set.
 
-## 2) Configure IndexNow key
+## 2) IndexNow key (already done in-repo)
 
-1. Generate a key (32+ chars; letters/numbers).
-2. Create a file in `public` named:
-   - `public/<YOUR_INDEXNOW_KEY>.txt`
-3. File contents must be exactly the same key (single line).
+| Item | Value |
+|------|--------|
+| Key | `c509aba8456d5c87cdfe9b6e74c11f7d` |
+| Public file | `https://www.easalesltd.co.uk/c509aba8456d5c87cdfe9b6e74c11f7d.txt` |
+| Optional env | `INDEXNOW_KEY` / `INDEXNOW_KEY_LOCATION` (script falls back to the committed key) |
 
-Example:
+The key file must stay publicly reachable and its contents must match the filename (IndexNow protocol).
 
-- filename: `public/0123456789abcdef0123456789abcdef.txt`
-- content: `0123456789abcdef0123456789abcdef`
-
-4. Set env vars:
-   - `INDEXNOW_KEY=<YOUR_INDEXNOW_KEY>`
-   - `INDEXNOW_KEY_LOCATION=https://www.easalesltd.co.uk/<YOUR_INDEXNOW_KEY>.txt`
-
-## 3) Submit changed URLs with the built-in script
-
-This repo now includes:
-
-- script: `scripts/submit-indexnow.mjs`
-- npm command: `npm run seo:indexnow`
-
-Examples:
+## 3) Submit changed URLs
 
 ```bash
-# Submit specific pages after a release
-npm run seo:indexnow -- --url /about --url /contact --url /temporary-rep-cover
+# After a content/SEO deploy — high-value pages + sitemap/llms
+npm run seo:indexnow -- --sitemap
 
-# Full URLs are also accepted
+# Specific pages
+npm run seo:indexnow -- --url /about --url /contact --url /blog
+
+# Full URLs also work
 npm run seo:indexnow -- https://www.easalesltd.co.uk/display-solutions
 ```
 
 Notes:
 
-- If you pass no URL, it submits the homepage.
-- Paths are resolved against `NEXT_PUBLIC_SITE_URL`.
+- With no args, only the homepage is submitted.
+- Paths resolve against `NEXT_PUBLIC_SITE_URL` (default `https://www.easalesltd.co.uk`).
 
 ## 4) Recommended release workflow
 
 After each production deploy:
 
-1. Submit your changed URLs via `npm run seo:indexnow`.
-2. In Bing Webmaster Tools:
-   - submit `https://www.easalesltd.co.uk/sitemap.xml` (once)
-   - run URL Inspection for critical pages if needed.
+1. `npm run seo:indexnow -- --sitemap`
+2. In Bing Webmaster Tools (once): submit `https://www.easalesltd.co.uk/sitemap.xml`
 
-## 5) Optional automation
-
-If you deploy from CI/CD, run this post-deploy command with changed paths:
+## 5) Optional CI post-deploy
 
 ```bash
-npm run seo:indexnow -- --url / --url /about --url /what-is-a-sales-agent
+npm run seo:indexnow -- --sitemap
 ```
-
-You can keep a small list of "high-value pages" and always submit them after deploy.

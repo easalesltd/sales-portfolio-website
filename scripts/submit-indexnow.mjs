@@ -6,20 +6,44 @@
  * Usage examples:
  *   npm run seo:indexnow -- --url /about --url /temporary-rep-cover
  *   npm run seo:indexnow -- https://www.easalesltd.co.uk/about
+ *   npm run seo:indexnow -- --sitemap
  */
 
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 const DEFAULT_SITE = 'https://www.easalesltd.co.uk';
+const DEFAULT_KEY = 'c509aba8456d5c87cdfe9b6e74c11f7d';
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 function getSiteBaseUrl() {
   const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
   return fromEnv || DEFAULT_SITE;
 }
 
-function parseUrls(argv, siteBaseUrl) {
+function resolveIndexNowKey() {
+  if (process.env.INDEXNOW_KEY) return process.env.INDEXNOW_KEY;
+
+  const keyFile = path.join(repoRoot, 'public', `${DEFAULT_KEY}.txt`);
+  if (fs.existsSync(keyFile)) {
+    const fromFile = fs.readFileSync(keyFile, 'utf8').trim();
+    if (fromFile) return fromFile;
+  }
+
+  return DEFAULT_KEY;
+}
+
+function parseArgs(argv) {
   const urls = [];
+  let submitSitemap = false;
 
   for (let i = 0; i < argv.length; i += 1) {
     const token = argv[i];
+    if (token === '--sitemap') {
+      submitSitemap = true;
+      continue;
+    }
     if (token === '--url' && argv[i + 1]) {
       urls.push(argv[i + 1]);
       i += 1;
@@ -29,6 +53,15 @@ function parseUrls(argv, siteBaseUrl) {
       continue;
     }
     urls.push(token);
+  }
+
+  return { urls, submitSitemap };
+}
+
+function resolveUrlList(rawUrls, siteBaseUrl, submitSitemap) {
+  const urls = [...rawUrls];
+  if (submitSitemap) {
+    urls.push('/sitemap.xml', '/llms.txt', '/', '/about', '/contact', '/what-is-a-sales-agent');
   }
 
   if (urls.length === 0) {
@@ -41,17 +74,13 @@ function parseUrls(argv, siteBaseUrl) {
 async function main() {
   const siteBaseUrl = getSiteBaseUrl();
   const host = new URL(siteBaseUrl).host;
-  const key = process.env.INDEXNOW_KEY;
+  const key = resolveIndexNowKey();
   const keyLocation =
-    process.env.INDEXNOW_KEY_LOCATION || `${siteBaseUrl}/${key || 'REPLACE_WITH_KEY'}.txt`;
+    process.env.INDEXNOW_KEY_LOCATION || `${siteBaseUrl}/${key}.txt`;
   const endpoint = process.env.INDEXNOW_ENDPOINT || 'https://api.indexnow.org/indexnow';
+  const { urls, submitSitemap } = parseArgs(process.argv.slice(2));
+  const urlList = resolveUrlList(urls, siteBaseUrl, submitSitemap);
 
-  if (!key) {
-    console.error('Missing INDEXNOW_KEY in environment.');
-    process.exit(1);
-  }
-
-  const urlList = parseUrls(process.argv.slice(2), siteBaseUrl);
   const payload = {
     host,
     key,
@@ -71,7 +100,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`IndexNow submitted ${urlList.length} URL(s).`);
+  console.log(`IndexNow submitted ${urlList.length} URL(s) (key ${key.slice(0, 8)}…).`);
   for (const url of urlList) {
     console.log(`- ${url}`);
   }
