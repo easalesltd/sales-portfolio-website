@@ -48,67 +48,67 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     notFound();
   }
 
-  // Special cases for each company
+  // Brand-first metadata; agent coverage belongs in page body / org schema, not every title.
   const companyMetadata = {
     'museums-and-galleries': {
-      title: 'David Langdon & Dave Langdon - Museums and Galleries Sales Agent | Art & Design-led Cards Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Museums and Galleries | Art & Design-led Greeting Cards & Stationery',
       description:
-        'Museums & Galleries art and design-led greeting cards supplied by Dave Langdon across East Anglia. Includes Angela Harding, Peter Rabbit and Henry Fraser ranges for 2026.',
+        'Museums & Galleries — UK licensed art and design-led greetings cards and gift stationery. Includes Angela Harding, Peter Rabbit and Henry Fraser ranges for 2026.',
     },
     'paper-salad': {
-      title: 'David Langdon & Dave Langdon - Paper Salad Sales Agent | Contemporary Design-led Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Paper Salad | Neon-Bright Hand-Painted Cards & Stationery',
       description:
-        'Paper Salad wholesale greeting cards and chocolate supplied by Dave Langdon, sales agent for East Anglia. Neon-bright, hand-painted designs for independent retailers across Suffolk and Norfolk.',
+        'Paper Salad wholesale greeting cards and chocolate — neon-bright, hand-painted designs from their Cheshire studio, printed in the UK.',
     },
     'ohh-deer': {
-      title: 'David Langdon & Dave Langdon - Ohh Deer Sales Agent | Illustrated Cards & Stationery in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Ohh Deer | Illustrated Cards, Stationery & Gifts',
       description:
-        'Ohh Deer wholesale greeting cards, stationery, silly beans, seasonal cards and gifts supplied by Dave Langdon across East Anglia. Includes the Cath Kidston and Laura Ashley greeting card ranges.',
+        'Ohh Deer wholesale greeting cards, stationery, silly beans and gifts — including Cath Kidston and Laura Ashley greeting card ranges.',
     },
     'mint-publishing': {
-      title: 'David Langdon & Dave Langdon - Mint Publishing Sales Agent | Funny & Captioned Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Mint Publishing | Funny Birthday & Captioned Greeting Cards',
       description:
-        'Mint Publishing wholesale greeting cards supplied by Dave Langdon across Suffolk, Norfolk, Essex and Cambridgeshire. Funny birthday and captioned cards including the Katie Abey range.',
+        'Mint Publishing wholesale greeting cards — refreshingly different birthday, blank and captioned cards, including the official Katie Abey range.',
     },
     'global-journey-gifts': {
-      title: 'Global Journey Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Global Journey Gifts | Retail Gifts & Coin Dispenser Solutions',
       description:
-        'Global Journey wholesale gifts and coin dispenser machines supplied by Dave Langdon across East Anglia. Ideal for tourist attractions, museums, garden centres and visitor centres.',
+        'Global Journey wholesale gifts on customised displays, plus coin dispenser machines for tourist attractions, museums, garden centres and visitor centres.',
     },
     'david-fischhoff': {
-      title: 'David Fischhoff Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'David Fischhoff | Artificial Flowers & Memorial Ornaments',
       description:
-        'David Fischhoff wholesale artificial flowers, grave ornaments and memorial products supplied by Dave Langdon across Suffolk, Norfolk, Essex and Cambridgeshire.',
+        'David Fischhoff wholesale artificial flowers, grave ornaments and memorial products for independent retailers.',
     },
     'emotional-rescue': {
-      title: 'Emotional Rescue Greeting Cards | Contemporary Cards in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Emotional Rescue | Unique & Innovative Greeting Cards',
       description:
-        'Emotional Rescue wholesale greeting cards supplied by Dave Langdon, East Anglia sales agent. Unique, innovative card designs for independent retailers across Suffolk and Norfolk.',
+        'Emotional Rescue wholesale greeting cards — unique, innovative designs for independent retailers.',
     },
     'boxer-gifts': {
-      title: 'Boxer Gifts Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Boxer Gifts | Fun Wholesale Gift Items',
       description:
-        'Wholesale Boxer Books and Gifts supplied by Dave Langdon, greeting card and gift sales agent for Suffolk, Norfolk, Essex and Cambridgeshire. Fun, unique gift ranges for independent retailers.',
+        'Boxer Gifts — designers and suppliers of unique, fun, quality wholesale gift items for independent retailers.',
     },
     'peppermint-grove': {
-      title: 'Peppermint Grove Sales Agent | Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Peppermint Grove | Luxury Home Fragrance & Bath Care',
       description:
-        'Peppermint Grove luxury home fragrance and bath & body wholesale products supplied by Dave Langdon across Suffolk, Norfolk, Essex and Cambridgeshire. Australian-made, beautifully presented.',
+        'Peppermint Grove luxury home fragrance and bath & body — handmade in Australia and presented in custom-designed glassware.',
     },
     'cgb-giftware': {
-      title: 'David Langdon & Dave Langdon - CGB Giftware Sales Agent | Container Group Gifts & Bespoke Giftware in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'CGB Giftware | High-Quality Gifts & Bespoke Giftware',
       description:
-        'CGB Giftware wholesale gifts and bespoke giftware supplied by Dave Langdon, East Anglia sales agent. Artisan glass, Enchanted Emporium and high-quality gift ranges for retailers.',
+        'CGB Giftware (Container Group) — artisan glass, Enchanted Emporium and distinctive wholesale gift ranges for retailers.',
     },
     'cambridge-confectionery-company': {
-      title: 'David Langdon & Dave Langdon - The Cambridge Confectionery Company & Calico Cottage Sales Agent | Wholesale Confectionery in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'The Cambridge Confectionery Company | Handfinished Chocolate Gifts',
       description:
-        'The Cambridge Confectionery Company wholesale chocolate and confectionery gifts supplied by Dave Langdon across East Anglia. Handfinished gift bars and collections for independent retailers.',
+        'The Cambridge Confectionery Company — generously topped chocolate bars, gift collections and giant buttons, finished by hand.',
     },
     'star-editions': {
-      title: 'David Langdon & Dave Langdon - Star Editions Sales Agent | Licensed Cards & Gifts in East Anglia, Hertfordshire & Cambridgeshire',
+      title: 'Star Editions | Licensed Cards & Bespoke Giftware',
       description:
-        'Star Editions wholesale greeting cards and licensed gifts supplied by Dave Langdon, East Anglian Sales agent, across Suffolk, Norfolk, Essex and Cambridgeshire. Richard Briggs and Dave Thompson ranges.',
+        'Star Editions wholesale licensed greeting cards and giftware — including Richard Briggs and Dave Thompson ranges, finished in the UK.',
     }
   };
 

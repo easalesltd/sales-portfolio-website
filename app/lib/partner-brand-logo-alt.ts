@@ -1,6 +1,6 @@
 /**
- * Accessible, keyword-rich alt for partner brand tiles (homepage, company routes).
+ * Accessible alt for partner brand logos (homepage tiles, company pages).
  */
 export function partnerBrandLogoAlt(brandName: string): string {
-  return `${brandName} logo — wholesale greeting cards and gifts partner brand with Dave Langdon, sales agent covering Suffolk, Norfolk, Essex, Cambridgeshire and Hertfordshire`;
+  return `${brandName} logo`;
 }
