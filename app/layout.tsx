@@ -242,37 +242,6 @@ export default async function RootLayout({
             __html: JSON.stringify([
               {
                 "@context": "https://schema.org",
-                "@type": "WebPage",
-                "@id": "https://www.easalesltd.co.uk/#webpage",
-                "url": "https://www.easalesltd.co.uk",
-                "name": "East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent",
-                "description": HOME_PAGE_META_DESCRIPTION,
-                "inLanguage": "en-GB",
-                "isPartOf": {
-                  "@type": "WebSite",
-                  "@id": "https://www.easalesltd.co.uk/#website",
-                  "url": "https://www.easalesltd.co.uk",
-                  "name": "East Anglian Sales LTD"
-                },
-                "primaryImageOfPage": {
-                  "@type": "ImageObject",
-                  "url": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
-                  "contentUrl": "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
-                  "width": 1200,
-                  "height": 630
-                },
-                "breadcrumb": {
-                  "@id": "https://www.easalesltd.co.uk/#breadcrumb"
-                },
-                "about": {
-                  "@id": "https://www.easalesltd.co.uk/#organization"
-                },
-                "mainEntity": {
-                  "@id": "https://www.easalesltd.co.uk/#organization"
-                }
-              },
-              {
-                "@context": "https://schema.org",
                 "@type": "Organization",
                 "additionalType": [
                   "https://schema.org/LocalBusiness",
@@ -457,19 +426,6 @@ export default async function RootLayout({
               },
               {
                 "@context": "https://schema.org",
-                "@type": "BreadcrumbList",
-                "@id": "https://www.easalesltd.co.uk/#breadcrumb",
-                "itemListElement": [
-                  {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://www.easalesltd.co.uk"
-                  }
-                ]
-              },
-              {
-                "@context": "https://schema.org",
                 "@type": "Person",
                 "@id": "https://www.easalesltd.co.uk/#person",
                 "name": "Dave Langdon",
@@ -503,85 +459,6 @@ export default async function RootLayout({
                   "addressCountry": "GB"
                 },
                 "description": "Dave Langdon, also known as David Langdon, is a UK-based professional Greeting Card Sales Agent and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience, Dave serves retailers across East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
-              },
-              {
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "@id": "https://www.easalesltd.co.uk/#faqpage",
-                "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": "What is a Greeting Card Sales Agent?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "A Greeting Card Sales Agent is a professional intermediary between greeting card manufacturers and retailers. Dave Langdon is a UK-based Greeting Card and Giftware Sales Agent for East Anglian Sales LTD, helping retailers across East Anglia find perfect greeting cards and gifts."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What is a Giftware Sales Agent?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "A Giftware Sales Agent represents giftware manufacturers to retail businesses. Dave Langdon provides retailers in East Anglia with quality giftware products and expert advice on product selection and display solutions."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Where does Dave Langdon serve as a Sales Agent?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Dave Langdon serves as a Greeting Card and Giftware Sales Agent across East Anglia, covering Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire. He travels to retailers throughout these regions providing personal service."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How do I contact a Greeting Card Sales Agent?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Contact Dave Langdon by phone at 07709197915 or email at dave@easalesltd.co.uk. Available Monday to Friday to discuss greeting card and giftware needs."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What brands does the Greeting Card Sales Agent represent?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Dave Langdon represents brands including Paper Salad, Ohh Deer, Museums & Galleries, Mint Publishing, Star Editions, Boxer Gifts, Global Journey, Peppermint Grove, Emotional Rescue, David Fischhoff, Real & Exciting Designs, CGB Giftware, The Cambridge Confectionery Company (also known as Calico Cottage), and more."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Who is David Langdon?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "David Langdon (Dave Langdon) is a UK-based professional Greeting Card and Giftware Sales Agent based in Ipswich, Suffolk. He works for East Anglian Sales LTD, serving retailers across East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What areas does East Anglian Sales LTD cover?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "East Anglian Sales LTD serves retailers across East Anglia, covering Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire. They provide wholesale greeting cards, gifts, and display solutions to independent shops and garden centres."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What services does East Anglian Sales LTD provide?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "East Anglian Sales LTD provides wholesale greeting cards and giftware supply, display solutions, expert product advice, and personal service to retailers. They help businesses create effective product displays and grow their greeting card and gift ranges."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Is East Anglian Sales LTD a member of the UK Greeting Card Association?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes. East Anglian Sales LTD is a member of the UK Greeting Card Association (GCA), the trade body for the UK greeting card industry."
-                  }
-                }
-                ]
               }
             ])
           }}

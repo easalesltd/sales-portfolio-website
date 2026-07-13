@@ -1,0 +1,42 @@
+# East Anglian Sales LTD
+
+> UK greeting card, giftware, and confectionery sales agency covering East Anglia. Founded by Dave Langdon (David Langdon). Member of the UK Greeting Card Association (GCA).
+
+## Summary
+
+East Anglian Sales LTD supplies independent retailers, garden centres, museums, and visitor attractions across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire with wholesale greeting cards, gifts, display solutions, and confectionery ranges. Contact: Dave Langdon — phone 07709197915, email dave@easalesltd.co.uk. Based in Ipswich, Suffolk.
+
+## Core pages
+
+- [Home](https://www.easalesltd.co.uk/): Company overview and partner brands
+- [About Dave](https://www.easalesltd.co.uk/about): Background and experience
+- [What is a sales agent?](https://www.easalesltd.co.uk/what-is-a-sales-agent): Plain-English explanation of greeting card / gift sales agents
+- [Display solutions](https://www.easalesltd.co.uk/display-solutions): Retail display options
+- [Bespoke confectionery displays](https://www.easalesltd.co.uk/display-solutions/bespoke-confectionery-displays): Plastic-free sweets and confectionery displays (Cambridge Confectionery / Calico Cottage)
+- [Temporary rep cover](https://www.easalesltd.co.uk/temporary-rep-cover): Cover for greeting card / gift territories
+- [Contact](https://www.easalesltd.co.uk/contact): Phone, email, and visit request
+- [Site index](https://www.easalesltd.co.uk/site-index): Full crawlable index of pages
+- [Blog / press](https://www.easalesltd.co.uk/blog): Trade press coverage
+- [Recipes](https://www.easalesltd.co.uk/recipes): Recipe content supporting partner brands
+
+## Partner brands
+
+- [Boxer Gifts](https://www.easalesltd.co.uk/companies/boxer-gifts)
+- [CGB Giftware](https://www.easalesltd.co.uk/companies/cgb-giftware)
+- [David Fischhoff](https://www.easalesltd.co.uk/companies/david-fischhoff)
+- [Emotional Rescue](https://www.easalesltd.co.uk/companies/emotional-rescue)
+- [Global Journey Gifts](https://www.easalesltd.co.uk/companies/global-journey-gifts)
+- [Mint Publishing](https://www.easalesltd.co.uk/companies/mint-publishing)
+- [Museums and Galleries](https://www.easalesltd.co.uk/companies/museums-and-galleries)
+- [Ohh Deer](https://www.easalesltd.co.uk/companies/ohh-deer)
+- [Paper Salad](https://www.easalesltd.co.uk/companies/paper-salad)
+- [Peppermint Grove](https://www.easalesltd.co.uk/companies/peppermint-grove)
+- [Real and Exciting Designs](https://www.easalesltd.co.uk/companies/real-and-exciting-designs)
+- [Star Editions](https://www.easalesltd.co.uk/companies/star-editions)
+- [The Cambridge Confectionery Company](https://www.easalesltd.co.uk/companies/cambridge-confectionery-company)
+
+## Optional
+
+- [Sitemap](https://www.easalesltd.co.uk/sitemap.xml)
+- [Privacy policy](https://www.easalesltd.co.uk/privacy)
+- [Cookie policy](https://www.easalesltd.co.uk/cookies)

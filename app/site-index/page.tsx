@@ -33,6 +33,7 @@ const corePages = [
   { href: '/cookies', label: 'Cookie Policy' },
   { href: '/blog', label: 'Blog / Press' },
   { href: '/recipes', label: 'Recipes' },
+  { href: '/llms.txt', label: 'llms.txt (AI / LLM site summary)' },
 ] as const;
 
 export default function SiteIndexPage() {

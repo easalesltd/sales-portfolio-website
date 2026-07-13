@@ -40,6 +40,14 @@ function getSourceMtime(sourceFile: string): Date {
   }
 }
 
+function getPublicFileMtime(relativePublicPath: string): Date {
+  try {
+    return fs.statSync(path.join(process.cwd(), 'public', relativePublicPath)).mtime;
+  } catch {
+    return new Date();
+  }
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const urls = new Map<string, MetadataRoute.Sitemap[number]>();
 
@@ -51,6 +59,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: route.priority,
     });
   }
+
+  urls.set('/llms.txt', {
+    url: `${SITE_URL}/llms.txt`,
+    lastModified: getPublicFileMtime('llms.txt'),
+    changeFrequency: 'monthly',
+    priority: 0.5,
+  });
 
   const companiesLastModified = getSourceMtime('data/companies.ts');
   for (const company of companies) {
