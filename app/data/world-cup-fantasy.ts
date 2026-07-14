@@ -1813,4 +1813,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 1,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-07-14-sf-1',
+    utcDate: '2026-07-14T19:00:00Z',
+    homeTeam: { name: 'Spain', tla: 'ESP' },
+    awayTeam: { name: 'France', tla: 'FRA' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
