@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Sunday\'s last quarter-final was pure survival surgery: Nest\'s Switzerland were carved up 1-3 after extra time — a red card and three conceded for the exit door — while Scott\'s Argentina barge into the final four as his one nation still breathing. Nest leads on 57, Scott has 50, Chris has 49, Jon has 43, Ash has 36, and Dave remains bottom on 31, still cluttering the table like a substitute board left on the wrong number long after the fourth official has gone home.';
+  'Tuesday\'s opening World Cup semi was survival football with the volume up: Spain dismissed France 2-0, so Ash\'s only remaining nation books a seat in the final while Chris\'s French campaign collapses into the "out" column with no understudies waiting in the wings. Nest leads on 57, Scott has 50, Chris has 49, Jon has 43, Ash has 39, and Dave remains bottom on 31 — eliminated everywhere weeks ago, still occupying last place like a misfiled lineup sheet stuck to the underside of the manager\'s clipboard.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
