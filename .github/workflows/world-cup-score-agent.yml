@@ -145,6 +145,7 @@ jobs:
           - run npm run world-cup:validate:roast before finishing; fix any roast validation errors
           - keep roasts varied; do not repeat the same premise, phrase, or pub-style gag
           - frame knockouts as survival football with eliminations and teams left alive
+          - if fixture 2026-07-19-final is already in WORLD_CUP_FANTASY_MANUAL_MATCHES, write the FINAL roast instead: crown the standings winner with their exact points, go hard and rude on the losers (especially last place), and skip survival/teams-left framing
 
           Recent fixtures that may need covering in the roast:
           ${DUE_FIXTURES}

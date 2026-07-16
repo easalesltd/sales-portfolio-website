@@ -9,10 +9,13 @@ import {
 import {
   computeStandings,
   getMatchdaySchedule,
+  isWorldCupSweepstakeComplete,
   manualMatchToResult,
+  pickWorldCupChampion,
   type MatchPointsEntry,
   type MatchdaySchedule,
   type PlayerStanding,
+  type WorldCupChampion,
 } from '@/app/lib/world-cup-scoring';
 import { resolveWorldCupScheduleFixtures } from '@/app/lib/world-cup-knockout-bracket';
 import { enrichMatchdayScheduleWithLiveScores } from '@/app/lib/world-cup-live-scores';
@@ -28,6 +31,8 @@ export type WorldCupFantasyResponse = {
   allScoringMatches: MatchPointsEntry[];
   recentScoringMatches: MatchPointsEntry[];
   finishedMatchCount: number;
+  tournamentComplete: boolean;
+  champion: WorldCupChampion | null;
 };
 
 export async function GET() {
@@ -53,6 +58,8 @@ export async function GET() {
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   ).length;
+  const tournamentComplete = isWorldCupSweepstakeComplete(recordedMatches);
+  const champion = tournamentComplete ? pickWorldCupChampion(standings) : null;
 
   const body: WorldCupFantasyResponse = {
     ok: true,
@@ -63,6 +70,8 @@ export async function GET() {
     allScoringMatches,
     recentScoringMatches,
     finishedMatchCount,
+    tournamentComplete,
+    champion,
   };
 
   return NextResponse.json(body);

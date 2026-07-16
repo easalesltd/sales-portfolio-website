@@ -7,6 +7,9 @@ import type { WorldCupMatchResult } from '@/app/lib/world-cup-scoring';
 
 export const WORLD_CUP_BRACKET_TBD_TLA = 'TBD';
 
+/** Ledger fixture id for the World Cup final — sweepstake ends once this result is recorded. */
+export const WORLD_CUP_SWEEPSTAKE_FINAL_FIXTURE_ID = '2026-07-19-final';
+
 export type KnockoutRound = 'R32' | 'R16' | 'QF' | 'SF' | 'F' | '3P';
 
 export const KNOCKOUT_ROUND_LABELS: Record<KnockoutRound, string> = {

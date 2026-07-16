@@ -11,6 +11,7 @@ import {
   KNOCKOUT_ROUND_LABELS,
   knockoutFixturesForElimination,
   teamCodeInResolvedFixture,
+  WORLD_CUP_SWEEPSTAKE_FINAL_FIXTURE_ID,
 } from '@/app/lib/world-cup-knockout-bracket';
 
 export type WorldCupMatchResult = {
@@ -637,6 +638,36 @@ export function computeEliminatedTeamCodes(
   }
 
   return eliminated;
+}
+
+export type WorldCupChampion = Pick<
+  PlayerStanding,
+  'id' | 'name' | 'teamName' | 'points' | 'managerImage' | 'clubCrest'
+>;
+
+export function isWorldCupSweepstakeComplete(
+  matches: readonly Pick<WorldCupMatchResult, 'id' | 'status' | 'homeGoals' | 'awayGoals'>[]
+): boolean {
+  const final = matches.find((match) => match.id === WORLD_CUP_SWEEPSTAKE_FINAL_FIXTURE_ID);
+  return (
+    final != null &&
+    final.status === 'FINISHED' &&
+    final.homeGoals != null &&
+    final.awayGoals != null
+  );
+}
+
+export function pickWorldCupChampion(standings: readonly PlayerStanding[]): WorldCupChampion | null {
+  const winner = standings[0];
+  if (!winner) return null;
+  return {
+    id: winner.id,
+    name: winner.name,
+    teamName: winner.teamName,
+    points: winner.points,
+    managerImage: winner.managerImage,
+    clubCrest: winner.clubCrest,
+  };
 }
 
 export function resolveManagerImageForStandings(

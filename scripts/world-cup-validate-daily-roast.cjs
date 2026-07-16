@@ -11,6 +11,7 @@ const {
   isKnockoutMatchId,
   scoreTeamMatch,
 } = require('./lib/world-cup-scoring-lib.cjs');
+const { isWorldCupSweepstakeComplete } = require('./lib/world-cup-sweepstake-complete.cjs');
 
 function extractConstArray(name) {
   const match = source.match(new RegExp(`export const ${name}[\\s\\S]*?= \\[([\\s\\S]*?)\\n\\](?: as const)?;`));
@@ -36,11 +37,16 @@ function parsePlayers() {
   const playersSource = extractConstArray('WORLD_CUP_FANTASY_PLAYERS');
   const playerPattern = /\{\s*id: '([^']+)',\s*name: '([^']+)',[\s\S]*?teams: \[([^\]]+)\]/g;
 
-  return [...playersSource.matchAll(playerPattern)].map((match) => ({
-    id: match[1],
-    name: match[2],
-    teams: parseQuotedList(match[3]),
-  }));
+  return [...playersSource.matchAll(playerPattern)].map((match) => {
+    const block = match[0];
+    const teamNameMatch = block.match(/teamName: '([^']+)'/);
+    return {
+      id: match[1],
+      name: match[2],
+      teamName: teamNameMatch ? teamNameMatch[1] : null,
+      teams: parseQuotedList(match[3]),
+    };
+  });
 }
 
 function parseTeamMeta() {
@@ -240,7 +246,9 @@ function parseTeamAliases(teamMeta) {
 
 function computeStandings(players, matches, aliases, knockoutMatchIds) {
   const standings = players.map((player) => ({
+    id: player.id,
     name: player.name,
+    teamName: player.teamName,
     points: 0,
     goalsFor: 0,
     goalsAgainst: 0,
@@ -293,22 +301,105 @@ function standingByName(standings, name) {
   return standings.find((standing) => standing.name === name);
 }
 
-function validateStandingsClaims(roast, standings) {
+function playerDisplayLabels(standing) {
+  const labels = [standing.name];
+  if (standing.teamName) labels.push(standing.teamName);
+  return labels;
+}
+
+function roastMentionsLabel(roast, label) {
+  return roast.includes(label);
+}
+
+function roastMentionsStanding(roast, standing) {
+  return playerDisplayLabels(standing).some((label) => roastMentionsLabel(roast, label));
+}
+
+function validateFinalRoast(roast, standings) {
+  const errors = [];
+  const winner = standings[0];
+  const bottom = standings.at(-1);
+
+  if (!winner) {
+    errors.push('No standings available for final roast validation');
+    return errors;
+  }
+
+  if (!roastMentionsStanding(roast, winner)) {
+    errors.push(
+      `Final roast must crown the winner (${playerDisplayLabels(winner).join(' / ')})`,
+    );
+  }
+
+  const winnerPointPatterns = playerDisplayLabels(winner).flatMap((label) => [
+    new RegExp(`\\b${escapeRegExp(label)}\\b(?: wins on| takes it on| crowned on| champion on) (\\d+)\\b`, 'i'),
+    new RegExp(`\\b${escapeRegExp(label)}\\b wins the sweepstake on (\\d+)\\b`, 'i'),
+  ]);
+
+  for (const pattern of winnerPointPatterns) {
+    const match = roast.match(pattern);
+    if (!match) continue;
+    const claimedPoints = Number.parseInt(match[1], 10);
+    if (claimedPoints !== winner.points) {
+      errors.push(
+        `Final roast says ${match[0]}, but computed champion total is ${winner.points}`,
+      );
+    }
+  }
+
+  if (bottom && bottom.id !== winner.id && !roastMentionsStanding(roast, bottom)) {
+    errors.push(
+      `Final roast should mention last-placed ${playerDisplayLabels(bottom).join(' / ')}`,
+    );
+  }
+
+  return errors;
+}
+
+function validateStandingsClaims(roast, standings, options = {}) {
   const errors = [];
   const playerNames = standings.map((standing) => standing.name);
+  const tournamentComplete = options.tournamentComplete === true;
+  const winner = standings[0];
 
-  const leaderMatch = roast.match(/\b(\w+)\b(?: leads on| is top on) (\d+)\b/);
-  if (leaderMatch) {
+  const leaderPatterns = tournamentComplete
+    ? [
+        /\b(\w+)\b(?: wins on| takes it on| crowned on| champion on) (\d+)\b/i,
+        /\b(\w+)\b wins the sweepstake on (\d+)\b/i,
+        /\b(\w+)\b(?: leads on| is top on) (\d+)\b/,
+      ]
+    : [/\b(\w+)\b(?: leads on| is top on) (\d+)\b/];
+
+  for (const pattern of leaderPatterns) {
+    const leaderMatch = roast.match(pattern);
+    if (!leaderMatch) continue;
+
     const [, name, pointsText] = leaderMatch;
     const leader = standings[0];
     const claimedPoints = Number.parseInt(pointsText, 10);
 
     if (!playerNames.includes(name)) {
       errors.push(`Roast leader name "${name}" is not a sweepstake player`);
-    } else if (leader && name !== leader.name) {
-      errors.push(`Roast says ${name} leads on ${pointsText}, but ${leader.name} leads on ${leader.points}`);
-    } else if (leader && claimedPoints !== leader.points) {
+    } else if (leader && name !== leader.name && !leader.teamName?.includes(name)) {
+      const expected = leader.teamName ? `${leader.teamName} (${leader.name})` : leader.name;
+      errors.push(`Roast says ${name} leads on ${pointsText}, but ${expected} leads on ${leader.points}`);
+    } else if (leader && name === leader.name && claimedPoints !== leader.points) {
       errors.push(`Roast says ${name} leads on ${pointsText}, but computed leader total is ${leader.points}`);
+    } else if (
+      leader &&
+      leader.teamName &&
+      name !== leader.name &&
+      roast.includes(leader.teamName) &&
+      claimedPoints !== leader.points
+    ) {
+      errors.push(`Roast says ${name} leads on ${pointsText}, but computed leader total is ${leader.points}`);
+    }
+    break;
+  }
+
+  if (tournamentComplete && winner && !leaderPatterns.some((pattern) => pattern.test(roast))) {
+    if (!roastMentionsStanding(roast, winner)) {
+      errors.push(`Final roast must state the winner's points (e.g. "${winner.name} wins on ${winner.points}")`);
     }
   }
 
@@ -422,10 +513,19 @@ function validateRoastDayScope(roast, manualMatches, teamMeta, roastDay) {
 
 function validateWorldCupDailyRoast(context, options = {}) {
   const { roast, players, manualMatches, standings, teamMeta } = context;
+  const tournamentComplete = options.tournamentComplete ?? isWorldCupSweepstakeComplete(manualMatches);
   const roastDay = options.roastDay ?? latestManualMatchDay(manualMatches);
 
   if (!roastDay) {
     return roast.trim().length > 0 ? ['Roast is set but no manual matches are recorded yet'] : [];
+  }
+
+  if (tournamentComplete) {
+    return [
+      ...validateStandingsClaims(roast, standings, { tournamentComplete: true }),
+      ...validatePlayerTeamLinks(roast, players, teamMeta),
+      ...validateFinalRoast(roast, standings),
+    ];
   }
 
   return [
@@ -450,20 +550,24 @@ module.exports = {
   validateWorldCupDailyRoast,
   loadValidationContext,
   latestManualMatchDay,
+  isWorldCupSweepstakeComplete,
 };
 
 if (require.main === module) {
   const context = loadValidationContext();
+  const tournamentComplete = isWorldCupSweepstakeComplete(context.manualMatches);
   const roastDay = latestManualMatchDay(context.manualMatches);
-  const errors = validateWorldCupDailyRoast(context, { roastDay });
+  const errors = validateWorldCupDailyRoast(context, { roastDay, tournamentComplete });
 
   if (errors.length > 0) {
-    console.error(`World Cup daily roast validation failed for ${roastDay}:`);
+    console.error(
+      `World Cup ${tournamentComplete ? 'final' : 'daily'} roast validation failed for ${roastDay}:`,
+    );
     for (const error of errors) {
       console.error(`- ${error}`);
     }
     process.exit(1);
   }
 
-  console.log(`Validated World Cup daily roast for ${roastDay}.`);
+  console.log(`Validated World Cup ${tournamentComplete ? 'final' : 'daily'} roast for ${roastDay}.`);
 }

@@ -7,6 +7,8 @@ import {
   getMatchdaySchedule,
   getUpcomingFixtures,
   isPlayerFullyEliminated,
+  isWorldCupSweepstakeComplete,
+  pickWorldCupChampion,
   resolveManagerImageForStandings,
   scoreTeamMatch,
   type WorldCupMatchResult,
@@ -20,7 +22,7 @@ import {
   type WorldCupFantasyFixture,
   type WorldCupFantasyPlayer,
 } from '@/app/data/world-cup-fantasy';
-import { WORLD_CUP_R32_FIXTURE_IDS } from '@/app/lib/world-cup-knockout-bracket';
+import { WORLD_CUP_R32_FIXTURE_IDS, WORLD_CUP_SWEEPSTAKE_FINAL_FIXTURE_ID } from '@/app/lib/world-cup-knockout-bracket';
 import { manualMatchToResult } from '@/app/lib/world-cup-scoring';
 
 const players: readonly WorldCupFantasyPlayer[] = [
@@ -402,6 +404,43 @@ describe('World Cup manual ledger integrity', () => {
     expect(eliminated.has('BRA')).toBe(false);
     expect(eliminated.has('JPN')).toBe(true);
     expect(eliminated.has('PAR')).toBe(false);
+  });
+});
+
+describe('isWorldCupSweepstakeComplete', () => {
+  it('is false until the World Cup final is in the ledger', () => {
+    const recorded = WORLD_CUP_FANTASY_MANUAL_MATCHES.map(manualMatchToResult);
+    expect(isWorldCupSweepstakeComplete(recorded)).toBe(false);
+  });
+
+  it('is true once the final result is recorded', () => {
+    const finalMatch: WorldCupMatchResult = {
+      id: WORLD_CUP_SWEEPSTAKE_FINAL_FIXTURE_ID,
+      utcDate: '2026-07-19T19:00:00Z',
+      status: 'FINISHED',
+      stage: 'knockout',
+      homeTeam: { name: 'Argentina', tla: 'ARG' },
+      awayTeam: { name: 'France', tla: 'FRA' },
+      homeGoals: 2,
+      awayGoals: 1,
+      homeRedCards: 0,
+      awayRedCards: 0,
+    };
+
+    expect(isWorldCupSweepstakeComplete([finalMatch])).toBe(true);
+  });
+});
+
+describe('pickWorldCupChampion', () => {
+  it('returns the top standings row with the champion portrait path', () => {
+    const finished = WORLD_CUP_FANTASY_MANUAL_MATCHES.map(manualMatchToResult);
+    const { standings } = computeStandings(WORLD_CUP_FANTASY_PLAYERS, finished, WORLD_CUP_FANTASY_FIXTURES);
+    const champion = pickWorldCupChampion(standings);
+
+    expect(champion).not.toBeNull();
+    expect(champion!.id).toBe(standings[0].id);
+    expect(champion!.points).toBe(standings[0].points);
+    expect(champion!.managerImage).toContain('-top.png');
   });
 });
 
