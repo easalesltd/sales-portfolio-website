@@ -14,6 +14,9 @@ interface VideoBackgroundProps {
 /**
  * Decorative muted background video. Files must be video-only (no audio track) so
  * iOS/Android do not pause Spotify/Apple Music when playback starts.
+ *
+ * Mobile Chrome needs: muted + playsInline + autoPlay attributes, an explicit
+ * load() when the section enters view, and faststart MP4s (moov before mdat).
  */
 export default function VideoBackground({
   videoUrl,
@@ -25,7 +28,7 @@ export default function VideoBackground({
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -33,7 +36,7 @@ export default function VideoBackground({
 
     const observer = new IntersectionObserver(
       ([entry]) => setIsInView(entry.isIntersecting),
-      { rootMargin: '120px', threshold: 0.01 }
+      { rootMargin: '160px', threshold: 0.01 }
     );
     observer.observe(container);
     return () => observer.disconnect();
@@ -43,9 +46,13 @@ export default function VideoBackground({
     const video = videoRef.current;
     if (!video) return;
 
+    // Attribute + property — Android Chrome is picky about muted autoplay.
     video.muted = true;
     video.defaultMuted = true;
     video.volume = 0;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
     video.playsInline = true;
     video.playbackRate = playbackRate;
 
@@ -54,23 +61,50 @@ export default function VideoBackground({
       return;
     }
 
-    const startPlayback = () => {
-      setIsLoaded(true);
-      void video.play().catch(() => {
-        // Autoplay can still be blocked in strict browser policies.
-      });
+    let cancelled = false;
+
+    const tryPlay = () => {
+      if (cancelled) return;
+      setIsReady(true);
+      const playAttempt = video.play();
+      if (playAttempt !== undefined) {
+        void playAttempt.catch(() => {
+          // Strict autoplay policies can still block; keep poster / first frame.
+        });
+      }
     };
 
+    const onCanPlay = () => tryPlay();
+    const onLoadedData = () => tryPlay();
+
+    video.addEventListener('canplay', onCanPlay);
+    video.addEventListener('loadeddata', onLoadedData);
+
+    // Kick loading — preload alone is unreliable on mobile when src was idle.
+    if (video.preload !== 'auto') {
+      video.preload = 'auto';
+    }
+    video.load();
+
     if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-      startPlayback();
-      return;
+      tryPlay();
     }
 
-    video.addEventListener('loadeddata', startPlayback, { once: true });
-    return () => video.removeEventListener('loadeddata', startPlayback);
+    // Retry after a short delay (Chrome sometimes needs a second nudge).
+    const retryId = window.setTimeout(() => {
+      if (!cancelled && video.paused) tryPlay();
+    }, 400);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(retryId);
+      video.removeEventListener('canplay', onCanPlay);
+      video.removeEventListener('loadeddata', onLoadedData);
+    };
   }, [isInView, playbackRate, videoUrl]);
 
-  const backdropClass = `h-full w-full object-cover ${isLoaded ? 'opacity-20' : 'opacity-0'}`;
+  const showMedia = isReady || Boolean(posterUrl);
+  const backdropClass = `h-full w-full object-cover ${showMedia ? 'opacity-20' : 'opacity-0'}`;
   const backdropTransition = fadeIn ? 'opacity 1s ease-in' : 'none';
 
   return (
@@ -81,19 +115,19 @@ export default function VideoBackground({
           ref={videoRef}
           className={backdropClass}
           style={{ transition: backdropTransition }}
+          src={isInView ? videoUrl : undefined}
           poster={posterUrl}
           data-decorative-background
           muted
+          autoPlay
           playsInline
           loop
-          preload={isInView ? 'metadata' : 'none'}
+          preload={isInView ? 'auto' : 'none'}
           disablePictureInPicture
           controlsList="nodownload noplaybackrate nofullscreen"
           aria-hidden
           tabIndex={-1}
-        >
-          <source src={videoUrl} type="video/mp4" />
-        </video>
+        />
       </div>
 
       <div className="relative z-10 h-full min-h-0 w-full">{children}</div>
