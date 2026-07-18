@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Wednesday\'s second semi wrote Nest out of the survival race and Scott into the final in one scoreline: Argentina beat England 2-1, so Scott still has one nation breathing for the showpiece while Nest\'s last hope is gone — table leader, empty squad list, pure points ghost. Nest leads on 57, Scott has 53, Chris has 49, Jon has 43, Ash has 39, and Dave remains bottom on 31 — wiped clean of live teams ages ago, still clinging to last place like a delayed goal-line technology replay nobody asked to see again.';
+  'Saturday\'s bronze-medal play-off was survival football\'s afterparty: Nest\'s England beat Chris\'s France 6-4 in a ten-goal free-for-all that settles third place and nothing about Sunday\'s final — both already eliminated from the title race, still trading punches for leftover points. Nest leads on 60, Scott has 53, Chris has 49, Jon has 43, Ash has 39, and Dave remains bottom on 31 — last for so many updates the standings treat him like a default setting that refuses to change.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
