@@ -1835,4 +1835,15 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-07-18-3p',
+    utcDate: '2026-07-18T21:00:00Z',
+    homeTeam: { name: 'England', tla: 'ENG' },
+    awayTeam: { name: 'France', tla: 'FRA' },
+    homeGoals: 6,
+    awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
