@@ -139,7 +139,7 @@ export type WorldCupFantasyPlayer = {
 };
 
 export const WORLD_CUP_FANTASY_DAILY_UPDATE =
-  'Saturday\'s bronze-medal play-off was survival football\'s afterparty: Nest\'s England beat Chris\'s France 6-4 in a ten-goal free-for-all that settles third place and nothing about Sunday\'s final — both already eliminated from the title race, still trading punches for leftover points. Nest leads on 60, Scott has 53, Chris has 49, Jon has 43, Ash has 39, and Dave remains bottom on 31 — last for so many updates the standings treat him like a default setting that refuses to change.';
+  'Full time on the World Cup, and Nest wins on 60 — England never needed the final because the spreadsheet had already filed the paperwork. Scott\'s Argentina lost the showpiece 0-1 after extra time and collected a red for the humiliation, Ash\'s Spain are world champions and somehow still fifth, and Dave finishes last on 31 with a squad that spent June advertising itself as elite and July proving the brochure was fiction.';
 
 export const WORLD_CUP_FANTASY_PLAYERS: readonly WorldCupFantasyPlayer[] = [
   {
@@ -1844,6 +1844,17 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES: readonly WorldCupFantasyManualMat
     homeGoals: 6,
     awayGoals: 4,
     homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-07-19-final',
+    utcDate: '2026-07-19T19:00:00Z',
+    homeTeam: { name: 'Argentina', tla: 'ARG' },
+    awayTeam: { name: 'Spain', tla: 'ESP' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 1,
     awayRedCards: 0,
   },
 ];
