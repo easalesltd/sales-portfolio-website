@@ -116,6 +116,18 @@ describe('resolveManagerImageForStandings', () => {
   it('uses default image for middle positions', () => {
     expect(resolveManagerImageForStandings(player, 2, 6)).toBe(player.managerImage);
   });
+
+  it('keeps the top portrait for first place even when fully eliminated', () => {
+    expect(resolveManagerImageForStandings(player, 0, 6, true)).toBe(
+      '/images/world-cup-fantasy/managers/jon-top.png'
+    );
+  });
+
+  it('uses bottom image for mid-table managers who are fully eliminated', () => {
+    expect(resolveManagerImageForStandings(player, 2, 6, true)).toBe(
+      '/images/world-cup-fantasy/managers/jon-bottom.png'
+    );
+  });
 });
 
 describe('scoreTeamMatch', () => {

@@ -676,13 +676,15 @@ export function resolveManagerImageForStandings(
   playerCount: number,
   allTeamsEliminated = false
 ): string {
-  if (allTeamsEliminated && playerCount > 1) {
-    return `/images/world-cup-fantasy/managers/${player.id}-bottom.png`;
-  }
+  // Table position wins over elimination: the sweepstake leader always gets
+  // the top portrait (including the champion banner after the final).
   if (playerCount > 1 && rankIndex === 0) {
     return `/images/world-cup-fantasy/managers/${player.id}-top.png`;
   }
   if (playerCount > 1 && rankIndex === playerCount - 1) {
+    return `/images/world-cup-fantasy/managers/${player.id}-bottom.png`;
+  }
+  if (allTeamsEliminated && playerCount > 1) {
     return `/images/world-cup-fantasy/managers/${player.id}-bottom.png`;
   }
   return player.managerImage;
