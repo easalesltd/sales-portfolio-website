@@ -427,6 +427,8 @@ export type TeamMatchDisplay = {
   cleanSheetBonus?: number;
   /** −1 when the team concedes 3+ goals. */
   concededPenalty?: number;
+  /** Net points from red cards (+1 each in pyramid; −1 each in World Cup). */
+  redCardPoints?: number;
   redCards: number;
   isHome: boolean;
 };
@@ -436,7 +438,11 @@ function formatEnglishPyramidPointsBreakdown(scored: TeamMatchScore): string {
   if (scored.cleanSheetBonus > 0) parts.push('CS');
   if (scored.bonus > 0) parts.push('3+');
   if (scored.concededPenalty < 0) parts.push('−conc');
-  if (scored.redCardPenalty < 0) parts.push(`${scored.redCardPenalty} red`);
+  if (scored.redCardPenalty !== 0) {
+    const redLabel =
+      scored.redCardPenalty > 0 ? `+${scored.redCardPenalty} red` : `${scored.redCardPenalty} red`;
+    parts.push(redLabel);
+  }
   return parts.join(' · ');
 }
 
@@ -466,6 +472,7 @@ export function getTeamMatchDisplay(match: EnglishPyramidMatchResult, teamCode: 
     scoringBonus: scored.bonus > 0 ? scored.bonus : undefined,
     cleanSheetBonus: scored.cleanSheetBonus > 0 ? scored.cleanSheetBonus : undefined,
     concededPenalty: scored.concededPenalty < 0 ? scored.concededPenalty : undefined,
+    redCardPoints: scored.redCardPenalty !== 0 ? scored.redCardPenalty : undefined,
     redCards,
     isHome: side.isHome,
   };

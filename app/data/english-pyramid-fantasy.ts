@@ -243,7 +243,8 @@ export const ENGLISH_PYRAMID_FANTASY_SCORING = {
   highScoringBonusMinGoals: 3,
   highScoringBonus: 1,
   cleanSheetBonus: 1,
-  redCardPenalty: -1,
+  /** +1 pt per red card (including second-yellow dismissals). */
+  redCardPenalty: 1,
   highConcededPenaltyMinGoals: 3,
   highConcededPenalty: -1,
 } as const;

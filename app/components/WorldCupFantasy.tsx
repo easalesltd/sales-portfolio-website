@@ -201,11 +201,13 @@ function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
     });
   }
   if (result.redCards > 0) {
-    const penalty = -result.redCards;
+    const redPoints = result.redCardPoints ?? -result.redCards;
+    const signed =
+      redPoints > 0 ? `+${redPoints}` : String(redPoints);
     items.push({
       key: 'red',
-      label: `(${penalty}, ${result.redCards === 1 ? 'red card' : 'red cards'})`,
-      className: t.c.negative,
+      label: `(${signed}, ${result.redCards === 1 ? 'red card' : 'red cards'})`,
+      className: redPoints > 0 ? t.c.positive : t.c.negative,
     });
   }
 

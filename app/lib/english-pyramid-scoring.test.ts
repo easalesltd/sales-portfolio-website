@@ -45,9 +45,12 @@ describe('english-pyramid scoreTeamMatch', () => {
     expect(scoreTeamMatch(3, 0).total).toBe(5);
   });
 
-  it('applies conceded and red-card penalties', () => {
+  it('applies conceded penalty and red-card bonus', () => {
+    // Draw 3-3: 1 + 3+ scored (+1) −3 conceded (−1) = 1
     expect(scoreTeamMatch(3, 3).total).toBe(1);
-    expect(scoreTeamMatch(2, 0, 1).total).toBe(3);
-    expect(scoreTeamMatch(0, 4, 2).total).toBe(-3);
+    // Win 2-0 with a red: 3 + CS (+1) + red (+1) = 5
+    expect(scoreTeamMatch(2, 0, 1).total).toBe(5);
+    // Loss 0-4 with two reds: 0 −3 conceded (−1) + 2 reds (+2) = 1
+    expect(scoreTeamMatch(0, 4, 2).total).toBe(1);
   });
 });

@@ -516,6 +516,8 @@ export type TeamMatchDisplay = {
   cleanSheetBonus?: number;
   /** −1 when the team concedes 3+ goals. */
   concededPenalty?: number;
+  /** Net points from red cards (World Cup: −1 each). */
+  redCardPoints?: number;
   redCards: number;
   isHome: boolean;
   /** Win/draw/loss including a penalty-shootout decision on a level knockout tie. */
@@ -556,6 +558,7 @@ export function getTeamMatchDisplay(match: WorldCupMatchResult, teamCode: string
     points: scored.total,
     scoringBonus: scored.bonus > 0 ? scored.bonus : undefined,
     concededPenalty: scored.concededPenalty < 0 ? scored.concededPenalty : undefined,
+    redCardPoints: scored.redCardPenalty !== 0 ? scored.redCardPenalty : undefined,
     redCards,
     isHome: side.isHome,
     outcome: scored.outcome,

@@ -11,7 +11,7 @@ Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyram
 
 - Seven managers, **seven clubs each** — one from each division (Premier League → National League South).
 - Draft used **pre-season outright winner betting odds** within each division (lower decimal = stronger favourite). Each manager gets **exactly one pick at each odds rank** (1st favourite through 7th) spread across the seven divisions.
-- Scoring (`ENGLISH_PYRAMID_FANTASY_SCORING`): **3** win, **1** draw, **+1** clean sheet, **+1** for 3+ goals scored, **−1** for 3+ conceded, **−1** per red card.
+- Scoring (`ENGLISH_PYRAMID_FANTASY_SCORING`): **3** win, **1** draw, **+1** clean sheet, **+1** for 3+ goals scored, **−1** for 3+ conceded, **+1** per red card.
 - **League season only — no knockouts, no cups, no elimination.** All seven clubs score points all season. Do not apply World Cup bracket, survival, or “teams left” logic to this game.
 
 ## Shared UI

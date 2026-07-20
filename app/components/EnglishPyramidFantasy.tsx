@@ -15,7 +15,7 @@ const ENGLISH_PYRAMID_SCORING_RULES = [
   '+1 clean sheet (0 goals conceded)',
   '+1 for 3+ goals scored',
   '−1 for 3+ goals conceded',
-  '−1 per red card',
+  '+1 per red card',
 ] as const;
 
 export default function EnglishPyramidFantasy({ onClose, standalone = false }: Props) {
