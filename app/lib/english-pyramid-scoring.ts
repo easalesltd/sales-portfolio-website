@@ -21,6 +21,9 @@ export type EnglishPyramidMatchResult = {
   awayGoals: number | null;
   homeRedCards: number;
   awayRedCards: number;
+  /** Reserved for tournament knockouts decided on pens. */
+  homePenalties?: number;
+  awayPenalties?: number;
 };
 
 export type TeamMatchScore = {
@@ -50,6 +53,8 @@ export type TeamStanding = {
   bonusPoints: number;
   redCards: number;
   playedMatches: number;
+  /** Reserved for tournament sweepstakes; unused in pyramid. */
+  eliminated?: boolean;
 };
 
 export type PlayerStanding = {
@@ -75,6 +80,8 @@ export type PlayerStanding = {
   playedMatches: number;
   /** Positive = climbed, negative = dropped, 0 = unchanged, null = no prior snapshot. */
   rankChange?: number | null;
+  /** Reserved for tournament sweepstakes (World Cup / Euros); unused in pyramid. */
+  allTeamsEliminated?: boolean;
 };
 
 export type MatchPointsEntry = {
@@ -112,6 +119,12 @@ export type MatchdayEntry = UpcomingFixtureEntry & {
   liveHomeGoals?: number;
   liveAwayGoals?: number;
   livePeriod?: string;
+  /** Reserved for tournament bracket UI (World Cup / Euros restore). */
+  homePenalties?: number;
+  awayPenalties?: number;
+  roundLabel?: string;
+  winnerPathLabel?: string;
+  placeholderSide?: 'home' | 'away' | 'both';
 };
 
 export type MatchdaySchedule = {
@@ -431,6 +444,10 @@ export type TeamMatchDisplay = {
   redCardPoints?: number;
   redCards: number;
   isHome: boolean;
+  /** Reserved for tournament knockouts decided on pens. */
+  outcome?: 'win' | 'draw' | 'loss';
+  penaltiesFor?: number;
+  penaltiesAgainst?: number;
 };
 
 function formatEnglishPyramidPointsBreakdown(scored: TeamMatchScore): string {
@@ -505,10 +522,10 @@ export function resolveManagerImageForStandings(
   playerCount: number
 ): string {
   if (playerCount > 1 && rankIndex === 0) {
-    return `/images/world-cup-fantasy/managers/${player.id}-top.png`;
+    return `/images/english-pyramid-fantasy/managers/${player.id}-top.png`;
   }
   if (playerCount > 1 && rankIndex === playerCount - 1) {
-    return `/images/world-cup-fantasy/managers/${player.id}-bottom.png`;
+    return `/images/english-pyramid-fantasy/managers/${player.id}-bottom.png`;
   }
   return player.managerImage;
 }
@@ -534,6 +551,68 @@ export function computeStandings(
 
   return { standings, allScoringMatches, recentScoringMatches };
 }
+
+export type PlayerProgressPoint = {
+  index: number;
+  label: string;
+  utcDate: string;
+  total: number;
+};
+
+export type PlayerProgressSeries = {
+  playerId: string;
+  label: string;
+  crest: string;
+  points: PlayerProgressPoint[];
+  currentTotal: number;
+};
+
+export function buildPlayerProgressSeries(
+  players: readonly Pick<PlayerStanding, 'id' | 'name' | 'teamName' | 'clubCrest'>[],
+  scoringMatches: MatchPointsEntry[]
+): PlayerProgressSeries[] {
+  const chronological = [...scoringMatches].reverse();
+  const snapshots: Record<string, number>[] = [
+    Object.fromEntries(players.map((player) => [player.id, 0])),
+  ];
+
+  for (const entry of chronological) {
+    const next = { ...snapshots[snapshots.length - 1] };
+    for (const player of players) {
+      next[player.id] += entry.byPlayer[player.id] ?? 0;
+    }
+    snapshots.push(next);
+  }
+
+  const pointsTimeline: Omit<PlayerProgressPoint, 'total'>[] = [
+    { index: 0, label: 'Start', utcDate: chronological[0]?.match.utcDate ?? '' },
+    ...chronological.map((entry, matchIndex) => ({
+      index: matchIndex + 1,
+      label: new Date(entry.match.utcDate).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        timeZone: 'UTC',
+      }),
+      utcDate: entry.match.utcDate,
+    })),
+  ];
+
+  return players.map((player) => {
+    const points = pointsTimeline.map((point, index) => ({
+      ...point,
+      total: snapshots[index][player.id] ?? 0,
+    }));
+
+    return {
+      playerId: player.id,
+      label: player.teamName ?? player.name,
+      crest: player.clubCrest,
+      points,
+      currentTotal: snapshots[snapshots.length - 1][player.id] ?? 0,
+    };
+  });
+}
+
 
 function buildStandingsFromFinished(
   players: readonly EnglishPyramidFantasyPlayer[],

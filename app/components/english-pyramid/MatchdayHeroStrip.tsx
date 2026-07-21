@@ -5,7 +5,7 @@ import {
   countInPlayFixtures,
   getGameweekNumber,
 } from '@/app/lib/english-pyramid-gameweek';
-import type { MatchdaySchedule } from '@/app/lib/world-cup-scoring';
+import type { MatchdaySchedule } from '@/app/lib/english-pyramid-scoring';
 
 type Props = {
   schedule: MatchdaySchedule;

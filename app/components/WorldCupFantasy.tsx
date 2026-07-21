@@ -2,8 +2,7 @@
 
 import Image from 'next/image';
 import { useCallback, useEffect, useState, type CSSProperties } from 'react';
-import { formatTeamLabel as formatWorldCupTeamLabel } from '@/app/data/world-cup-fantasy';
-import type { WorldCupFantasyResponse } from '@/app/api/world-cup-fantasy/route';
+import { formatTeamLabel as formatPyramidTeamLabel } from '@/app/data/english-pyramid-fantasy';
 import type { EnglishPyramidFantasyResponse } from '@/app/api/english-pyramid-fantasy/route';
 import type {
   FixtureManager,
@@ -13,13 +12,12 @@ import type {
   PlayerStanding,
   TeamMatchDisplay,
   TeamStanding,
-  WorldCupChampion,
-} from '@/app/lib/world-cup-scoring';
+} from '@/app/lib/english-pyramid-scoring';
 import {
   buildPlayerProgressSeries,
-  getTeamMatchDisplay as getWorldCupTeamMatchDisplay,
-  matchInvolvesTeam as worldCupMatchInvolvesTeam,
-} from '@/app/lib/world-cup-scoring';
+  getTeamMatchDisplay as getPyramidTeamMatchDisplay,
+  matchInvolvesTeam as pyramidMatchInvolvesTeam,
+} from '@/app/lib/english-pyramid-scoring';
 import type { SweepstakeFantasyThemeId } from '@/app/lib/sweepstake-fantasy-theme';
 import { formatTeamNameShort } from '@/app/data/english-pyramid-fantasy';
 import { useLiveGoalAlerts } from '@/app/hooks/useLiveGoalAlerts';
@@ -32,7 +30,7 @@ import EnglishPyramidFixtureRow from './english-pyramid/EnglishPyramidFixtureRow
 import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeContext';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 
-type SweepstakeResponse = WorldCupFantasyResponse | EnglishPyramidFantasyResponse;
+type SweepstakeResponse = EnglishPyramidFantasyResponse;
 
 type MatchScoringHelpers = {
   matchInvolvesTeam: (
@@ -63,8 +61,8 @@ type Props = {
   themeId?: SweepstakeFantasyThemeId;
 };
 
-const DEFAULT_API_PATH = '/api/world-cup-fantasy';
-const DEFAULT_TITLE = 'World Cup Sweepstake 2026';
+const DEFAULT_API_PATH = '/api/english-pyramid-fantasy';
+const DEFAULT_TITLE = 'English Pyramid Sweepstake 2026/27';
 /** Bust browser / image-optimizer cache when manager portrait files are replaced. */
 const SWEEPSTAKE_MANAGER_PHOTO_VERSION = '20260701';
 
@@ -73,8 +71,8 @@ function managerPhotoSrc(path: string): string {
 }
 
 const DEFAULT_MATCH_SCORING_HELPERS: MatchScoringHelpers = {
-  matchInvolvesTeam: worldCupMatchInvolvesTeam,
-  getTeamMatchDisplay: getWorldCupTeamMatchDisplay,
+  matchInvolvesTeam: pyramidMatchInvolvesTeam,
+  getTeamMatchDisplay: getPyramidTeamMatchDisplay,
 };
 
 const SCORING_RULES = [
@@ -279,52 +277,6 @@ function formatResultTickerDate(utcDate: string): string {
 
 function playerDisplayLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): string {
   return player.teamName ?? player.name;
-}
-
-function isWorldCupFantasyData(data: SweepstakeResponse): data is WorldCupFantasyResponse {
-  return 'tournamentComplete' in data;
-}
-
-function SweepstakeChampionHero({ champion }: { champion: WorldCupChampion }) {
-  const t = useSweepstakeTheme();
-  if (t.id !== 'world-cup') return null;
-
-  const label = playerDisplayLabel(champion);
-
-  return (
-    <section
-      className="overflow-hidden rounded-xl border-2 border-[#d4af37]/60 bg-gradient-to-br from-[#1a2744] via-[#121c33] to-[#0a0f1a] px-4 py-5 shadow-[0_0_32px_rgba(212,175,55,0.15)] sm:px-6 sm:py-6"
-      aria-label={`${label} wins the World Cup sweepstake`}
-    >
-      <p className="text-center text-[10px] font-bold uppercase tracking-[0.35em] text-[#d4af37] sm:text-xs">
-        World Cup sweepstake champion
-      </p>
-      <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
-        <img
-          src={managerPhotoSrc(champion.managerImage)}
-          alt={`${label} — champion portrait`}
-          className="h-36 w-36 shrink-0 rounded-xl border-2 border-[#d4af37] object-cover object-center shadow-[0_0_24px_rgba(212,175,55,0.35)] sm:h-44 sm:w-44"
-        />
-        <div className="flex items-center gap-3 sm:gap-4">
-          <span
-            className="block h-16 w-16 shrink-0 bg-contain bg-center bg-no-repeat sm:h-20 sm:w-20"
-            style={{ backgroundImage: `url(${champion.clubCrest})` }}
-            role="img"
-            aria-label={`${label} club crest`}
-          />
-          <div className="text-center sm:text-left">
-            <p className="text-2xl font-bold text-[#f5f5f0] sm:text-3xl">{label}</p>
-            {champion.teamName ? (
-              <p className="text-sm text-[#e8dfc8]/75">{champion.name}</p>
-            ) : null}
-            <p className="mt-1 text-lg font-bold tabular-nums text-[#d4af37] sm:text-xl">
-              {champion.points} pts
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
 }
 
 function fixtureManagerLabel(manager: Pick<FixtureManager, 'name' | 'teamName'>): string {
@@ -1882,7 +1834,7 @@ function PlayerSquadCard({
 }
 
 export default function WorldCupFantasy(props: Props) {
-  const { themeId = 'world-cup', ...rest } = props;
+  const { themeId = 'english-pyramid', ...rest } = props;
   return (
     <SweepstakeThemeProvider themeId={themeId}>
       <WorldCupFantasyView {...rest} />
@@ -1897,7 +1849,7 @@ function WorldCupFantasyView({
   title = DEFAULT_TITLE,
   headerImage,
   headerImageAlt = '',
-  formatTeamLabel = formatWorldCupTeamLabel,
+  formatTeamLabel = formatPyramidTeamLabel,
   scoringRules = SCORING_RULES,
   bonusColumnLabel = 'Bonus',
   matchScoringHelpers = DEFAULT_MATCH_SCORING_HELPERS,
@@ -2030,10 +1982,6 @@ function WorldCupFantasyView({
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (
             <div className="space-y-6">
-              {isWorldCupFantasyData(data) && data.tournamentComplete && data.champion ? (
-                <SweepstakeChampionHero champion={data.champion} />
-              ) : null}
-
               <LatestResultsTicker
                 matches={data.recentScoringMatches}
                 standings={data.standings}
@@ -2041,9 +1989,7 @@ function WorldCupFantasyView({
               />
 
               <section className={t.c.roastSection}>
-                <h3 className={t.c.roastHeading}>
-                  {isWorldCupFantasyData(data) && data.tournamentComplete ? 'Final roast' : 'Daily roast'}
-                </h3>
+                <h3 className={t.c.roastHeading}>Daily roast</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
               </section>
 
@@ -2101,8 +2047,8 @@ function WorldCupFantasyView({
                               {formatMatchScore(
                                 match.homeGoals,
                                 match.awayGoals,
-                                'homePenalties' in match ? match.homePenalties : undefined,
-                                'awayPenalties' in match ? match.awayPenalties : undefined,
+                                match.homePenalties,
+                                match.awayPenalties,
                               )}{' '}
                               {match.awayTeam.tla}
                             </span>

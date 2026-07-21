@@ -1,4 +1,16 @@
-import type { EspnParsedEvent } from '@/app/lib/world-cup-espn-scoreboard';
+export type EspnFinalStatus = {
+  statusState?: string;
+  statusName?: string;
+};
+
+export type EspnFinalScoreFields = {
+  homeGoals: number;
+  awayGoals: number;
+  homeWinner?: boolean;
+  awayWinner?: boolean;
+  homeShootoutScore?: number | null;
+  awayShootoutScore?: number | null;
+};
 
 export function isEspnFullTimePeriod(period: string): boolean {
   const normalized = period.trim().toLowerCase();
@@ -16,7 +28,7 @@ export function isEspnFullTimePeriod(period: string): boolean {
 
 export function isEspnFinalPeriod(
   period: string,
-  status?: { statusState?: string; statusName?: string }
+  status?: EspnFinalStatus
 ): boolean {
   const state = String(status?.statusState || '').toLowerCase();
   if (state === 'post') return true;
@@ -44,11 +56,7 @@ export type LedgerGoals = {
 };
 
 export function resolveLedgerGoalsFromEspnMatch(
-  espnMatch: Pick<
-    EspnParsedEvent,
-    'homeGoals' | 'awayGoals' | 'homeWinner' | 'awayWinner'
-  > &
-    Partial<Pick<EspnParsedEvent, 'homeShootoutScore' | 'awayShootoutScore'>>,
+  espnMatch: EspnFinalScoreFields,
   isKnockout: boolean
 ): LedgerGoals | null {
   let homeGoals = espnMatch.homeGoals;

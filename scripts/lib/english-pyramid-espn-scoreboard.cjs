@@ -1,6 +1,6 @@
 /**
  * ESPN English pyramid scoreboard helpers for Node scripts.
- * Keep red-card counting in sync with app/lib/world-cup-espn-scoreboard.ts.
+ * Keep red-card counting in sync with app/lib/espn-red-cards.ts.
  */
 
 const { countRedCardsFromEspnCompetition } = require('./espn-red-cards.cjs');

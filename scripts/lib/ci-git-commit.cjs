@@ -14,10 +14,6 @@ const {
 } = require('./sweepstake-ledger-guard.cjs');
 
 const LEDGER_GUARDS = {
-  'world-cup': {
-    relativePath: 'app/data/world-cup-fantasy.ts',
-    exportName: 'WORLD_CUP_FANTASY_MANUAL_MATCHES',
-  },
   'english-pyramid': {
     relativePath: 'app/data/english-pyramid-fantasy.ts',
     exportName: 'ENGLISH_PYRAMID_MANUAL_MATCHES',

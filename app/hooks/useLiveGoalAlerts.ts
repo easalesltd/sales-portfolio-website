@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { MatchdaySchedule } from '@/app/lib/world-cup-scoring';
+import type { MatchdaySchedule } from '@/app/lib/english-pyramid-scoring';
 
 const STORAGE_KEY = 'english-pyramid-live-alerts';
 

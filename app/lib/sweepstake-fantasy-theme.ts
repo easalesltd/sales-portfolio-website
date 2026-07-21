@@ -321,6 +321,6 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
   },
 };
 
-export function getSweepstakeFantasyTheme(id: SweepstakeFantasyThemeId = 'world-cup'): SweepstakeFantasyTheme {
+export function getSweepstakeFantasyTheme(id: SweepstakeFantasyThemeId = 'english-pyramid'): SweepstakeFantasyTheme {
   return id === 'english-pyramid' ? englishPyramidFantasyTheme : worldCupFantasyTheme;
 }

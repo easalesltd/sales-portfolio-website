@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import type { MatchdayEntry } from '@/app/lib/world-cup-scoring';
+import type { MatchdayEntry } from '@/app/lib/english-pyramid-scoring';
 import DivisionBadge from './DivisionBadge';
 
 type FixtureSideProps = {

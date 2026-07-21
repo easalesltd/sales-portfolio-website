@@ -5,8 +5,8 @@ import type {
   MatchdaySchedule,
 } from '@/app/lib/english-pyramid-scoring';
 import { gameLeaderboardRedis } from '@/app/lib/game-leaderboard-redis';
-import { countRedCardsFromEspnCompetition } from '@/app/lib/world-cup-espn-scoreboard';
-import { isEspnFullTimePeriod } from '@/app/lib/world-cup-live-scores';
+import { countRedCardsFromEspnCompetition } from '@/app/lib/espn-red-cards';
+import { isEspnFullTimePeriod } from '@/app/lib/world-cup-espn-finals';
 
 const DIVISION_TO_ESPN_SLUG: Record<string, string> = {
   PL: 'eng.1',

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { PlayerStanding } from '@/app/lib/world-cup-scoring';
+import type { PlayerStanding } from '@/app/lib/english-pyramid-scoring';
 
 const CARD_WIDTH = 1080;
 const CARD_HEIGHT = 1080;

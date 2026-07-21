@@ -1,5 +1,6 @@
 /**
- * Append World Cup manual ledger entries to world-cup-fantasy.ts.
+ * Append sweepstake manual ledger entries (shared helper for pyramid / tournament games).
+ * `findManualMatchesArrayOpen` is used by English pyramid; World Cup restore uses the same shape.
  */
 
 const {
