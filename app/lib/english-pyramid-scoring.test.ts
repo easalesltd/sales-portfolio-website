@@ -14,13 +14,13 @@ describe('english-pyramid matchday schedule', () => {
       new Date('2026-06-27T12:00:00Z')
     );
 
-    expect(schedule.defaultDate).toBe('2026-08-14');
-    expect(schedule.fixtureDates[0]).toBe('2026-08-14');
-    expect(schedule.schedulesByDate['2026-08-14']).toEqual(
+    expect(schedule.defaultDate).toBe('2026-08-08');
+    expect(schedule.fixtureDates[0]).toBe('2026-08-08');
+    expect(schedule.schedulesByDate['2026-08-08']).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          homeTeam: expect.objectContaining({ tla: 'WOL' }),
-          awayTeam: expect.objectContaining({ tla: 'BLK' }),
+          homeTeam: expect.objectContaining({ tla: 'BUX' }),
+          awayTeam: expect.objectContaining({ tla: 'HER' }),
         }),
       ])
     );

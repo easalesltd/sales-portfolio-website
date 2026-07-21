@@ -35,7 +35,7 @@ export default function EnglishPyramidFantasy({ onClose, standalone = false }: P
       bonusColumnLabel="Bonus (CS/3+)"
       matchScoringHelpers={{ getTeamMatchDisplay, matchInvolvesTeam }}
       noResultsMessage="No finished matches yet — check back once the 2026/27 league season starts."
-      resultsUpdateNote="Fixtures flip to In play at kick-off and refresh here every minute with live scores when ESPN covers that division (Premier League through National League). National League fixtures load automatically from ESPN after they publish (~10 July). Points appear when ESPN reports FT; the ledger still commits automatically later. NL North/South clubs rely on manual results until we add those fixtures."
+      resultsUpdateNote="Fixtures flip to In play at kick-off and refresh here every minute with live scores when ESPN covers that division (Premier League through National League). Points appear when ESPN reports FT; the ledger still commits automatically later. NL North/South results come from Football Web Pages sync (or manual) until live ESPN coverage exists."
       progressChartTitle="Season progress"
     />
   );

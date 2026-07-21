@@ -9,10 +9,11 @@ Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyram
 
 ## Structure
 
-- Seven managers, **seven clubs each** — one from each division at draft (Premier League → National League South). Clubs that promote/relegate keep scoring in their new division (e.g. York City drafted as NL, now League Two for 2026/27).
-- Draft used **pre-season outright winner betting odds** within each division (lower decimal = stronger favourite). Each manager gets **exactly one pick at each odds rank** (1st favourite through 7th) spread across the seven divisions.
+- Seven managers, **fourteen clubs each** — one **title** pick and one **survival** pick from each division at draft (Premier League → National League South). Clubs that promote/relegate keep scoring in their new division (e.g. York City drafted as NL, now League Two for 2026/27).
+- **Title draft:** pre-season outright winner betting odds within each division (lower decimal = stronger favourite). Each manager gets **exactly one pick at each odds rank** (1st favourite through 7th) spread across the seven divisions — player index `p` takes rank `((p + divisionIndex) mod 7) + 1`.
+- **Survival draft:** bottom 7 by relegation odds (or longest title shots where markets are thin). Complementary deal: `p` takes survival rank `((6 - p + divisionIndex) mod 7) + 1` so title-heavy managers do not also stack every relegation favourite.
 - Scoring (`ENGLISH_PYRAMID_FANTASY_SCORING`): **3** home win, **4** away win, **1** draw (any score except 0–0), **−1** for a boring 0–0 (overrides draw + clean-sheet), **+1** clean sheet, **+1** for 3+ goals scored, **−1** for 3+ conceded, **+1** per red card.
-- **League season only — no knockouts, no cups, no elimination.** All seven clubs score points all season. Do not apply World Cup bracket, survival, or “teams left” logic to this game.
+- **League season only — no knockouts, no cups, no elimination.** All fourteen clubs score points all season. Do not apply World Cup bracket, knockout survival, or “teams left” logic to this game.
 
 ## Shared UI
 
@@ -21,10 +22,10 @@ Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyram
 
 ## Fixtures and kick-off times
 
-- Maintain `ENGLISH_PYRAMID_FIXTURES` with **every league match** involving our **49 clubs** (not just games between sweepstake clubs).
+- Maintain `ENGLISH_PYRAMID_FIXTURES` with **every league match** involving our **98 clubs** (not just games between sweepstake clubs).
 - Refresh the bulk schedule with `npm run english-pyramid:fetch-fixtures -- --write` (ESPN: PL → NL; Football Web Pages: NL North/South).
 - **National League (tier 5)** fixtures typically publish around **10 July** each summer. `.github/workflows/english-pyramid-fixture-check.yml` polls ESPN twice daily **10–20 July** (plus weekly Mondays) and auto-commits when eng.5 fixtures appear.
-- **NL North / South** come from Football Web Pages team fixture pages (`scripts/lib/english-pyramid-fwp-nln-nls.cjs`). Same fetch/check commands refresh them; kick-offs are Europe/London → UTC.
+- **NL North / South** come from Football Web Pages team fixture pages (`scripts/lib/english-pyramid-fwp-nln-nls.cjs`). Same fetch/check commands refresh them; kick-offs are Europe/London → UTC. If FWP returns Cloudflare 403, the fetcher falls back to BBC Sport month fixture pages.
 - **League only** — cup ties (FA Cup, League Cup, etc.) are excluded automatically (season slug + single-leg pair filter; FWP filters to `national-league-north` / `national-league-south` only).
 - Weekly GitHub Action `.github/workflows/english-pyramid-fixture-check.yml` compares remote sources to the repo and auto-refreshes when kick-offs move (international breaks, postponements).
 - Manual drift check: `npm run english-pyramid:check-fixtures` (add `--write` to apply).
@@ -48,7 +49,7 @@ When asked to update English pyramid scores (or by the scheduled GitHub workflow
 - **Every manual result must exist in `ENGLISH_PYRAMID_FIXTURES` with matching home/away TLAs.** The full-season fixture list is kept in-repo (unlike the rolling World Cup schedule), so `npm run english-pyramid:validate` fails if the ledger and fixtures drift apart or if a fixture is overdue with no result.
 - Do not hand-edit standings — `computeStandings()` in `app/lib/english-pyramid-scoring.ts` derives totals.
 - After any ledger change, run `npm run english-pyramid:standings` and use that output as the only source for totals and leader/bottom wording in `ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE`.
-- Refresh `ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE` when the table changes (British football roast tone; avoid repeating the same gag).
+- Refresh `ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE` when the table changes. Tone: **foul-mouthed Grok / Tesla cabin energy** — sweary, rude, British football roast, genuinely funny. Name managers and clubs. Avoid repeating the same gag. Still mirror standings totals exactly; do not invent scores.
 - Push to **`origin/main`** unless the user asks for PR-only work.
 
 ## Scheduled workflow
@@ -68,4 +69,4 @@ When asked to update English pyramid scores (or by the scheduled GitHub workflow
 
 ## Example Slack / agent prompt
 
-> Sync English pyramid sweepstake scores. Find newly finished matches for our 49 clubs across PL → NL South, append to `ENGLISH_PYRAMID_MANUAL_MATCHES`, refresh fixtures and daily roast, merge to main, push origin/main.
+> Sync English pyramid sweepstake scores. Find newly finished matches for our 98 clubs across PL → NL South, append to `ENGLISH_PYRAMID_MANUAL_MATCHES`, refresh fixtures and daily roast, merge to main, push origin/main.

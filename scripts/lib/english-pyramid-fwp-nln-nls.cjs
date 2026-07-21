@@ -5,7 +5,7 @@
 
 const FWP_ORIGIN = 'https://www.footballwebpages.co.uk';
 
-/** Our 14 NLN/NLS sweepstake clubs → FWP URL slug. */
+/** Our 28 NLN/NLS sweepstake clubs (title + survival) → FWP URL slug. */
 const FWP_SLUG_BY_CODE = {
   SSH: 'south-shields',
   MAC: 'macclesfield',
@@ -14,6 +14,13 @@ const FWP_SLUG_BY_CODE = {
   DAR: 'darlington',
   BUX: 'buxton',
   CHF: 'chester',
+  HEB: 'hebburn-town',
+  SPA: 'spalding-united',
+  BED: 'bedford-town',
+  HBO: 'harborough-town',
+  HED: 'hednesford-town',
+  OXC: 'oxford-city',
+  MAR: 'marine',
   DAG: 'dagenham-and-redbridge',
   TOR: 'torquay-united',
   HOR: 'horsham',
@@ -21,6 +28,13 @@ const FWP_SLUG_BY_CODE = {
   MAI: 'maidstone-united',
   EBB: 'ebbsfleet-united',
   CLM: 'chelmsford-city',
+  FNH: 'farnham-town',
+  AFT: 'afc-totton',
+  DOV: 'dover-athletic',
+  SBY: 'salisbury',
+  CHU: 'chesham-united',
+  TON: 'tonbridge-angels',
+  WAH: 'walton-and-hersham',
 };
 
 const FWP_LEAGUE_COMP_BY_CODE = {
@@ -31,6 +45,13 @@ const FWP_LEAGUE_COMP_BY_CODE = {
   DAR: 'national-league-north',
   BUX: 'national-league-north',
   CHF: 'national-league-north',
+  HEB: 'national-league-north',
+  SPA: 'national-league-north',
+  BED: 'national-league-north',
+  HBO: 'national-league-north',
+  HED: 'national-league-north',
+  OXC: 'national-league-north',
+  MAR: 'national-league-north',
   DAG: 'national-league-south',
   TOR: 'national-league-south',
   HOR: 'national-league-south',
@@ -38,6 +59,13 @@ const FWP_LEAGUE_COMP_BY_CODE = {
   MAI: 'national-league-south',
   EBB: 'national-league-south',
   CLM: 'national-league-south',
+  FNH: 'national-league-south',
+  AFT: 'national-league-south',
+  DOV: 'national-league-south',
+  SBY: 'national-league-south',
+  CHU: 'national-league-south',
+  TON: 'national-league-south',
+  WAH: 'national-league-south',
 };
 
 /**
@@ -440,7 +468,7 @@ async function fetchFwpResultForFixture(fixture) {
   };
 }
 
-async function fetchAllNlnNlsFixtures() {
+async function fetchAllNlnNlsFixturesFromFwp() {
   const byCode = {};
   const allFixtures = [];
 
@@ -466,6 +494,175 @@ async function fetchAllNlnNlsFixtures() {
   };
 }
 
+/** BBC short names → our TLA (league fixtures pages). */
+const BBC_NAME_TO_CODE = {
+  ...Object.fromEntries(
+    Object.entries(FWP_NAME_BY_SLUG).map(([slug, name]) => [name, FWP_CODE_BY_SLUG[slug]])
+  ),
+  Chester: 'CHF',
+  'Hampton & Richmond': 'HRB',
+  'Hampton and Richmond': 'HRB',
+  'Dagenham and Redbridge': 'DAG',
+  'Walton and Hersham': 'WAH',
+};
+
+const BBC_MONTHS = [
+  '2026-08',
+  '2026-09',
+  '2026-10',
+  '2026-11',
+  '2026-12',
+  '2027-01',
+  '2027-02',
+  '2027-03',
+  '2027-04',
+];
+
+const BBC_MONTH_INDEX = {
+  January: 0,
+  February: 1,
+  March: 2,
+  April: 3,
+  May: 4,
+  June: 5,
+  July: 6,
+  August: 7,
+  September: 8,
+  October: 9,
+  November: 10,
+  December: 11,
+};
+
+function decodeBbcHtml(text) {
+  return String(text || '')
+    .replace(/&#x27;/g, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ')
+    .trim();
+}
+
+async function fetchBbcMonthHtml(leaguePath, month) {
+  const url = `https://www.bbc.co.uk/sport/football/${leaguePath}/scores-fixtures/${month}`;
+  const response = await fetch(url, {
+    headers: {
+      Accept: 'text/html',
+      'User-Agent':
+        'Mozilla/5.0 (compatible; english-pyramid-fixtures/1.0; +https://github.com/easalesltd/sales-portfolio-website)',
+    },
+    cache: 'no-store',
+  });
+  if (!response.ok) {
+    throw new Error(`BBC request failed (${response.status}): ${url}`);
+  }
+  return response.text();
+}
+
+function parseBbcMonthFixtures(html, fileYear, expectedComp) {
+  const fixtures = [];
+  let currentDate = null;
+  const tokenRe =
+    /<h2[^>]*>([^<]+)<\/h2>|visually-hidden[^"]*"[^>]*>([^<]+ versus [^<]+ kick off [^<]+)</g;
+  let match;
+  while ((match = tokenRe.exec(html))) {
+    if (match[1]) {
+      const heading = decodeBbcHtml(match[1]);
+      const dateMatch = heading.match(
+        /(\d{1,2})(?:st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December)/i
+      );
+      if (dateMatch) {
+        currentDate = {
+          day: Number(dateMatch[1]),
+          month: BBC_MONTH_INDEX[dateMatch[2]],
+        };
+      }
+      continue;
+    }
+    if (!currentDate || !match[2]) continue;
+    const line = decodeBbcHtml(match[2]);
+    const versus = line.match(/^(.+?) versus (.+?) kick off (\d{1,2}):(\d{2})$/);
+    if (!versus) continue;
+    const homeName = versus[1].trim();
+    const awayName = versus[2].trim();
+    const homeCode = BBC_NAME_TO_CODE[homeName];
+    const awayCode = BBC_NAME_TO_CODE[awayName];
+    if (!homeCode || !awayCode) continue;
+    if (!OUR_NLN_NLS_CODES.has(homeCode) && !OUR_NLN_NLS_CODES.has(awayCode)) continue;
+
+    const utcDate = londonLocalToUtcIso(
+      currentDate.day,
+      currentDate.month + 1,
+      fileYear,
+      Number(versus[3]),
+      Number(versus[4])
+    );
+    const homeDisplay = FWP_NAME_BY_SLUG[Object.entries(FWP_CODE_BY_SLUG).find(([, c]) => c === homeCode)?.[0]] || homeName;
+    const awayDisplay = FWP_NAME_BY_SLUG[Object.entries(FWP_CODE_BY_SLUG).find(([, c]) => c === awayCode)?.[0]] || awayName;
+
+    fixtures.push({
+      id: fixtureId(utcDate, homeCode, awayCode),
+      utcDate,
+      homeTeam: { name: homeDisplay, tla: homeCode },
+      awayTeam: { name: awayDisplay, tla: awayCode },
+      involvedOurCodes: [OUR_NLN_NLS_CODES.has(homeCode) ? homeCode : null, OUR_NLN_NLS_CODES.has(awayCode) ? awayCode : null].filter(
+        Boolean
+      ),
+      source: 'bbc',
+      competition: expectedComp,
+    });
+  }
+  return fixtures;
+}
+
+async function fetchAllNlnNlsFixturesFromBbc() {
+  const allFixtures = [];
+  for (const [leaguePath, expectedComp] of [
+    ['national-league-north', 'national-league-north'],
+    ['national-league-south', 'national-league-south'],
+  ]) {
+    for (const month of BBC_MONTHS) {
+      const html = await fetchBbcMonthHtml(leaguePath, month);
+      const fileYear = Number(month.slice(0, 4));
+      allFixtures.push(...parseBbcMonthFixtures(html, fileYear, expectedComp));
+    }
+  }
+
+  allFixtures.sort((a, b) => a.utcDate.localeCompare(b.utcDate) || a.id.localeCompare(b.id));
+  const seen = new Set();
+  const uniqueFixtures = allFixtures.filter((fixture) => {
+    if (seen.has(fixture.id)) return false;
+    seen.add(fixture.id);
+    return true;
+  });
+
+  const byCode = {};
+  for (const code of Object.keys(FWP_SLUG_BY_CODE)) byCode[code] = 0;
+  for (const fixture of uniqueFixtures) {
+    for (const code of fixture.involvedOurCodes ?? []) {
+      byCode[code] = (byCode[code] ?? 0) + 1;
+    }
+  }
+
+  return {
+    fixtures: uniqueFixtures,
+    byCode,
+    source: 'bbc-sport',
+  };
+}
+
+async function fetchAllNlnNlsFixtures() {
+  try {
+    return await fetchAllNlnNlsFixturesFromFwp();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!/FWP request failed \(403\)/.test(message) && !/cloudflare/i.test(message)) {
+      throw error;
+    }
+    console.warn(`FWP blocked (${message}); falling back to BBC Sport NLN/NLS fixtures.`);
+    return fetchAllNlnNlsFixturesFromBbc();
+  }
+}
+
 module.exports = {
   FWP_CODE_BY_SLUG,
   FWP_LEAGUE_COMP_BY_CODE,
@@ -474,6 +671,8 @@ module.exports = {
   FWP_SLUG_BY_CODE,
   OUR_NLN_NLS_CODES,
   fetchAllNlnNlsFixtures,
+  fetchAllNlnNlsFixturesFromBbc,
+  fetchAllNlnNlsFixturesFromFwp,
   fetchClubLeagueFixtures,
   fetchFwpResultForFixture,
   isFwpScoreText,
