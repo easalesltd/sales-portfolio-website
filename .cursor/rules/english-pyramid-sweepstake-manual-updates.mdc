@@ -9,7 +9,7 @@ Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyram
 
 ## Structure
 
-- Seven managers, **seven clubs each** — one from each division (Premier League → National League South).
+- Seven managers, **seven clubs each** — one from each division at draft (Premier League → National League South). Clubs that promote/relegate keep scoring in their new division (e.g. York City drafted as NL, now League Two for 2026/27).
 - Draft used **pre-season outright winner betting odds** within each division (lower decimal = stronger favourite). Each manager gets **exactly one pick at each odds rank** (1st favourite through 7th) spread across the seven divisions.
 - Scoring (`ENGLISH_PYRAMID_FANTASY_SCORING`): **3** home win, **4** away win, **1** draw (any score except 0–0), **−1** for a boring 0–0 (overrides draw + clean-sheet), **+1** clean sheet, **+1** for 3+ goals scored, **−1** for 3+ conceded, **+1** per red card.
 - **League season only — no knockouts, no cups, no elimination.** All seven clubs score points all season. Do not apply World Cup bracket, survival, or “teams left” logic to this game.

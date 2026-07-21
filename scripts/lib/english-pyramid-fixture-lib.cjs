@@ -10,18 +10,39 @@ const SEASON_START_ISO = '2026-07-01T00:00:00Z';
 /** National League (eng.5) fixtures typically publish around this date each summer. */
 const NATIONAL_LEAGUE_FIXTURES_RELEASE_DATE = '2026-07-10';
 
-/** Our seven National League sweepstake clubs (ESPN eng.5 when published). */
-const NL_SWEEPSTAKE_CODES = ['CAR', 'STD', 'FGR', 'BORE', 'HPL', 'SCU', 'YOR'];
+/**
+ * National League sweepstake clubs on ESPN eng.5.
+ * York City (YOR) promoted to League Two for 2026/27 — tracked under eng.4.
+ */
+const NL_SWEEPSTAKE_CODES = ['CAR', 'STD', 'FGR', 'BORE', 'HPL', 'SCU'];
 
 const LEAGUE_SLUGS = ['eng.1', 'eng.2', 'eng.3', 'eng.4', 'eng.5'];
 
-/** ESPN abbreviation → sweepstake code (our clubs only, per league slug). */
+/**
+ * ESPN abbreviation → sweepstake code (our clubs only, per league slug).
+ * Ambiguous abbrevs (e.g. HAR = Hartlepool and Harrogate) use ESPN_TEAM_ID_BY_SLUG instead.
+ */
 const ESPN_ABBREV_BY_SLUG = {
   'eng.1': { MNC: 'MCI', MAN: 'MUN', ARS: 'ARS', AVL: 'AVL', CHE: 'CHE', LIV: 'LIV', NEW: 'NEW' },
-  'eng.2': { WHU: 'WHU', WOL: 'WOL', BUR: 'BUR', MID: 'MID', BIR: 'BIR', SHU: 'SHU', SOU: 'SOU' },
-  'eng.3': { LEI: 'LEI', SHW: 'SHW', LTN: 'LUT', STO: 'STP', PLY: 'PLY', HUD: 'HUD', BOL: 'BOL' },
-  'eng.4': { BAR: 'BAR', ROT: 'ROT', PTV: 'PVL', SAL: 'SAL', CHES: 'CHS', BRI: 'BRST', GRI: 'GRI' },
-  'eng.5': { CAR: 'CAR', SOUT: 'STD', FGR: 'FGR', BOR: 'BORE', HAR: 'HPL', SCU: 'SCU', YORK: 'YOR' },
+  'eng.2': { WHU: 'WHU', WOL: 'WOL', BUR: 'BUR', MID: 'MID', BIR: 'BIR', SHU: 'SHU', SOU: 'SOU', BOL: 'BOL' },
+  'eng.3': { LEI: 'LEI', SHW: 'SHW', LTN: 'LUT', STO: 'STP', PLY: 'PLY', HUD: 'HUD' },
+  'eng.4': {
+    BAR: 'BAR',
+    ROT: 'ROT',
+    PTV: 'PVL',
+    SAL: 'SAL',
+    CHES: 'CHS',
+    BRI: 'BRST',
+    GRI: 'GRI',
+    YORK: 'YOR',
+  },
+  'eng.5': { CAR: 'CAR', SOUT: 'STD', FGR: 'FGR', BOR: 'BORE', SCU: 'SCU' },
+};
+
+/** ESPN team id → sweepstake code when abbreviation alone is ambiguous. */
+const ESPN_TEAM_ID_BY_SLUG = {
+  'eng.4': { 315: 'YOR' }, // York City (abbrev YORK)
+  'eng.5': { 323: 'HPL' }, // Hartlepool United (abbrev HAR; Harrogate is also HAR)
 };
 
 const TEAM_NAME_BY_CODE = {
@@ -117,11 +138,21 @@ async function fetchLeagueRoster(slug) {
   return roster;
 }
 
+function resolveOurCode(slug, competitor) {
+  const teamId = String(competitor?.team?.id ?? '');
+  const idMapped = ESPN_TEAM_ID_BY_SLUG[slug]?.[teamId];
+  if (idMapped) return idMapped;
+
+  const abbrev = competitor?.team?.abbreviation?.trim().toUpperCase();
+  if (!abbrev) return null;
+  return ESPN_ABBREV_BY_SLUG[slug]?.[abbrev] ?? null;
+}
+
 function resolveTeam(slug, competitor, roster) {
   const abbrev = competitor?.team?.abbreviation?.trim().toUpperCase();
   if (!abbrev || !roster.has(abbrev)) return null;
 
-  const ourCode = ESPN_ABBREV_BY_SLUG[slug]?.[abbrev];
+  const ourCode = resolveOurCode(slug, competitor);
   if (ourCode) {
     return {
       code: ourCode,
@@ -343,8 +374,8 @@ function compareFixtureLists(localFixtures, remoteFixtures) {
   return { added, removed, rescheduled, changed: added.length + removed.length + rescheduled.length > 0 };
 }
 
-/** Abbrevs reused across divisions on ESPN (Cardiff/ Carlisle, Newport/ Newcastle, etc.). */
-const AMBIGUOUS_OPPONENT_ABBREVS = new Set(['CAR', 'NEW', 'BOL']);
+/** Abbrevs reused across divisions on ESPN (Cardiff vs Carlisle, Newport vs Newcastle). */
+const AMBIGUOUS_OPPONENT_ABBREVS = new Set(['CAR', 'NEW']);
 
 function isOurSweepstakeClub(team) {
   return OUR_CODES.has(team.tla) && TEAM_NAME_BY_CODE[team.tla] === team.name;
@@ -356,6 +387,8 @@ function isSweepstakeClubSide(team, fixture) {
   const ourDivision = SWEEPSTAKE_DIVISION_BY_CODE[team.tla];
   const other = team.tla === fixture.homeTeam.tla ? fixture.awayTeam : fixture.homeTeam;
 
+  // Two of our clubs in different divisions can share an ESPN abbrev collision path;
+  // still count each named side when both resolve as ours.
   if (
     AMBIGUOUS_OPPONENT_ABBREVS.has(other.tla) &&
     isOurSweepstakeClub(other) &&
@@ -364,14 +397,12 @@ function isSweepstakeClubSide(team, fixture) {
     return true;
   }
 
+  // Same-division sweepstake derbies count for both sides.
   if (isOurSweepstakeClub(other)) {
     return SWEEPSTAKE_DIVISION_BY_CODE[other.tla] === ourDivision;
   }
 
-  if (AMBIGUOUS_OPPONENT_ABBREVS.has(team.tla)) {
-    return false;
-  }
-
+  // Name match already distinguishes Carlisle/Newcastle from Cardiff/Newport opponents.
   return true;
 }
 
@@ -436,16 +467,17 @@ function summarizeNlFixtureStatus(localFixtures, remoteFixtures, now = new Date(
 
 const SWEEPSTAKE_DIVISION_BY_CODE = {
   MCI: 'PL', MUN: 'PL', ARS: 'PL', AVL: 'PL', CHE: 'PL', LIV: 'PL', NEW: 'PL',
-  WHU: 'CH', WOL: 'CH', BUR: 'CH', MID: 'CH', BIR: 'CH', SHU: 'CH', SOU: 'CH',
-  LEI: 'L1', SHW: 'L1', LUT: 'L1', STP: 'L1', PLY: 'L1', HUD: 'L1', BOL: 'L1',
-  BAR: 'L2', ROT: 'L2', PVL: 'L2', SAL: 'L2', CHS: 'L2', BRST: 'L2', GRI: 'L2',
-  CAR: 'NL', STD: 'NL', FGR: 'NL', BORE: 'NL', HPL: 'NL', SCU: 'NL', YOR: 'NL',
+  WHU: 'CH', WOL: 'CH', BUR: 'CH', MID: 'CH', BIR: 'CH', SHU: 'CH', SOU: 'CH', BOL: 'CH',
+  LEI: 'L1', SHW: 'L1', LUT: 'L1', STP: 'L1', PLY: 'L1', HUD: 'L1',
+  BAR: 'L2', ROT: 'L2', PVL: 'L2', SAL: 'L2', CHS: 'L2', BRST: 'L2', GRI: 'L2', YOR: 'L2',
+  CAR: 'NL', STD: 'NL', FGR: 'NL', BORE: 'NL', HPL: 'NL', SCU: 'NL',
 };
 
 module.exports = {
   CUP_SEASON_SLUG_PATTERN,
   dataPath,
   ESPN_ABBREV_BY_SLUG,
+  ESPN_TEAM_ID_BY_SLUG,
   LEAGUE_SLUGS,
   NL_SWEEPSTAKE_CODES,
   NATIONAL_LEAGUE_FIXTURES_RELEASE_DATE,
@@ -459,6 +491,7 @@ module.exports = {
   isOnOrAfterNlReleaseDate,
   parseFixturesFromSource,
   expectedMatchesForTeamCode,
+  resolveOurCode,
   summarizeNlFixtureStatus,
   summarizePerTeam,
   writeFixturesToDataFile,

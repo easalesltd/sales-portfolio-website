@@ -5,7 +5,7 @@
 
 const { countRedCardsFromEspnCompetition } = require('./espn-red-cards.cjs');
 const { normalizeEspnEventDate } = require('./espn-kickoff.cjs');
-const { ESPN_ABBREV_BY_SLUG } = require('./english-pyramid-fixture-lib.cjs');
+const { ESPN_ABBREV_BY_SLUG, ESPN_TEAM_ID_BY_SLUG } = require('./english-pyramid-fixture-lib.cjs');
 
 const DIVISION_TO_ESPN_SLUG = {
   PL: 'eng.1',
@@ -17,10 +17,10 @@ const DIVISION_TO_ESPN_SLUG = {
 
 const SWEEPSTAKE_DIVISION_BY_CODE = {
   MCI: 'PL', MUN: 'PL', ARS: 'PL', AVL: 'PL', CHE: 'PL', LIV: 'PL', NEW: 'PL',
-  WHU: 'CH', WOL: 'CH', BUR: 'CH', MID: 'CH', BIR: 'CH', SHU: 'CH', SOU: 'CH',
-  LEI: 'L1', SHW: 'L1', LUT: 'L1', STP: 'L1', PLY: 'L1', HUD: 'L1', BOL: 'L1',
-  BAR: 'L2', ROT: 'L2', PVL: 'L2', SAL: 'L2', CHS: 'L2', BRST: 'L2', GRI: 'L2',
-  CAR: 'NL', STD: 'NL', FGR: 'NL', BORE: 'NL', HPL: 'NL', SCU: 'NL', YOR: 'NL',
+  WHU: 'CH', WOL: 'CH', BUR: 'CH', MID: 'CH', BIR: 'CH', SHU: 'CH', SOU: 'CH', BOL: 'CH',
+  LEI: 'L1', SHW: 'L1', LUT: 'L1', STP: 'L1', PLY: 'L1', HUD: 'L1',
+  BAR: 'L2', ROT: 'L2', PVL: 'L2', SAL: 'L2', CHS: 'L2', BRST: 'L2', GRI: 'L2', YOR: 'L2',
+  CAR: 'NL', STD: 'NL', FGR: 'NL', BORE: 'NL', HPL: 'NL', SCU: 'NL',
 };
 
 function parseScore(value) {
@@ -29,8 +29,15 @@ function parseScore(value) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-function normalizeEspnAbbrevToTeamCode(slug, abbrev) {
-  const upper = abbrev.trim().toUpperCase();
+function normalizeEspnAbbrevToTeamCode(slug, abbrev, teamId) {
+  const idKey = teamId != null ? String(teamId) : '';
+  const idMapped = idKey ? ESPN_TEAM_ID_BY_SLUG[slug]?.[idKey] : null;
+  if (idMapped) return idMapped;
+
+  const upper = String(abbrev ?? '')
+    .trim()
+    .toUpperCase();
+  if (!upper) return null;
   const mapped = ESPN_ABBREV_BY_SLUG[slug]?.[upper];
   if (mapped) return mapped;
   return upper;
@@ -68,8 +75,8 @@ function parseEspnScoreboardEvent(event, slug, ignoreStatuses) {
   const normalizedPeriod = period.trim().toLowerCase();
   if (ignoreStatuses?.has(normalizedPeriod)) return null;
 
-  const homeTla = normalizeEspnAbbrevToTeamCode(slug, homeAbbrev);
-  const awayTla = normalizeEspnAbbrevToTeamCode(slug, awayAbbrev);
+  const homeTla = normalizeEspnAbbrevToTeamCode(slug, homeAbbrev, home?.team?.id);
+  const awayTla = normalizeEspnAbbrevToTeamCode(slug, awayAbbrev, away?.team?.id);
   if (!homeTla || !awayTla) return null;
 
   const redCards = countRedCardsFromEspnCompetition(competition);

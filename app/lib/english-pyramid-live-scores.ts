@@ -16,13 +16,28 @@ const DIVISION_TO_ESPN_SLUG: Record<string, string> = {
   NL: 'eng.5',
 };
 
-/** ESPN abbreviation → sweepstake code (per league slug). Mirrors scripts/english-pyramid-fetch-fixtures.cjs */
+/** ESPN abbreviation → sweepstake code (per league slug). Mirrors scripts/lib/english-pyramid-fixture-lib.cjs */
 const ESPN_ABBREV_BY_SLUG: Record<string, Record<string, string>> = {
   'eng.1': { MNC: 'MCI', MAN: 'MUN', ARS: 'ARS', AVL: 'AVL', CHE: 'CHE', LIV: 'LIV', NEW: 'NEW' },
-  'eng.2': { WHU: 'WHU', WOL: 'WOL', BUR: 'BUR', MID: 'MID', BIR: 'BIR', SHU: 'SHU', SOU: 'SOU' },
-  'eng.3': { LEI: 'LEI', SHW: 'SHW', LTN: 'LUT', STO: 'STP', PLY: 'PLY', HUD: 'HUD', BOL: 'BOL' },
-  'eng.4': { BAR: 'BAR', ROT: 'ROT', PTV: 'PVL', SAL: 'SAL', CHES: 'CHS', BRI: 'BRST', GRI: 'GRI' },
-  'eng.5': { CAR: 'CAR', SOUT: 'STD', FGR: 'FGR', BOR: 'BORE', HAR: 'HPL', SCU: 'SCU', YORK: 'YOR' },
+  'eng.2': { WHU: 'WHU', WOL: 'WOL', BUR: 'BUR', MID: 'MID', BIR: 'BIR', SHU: 'SHU', SOU: 'SOU', BOL: 'BOL' },
+  'eng.3': { LEI: 'LEI', SHW: 'SHW', LTN: 'LUT', STO: 'STP', PLY: 'PLY', HUD: 'HUD' },
+  'eng.4': {
+    BAR: 'BAR',
+    ROT: 'ROT',
+    PTV: 'PVL',
+    SAL: 'SAL',
+    CHES: 'CHS',
+    BRI: 'BRST',
+    GRI: 'GRI',
+    YORK: 'YOR',
+  },
+  'eng.5': { CAR: 'CAR', SOUT: 'STD', FGR: 'FGR', BOR: 'BORE', SCU: 'SCU' },
+};
+
+/** ESPN team id → sweepstake code when abbreviation alone is ambiguous. */
+const ESPN_TEAM_ID_BY_SLUG: Record<string, Record<string, string>> = {
+  'eng.4': { '315': 'YOR' },
+  'eng.5': { '323': 'HPL' },
 };
 
 const REDIS_CACHE_KEY_PREFIX = 'english-pyramid:espn-scoreboard:v1';
@@ -73,7 +88,15 @@ function parseScore(value: string | number | undefined): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-export function normalizeEspnAbbrevToTeamCode(slug: string, abbrev: string): string | null {
+export function normalizeEspnAbbrevToTeamCode(
+  slug: string,
+  abbrev: string,
+  teamId?: string | number | null
+): string | null {
+  const idKey = teamId != null ? String(teamId) : '';
+  const idMapped = idKey ? ESPN_TEAM_ID_BY_SLUG[slug]?.[idKey] : undefined;
+  if (idMapped) return idMapped;
+
   const upper = abbrev.trim().toUpperCase();
   const mapped = ESPN_ABBREV_BY_SLUG[slug]?.[upper];
   if (mapped) return mapped;
@@ -128,13 +151,17 @@ export function parseEspnScoreboard(slug: string, payload: unknown): EspnScorebo
         entry &&
         typeof entry === 'object' &&
         (entry as { homeAway?: string }).homeAway === 'home'
-    ) as { team?: { abbreviation?: string }; score?: string | number } | undefined;
+    ) as
+      | { team?: { abbreviation?: string; id?: string | number }; score?: string | number }
+      | undefined;
     const away = competitors.find(
       (entry) =>
         entry &&
         typeof entry === 'object' &&
         (entry as { homeAway?: string }).homeAway === 'away'
-    ) as { team?: { abbreviation?: string }; score?: string | number } | undefined;
+    ) as
+      | { team?: { abbreviation?: string; id?: string | number }; score?: string | number }
+      | undefined;
 
     const homeAbbrev = home?.team?.abbreviation;
     const awayAbbrev = away?.team?.abbreviation;
@@ -149,8 +176,8 @@ export function parseEspnScoreboard(slug: string, payload: unknown): EspnScorebo
     if (!homeAbbrev || !awayAbbrev || homeGoals == null || awayGoals == null) continue;
     if (IGNORED_ESPN_STATUSES.has(period.trim().toLowerCase())) continue;
 
-    const homeTla = normalizeEspnAbbrevToTeamCode(slug, homeAbbrev);
-    const awayTla = normalizeEspnAbbrevToTeamCode(slug, awayAbbrev);
+    const homeTla = normalizeEspnAbbrevToTeamCode(slug, homeAbbrev, home?.team?.id);
+    const awayTla = normalizeEspnAbbrevToTeamCode(slug, awayAbbrev, away?.team?.id);
     if (!homeTla || !awayTla) continue;
 
     const redCards = countRedCardsFromEspnCompetition(competition);

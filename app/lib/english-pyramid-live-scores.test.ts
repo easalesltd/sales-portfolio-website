@@ -14,6 +14,9 @@ describe('english-pyramid-live-scores', () => {
     expect(normalizeEspnAbbrevToTeamCode('eng.1', 'MNC')).toBe('MCI');
     expect(normalizeEspnAbbrevToTeamCode('eng.4', 'CHES')).toBe('CHS');
     expect(normalizeEspnAbbrevToTeamCode('eng.5', 'BOR')).toBe('BORE');
+    expect(normalizeEspnAbbrevToTeamCode('eng.4', 'YORK')).toBe('YOR');
+    expect(normalizeEspnAbbrevToTeamCode('eng.5', 'HAR', '323')).toBe('HPL');
+    expect(normalizeEspnAbbrevToTeamCode('eng.5', 'HAR', '19262')).toBe('HAR');
     expect(normalizeEspnAbbrevToTeamCode('eng.4', 'NEW')).toBe('NEW');
     expect(normalizeEspnAbbrevToTeamCode('eng.1', 'NEW')).toBe('NEW');
   });
