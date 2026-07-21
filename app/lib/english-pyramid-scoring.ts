@@ -167,7 +167,8 @@ export function scoreTeamMatch(
       ? ENGLISH_PYRAMID_FANTASY_SCORING.highScoringBonus
       : 0;
 
-  const cleanSheetBonus = opponentGoals === 0 ? ENGLISH_PYRAMID_FANTASY_SCORING.cleanSheetBonus : 0;
+  const cleanSheetBonus =
+    opponentGoals === 0 && teamGoals > 0 ? ENGLISH_PYRAMID_FANTASY_SCORING.cleanSheetBonus : 0;
 
   const redCardPenalty = redCards * ENGLISH_PYRAMID_FANTASY_SCORING.redCardPenalty;
 
@@ -176,10 +177,26 @@ export function scoreTeamMatch(
       ? ENGLISH_PYRAMID_FANTASY_SCORING.highConcededPenalty
       : 0;
 
-  const boringMatchPenalty =
-    teamGoals === 0 && opponentGoals === 0
-      ? ENGLISH_PYRAMID_FANTASY_SCORING.boringGoallessDrawPenalty
-      : 0;
+  const isGoallessDraw = teamGoals === 0 && opponentGoals === 0;
+  // 0–0 overrides draw points and the clean-sheet bonus: flat −1.
+  if (isGoallessDraw) {
+    const boringMatchPenalty = ENGLISH_PYRAMID_FANTASY_SCORING.boringGoallessDrawPenalty;
+    return {
+      points: 0,
+      bonus: 0,
+      cleanSheetBonus: 0,
+      redCardPenalty,
+      concededPenalty: 0,
+      boringMatchPenalty,
+      total: boringMatchPenalty + redCardPenalty,
+      outcome: 'draw',
+      goalsFor: teamGoals,
+      goalsAgainst: opponentGoals,
+      redCards,
+    };
+  }
+
+  const boringMatchPenalty = 0;
 
   return {
     points,

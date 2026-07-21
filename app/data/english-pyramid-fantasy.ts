@@ -247,7 +247,7 @@ export const ENGLISH_PYRAMID_FANTASY_SCORING = {
   redCardPenalty: 1,
   highConcededPenaltyMinGoals: 3,
   highConcededPenalty: -1,
-  /** −1 when a match finishes 0–0 (draw points still apply; other draws unchanged). */
+  /** −1 when a match finishes 0–0 (overrides draw points and clean-sheet bonus). */
   boringGoallessDrawPenalty: -1,
 } as const;
 

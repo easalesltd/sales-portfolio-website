@@ -36,14 +36,16 @@ describe('english-pyramid scoreTeamMatch', () => {
     expect(scoreTeamMatch(1, 1).total).toBe(1);
   });
 
-  it('adds a clean-sheet bonus', () => {
-    expect(scoreTeamMatch(1, 0).total).toBe(4);
+  it('scores a boring 0-0 as flat -1 with no draw or clean-sheet points', () => {
+    const scored = scoreTeamMatch(0, 0);
+    expect(scored.points).toBe(0);
+    expect(scored.cleanSheetBonus).toBe(0);
+    expect(scored.boringMatchPenalty).toBe(-1);
+    expect(scored.total).toBe(-1);
   });
 
-  it('deducts for a boring 0-0 while keeping draw + clean sheet', () => {
-    // Draw 1 + CS (+1) + boring (−1) = 1
-    expect(scoreTeamMatch(0, 0).total).toBe(1);
-    expect(scoreTeamMatch(0, 0).boringMatchPenalty).toBe(-1);
+  it('still awards clean sheet on a 1-0 win', () => {
+    expect(scoreTeamMatch(1, 0).total).toBe(4);
   });
 
   it('leaves other draws unchanged', () => {

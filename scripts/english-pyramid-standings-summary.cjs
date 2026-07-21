@@ -97,11 +97,13 @@ function teamCodeMatches(matchTla, playerTeamCode, searchNames) {
 }
 
 function scoreTeamMatch(goalsFor, goalsAgainst, redCards) {
+  if (goalsFor === 0 && goalsAgainst === 0) {
+    return -1 + redCards;
+  }
   let total = goalsFor > goalsAgainst ? 3 : goalsFor === goalsAgainst ? 1 : 0;
   if (goalsAgainst === 0) total += 1;
   if (goalsFor >= 3) total += 1;
   if (goalsAgainst >= 3) total -= 1;
-  if (goalsFor === 0 && goalsAgainst === 0) total -= 1;
   total += redCards;
   return total;
 }

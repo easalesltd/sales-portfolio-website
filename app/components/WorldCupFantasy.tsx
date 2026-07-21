@@ -201,7 +201,7 @@ function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
   if (result.boringMatchPenalty && result.boringMatchPenalty < 0) {
     items.push({
       key: 'boring',
-      label: `(${result.boringMatchPenalty}, boring 0–0)`,
+      label: `(${result.boringMatchPenalty}, boring 0–0 — no draw/CS)`,
       className: t.c.negative,
     });
   }
