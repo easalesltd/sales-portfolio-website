@@ -9,6 +9,7 @@ const {
   findEspnEventForFixture,
   parseEspnScoreboard,
 } = require('./lib/english-pyramid-espn-scoreboard.cjs');
+const { fetchFwpResultForFixture, OUR_NLN_NLS_CODES } = require('./lib/english-pyramid-fwp-nln-nls.cjs');
 const {
   getDueFixtureOptionsFromEnv,
   getDueFixtures,
@@ -43,6 +44,10 @@ function espnSlugForFixture(fixture) {
   return espnSlugForTeamCode(fixture.homeTla) || espnSlugForTeamCode(fixture.awayTla);
 }
 
+function isNlnNlsFixture(fixture) {
+  return OUR_NLN_NLS_CODES.has(fixture.homeTla) || OUR_NLN_NLS_CODES.has(fixture.awayTla);
+}
+
 async function loadEspnEventsForFixture(fixture, cache) {
   const slug = espnSlugForFixture(fixture);
   const dateParam = espnDateParamFromUtcDate(fixture.utcDate);
@@ -57,6 +62,59 @@ async function loadEspnEventsForFixture(fixture, cache) {
   return findEspnEventForFixture(cache.get(cacheKey), fixture.homeTla, fixture.awayTla);
 }
 
+async function resolveFinalResult(fixture, espnCache) {
+  if (isNlnNlsFixture(fixture)) {
+    const fwpMatch = await fetchFwpResultForFixture(fixture);
+    if (!fwpMatch) {
+      return { status: 'waiting', detail: 'FWP result not final yet' };
+    }
+    return {
+      status: 'ready',
+      goals: { homeGoals: fwpMatch.homeGoals, awayGoals: fwpMatch.awayGoals },
+      redCards: {
+        homeRedCards: fwpMatch.homeRedCards,
+        awayRedCards: fwpMatch.awayRedCards,
+      },
+      label: `FWP ${fwpMatch.period}`,
+      comment: 'Verified final result (Football Web Pages sync).',
+    };
+  }
+
+  const slug = espnSlugForFixture(fixture);
+  if (!slug) {
+    return { status: 'skipped', detail: 'no ESPN/FWP league source' };
+  }
+
+  let espnMatch;
+  try {
+    espnMatch = await loadEspnEventsForFixture(fixture, espnCache);
+  } catch (error) {
+    return {
+      status: 'waiting',
+      detail: `ESPN fetch failed (${error instanceof Error ? error.message : error})`,
+    };
+  }
+
+  if (!espnMatch) {
+    return { status: 'waiting', detail: 'no ESPN event yet' };
+  }
+
+  if (!isEspnFinalPeriod(espnMatch.period)) {
+    return { status: 'waiting', detail: `ESPN status "${espnMatch.period}" is not final` };
+  }
+
+  return {
+    status: 'ready',
+    goals: { homeGoals: espnMatch.homeGoals, awayGoals: espnMatch.awayGoals },
+    redCards: {
+      homeRedCards: espnMatch.homeRedCards,
+      awayRedCards: espnMatch.awayRedCards,
+    },
+    label: espnMatch.period,
+    comment: 'Verified final result (ESPN sync).',
+  };
+}
+
 async function main() {
   const source = readDataFileSource(dataPath);
   const dueOptions = getDueFixtureOptionsFromEnv();
@@ -66,50 +124,34 @@ async function main() {
   const skipped = [];
 
   for (const fixture of dueFixtures) {
-    const slug = espnSlugForFixture(fixture);
-    if (!slug) {
-      skipped.push(`${fixture.id}: no ESPN league slug (likely NL North/South — needs manual/agent)`);
-      continue;
-    }
-
-    let espnMatch;
+    let resolved;
     try {
-      espnMatch = await loadEspnEventsForFixture(fixture, espnCache);
+      resolved = await resolveFinalResult(fixture, espnCache);
     } catch (error) {
       skipped.push(
-        `${fixture.id}: ESPN fetch failed (${error instanceof Error ? error.message : error})`,
+        `${fixture.id}: result lookup failed (${error instanceof Error ? error.message : error})`,
       );
       continue;
     }
 
-    if (!espnMatch) {
-      skipped.push(`${fixture.id}: no ESPN event yet`);
-      continue;
-    }
-
-    if (!isEspnFinalPeriod(espnMatch.period)) {
-      skipped.push(`${fixture.id}: ESPN status "${espnMatch.period}" is not final`);
+    if (resolved.status !== 'ready') {
+      skipped.push(`${fixture.id}: ${resolved.detail}`);
       continue;
     }
 
     pendingEntries.push(
-      formatManualMatchEntry(
-        fixture,
-        { homeGoals: espnMatch.homeGoals, awayGoals: espnMatch.awayGoals },
-        {
-          homeRedCards: espnMatch.homeRedCards,
-          awayRedCards: espnMatch.awayRedCards,
-        },
-      ),
+      formatManualMatchEntry(fixture, resolved.goals, resolved.redCards, resolved.comment),
     );
 
     console.log(
-      `Will append ${fixture.id}: ${fixture.homeTla} ${espnMatch.homeGoals}-${espnMatch.awayGoals} ${fixture.awayTla} (${espnMatch.period})`,
+      `Will append ${fixture.id}: ${fixture.homeTla} ${resolved.goals.homeGoals}-${resolved.goals.awayGoals} ${fixture.awayTla} (${resolved.label})`,
     );
   }
 
   if (pendingEntries.length === 0) {
-    console.log(`No ESPN-final fixtures ready to sync (${dueFixtures.length} due, all waiting).`);
+    console.log(
+      `No final fixtures ready to sync (${dueFixtures.length} due, all waiting on ESPN/FWP).`,
+    );
     for (const reason of skipped) {
       console.log(`- ${reason}`);
     }
@@ -133,7 +175,7 @@ async function main() {
   console.log(`Appended ${pendingEntries.length} English pyramid result(s) to the manual ledger.`);
 
   if (skipped.length > 0) {
-    console.log('Still waiting on ESPN finals or manual sources for:');
+    console.log('Still waiting on finals for:');
     for (const reason of skipped) {
       console.log(`- ${reason}`);
     }

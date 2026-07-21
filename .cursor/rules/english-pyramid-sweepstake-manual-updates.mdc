@@ -53,7 +53,9 @@ When asked to update English pyramid scores (or by the scheduled GitHub workflow
 
 ## Scheduled workflow
 
-- **Scores:** `.github/workflows/english-pyramid-score-agent.yml` runs `npm run english-pyramid:sync` for due fixtures on ESPN tiers (PL → NL). NL North/South and matchday sweeps may still need the Cursor agent.
+- **Scores:** `.github/workflows/english-pyramid-score-agent.yml` runs `npm run english-pyramid:sync` for due fixtures on ESPN tiers (PL → NL) and **Football Web Pages for NL North/South**. Matchday sweeps may still need the Cursor agent for roast copy / edge cases.
+- **NL North / South results:** same sync job scrapes FWP team fixture pages (kick-off cells become `1 - 0` when final). Red cards are recorded as `0` from FWP tables (not exposed reliably there) — cross-check Flashscore/BBC if a dismissal is reported.
+- **Due fixtures:** `scripts/english-pyramid-due-fixtures.cjs` keeps fixtures due until recorded (no lookback expiry), with a matchday sweep fallback for same-day games.
 - **Due fixtures:** `scripts/english-pyramid-due-fixtures.cjs` keeps fixtures due until recorded (no lookback expiry), with a matchday sweep fallback for same-day games.
 - **Health check:** `.github/workflows/english-pyramid-health-check.yml` runs `npm run english-pyramid:validate` on a fixed schedule and fails loudly on overdue fixtures or ESPN red-card drift.
 - **Validate split:** `npm run english-pyramid:validate:scores` (ledger + reds), `npm run english-pyramid:validate` (same — no separate roast validator yet).

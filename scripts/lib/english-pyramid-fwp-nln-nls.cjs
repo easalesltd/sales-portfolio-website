@@ -250,6 +250,47 @@ function decodeHtmlEntities(value) {
     .trim();
 }
 
+function isFwpScoreText(text) {
+  return /^\d+\s*-\s*\d+$/.test(String(text || '').trim());
+}
+
+function parseScorePair(text) {
+  const match = String(text || '')
+    .trim()
+    .match(/^(\d+)\s*-\s*(\d+)$/);
+  if (!match) return null;
+  return { left: Number(match[1]), right: Number(match[2]) };
+}
+
+/**
+ * Finished FWP team-page rows use title "Home 1-0 Away".
+ * The ko-score cell is viewed-team first (not always home-away).
+ */
+function parseFinishedHomeAwayGoals(title, koText, venue) {
+  const decodedTitle = decodeHtmlEntities(title);
+  const titleScore = decodedTitle.match(/^(.+?)\s+(\d+)\s*-\s*(\d+)\s+(.+)$/);
+  if (titleScore) {
+    return {
+      homeGoals: Number(titleScore[2]),
+      awayGoals: Number(titleScore[3]),
+      final: true,
+      source: 'title',
+    };
+  }
+
+  const pair = parseScorePair(koText);
+  if (!pair) return { final: false };
+
+  if (venue === 'H') {
+    return { homeGoals: pair.left, awayGoals: pair.right, final: true, source: 'ko-home' };
+  }
+  if (venue === 'A') {
+    return { homeGoals: pair.right, awayGoals: pair.left, final: true, source: 'ko-away' };
+  }
+
+  return { final: false };
+}
+
 function resolveTeamFromSlug(slug) {
   const code = FWP_CODE_BY_SLUG[slug];
   if (!code) {
@@ -262,11 +303,16 @@ function resolveTeamFromSlug(slug) {
   };
 }
 
+function slugForTeamCode(code) {
+  return FWP_SLUG_BY_CODE[code] || null;
+}
+
 function parseTeamFixtureRows(html, expectedCompSlug) {
   const rows = [];
   const rowPattern = /<tr[^>]*title="([^"]+)" data-href="(match\/[^"]+)"[^>]*>(.*?)<\/tr>/gs;
 
   for (const match of html.matchAll(rowPattern)) {
+    const title = decodeHtmlEntities(match[1]);
     const href = match[2];
     const body = match[3];
     const parts = href.split('/');
@@ -279,19 +325,31 @@ function parseTeamFixtureRows(html, expectedCompSlug) {
     const awaySlug = parts[4];
     const dateMatch = body.match(/data-export="(\d{1,2}\/\d{1,2}\/\d{4})"/);
     const koMatch = body.match(/class="ko-score"[^>]*>([^<]+)/);
+    const venueMatch = body.match(/class="[^"]*venue[^"]*"[^>]*>([^<]+)/);
     if (!dateMatch || !koMatch) {
       throw new Error(`FWP row missing date/kick-off: ${href}`);
     }
 
     rows.push({
+      title,
+      href,
       homeSlug,
       awaySlug,
       dateExport: dateMatch[1],
       koText: decodeHtmlEntities(koMatch[1]),
+      venue: venueMatch ? decodeHtmlEntities(venueMatch[1]) : null,
     });
   }
 
   return rows;
+}
+
+function kickoffTextForUtc(row) {
+  // Once finished, FWP replaces kick-off with the score — keep a stable afternoon default.
+  if (isFwpScoreText(row.koText) || parseFinishedHomeAwayGoals(row.title, row.koText, row.venue).final) {
+    return '3pm';
+  }
+  return row.koText;
 }
 
 async function fetchClubLeagueFixtures(code) {
@@ -310,7 +368,7 @@ async function fetchClubLeagueFixtures(code) {
     const away = resolveTeamFromSlug(row.awaySlug);
     if (!home.isOurs && !away.isOurs) continue;
 
-    const utcDate = parseUkDateToUtcIso(row.dateExport, row.koText);
+    const utcDate = parseUkDateToUtcIso(row.dateExport, kickoffTextForUtc(row));
     fixtures.push({
       id: fixtureId(utcDate, home.code, away.code),
       utcDate,
@@ -325,6 +383,61 @@ async function fetchClubLeagueFixtures(code) {
   }
 
   return fixtures;
+}
+
+const fwpClubPageCache = new Map();
+
+async function loadClubFixtureRows(code) {
+  if (fwpClubPageCache.has(code)) return fwpClubPageCache.get(code);
+
+  const slug = FWP_SLUG_BY_CODE[code];
+  const expectedComp = FWP_LEAGUE_COMP_BY_CODE[code];
+  if (!slug || !expectedComp) {
+    throw new Error(`No FWP mapping for ${code}`);
+  }
+
+  const html = await fetchHtml(`${FWP_ORIGIN}/${slug}/fixtures-results`);
+  const rows = parseTeamFixtureRows(html, expectedComp);
+  fwpClubPageCache.set(code, rows);
+  return rows;
+}
+
+/**
+ * Look up a finished NLN/NLS result for a due sweepstake fixture.
+ * Returns null if not final yet. Red cards are not reliably published on FWP tables → 0.
+ */
+async function fetchFwpResultForFixture(fixture) {
+  const homeCode = fixture.homeTla || fixture.homeTeam?.tla;
+  const awayCode = fixture.awayTla || fixture.awayTeam?.tla;
+  const ourCode = OUR_NLN_NLS_CODES.has(homeCode)
+    ? homeCode
+    : OUR_NLN_NLS_CODES.has(awayCode)
+      ? awayCode
+      : null;
+  if (!ourCode) return null;
+
+  const homeSlug = slugForTeamCode(homeCode) || Object.entries(FWP_CODE_BY_SLUG).find(([, c]) => c === homeCode)?.[0];
+  const awaySlug = slugForTeamCode(awayCode) || Object.entries(FWP_CODE_BY_SLUG).find(([, c]) => c === awayCode)?.[0];
+  if (!homeSlug || !awaySlug) {
+    throw new Error(`FWP slug missing for ${homeCode} vs ${awayCode}`);
+  }
+
+  const rows = await loadClubFixtureRows(ourCode);
+  const row = rows.find((entry) => entry.homeSlug === homeSlug && entry.awaySlug === awaySlug);
+  if (!row) return null;
+
+  const parsed = parseFinishedHomeAwayGoals(row.title, row.koText, row.venue);
+  if (!parsed.final) return null;
+
+  return {
+    homeGoals: parsed.homeGoals,
+    awayGoals: parsed.awayGoals,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    period: 'FT',
+    source: 'fwp',
+    scoreSource: parsed.source,
+  };
 }
 
 async function fetchAllNlnNlsFixtures() {
@@ -362,7 +475,11 @@ module.exports = {
   OUR_NLN_NLS_CODES,
   fetchAllNlnNlsFixtures,
   fetchClubLeagueFixtures,
+  fetchFwpResultForFixture,
+  isFwpScoreText,
   londonLocalToUtcIso,
+  parseFinishedHomeAwayGoals,
   parseKoToMinutes,
   parseUkDateToUtcIso,
+  slugForTeamCode,
 };
