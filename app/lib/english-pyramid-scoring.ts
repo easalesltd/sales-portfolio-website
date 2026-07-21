@@ -149,14 +149,17 @@ function compareByStandingsOrder(
 export function scoreTeamMatch(
   teamGoals: number,
   opponentGoals: number,
-  redCards = 0
+  redCards = 0,
+  isHome = true
 ): TeamMatchScore {
   let outcome: TeamMatchScore['outcome'] = 'loss';
   let points: number = ENGLISH_PYRAMID_FANTASY_SCORING.loss;
 
   if (teamGoals > opponentGoals) {
     outcome = 'win';
-    points = ENGLISH_PYRAMID_FANTASY_SCORING.win;
+    points = isHome
+      ? ENGLISH_PYRAMID_FANTASY_SCORING.win
+      : ENGLISH_PYRAMID_FANTASY_SCORING.awayWin;
   } else if (teamGoals === opponentGoals) {
     outcome = 'draw';
     points = ENGLISH_PYRAMID_FANTASY_SCORING.draw;
@@ -441,7 +444,7 @@ export function teamPointsInMatch(match: EnglishPyramidMatchResult, playerTeamCo
   const goalsFor = side.isHome ? match.homeGoals : match.awayGoals;
   const goalsAgainst = side.isHome ? match.awayGoals : match.homeGoals;
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
-  return scoreTeamMatch(goalsFor, goalsAgainst, redCards).total;
+  return scoreTeamMatch(goalsFor, goalsAgainst, redCards, side.isHome).total;
 }
 
 export function matchInvolvesTeam(match: EnglishPyramidMatchResult, teamCode: string): boolean {
@@ -501,7 +504,7 @@ export function getTeamMatchDisplay(match: EnglishPyramidMatchResult, teamCode: 
   const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
   const opponent = side.isHome ? match.awayTeam : match.homeTeam;
   const opponentMeta = ENGLISH_PYRAMID_TEAM_BY_CODE[opponent.tla];
-  const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards);
+  const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards, side.isHome);
 
   return {
     matchId: match.id,
@@ -702,7 +705,7 @@ function buildStandingsFromFinished(
         const goalsFor = side.isHome ? match.homeGoals! : match.awayGoals!;
         const goalsAgainst = side.isHome ? match.awayGoals! : match.homeGoals!;
         const redCards = side.isHome ? match.homeRedCards : match.awayRedCards;
-        const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards);
+        const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards, side.isHome);
         const teamRow = teamRows.get(teamCode);
         if (!teamRow) continue;
 

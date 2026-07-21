@@ -28,8 +28,13 @@ describe('english-pyramid matchday schedule', () => {
 });
 
 describe('english-pyramid scoreTeamMatch', () => {
-  it('awards 3 for a win', () => {
+  it('awards 3 for a home win', () => {
     expect(scoreTeamMatch(2, 1).total).toBe(3);
+    expect(scoreTeamMatch(2, 1, 0, true).total).toBe(3);
+  });
+
+  it('awards 4 for an away win', () => {
+    expect(scoreTeamMatch(2, 1, 0, false).total).toBe(4);
   });
 
   it('awards 1 for a draw', () => {
@@ -45,7 +50,8 @@ describe('english-pyramid scoreTeamMatch', () => {
   });
 
   it('still awards clean sheet on a 1-0 win', () => {
-    expect(scoreTeamMatch(1, 0).total).toBe(4);
+    expect(scoreTeamMatch(1, 0, 0, true).total).toBe(4);
+    expect(scoreTeamMatch(1, 0, 0, false).total).toBe(5);
   });
 
   it('leaves other draws unchanged', () => {
@@ -54,14 +60,17 @@ describe('english-pyramid scoreTeamMatch', () => {
   });
 
   it('stacks clean sheet and 3+ goals scored', () => {
-    expect(scoreTeamMatch(3, 0).total).toBe(5);
+    expect(scoreTeamMatch(3, 0, 0, true).total).toBe(5);
+    expect(scoreTeamMatch(3, 0, 0, false).total).toBe(6);
   });
 
   it('applies conceded penalty and red-card bonus', () => {
     // Draw 3-3: 1 + 3+ scored (+1) −3 conceded (−1) = 1
     expect(scoreTeamMatch(3, 3).total).toBe(1);
-    // Win 2-0 with a red: 3 + CS (+1) + red (+1) = 5
-    expect(scoreTeamMatch(2, 0, 1).total).toBe(5);
+    // Home win 2-0 with a red: 3 + CS (+1) + red (+1) = 5
+    expect(scoreTeamMatch(2, 0, 1, true).total).toBe(5);
+    // Away win 2-0 with a red: 4 + CS (+1) + red (+1) = 6
+    expect(scoreTeamMatch(2, 0, 1, false).total).toBe(6);
     // Loss 0-4 with two reds: 0 −3 conceded (−1) + 2 reds (+2) = 1
     expect(scoreTeamMatch(0, 4, 2).total).toBe(1);
   });

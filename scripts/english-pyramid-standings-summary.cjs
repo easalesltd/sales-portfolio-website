@@ -96,11 +96,12 @@ function teamCodeMatches(matchTla, playerTeamCode, searchNames) {
   );
 }
 
-function scoreTeamMatch(goalsFor, goalsAgainst, redCards) {
+function scoreTeamMatch(goalsFor, goalsAgainst, redCards, isHome = true) {
   if (goalsFor === 0 && goalsAgainst === 0) {
     return -1 + redCards;
   }
-  let total = goalsFor > goalsAgainst ? 3 : goalsFor === goalsAgainst ? 1 : 0;
+  let total =
+    goalsFor > goalsAgainst ? (isHome ? 3 : 4) : goalsFor === goalsAgainst ? 1 : 0;
   if (goalsAgainst === 0) total += 1;
   if (goalsFor >= 3) total += 1;
   if (goalsAgainst >= 3) total -= 1;
@@ -127,7 +128,7 @@ function computeStandings(players, matches, searchNames) {
         const goalsFor = isHome ? match.homeGoals : match.awayGoals;
         const goalsAgainst = isHome ? match.awayGoals : match.homeGoals;
         const redCards = isHome ? match.homeRedCards : match.awayRedCards;
-        standings[index].points += scoreTeamMatch(goalsFor, goalsAgainst, redCards);
+        standings[index].points += scoreTeamMatch(goalsFor, goalsAgainst, redCards, isHome);
         standings[index].goalsFor += goalsFor;
         standings[index].goalsAgainst += goalsAgainst;
         if (goalsAgainst === 0) standings[index].bonusPoints += 1;

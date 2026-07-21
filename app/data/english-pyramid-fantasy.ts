@@ -238,6 +238,7 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
 
 export const ENGLISH_PYRAMID_FANTASY_SCORING = {
   win: 3,
+  awayWin: 4,
   draw: 1,
   loss: 0,
   highScoringBonusMinGoals: 3,

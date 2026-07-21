@@ -10,7 +10,8 @@ type Props = {
 };
 
 const ENGLISH_PYRAMID_SCORING_RULES = [
-  '3 pts win',
+  '3 pts home win',
+  '4 pts away win',
   '1 pt draw (except 0–0)',
   '−1 for a boring 0–0 (no draw or clean-sheet points)',
   '+1 clean sheet (0 goals conceded)',
