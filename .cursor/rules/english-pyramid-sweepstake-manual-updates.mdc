@@ -22,10 +22,11 @@ Parallel game to the World Cup sweepstake. Data lives in `app/data/english-pyram
 ## Fixtures and kick-off times
 
 - Maintain `ENGLISH_PYRAMID_FIXTURES` with **every league match** involving our **49 clubs** (not just games between sweepstake clubs).
-- Refresh the bulk schedule with `npm run english-pyramid:fetch-fixtures -- --write` (ESPN: PL → NL when published; NL North/South manual).
+- Refresh the bulk schedule with `npm run english-pyramid:fetch-fixtures -- --write` (ESPN: PL → NL; Football Web Pages: NL North/South).
 - **National League (tier 5)** fixtures typically publish around **10 July** each summer. `.github/workflows/english-pyramid-fixture-check.yml` polls ESPN twice daily **10–20 July** (plus weekly Mondays) and auto-commits when eng.5 fixtures appear.
-- **League only** — cup ties (FA Cup, League Cup, etc.) are excluded automatically (season slug + single-leg pair filter).
-- Weekly GitHub Action `.github/workflows/english-pyramid-fixture-check.yml` compares ESPN to the repo and auto-refreshes when kick-offs move (international breaks, postponements).
+- **NL North / South** come from Football Web Pages team fixture pages (`scripts/lib/english-pyramid-fwp-nln-nls.cjs`). Same fetch/check commands refresh them; kick-offs are Europe/London → UTC.
+- **League only** — cup ties (FA Cup, League Cup, etc.) are excluded automatically (season slug + single-leg pair filter; FWP filters to `national-league-north` / `national-league-south` only).
+- Weekly GitHub Action `.github/workflows/english-pyramid-fixture-check.yml` compares remote sources to the repo and auto-refreshes when kick-offs move (international breaks, postponements).
 - Manual drift check: `npm run english-pyramid:check-fixtures` (add `--write` to apply).
 - First matchday opens on the earliest fixture date in the ledger (e.g. Championship often kicks off Friday before the main Saturday batch).
 - Store `utcDate` as **UTC ISO-8601** (`2026-08-09T14:00:00Z`) converted from the **Europe/London** kick-off (handles GMT/BST).

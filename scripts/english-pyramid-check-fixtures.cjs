@@ -29,7 +29,7 @@ async function main() {
   const nlStatus = summarizeNlFixtureStatus(localFixtures, remoteFixtures);
 
   console.log(`Local fixtures: ${localFixtures.length}`);
-  console.log(`ESPN league fixtures: ${remoteFixtures.length}`);
+  console.log(`Remote league fixtures: ${remoteFixtures.length} (ESPN PL→NL + FWP NLN/NLS)`);
   for (const [slug, count] of Object.entries(bySlug)) {
     console.log(`  ${slug}: ${count}`);
   }
@@ -56,7 +56,7 @@ async function main() {
   const remoteCounts = summarizePerTeam(remoteFixtures);
 
   if (!diff.changed) {
-    console.log('\nFixtures are in sync with ESPN (league only).');
+    console.log('\nFixtures are in sync (ESPN + Football Web Pages, league only).');
     setOutput('changed', 'false');
     return;
   }
@@ -92,7 +92,9 @@ async function main() {
 
   if (write) {
     writeFixturesToDataFile(remoteFixtures);
-    console.log('\nUpdated app/data/english-pyramid-fantasy.ts from ESPN (league fixtures only).');
+    console.log(
+      '\nUpdated app/data/english-pyramid-fantasy.ts from ESPN + Football Web Pages (league fixtures only).'
+    );
     setOutput('updated', 'true');
     return;
   }

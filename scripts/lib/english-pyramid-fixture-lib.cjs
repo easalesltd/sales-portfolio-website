@@ -81,6 +81,20 @@ const TEAM_NAME_BY_CODE = {
   HPL: 'Hartlepool United',
   SCU: 'Scunthorpe United',
   YOR: 'York City',
+  SSH: 'South Shields',
+  MAC: 'Macclesfield',
+  MER: 'Merthyr Town',
+  WRK: 'Worksop Town',
+  DAR: 'Darlington',
+  BUX: 'Buxton',
+  CHF: 'Chester FC',
+  DAG: 'Dagenham & Redbridge',
+  TOR: 'Torquay United',
+  HOR: 'Horsham',
+  WSM: 'Weston-super-Mare',
+  MAI: 'Maidstone United',
+  EBB: 'Ebbsfleet United',
+  CLM: 'Chelmsford City',
 };
 
 const OUR_CODES = new Set(Object.keys(TEAM_NAME_BY_CODE));
@@ -265,6 +279,8 @@ function filterCupFixtures(fixtures, slug) {
 }
 
 async function fetchAllLeagueFixtures() {
+  const { fetchAllNlnNlsFixtures } = require('./english-pyramid-fwp-nln-nls.cjs');
+
   const bySlug = {};
   const allFixtures = [];
 
@@ -273,6 +289,10 @@ async function fetchAllLeagueFixtures() {
     bySlug[slug] = result.fixtures.length;
     allFixtures.push(...result.fixtures);
   }
+
+  const nlnNls = await fetchAllNlnNlsFixtures();
+  bySlug['fwp.nln-nls'] = nlnNls.fixtures.length;
+  allFixtures.push(...nlnNls.fixtures);
 
   allFixtures.sort((a, b) => a.utcDate.localeCompare(b.utcDate) || a.id.localeCompare(b.id));
 
@@ -283,7 +303,7 @@ async function fetchAllLeagueFixtures() {
     return true;
   });
 
-  return { fixtures: uniqueFixtures, bySlug };
+  return { fixtures: uniqueFixtures, bySlug, nlnNlsByCode: nlnNls.byCode };
 }
 
 function readDataFileSource() {
@@ -321,7 +341,7 @@ function formatFixtureBlock(fixtures, fetchedOn = new Date().toISOString().slice
   }`;
   });
 
-  return `/** Sweepstake fixtures for our 28 ESPN-covered clubs (PL → NL). League matches only — cup ties excluded. NL North/South (14 clubs) add manually. Fetched ${fetchedOn} via npm run english-pyramid:fetch-fixtures. */
+  return `/** Sweepstake fixtures for all 49 clubs (PL → NL South). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched ${fetchedOn} via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
 ${lines.join(',\n')},
 ];`;
@@ -428,6 +448,8 @@ const EXPECTED_LEAGUE_MATCHES_BY_DIVISION = {
   L1: 46,
   L2: 46,
   NL: 46,
+  NLN: 46,
+  NLS: 46,
 };
 
 function expectedMatchesForTeamCode(code) {
@@ -471,6 +493,8 @@ const SWEEPSTAKE_DIVISION_BY_CODE = {
   LEI: 'L1', SHW: 'L1', LUT: 'L1', STP: 'L1', PLY: 'L1', HUD: 'L1',
   BAR: 'L2', ROT: 'L2', PVL: 'L2', SAL: 'L2', CHS: 'L2', BRST: 'L2', GRI: 'L2', YOR: 'L2',
   CAR: 'NL', STD: 'NL', FGR: 'NL', BORE: 'NL', HPL: 'NL', SCU: 'NL',
+  SSH: 'NLN', MAC: 'NLN', MER: 'NLN', WRK: 'NLN', DAR: 'NLN', BUX: 'NLN', CHF: 'NLN',
+  DAG: 'NLS', TOR: 'NLS', HOR: 'NLS', WSM: 'NLS', MAI: 'NLS', EBB: 'NLS', CLM: 'NLS',
 };
 
 module.exports = {

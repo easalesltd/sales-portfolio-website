@@ -14,7 +14,7 @@ async function main() {
   const { fixtures, bySlug } = await fetchAllLeagueFixtures();
 
   if (fixtures.length === 0) {
-    throw new Error('No league fixtures returned from ESPN for the 2026/27 season.');
+    throw new Error('No league fixtures returned for the 2026/27 season.');
   }
 
   for (const [slug, count] of Object.entries(bySlug)) {
@@ -28,7 +28,7 @@ async function main() {
     .map((code) => {
       const expected = expectedMatchesForTeamCode(code);
       const actual = perTeam[code] ?? 0;
-      if (expected == null || actual === 0) return null;
+      if (expected == null) return null;
       if (actual !== expected) return `${code}=${actual} (expected ${expected})`;
       return null;
     })
@@ -45,12 +45,11 @@ async function main() {
   );
   process.stderr.write(`First fixture: ${fixtures[0].id} (${fixtures[0].utcDate})\n`);
   if (countWarnings.length > 0) {
-    process.stderr.write(`Count warnings (ESPN gaps): ${countWarnings.join(', ')}\n`);
+    process.stderr.write(`Count warnings: ${countWarnings.join(', ')}\n`);
   }
   process.stderr.write(
-    `Note: National League (eng.5) fixtures usually publish around 10 July — GitHub Actions polls ESPN 10–20 July and weekly thereafter. NL North/South (14 clubs) are not on ESPN; add those fixtures manually when available.\n`
+    'Sources: ESPN eng.1–eng.5 (PL→NL) + Football Web Pages (NL North/South). Cup ties excluded.\n'
   );
-  process.stderr.write('Cup ties are excluded — league competition only.\n');
 
   if (write) {
     writeFixturesToDataFile(fixtures);
