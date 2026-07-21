@@ -198,6 +198,13 @@ function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
       className: t.c.negative,
     });
   }
+  if (result.boringMatchPenalty && result.boringMatchPenalty < 0) {
+    items.push({
+      key: 'boring',
+      label: `(${result.boringMatchPenalty}, boring 0–0)`,
+      className: t.c.negative,
+    });
+  }
   if (result.redCards > 0) {
     const redPoints = result.redCardPoints ?? -result.redCards;
     const signed =

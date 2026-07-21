@@ -101,6 +101,7 @@ function scoreTeamMatch(goalsFor, goalsAgainst, redCards) {
   if (goalsAgainst === 0) total += 1;
   if (goalsFor >= 3) total += 1;
   if (goalsAgainst >= 3) total -= 1;
+  if (goalsFor === 0 && goalsAgainst === 0) total -= 1;
   total += redCards;
   return total;
 }

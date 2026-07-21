@@ -38,7 +38,17 @@ describe('english-pyramid scoreTeamMatch', () => {
 
   it('adds a clean-sheet bonus', () => {
     expect(scoreTeamMatch(1, 0).total).toBe(4);
-    expect(scoreTeamMatch(0, 0).total).toBe(2);
+  });
+
+  it('deducts for a boring 0-0 while keeping draw + clean sheet', () => {
+    // Draw 1 + CS (+1) + boring (−1) = 1
+    expect(scoreTeamMatch(0, 0).total).toBe(1);
+    expect(scoreTeamMatch(0, 0).boringMatchPenalty).toBe(-1);
+  });
+
+  it('leaves other draws unchanged', () => {
+    expect(scoreTeamMatch(1, 1).total).toBe(1);
+    expect(scoreTeamMatch(2, 2).boringMatchPenalty).toBe(0);
   });
 
   it('stacks clean sheet and 3+ goals scored', () => {

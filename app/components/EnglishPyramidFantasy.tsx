@@ -11,7 +11,8 @@ type Props = {
 
 const ENGLISH_PYRAMID_SCORING_RULES = [
   '3 pts win',
-  '1 pt draw',
+  '1 pt draw (except 0–0)',
+  '−1 for a boring 0–0',
   '+1 clean sheet (0 goals conceded)',
   '+1 for 3+ goals scored',
   '−1 for 3+ goals conceded',

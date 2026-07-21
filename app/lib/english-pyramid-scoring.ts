@@ -32,6 +32,7 @@ export type TeamMatchScore = {
   cleanSheetBonus: number;
   redCardPenalty: number;
   concededPenalty: number;
+  boringMatchPenalty: number;
   total: number;
   outcome: 'win' | 'draw' | 'loss';
   goalsFor: number;
@@ -175,13 +176,19 @@ export function scoreTeamMatch(
       ? ENGLISH_PYRAMID_FANTASY_SCORING.highConcededPenalty
       : 0;
 
+  const boringMatchPenalty =
+    teamGoals === 0 && opponentGoals === 0
+      ? ENGLISH_PYRAMID_FANTASY_SCORING.boringGoallessDrawPenalty
+      : 0;
+
   return {
     points,
     bonus,
     cleanSheetBonus,
     redCardPenalty,
     concededPenalty,
-    total: points + bonus + cleanSheetBonus + redCardPenalty + concededPenalty,
+    boringMatchPenalty,
+    total: points + bonus + cleanSheetBonus + redCardPenalty + concededPenalty + boringMatchPenalty,
     outcome,
     goalsFor: teamGoals,
     goalsAgainst: opponentGoals,
@@ -440,7 +447,9 @@ export type TeamMatchDisplay = {
   cleanSheetBonus?: number;
   /** −1 when the team concedes 3+ goals. */
   concededPenalty?: number;
-  /** Net points from red cards (+1 each in pyramid; −1 each in World Cup). */
+  /** −1 when the match finishes 0–0. */
+  boringMatchPenalty?: number;
+  /** Net points from red cards (+1 each in pyramid). */
   redCardPoints?: number;
   redCards: number;
   isHome: boolean;
@@ -455,6 +464,7 @@ function formatEnglishPyramidPointsBreakdown(scored: TeamMatchScore): string {
   if (scored.cleanSheetBonus > 0) parts.push('CS');
   if (scored.bonus > 0) parts.push('3+');
   if (scored.concededPenalty < 0) parts.push('−conc');
+  if (scored.boringMatchPenalty < 0) parts.push('−0-0');
   if (scored.redCardPenalty !== 0) {
     const redLabel =
       scored.redCardPenalty > 0 ? `+${scored.redCardPenalty} red` : `${scored.redCardPenalty} red`;
@@ -489,6 +499,7 @@ export function getTeamMatchDisplay(match: EnglishPyramidMatchResult, teamCode: 
     scoringBonus: scored.bonus > 0 ? scored.bonus : undefined,
     cleanSheetBonus: scored.cleanSheetBonus > 0 ? scored.cleanSheetBonus : undefined,
     concededPenalty: scored.concededPenalty < 0 ? scored.concededPenalty : undefined,
+    boringMatchPenalty: scored.boringMatchPenalty < 0 ? scored.boringMatchPenalty : undefined,
     redCardPoints: scored.redCardPenalty !== 0 ? scored.redCardPenalty : undefined,
     redCards,
     isHome: side.isHome,
