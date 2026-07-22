@@ -19,7 +19,7 @@ import {
   matchInvolvesTeam as pyramidMatchInvolvesTeam,
 } from '@/app/lib/english-pyramid-scoring';
 import type { SweepstakeFantasyThemeId } from '@/app/lib/sweepstake-fantasy-theme';
-import { formatTeamNameShort } from '@/app/data/english-pyramid-fantasy';
+import { formatTeamNameWithSeed } from '@/app/data/english-pyramid-fantasy';
 import { useLiveGoalAlerts } from '@/app/hooks/useLiveGoalAlerts';
 import { usePullToRefresh } from '@/app/hooks/usePullToRefresh';
 import DivisionBadge from './english-pyramid/DivisionBadge';
@@ -1685,7 +1685,7 @@ function TeamMiniTable({
                         {t.id === 'english-pyramid' ? (
                           <>
                             <DivisionBadge divisionId={team.flag} />
-                            {team.name}
+                            {formatTeamNameWithSeed(team.code)}
                           </>
                         ) : formatTeamLabel ? (
                           formatTeamLabel(team.code)
@@ -1953,7 +1953,7 @@ function PlayerSquadCard({
                     return (
                       <span key={code} className="inline-flex items-center">
                         <DivisionBadge divisionId={divisionId} />
-                        {team?.name ?? formatTeamNameShort(code)}
+                        {formatTeamNameWithSeed(code)}
                       </span>
                     );
                   })

@@ -243,31 +243,84 @@ export function getEnglishPyramidTeamSearchTerms(code: string): string[] {
   return [...new Set([meta.code, meta.name, ...(meta.searchNames ?? [])])];
 }
 
+/** Clubs in each division for 2026/27 — maps survival R#k to a table place (R#1 → last). */
+export const ENGLISH_PYRAMID_DIVISION_CLUB_COUNT: Readonly<Record<string, number>> = {
+  PL: 20,
+  CH: 24,
+  L1: 24,
+  L2: 24,
+  NL: 24,
+  NLN: 24,
+  NLS: 24,
+};
+
+function toOrdinal(n: number): string {
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 13) return `${n}th`;
+  switch (n % 10) {
+    case 1:
+      return `${n}st`;
+    case 2:
+      return `${n}nd`;
+    case 3:
+      return `${n}rd`;
+    default:
+      return `${n}th`;
+  }
+}
+
+/**
+ * Pre-season predicted table place from draft odds.
+ * Title #1 → 1st; survival R#1 (relegation favourite) → last (20th in PL, 24th elsewhere).
+ */
+export function getPreSeasonTablePlace(code: string): number | null {
+  const meta = ENGLISH_PYRAMID_TEAM_BY_CODE[code];
+  if (!meta) return null;
+  const rank = PRESEASON_ODDS_RANK_BY_CODE[code];
+  if (rank == null) return null;
+  const draftDiv = meta.draftDivisionId ?? meta.divisionId;
+  const size = ENGLISH_PYRAMID_DIVISION_CLUB_COUNT[draftDiv];
+  if (!size) return null;
+  if (draftBandOf(meta) === 'survival') {
+    return size - rank + 1;
+  }
+  return rank;
+}
+
+export function formatPreSeasonTablePlace(code: string): string | null {
+  const place = getPreSeasonTablePlace(code);
+  return place != null ? toOrdinal(place) : null;
+}
+
 export function formatTeamLabel(code: string): string {
   const meta = ENGLISH_PYRAMID_TEAM_BY_CODE[code];
   if (!meta) return code;
   const draftDiv = meta.draftDivisionId ?? meta.divisionId;
   const draftLabel = DIVISION_LABEL_BY_ID[draftDiv];
   const playingLabel = DIVISION_LABEL_BY_ID[meta.divisionId];
-  const rank = PRESEASON_ODDS_RANK_BY_CODE[code];
-  const band = draftBandOf(meta);
-  const rankTag =
-    rank != null ? (band === 'survival' ? `R#${rank}` : `#${rank}`) : null;
+  const place = formatPreSeasonTablePlace(code);
   const promoted = Boolean(meta.draftDivisionId && meta.draftDivisionId !== meta.divisionId);
   const divisionNote =
     promoted && draftLabel && playingLabel
       ? `${draftLabel} → ${playingLabel}`
       : draftLabel;
-  if (divisionNote && rankTag) {
-    return `${meta.name} (${rankTag}, ${divisionNote})`;
+  if (place && divisionNote) {
+    return `${meta.name} (${place}, ${divisionNote})`;
   }
-  if (rankTag) return `${meta.name} (${rankTag})`;
+  if (place) return `${meta.name} (${place})`;
   return divisionNote ? `${meta.name} (${divisionNote})` : meta.name;
 }
 
-/** Squad table label — club name only; division shown as a separate badge in the UI. */
+/** Squad table / chip label — club name with pre-season place, e.g. Arsenal (1st), Hull (20th). */
 export function formatTeamNameShort(code: string): string {
   return ENGLISH_PYRAMID_TEAM_BY_CODE[code]?.name ?? code;
+}
+
+/** Club name with start-of-season ranking in brackets for squad summaries. */
+export function formatTeamNameWithSeed(code: string): string {
+  const name = formatTeamNameShort(code);
+  const place = formatPreSeasonTablePlace(code);
+  return place ? `${name} (${place})` : name;
 }
 
 export type EnglishPyramidFantasyPlayer = {

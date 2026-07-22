@@ -4,9 +4,12 @@ import {
   ENGLISH_PYRAMID_FANTASY_PLAYERS,
   ENGLISH_PYRAMID_FIXTURES,
   ENGLISH_PYRAMID_TEAM_BY_CODE,
+  formatPreSeasonTablePlace,
+  formatTeamNameWithSeed,
   getDraftBand,
   getDraftDivisionId,
   getPreSeasonOddsRank,
+  getPreSeasonTablePlace,
 } from '@/app/data/english-pyramid-fantasy';
 import { getMatchdaySchedule, scoreTeamMatch } from '@/app/lib/english-pyramid-scoring';
 
@@ -63,6 +66,19 @@ describe('english-pyramid draft fairness', () => {
     expect(getPreSeasonOddsRank('ARS')).toBe(1);
     expect(getPreSeasonOddsRank('HUL')).toBe(1);
     expect(getDraftBand('HUL')).toBe('survival');
+  });
+
+  it('formats start-of-season places as 1st / 20th for squad labels', () => {
+    expect(getPreSeasonTablePlace('ARS')).toBe(1);
+    expect(getPreSeasonTablePlace('HUL')).toBe(20);
+    expect(formatPreSeasonTablePlace('ARS')).toBe('1st');
+    expect(formatPreSeasonTablePlace('HUL')).toBe('20th');
+    expect(formatTeamNameWithSeed('ARS')).toBe('Arsenal (1st)');
+    expect(formatTeamNameWithSeed('HUL')).toBe('Hull City (20th)');
+    // Championship survival R#1 → 24th
+    expect(formatTeamNameWithSeed('LIN')).toBe('Lincoln City (24th)');
+    // League One title #7 (Bolton drafted L1) → 7th
+    expect(formatTeamNameWithSeed('BOL')).toBe('Bolton Wanderers (7th)');
   });
 
   it('keeps promoted clubs on their draft rung while playing in the new division', () => {
