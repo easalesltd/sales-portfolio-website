@@ -391,7 +391,7 @@ export type EnglishPyramidPrizeFundConfig = {
 export const ENGLISH_PYRAMID_PRIZE_FUND: EnglishPyramidPrizeFundConfig = {
   fundName: 'Vanguard FTSE All-World UCITS ETF (Accumulating)',
   yahooSymbol: 'VWRP.L',
-  investedAmountGbp: 170,
+  investedAmountGbp: 140,
   units: null,
   purchasePriceGbp: null,
   investedAt: null,
