@@ -2152,18 +2152,18 @@ function WorldCupFantasyView({
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
               </section>
 
+              <section>
+                <h3 className={`mb-3 ${t.c.sectionHeading}`}>Overall standings</h3>
+                <OverallStandings standings={data.standings} />
+                <ScoringRulesBlock rules={scoringRules} />
+              </section>
+
               <MatchdaySchedule
                 schedule={data.matchdaySchedule}
                 standings={data.standings}
                 scoringMatches={data.allScoringMatches}
                 matchScoringHelpers={matchScoringHelpers}
               />
-
-              <section>
-                <h3 className={`mb-3 ${t.c.sectionHeading}`}>Overall standings</h3>
-                <OverallStandings standings={data.standings} />
-                <ScoringRulesBlock rules={scoringRules} />
-              </section>
 
               <section>
                 <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>
