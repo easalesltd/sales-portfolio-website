@@ -33,6 +33,7 @@ import MatchdayHeroStrip from './english-pyramid/MatchdayHeroStrip';
 import EnglishPyramidFixtureRow from './english-pyramid/EnglishPyramidFixtureRow';
 import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeContext';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
+import SweepstakeAwards from './english-pyramid/SweepstakeAwards';
 
 type SweepstakeResponse = EnglishPyramidFantasyResponse;
 
@@ -2179,6 +2180,8 @@ function WorldCupFantasyView({
                 <p className="text-xs text-neutral-500">{progressChartDescription}</p>
                 <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
               </section>
+
+              <SweepstakeAwards standings={data.standings} scoringMatches={data.allScoringMatches} />
 
               <section>
                 <h3 className={`mb-3 ${t.c.sectionHeading}`}>Player squads</h3>
