@@ -720,29 +720,46 @@ function MatchdaySchedule({
           <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[#d4af37]/80">
             Your games today
           </p>
-          <label className="block sm:hidden">
-            <span className="sr-only">Filter fixtures by manager</span>
-            <select
-              value={managerFilter}
-              onChange={(event) => setManagerFilter(event.target.value)}
-              className="w-full rounded-md border border-neutral-700 bg-neutral-950/80 px-3 py-2 text-sm font-semibold text-neutral-100 focus:border-[#d4af37] focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
-            >
-              <option value="all">All clubs ({dayEntries.length})</option>
-              {standings.map((player) => {
-                const count = dayEntries.filter(
-                  (entry) =>
-                    entry.homeManagers.some((manager) => manager.id === player.id) ||
-                    entry.awayManagers.some((manager) => manager.id === player.id)
-                ).length;
-                const label = player.teamName ?? player.name;
-                return (
-                  <option key={player.id} value={player.id}>
-                    {label} ({count})
-                  </option>
-                );
-              })}
-            </select>
-          </label>
+          <div className="sm:hidden">
+            <label htmlFor="pyramid-manager-filter" className="mb-1.5 block text-xs font-medium text-neutral-300">
+              Filter by manager
+            </label>
+            <div className="relative">
+              <select
+                id="pyramid-manager-filter"
+                value={managerFilter}
+                onChange={(event) => setManagerFilter(event.target.value)}
+                className="w-full appearance-none rounded-md border border-[#d4af37]/55 bg-neutral-950/90 py-2.5 pl-3 pr-11 text-sm font-semibold text-neutral-100 shadow-[inset_0_0_0_1px_rgba(212,175,55,0.12)] focus:border-[#d4af37] focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+              >
+                <option value="all">All clubs ({dayEntries.length})</option>
+                {standings.map((player) => {
+                  const count = dayEntries.filter(
+                    (entry) =>
+                      entry.homeManagers.some((manager) => manager.id === player.id) ||
+                      entry.awayManagers.some((manager) => manager.id === player.id)
+                  ).length;
+                  const label = player.teamName ?? player.name;
+                  return (
+                    <option key={player.id} value={player.id}>
+                      {label} ({count})
+                    </option>
+                  );
+                })}
+              </select>
+              <span
+                className="pointer-events-none absolute inset-y-0 right-0 flex w-11 items-center justify-center border-l border-[#d4af37]/35 text-[#d4af37]"
+                aria-hidden
+              >
+                <svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5" focusable="false">
+                  <path
+                    fillRule="evenodd"
+                    d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.17l3.71-3.94a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+            </div>
+          </div>
           <div
             className="hidden flex-wrap gap-1.5 sm:flex"
             role="group"
