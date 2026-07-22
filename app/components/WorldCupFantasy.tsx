@@ -1746,20 +1746,20 @@ function ImageLightbox({
 
   return (
     <div
-      className="fixed inset-0 z-[110] flex items-center justify-center bg-black/90 p-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]"
+      className="fixed inset-0 z-[110] flex cursor-zoom-out items-center justify-center bg-black/90 p-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label={`${label} — enlarged`}
+      aria-label={`${label} — enlarged. Tap anywhere to close.`}
     >
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-4 top-4 rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 sm:text-sm"
+        className="absolute right-4 top-4 z-10 rounded-lg border border-white/25 bg-neutral-950/75 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-900/90 sm:text-sm"
       >
         Close
       </button>
-      <div className="w-full max-w-xs sm:max-w-sm" onClick={(event) => event.stopPropagation()}>
+      <div className="pointer-events-none w-full max-w-xs sm:max-w-sm">
         <div
           className={`relative w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950 ${
             aspectClass === 'aspect-square'
