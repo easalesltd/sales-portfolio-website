@@ -10,6 +10,10 @@ import {
 } from '@/app/data/english-pyramid-fantasy';
 import { enrichMatchdayScheduleWithLiveScores } from '@/app/lib/english-pyramid-live-scores';
 import {
+  resolveEnglishPyramidPrizeFund,
+  type EnglishPyramidPrizeFundSnapshot,
+} from '@/app/lib/english-pyramid-prize-fund';
+import {
   computeStandings,
   getMatchdaySchedule,
   manualMatchToResult,
@@ -27,6 +31,7 @@ export type EnglishPyramidFantasyResponse = {
   dailyUpdate: string;
   sweepstakeIntro: string;
   sweepstakeFairness: string;
+  prizeFund: EnglishPyramidPrizeFundSnapshot;
   standings: PlayerStanding[];
   matchdaySchedule: MatchdaySchedule;
   allScoringMatches: MatchPointsEntry[];
@@ -42,8 +47,10 @@ export async function GET() {
     recordedMatches,
     ENGLISH_PYRAMID_FANTASY_PLAYERS
   );
-  const { schedule: matchdaySchedule, provisionalMatches } =
-    await enrichMatchdayScheduleWithLiveScores(baseSchedule);
+  const [{ schedule: matchdaySchedule, provisionalMatches }, prizeFund] = await Promise.all([
+    enrichMatchdayScheduleWithLiveScores(baseSchedule),
+    resolveEnglishPyramidPrizeFund(),
+  ]);
   const matches = [
     ...recordedMatches,
     ...provisionalMatches.filter((match) => !recordedMatchIds.has(match.id)),
@@ -63,6 +70,7 @@ export async function GET() {
     dailyUpdate: ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE,
     sweepstakeIntro: ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
     sweepstakeFairness: ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
+    prizeFund,
     standings,
     matchdaySchedule,
     allScoringMatches,
