@@ -323,6 +323,25 @@ export function formatTeamNameWithSeed(code: string): string {
   return place ? `${name} (${place})` : name;
 }
 
+const DRAFT_DIVISION_ORDER = Object.fromEntries(
+  ENGLISH_PYRAMID_DIVISIONS.map((division, index) => [division.id, index])
+);
+
+/** Sort squad codes by draft division (PL→NLS), title pick before survival within each rung. */
+export function compareTeamCodesByDraftDivision(a: string, b: string): number {
+  const divA = getDraftDivisionId(a) ?? '';
+  const divB = getDraftDivisionId(b) ?? '';
+  const orderCmp = (DRAFT_DIVISION_ORDER[divA] ?? 99) - (DRAFT_DIVISION_ORDER[divB] ?? 99);
+  if (orderCmp !== 0) return orderCmp;
+  const bandA = getDraftBand(a) === 'survival' ? 1 : 0;
+  const bandB = getDraftBand(b) === 'survival' ? 1 : 0;
+  return bandA - bandB;
+}
+
+export function sortTeamCodesByDraftDivision(codes: readonly string[]): string[] {
+  return [...codes].sort(compareTeamCodesByDraftDivision);
+}
+
 export type EnglishPyramidFantasyPlayer = {
   id: string;
   name: string;

@@ -19,7 +19,11 @@ import {
   matchInvolvesTeam as pyramidMatchInvolvesTeam,
 } from '@/app/lib/english-pyramid-scoring';
 import type { SweepstakeFantasyThemeId } from '@/app/lib/sweepstake-fantasy-theme';
-import { formatTeamNameWithSeed } from '@/app/data/english-pyramid-fantasy';
+import {
+  compareTeamCodesByDraftDivision,
+  formatTeamNameWithSeed,
+  sortTeamCodesByDraftDivision,
+} from '@/app/data/english-pyramid-fantasy';
 import { useLiveGoalAlerts } from '@/app/hooks/useLiveGoalAlerts';
 import { usePullToRefresh } from '@/app/hooks/usePullToRefresh';
 import DivisionBadge from './english-pyramid/DivisionBadge';
@@ -1613,6 +1617,11 @@ function TeamMiniTable({
   const [pinnedTeamCode, setPinnedTeamCode] = useState<string | null>(null);
   const [hoverTeamCode, setHoverTeamCode] = useState<string | null>(null);
 
+  const orderedTeams =
+    t.id === 'english-pyramid'
+      ? [...teams].sort((a, b) => compareTeamCodesByDraftDivision(a.code, b.code))
+      : teams;
+
   const toggleTeam = (teamCode: string) => {
     setHoverTeamCode(null);
     setPinnedTeamCode((current) => (current === teamCode ? null : teamCode));
@@ -1652,7 +1661,7 @@ function TeamMiniTable({
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-800 text-neutral-100">
-              {teams.map((team) => {
+              {orderedTeams.map((team) => {
                 const isPinned = pinnedTeamCode === team.code;
                 const isHighlighted = displayTeamCode === team.code;
                 const isEliminated = team.eliminated === true;
@@ -1947,7 +1956,7 @@ function PlayerSquadCard({
             ) : null}
             <p className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-300">
               {t.id === 'english-pyramid'
-                ? player.teams.map((code) => {
+                ? sortTeamCodesByDraftDivision(player.teams).map((code) => {
                     const team = player.teamBreakdown.find((entry) => entry.code === code);
                     const divisionId = team?.flag ?? '';
                     return (

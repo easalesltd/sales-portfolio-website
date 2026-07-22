@@ -10,6 +10,7 @@ import {
   getDraftDivisionId,
   getPreSeasonOddsRank,
   getPreSeasonTablePlace,
+  sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
 import { getMatchdaySchedule, scoreTeamMatch } from '@/app/lib/english-pyramid-scoring';
 
@@ -79,6 +80,16 @@ describe('english-pyramid draft fairness', () => {
     expect(formatTeamNameWithSeed('LIN')).toBe('Lincoln City (24th)');
     // League One title #7 (Bolton drafted L1) → 7th
     expect(formatTeamNameWithSeed('BOL')).toBe('Bolton Wanderers (7th)');
+  });
+
+  it('groups squad codes by draft division with title before survival', () => {
+    const ash = ENGLISH_PYRAMID_FANTASY_PLAYERS.find((p) => p.id === 'ash')!;
+    expect(sortTeamCodesByDraftDivision(ash.teams).slice(0, 4)).toEqual([
+      'ARS',
+      'HUL',
+      'WOL',
+      'CHA',
+    ]);
   });
 
   it('keeps promoted clubs on their draft rung while playing in the new division', () => {
