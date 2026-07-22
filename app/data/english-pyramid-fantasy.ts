@@ -1,11 +1,15 @@
 /**
  * English pyramid sweepstake — seven divisions, two clubs each per manager (title + survival).
- * Title draft: clubs ranked 1–7 by pre-season outright odds within each division; each manager
- * gets exactly one pick at each rank (one favourite … one seventh) — player index p takes
- * rank ((p + divisionIndex) mod 7) + 1.
+ * Title draft: clubs ranked 1–7 by pre-season outright odds within each **draft** division;
+ * each manager gets exactly one pick at each rank (one favourite … one seventh) — player
+ * index p takes rank ((p + divisionIndex) mod 7) + 1.
  * Survival draft: bottom 7 by relegation odds (or longest title shots where markets are thin);
- * complementary deal so p takes survival rank ((6 - p + divisionIndex) mod 7) + 1 — nobody
- * stacks every favourite or every relegation candidate.
+ * complementary within-league deal so title rank k pairs with survival rank (8 − k) in the
+ * same division: p takes survival rank ((6 − p − divisionIndex) mod 7) + 1. Across the seven
+ * leagues every manager therefore gets exactly one (#1+#7), one (#2+#6), …, one (#4+#4) pair —
+ * top seed with bottom seed in one league, second-best with second-worst in another, etc.
+ * Clubs that promote/relegate keep `divisionId` as the division they play in now, but
+ * `draftDivisionId` preserves the rung they were drafted from (Bolton → L1, York → NL).
  */
 export type EnglishPyramidDivision = {
   id: string;
@@ -18,7 +22,13 @@ export type EnglishPyramidDraftBand = 'title' | 'survival';
 export type EnglishPyramidTeamMeta = {
   code: string;
   name: string;
+  /** Division the club plays in for 2026/27 fixtures / live scores. */
   divisionId: string;
+  /**
+   * Division the club was drafted from (title/survival bands + fairness ranks).
+   * Defaults to `divisionId`. Set when a club promoted/relegated after the draft.
+   */
+  draftDivisionId?: string;
   /** Title-band favourites vs survival-band long shots / relegation candidates. Defaults to title. */
   draftBand?: EnglishPyramidDraftBand;
   /** Decimal outright winner odds at 2026/27 pre-season (lower = favourite). */
@@ -66,6 +76,7 @@ export const ENGLISH_PYRAMID_TEAM_BY_CODE: Record<string, EnglishPyramidTeamMeta
     code: 'BOL',
     name: 'Bolton Wanderers',
     divisionId: 'CH',
+    draftDivisionId: 'L1',
     outrightOddsDecimal: 17,
     oddsNote: 'Drafted as L1 Jun 2026 (Betfair 66/1 promotion); promoted to Championship for 2026/27',
   },
@@ -80,6 +91,7 @@ export const ENGLISH_PYRAMID_TEAM_BY_CODE: Record<string, EnglishPyramidTeamMeta
     code: 'YOR',
     name: 'York City',
     divisionId: 'L2',
+    draftDivisionId: 'NL',
     outrightOddsDecimal: 13,
     oddsNote: 'Drafted as NL Jun 2026; promoted to League Two for 2026/27',
     searchNames: ['YORK'],
@@ -163,10 +175,23 @@ function draftBandOf(meta: EnglishPyramidTeamMeta): EnglishPyramidDraftBand {
   return meta.draftBand ?? 'title';
 }
 
+/** Division used for draft bands / fairness ranks (may differ after promotion). */
+export function getDraftDivisionId(code: string): string | null {
+  const meta = ENGLISH_PYRAMID_TEAM_BY_CODE[code];
+  if (!meta) return null;
+  return meta.draftDivisionId ?? meta.divisionId;
+}
+
+/** Division the club plays in this season (fixtures / live scores). */
+export function getPlayingDivisionId(code: string): string | null {
+  return ENGLISH_PYRAMID_TEAM_BY_CODE[code]?.divisionId ?? null;
+}
+
 function buildPreSeasonOddsRankByCode(): Record<string, number> {
   const byDivisionBand = new Map<string, EnglishPyramidTeamMeta[]>();
   for (const meta of Object.values(ENGLISH_PYRAMID_TEAM_BY_CODE)) {
-    const key = `${meta.divisionId}:${draftBandOf(meta)}`;
+    const draftDiv = meta.draftDivisionId ?? meta.divisionId;
+    const key = `${draftDiv}:${draftBandOf(meta)}`;
     const list = byDivisionBand.get(key) ?? [];
     list.push(meta);
     byDivisionBand.set(key, list);
@@ -220,16 +245,23 @@ export function getEnglishPyramidTeamSearchTerms(code: string): string[] {
 export function formatTeamLabel(code: string): string {
   const meta = ENGLISH_PYRAMID_TEAM_BY_CODE[code];
   if (!meta) return code;
-  const division = DIVISION_LABEL_BY_ID[meta.divisionId];
+  const draftDiv = meta.draftDivisionId ?? meta.divisionId;
+  const draftLabel = DIVISION_LABEL_BY_ID[draftDiv];
+  const playingLabel = DIVISION_LABEL_BY_ID[meta.divisionId];
   const rank = PRESEASON_ODDS_RANK_BY_CODE[code];
   const band = draftBandOf(meta);
   const rankTag =
     rank != null ? (band === 'survival' ? `R#${rank}` : `#${rank}`) : null;
-  if (division && rankTag) {
-    return `${meta.name} (${rankTag}, ${division})`;
+  const promoted = Boolean(meta.draftDivisionId && meta.draftDivisionId !== meta.divisionId);
+  const divisionNote =
+    promoted && draftLabel && playingLabel
+      ? `${draftLabel} → ${playingLabel}`
+      : draftLabel;
+  if (divisionNote && rankTag) {
+    return `${meta.name} (${rankTag}, ${divisionNote})`;
   }
   if (rankTag) return `${meta.name} (${rankTag})`;
-  return division ? `${meta.name} (${division})` : meta.name;
+  return divisionNote ? `${meta.name} (${divisionNote})` : meta.name;
 }
 
 /** Squad table label — club name only; division shown as a separate badge in the UI. */
@@ -251,7 +283,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_INTRO =
   'Seven managers, fourteen clubs each — one title favourite and one survival dog from every rung of the pyramid (Premier League down to National League North and South). Points follow your clubs’ real league results all season.';
 
 export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
-  'Within each division we drafted two bands. Title band: clubs ranked 1–7 by pre-season outright winner odds — each manager gets exactly one pick at each rank across the seven divisions. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin), dealt on a complementary diagonal so the manager who banked Arsenal does not also hoard every relegation favourite. Nobody stacks all the glamour or all the dumpster fires.';
+  'Within each division we drafted two bands. Title band: clubs ranked 1–7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin). In every league, title rank k is paired with survival rank (8 − k) for the same manager — so someone gets the top seed and the bottom seed in one division, second-best with second-worst in another, and so on. Across the seven rungs each manager therefore holds exactly one pick at every title rank and every survival rank. Clubs that promoted after the draft (Bolton, York) still count on the rung they were drafted from; they just score in their new division.';
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
   'Pre-season. Zero points. Fourteen clubs of emotional baggage each. Scott’s already last somehow and the ledger is empty — that takes a special kind of useless. When August lands we’re going full Tesla-Grok: sweary, mean, and naming every soft bastard who bottles a 1–0.';
@@ -272,15 +304,15 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'BUX',
       'CLM',
       'CRY',
-      'LIN',
-      'WIM',
-      'ACC',
-      'ALD',
-      'HED',
-      'TON',
+      'POR',
+      'BSL',
+      'TRN',
+      'ALT',
+      'SPA',
+      'FNH',
     ],
     draftNote:
-      'Arsenal #1 up top, then the mildest Premier League survival pick (Palace) — Lincoln as Championship R#1 keeps him honest, with Wimbledon, Accrington, Aldershot, Hednesford and Tonbridge for the weekly heartburn.',
+      'Arsenal #1 with Palace R#7 (top + bottom in the Premier League), then Wolves with Portsmouth, Luton with Barnsley, and the rest of the complementary ladder down to Farnham as NLS R#1.',
   },
   {
     id: 'jon',
@@ -297,15 +329,15 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'CHF',
       'DAG',
       'LEE',
-      'BLK',
-      'BRO',
-      'CHT',
-      'ALT',
-      'HBO',
-      'CHU',
+      'QPR',
+      'CAM',
+      'ACC',
+      'WEA',
+      'HEB',
+      'WAH',
     ],
     draftNote:
-      'City #2 and Burnley #3 for the highlights reel — Leeds, Blackburn, Bromley, Cheltenham, Altrincham, Harborough and Chesham for the “why do I do this to myself” reel.',
+      'City #2 with Leeds R#6, Burnley with QPR, Huddersfield with Cambridge — and Dagenham #1 paired with Walton & Hersham R#7 down south.',
   },
   {
     id: 'nest',
@@ -322,15 +354,15 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'SSH',
       'TOR',
       'FUL',
-      'POR',
-      'NCO',
-      'NWP',
-      'WEA',
-      'BED',
-      'SBY',
+      'PNE',
+      'BTN',
+      'CHT',
+      'HRN',
+      'MAR',
+      'TON',
     ],
     draftNote:
-      'Liverpool and Middlesbrough carry the swagger; Fulham, Portsmouth, Notts County, Newport, Wealdstone, Bedford and Salisbury are the pterodactyl diet of pure chaos.',
+      'Liverpool and Middlesbrough carry the swagger; York was drafted NL #7 (now League Two) with Hornchurch R#1 — top-and-bottom energy on that rung — plus Fulham, Preston, Burton, Cheltenham, Marine and Tonbridge.',
   },
   {
     id: 'chris',
@@ -347,15 +379,15 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'MAC',
       'HOR',
       'SUN',
-      'QPR',
-      'LEY',
-      'CRA',
-      'HRN',
-      'SPA',
-      'DOV',
+      'CDF',
+      'WIM',
+      'NWP',
+      'TAM',
+      'OXC',
+      'CHU',
     ],
     draftNote:
-      'United and Birmingham for the potato mash; Sunderland, QPR, Orient, Crawley, Hornchurch, Spalding and Dover for the bits that stick to the pan.',
+      'United #4 with Sunderland R#4 (dead-centre mash), Carlisle #1 with Tamworth R#7, and the potato skins: Cardiff, Wimbledon, Newport, Oxford City and Chesham.',
   },
   {
     id: 'scott',
@@ -372,15 +404,15 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'MER',
       'WSM',
       'IPS',
-      'PNE',
-      'BSL',
-      'FLE',
-      'TAM',
-      'HEB',
-      'AFT',
+      'CHA',
+      'BRO',
+      'CRA',
+      'SUT',
+      'HED',
+      'SBY',
     ],
     draftNote:
-      'Chelsea and the objectionable mid-table hopes — Ipswich, Preston, Barnsley, Fleetwood, Tamworth, Hebburn and Totton are the exhibits the judge already hates.',
+      'Chelsea #5 with Ipswich R#3; Bolton was his League One title #7 (now Championship) paired with Bromley R#1 — two L1 draft picks, your honour — plus Southampton, Barnet, Southend, Merthyr, Weston, Charlton, Crawley, Sutton, Hednesford and Salisbury.',
   },
   {
     id: 'dave',
@@ -397,15 +429,15 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'WRK',
       'MAI',
       'COV',
-      'CDF',
-      'CAM',
-      'SHR',
-      'SUT',
-      'MAR',
-      'FNH',
+      'LIN',
+      'NCO',
+      'FLE',
+      'KID',
+      'HBO',
+      'DOV',
     ],
     draftNote:
-      'Villa and Leicester for the cream; Coventry, Cardiff, Cambridge, Shrewsbury, Sutton, Marine and Farnham for the lumps you pretend are intentional.',
+      'Villa #6 with Coventry R#2; Leicester #1 with Notts County R#7 (top + bottom in League One); Sheffield United with Lincoln R#1 — cream on top, lumps underneath (Fleetwood, Kidderminster, Harborough, Dover).',
   },
   {
     id: 'ben',
@@ -422,15 +454,15 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'DAR',
       'EBB',
       'HUL',
-      'CHA',
-      'BTN',
-      'TRN',
-      'KID',
-      'OXC',
-      'WAH',
+      'BLK',
+      'LEY',
+      'SHR',
+      'ALD',
+      'BED',
+      'AFT',
     ],
     draftNote:
-      'Newcastle #7 and West Ham #1 — then Hull as Premier League R#1, plus Charlton, Burton, Tranmere, Kidderminster, Oxford City and Walton & Hersham. The mullet deserves hazard pay.',
+      'Newcastle #7 with Hull R#1 (top-and-bottom Premier League misery), West Ham #1 with Blackburn R#7, then Wednesday, Rotherham, Boreham Wood, Darlington, Ebbsfleet — plus Orient, Shrewsbury, Aldershot, Bedford and Totton. The mullet deserves hazard pay.',
   },
 ] as const;
 

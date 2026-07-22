@@ -1,9 +1,78 @@
 import { describe, expect, it } from '@jest/globals';
 import {
+  ENGLISH_PYRAMID_DIVISIONS,
   ENGLISH_PYRAMID_FANTASY_PLAYERS,
   ENGLISH_PYRAMID_FIXTURES,
+  ENGLISH_PYRAMID_TEAM_BY_CODE,
+  getDraftBand,
+  getDraftDivisionId,
+  getPreSeasonOddsRank,
 } from '@/app/data/english-pyramid-fantasy';
 import { getMatchdaySchedule, scoreTeamMatch } from '@/app/lib/english-pyramid-scoring';
+
+describe('english-pyramid draft fairness', () => {
+  it('gives every manager two clubs from each draft division', () => {
+    for (const player of ENGLISH_PYRAMID_FANTASY_PLAYERS) {
+      const byDraftDiv = new Map<string, string[]>();
+      for (const code of player.teams) {
+        const draftDiv = getDraftDivisionId(code);
+        expect(draftDiv).toBeTruthy();
+        const list = byDraftDiv.get(draftDiv!) ?? [];
+        list.push(code);
+        byDraftDiv.set(draftDiv!, list);
+      }
+      for (const div of ENGLISH_PYRAMID_DIVISIONS) {
+        expect(byDraftDiv.get(div.id)?.length ?? 0).toBe(2);
+      }
+      expect(player.teams).toHaveLength(14);
+    }
+  });
+
+  it('pairs title rank k with survival rank 8-k in each draft division', () => {
+    const mod = (n: number) => ((n % 7) + 7) % 7;
+
+    ENGLISH_PYRAMID_FANTASY_PLAYERS.forEach((player, playerIndex) => {
+      const titleRanks: number[] = [];
+      const survivalRanks: number[] = [];
+
+      for (const [divisionIndex, div] of ENGLISH_PYRAMID_DIVISIONS.entries()) {
+        const expectedTitle = mod(playerIndex + divisionIndex) + 1;
+        const expectedSurvival = mod(6 - playerIndex - divisionIndex) + 1;
+
+        const inDiv = player.teams.filter((code) => getDraftDivisionId(code) === div.id);
+        expect(inDiv).toHaveLength(2);
+
+        const title = inDiv.find((code) => getDraftBand(code) === 'title');
+        const survival = inDiv.find((code) => getDraftBand(code) === 'survival');
+        expect(title).toBeTruthy();
+        expect(survival).toBeTruthy();
+        expect(getPreSeasonOddsRank(title!)).toBe(expectedTitle);
+        expect(getPreSeasonOddsRank(survival!)).toBe(expectedSurvival);
+        expect(expectedTitle + expectedSurvival).toBe(8);
+
+        titleRanks.push(expectedTitle);
+        survivalRanks.push(expectedSurvival);
+      }
+
+      expect([...titleRanks].sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+      expect([...survivalRanks].sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    });
+  });
+
+  it('keeps promoted clubs on their draft rung while playing in the new division', () => {
+    expect(ENGLISH_PYRAMID_TEAM_BY_CODE.BOL.divisionId).toBe('CH');
+    expect(getDraftDivisionId('BOL')).toBe('L1');
+    expect(getPreSeasonOddsRank('BOL')).toBe(7);
+
+    expect(ENGLISH_PYRAMID_TEAM_BY_CODE.YOR.divisionId).toBe('L2');
+    expect(getDraftDivisionId('YOR')).toBe('NL');
+    expect(getPreSeasonOddsRank('YOR')).toBe(7);
+
+    const scott = ENGLISH_PYRAMID_FANTASY_PLAYERS.find((p) => p.id === 'scott');
+    expect(scott?.teams).toEqual(expect.arrayContaining(['BOL', 'BRO']));
+    expect(scott?.teams.filter((c) => getDraftDivisionId(c) === 'L1')).toHaveLength(2);
+  });
+});
 
 describe('english-pyramid matchday schedule', () => {
   it('opens on the first fixture date before the season starts', () => {

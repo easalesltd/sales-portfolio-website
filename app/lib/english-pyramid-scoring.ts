@@ -2,6 +2,7 @@ import {
   ENGLISH_PYRAMID_FANTASY_SCORING,
   ENGLISH_PYRAMID_TEAM_BY_CODE,
   ENGLISH_PYRAMID_DIVISIONS,
+  getDraftDivisionId,
   teamCodeMatches,
   type EnglishPyramidFixture,
   type EnglishPyramidManualMatch,
@@ -669,7 +670,8 @@ function buildStandingsFromFinished(
       return {
         code,
         name: meta?.name ?? code,
-        flag: meta?.divisionId ?? '',
+        // Squad badges use draft division so promoted clubs still sit on the rung they were dealt from.
+        flag: getDraftDivisionId(code) ?? meta?.divisionId ?? '',
         points: 0,
         goalsFor: 0,
         goalsAgainst: 0,
