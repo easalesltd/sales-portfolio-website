@@ -59,35 +59,110 @@ export async function renderEnglishPyramidShareCard(
   ctx.textAlign = 'center';
   ctx.fillText('ENGLISH PYRAMID SWEEPSTAKE 2026/27', CARD_WIDTH / 2, 120);
 
+  const photoSize = 220;
+  const crestSize = 200;
+  const mediaGap = 48;
+  const mediaTop = 155;
+
+  const managerPhoto = player.managerImage
+    ? await loadImage(`${player.managerImage}?v=20260701`)
+    : null;
   const crest = await loadImage(player.clubCrest);
-  if (crest) {
-    const crestSize = 200;
-    ctx.drawImage(crest, CARD_WIDTH / 2 - crestSize / 2, 160, crestSize, crestSize);
+
+  if (managerPhoto && crest) {
+    const pairWidth = photoSize + mediaGap + crestSize;
+    const pairLeft = CARD_WIDTH / 2 - pairWidth / 2;
+    const photoX = pairLeft;
+    const photoY = mediaTop;
+
+    ctx.save();
+    const radius = 18;
+    ctx.beginPath();
+    ctx.moveTo(photoX + radius, photoY);
+    ctx.arcTo(photoX + photoSize, photoY, photoX + photoSize, photoY + photoSize, radius);
+    ctx.arcTo(photoX + photoSize, photoY + photoSize, photoX, photoY + photoSize, radius);
+    ctx.arcTo(photoX, photoY + photoSize, photoX, photoY, radius);
+    ctx.arcTo(photoX, photoY, photoX + photoSize, photoY, radius);
+    ctx.closePath();
+    ctx.clip();
+
+    const scale = Math.max(photoSize / managerPhoto.width, photoSize / managerPhoto.height);
+    const drawW = managerPhoto.width * scale;
+    const drawH = managerPhoto.height * scale;
+    ctx.drawImage(
+      managerPhoto,
+      photoX + (photoSize - drawW) / 2,
+      photoY + (photoSize - drawH) / 2,
+      drawW,
+      drawH
+    );
+    ctx.restore();
+
+    ctx.strokeStyle = 'rgba(212, 175, 55, 0.55)';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(photoX + radius, photoY);
+    ctx.arcTo(photoX + photoSize, photoY, photoX + photoSize, photoY + photoSize, radius);
+    ctx.arcTo(photoX + photoSize, photoY + photoSize, photoX, photoY + photoSize, radius);
+    ctx.arcTo(photoX, photoY + photoSize, photoX, photoY, radius);
+    ctx.arcTo(photoX, photoY, photoX + photoSize, photoY, radius);
+    ctx.closePath();
+    ctx.stroke();
+
+    const crestX = pairLeft + photoSize + mediaGap;
+    const crestY = mediaTop + (photoSize - crestSize) / 2;
+    ctx.drawImage(crest, crestX, crestY, crestSize, crestSize);
+  } else if (managerPhoto) {
+    const photoX = CARD_WIDTH / 2 - photoSize / 2;
+    const photoY = mediaTop;
+    ctx.save();
+    const radius = 18;
+    ctx.beginPath();
+    ctx.moveTo(photoX + radius, photoY);
+    ctx.arcTo(photoX + photoSize, photoY, photoX + photoSize, photoY + photoSize, radius);
+    ctx.arcTo(photoX + photoSize, photoY + photoSize, photoX, photoY + photoSize, radius);
+    ctx.arcTo(photoX, photoY + photoSize, photoX, photoY, radius);
+    ctx.arcTo(photoX, photoY, photoX + photoSize, photoY, radius);
+    ctx.closePath();
+    ctx.clip();
+    const scale = Math.max(photoSize / managerPhoto.width, photoSize / managerPhoto.height);
+    const drawW = managerPhoto.width * scale;
+    const drawH = managerPhoto.height * scale;
+    ctx.drawImage(
+      managerPhoto,
+      photoX + (photoSize - drawW) / 2,
+      photoY + (photoSize - drawH) / 2,
+      drawW,
+      drawH
+    );
+    ctx.restore();
+  } else if (crest) {
+    ctx.drawImage(crest, CARD_WIDTH / 2 - crestSize / 2, mediaTop, crestSize, crestSize);
   }
 
   const displayName = player.teamName ?? player.name;
   ctx.fillStyle = '#f5f5f0';
   ctx.font = '700 56px system-ui, sans-serif';
-  ctx.fillText(displayName, CARD_WIDTH / 2, 420);
+  ctx.fillText(displayName, CARD_WIDTH / 2, 450);
 
   ctx.fillStyle = '#e8dfc8';
   ctx.font = '500 32px system-ui, sans-serif';
-  ctx.fillText(player.name, CARD_WIDTH / 2, 470);
+  ctx.fillText(player.name, CARD_WIDTH / 2, 500);
 
   ctx.fillStyle = '#d4af37';
   ctx.font = '800 96px system-ui, sans-serif';
-  ctx.fillText(`${player.points} pts`, CARD_WIDTH / 2, 590);
+  ctx.fillText(`${player.points} pts`, CARD_WIDTH / 2, 620);
 
   ctx.fillStyle = '#f5f5f0';
   ctx.font = '600 44px system-ui, sans-serif';
-  ctx.fillText(`${ordinal(rank)} of ${totalPlayers}`, CARD_WIDTH / 2, 670);
+  ctx.fillText(`${ordinal(rank)} of ${totalPlayers}`, CARD_WIDTH / 2, 700);
 
   ctx.fillStyle = 'rgba(232, 223, 200, 0.75)';
   ctx.font = '500 28px system-ui, sans-serif';
   ctx.fillText(
     `GD ${player.goalDifference >= 0 ? '+' : ''}${player.goalDifference} · W${player.wins} D${player.draws} L${player.losses}`,
     CARD_WIDTH / 2,
-    730
+    760
   );
 
   ctx.fillStyle = 'rgba(212, 175, 55, 0.55)';
