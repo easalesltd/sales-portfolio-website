@@ -231,21 +231,23 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
     closeBtn:
       'rounded-lg border border-[#d4af37]/40 bg-[#0a0f1a]/80 px-3 py-1.5 text-xs font-medium text-[#e8dfc8] hover:bg-[#1a2744]/90 sm:text-sm',
     body: 'min-h-0 flex-1 overflow-y-auto p-4 sm:p-5',
-    sectionHeading: 'text-sm font-semibold uppercase tracking-[0.12em] text-[#d4af37]',
+    sectionHeading:
+      'text-sm font-semibold uppercase tracking-[0.12em] text-gold-gradient',
     scoringSection:
-      'mt-3 rounded-lg border border-[#d4af37]/25 bg-[#0a0f1a]/50 px-3 py-2.5 sm:px-4 sm:py-3',
+      'mt-3 rounded-lg border border-[#d4af37]/25 sweepstake-card-glass px-3 py-2.5 sm:px-4 sm:py-3',
     scoringHeading: 'text-[10px] font-semibold uppercase tracking-wide text-[#e8dfc8]/60 sm:text-xs',
     scoringBullet: 'mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#d4af37]',
     roastSection:
-      'rounded-lg border border-[#a83248]/50 bg-[#8b2233]/20 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]',
+      'rounded-lg border border-[#a83248]/50 bg-[#8b2233]/25 backdrop-blur-md px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]',
     roastHeading: 'text-sm font-semibold uppercase tracking-wide text-[#f0c4cc]',
     fixturesSection:
-      'rounded-lg border border-[#d4af37]/25 bg-[#1a2744]/40 px-3 py-2.5 sm:px-4 sm:py-3',
-    fixturesHeading: 'text-sm font-semibold uppercase tracking-wide text-[#e8dfc8]',
+      'rounded-lg border border-[#d4af37]/25 sweepstake-card-glass px-3 py-2.5 sm:px-4 sm:py-3',
+    fixturesHeading: 'text-sm font-semibold uppercase tracking-wide text-gold-gradient',
     fixturesMeta: 'text-[10px] text-[#d4af37]/75 sm:text-xs',
     fixturesList:
       'mt-2 divide-y divide-[#d4af37]/10 rounded-md border border-[#1a2744] bg-[#0a0f1a]/50',
-    fixturesRowLive: 'bg-emerald-950/15',
+    fixturesRowLive:
+      'bg-emerald-950/20 shadow-[inset_0_0_0_1px_rgba(16,185,129,0.35),0_0_18px_rgba(16,185,129,0.12)]',
     fixturesKickoff: 'text-xs font-semibold tabular-nums leading-snug text-[#e8dfc8]/90',
     fixturesKickoffLive: 'text-xs font-semibold tabular-nums leading-snug text-emerald-300',
     fixturesInPlay: 'mt-0.5 block text-[10px] font-semibold uppercase tracking-wide text-emerald-400 sm:text-xs',
@@ -258,7 +260,7 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
     navBtn:
       'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[#d4af37]/35 bg-[#1a2744]/80 text-sm font-semibold text-[#e8dfc8] transition hover:bg-[#d4af37]/15 disabled:cursor-not-allowed disabled:border-neutral-800 disabled:bg-[#0a0f1a]/40 disabled:text-neutral-600',
     tickerCard:
-      'min-w-[17rem] shrink-0 rounded-lg border border-[#d4af37]/35 bg-[#0a0f1a] px-3 py-2 shadow-[0_0_20px_rgba(212,175,55,0.12)] md:min-w-[21rem] xl:min-w-[24rem]',
+      'min-w-[17rem] shrink-0 rounded-lg border border-[#d4af37]/35 sweepstake-card-glass px-3 py-2 shadow-[0_0_20px_rgba(212,175,55,0.12)] md:min-w-[21rem] xl:min-w-[24rem]',
     tickerCardLabel: 'text-[9px] font-semibold uppercase tracking-[0.26em] text-[#d4af37]/75',
     tickerCardInner:
       'mt-1 rounded-md border border-[#d4af37]/20 bg-[#0a0f1a] px-3 py-2 [background-image:radial-gradient(rgba(212,175,55,0.12)_1px,transparent_1px)] [background-size:4px_4px]',
@@ -296,27 +298,28 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
     teamResultsPanel: 'rounded-md border border-[#d4af37]/25 bg-[#0a0f1a]/80 px-3 py-2',
     teamResultsHeading: 'text-[10px] font-semibold uppercase tracking-wide text-[#d4af37]/90',
     teamResultsPoints: 'shrink-0 font-semibold tabular-nums text-[#d4af37]',
-    squadCard: 'rounded-lg border border-[#1a2744] bg-[#0a0f1a]/40',
+    squadCard:
+      'sweepstake-card-glass rounded-lg border border-[#1a2744] transition-all duration-300 motion-safe:hover:scale-[1.015] hover:shadow-[0_4px_20px_rgba(0,0,0,0.4)]',
     squadCardLeader:
-      'rounded-lg border border-[#d4af37]/35 bg-[#0a0f1a]/50 shadow-[0_0_28px_rgba(212,175,55,0.1)] ring-1 ring-[#d4af37]/20',
-    squadCardEliminated: 'rounded-lg border border-[#1a2744] bg-[#0a0f1a]/40',
+      'sweepstake-card-glass animate-leader-glow rounded-lg border border-[#d4af37]/45 shadow-[0_0_25px_rgba(212,175,55,0.18)] ring-1 ring-[#d4af37]/30 transition-all duration-300 motion-safe:hover:scale-[1.015] hover:shadow-[0_12px_36px_rgba(0,0,0,0.5)] hover:border-[#d4af37]/65',
+    squadCardEliminated: 'sweepstake-card-glass rounded-lg border border-[#1a2744]',
     squadEliminatedBanner: '',
     squadEliminatedBadge: '',
     standingsRowEliminated: '',
     squadRankBadge:
       'inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#1a2744] text-xs font-bold text-[#e8dfc8]',
     squadRankBadgeLeader:
-      'inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#d4af37] text-xs font-bold text-[#0a0f1a] ring-2 ring-[#d4af37]/40',
+      'inline-flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#f5e2a3] via-[#d4af37] to-[#8b6914] text-xs font-bold text-[#0a0f1a] ring-2 ring-[#d4af37]/40',
     squadPhotoBtn:
       'relative flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-[#1a2744] bg-[#0a0f1a] transition hover:border-[#d4af37]/50 hover:ring-2 hover:ring-[#d4af37]/25 sm:size-32 md:size-36',
-    chartWrap: 'overflow-x-auto overflow-y-visible rounded-lg border border-[#d4af37]/20 bg-[#0a0f1a]/60',
+    chartWrap: 'overflow-x-auto overflow-y-visible rounded-lg border border-[#d4af37]/20 sweepstake-card-glass',
     chartLegendPoints: 'tabular-nums text-[#d4af37]',
     chartLegendBtnSelected: 'border-[#d4af37] ring-2 ring-[#d4af37]/35',
     chartLegendBtn: 'border-[#1a2744]',
-    recentResultItem: 'rounded-lg border border-[#1a2744] bg-[#0a0f1a]/50 px-3 py-2 text-sm',
+    recentResultItem: 'rounded-lg border border-[#1a2744] sweepstake-card-glass px-3 py-2 text-sm',
     recentResultPoints: 'mt-1 text-xs text-[#d4af37]',
     footerNote:
-      'rounded-lg border border-[#1a2744] bg-[#0a0f1a]/40 px-4 py-3 text-xs text-[#e8dfc8]/55 sm:text-sm',
+      'rounded-lg border border-[#1a2744] sweepstake-card-glass px-4 py-3 text-xs text-[#e8dfc8]/55 sm:text-sm',
     loading: 'text-sm text-[#e8dfc8]/60',
   },
 };

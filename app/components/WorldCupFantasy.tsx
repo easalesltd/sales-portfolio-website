@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useState, useMemo, useRef, type CSSProperties } from 'react';
 import { formatTeamLabel as formatPyramidTeamLabel } from '@/app/data/english-pyramid-fantasy';
 import type { EnglishPyramidFantasyResponse } from '@/app/api/english-pyramid-fantasy/route';
 import type {
@@ -73,6 +73,115 @@ const SWEEPSTAKE_MANAGER_PHOTO_VERSION = '20260701';
 
 function managerPhotoSrc(path: string): string {
   return `${path}?v=${SWEEPSTAKE_MANAGER_PHOTO_VERSION}`;
+}
+
+function Sparkline({
+  playerId,
+  scoringMatches,
+}: {
+  playerId: string;
+  scoringMatches: MatchPointsEntry[];
+}) {
+  const t = useSweepstakeTheme();
+
+  const pointsHistory = useMemo(() => {
+    if (scoringMatches.length === 0) return [];
+
+    const chronological = [...scoringMatches].reverse();
+    let currentTotal = 0;
+    const history = [0];
+
+    for (const entry of chronological) {
+      currentTotal += entry.byPlayer[playerId] || 0;
+      history.push(currentTotal);
+    }
+
+    return history.slice(-6);
+  }, [playerId, scoringMatches]);
+
+  if (pointsHistory.length < 2) return null;
+
+  const min = Math.min(...pointsHistory);
+  const max = Math.max(...pointsHistory, min + 1);
+  const range = max - min;
+
+  const width = 48;
+  const height = 16;
+  const padding = 1;
+  const usableHeight = height - 2 * padding;
+
+  const pointsString = pointsHistory
+    .map((val, index) => {
+      const x = (index / (pointsHistory.length - 1)) * width;
+      const y = height - padding - ((val - min) / range) * usableHeight;
+      return `${x},${y}`;
+    })
+    .join(' ');
+
+  const strokeColor = t.id === 'english-pyramid' ? '#d4af37' : '#2dd4bf';
+
+  return (
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      className="ml-1.5 inline-block h-[18px] w-10 align-middle opacity-90"
+      role="img"
+      aria-label="Recent points trend"
+    >
+      <polyline
+        fill="none"
+        stroke={strokeColor}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        points={pointsString}
+      />
+      <circle
+        cx={width}
+        cy={height - padding - ((pointsHistory[pointsHistory.length - 1] - min) / range) * usableHeight}
+        r="1.5"
+        fill={strokeColor}
+      />
+    </svg>
+  );
+}
+
+function AnimatedCounter({ value }: { value: number }) {
+  const [displayValue, setDisplayValue] = useState(0);
+  const displayValueRef = useRef(0);
+
+  useEffect(() => {
+    displayValueRef.current = displayValue;
+  }, [displayValue]);
+
+  useEffect(() => {
+    let startTimestamp: number | null = null;
+    const startVal = displayValueRef.current;
+    const endVal = value;
+    if (startVal === endVal) return;
+    const duration = 750;
+    let cancelled = false;
+    let frame = 0;
+
+    const step = (timestamp: number) => {
+      if (cancelled) return;
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeProgress = progress * (2 - progress);
+      const current = Math.floor(startVal + (endVal - startVal) * easeProgress);
+      setDisplayValue(current);
+      if (progress < 1) {
+        frame = window.requestAnimationFrame(step);
+      }
+    };
+
+    frame = window.requestAnimationFrame(step);
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+    };
+  }, [value]);
+
+  return <span className="tabular-nums">{displayValue}</span>;
 }
 
 const DEFAULT_MATCH_SCORING_HELPERS: MatchScoringHelpers = {
@@ -596,7 +705,10 @@ function MatchdayStatusBadge({
 
   if (status === 'in-play') {
     return (
-      <span className={t.c.fixturesInPlay}>{formatLiveMatchLabel(livePeriod)}</span>
+      <span className={t.c.fixturesInPlay}>
+        <span className="inline-block h-2 w-2 mr-1.5 rounded-full bg-red-500 animate-pulse align-middle" />
+        <span className="align-middle">{formatLiveMatchLabel(livePeriod)}</span>
+      </span>
     );
   }
 
@@ -607,7 +719,13 @@ function MatchdayStatusBadge({
   return null;
 }
 
-function MatchdayFixtureScore({ entry }: { entry: MatchdayEntry }) {
+function MatchdayFixtureScore({
+  entry,
+  goalFlash = false,
+}: {
+  entry: MatchdayEntry;
+  goalFlash?: boolean;
+}) {
   const t = useSweepstakeTheme();
 
   if (entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null) {
@@ -624,7 +742,11 @@ function MatchdayFixtureScore({ entry }: { entry: MatchdayEntry }) {
     entry.liveAwayGoals != null
   ) {
     return (
-      <span className={t.c.fixturesLiveScore}>
+      <span
+        className={`${t.c.fixturesLiveScore} rounded border border-emerald-500/20 bg-emerald-950/40 px-1.5 py-0.5 motion-safe:animate-live-border ${
+          goalFlash ? 'motion-safe:animate-goal-flash' : ''
+        }`}
+      >
         {formatMatchScore(entry.liveHomeGoals, entry.liveAwayGoals)}
       </span>
     );
@@ -676,16 +798,19 @@ function MatchdaySchedule({
   standings,
   scoringMatches,
   matchScoringHelpers,
+  flashingMatchIds = [],
 }: {
   schedule: MatchdayScheduleData;
   standings: PlayerStanding[];
   scoringMatches: MatchPointsEntry[];
   matchScoringHelpers: MatchScoringHelpers;
+  flashingMatchIds?: readonly string[];
 }) {
   const t = useSweepstakeTheme();
   const [selectedDate, setSelectedDate] = useState(schedule.defaultDate);
   const [managerFilter, setManagerFilter] = useState<string>('all');
   const scoringByMatchId = new Map(scoringMatches.map((entry) => [entry.match.id, entry] as const));
+  const flashingIds = useMemo(() => new Set(flashingMatchIds), [flashingMatchIds]);
   const selectedIndex = schedule.fixtureDates.indexOf(selectedDate);
   const canGoPrevious = selectedIndex > 0;
   const canGoNext = selectedIndex >= 0 && selectedIndex < schedule.fixtureDates.length - 1;
@@ -855,6 +980,7 @@ function MatchdaySchedule({
             const scoringPlayers = scoringEntry
               ? standings.filter((player) => scoringEntry.byPlayer[player.id] != null)
               : [];
+            const goalFlash = flashingIds.has(entry.id);
 
             return (
               <li
@@ -877,7 +1003,7 @@ function MatchdaySchedule({
                     statusBadge={
                       <MatchdayStatusBadge status={entry.status} livePeriod={entry.livePeriod} />
                     }
-                    score={<MatchdayFixtureScore entry={entry} />}
+                    score={<MatchdayFixtureScore entry={entry} goalFlash={goalFlash} />}
                     homeManagersLabel={
                       entry.placeholderSide === 'home' || entry.placeholderSide === 'both' ? null : (
                         <FixtureTeamManagers managers={entry.homeManagers} />
@@ -1370,7 +1496,13 @@ function isWorldCupPlayerEliminated(player: PlayerStanding, themeId: string): bo
   return themeId === 'world-cup' && player.allTeamsEliminated === true;
 }
 
-function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
+function OverallStandings({
+  standings,
+  scoringMatches,
+}: {
+  standings: PlayerStanding[];
+  scoringMatches: MatchPointsEntry[];
+}) {
   const t = useSweepstakeTheme();
   const showRankMovement = t.id === 'english-pyramid';
   const mobileGridClass =
@@ -1413,8 +1545,9 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 />
               </span>
               <span className="block min-w-0">
-                <span className="block text-xs font-medium leading-snug text-white">
-                  {playerDisplayLabel(row)}
+                <span className="block text-xs font-medium leading-snug text-white flex items-center flex-wrap">
+                  <span>{playerDisplayLabel(row)}</span>
+                  <Sparkline playerId={row.id} scoringMatches={scoringMatches} />
                 </span>
                 {row.teamName ? (
                   <ManagerName
@@ -1439,7 +1572,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 </span>
               )}
               <span className={`shrink-0 text-right text-sm tabular-nums ${t.c.pointsBold}`}>
-                {row.points}
+                <AnimatedCounter value={row.points} />
               </span>
             </li>
           ))}
@@ -1483,10 +1616,13 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                   />
                 </td>
                 <td className="px-3 py-2 font-medium">
-                  <PlayerIdentity player={row} />
-                  {isWorldCupPlayerEliminated(row, t.id) ? (
-                    <span className={`ml-2 ${t.c.squadEliminatedBadge}`}>Out</span>
-                  ) : null}
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <PlayerIdentity player={row} />
+                    <Sparkline playerId={row.id} scoringMatches={scoringMatches} />
+                    {isWorldCupPlayerEliminated(row, t.id) ? (
+                      <span className={`ml-2 ${t.c.squadEliminatedBadge}`}>Out</span>
+                    ) : null}
+                  </div>
                 </td>
                 <td
                   className={`px-3 py-2 ${
@@ -1505,7 +1641,7 @@ function OverallStandings({ standings }: { standings: PlayerStanding[] }) {
                 </td>
                 <td className={`px-3 py-2 text-right tabular-nums ${t.c.negative}`}>{row.redCards}</td>
                 <td className={`px-3 py-2 text-right font-semibold tabular-nums ${index === 0 ? t.c.points : ''}`}>
-                  {row.points}
+                  <AnimatedCounter value={row.points} />
                 </td>
               </tr>
             ))}
@@ -1854,11 +1990,25 @@ function PlayerSquadCard({
   const isLast = rank === totalPlayers;
   const isEliminated = isWorldCupPlayerEliminated(player, t.id);
   const photoFrame = managerPhotoFrameClass(isLeader, isLast, t.id);
-  const cardClass = isEliminated ? t.c.squadCardEliminated : isLeader ? t.c.squadCardLeader : t.c.squadCard;
   const photoToneClass = isEliminated ? 'grayscale-[0.85] opacity-80' : '';
 
+  let animatedCardClass = isEliminated
+    ? t.c.squadCardEliminated
+    : isLeader
+      ? t.c.squadCardLeader
+      : t.c.squadCard;
+
+  if (isLast && !isEliminated) {
+    animatedCardClass += ' animate-wiggle-hover hover:border-red-900/60';
+  }
+
+  const leaderPhotoClass =
+    isLeader && !isEliminated && t.id === 'english-pyramid' ? 'animate-leader-portrait' : '';
+  const spoonPhotoClass =
+    isLast && !isEliminated && t.id === 'english-pyramid' ? 'sweepstake-spoon-photo' : '';
+
   return (
-    <article className={cardClass} aria-label={isEliminated ? `${managerLabel} eliminated from the World Cup` : undefined}>
+    <article className={animatedCardClass} aria-label={isEliminated ? `${managerLabel} eliminated from the World Cup` : undefined}>
       {isEliminated ? (
         <div className={t.c.squadEliminatedBanner}>
           Eliminated — every nation out of the World Cup
@@ -1870,20 +2020,20 @@ function PlayerSquadCard({
             <button
               type="button"
               onClick={() => setEnlarged('manager')}
-              className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass}`}
+              className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass}`}
               aria-label={`View enlarged photo of ${managerLabel}`}
             >
               {/* Native img avoids stale next/image optimizer cache after portrait swaps. */}
               <img
                 src={managerPhotoSrc(player.managerImage)}
                 alt={`${managerLabel} manager`}
-                className="h-full w-full object-cover object-center"
+                className={`h-full w-full object-cover object-center transition-[filter] duration-300 ${spoonPhotoClass}`}
               />
             </button>
             <button
               type="button"
               onClick={() => setEnlarged('crest')}
-              className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
+              className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
               aria-label={`View enlarged ${managerLabel} club crest`}
             >
               {/* background-size: contain cannot stretch — avoids img flex sizing bugs on mobile */}
@@ -1904,7 +2054,7 @@ function PlayerSquadCard({
               </span>
               <PlayerIdentity player={player} heading />
               {isEliminated ? <span className={t.c.squadEliminatedBadge}>Eliminated</span> : null}
-              <span className={`text-sm font-semibold tabular-nums ${t.c.points}`}>{player.points} pts</span>
+              <span className={`text-sm font-semibold tabular-nums ${t.c.points}`}><AnimatedCounter value={player.points} /> pts</span>
               {t.id === 'english-pyramid' ? (
                 <EnglishPyramidShareButton
                   player={player}
@@ -2031,9 +2181,11 @@ function WorldCupFantasyView({
   const [data, setData] = useState<SweepstakeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { enabled: liveAlertsEnabled, setEnabled: setLiveAlertsEnabled } = useLiveGoalAlerts(
-    t.id === 'english-pyramid' ? data?.matchdaySchedule : null
-  );
+  const {
+    enabled: liveAlertsEnabled,
+    setEnabled: setLiveAlertsEnabled,
+    flashingMatchIds,
+  } = useLiveGoalAlerts(t.id === 'english-pyramid' ? data?.matchdaySchedule : null);
 
   const load = useCallback(async (options?: { silent?: boolean }) => {
     if (!options?.silent) {
@@ -2164,7 +2316,7 @@ function WorldCupFantasyView({
 
               <section>
                 <h3 className={`mb-3 ${t.c.sectionHeading}`}>Overall standings</h3>
-                <OverallStandings standings={data.standings} />
+                <OverallStandings standings={data.standings} scoringMatches={data.allScoringMatches} />
                 <ScoringRulesBlock rules={scoringRules} />
               </section>
 
@@ -2173,6 +2325,7 @@ function WorldCupFantasyView({
                 standings={data.standings}
                 scoringMatches={data.allScoringMatches}
                 matchScoringHelpers={matchScoringHelpers}
+                flashingMatchIds={flashingMatchIds}
               />
 
               <section>

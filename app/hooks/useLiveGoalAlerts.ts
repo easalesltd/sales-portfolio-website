@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { MatchdaySchedule } from '@/app/lib/english-pyramid-scoring';
 
 const STORAGE_KEY = 'english-pyramid-live-alerts';
+const GOAL_FLASH_MS = 1200;
 
 function readEnabled(): boolean {
   if (typeof window === 'undefined') return false;
@@ -48,11 +49,20 @@ function liveScoreKey(entry: {
 
 export function useLiveGoalAlerts(schedule: MatchdaySchedule | null | undefined) {
   const [enabled, setEnabledState] = useState(false);
+  const [flashingMatchIds, setFlashingMatchIds] = useState<readonly string[]>([]);
   const prevScoresRef = useRef<Map<string, string>>(new Map());
   const primedRef = useRef(false);
+  const flashTimersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   useEffect(() => {
     setEnabledState(readEnabled());
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      for (const timer of flashTimersRef.current.values()) clearTimeout(timer);
+      flashTimersRef.current.clear();
+    };
   }, []);
 
   const setEnabled = useCallback((next: boolean) => {
@@ -66,8 +76,21 @@ export function useLiveGoalAlerts(schedule: MatchdaySchedule | null | undefined)
     }
   }, []);
 
+  const flashMatch = useCallback((id: string) => {
+    setFlashingMatchIds((current) => (current.includes(id) ? current : [...current, id]));
+    const existing = flashTimersRef.current.get(id);
+    if (existing) clearTimeout(existing);
+    flashTimersRef.current.set(
+      id,
+      setTimeout(() => {
+        setFlashingMatchIds((current) => current.filter((entryId) => entryId !== id));
+        flashTimersRef.current.delete(id);
+      }, GOAL_FLASH_MS)
+    );
+  }, []);
+
   useEffect(() => {
-    if (!enabled || !schedule) return;
+    if (!schedule) return;
 
     const current = new Map<string, string>();
     for (const date of schedule.fixtureDates) {
@@ -84,16 +107,20 @@ export function useLiveGoalAlerts(schedule: MatchdaySchedule | null | undefined)
       return;
     }
 
+    let pinged = false;
     for (const [id, score] of current) {
       const previous = prevScoresRef.current.get(id);
       if (previous != null && previous !== score) {
-        playGoalPing();
-        break;
+        flashMatch(id);
+        if (enabled && !pinged) {
+          playGoalPing();
+          pinged = true;
+        }
       }
     }
 
     prevScoresRef.current = current;
-  }, [enabled, schedule]);
+  }, [enabled, schedule, flashMatch]);
 
-  return { enabled, setEnabled };
+  return { enabled, setEnabled, flashingMatchIds };
 }
