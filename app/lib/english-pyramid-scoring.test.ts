@@ -28,7 +28,7 @@ describe('english-pyramid draft fairness', () => {
     }
   });
 
-  it('pairs title rank k with survival rank 8-k in each draft division', () => {
+  it('pairs title rank k with survival rank k (relegation favourite with title favourite)', () => {
     const mod = (n: number) => ((n % 7) + 7) % 7;
 
     ENGLISH_PYRAMID_FANTASY_PLAYERS.forEach((player, playerIndex) => {
@@ -36,8 +36,7 @@ describe('english-pyramid draft fairness', () => {
       const survivalRanks: number[] = [];
 
       for (const [divisionIndex, div] of ENGLISH_PYRAMID_DIVISIONS.entries()) {
-        const expectedTitle = mod(playerIndex + divisionIndex) + 1;
-        const expectedSurvival = mod(6 - playerIndex - divisionIndex) + 1;
+        const expectedRank = mod(playerIndex + divisionIndex) + 1;
 
         const inDiv = player.teams.filter((code) => getDraftDivisionId(code) === div.id);
         expect(inDiv).toHaveLength(2);
@@ -46,17 +45,24 @@ describe('english-pyramid draft fairness', () => {
         const survival = inDiv.find((code) => getDraftBand(code) === 'survival');
         expect(title).toBeTruthy();
         expect(survival).toBeTruthy();
-        expect(getPreSeasonOddsRank(title!)).toBe(expectedTitle);
-        expect(getPreSeasonOddsRank(survival!)).toBe(expectedSurvival);
-        expect(expectedTitle + expectedSurvival).toBe(8);
+        expect(getPreSeasonOddsRank(title!)).toBe(expectedRank);
+        expect(getPreSeasonOddsRank(survival!)).toBe(expectedRank);
 
-        titleRanks.push(expectedTitle);
-        survivalRanks.push(expectedSurvival);
+        titleRanks.push(expectedRank);
+        survivalRanks.push(expectedRank);
       }
 
       expect([...titleRanks].sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7]);
       expect([...survivalRanks].sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7]);
     });
+  });
+
+  it('gives the PL title favourite the PL relegation favourite', () => {
+    const ash = ENGLISH_PYRAMID_FANTASY_PLAYERS.find((p) => p.id === 'ash');
+    expect(ash?.teams).toEqual(expect.arrayContaining(['ARS', 'HUL']));
+    expect(getPreSeasonOddsRank('ARS')).toBe(1);
+    expect(getPreSeasonOddsRank('HUL')).toBe(1);
+    expect(getDraftBand('HUL')).toBe('survival');
   });
 
   it('keeps promoted clubs on their draft rung while playing in the new division', () => {
@@ -69,7 +75,7 @@ describe('english-pyramid draft fairness', () => {
     expect(getPreSeasonOddsRank('YOR')).toBe(7);
 
     const scott = ENGLISH_PYRAMID_FANTASY_PLAYERS.find((p) => p.id === 'scott');
-    expect(scott?.teams).toEqual(expect.arrayContaining(['BOL', 'BRO']));
+    expect(scott?.teams).toEqual(expect.arrayContaining(['BOL', 'NCO']));
     expect(scott?.teams.filter((c) => getDraftDivisionId(c) === 'L1')).toHaveLength(2);
   });
 });

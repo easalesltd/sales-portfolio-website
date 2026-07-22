@@ -4,10 +4,11 @@
  * each manager gets exactly one pick at each rank (one favourite … one seventh) — player
  * index p takes rank ((p + divisionIndex) mod 7) + 1.
  * Survival draft: bottom 7 by relegation odds (or longest title shots where markets are thin);
- * complementary within-league deal so title rank k pairs with survival rank (8 − k) in the
- * same division: p takes survival rank ((6 − p − divisionIndex) mod 7) + 1. Across the seven
- * leagues every manager therefore gets exactly one (#1+#7), one (#2+#6), …, one (#4+#4) pair —
- * top seed with bottom seed in one league, second-best with second-worst in another, etc.
+ * **same ordinal** within each league as the title pick — title rank k pairs with survival
+ * rank k (relegation favourite R#1 with title favourite #1, etc.): p takes survival rank
+ * ((p + divisionIndex) mod 7) + 1. So the manager with Arsenal (#1) also gets Hull (R#1 /
+ * “20th favourite”); across the seven rungs everyone still holds each rank 1–7 once in
+ * each band.
  * Clubs that promote/relegate keep `divisionId` as the division they play in now, but
  * `draftDivisionId` preserves the rung they were drafted from (Bolton → L1, York → NL).
  */
@@ -283,7 +284,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_INTRO =
   'Seven managers, fourteen clubs each — one title favourite and one survival dog from every rung of the pyramid (Premier League down to National League North and South). Points follow your clubs’ real league results all season.';
 
 export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
-  'Within each division we drafted two bands. Title band: clubs ranked 1–7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin). In every league, title rank k is paired with survival rank (8 − k) for the same manager — so someone gets the top seed and the bottom seed in one division, second-best with second-worst in another, and so on. Across the seven rungs each manager therefore holds exactly one pick at every title rank and every survival rank. Clubs that promoted after the draft (Bolton, York) still count on the rung they were drafted from; they just score in their new division.';
+  'Within each division we drafted two bands. Title band: clubs ranked 1–7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) — R#1 is the relegation favourite (“20th favourite” in a 20-team league). In every league, the same manager gets title rank k and survival rank k together: Arsenal #1 comes with Hull R#1, City #2 with Coventry R#2, and so on. Across the seven rungs each manager therefore holds exactly one pick at every title rank and every survival rank. Clubs that promoted after the draft (Bolton, York) still count on the rung they were drafted from; they just score in their new division.';
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
   'Pre-season. Zero points. Fourteen clubs of emotional baggage each. Scott’s already last somehow and the ledger is empty — that takes a special kind of useless. When August lands we’re going full Tesla-Grok: sweary, mean, and naming every soft bastard who bottles a 1–0.';
@@ -303,16 +304,16 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'HPL',
       'BUX',
       'CLM',
-      'CRY',
-      'POR',
-      'BSL',
+      'HUL',
+      'CHA',
+      'BTN',
       'TRN',
-      'ALT',
-      'SPA',
-      'FNH',
+      'KID',
+      'OXC',
+      'WAH',
     ],
     draftNote:
-      'Arsenal #1 with Palace R#7 (top + bottom in the Premier League), then Wolves with Portsmouth, Luton with Barnsley, and the rest of the complementary ladder down to Farnham as NLS R#1.',
+      'Arsenal #1 with Hull R#1 — 1st and 20th in the Premier League, as the gods intended — then Wolves with Charlton, Luton with Burton, and the same-ordinal ladder down to Walton & Hersham.',
   },
   {
     id: 'jon',
@@ -328,16 +329,16 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'SCU',
       'CHF',
       'DAG',
-      'LEE',
-      'QPR',
+      'COV',
+      'CDF',
       'CAM',
-      'ACC',
-      'WEA',
-      'HEB',
-      'WAH',
+      'SHR',
+      'SUT',
+      'MAR',
+      'FNH',
     ],
     draftNote:
-      'City #2 with Leeds R#6, Burnley with QPR, Huddersfield with Cambridge — and Dagenham #1 paired with Walton & Hersham R#7 down south.',
+      'City #2 with Coventry R#2, Burnley with Cardiff, Huddersfield with Cambridge — and Dagenham #1 paired with Farnham R#1 down south.',
   },
   {
     id: 'nest',
@@ -353,16 +354,16 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'YOR',
       'SSH',
       'TOR',
-      'FUL',
+      'IPS',
       'PNE',
-      'BTN',
-      'CHT',
-      'HRN',
-      'MAR',
-      'TON',
+      'BSL',
+      'FLE',
+      'TAM',
+      'HEB',
+      'AFT',
     ],
     draftNote:
-      'Liverpool and Middlesbrough carry the swagger; York was drafted NL #7 (now League Two) with Hornchurch R#1 — top-and-bottom energy on that rung — plus Fulham, Preston, Burton, Cheltenham, Marine and Tonbridge.',
+      'Liverpool #3 with Ipswich R#3; York was drafted NL #7 (now League Two) with Tamworth R#7; South Shields #1 with Hebburn R#1 — plus Middlesbrough, Plymouth, Salford, Torquay, Preston, Barnsley, Fleetwood and Totton.',
   },
   {
     id: 'chris',
@@ -379,15 +380,15 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'MAC',
       'HOR',
       'SUN',
-      'CDF',
-      'WIM',
-      'NWP',
-      'TAM',
-      'OXC',
-      'CHU',
+      'QPR',
+      'LEY',
+      'CRA',
+      'HRN',
+      'SPA',
+      'DOV',
     ],
     draftNote:
-      'United #4 with Sunderland R#4 (dead-centre mash), Carlisle #1 with Tamworth R#7, and the potato skins: Cardiff, Wimbledon, Newport, Oxford City and Chesham.',
+      'United #4 with Sunderland R#4; Carlisle #1 with Hornchurch R#1 (top and bottom of the National League); Birmingham, Stockport, Grimsby, Macclesfield, Horsham — plus QPR, Orient, Crawley, Spalding and Dover.',
   },
   {
     id: 'scott',
@@ -403,16 +404,16 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'STD',
       'MER',
       'WSM',
-      'IPS',
-      'CHA',
-      'BRO',
-      'CRA',
-      'SUT',
-      'HED',
+      'FUL',
+      'POR',
+      'NCO',
+      'NWP',
+      'WEA',
+      'BED',
       'SBY',
     ],
     draftNote:
-      'Chelsea #5 with Ipswich R#3; Bolton was his League One title #7 (now Championship) paired with Bromley R#1 — two L1 draft picks, your honour — plus Southampton, Barnet, Southend, Merthyr, Weston, Charlton, Crawley, Sutton, Hednesford and Salisbury.',
+      'Chelsea #5 with Fulham R#5; Bolton was his League One title #7 (now Championship) paired with Notts County R#7 — two L1 draft picks — plus Southampton, Barnet, Southend, Merthyr, Weston, Portsmouth, Newport, Wealdstone, Bedford and Salisbury.',
   },
   {
     id: 'dave',
@@ -428,16 +429,16 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'FGR',
       'WRK',
       'MAI',
-      'COV',
-      'LIN',
-      'NCO',
-      'FLE',
-      'KID',
+      'LEE',
+      'BLK',
+      'BRO',
+      'CHT',
+      'ALT',
       'HBO',
-      'DOV',
+      'CHU',
     ],
     draftNote:
-      'Villa #6 with Coventry R#2; Leicester #1 with Notts County R#7 (top + bottom in League One); Sheffield United with Lincoln R#1 — cream on top, lumps underneath (Fleetwood, Kidderminster, Harborough, Dover).',
+      'Villa #6 with Leeds R#6; Leicester #1 with Bromley R#1 (1st and last in League One); Sheffield United with Blackburn R#7 — cream on top, lumps underneath (Cheltenham, Altrincham, Harborough, Chesham).',
   },
   {
     id: 'ben',
@@ -453,16 +454,16 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'BORE',
       'DAR',
       'EBB',
-      'HUL',
-      'BLK',
-      'LEY',
-      'SHR',
+      'CRY',
+      'LIN',
+      'WIM',
+      'ACC',
       'ALD',
-      'BED',
-      'AFT',
+      'HED',
+      'TON',
     ],
     draftNote:
-      'Newcastle #7 with Hull R#1 (top-and-bottom Premier League misery), West Ham #1 with Blackburn R#7, then Wednesday, Rotherham, Boreham Wood, Darlington, Ebbsfleet — plus Orient, Shrewsbury, Aldershot, Bedford and Totton. The mullet deserves hazard pay.',
+      'Newcastle #7 with Palace R#7; West Ham #1 with Lincoln R#1 (Championship 1st and last); then Wednesday, Rotherham, Boreham Wood, Darlington, Ebbsfleet — plus Wimbledon, Accrington, Aldershot, Hednesford and Tonbridge. The mullet deserves hazard pay.',
   },
 ] as const;
 
