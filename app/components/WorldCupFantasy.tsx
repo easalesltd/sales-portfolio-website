@@ -1423,7 +1423,7 @@ function TeamResultsPanel({
               <span className="min-w-0">
                 <span className="text-neutral-500">{formatTeamMatchDate(result.utcDate)}</span>{' '}
                 <span className="text-neutral-400">{result.isHome ? 'vs' : '@'}</span>{' '}
-                {result.opponentFlag} {result.opponentTla}{' '}
+                {result.opponentFlag} {result.opponentName}{' '}
                 <span className="font-medium tabular-nums">
                   {result.goalsFor}–{result.goalsAgainst}
                   {result.penaltiesFor != null && result.penaltiesAgainst != null
@@ -1536,7 +1536,7 @@ function TeamMiniTable({
                         {t.id === 'english-pyramid' ? (
                           <>
                             <DivisionBadge divisionId={team.flag} />
-                            {formatTeamNameShort(team.code)}
+                            {team.name}
                           </>
                         ) : formatTeamLabel ? (
                           formatTeamLabel(team.code)
@@ -1796,12 +1796,12 @@ function PlayerSquadCard({
             <p className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-300">
               {t.id === 'english-pyramid'
                 ? player.teams.map((code) => {
-                    const divisionId =
-                      player.teamBreakdown.find((team) => team.code === code)?.flag ?? '';
+                    const team = player.teamBreakdown.find((entry) => entry.code === code);
+                    const divisionId = team?.flag ?? '';
                     return (
                       <span key={code} className="inline-flex items-center">
                         <DivisionBadge divisionId={divisionId} />
-                        {formatTeamNameShort(code)}
+                        {team?.name ?? formatTeamNameShort(code)}
                       </span>
                     );
                   })
