@@ -28,6 +28,7 @@ import { useLiveGoalAlerts } from '@/app/hooks/useLiveGoalAlerts';
 import { usePullToRefresh } from '@/app/hooks/usePullToRefresh';
 import DivisionBadge from './english-pyramid/DivisionBadge';
 import EnglishPyramidShareButton from './english-pyramid/EnglishPyramidShareButton';
+import EnglishPyramidPrizeFundPanel from './english-pyramid/EnglishPyramidPrizeFundPanel';
 import LiveGoalAlertsToggle from './english-pyramid/LiveGoalAlertsToggle';
 import MatchdayHeroStrip from './english-pyramid/MatchdayHeroStrip';
 import EnglishPyramidFixtureRow from './english-pyramid/EnglishPyramidFixtureRow';
@@ -2313,6 +2314,8 @@ function WorldCupFantasyView({
                 <h3 className={t.c.roastHeading}>Daily roast</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
               </section>
+
+              {data.prizeFund ? <EnglishPyramidPrizeFundPanel prizeFund={data.prizeFund} /> : null}
 
               <section>
                 <h3 className={`mb-3 ${t.c.sectionHeading}`}>Overall standings</h3>

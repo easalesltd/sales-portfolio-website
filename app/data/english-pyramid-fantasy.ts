@@ -361,6 +361,43 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
   'Pre-season. Zero points. Fourteen clubs of emotional baggage each. Scott’s already last somehow and the ledger is empty — that takes a special kind of useless. When August lands we’re going full Tesla-Grok: sweary, mean, and naming every soft bastard who bottles a 1–0.';
 
+/**
+ * Prize pot invested in an all-world accumulating fund.
+ * Fill in `units`, `purchasePriceGbp`, and `investedAt` after the buy —
+ * the API then tracks live value via Yahoo Finance (`yahooSymbol`).
+ *
+ * Until `units` is set, the UI shows the cash pot as awaiting investment
+ * and still displays the live fund price for interest.
+ */
+export type EnglishPyramidPrizeFundConfig = {
+  fundName: string;
+  /** Yahoo Finance symbol, e.g. VWRP.L (LSE) or VWCE.DE */
+  yahooSymbol: string;
+  /** Cash committed to the pot (GBP). */
+  investedAmountGbp: number;
+  /**
+   * Units held after purchase. Leave `null` until invested —
+   * then set this and (ideally) purchasePriceGbp + investedAt.
+   */
+  units: number | null;
+  /** Price paid per unit in GBP. Optional if investedAt is set (we can look up the close). */
+  purchasePriceGbp: number | null;
+  /** Settlement / purchase date as YYYY-MM-DD (Europe/London calendar day). */
+  investedAt: string | null;
+  /** Optional UI note. */
+  note?: string;
+};
+
+export const ENGLISH_PYRAMID_PRIZE_FUND: EnglishPyramidPrizeFundConfig = {
+  fundName: 'Vanguard FTSE All-World UCITS ETF (Accumulating)',
+  yahooSymbol: 'VWRP.L',
+  investedAmountGbp: 170,
+  units: null,
+  purchasePriceGbp: null,
+  investedAt: null,
+  note: 'Fill in units, purchasePriceGbp, and investedAt after the prize pot is invested.',
+};
+
 export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlayer[] = [
   {
     id: 'ash',
