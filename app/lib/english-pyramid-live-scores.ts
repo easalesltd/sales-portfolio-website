@@ -7,6 +7,10 @@ import type {
 import { gameLeaderboardRedis } from '@/app/lib/game-leaderboard-redis';
 import { countRedCardsFromEspnCompetition } from '@/app/lib/espn-red-cards';
 import { isEspnFullTimePeriod } from '@/app/lib/world-cup-espn-finals';
+import {
+  fetchFwpLiveEventsForInPlayEntries,
+  isFwpFullTimePeriod,
+} from '@/app/lib/english-pyramid-fwp-live-scores';
 
 const DIVISION_TO_ESPN_SLUG: Record<string, string> = {
   PL: 'eng.1',
@@ -327,7 +331,7 @@ export function applyLiveScoresToSchedule(
       const live = matchLiveScoreForFixture(entry, events);
       if (!live) return entry;
 
-      if (isEspnFullTimePeriod(live.period)) {
+      if (isEspnFullTimePeriod(live.period) || isFwpFullTimePeriod(live.period)) {
         const finishedEntry: MatchdayEntry = {
           ...entry,
           status: 'finished',
@@ -382,14 +386,15 @@ export async function enrichMatchdayScheduleWithLiveScores(
   }
 
   const fetchKeys = scoreboardFetchKeysForInPlayEntries(inPlayEntries);
-  if (fetchKeys.length === 0) {
-    return { schedule, provisionalMatches: [] };
-  }
+  const [espnEvents, fwpEvents] = await Promise.all([
+    fetchKeys.length > 0
+      ? getCachedScoreboardEventsForKeys(fetchKeys).catch(() => [] as EspnScoreboardEvent[])
+      : Promise.resolve([] as EspnScoreboardEvent[]),
+    fetchFwpLiveEventsForInPlayEntries(inPlayEntries).catch(() => []),
+  ]);
 
-  let events: EspnScoreboardEvent[] = [];
-  try {
-    events = await getCachedScoreboardEventsForKeys(fetchKeys);
-  } catch {
+  const events = [...espnEvents, ...fwpEvents];
+  if (events.length === 0) {
     return { schedule, provisionalMatches: [] };
   }
 

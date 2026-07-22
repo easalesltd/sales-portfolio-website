@@ -658,15 +658,28 @@ function MatchdaySchedule({
 }) {
   const t = useSweepstakeTheme();
   const [selectedDate, setSelectedDate] = useState(schedule.defaultDate);
+  const [managerFilter, setManagerFilter] = useState<string>('all');
   const scoringByMatchId = new Map(scoringMatches.map((entry) => [entry.match.id, entry] as const));
   const selectedIndex = schedule.fixtureDates.indexOf(selectedDate);
   const canGoPrevious = selectedIndex > 0;
   const canGoNext = selectedIndex >= 0 && selectedIndex < schedule.fixtureDates.length - 1;
-  const entries = schedule.schedulesByDate[selectedDate] ?? [];
+  const dayEntries = schedule.schedulesByDate[selectedDate] ?? [];
+  const entries =
+    t.id === 'english-pyramid' && managerFilter !== 'all'
+      ? dayEntries.filter(
+          (entry) =>
+            entry.homeManagers.some((manager) => manager.id === managerFilter) ||
+            entry.awayManagers.some((manager) => manager.id === managerFilter)
+        )
+      : dayEntries;
 
   useEffect(() => {
     setSelectedDate(schedule.defaultDate);
   }, [schedule.defaultDate]);
+
+  useEffect(() => {
+    setManagerFilter('all');
+  }, [selectedDate]);
 
   return (
     <section className={t.c.fixturesSection}>
@@ -680,6 +693,59 @@ function MatchdaySchedule({
           onPreviousDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex - 1])}
           onNextDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
         />
+      ) : null}
+      {t.id === 'english-pyramid' ? (
+        <div className="mt-3">
+          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[#d4af37]/80">
+            Your games today
+          </p>
+          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter fixtures by manager">
+            <button
+              type="button"
+              onClick={() => setManagerFilter('all')}
+              className={`rounded-md border px-2 py-1 text-[11px] font-semibold transition sm:text-xs ${
+                managerFilter === 'all'
+                  ? 'border-[#d4af37] bg-[#d4af37]/20 text-[#f5f5f0]'
+                  : 'border-neutral-700 bg-neutral-950/60 text-neutral-300 hover:border-[#d4af37]/40'
+              }`}
+            >
+              All clubs
+              <span className="ml-1 tabular-nums text-neutral-500">({dayEntries.length})</span>
+            </button>
+            {standings.map((player) => {
+              const count = dayEntries.filter(
+                (entry) =>
+                  entry.homeManagers.some((manager) => manager.id === player.id) ||
+                  entry.awayManagers.some((manager) => manager.id === player.id)
+              ).length;
+              const label = player.teamName ?? player.name;
+              const active = managerFilter === player.id;
+              return (
+                <button
+                  key={player.id}
+                  type="button"
+                  onClick={() => setManagerFilter(player.id)}
+                  className={`rounded-md border px-2 py-1 text-[11px] font-semibold transition sm:text-xs ${
+                    active
+                      ? 'border-[#d4af37] bg-[#d4af37]/20 text-[#f5f5f0]'
+                      : 'border-neutral-700 bg-neutral-950/60 text-neutral-300 hover:border-[#d4af37]/40'
+                  }`}
+                >
+                  {label}
+                  <span className="ml-1 tabular-nums text-neutral-500">({count})</span>
+                </button>
+              );
+            })}
+          </div>
+          {managerFilter !== 'all' ? (
+            <p className="mt-2 text-xs text-neutral-400">
+              Showing {entries.length} fixture{entries.length === 1 ? '' : 's'} involving{' '}
+              {standings.find((player) => player.id === managerFilter)?.teamName ??
+                standings.find((player) => player.id === managerFilter)?.name}
+              .
+            </p>
+          ) : null}
+        </div>
       ) : null}
       {t.id !== 'english-pyramid' ? (
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
@@ -707,7 +773,11 @@ function MatchdaySchedule({
       ) : null}
 
       {entries.length === 0 ? (
-        <p className="mt-2 text-sm text-neutral-300">No sweepstake fixtures scheduled for this day.</p>
+        <p className="mt-2 text-sm text-neutral-300">
+          {managerFilter !== 'all'
+            ? 'No fixtures for this manager on this day.'
+            : 'No sweepstake fixtures scheduled for this day.'}
+        </p>
       ) : (
         <ul className={t.c.fixturesList}>
           {entries.map((entry) => {
@@ -1994,6 +2064,16 @@ function WorldCupFantasyView({
                 standings={data.standings}
                 matchScoringHelpers={matchScoringHelpers}
               />
+
+              {data.sweepstakeIntro ? (
+                <section className="rounded-lg border border-[#d4af37]/25 bg-[#141f38]/70 px-4 py-3">
+                  <h3 className={`mb-2 ${t.c.sectionHeading}`}>How it works</h3>
+                  <p className="text-sm leading-relaxed text-neutral-100">{data.sweepstakeIntro}</p>
+                  {data.sweepstakeFairness ? (
+                    <p className="mt-2 text-sm leading-relaxed text-neutral-300">{data.sweepstakeFairness}</p>
+                  ) : null}
+                </section>
+              ) : null}
 
               <section className={t.c.roastSection}>
                 <h3 className={t.c.roastHeading}>Daily roast</h3>
