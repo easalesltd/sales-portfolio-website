@@ -2147,16 +2147,6 @@ function WorldCupFantasyView({
                 matchScoringHelpers={matchScoringHelpers}
               />
 
-              {data.sweepstakeIntro ? (
-                <section className="rounded-lg border border-[#d4af37]/25 bg-[#141f38]/70 px-4 py-3">
-                  <h3 className={`mb-2 ${t.c.sectionHeading}`}>How it works</h3>
-                  <p className="text-sm leading-relaxed text-neutral-100">{data.sweepstakeIntro}</p>
-                  {data.sweepstakeFairness ? (
-                    <p className="mt-2 text-sm leading-relaxed text-neutral-300">{data.sweepstakeFairness}</p>
-                  ) : null}
-                </section>
-              ) : null}
-
               <section className={t.c.roastSection}>
                 <h3 className={t.c.roastHeading}>Daily roast</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
