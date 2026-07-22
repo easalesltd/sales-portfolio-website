@@ -13,7 +13,20 @@ function escapeSingleQuotes(value) {
   return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
-function formatManualMatchEntry(fixture, goals, redCards, comment = 'Verified final result (ESPN sync).') {
+/**
+ * @param {object} fixture
+ * @param {{ homeGoals: number, awayGoals: number }} goals
+ * @param {{ homeRedCards: number, awayRedCards: number }} redCards
+ * @param {string} [comment]
+ * @param {{ redsUnchecked?: boolean }} [options]
+ */
+function formatManualMatchEntry(
+  fixture,
+  goals,
+  redCards,
+  comment = 'Verified final result (ESPN sync).',
+  options = {}
+) {
   const lines = [
     '  {',
     `    /** ${comment} */`,
@@ -25,8 +38,13 @@ function formatManualMatchEntry(fixture, goals, redCards, comment = 'Verified fi
     `    awayGoals: ${goals.awayGoals},`,
     `    homeRedCards: ${redCards.homeRedCards},`,
     `    awayRedCards: ${redCards.awayRedCards},`,
-    '  },',
   ];
+
+  if (options.redsUnchecked === true) {
+    lines.push('    redsUnchecked: true,');
+  }
+
+  lines.push('  },');
 
   return lines.join('\n');
 }

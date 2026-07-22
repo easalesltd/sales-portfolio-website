@@ -21,6 +21,8 @@ export type EnglishPyramidMatchResult = {
   awayGoals: number | null;
   homeRedCards: number;
   awayRedCards: number;
+  /** True when red cards were not verified (e.g. FWP NLN/NLS sync). */
+  redsUnchecked?: boolean;
   /** Reserved for tournament knockouts decided on pens. */
   homePenalties?: number;
   awayPenalties?: number;
@@ -227,6 +229,7 @@ export function manualMatchToResult(match: EnglishPyramidManualMatch): EnglishPy
     awayGoals: match.awayGoals,
     homeRedCards: match.homeRedCards ?? 0,
     awayRedCards: match.awayRedCards ?? 0,
+    redsUnchecked: match.redsUnchecked === true ? true : undefined,
   };
 }
 
@@ -472,6 +475,8 @@ export type TeamMatchDisplay = {
   /** Net points from red cards (+1 each in pyramid). */
   redCardPoints?: number;
   redCards: number;
+  /** True when the ledger could not verify dismissals for this match. */
+  redsUnchecked?: boolean;
   isHome: boolean;
   /** Reserved for tournament knockouts decided on pens. */
   outcome?: 'win' | 'draw' | 'loss';
@@ -522,6 +527,7 @@ export function getTeamMatchDisplay(match: EnglishPyramidMatchResult, teamCode: 
     boringMatchPenalty: scored.boringMatchPenalty < 0 ? scored.boringMatchPenalty : undefined,
     redCardPoints: scored.redCardPenalty !== 0 ? scored.redCardPenalty : undefined,
     redCards,
+    redsUnchecked: match.redsUnchecked === true ? true : undefined,
     isHome: side.isHome,
   };
 }

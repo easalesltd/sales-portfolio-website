@@ -459,6 +459,11 @@ export type EnglishPyramidManualMatch = {
   awayGoals: number;
   homeRedCards?: number;
   awayRedCards?: number;
+  /**
+   * True when reds were not verified (FWP NLN/NLS sync defaults to 0).
+   * UI flags these so +1 red scoring is not silently trusted.
+   */
+  redsUnchecked?: boolean;
 };
 
 export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[] = [];

@@ -46,16 +46,18 @@ When asked to update English pyramid scores (or by the scheduled GitHub workflow
 - Add only final results: home/away teams (`tla` code), final goals, red-card tallies (including second-yellow dismissals).
 - Cross-check red-card tallies against ESPN before finishing any score update: run `npm run english-pyramid:validate` (includes `scripts/english-pyramid-validate-red-cards.cjs`). If ESPN reports reds for a finished ledger match and the ledger is lower, fix the ledger before pushing.
 - When appending a new manual result, always set explicit `homeRedCards` and `awayRedCards` (use `0` when none). Never omit the fields.
+- FWP-synced NL North/South results set `redsUnchecked: true` (reds default to 0). When you verify a dismissal from BBC/Flashscore/Sky, set the correct red tallies and remove `redsUnchecked`.
 - **Every manual result must exist in `ENGLISH_PYRAMID_FIXTURES` with matching home/away TLAs.** The full-season fixture list is kept in-repo (unlike the rolling World Cup schedule), so `npm run english-pyramid:validate` fails if the ledger and fixtures drift apart or if a fixture is overdue with no result.
 - Do not hand-edit standings — `computeStandings()` in `app/lib/english-pyramid-scoring.ts` derives totals.
 - After any ledger change, run `npm run english-pyramid:standings` and use that output as the only source for totals and leader/bottom wording in `ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE`.
-- Refresh `ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE` when the table changes. Tone: **foul-mouthed Grok / Tesla cabin energy** — sweary, rude, British football roast, genuinely funny. Name managers and clubs. Avoid repeating the same gag. Still mirror standings totals exactly; do not invent scores.
+- Automated sync refreshes a **template** roast via `npm run english-pyramid:roast -- --write` when new results land (`english-pyramid-ci-sync-commit`). Prefer a sharper agent/manual roast when you can; still mirror standings totals exactly and do not invent scores. Tone: **foul-mouthed Grok / Tesla cabin energy** — sweary, rude, British football roast, genuinely funny. Name managers and clubs. Avoid repeating the same gag.
 - Push to **`origin/main`** unless the user asks for PR-only work.
 
 ## Scheduled workflow
 
 - **Scores:** `.github/workflows/english-pyramid-score-agent.yml` runs `npm run english-pyramid:sync` for due fixtures on ESPN tiers (PL → NL) and **Football Web Pages for NL North/South**. Matchday sweeps may still need the Cursor agent for roast copy / edge cases.
-- **NL North / South results:** same sync job scrapes FWP team fixture pages (kick-off cells become `1 - 0` when final). Red cards are recorded as `0` from FWP tables (not exposed reliably there) — cross-check Flashscore/BBC if a dismissal is reported.
+- **NL North / South results:** same sync job scrapes FWP team fixture pages (kick-off cells become `1 - 0` when final). Red cards are recorded as `0` with `redsUnchecked: true` (FWP tables do not expose dismissals reliably). UI labels those results “(reds unchecked)”; cross-check Flashscore/BBC and clear the flag when verified.
+- **Auto roast:** after a successful ledger sync that appends matches, CI runs `english-pyramid-refresh-roast.cjs` so the Daily roast is never stale. Agent can overwrite with better copy.
 - **Live UI scores:** ESPN for PL→NL; Football Web Pages competition day pages for NLN/NLS (`app/lib/english-pyramid-fwp-live-scores.ts`), polled with the matchday API refresh.
 - **Due fixtures:** `scripts/english-pyramid-due-fixtures.cjs` keeps fixtures due until recorded (no lookback expiry), with a matchday sweep fallback for same-day games.
 - **Due fixtures:** `scripts/english-pyramid-due-fixtures.cjs` keeps fixtures due until recorded (no lookback expiry), with a matchday sweep fallback for same-day games.

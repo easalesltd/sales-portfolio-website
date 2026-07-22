@@ -173,6 +173,20 @@ function MatchOutcomeLetter({ outcome }: { outcome: 'W' | 'L' | 'D' }) {
   );
 }
 
+function FormChips({ outcomes }: { outcomes: Array<'W' | 'L' | 'D'> }) {
+  if (outcomes.length === 0) {
+    return <span className="text-neutral-600">—</span>;
+  }
+
+  return (
+    <span className="inline-flex items-center gap-0.5" aria-label={`Form ${outcomes.join(' ')}`}>
+      {outcomes.map((outcome, index) => (
+        <MatchOutcomeLetter key={`${outcome}-${index}`} outcome={outcome} />
+      ))}
+    </span>
+  );
+}
+
 function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
   const t = useSweepstakeTheme();
   const items: { key: string; label: string; className: string }[] = [];
@@ -213,6 +227,13 @@ function TeamMatchAdjustments({ result }: { result: TeamMatchDisplay }) {
       key: 'red',
       label: `(${signed}, ${result.redCards === 1 ? 'red card' : 'red cards'})`,
       className: redPoints > 0 ? t.c.positive : t.c.negative,
+    });
+  }
+  if (result.redsUnchecked) {
+    items.push({
+      key: 'reds-unchecked',
+      label: '(reds unchecked)',
+      className: 'text-amber-400/90',
     });
   }
 
@@ -1466,6 +1487,18 @@ function teamMatchDisplaysForTeam(
     .sort((a, b) => b.utcDate.localeCompare(a.utcDate));
 }
 
+/** Last five results, oldest → newest (standard form strip). */
+function lastFiveFormOutcomes(
+  teamCode: string,
+  matches: MatchPointsEntry[],
+  helpers: MatchScoringHelpers
+): Array<'W' | 'L' | 'D'> {
+  return teamMatchDisplaysForTeam(teamCode, matches, helpers)
+    .slice(0, 5)
+    .reverse()
+    .map(teamMatchDisplayOutcomeLetter);
+}
+
 function TeamResultsPanel({
   team,
   results,
@@ -1563,6 +1596,7 @@ function TeamMiniTable({
             <thead className="bg-neutral-950/80 text-neutral-400">
               <tr>
                 <th className="px-2 py-1.5 font-medium sm:px-3">Team</th>
+                <th className="px-2 py-1.5 font-medium text-right sm:px-3">Form</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pld</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">W</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">D</th>
@@ -1578,6 +1612,7 @@ function TeamMiniTable({
                 const isPinned = pinnedTeamCode === team.code;
                 const isHighlighted = displayTeamCode === team.code;
                 const isEliminated = team.eliminated === true;
+                const form = lastFiveFormOutcomes(team.code, scoringMatches, matchScoringHelpers);
 
                 return (
                   <tr
@@ -1619,6 +1654,9 @@ function TeamMiniTable({
                           </span>
                         ) : null}
                       </button>
+                    </td>
+                    <td className="px-2 py-1.5 text-right text-[11px] sm:px-3 sm:text-xs">
+                      <FormChips outcomes={form} />
                     </td>
                     <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.playedMatches}</td>
                     <td className="px-2 py-1.5 text-right tabular-nums sm:px-3">{team.wins}</td>

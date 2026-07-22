@@ -28,6 +28,7 @@
     "english-pyramid:sync": "node scripts/english-pyramid-sync-ledger.cjs --write",
     "english-pyramid:ci-sync-commit": "node scripts/english-pyramid-ci-sync-commit.cjs",
     "english-pyramid:standings": "node scripts/english-pyramid-standings-summary.cjs",
+    "english-pyramid:roast": "node scripts/english-pyramid-refresh-roast.cjs",
     "english-pyramid:due": "node scripts/english-pyramid-due-fixtures.cjs",
     "english-pyramid:fetch-fixtures": "node scripts/english-pyramid-fetch-fixtures.cjs",
     "english-pyramid:check-fixtures": "node scripts/english-pyramid-check-fixtures.cjs"

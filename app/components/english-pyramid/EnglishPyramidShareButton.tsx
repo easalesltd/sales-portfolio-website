@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { getDraftBand } from '@/app/data/english-pyramid-fantasy';
 import type { PlayerStanding } from '@/app/lib/english-pyramid-scoring';
 
 const CARD_WIDTH = 1080;
@@ -31,6 +32,27 @@ async function loadImage(src: string): Promise<HTMLImageElement | null> {
   });
 }
 
+function bandPoints(player: PlayerStanding): { title: number; survival: number } {
+  let title = 0;
+  let survival = 0;
+  for (const team of player.teamBreakdown) {
+    if (getDraftBand(team.code) === 'survival') survival += team.points;
+    else title += team.points;
+  }
+  return { title, survival };
+}
+
+function topClubLabel(player: PlayerStanding): string | null {
+  if (player.teamBreakdown.length === 0) return null;
+  const sorted = [...player.teamBreakdown].sort(
+    (a, b) =>
+      b.points - a.points || b.goalDifference - a.goalDifference || a.name.localeCompare(b.name)
+  );
+  const top = sorted[0];
+  if (!top || top.playedMatches === 0) return null;
+  return `${top.name} ${top.points} pts`;
+}
+
 export async function renderEnglishPyramidShareCard(
   player: PlayerStanding,
   rank: number,
@@ -59,10 +81,10 @@ export async function renderEnglishPyramidShareCard(
   ctx.textAlign = 'center';
   ctx.fillText('ENGLISH PYRAMID SWEEPSTAKE 2026/27', CARD_WIDTH / 2, 120);
 
-  const photoSize = 220;
-  const crestSize = 200;
-  const mediaGap = 48;
-  const mediaTop = 155;
+  const photoSize = 200;
+  const crestSize = 180;
+  const mediaGap = 44;
+  const mediaTop = 145;
 
   const managerPhoto = player.managerImage
     ? await loadImage(`${player.managerImage}?v=20260701`)
@@ -142,28 +164,40 @@ export async function renderEnglishPyramidShareCard(
 
   const displayName = player.teamName ?? player.name;
   ctx.fillStyle = '#f5f5f0';
-  ctx.font = '700 56px system-ui, sans-serif';
-  ctx.fillText(displayName, CARD_WIDTH / 2, 450);
+  ctx.font = '700 52px system-ui, sans-serif';
+  ctx.fillText(displayName, CARD_WIDTH / 2, 410);
 
   ctx.fillStyle = '#e8dfc8';
-  ctx.font = '500 32px system-ui, sans-serif';
-  ctx.fillText(player.name, CARD_WIDTH / 2, 500);
+  ctx.font = '500 30px system-ui, sans-serif';
+  ctx.fillText(player.name, CARD_WIDTH / 2, 455);
 
   ctx.fillStyle = '#d4af37';
-  ctx.font = '800 96px system-ui, sans-serif';
-  ctx.fillText(`${player.points} pts`, CARD_WIDTH / 2, 620);
+  ctx.font = '800 88px system-ui, sans-serif';
+  ctx.fillText(`${player.points} pts`, CARD_WIDTH / 2, 555);
 
   ctx.fillStyle = '#f5f5f0';
-  ctx.font = '600 44px system-ui, sans-serif';
-  ctx.fillText(`${ordinal(rank)} of ${totalPlayers}`, CARD_WIDTH / 2, 700);
+  ctx.font = '600 40px system-ui, sans-serif';
+  ctx.fillText(`${ordinal(rank)} of ${totalPlayers}`, CARD_WIDTH / 2, 620);
+
+  const bands = bandPoints(player);
+  ctx.fillStyle = 'rgba(232, 223, 200, 0.9)';
+  ctx.font = '600 28px system-ui, sans-serif';
+  ctx.fillText(`Title ${bands.title} · Survival ${bands.survival}`, CARD_WIDTH / 2, 680);
 
   ctx.fillStyle = 'rgba(232, 223, 200, 0.75)';
-  ctx.font = '500 28px system-ui, sans-serif';
+  ctx.font = '500 26px system-ui, sans-serif';
   ctx.fillText(
     `GD ${player.goalDifference >= 0 ? '+' : ''}${player.goalDifference} · W${player.wins} D${player.draws} L${player.losses}`,
     CARD_WIDTH / 2,
-    760
+    730
   );
+
+  const topClub = topClubLabel(player);
+  if (topClub) {
+    ctx.fillStyle = 'rgba(212, 175, 55, 0.85)';
+    ctx.font = '500 24px system-ui, sans-serif';
+    ctx.fillText(`Top club · ${topClub}`, CARD_WIDTH / 2, 780);
+  }
 
   ctx.fillStyle = 'rgba(212, 175, 55, 0.55)';
   ctx.font = '500 24px system-ui, sans-serif';

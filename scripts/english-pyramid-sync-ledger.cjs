@@ -75,8 +75,10 @@ async function resolveFinalResult(fixture, espnCache) {
         homeRedCards: fwpMatch.homeRedCards,
         awayRedCards: fwpMatch.awayRedCards,
       },
+      redsUnchecked: true,
       label: `FWP ${fwpMatch.period}`,
-      comment: 'Verified final result (Football Web Pages sync).',
+      comment:
+        'Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked.',
     };
   }
 
@@ -140,7 +142,9 @@ async function main() {
     }
 
     pendingEntries.push(
-      formatManualMatchEntry(fixture, resolved.goals, resolved.redCards, resolved.comment),
+      formatManualMatchEntry(fixture, resolved.goals, resolved.redCards, resolved.comment, {
+        redsUnchecked: resolved.redsUnchecked === true,
+      }),
     );
 
     console.log(
