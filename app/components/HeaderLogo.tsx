@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { ENGLISH_PYRAMID_SWEEPSTAKE_PATH } from '@/app/lib/english-pyramid-sweepstake-path';
 
 const SalesAgentDash = dynamic(() => import('./SalesAgentDash'), { ssr: false });
-const EnglishPyramidFantasy = dynamic(() => import('./EnglishPyramidFantasy'), { ssr: false });
 
 const DOUBLE_CLICK_MS = 340;
 const TRIPLE_CLICK_MS = 520;
@@ -17,7 +17,6 @@ const NAV_DELAY_MS = 300;
 export default function HeaderLogo() {
   const router = useRouter();
   const [dashOpen, setDashOpen] = useState(false);
-  const [pyramidOpen, setPyramidOpen] = useState(false);
   const navTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const clickTimesRef = useRef<number[]>([]);
 
@@ -43,7 +42,7 @@ export default function HeaderLogo() {
 
       if (times.length >= 3) {
         clickTimesRef.current = [];
-        setPyramidOpen(true);
+        router.push(ENGLISH_PYRAMID_SWEEPSTAKE_PATH);
         return;
       }
 
@@ -87,7 +86,6 @@ export default function HeaderLogo() {
         />
       </Link>
       {dashOpen ? <SalesAgentDash onClose={() => setDashOpen(false)} /> : null}
-      {pyramidOpen ? <EnglishPyramidFantasy onClose={() => setPyramidOpen(false)} /> : null}
     </>
   );
 }
