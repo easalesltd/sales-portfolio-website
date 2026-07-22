@@ -720,11 +720,38 @@ function MatchdaySchedule({
           <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[#d4af37]/80">
             Your games today
           </p>
-          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter fixtures by manager">
+          <label className="block sm:hidden">
+            <span className="sr-only">Filter fixtures by manager</span>
+            <select
+              value={managerFilter}
+              onChange={(event) => setManagerFilter(event.target.value)}
+              className="w-full rounded-md border border-neutral-700 bg-neutral-950/80 px-3 py-2 text-sm font-semibold text-neutral-100 focus:border-[#d4af37] focus:outline-none focus:ring-1 focus:ring-[#d4af37]"
+            >
+              <option value="all">All clubs ({dayEntries.length})</option>
+              {standings.map((player) => {
+                const count = dayEntries.filter(
+                  (entry) =>
+                    entry.homeManagers.some((manager) => manager.id === player.id) ||
+                    entry.awayManagers.some((manager) => manager.id === player.id)
+                ).length;
+                const label = player.teamName ?? player.name;
+                return (
+                  <option key={player.id} value={player.id}>
+                    {label} ({count})
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+          <div
+            className="hidden flex-wrap gap-1.5 sm:flex"
+            role="group"
+            aria-label="Filter fixtures by manager"
+          >
             <button
               type="button"
               onClick={() => setManagerFilter('all')}
-              className={`rounded-md border px-2 py-1 text-[11px] font-semibold transition sm:text-xs ${
+              className={`rounded-md border px-2 py-1 text-xs font-semibold transition ${
                 managerFilter === 'all'
                   ? 'border-[#d4af37] bg-[#d4af37]/20 text-[#f5f5f0]'
                   : 'border-neutral-700 bg-neutral-950/60 text-neutral-300 hover:border-[#d4af37]/40'
@@ -746,7 +773,7 @@ function MatchdaySchedule({
                   key={player.id}
                   type="button"
                   onClick={() => setManagerFilter(player.id)}
-                  className={`rounded-md border px-2 py-1 text-[11px] font-semibold transition sm:text-xs ${
+                  className={`rounded-md border px-2 py-1 text-xs font-semibold transition ${
                     active
                       ? 'border-[#d4af37] bg-[#d4af37]/20 text-[#f5f5f0]'
                       : 'border-neutral-700 bg-neutral-950/60 text-neutral-300 hover:border-[#d4af37]/40'
