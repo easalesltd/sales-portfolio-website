@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useCallback, useEffect, useState, useMemo, useRef, type CSSProperties } from 'react';
+import { createPortal } from 'react-dom';
 import { formatTeamLabel as formatPyramidTeamLabel } from '@/app/data/english-pyramid-fantasy';
 import type { EnglishPyramidFantasyResponse } from '@/app/api/english-pyramid-fantasy/route';
 import type {
@@ -1931,17 +1932,32 @@ function ImageLightbox({
   useNativeImage?: boolean;
   useBackgroundImage?: boolean;
 }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
   }, [onClose]);
 
-  return (
+  if (!mounted) return null;
+
+  // Portal above the sweepstake overlay — fixed inside overflow/backdrop-filter
+  // ancestors collapses to a black void on mobile Safari.
+  return createPortal(
     <div
-      className="fixed inset-0 z-[110] flex cursor-zoom-out items-center justify-center bg-black/90 p-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]"
+      className="fixed inset-0 z-[300] flex cursor-zoom-out items-center justify-center bg-black/90 p-4 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))]"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -1954,13 +1970,11 @@ function ImageLightbox({
       >
         Close
       </button>
-      <div className="pointer-events-none w-full max-w-xs sm:max-w-sm">
+      <div className="pointer-events-none flex w-full max-w-sm flex-col items-center sm:max-w-md">
         <div
           className={`relative w-full overflow-hidden rounded-xl border border-neutral-600 bg-neutral-950 ${
-            aspectClass === 'aspect-square'
-              ? 'aspect-square'
-              : `${aspectClass} max-h-[calc(100dvh-7rem)]`
-          } ${useNativeImage || useBackgroundImage ? 'flex items-center justify-center' : ''}`}
+            aspectClass === 'aspect-square' ? 'aspect-square' : aspectClass
+          } max-h-[min(70dvh,calc(100dvh-8rem))]`}
         >
           {useBackgroundImage ? (
             <span
@@ -1973,21 +1987,22 @@ function ImageLightbox({
             <img
               src={src}
               alt={label}
-              className={`max-h-full max-w-full object-contain ${imageClassName}`}
+              className={`absolute inset-0 h-full w-full object-contain ${imageClassName}`}
             />
           ) : (
             <Image
               src={src}
               alt={label}
               fill
-              sizes="(max-width: 640px) 320px, 384px"
+              sizes="(max-width: 640px) 90vw, 448px"
               className={`object-contain ${imageClassName}`}
             />
           )}
         </div>
         <p className="mt-3 text-center text-sm font-medium text-white">{label}</p>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
