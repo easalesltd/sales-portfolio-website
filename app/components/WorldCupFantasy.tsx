@@ -1552,12 +1552,18 @@ function OverallStandings({
                   scrollToPlayerSquad(row.id);
                 }
               }}
-              className={`grid ${mobileGridClass} cursor-pointer items-center gap-x-2 px-2 py-1.5 transition-colors hover:bg-neutral-800/60 ${
+              className={`grid ${mobileGridClass} cursor-pointer items-center gap-x-2 px-2 py-0.5 transition-colors hover:bg-neutral-800/60 ${
                 isWorldCupPlayerEliminated(row, t.id)
                   ? `${t.c.standingsRowEliminated} text-red-200/90`
                   : index === 0
                     ? t.c.leaderRowMobile
-                    : 'bg-neutral-950/40'
+                    : row.rankChange != null
+                      ? row.rankChange > 0
+                        ? 'bg-emerald-950/30'
+                        : row.rankChange < 0
+                          ? 'bg-red-950/30'
+                          : 'bg-neutral-950/40'
+                      : 'bg-neutral-950/40'
               }`}
             >
               <span className="text-[11px] text-neutral-300">
@@ -2322,25 +2328,31 @@ function WorldCupFantasyView({
         <div ref={scrollRef} className={t.c.body}>
           {pullToRefreshEnabled ? (
             <div
-              className="flex items-center justify-center overflow-hidden text-xs font-medium text-[#d4af37] transition-[height] duration-200 ease-out"
+              className="flex items-center justify-center overflow-hidden bg-neutral-950/80 text-xs font-medium text-[#d4af37] transition-[height] duration-200 ease-out"
               style={{ height: refreshing ? threshold : pullDistance }}
               aria-live="polite"
               aria-busy={refreshing}
             >
               {pullDistance > 0 || refreshing ? (
-                <span className="flex items-center gap-2 py-1">
+                <span className="flex items-center gap-2 py-2">
                   {refreshing ? (
                     <>
                       <span
-                        className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-[#d4af37]/30 border-t-[#d4af37]"
+                        className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-[#d4af37]/30 border-t-[#d4af37]"
                         aria-hidden
                       />
-                      Refreshing…
+                      <span className="font-semibold">Refreshing…</span>
                     </>
                   ) : pullDistance >= threshold ? (
-                    'Release to refresh'
+                    <>
+                      <span className="inline-block h-5 w-5 rounded-full border-2 border-[#d4af37]/50" aria-hidden />
+                      <span className="font-semibold">Release to refresh</span>
+                    </>
                   ) : (
-                    'Pull to refresh'
+                    <>
+                      <span className="inline-block h-5 w-5 rounded-full border-2 border-neutral-600" aria-hidden />
+                      Pull to refresh
+                    </>
                   )}
                 </span>
               ) : null}
