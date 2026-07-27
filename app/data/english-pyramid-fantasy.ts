@@ -427,9 +427,9 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
   {
     id: 'jon',
     name: 'Jon',
-    teamName: 'You can leave Leif your hat on FC',
+    teamName: 'You Can Leif Your Hat On FC',
     managerImage: '/images/english-pyramid-fantasy/managers/jon.png',
-    clubCrest: '/images/english-pyramid-fantasy/crests/you-can-leave-leif-your-hat-on-fc.png?v=1',
+    clubCrest: '/images/english-pyramid-fantasy/crests/you-can-leave-leif-your-hat-on-fc.png?v=2',
     teams: [
       'MCI',
       'BUR',
