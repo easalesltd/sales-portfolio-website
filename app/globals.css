@@ -335,21 +335,6 @@ html[data-sweepstake-standalone][data-sweepstake-theme='english-pyramid'] #main-
   z-index: 1;
 }
 
-/* Custom wiggle animation for the Wooden Spoon holder's card */
-@keyframes sweepstake-wiggle {
-  0%, 100% { transform: rotate(0deg) scale(1.015); }
-  25% { transform: rotate(-0.4deg) scale(1.015); }
-  75% { transform: rotate(0.4deg) scale(1.015); }
-}
-
-.animate-wiggle-hover:hover {
-  animation: sweepstake-wiggle 0.2s ease-in-out infinite;
-}
-
-.animate-wiggle-hover:hover .sweepstake-spoon-photo {
-  filter: grayscale(1) brightness(0.75);
-}
-
 /* Glassmorphism card utility */
 .sweepstake-card-glass {
   backdrop-filter: blur(12px);
@@ -411,7 +396,6 @@ html[data-sweepstake-standalone][data-sweepstake-theme='english-pyramid'] #main-
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-wiggle-hover:hover,
   .animate-leader-glow,
   .animate-leader-portrait,
   .animate-live-border,

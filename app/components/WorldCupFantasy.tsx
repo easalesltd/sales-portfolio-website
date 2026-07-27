@@ -2031,13 +2031,11 @@ function PlayerSquadCard({
       : t.c.squadCard;
 
   if (isLast && !isEliminated) {
-    animatedCardClass += ' animate-wiggle-hover hover:border-red-900/60';
+    animatedCardClass += ' hover:border-red-900/60';
   }
 
   const leaderPhotoClass =
     isLeader && !isEliminated && t.id === 'english-pyramid' ? 'animate-leader-portrait' : '';
-  const spoonPhotoClass =
-    isLast && !isEliminated && t.id === 'english-pyramid' ? 'sweepstake-spoon-photo' : '';
 
   return (
     <article
@@ -2063,7 +2061,7 @@ function PlayerSquadCard({
               <img
                 src={managerPhotoSrc(player.managerImage)}
                 alt={`${managerLabel} manager`}
-                className={`h-full w-full object-cover object-center transition-[filter] duration-300 ${spoonPhotoClass}`}
+                className="h-full w-full object-cover object-center"
               />
             </button>
             <button

@@ -299,9 +299,9 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
     teamResultsHeading: 'text-[10px] font-semibold uppercase tracking-wide text-[#d4af37]/90',
     teamResultsPoints: 'shrink-0 font-semibold tabular-nums text-[#d4af37]',
     squadCard:
-      'sweepstake-card-glass rounded-lg border border-[#1a2744] transition-all duration-300 motion-safe:hover:scale-[1.015] hover:shadow-[0_4px_20px_rgba(0,0,0,0.4)]',
+      'sweepstake-card-glass rounded-lg border border-[#1a2744] transition-shadow duration-300 hover:shadow-[0_4px_20px_rgba(0,0,0,0.4)]',
     squadCardLeader:
-      'sweepstake-card-glass animate-leader-glow rounded-lg border border-[#d4af37]/45 shadow-[0_0_25px_rgba(212,175,55,0.18)] ring-1 ring-[#d4af37]/30 transition-all duration-300 motion-safe:hover:scale-[1.015] hover:shadow-[0_12px_36px_rgba(0,0,0,0.5)] hover:border-[#d4af37]/65',
+      'sweepstake-card-glass animate-leader-glow rounded-lg border border-[#d4af37]/45 shadow-[0_0_25px_rgba(212,175,55,0.18)] ring-1 ring-[#d4af37]/30 transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(0,0,0,0.5)] hover:border-[#d4af37]/65',
     squadCardEliminated: 'sweepstake-card-glass rounded-lg border border-[#1a2744]',
     squadEliminatedBanner: '',
     squadEliminatedBadge: '',
