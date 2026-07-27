@@ -1497,6 +1497,17 @@ function isWorldCupPlayerEliminated(player: PlayerStanding, themeId: string): bo
   return themeId === 'world-cup' && player.allTeamsEliminated === true;
 }
 
+function playerSquadAnchorId(playerId: string): string {
+  return `squad-${playerId}`;
+}
+
+function scrollToPlayerSquad(playerId: string) {
+  document.getElementById(playerSquadAnchorId(playerId))?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  });
+}
+
 function OverallStandings({
   standings,
   scoringMatches,
@@ -1530,7 +1541,17 @@ function OverallStandings({
           {standings.map((row, index) => (
             <li
               key={row.id}
-              className={`grid ${mobileGridClass} items-center gap-x-2 px-2 py-1.5 ${
+              role="link"
+              tabIndex={0}
+              aria-label={`View ${playerDisplayLabel(row)} squad`}
+              onClick={() => scrollToPlayerSquad(row.id)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  scrollToPlayerSquad(row.id);
+                }
+              }}
+              className={`grid ${mobileGridClass} cursor-pointer items-center gap-x-2 px-2 py-1.5 transition-colors hover:bg-neutral-800/60 ${
                 isWorldCupPlayerEliminated(row, t.id)
                   ? `${t.c.standingsRowEliminated} text-red-200/90`
                   : index === 0
@@ -1601,13 +1622,23 @@ function OverallStandings({
             {standings.map((row, index) => (
               <tr
                 key={row.id}
-                className={
+                role="link"
+                tabIndex={0}
+                aria-label={`View ${playerDisplayLabel(row)} squad`}
+                onClick={() => scrollToPlayerSquad(row.id)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    scrollToPlayerSquad(row.id);
+                  }
+                }}
+                className={`cursor-pointer transition-colors hover:bg-neutral-800/50 ${
                   isWorldCupPlayerEliminated(row, t.id)
                     ? `${t.c.standingsRowEliminated} text-red-100/90`
                     : index === 0
                       ? t.c.leaderRow
-                      : undefined
-                }
+                      : ''
+                }`}
               >
                 <td className="px-3 py-2 text-neutral-300">
                   <RankWithMovement
@@ -2009,7 +2040,11 @@ function PlayerSquadCard({
     isLast && !isEliminated && t.id === 'english-pyramid' ? 'sweepstake-spoon-photo' : '';
 
   return (
-    <article className={animatedCardClass} aria-label={isEliminated ? `${managerLabel} eliminated from the World Cup` : undefined}>
+    <article
+      id={playerSquadAnchorId(player.id)}
+      className={`scroll-mt-4 ${animatedCardClass}`}
+      aria-label={isEliminated ? `${managerLabel} eliminated from the World Cup` : undefined}
+    >
       {isEliminated ? (
         <div className={t.c.squadEliminatedBanner}>
           Eliminated — every nation out of the World Cup
