@@ -1933,7 +1933,7 @@ function ImageLightbox({
         >
           {useBackgroundImage ? (
             <span
-              className={`absolute inset-3 block bg-contain bg-center bg-no-repeat sm:inset-4 ${imageClassName}`}
+              className={`absolute inset-0 block bg-contain bg-center bg-no-repeat ${imageClassName}`}
               style={{ backgroundImage: `url(${src})` }}
               role="img"
               aria-label={label}
@@ -2037,9 +2037,9 @@ function PlayerSquadCard({
               className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} relative aspect-square w-full min-w-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
               aria-label={`View enlarged ${managerLabel} club crest`}
             >
-              {/* background-size: contain cannot stretch — avoids img flex sizing bugs on mobile */}
+              {/* Fill the frame like the manager photo — avoid inset padding that shrinks crests. */}
               <span
-                className="absolute inset-2.5 block bg-contain bg-center bg-no-repeat sm:inset-3"
+                className="absolute inset-0 block bg-contain bg-center bg-no-repeat"
                 style={{ backgroundImage: `url(${player.clubCrest})` }}
                 aria-hidden
               />
