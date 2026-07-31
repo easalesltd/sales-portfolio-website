@@ -389,13 +389,14 @@ export type EnglishPyramidPrizeFundConfig = {
 };
 
 export const ENGLISH_PYRAMID_PRIZE_FUND: EnglishPyramidPrizeFundConfig = {
-  fundName: 'Vanguard FTSE All-World UCITS ETF (Accumulating)',
-  yahooSymbol: 'VWRP.L',
-  investedAmountGbp: 140,
-  units: null,
-  purchasePriceGbp: null,
-  investedAt: null,
-  note: 'Fill in units, purchasePriceGbp, and investedAt after the prize pot is invested.',
+  fundName: 'HSBC FTSE All-World Index C Acc',
+  yahooSymbol: '0P00013P6I.L',
+  investedAmountGbp: 139.25,
+  /** Estimated from £139.25 ÷ latest NAV (£3.9976 on 30 Jul) until the broker fill confirms quantity. */
+  units: 34.8334,
+  purchasePriceGbp: 3.9976,
+  investedAt: '2026-07-31',
+  note: 'Buy order 44626CF8752 settled 31 Jul 2026. Replace units/purchasePriceGbp when the broker confirms the fill.',
 };
 
 export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlayer[] = [
