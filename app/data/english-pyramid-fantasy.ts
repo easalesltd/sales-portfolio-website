@@ -395,7 +395,7 @@ export const ENGLISH_PYRAMID_PRIZE_FUND: EnglishPyramidPrizeFundConfig = {
   /** Confirmed AJ Bell holding: 33.88 units, cost £139.25. */
   units: 33.88,
   /** Cost basis ÷ units (£139.25 ÷ 33.88). */
-  purchasePriceGbp: 4.11038961,
+  purchasePriceGbp: 4.11009445,
   investedAt: '2026-07-31',
   note: 'AJ Bell fill confirmed: 33.88 units of HSBC FTSE All-World Index C Acc at £139.25 cost (order 44626CF8752, settled 31 Jul 2026).',
 };
