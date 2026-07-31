@@ -392,11 +392,12 @@ export const ENGLISH_PYRAMID_PRIZE_FUND: EnglishPyramidPrizeFundConfig = {
   fundName: 'HSBC FTSE All-World Index C Acc',
   yahooSymbol: '0P00013P6I.L',
   investedAmountGbp: 139.25,
-  /** Estimated from £139.25 ÷ latest NAV (£3.9976 on 30 Jul) until the broker fill confirms quantity. */
-  units: 34.8334,
-  purchasePriceGbp: 3.9976,
+  /** Confirmed AJ Bell holding: 33.88 units, cost £139.25. */
+  units: 33.88,
+  /** Cost basis ÷ units (£139.25 ÷ 33.88). */
+  purchasePriceGbp: 4.11038961,
   investedAt: '2026-07-31',
-  note: 'Buy order 44626CF8752 settled 31 Jul 2026. Replace units/purchasePriceGbp when the broker confirms the fill.',
+  note: 'AJ Bell fill confirmed: 33.88 units of HSBC FTSE All-World Index C Acc at £139.25 cost (order 44626CF8752, settled 31 Jul 2026).',
 };
 
 export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlayer[] = [
