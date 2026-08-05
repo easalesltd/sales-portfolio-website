@@ -1,12 +1,16 @@
 'use client';
 
 import type { MatchdayEntry } from '@/app/lib/english-pyramid-scoring';
+import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
+import { useSweepstakeTheme } from '../SweepstakeThemeContext';
 
 type Props = {
   entries: MatchdayEntry[];
 };
 
-function managerLabel(manager: MatchdayEntry['homeManagers'][number]): string {
+type Manager = MatchdayEntry['homeManagers'][number];
+
+function managerLabel(manager: Manager): string {
   return manager.teamName ?? manager.name;
 }
 
@@ -16,6 +20,56 @@ function scoreLabel(entry: MatchdayEntry): string {
   const away =
     entry.status === 'in-play' ? entry.liveAwayGoals : entry.awayGoals;
   return home != null && away != null ? `${home}–${away}` : 'v';
+}
+
+function ManagerSide({
+  managers,
+  teamName,
+  align,
+}: {
+  managers: Manager[];
+  teamName: string;
+  align: 'left' | 'right';
+}) {
+  const t = useSweepstakeTheme();
+  const primaryColor = managers[0] ? managerColorForPlayer(managers[0].id, t.id) : undefined;
+
+  return (
+    <div className={`min-w-0 ${align === 'right' ? 'text-right' : 'text-left'}`}>
+      <p className="truncate text-xs font-bold sm:text-sm">
+        {managers.map((manager, index) => {
+          const color = managerColorForPlayer(manager.id, t.id);
+          return (
+            <span key={`${manager.id}-${manager.teamCode}`}>
+              {index > 0 ? <span className="text-neutral-600"> · </span> : null}
+              <span style={color ? { color } : undefined}>{managerLabel(manager)}</span>
+            </span>
+          );
+        })}
+      </p>
+      <p
+        className={`mt-0.5 flex items-center gap-1.5 truncate text-[10px] text-neutral-300 sm:text-xs ${
+          align === 'right' ? 'justify-end' : 'justify-start'
+        }`}
+      >
+        {align === 'left' ? (
+          <span
+            className="inline-block h-2 w-2 shrink-0 rounded-full"
+            style={{ backgroundColor: primaryColor ?? '#6b7280' }}
+            aria-hidden
+          />
+        ) : null}
+        <span className="truncate">{teamName}</span>
+        {align === 'right' ? (
+          <span
+            className="inline-block h-2 w-2 shrink-0 rounded-full"
+            style={{ backgroundColor: primaryColor ?? '#6b7280' }}
+            aria-hidden
+          />
+        ) : null}
+      </p>
+    </div>
+  );
 }
 
 export default function ManagerHeadToHead({ entries }: Props) {
@@ -32,19 +86,19 @@ export default function ManagerHeadToHead({ entries }: Props) {
 
   return (
     <section
-      className="mt-3 overflow-hidden rounded-lg border border-fuchsia-400/30 bg-gradient-to-br from-fuchsia-950/35 via-[#141f38]/80 to-cyan-950/25"
+      className="mt-3 overflow-hidden rounded-lg border border-[#d4af37]/30 bg-[#141f38]/70 [background-image:linear-gradient(135deg,rgba(212,175,55,0.12)_0%,transparent_60%)]"
       aria-labelledby="manager-head-to-head-title"
     >
       <div className="flex items-center justify-between border-b border-white/10 px-3 py-2 sm:px-4">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-fuchsia-300/80">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]/80">
             Rivalry radar
           </p>
           <h4 id="manager-head-to-head-title" className="text-sm font-bold text-white sm:text-base">
             Manager head-to-head
           </h4>
         </div>
-        <span className="rounded-full border border-fuchsia-300/25 bg-fuchsia-400/10 px-2 py-0.5 text-[10px] font-bold text-fuchsia-200">
+        <span className="rounded-full border border-[#d4af37]/30 bg-[#d4af37]/10 px-2 py-0.5 text-[10px] font-bold text-[#f2d36b]">
           {clashes.length} clash{clashes.length === 1 ? '' : 'es'}
         </span>
       </div>
@@ -56,24 +110,22 @@ export default function ManagerHeadToHead({ entries }: Props) {
             className="rounded-md border border-white/10 bg-black/25 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
           >
             <div className="grid grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)] items-center gap-2">
-              <div className="min-w-0 text-right">
-                <p className="truncate text-xs font-bold text-fuchsia-200 sm:text-sm">
-                  {entry.homeManagers.map(managerLabel).join(' · ')}
-                </p>
-                <p className="truncate text-[10px] text-neutral-300 sm:text-xs">{entry.homeTeam.name}</p>
-              </div>
+              <ManagerSide
+                managers={entry.homeManagers}
+                teamName={entry.homeTeam.name}
+                align="right"
+              />
               <div className="text-center">
                 <p className="text-base font-black tabular-nums text-white">{scoreLabel(entry)}</p>
                 <p className="text-[9px] uppercase tracking-wide text-neutral-500">
                   {entry.status === 'in-play' ? 'Live' : entry.status === 'finished' ? 'FT' : 'KO'}
                 </p>
               </div>
-              <div className="min-w-0">
-                <p className="truncate text-xs font-bold text-cyan-200 sm:text-sm">
-                  {entry.awayManagers.map(managerLabel).join(' · ')}
-                </p>
-                <p className="truncate text-[10px] text-neutral-300 sm:text-xs">{entry.awayTeam.name}</p>
-              </div>
+              <ManagerSide
+                managers={entry.awayManagers}
+                teamName={entry.awayTeam.name}
+                align="left"
+              />
             </div>
           </article>
         ))}
