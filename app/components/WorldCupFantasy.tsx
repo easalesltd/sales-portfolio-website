@@ -2329,22 +2329,13 @@ function WorldCupFantasyView({
                 </h2>
               ) : null}
             </div>
-            <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
-              {t.id === 'english-pyramid' && data ? (
-                <button
-                  type="button"
-                  onClick={() => setShowRedrawReveal(true)}
-                  className="rounded-md border border-[#d4af37]/40 bg-[#d4af37]/10 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#f2d36b] transition hover:bg-[#d4af37]/20 sm:text-xs"
-                >
-                  Redraw reveal
-                </button>
-              ) : null}
-              {!standalone && onClose ? (
+            {!standalone && onClose ? (
+              <div className="flex shrink-0 gap-2">
                 <button type="button" onClick={onClose} className={t.c.closeBtn}>
                   Close
                 </button>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
           </div>
         </header>
 
