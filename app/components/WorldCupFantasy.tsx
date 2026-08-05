@@ -805,12 +805,14 @@ function MatchdaySchedule({
   scoringMatches,
   matchScoringHelpers,
   flashingMatchIds = [],
+  squadsSealed = false,
 }: {
   schedule: MatchdayScheduleData;
   standings: PlayerStanding[];
   scoringMatches: MatchPointsEntry[];
   matchScoringHelpers: MatchScoringHelpers;
   flashingMatchIds?: readonly string[];
+  squadsSealed?: boolean;
 }) {
   const t = useSweepstakeTheme();
   const [selectedDate, setSelectedDate] = useState(schedule.defaultDate);
@@ -976,9 +978,11 @@ function MatchdaySchedule({
 
       {entries.length === 0 ? (
         <p className="mt-2 text-sm text-neutral-300">
-          {managerFilter !== 'all'
-            ? 'No fixtures for this manager on this day.'
-            : 'No sweepstake fixtures scheduled for this day.'}
+          {squadsSealed
+            ? 'Fixtures unlock with the redraw at 7pm Friday — no clubs assigned yet.'
+            : managerFilter !== 'all'
+              ? 'No fixtures for this manager on this day.'
+              : 'No sweepstake fixtures scheduled for this day.'}
         </p>
       ) : (
         <ul className={t.c.fixturesList}>
@@ -1482,7 +1486,10 @@ function StandingsProgressChart({
 }
 
 function teamsLeftLabel(row: PlayerStanding, themeId: string): string {
-  if (themeId === 'english-pyramid') return `${row.teamCount} clubs`;
+  if (themeId === 'english-pyramid') {
+    if (row.teamCount === 0) return 'Sealed';
+    return `${row.teamCount} clubs`;
+  }
   if (row.allTeamsEliminated) return 'Eliminated';
   const alive = row.teamBreakdown.filter((team) => !team.eliminated).length;
   if (alive === row.teamCount) return `${row.teamCount} teams`;
@@ -1492,7 +1499,10 @@ function teamsLeftLabel(row: PlayerStanding, themeId: string): string {
 }
 
 function teamsLeftCount(row: PlayerStanding, themeId: string): string | number {
-  if (themeId === 'english-pyramid') return row.teamCount;
+  if (themeId === 'english-pyramid') {
+    if (row.teamCount === 0) return '—';
+    return row.teamCount;
+  }
   if (row.allTeamsEliminated) return 'OUT';
   const alive = row.teamBreakdown.filter((team) => !team.eliminated).length;
   if (alive === 0) return 'OUT';
@@ -2032,6 +2042,7 @@ function PlayerSquadCard({
   matchScoringHelpers,
   bonusColumnLabel,
   totalPlayers,
+  squadsSealed = false,
 }: {
   rank: number;
   player: PlayerStanding;
@@ -2040,6 +2051,7 @@ function PlayerSquadCard({
   matchScoringHelpers: MatchScoringHelpers;
   bonusColumnLabel?: string;
   totalPlayers: number;
+  squadsSealed?: boolean;
 }) {
   const t = useSweepstakeTheme();
   const managerLabel = player.teamName ?? player.name;
@@ -2157,7 +2169,11 @@ function PlayerSquadCard({
                 )}
               </span>
             </div>
-            <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">{player.draftNote}</p>
+            <p className="mt-1 text-xs leading-relaxed text-neutral-400 sm:text-sm">
+              {squadsSealed
+                ? 'Fourteen clubs sealed until redraw night.'
+                : player.draftNote}
+            </p>
             {isEliminated ? (
               <p className="mt-2 text-sm font-medium leading-relaxed text-red-200/95">
                 {player.id === 'dave'
@@ -2165,31 +2181,44 @@ function PlayerSquadCard({
                   : 'Every nation in this squad is out. No more points incoming — only the scoreboard and the shame.'}
               </p>
             ) : null}
-            <p className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-300">
-              {t.id === 'english-pyramid'
-                ? sortTeamCodesByDraftDivision(player.teams).map((code) => {
-                    const team = player.teamBreakdown.find((entry) => entry.code === code);
-                    const divisionId = team?.flag ?? '';
-                    return (
-                      <span key={code} className="inline-flex items-center">
-                        <DivisionBadge divisionId={divisionId} />
-                        {formatTeamNameWithSeed(code)}
-                      </span>
-                    );
-                  })
-                : player.teams.map(formatTeamLabel).join(' · ')}
-            </p>
+            {!squadsSealed ? (
+              <p className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-300">
+                {t.id === 'english-pyramid'
+                  ? sortTeamCodesByDraftDivision(player.teams).map((code) => {
+                      const team = player.teamBreakdown.find((entry) => entry.code === code);
+                      const divisionId = team?.flag ?? '';
+                      return (
+                        <span key={code} className="inline-flex items-center">
+                          <DivisionBadge divisionId={divisionId} />
+                          {formatTeamNameWithSeed(code)}
+                        </span>
+                      );
+                    })
+                  : player.teams.map(formatTeamLabel).join(' · ')}
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
       <div className="border-t border-neutral-800 px-3 pb-3 pt-2 sm:px-4">
-        <TeamMiniTable
-          teams={player.teamBreakdown}
-          scoringMatches={scoringMatches}
-          matchScoringHelpers={matchScoringHelpers}
-          formatTeamLabel={formatTeamLabel}
-          bonusColumnLabel={bonusColumnLabel}
-        />
+        {squadsSealed ? (
+          <div className="rounded-md border border-dashed border-[#d4af37]/35 bg-[#0a0f1a]/60 px-3 py-6 text-center">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]/80">
+              Squad sealed
+            </p>
+            <p className="mt-2 text-sm font-medium text-[#e8dfc8]/75">
+              No clubs drawn yet — reveal at 7pm Friday.
+            </p>
+          </div>
+        ) : (
+          <TeamMiniTable
+            teams={player.teamBreakdown}
+            scoringMatches={scoringMatches}
+            matchScoringHelpers={matchScoringHelpers}
+            formatTeamLabel={formatTeamLabel}
+            bonusColumnLabel={bonusColumnLabel}
+          />
+        )}
       </div>
       {enlarged === 'manager' ? (
         <ImageLightbox
@@ -2445,6 +2474,7 @@ function WorldCupFantasyView({
                 scoringMatches={data.allScoringMatches}
                 matchScoringHelpers={matchScoringHelpers}
                 flashingMatchIds={flashingMatchIds}
+                squadsSealed={data.redraw?.squadsHidden ?? false}
               />
 
               <section>
@@ -2468,6 +2498,7 @@ function WorldCupFantasyView({
                       matchScoringHelpers={matchScoringHelpers}
                       bonusColumnLabel={bonusColumnLabel}
                       totalPlayers={data.standings.length}
+                      squadsSealed={data.redraw?.squadsHidden ?? false}
                     />
                   ))}
                 </div>

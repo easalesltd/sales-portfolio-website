@@ -415,8 +415,9 @@ export type EnglishPyramidRedrawConfig = {
 
 export const ENGLISH_PYRAMID_REDRAW: EnglishPyramidRedrawConfig = {
   revealAtUtc: '2026-08-07T18:00:00Z',
-  hideSquadsUntilReveal: false,
-  headline: 'Squads are being redrawn to the latest betting odds.',
+  /** Sealed until 7pm Friday — push the real redraw anytime before then with this left true. */
+  hideSquadsUntilReveal: true,
+  headline: 'No squads yet — redraw night is Friday 7pm.',
 };
 
 export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlayer[] = [

@@ -56,19 +56,16 @@ function hideSquads(standings: PlayerStanding[]): PlayerStanding[] {
     ...player,
     teams: [],
     teamBreakdown: [],
-    draftNote: 'Squad sealed until the redraw reveal.',
+    teamCount: 0,
+    draftNote: '',
   }));
 }
 
-function hideScheduleManagers(schedule: MatchdaySchedule): MatchdaySchedule {
+function emptyMatchdaySchedule(schedule: MatchdaySchedule): MatchdaySchedule {
   return {
-    ...schedule,
-    schedulesByDate: Object.fromEntries(
-      Object.entries(schedule.schedulesByDate).map(([date, entries]) => [
-        date,
-        entries.map((entry) => ({ ...entry, homeManagers: [], awayManagers: [] })),
-      ])
-    ),
+    defaultDate: schedule.defaultDate,
+    fixtureDates: [],
+    schedulesByDate: {},
   };
 }
 
@@ -119,7 +116,7 @@ export async function GET() {
     },
     standings: squadsHidden ? hideSquads(standings) : standings,
     revealPlayers: squadsHidden ? hideSquads(revealPlayers) : revealPlayers,
-    matchdaySchedule: squadsHidden ? hideScheduleManagers(matchdaySchedule) : matchdaySchedule,
+    matchdaySchedule: squadsHidden ? emptyMatchdaySchedule(matchdaySchedule) : matchdaySchedule,
     allScoringMatches,
     recentScoringMatches,
     finishedMatchCount,
