@@ -5,6 +5,7 @@ import {
   ENGLISH_PYRAMID_MANUAL_MATCHES,
   ENGLISH_PYRAMID_FANTASY_PLAYERS,
   ENGLISH_PYRAMID_FANTASY_SCORING,
+  ENGLISH_PYRAMID_REDRAW,
   ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
   ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
 } from '@/app/data/english-pyramid-fantasy';
@@ -24,6 +25,13 @@ import {
 
 export const runtime = 'nodejs';
 
+export type EnglishPyramidRedrawState = {
+  revealAtUtc: string;
+  headline: string;
+  /** True while the clock has not reached the reveal and squads are being withheld. */
+  squadsHidden: boolean;
+};
+
 export type EnglishPyramidFantasyResponse = {
   ok: true;
   title: string;
@@ -32,6 +40,7 @@ export type EnglishPyramidFantasyResponse = {
   sweepstakeIntro: string;
   sweepstakeFairness: string;
   prizeFund: EnglishPyramidPrizeFundSnapshot;
+  redraw: EnglishPyramidRedrawState;
   standings: PlayerStanding[];
   /** Stable draft order for the recordable redraw reveal (standings reorder during the season). */
   revealPlayers: PlayerStanding[];
@@ -40,6 +49,28 @@ export type EnglishPyramidFantasyResponse = {
   recentScoringMatches: MatchPointsEntry[];
   finishedMatchCount: number;
 };
+
+/** Withhold club-level detail so a pre-pushed redraw cannot be read before reveal night. */
+function hideSquads(standings: PlayerStanding[]): PlayerStanding[] {
+  return standings.map((player) => ({
+    ...player,
+    teams: [],
+    teamBreakdown: [],
+    draftNote: 'Squad sealed until the redraw reveal.',
+  }));
+}
+
+function hideScheduleManagers(schedule: MatchdaySchedule): MatchdaySchedule {
+  return {
+    ...schedule,
+    schedulesByDate: Object.fromEntries(
+      Object.entries(schedule.schedulesByDate).map(([date, entries]) => [
+        date,
+        entries.map((entry) => ({ ...entry, homeManagers: [], awayManagers: [] })),
+      ])
+    ),
+  };
+}
 
 export async function GET() {
   const recordedMatches = ENGLISH_PYRAMID_MANUAL_MATCHES.map(manualMatchToResult);
@@ -69,6 +100,10 @@ export async function GET() {
     standingsById.get(player.id)
   ).filter((player): player is PlayerStanding => player != null);
 
+  const squadsHidden =
+    ENGLISH_PYRAMID_REDRAW.hideSquadsUntilReveal &&
+    Date.now() < new Date(ENGLISH_PYRAMID_REDRAW.revealAtUtc).getTime();
+
   const body: EnglishPyramidFantasyResponse = {
     ok: true,
     title: 'English Pyramid Sweepstake 2026/27',
@@ -77,9 +112,14 @@ export async function GET() {
     sweepstakeIntro: ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
     sweepstakeFairness: ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
     prizeFund,
-    standings,
-    revealPlayers,
-    matchdaySchedule,
+    redraw: {
+      revealAtUtc: ENGLISH_PYRAMID_REDRAW.revealAtUtc,
+      headline: ENGLISH_PYRAMID_REDRAW.headline,
+      squadsHidden,
+    },
+    standings: squadsHidden ? hideSquads(standings) : standings,
+    revealPlayers: squadsHidden ? hideSquads(revealPlayers) : revealPlayers,
+    matchdaySchedule: squadsHidden ? hideScheduleManagers(matchdaySchedule) : matchdaySchedule,
     allScoringMatches,
     recentScoringMatches,
     finishedMatchCount,

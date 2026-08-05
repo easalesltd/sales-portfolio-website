@@ -24,7 +24,12 @@ When the user asks to redraw squads to current betting odds (planned ~7 Aug 2026
 - **Do not ask the user for odds sources.** Research them the same way as the original draft: web search UK bookmaker / odds-roundup pages (Goal.com, BettingLounge, BetVictor, Sky Bet, Bet365, Betfair, Racing Post, Football League World, News & Star, etc.). Note the source on each club’s `oddsNote`. Where NL North/South markets are thin, estimate ranks from published favourites / season previews and say so in `oddsNote`.
 - **Do not ask the user to confirm which division each club is in.** By re-draft day, published outright / relegation markets list clubs in their **2026/27** divisions — trust those markets for `divisionId` / draft pools.
 - Keep the same fairness formula and title↔survival pairing (`((p + divisionIndex) mod 7) + 1`). Rebuild the title top-7 + survival bottom-7 per division, reassign `ENGLISH_PYRAMID_FANTASY_PLAYERS`, refresh fixtures if the club set changes, push `origin/main` unless asked otherwise.
-- After the re-draft is live, open the recordable reveal at `/p/ep2627?reveal=1` (or the **Redraw reveal** button in the header). Auto-advances through all seven managers with Space/arrows; pause with **P**.
+### Reveal night (7pm Friday)
+
+- `ENGLISH_PYRAMID_REDRAW` in `app/data/english-pyramid-fantasy.ts` holds `revealAtUtc` (**7pm Europe/London = 18:00 UTC in BST**), `headline`, and `hideSquadsUntilReveal`.
+- A countdown banner sits at the top of `/p/ep2627` until `revealAtUtc`, then flips to “Play the reveal”. If the page is open when the clock strikes, the ceremony auto-launches once (guarded by localStorage).
+- **When pushing the redrafted squads before 7pm, set `hideSquadsUntilReveal: true`.** The API then blanks `teams`, `teamBreakdown`, `draftNote`, and fixture managers until the reveal time, so the new draw cannot be read early. It unlocks automatically on the clock — no second deploy needed (flip the flag back to `false` at leisure).
+- Recordable ceremony: `/p/ep2627?reveal=1` or the **Redraw reveal** header button. Full-screen, no scrolling, slot-machine shuffle that settles each of the 14 clubs per manager. Space/→ next · ← back · **P** pause · Esc exit.
 
 ## Shared UI
 

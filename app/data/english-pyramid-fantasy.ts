@@ -400,6 +400,25 @@ export const ENGLISH_PYRAMID_PRIZE_FUND: EnglishPyramidPrizeFundConfig = {
   note: 'AJ Bell fill confirmed: 33.88 units of HSBC FTSE All-World Index C Acc at £139.25 cost (order 44626CF8752, settled 31 Jul 2026).',
 };
 
+/**
+ * Redraw reveal night. Squads unlock automatically at `revealAtUtc`
+ * (7pm Europe/London on 7 Aug 2026 = 18:00 UTC during BST).
+ *
+ * Set `hideSquadsUntilReveal` to true when the redrafted squads are pushed
+ * ahead of the reveal so the API withholds clubs until the clock strikes.
+ */
+export type EnglishPyramidRedrawConfig = {
+  revealAtUtc: string;
+  hideSquadsUntilReveal: boolean;
+  headline: string;
+};
+
+export const ENGLISH_PYRAMID_REDRAW: EnglishPyramidRedrawConfig = {
+  revealAtUtc: '2026-08-07T18:00:00Z',
+  hideSquadsUntilReveal: false,
+  headline: 'Squads are being redrawn to the latest betting odds.',
+};
+
 export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlayer[] = [
   {
     id: 'ash',

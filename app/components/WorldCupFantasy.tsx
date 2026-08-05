@@ -36,6 +36,7 @@ import EnglishPyramidFixtureRow from './english-pyramid/EnglishPyramidFixtureRow
 import ManagerHeadToHead from './english-pyramid/ManagerHeadToHead';
 import EnglishPyramidWeeklyShareButton from './english-pyramid/EnglishPyramidWeeklyShareButton';
 import RedrawRevealExperience from './english-pyramid/RedrawRevealExperience';
+import RedrawCountdownBanner from './english-pyramid/RedrawCountdownBanner';
 import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeContext';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import SweepstakeAwards from './english-pyramid/SweepstakeAwards';
@@ -2350,6 +2351,7 @@ function WorldCupFantasyView({
         {showRedrawReveal && data ? (
           <RedrawRevealExperience
             players={data.revealPlayers?.length ? data.revealPlayers : data.standings}
+            squadsHidden={data.redraw?.squadsHidden ?? false}
             onClose={() => {
               setShowRedrawReveal(false);
               if (typeof window !== 'undefined') {
@@ -2401,6 +2403,25 @@ function WorldCupFantasyView({
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (
             <div className="space-y-6">
+              {t.id === 'english-pyramid' && data.redraw ? (
+                <RedrawCountdownBanner
+                  revealAtUtc={data.redraw.revealAtUtc}
+                  headline={data.redraw.headline}
+                  onOpenReveal={() => setShowRedrawReveal(true)}
+                  onGoLive={() => {
+                    const key = `epffl-redraw-autoplayed:${data.redraw.revealAtUtc}`;
+                    try {
+                      if (window.localStorage.getItem(key)) return;
+                      window.localStorage.setItem(key, '1');
+                    } catch {
+                      // Private browsing — still fine to launch once this session.
+                    }
+                    void load({ silent: true });
+                    setShowRedrawReveal(true);
+                  }}
+                />
+              ) : null}
+
               <LatestResultsTicker
                 matches={data.recentScoringMatches}
                 standings={data.standings}
