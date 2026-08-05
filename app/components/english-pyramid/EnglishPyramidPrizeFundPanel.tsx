@@ -53,6 +53,7 @@ function formatAsOf(iso: string | null): string | null {
 
 export default function EnglishPyramidPrizeFundPanel({ prizeFund }: Props) {
   const [milestone, setMilestone] = useState<string | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const value = prizeFund.currentValueGbp;
   const change = prizeFund.changeGbp;
   const changePct = prizeFund.changePercent;
@@ -102,34 +103,100 @@ export default function EnglishPyramidPrizeFundPanel({ prizeFund }: Props) {
     }
   }, [prizeFund.invested, prizeFund.investedAmountGbp, value]);
 
+  const displayValue = value != null ? formatGbp(value) : formatGbp(prizeFund.investedAmountGbp);
+
   return (
     <section
-      className="relative overflow-hidden rounded-lg border border-[#d4af37]/35 bg-[#141f38]/70 px-4 py-3 [background-image:linear-gradient(135deg,rgba(212,175,55,0.12)_0%,transparent_55%)]"
+      className="relative overflow-hidden rounded-lg border border-[#d4af37]/35 bg-[#141f38]/70 px-3 py-2.5 sm:px-4 sm:py-3 [background-image:linear-gradient(135deg,rgba(212,175,55,0.12)_0%,transparent_55%)]"
       aria-label="Prize pot"
     >
       {milestone ? (
         <div
-          className="mb-3 flex items-center justify-between gap-3 rounded-md border border-emerald-400/35 bg-emerald-950/50 px-3 py-2 text-xs font-semibold text-emerald-200 shadow-[0_0_20px_rgba(52,211,153,0.12)]"
+          className="mb-2 flex items-center justify-between gap-3 rounded-md border border-emerald-400/35 bg-emerald-950/50 px-3 py-2.5 text-xs font-semibold text-emerald-200 shadow-[0_0_20px_rgba(52,211,153,0.12)] sm:mb-3"
           role="status"
         >
           <span>🏆 {milestone}</span>
           <button
             type="button"
             onClick={() => setMilestone(null)}
-            className="shrink-0 text-emerald-100/60 hover:text-emerald-100"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-emerald-100/60 hover:text-emerald-100"
             aria-label="Dismiss prize milestone"
           >
             ×
           </button>
         </div>
       ) : null}
-      <div className="flex flex-wrap items-start justify-between gap-3">
+
+      {/* Mobile compact strip */}
+      <div className="sm:hidden">
+        <div className="flex items-end justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]/80">
+              Prize pot
+            </p>
+            <p className="mt-0.5 text-2xl font-bold tracking-tight tabular-nums text-[#f5f5f0]">
+              {displayValue}
+            </p>
+            {prizeFund.invested && change != null && changePct != null ? (
+              <p className={`mt-0.5 text-xs font-semibold tabular-nums ${changeTone}`}>
+                {formatSignedGbp(change)} ({formatSignedPercent(changePct)})
+              </p>
+            ) : (
+              <p className="mt-0.5 text-xs text-[#e8dfc8]/70">Awaiting investment</p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setDetailsOpen((open) => !open)}
+            className="min-h-10 shrink-0 rounded-md border border-[#d4af37]/30 px-3 text-xs font-semibold text-[#e8dfc8]"
+            aria-expanded={detailsOpen}
+          >
+            {detailsOpen ? 'Hide' : 'Details'}
+          </button>
+        </div>
+        {detailsOpen ? (
+          <div className="mt-2 space-y-1 border-t border-white/10 pt-2 text-xs text-[#e8dfc8]/65">
+            <p className="font-medium text-[#e8dfc8]/85">{prizeFund.fundName}</p>
+            <p className="tabular-nums">
+              {prizeFund.yahooSymbol}
+              {prizeFund.currentPriceGbp != null ? ` · ${formatGbp(prizeFund.currentPriceGbp)}` : null}
+              {prizeFund.dayChangePercent != null ? (
+                <span
+                  className={
+                    prizeFund.dayChangePercent > 0
+                      ? ' text-emerald-300'
+                      : prizeFund.dayChangePercent < 0
+                        ? ' text-red-300'
+                        : ''
+                  }
+                >
+                  {' '}
+                  ({formatSignedPercent(prizeFund.dayChangePercent)} today)
+                </span>
+              ) : null}
+            </p>
+            {prizeFund.invested && prizeFund.units != null ? (
+              <p className="tabular-nums">
+                {prizeFund.units.toLocaleString('en-GB', { maximumFractionDigits: 4 })} units
+                {prizeFund.purchasePriceGbp != null
+                  ? ` @ ${formatGbp(prizeFund.purchasePriceGbp)}`
+                  : null}
+                {prizeFund.investedAt ? ` · since ${prizeFund.investedAt}` : null}
+              </p>
+            ) : null}
+            {asOf ? <p className="text-[11px] text-[#e8dfc8]/45">As of {asOf}</p> : null}
+          </div>
+        ) : null}
+      </div>
+
+      {/* Desktop full layout */}
+      <div className="hidden flex-wrap items-start justify-between gap-3 sm:flex">
         <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]/80">
             Prize pot
           </p>
-          <p className="mt-1 text-2xl font-bold tracking-tight tabular-nums text-[#f5f5f0] sm:text-3xl">
-            {value != null ? formatGbp(value) : formatGbp(prizeFund.investedAmountGbp)}
+          <p className="mt-1 text-3xl font-bold tracking-tight tabular-nums text-[#f5f5f0]">
+            {displayValue}
           </p>
           {prizeFund.invested && change != null && changePct != null ? (
             <p className={`mt-1 text-sm font-semibold tabular-nums ${changeTone}`}>
@@ -142,7 +209,7 @@ export default function EnglishPyramidPrizeFundPanel({ prizeFund }: Props) {
           )}
         </div>
 
-        <div className="min-w-0 max-w-full text-right text-xs text-[#e8dfc8]/65 sm:text-sm">
+        <div className="min-w-0 max-w-full text-right text-sm text-[#e8dfc8]/65">
           <p className="font-medium text-[#e8dfc8]/85">{prizeFund.fundName}</p>
           <p className="mt-0.5 tabular-nums">
             {prizeFund.yahooSymbol}

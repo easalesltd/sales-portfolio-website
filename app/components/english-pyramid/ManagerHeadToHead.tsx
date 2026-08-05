@@ -103,11 +103,11 @@ export default function ManagerHeadToHead({ entries }: Props) {
         </span>
       </div>
 
-      <div className="grid gap-2 p-2 sm:grid-cols-2 sm:p-3">
+      <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto p-2 sm:grid sm:grid-cols-2 sm:overflow-visible sm:p-3">
         {clashes.map((entry) => (
           <article
             key={entry.id}
-            className="rounded-md border border-white/10 bg-black/25 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+            className="w-[min(100%,18.5rem)] shrink-0 snap-center rounded-md border border-white/10 bg-black/25 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:w-auto sm:shrink"
           >
             <div className="grid grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)] items-center gap-2">
               <ManagerSide

@@ -121,13 +121,13 @@ export default function RedrawCountdownBanner({
           <p className="mt-0.5 text-xs text-[#e8dfc8]/60">Reveal goes live {revealLabel}</p>
         </div>
 
-        <div className="flex shrink-0 gap-1.5 tabular-nums">
+        <div className="grid w-full grid-cols-4 gap-1.5 tabular-nums sm:flex sm:w-auto sm:shrink-0">
           {boxes.map((box) => (
             <div
               key={box.label}
-              className="min-w-[3.1rem] rounded-md border border-[#d4af37]/30 bg-[#0a0f1a]/70 px-2 py-1.5 text-center"
+              className="min-w-0 rounded-md border border-[#d4af37]/30 bg-[#0a0f1a]/70 px-1.5 py-1.5 text-center sm:min-w-[3.1rem] sm:px-2"
             >
-              <p className="text-lg font-black leading-none text-[#f2d36b] sm:text-xl">
+              <p className="text-base font-black leading-none text-[#f2d36b] sm:text-xl">
                 {pad(box.value)}
               </p>
               <p className="mt-1 text-[9px] font-semibold uppercase tracking-widest text-[#e8dfc8]/45">

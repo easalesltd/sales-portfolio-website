@@ -109,7 +109,7 @@ export default function EnglishPyramidFixtureRow({
             divisionId={entry.awayTeam.flag}
             managersLabel={awayManagersLabel}
             isPlaceholder={awayIsPlaceholder}
-            align="right"
+            align="left"
             compact
           />
         </div>
