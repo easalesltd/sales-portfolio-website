@@ -416,7 +416,7 @@ export type EnglishPyramidRedrawConfig = {
 export const ENGLISH_PYRAMID_REDRAW: EnglishPyramidRedrawConfig = {
   revealAtUtc: '2026-08-07T18:00:00Z',
   /** Sealed until 7pm Friday — push the real redraw anytime before then with this left true. */
-  hideSquadsUntilReveal: true,
+  hideSquadsUntilReveal: false, // PREVIEW ONLY — do not merge; production stays sealed until Friday 7pm
   headline: 'No squads yet — redraw night is Friday 7pm.',
 };
 
