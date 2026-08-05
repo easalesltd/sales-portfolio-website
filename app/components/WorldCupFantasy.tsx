@@ -33,6 +33,9 @@ import EnglishPyramidPrizeFundPanel from './english-pyramid/EnglishPyramidPrizeF
 import LiveGoalAlertsToggle from './english-pyramid/LiveGoalAlertsToggle';
 import MatchdayHeroStrip from './english-pyramid/MatchdayHeroStrip';
 import EnglishPyramidFixtureRow from './english-pyramid/EnglishPyramidFixtureRow';
+import ManagerHeadToHead from './english-pyramid/ManagerHeadToHead';
+import EnglishPyramidWeeklyShareButton from './english-pyramid/EnglishPyramidWeeklyShareButton';
+import RedrawRevealExperience from './english-pyramid/RedrawRevealExperience';
 import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeContext';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import SweepstakeAwards from './english-pyramid/SweepstakeAwards';
@@ -847,6 +850,7 @@ function MatchdaySchedule({
           onNextDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
         />
       ) : null}
+      {t.id === 'english-pyramid' ? <ManagerHeadToHead entries={dayEntries} /> : null}
       {t.id === 'english-pyramid' ? (
         <div className="mt-3">
           <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-[#d4af37]/80">
@@ -2236,11 +2240,20 @@ function WorldCupFantasyView({
   const [data, setData] = useState<SweepstakeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showRedrawReveal, setShowRedrawReveal] = useState(false);
   const {
     enabled: liveAlertsEnabled,
     setEnabled: setLiveAlertsEnabled,
     flashingMatchIds,
   } = useLiveGoalAlerts(t.id === 'english-pyramid' ? data?.matchdaySchedule : null);
+
+  useEffect(() => {
+    if (t.id !== 'english-pyramid' || typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('reveal') === '1' || params.get('redraw') === '1') {
+      setShowRedrawReveal(true);
+    }
+  }, [t.id]);
 
   const load = useCallback(async (options?: { silent?: boolean }) => {
     if (!options?.silent) {
@@ -2315,15 +2328,39 @@ function WorldCupFantasyView({
                 </h2>
               ) : null}
             </div>
-            {!standalone && onClose ? (
-              <div className="flex shrink-0 gap-2">
+            <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+              {t.id === 'english-pyramid' && data ? (
+                <button
+                  type="button"
+                  onClick={() => setShowRedrawReveal(true)}
+                  className="rounded-md border border-[#d4af37]/40 bg-[#d4af37]/10 px-2.5 py-1.5 text-[11px] font-bold uppercase tracking-wide text-[#f2d36b] transition hover:bg-[#d4af37]/20 sm:text-xs"
+                >
+                  Redraw reveal
+                </button>
+              ) : null}
+              {!standalone && onClose ? (
                 <button type="button" onClick={onClose} className={t.c.closeBtn}>
                   Close
                 </button>
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </div>
         </header>
+
+        {showRedrawReveal && data ? (
+          <RedrawRevealExperience
+            players={data.revealPlayers?.length ? data.revealPlayers : data.standings}
+            onClose={() => {
+              setShowRedrawReveal(false);
+              if (typeof window !== 'undefined') {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('reveal');
+                url.searchParams.delete('redraw');
+                window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+              }
+            }}
+          />
+        ) : null}
 
         <div ref={scrollRef} className={t.c.body}>
           {pullToRefreshEnabled ? (
@@ -2373,6 +2410,13 @@ function WorldCupFantasyView({
               <section className={t.c.roastSection}>
                 <h3 className={t.c.roastHeading}>Daily roast</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-100">{data.dailyUpdate}</p>
+                {t.id === 'english-pyramid' ? (
+                  <EnglishPyramidWeeklyShareButton
+                    standings={data.standings}
+                    roast={data.dailyUpdate}
+                    prizeFund={data.prizeFund}
+                  />
+                ) : null}
               </section>
 
               {data.prizeFund ? <EnglishPyramidPrizeFundPanel prizeFund={data.prizeFund} /> : null}

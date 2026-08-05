@@ -33,6 +33,8 @@ export type EnglishPyramidFantasyResponse = {
   sweepstakeFairness: string;
   prizeFund: EnglishPyramidPrizeFundSnapshot;
   standings: PlayerStanding[];
+  /** Stable draft order for the recordable redraw reveal (standings reorder during the season). */
+  revealPlayers: PlayerStanding[];
   matchdaySchedule: MatchdaySchedule;
   allScoringMatches: MatchPointsEntry[];
   recentScoringMatches: MatchPointsEntry[];
@@ -62,6 +64,10 @@ export async function GET() {
   const finishedMatchCount = matches.filter(
     (m) => m.status === 'FINISHED' && m.homeGoals != null && m.awayGoals != null
   ).length;
+  const standingsById = new Map(standings.map((player) => [player.id, player] as const));
+  const revealPlayers = ENGLISH_PYRAMID_FANTASY_PLAYERS.map((player) =>
+    standingsById.get(player.id)
+  ).filter((player): player is PlayerStanding => player != null);
 
   const body: EnglishPyramidFantasyResponse = {
     ok: true,
@@ -72,6 +78,7 @@ export async function GET() {
     sweepstakeFairness: ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
     prizeFund,
     standings,
+    revealPlayers,
     matchdaySchedule,
     allScoringMatches,
     recentScoringMatches,

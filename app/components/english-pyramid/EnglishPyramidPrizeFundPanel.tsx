@@ -1,9 +1,17 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import type { EnglishPyramidPrizeFundSnapshot } from '@/app/lib/english-pyramid-prize-fund';
 
 type Props = {
   prizeFund: EnglishPyramidPrizeFundSnapshot;
+};
+
+const MILESTONE_STORAGE_KEY = 'epffl-prize-milestones-v1';
+
+type StoredMilestones = {
+  high: number;
+  wasBelowInvestment: boolean;
 };
 
 function formatGbp(value: number): string {
@@ -44,6 +52,7 @@ function formatAsOf(iso: string | null): string | null {
 }
 
 export default function EnglishPyramidPrizeFundPanel({ prizeFund }: Props) {
+  const [milestone, setMilestone] = useState<string | null>(null);
   const value = prizeFund.currentValueGbp;
   const change = prizeFund.changeGbp;
   const changePct = prizeFund.changePercent;
@@ -52,11 +61,68 @@ export default function EnglishPyramidPrizeFundPanel({ prizeFund }: Props) {
   const changeTone = up ? 'text-emerald-300' : down ? 'text-red-300' : 'text-[#e8dfc8]/70';
   const asOf = formatAsOf(prizeFund.asOf);
 
+  useEffect(() => {
+    if (!prizeFund.invested || value == null || !Number.isFinite(value)) return;
+
+    try {
+      const raw = window.localStorage.getItem(MILESTONE_STORAGE_KEY);
+      const stored = raw ? (JSON.parse(raw) as StoredMilestones) : null;
+      const isBelowInvestment = value < prizeFund.investedAmountGbp;
+
+      if (!stored || !Number.isFinite(stored.high)) {
+        window.localStorage.setItem(
+          MILESTONE_STORAGE_KEY,
+          JSON.stringify({ high: value, wasBelowInvestment: isBelowInvestment })
+        );
+        return;
+      }
+
+      let message: string | null = null;
+      if (stored.wasBelowInvestment && !isBelowInvestment) {
+        message = `Back above water — the pot has recovered to ${formatGbp(value)}.`;
+      } else if (value > stored.high + 0.01) {
+        message = `New prize-pot high: ${formatGbp(value)}.`;
+      }
+
+      window.localStorage.setItem(
+        MILESTONE_STORAGE_KEY,
+        JSON.stringify({
+          high: Math.max(stored.high, value),
+          wasBelowInvestment: isBelowInvestment,
+        })
+      );
+
+      if (message) {
+        setMilestone(message);
+        const timeout = window.setTimeout(() => setMilestone(null), 6500);
+        return () => window.clearTimeout(timeout);
+      }
+    } catch {
+      // Storage may be disabled in private browsing; valuation still works normally.
+    }
+  }, [prizeFund.invested, prizeFund.investedAmountGbp, value]);
+
   return (
     <section
-      className="rounded-lg border border-[#d4af37]/35 bg-[#141f38]/70 px-4 py-3 [background-image:linear-gradient(135deg,rgba(212,175,55,0.12)_0%,transparent_55%)]"
+      className="relative overflow-hidden rounded-lg border border-[#d4af37]/35 bg-[#141f38]/70 px-4 py-3 [background-image:linear-gradient(135deg,rgba(212,175,55,0.12)_0%,transparent_55%)]"
       aria-label="Prize pot"
     >
+      {milestone ? (
+        <div
+          className="mb-3 flex items-center justify-between gap-3 rounded-md border border-emerald-400/35 bg-emerald-950/50 px-3 py-2 text-xs font-semibold text-emerald-200 shadow-[0_0_20px_rgba(52,211,153,0.12)]"
+          role="status"
+        >
+          <span>🏆 {milestone}</span>
+          <button
+            type="button"
+            onClick={() => setMilestone(null)}
+            className="shrink-0 text-emerald-100/60 hover:text-emerald-100"
+            aria-label="Dismiss prize milestone"
+          >
+            ×
+          </button>
+        </div>
+      ) : null}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]/80">
