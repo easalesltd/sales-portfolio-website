@@ -426,6 +426,41 @@ function filterCupFixtures(fixtures, slug) {
   );
 }
 
+/**
+ * FWP (and occasional ESPN) keep the original Saturday listing after a match is
+ * brought forward to Friday night. Collapse same home+away within 2 calendar
+ * days, keeping the earlier kick-off (the real brought-forward fixture).
+ */
+function collapseRescheduledDuplicates(fixtures) {
+  const byDirectedPair = new Map();
+  for (const fixture of fixtures) {
+    const key = `${fixture.homeTeam.tla}|${fixture.awayTeam.tla}`;
+    if (!byDirectedPair.has(key)) byDirectedPair.set(key, []);
+    byDirectedPair.get(key).push(fixture);
+  }
+
+  const dropIds = new Set();
+  for (const list of byDirectedPair.values()) {
+    if (list.length < 2) continue;
+    list.sort((a, b) => a.utcDate.localeCompare(b.utcDate) || a.id.localeCompare(b.id));
+    for (let i = 0; i < list.length - 1; i++) {
+      const current = list[i];
+      const next = list[i + 1];
+      if (dropIds.has(current.id)) continue;
+      const dayA = Date.parse(`${current.utcDate.slice(0, 10)}T00:00:00Z`);
+      const dayB = Date.parse(`${next.utcDate.slice(0, 10)}T00:00:00Z`);
+      if (!Number.isFinite(dayA) || !Number.isFinite(dayB)) continue;
+      const dayDiff = Math.round((dayB - dayA) / 86_400_000);
+      if (dayDiff >= 1 && dayDiff <= 2) {
+        dropIds.add(next.id);
+      }
+    }
+  }
+
+  if (dropIds.size === 0) return fixtures;
+  return fixtures.filter((fixture) => !dropIds.has(fixture.id));
+}
+
 async function fetchAllLeagueFixtures() {
   const { fetchAllNlnNlsFixtures } = require('./english-pyramid-fwp-nln-nls.cjs');
 
@@ -451,7 +486,8 @@ async function fetchAllLeagueFixtures() {
     return true;
   });
 
-  return { fixtures: uniqueFixtures, bySlug, nlnNlsByCode: nlnNls.byCode };
+  const fixtures = collapseRescheduledDuplicates(uniqueFixtures);
+  return { fixtures, bySlug, nlnNlsByCode: nlnNls.byCode };
 }
 
 function readDataFileSource() {
@@ -656,6 +692,7 @@ module.exports = {
   OUR_CODES,
   SEASON_START_ISO,
   TEAM_NAME_BY_CODE,
+  collapseRescheduledDuplicates,
   compareFixtureLists,
   fetchAllLeagueFixtures,
   fetchLeagueFixtures,

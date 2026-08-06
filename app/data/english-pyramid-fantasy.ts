@@ -916,12 +916,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Truro City', tla: 'TRU' },
   },
   {
-    id: '2026-08-15-dag-fnh',
-    utcDate: '2026-08-15T14:00:00Z',
-    homeTeam: { name: 'Dagenham & Redbridge', tla: 'DAG' },
-    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
-  },
-  {
     id: '2026-08-15-dov-slo',
     utcDate: '2026-08-15T14:00:00Z',
     homeTeam: { name: 'Dover Athletic', tla: 'DOV' },
@@ -1906,12 +1900,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'King\'s Lynn Town', tla: 'KLT' },
   },
   {
-    id: '2026-08-29-hed-hbo',
-    utcDate: '2026-08-29T14:00:00Z',
-    homeTeam: { name: 'Hednesford Town', tla: 'HED' },
-    awayTeam: { name: 'Harborough Town', tla: 'HBO' },
-  },
-  {
     id: '2026-08-29-hem-wsm',
     utcDate: '2026-08-29T14:00:00Z',
     homeTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
@@ -1940,12 +1928,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-08-29T14:00:00Z',
     homeTeam: { name: 'Marine', tla: 'MAR' },
     awayTeam: { name: 'Radcliffe', tla: 'RAD' },
-  },
-  {
-    id: '2026-08-29-mor-tel',
-    utcDate: '2026-08-29T14:00:00Z',
-    homeTeam: { name: 'Morecambe', tla: 'MOR' },
-    awayTeam: { name: 'AFC Telford United', tla: 'TEL' },
   },
   {
     id: '2026-08-29-oxc-bux',
