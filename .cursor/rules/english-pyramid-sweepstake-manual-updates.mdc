@@ -23,7 +23,7 @@ When the user asks to redraw squads to current betting odds (planned ~7 Aug 2026
 
 - **Do not ask the user for odds sources.** Research them the same way as the original draft: web search UK bookmaker / odds-roundup pages (Goal.com, BettingLounge, BetVictor, Sky Bet, Bet365, Betfair, Racing Post, Football League World, News & Star, etc.). Note the source on each club’s `oddsNote`. Where NL North/South markets are thin, estimate ranks from published favourites / season previews and say so in `oddsNote`.
 - **Do not ask the user to confirm which division each club is in.** By re-draft day, published outright / relegation markets list clubs in their **2026/27** divisions — trust those markets for `divisionId` / draft pools.
-- Keep the same fairness formula and title↔survival pairing (`((p + divisionIndex) mod 7) + 1`). Rebuild the title top-7 + survival bottom-7 per division, reassign `ENGLISH_PYRAMID_FANTASY_PLAYERS`, refresh fixtures if the club set changes, push `origin/main` unless asked otherwise.
+- Keep the same fairness formula and title↔survival pairing (`((p + divisionIndex + DRAFT_SEAT_OFFSET) mod 7) + 1`). `ENGLISH_PYRAMID_DRAFT_SEAT_OFFSET` (currently 3) rotates seats so a redraw does not inherit the previous PL #1 holder. Rebuild the title top-7 + survival bottom-7 per division, reassign `ENGLISH_PYRAMID_FANTASY_PLAYERS`, refresh fixtures if the club set changes, push `origin/main` unless asked otherwise.
 ### Reveal night (7pm Friday)
 
 - `ENGLISH_PYRAMID_REDRAW` in `app/data/english-pyramid-fantasy.ts` holds `revealAtUtc` (**7pm Europe/London = 18:00 UTC in BST**), `headline`, and `hideSquadsUntilReveal`.

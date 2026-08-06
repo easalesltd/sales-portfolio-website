@@ -2,13 +2,12 @@
  * English pyramid sweepstake — seven divisions, two clubs each per manager (title + survival).
  * Title draft: clubs ranked 1–7 by pre-season outright odds within each **draft** division;
  * each manager gets exactly one pick at each rank (one favourite … one seventh) — player
- * index p takes rank ((p + divisionIndex) mod 7) + 1.
+ * index p takes rank ((p + divisionIndex + DRAFT_SEAT_OFFSET) mod 7) + 1.
  * Survival draft: bottom 7 by relegation odds (or longest title shots where markets are thin);
  * **same ordinal** within each league as the title pick — title rank k pairs with survival
- * rank k (relegation favourite R#1 with title favourite #1, etc.): p takes survival rank
- * ((p + divisionIndex) mod 7) + 1. So the manager with Arsenal (#1) also gets Hull (R#1 /
- * “20th favourite”); across the seven rungs everyone still holds each rank 1–7 once in
- * each band.
+ * rank k: p takes survival rank ((p + divisionIndex + DRAFT_SEAT_OFFSET) mod 7) + 1.
+ * Arsenal (#1) still pairs with Hull (R#1); DRAFT_SEAT_OFFSET=3 rotates who sits where
+ * so a redraw does not inherit June PL #1 seat. Everyone still holds each rank 1-7 once.
  * Clubs that promote/relegate mid-season keep scoring in their new division via
  * `divisionId`, with optional `draftDivisionId` only if a club moves after the
  * redraw (not used for the Aug 2026 locked draw — every club is drafted in its
@@ -42,6 +41,9 @@ export type EnglishPyramidTeamMeta = {
   oddsNote?: string;
   searchNames?: readonly string[];
 };
+
+/** August 2026 redraw: rotate seats so PL #1 is not locked to the same manager as June. */
+export const ENGLISH_PYRAMID_DRAFT_SEAT_OFFSET = 3;
 
 export const ENGLISH_PYRAMID_DIVISIONS: readonly EnglishPyramidDivision[] = [
   { id: 'PL', label: 'Premier League', tier: 1 },
@@ -343,7 +345,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_INTRO =
   'Seven managers, fourteen clubs each — one title favourite and one survival dog from every rung of the pyramid (Premier League down to National League North and South). Points follow your clubs’ real league results all season.';
 
 export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
-  'Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1–7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) — R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together: Arsenal #1 comes with Hull R#1, City #2 with Ipswich R#2, and so on. Across the seven rungs each manager therefore holds exactly one pick at every title rank and every survival rank. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.';
+  "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
   'Pre-season. Zero points. Fourteen clubs of emotional baggage each. Scott’s already last somehow and the ledger is empty — that takes a special kind of useless. When August lands we’re going full Tesla-Grok: sweary, mean, and naming every soft bastard who bottles a 1–0.';
@@ -423,81 +425,6 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
     managerImage: '/images/english-pyramid-fantasy/managers/ash.png',
     clubCrest: '/images/english-pyramid-fantasy/crests/ash.png',
     teams: [
-      'ARS',
-      'WOL',
-      'LUT',
-      'CHS',
-      'BORE',
-      'DAR',
-      'WSM',
-      'HUL',
-      'BOL',
-      'BTN',
-      'CRA',
-      'KID',
-      'OXC',
-      'HOR',
-    ],
-    draftNote:
-      "Arsenal #1 with Hull R#1, Wolves with Bolton R#2, Luton with Burton \u2014 same-ordinal ladder down to Weston and Horsham.",
-  },
-  {
-    id: 'jon',
-    name: 'Jon',
-    teamName: "You Can Leif Your Hat On FC",
-    managerImage: '/images/english-pyramid-fantasy/managers/jon.png',
-    clubCrest: '/images/english-pyramid-fantasy/crests/you-can-leave-leif-your-hat-on-fc.png?v=2',
-    teams: [
-      'MCI',
-      'BUR',
-      'PLY',
-      'PVL',
-      'SCU',
-      'WRK',
-      'TOR',
-      'IPS',
-      'CHA',
-      'CAM',
-      'TRN',
-      'SUT',
-      'MAR',
-      'WAH',
-    ],
-    draftNote:
-      "City #2 with Ipswich R#2; Torquay #1 paired with Walton & Hersham R#1 in NL South; Burnley, Plymouth, Port Vale, Scunthorpe, Worksop.",
-  },
-  {
-    id: 'nest',
-    name: 'Nest',
-    teamName: "The Pterotractoryls",
-    managerImage: '/images/english-pyramid-fantasy/managers/nest.png',
-    clubCrest: '/images/english-pyramid-fantasy/crests/the-pterotractoryls-fc.png?v=1',
-    teams: [
-      'LIV',
-      'MID',
-      'HUD',
-      'GRI',
-      'BRW',
-      'MOR',
-      'DAG',
-      'COV',
-      'CDF',
-      'NCO',
-      'FLE',
-      'TAM',
-      'HEB',
-      'DOV',
-    ],
-    draftNote:
-      "Liverpool #3 with Coventry R#3; Morecambe #1 with Hebburn R#1 in NL North; Middlesbrough, Huddersfield, Grimsby, Barrow, Dagenham.",
-  },
-  {
-    id: 'chris',
-    name: 'Chris',
-    teamName: "Saka Potatoes",
-    managerImage: '/images/english-pyramid-fantasy/managers/chris.png',
-    clubCrest: '/images/english-pyramid-fantasy/crests/saka-potatoes-fc.png',
-    teams: [
       'MUN',
       'SOU',
       'MKD',
@@ -514,14 +441,14 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'AFT',
     ],
     draftNote:
-      "United #4 with Sunderland R#4; Carlisle #1 with Wealdstone R#1; MK Dons, York (now L2 title), South Shields, Chelmsford \u2014 plus Preston, Orient, Shrewsbury, Spalding, Totton.",
+      "MUN with SUN in the Premier League, then the rotated ladder (SOU/PNE, MKD/LEY ... CLM/AFT) \u2014 August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
   },
   {
-    id: 'scott',
-    name: 'Scott',
-    teamName: "Objection Overruled FC",
-    managerImage: '/images/english-pyramid-fantasy/managers/scott.png',
-    clubCrest: '/images/english-pyramid-fantasy/crests/objection-overruled.png',
+    id: 'jon',
+    name: 'Jon',
+    teamName: "You Can Leif Your Hat On FC",
+    managerImage: '/images/english-pyramid-fantasy/managers/jon.png',
+    clubCrest: '/images/english-pyramid-fantasy/crests/you-can-leave-leif-your-hat-on-fc.png?v=2',
     teams: [
       'CHE',
       'BIR',
@@ -539,14 +466,14 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'SBY',
     ],
     draftNote:
-      "Chelsea #5 with Fulham R#5; Salford #1 with Newport R#1; Hartlepool, Macclesfield, Ebbsfleet \u2014 plus Birmingham, Stockport, Portsmouth, Oxford United, Altrincham, Bedford, Salisbury.",
+      "CHE with FUL in the Premier League, then the rotated ladder (BIR/POR, STP/OXF ... EBB/SBY) \u2014 August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
   },
   {
-    id: 'dave',
-    name: 'Dave',
-    teamName: "The Creamy Creamers FC",
-    managerImage: '/images/english-pyramid-fantasy/managers/dave.png',
-    clubCrest: '/images/english-pyramid-fantasy/crests/the-creamy-creamers-fc.png?v=1',
+    id: 'nest',
+    name: 'Nest',
+    teamName: "The Pterotractoryls",
+    managerImage: '/images/english-pyramid-fantasy/managers/nest.png',
+    clubCrest: '/images/english-pyramid-fantasy/crests/the-pterotractoryls-fc.png?v=1',
     teams: [
       'AVL',
       'SHU',
@@ -564,14 +491,14 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'CHU',
     ],
     draftNote:
-      "Villa #6 with Leeds R#6; Leicester #1 with Bromley R#1; Farnham now an NLS title pick with Chesham R#7 \u2014 plus Sheffield United, Bristol Rovers, Southend, Buxton, Blackburn, Accrington, Hornchurch, Harborough.",
+      "AVL with LEE in the Premier League, then the rotated ladder (SHU/BLK, LEI/BRO ... FNH/CHU) \u2014 August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
   },
   {
-    id: 'ben',
-    name: 'Ben',
-    teamName: "Mulletman FC",
-    managerImage: '/images/english-pyramid-fantasy/managers/ben.png',
-    clubCrest: '/images/english-pyramid-fantasy/crests/mulletman-fc.png?v=5',
+    id: 'chris',
+    name: 'Chris',
+    teamName: "Saka Potatoes",
+    managerImage: '/images/english-pyramid-fantasy/managers/chris.png',
+    clubCrest: '/images/english-pyramid-fantasy/crests/saka-potatoes-fc.png',
     teams: [
       'NEW',
       'WHU',
@@ -589,7 +516,82 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'TON',
     ],
     draftNote:
-      "Newcastle #7 with Palace R#7; West Ham #1 with Lincoln R#1 (Championship 1st and last); Wednesday, Barnet, Forest Green, Chester, Maidstone \u2014 plus Wimbledon, Cheltenham, Aldershot, Hednesford and Tonbridge.",
+      "NEW with CRY in the Premier League, then the rotated ladder (WHU/LIN, SHW/WIM ... MAI/TON) \u2014 August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
+  },
+  {
+    id: 'scott',
+    name: 'Scott',
+    teamName: "Objection Overruled FC",
+    managerImage: '/images/english-pyramid-fantasy/managers/scott.png',
+    clubCrest: '/images/english-pyramid-fantasy/crests/objection-overruled.png',
+    teams: [
+      'ARS',
+      'WOL',
+      'LUT',
+      'CHS',
+      'BORE',
+      'DAR',
+      'WSM',
+      'HUL',
+      'BOL',
+      'BTN',
+      'CRA',
+      'KID',
+      'OXC',
+      'HOR',
+    ],
+    draftNote:
+      "ARS with HUL in the Premier League, then the rotated ladder (WOL/BOL, LUT/BTN ... WSM/HOR) \u2014 August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
+  },
+  {
+    id: 'dave',
+    name: 'Dave',
+    teamName: "The Creamy Creamers FC",
+    managerImage: '/images/english-pyramid-fantasy/managers/dave.png',
+    clubCrest: '/images/english-pyramid-fantasy/crests/the-creamy-creamers-fc.png?v=1',
+    teams: [
+      'MCI',
+      'BUR',
+      'PLY',
+      'PVL',
+      'SCU',
+      'WRK',
+      'TOR',
+      'IPS',
+      'CHA',
+      'CAM',
+      'TRN',
+      'SUT',
+      'MAR',
+      'WAH',
+    ],
+    draftNote:
+      "MCI with IPS in the Premier League, then the rotated ladder (BUR/CHA, PLY/CAM ... TOR/WAH) \u2014 August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
+  },
+  {
+    id: 'ben',
+    name: 'Ben',
+    teamName: "Mulletman FC",
+    managerImage: '/images/english-pyramid-fantasy/managers/ben.png',
+    clubCrest: '/images/english-pyramid-fantasy/crests/mulletman-fc.png?v=5',
+    teams: [
+      'LIV',
+      'MID',
+      'HUD',
+      'GRI',
+      'BRW',
+      'MOR',
+      'DAG',
+      'COV',
+      'CDF',
+      'NCO',
+      'FLE',
+      'TAM',
+      'HEB',
+      'DOV',
+    ],
+    draftNote:
+      "LIV with COV in the Premier League, then the rotated ladder (MID/CDF, HUD/NCO ... DAG/DOV) \u2014 August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
   },
 ] as const;
 
