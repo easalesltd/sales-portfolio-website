@@ -9,7 +9,7 @@ const FWP_ORIGIN = 'https://www.footballwebpages.co.uk';
 const FWP_SLUG_BY_CODE = {
   SSH: 'south-shields',
   MAC: 'macclesfield',
-  MER: 'merthyr-town',
+  MOR: 'morecambe',
   WRK: 'worksop-town',
   DAR: 'darlington',
   BUX: 'buxton',
@@ -40,7 +40,7 @@ const FWP_SLUG_BY_CODE = {
 const FWP_LEAGUE_COMP_BY_CODE = {
   SSH: 'national-league-north',
   MAC: 'national-league-north',
-  MER: 'national-league-north',
+  MOR: 'national-league-north',
   WRK: 'national-league-north',
   DAR: 'national-league-north',
   BUX: 'national-league-north',
