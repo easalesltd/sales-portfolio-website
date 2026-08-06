@@ -30,7 +30,8 @@ When the user asks to redraw squads to current betting odds (planned ~7 Aug 2026
 - A countdown banner sits at the top of `/p/ep2627` until `revealAtUtc`, then flips to “Play the reveal”. If the page is open when the clock strikes, the ceremony auto-launches once (guarded by localStorage).
 - **When pushing the redrafted squads before 7pm, set `hideSquadsUntilReveal: true`.** The API then blanks `teams`, `teamBreakdown`, `draftNote`, fixture schedule, and club counts until the reveal time, so the new draw cannot be read early. It unlocks automatically on the clock — no second deploy needed (flip the flag back to `false` at leisure).
 - Until Friday 7pm the public UI should look undrawn (sealed squad cards, “Sealed” in standings, no fixtures). The real squad data can already be in the repo behind that gate.
-- Recordable ceremony opens from the banner button after 7pm, or any time via `/p/ep2627?reveal=1` (rehearsal path — there is deliberately no header button). Full-screen, no scrolling, slot-machine shuffle that settles each of the 14 clubs per manager. Space/→ next · ← back · **P** pause · Esc exit.
+- Recordable ceremony opens from the banner button after 7pm, or via `/p/ep2627?reveal=1` while `ceremonyAvailable` (rehearsal path — there is deliberately no header button). Full-screen, no scrolling, slot-machine shuffle that settles each of the 14 clubs per manager. Space/→ next · ← back · **P** pause · Esc exit.
+- `ceremonyEndsAtUtc` (default: one hour before the first league KO) retires the countdown banner, “Play the reveal” button, and `?reveal=1` path. Squads stay unlocked; the page is just the normal game from then on.
 
 ## Shared UI
 

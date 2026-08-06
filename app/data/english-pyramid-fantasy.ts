@@ -393,15 +393,23 @@ export const ENGLISH_PYRAMID_PRIZE_FUND: EnglishPyramidPrizeFundConfig = {
  *
  * Set `hideSquadsUntilReveal` to true when the redrafted squads are pushed
  * ahead of the reveal so the API withholds clubs until the clock strikes.
+ *
+ * `ceremonyEndsAtUtc` retires the slot-machine reveal UI (banner + ?reveal=1)
+ * one hour before the first league kick-off (Sat 8 Aug 2026, 15:00 London →
+ * ceremony ends 14:00 London = 13:00 UTC).
  */
 export type EnglishPyramidRedrawConfig = {
   revealAtUtc: string;
+  /** After this instant the reveal ceremony is gone; the normal game UI remains. */
+  ceremonyEndsAtUtc: string;
   hideSquadsUntilReveal: boolean;
   headline: string;
 };
 
 export const ENGLISH_PYRAMID_REDRAW: EnglishPyramidRedrawConfig = {
   revealAtUtc: '2026-08-07T18:00:00Z',
+  /** One hour before first sweepstake KO (Dover away, 15:00 London / 14:00 UTC). */
+  ceremonyEndsAtUtc: '2026-08-08T13:00:00Z',
   /** Sealed until 7pm Friday — push the real redraw anytime before then with this left true. */
   hideSquadsUntilReveal: true,
   headline: 'Squads sealed — redraw night is Friday 7pm.',

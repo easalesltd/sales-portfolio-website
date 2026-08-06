@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   revealAtUtc: string;
+  /** After this time the banner disappears entirely (ceremony retired). */
+  ceremonyEndsAtUtc: string;
   headline: string;
   onOpenReveal: () => void;
   /** Fired once when the clock crosses the reveal time with the page open. */
@@ -16,11 +18,18 @@ type Remaining = {
   minutes: number;
   seconds: number;
   live: boolean;
+  ceremonyOver: boolean;
 };
 
-function remainingFrom(target: number): Remaining {
-  const diff = target - Date.now();
-  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, live: true };
+function remainingFrom(revealAt: number, ceremonyEndsAt: number): Remaining {
+  const now = Date.now();
+  if (now >= ceremonyEndsAt) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, live: true, ceremonyOver: true };
+  }
+  const diff = revealAt - now;
+  if (diff <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, live: true, ceremonyOver: false };
+  }
   const totalSeconds = Math.floor(diff / 1000);
   return {
     days: Math.floor(totalSeconds / 86400),
@@ -28,6 +37,7 @@ function remainingFrom(target: number): Remaining {
     minutes: Math.floor((totalSeconds % 3600) / 60),
     seconds: totalSeconds % 60,
     live: false,
+    ceremonyOver: false,
   };
 }
 
@@ -37,34 +47,38 @@ function pad(value: number): string {
 
 export default function RedrawCountdownBanner({
   revealAtUtc,
+  ceremonyEndsAtUtc,
   headline,
   onOpenReveal,
   onGoLive,
 }: Props) {
-  const target = new Date(revealAtUtc).getTime();
+  const revealAt = new Date(revealAtUtc).getTime();
+  const ceremonyEndsAt = new Date(ceremonyEndsAtUtc).getTime();
   const [remaining, setRemaining] = useState<Remaining | null>(null);
   const wasLive = useRef<boolean | null>(null);
   const goLiveRef = useRef(onGoLive);
   goLiveRef.current = onGoLive;
 
   useEffect(() => {
-    if (!Number.isFinite(target)) return;
+    if (!Number.isFinite(revealAt) || !Number.isFinite(ceremonyEndsAt)) return;
 
     const tick = () => {
-      const next = remainingFrom(target);
+      const next = remainingFrom(revealAt, ceremonyEndsAt);
       setRemaining(next);
-      if (wasLive.current === false && next.live) goLiveRef.current?.();
+      if (wasLive.current === false && next.live && !next.ceremonyOver) {
+        goLiveRef.current?.();
+      }
       wasLive.current = next.live;
     };
 
     tick();
     const interval = window.setInterval(tick, 1000);
     return () => window.clearInterval(interval);
-  }, [target]);
+  }, [revealAt, ceremonyEndsAt]);
 
-  if (!remaining) return null;
+  if (!remaining || remaining.ceremonyOver) return null;
 
-  const revealLabel = new Date(target).toLocaleString('en-GB', {
+  const revealLabel = new Date(revealAt).toLocaleString('en-GB', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -130,7 +144,7 @@ export default function RedrawCountdownBanner({
               <p className="text-base font-black leading-none text-[#f2d36b] sm:text-xl">
                 {pad(box.value)}
               </p>
-              <p className="mt-1 text-[9px] font-semibold uppercase tracking-widest text-[#e8dfc8]/45">
+              <p className="mt-0.5 text-[9px] font-semibold uppercase tracking-wider text-[#e8dfc8]/55">
                 {box.label}
               </p>
             </div>

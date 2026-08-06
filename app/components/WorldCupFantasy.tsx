@@ -2244,10 +2244,25 @@ function WorldCupFantasyView({
   useEffect(() => {
     if (t.id !== 'english-pyramid' || typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
-    if (params.get('reveal') === '1' || params.get('redraw') === '1') {
-      setShowRedrawReveal(true);
+    if (params.get('reveal') !== '1' && params.get('redraw') !== '1') return;
+    // Wait for API so we honour ceremonyEndsAtUtc (no late peeks after Saturday cut-off).
+    if (!data?.redraw) return;
+    if (data.redraw.ceremonyAvailable === false) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('reveal');
+      url.searchParams.delete('redraw');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      return;
     }
-  }, [t.id]);
+    setShowRedrawReveal(true);
+  }, [t.id, data?.redraw]);
+
+  useEffect(() => {
+    if (!showRedrawReveal) return;
+    if (data?.redraw?.ceremonyAvailable === false) {
+      setShowRedrawReveal(false);
+    }
+  }, [showRedrawReveal, data?.redraw?.ceremonyAvailable]);
 
   const load = useCallback(async (options?: { silent?: boolean }) => {
     if (!options?.silent) {
@@ -2392,9 +2407,14 @@ function WorldCupFantasyView({
               {t.id === 'english-pyramid' && data.redraw ? (
                 <RedrawCountdownBanner
                   revealAtUtc={data.redraw.revealAtUtc}
+                  ceremonyEndsAtUtc={data.redraw.ceremonyEndsAtUtc}
                   headline={data.redraw.headline}
-                  onOpenReveal={() => setShowRedrawReveal(true)}
+                  onOpenReveal={() => {
+                    if (data.redraw?.ceremonyAvailable === false) return;
+                    setShowRedrawReveal(true);
+                  }}
                   onGoLive={() => {
+                    if (data.redraw?.ceremonyAvailable === false) return;
                     const key = `epffl-redraw-autoplayed:${data.redraw.revealAtUtc}`;
                     try {
                       if (window.localStorage.getItem(key)) return;

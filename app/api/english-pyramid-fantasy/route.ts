@@ -27,9 +27,12 @@ export const runtime = 'nodejs';
 
 export type EnglishPyramidRedrawState = {
   revealAtUtc: string;
+  ceremonyEndsAtUtc: string;
   headline: string;
   /** True while the clock has not reached the reveal and squads are being withheld. */
   squadsHidden: boolean;
+  /** True from reveal until ceremonyEndsAtUtc — slot-machine UI / ?reveal=1 allowed. */
+  ceremonyAvailable: boolean;
 };
 
 export type EnglishPyramidFantasyResponse = {
@@ -97,9 +100,12 @@ export async function GET() {
     standingsById.get(player.id)
   ).filter((player): player is PlayerStanding => player != null);
 
+  const now = Date.now();
+  const revealAt = new Date(ENGLISH_PYRAMID_REDRAW.revealAtUtc).getTime();
+  const ceremonyEndsAt = new Date(ENGLISH_PYRAMID_REDRAW.ceremonyEndsAtUtc).getTime();
   const squadsHidden =
-    ENGLISH_PYRAMID_REDRAW.hideSquadsUntilReveal &&
-    Date.now() < new Date(ENGLISH_PYRAMID_REDRAW.revealAtUtc).getTime();
+    ENGLISH_PYRAMID_REDRAW.hideSquadsUntilReveal && now < revealAt;
+  const ceremonyAvailable = now >= revealAt && now < ceremonyEndsAt;
 
   const body: EnglishPyramidFantasyResponse = {
     ok: true,
@@ -111,8 +117,10 @@ export async function GET() {
     prizeFund,
     redraw: {
       revealAtUtc: ENGLISH_PYRAMID_REDRAW.revealAtUtc,
+      ceremonyEndsAtUtc: ENGLISH_PYRAMID_REDRAW.ceremonyEndsAtUtc,
       headline: ENGLISH_PYRAMID_REDRAW.headline,
       squadsHidden,
+      ceremonyAvailable,
     },
     standings: squadsHidden ? hideSquads(standings) : standings,
     revealPlayers: squadsHidden ? hideSquads(revealPlayers) : revealPlayers,
