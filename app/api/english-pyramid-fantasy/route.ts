@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import {
   ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE,
   ENGLISH_PYRAMID_FIXTURES,
@@ -31,8 +31,13 @@ export type EnglishPyramidRedrawState = {
   headline: string;
   /** True while the clock has not reached the reveal and squads are being withheld. */
   squadsHidden: boolean;
-  /** True from reveal until ceremonyEndsAtUtc — slot-machine UI / ?reveal=1 allowed. */
+  /** True from reveal until ceremonyEndsAtUtc — public banner “Play the reveal”. */
   ceremonyAvailable: boolean;
+  /**
+   * True until ceremonyEndsAtUtc. Powers the `?reveal=1` rehearsal path
+   * (and live night) without unsealing the public standings UI early.
+   */
+  rehearsalAllowed: boolean;
 };
 
 export type EnglishPyramidFantasyResponse = {
@@ -72,7 +77,7 @@ function emptyMatchdaySchedule(schedule: MatchdaySchedule): MatchdaySchedule {
   };
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const recordedMatches = ENGLISH_PYRAMID_MANUAL_MATCHES.map(manualMatchToResult);
   const recordedMatchIds = new Set(recordedMatches.map((match) => match.id));
   const baseSchedule = getMatchdaySchedule(
@@ -106,6 +111,10 @@ export async function GET() {
   const squadsHidden =
     ENGLISH_PYRAMID_REDRAW.hideSquadsUntilReveal && now < revealAt;
   const ceremonyAvailable = now >= revealAt && now < ceremonyEndsAt;
+  const rehearsalAllowed = now < ceremonyEndsAt;
+  /** Soft unlock for `/p/ep2627?reveal=1` — standings stay sealed until revealAt. */
+  const rehearsalUnlock =
+    rehearsalAllowed && request.nextUrl.searchParams.get('rehearsal') === '1';
 
   const body: EnglishPyramidFantasyResponse = {
     ok: true,
@@ -121,9 +130,11 @@ export async function GET() {
       headline: ENGLISH_PYRAMID_REDRAW.headline,
       squadsHidden,
       ceremonyAvailable,
+      rehearsalAllowed,
     },
     standings: squadsHidden ? hideSquads(standings) : standings,
-    revealPlayers: squadsHidden ? hideSquads(revealPlayers) : revealPlayers,
+    revealPlayers:
+      squadsHidden && !rehearsalUnlock ? hideSquads(revealPlayers) : revealPlayers,
     matchdaySchedule: squadsHidden ? emptyMatchdaySchedule(matchdaySchedule) : matchdaySchedule,
     allScoringMatches,
     recentScoringMatches,

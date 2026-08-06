@@ -2247,22 +2247,24 @@ function WorldCupFantasyView({
     if (params.get('reveal') !== '1' && params.get('redraw') !== '1') return;
     // Wait for API so we honour ceremonyEndsAtUtc (no late peeks after Saturday cut-off).
     if (!data?.redraw) return;
-    if (data.redraw.ceremonyAvailable === false) {
+    if (data.redraw.rehearsalAllowed === false) {
       const url = new URL(window.location.href);
       url.searchParams.delete('reveal');
       url.searchParams.delete('redraw');
       window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
       return;
     }
+    const hasRevealSquads = (data.revealPlayers ?? []).some((player) => player.teams.length > 0);
+    if (!hasRevealSquads) return;
     setShowRedrawReveal(true);
-  }, [t.id, data?.redraw]);
+  }, [t.id, data?.redraw, data?.revealPlayers]);
 
   useEffect(() => {
     if (!showRedrawReveal) return;
-    if (data?.redraw?.ceremonyAvailable === false) {
+    if (data?.redraw?.rehearsalAllowed === false) {
       setShowRedrawReveal(false);
     }
-  }, [showRedrawReveal, data?.redraw?.ceremonyAvailable]);
+  }, [showRedrawReveal, data?.redraw?.rehearsalAllowed]);
 
   const load = useCallback(async (options?: { silent?: boolean }) => {
     if (!options?.silent) {
@@ -2271,7 +2273,16 @@ function WorldCupFantasyView({
     setError(null);
 
     try {
-      const response = await fetch(apiPath, { cache: 'no-store' });
+      const wantsRehearsal =
+        typeof window !== 'undefined' &&
+        (() => {
+          const params = new URLSearchParams(window.location.search);
+          return params.get('reveal') === '1' || params.get('redraw') === '1';
+        })();
+      const url = wantsRehearsal
+        ? `${apiPath}${apiPath.includes('?') ? '&' : '?'}rehearsal=1`
+        : apiPath;
+      const response = await fetch(url, { cache: 'no-store' });
       if (!response.ok) throw new Error(`Request failed (${response.status})`);
       const payload = (await response.json()) as SweepstakeResponse;
       setData(payload);
@@ -2350,7 +2361,10 @@ function WorldCupFantasyView({
         {showRedrawReveal && data ? (
           <RedrawRevealExperience
             players={data.revealPlayers?.length ? data.revealPlayers : data.standings}
-            squadsHidden={data.redraw?.squadsHidden ?? false}
+            squadsHidden={
+              (data.redraw?.squadsHidden ?? false) &&
+              !(data.revealPlayers ?? []).some((player) => player.teams.length > 0)
+            }
             onClose={() => {
               setShowRedrawReveal(false);
               if (typeof window !== 'undefined') {
