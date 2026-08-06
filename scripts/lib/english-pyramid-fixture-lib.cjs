@@ -304,10 +304,29 @@ function resolveTeam(slug, competitor, roster) {
     };
   }
 
+  const displayName = competitor.team.displayName ?? competitor.team.name ?? abbrev;
+
+  /**
+   * ESPN reuses abbreviations across divisions. If an opponent’s abbrev matches one of
+   * *our* codes for a different club (eng.3 Barnsley=BAR vs eng.4 Barnet=BAR), remap so
+   * we never attribute the wrong club’s results to a sweepstake side.
+   */
+  const OPPONENT_ABBREV_COLLISION = {
+    'eng.3': { BAR: 'BSL' }, // Barnsley — Barnet owns BAR in our L2 pool
+  };
+  const collisionCode = OPPONENT_ABBREV_COLLISION[slug]?.[abbrev];
+  if (collisionCode || OUR_CODES.has(abbrev)) {
+    return {
+      code: collisionCode ?? `${abbrev}_OPP`,
+      name: displayName,
+      isOurs: false,
+    };
+  }
+
   // Opponents keep ESPN abbrev only — never alias across leagues (e.g. eng.4 NEW = Newport, not Newcastle).
   return {
     code: abbrev,
-    name: competitor.team.displayName ?? competitor.team.name ?? abbrev,
+    name: displayName,
     isOurs: false,
   };
 }
