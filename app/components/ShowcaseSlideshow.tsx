@@ -186,6 +186,21 @@ const SHOWCASE_SLIDES: ShowcaseSlide[] = [
     alt:
       'Greeting cards merchandised for trade customers — Dave Langdon sales rep showcase photo three',
   },
+  {
+    src: '/images/showcase/paper-salad-mothers-day-amazing-mum.jpg',
+    alt:
+      'Paper Salad Mother’s Day greeting card range on hot pink — Dave Langdon wholesale East Anglia portfolio',
+  },
+  {
+    src: '/images/showcase/paper-salad-valentines-range.jpg',
+    alt:
+      'Paper Salad Valentine’s Day card range with punny designs — Dave Langdon wholesale greeting cards East Anglia',
+  },
+  {
+    src: '/images/showcase/paper-salad-mothers-day-queen-of-mums.jpg',
+    alt:
+      'Paper Salad Mother’s Day cards including Queen of Mums and Cool Mums Club — Dave Langdon trade showcase',
+  },
 ];
 
 export default function ShowcaseSlideshow() {
