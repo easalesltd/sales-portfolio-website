@@ -842,9 +842,9 @@ function MatchdaySchedule({
   }, [selectedDate]);
 
   return (
-    <section id="pyramid-matchday" className={`scroll-mt-14 ${t.c.fixturesSection}`}>
+    <section id="pyramid-matchday" className={`scroll-mt-3 ${t.c.fixturesSection}`}>
       {t.id === 'english-pyramid' ? (
-        <div className="sticky top-12 z-20 -mx-1 mb-2 rounded-lg bg-[#121c33] px-1 py-1 shadow-[0_8px_14px_#121c33] sm:static sm:top-auto sm:z-auto sm:mx-0 sm:mb-0 sm:bg-transparent sm:px-0 sm:py-0 sm:shadow-none">
+        <div className="sticky top-0 z-20 -mx-1 mb-2 rounded-lg bg-[#121c33] px-1 py-1 shadow-[0_8px_14px_#121c33] sm:static sm:top-auto sm:z-auto sm:mx-0 sm:mb-0 sm:bg-transparent sm:px-0 sm:py-0 sm:shadow-none">
           <MatchdayHeroStrip
             schedule={schedule}
             selectedDate={selectedDate}
@@ -2377,6 +2377,9 @@ function WorldCupFantasyView({
           />
         ) : null}
 
+        {/* Outside the scroll body so standings/fixtures never paint underneath the jump buttons. */}
+        {t.id === 'english-pyramid' && data && !loading && !error ? <PyramidMobileJumpNav /> : null}
+
         <div ref={scrollRef} className={t.c.body}>
           {pullToRefreshEnabled ? (
             <div
@@ -2416,8 +2419,6 @@ function WorldCupFantasyView({
             <p className="rounded-lg border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-100">{error}</p>
           ) : data ? (
             <div className="space-y-5 sm:space-y-6">
-              {t.id === 'english-pyramid' ? <PyramidMobileJumpNav /> : null}
-
               {t.id === 'english-pyramid' && data.redraw ? (
                 <RedrawCountdownBanner
                   revealAtUtc={data.redraw.revealAtUtc}
@@ -2480,7 +2481,7 @@ function WorldCupFantasyView({
 
               {data.prizeFund ? <EnglishPyramidPrizeFundPanel prizeFund={data.prizeFund} /> : null}
 
-              <section id="pyramid-standings" className="scroll-mt-14">
+              <section id="pyramid-standings" className="scroll-mt-3">
                 <h3 className={`mb-3 ${t.c.sectionHeading}`}>Overall standings</h3>
                 <OverallStandings standings={data.standings} scoringMatches={data.allScoringMatches} />
                 <ScoringRulesBlock rules={scoringRules} />
@@ -2514,7 +2515,7 @@ function WorldCupFantasyView({
                 <SweepstakeAwards standings={data.standings} scoringMatches={data.allScoringMatches} />
               </div>
 
-              <section id="pyramid-squads" className="scroll-mt-14">
+              <section id="pyramid-squads" className="scroll-mt-3">
                 <h3 className={`mb-3 ${t.c.sectionHeading}`}>Player squads</h3>
                 {data.redraw?.squadsHidden ? (
                   <p className="mb-3 rounded-md border border-[#d4af37]/30 bg-[#141f38]/60 px-3 py-2 text-xs text-[#e8dfc8]/75 sm:hidden">

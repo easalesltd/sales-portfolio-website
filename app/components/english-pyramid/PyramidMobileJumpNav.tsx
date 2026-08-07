@@ -18,7 +18,7 @@ export default function PyramidMobileJumpNav() {
 
   return (
     <nav
-      className="sticky top-0 z-30 -mx-4 mb-1 border-b border-[#d4af37]/20 bg-[#121c33] px-4 py-2 shadow-[0_10px_16px_#121c33] sm:hidden"
+      className="shrink-0 border-b border-[#d4af37]/20 bg-[#121c33] px-4 py-2 sm:hidden"
       aria-label="Jump to section"
     >
       <div className="flex gap-1.5">
@@ -27,7 +27,7 @@ export default function PyramidMobileJumpNav() {
             key={target.id}
             type="button"
             onClick={() => jump(target.id)}
-            className="min-h-10 flex-1 rounded-md border border-[#d4af37]/35 bg-[#1a2744]/80 px-2 text-xs font-bold text-[#e8dfc8] transition active:bg-[#d4af37]/20"
+            className="min-h-10 flex-1 rounded-md border border-[#d4af37]/35 bg-[#1a2744] px-2 text-xs font-bold text-[#e8dfc8] transition active:bg-[#d4af37]/20"
           >
             {target.label}
           </button>
