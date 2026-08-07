@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import type { MatchdayEntry } from '@/app/lib/english-pyramid-scoring';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import { useSweepstakeTheme } from '../SweepstakeThemeContext';
@@ -73,6 +74,7 @@ function ManagerSide({
 }
 
 export default function ManagerHeadToHead({ entries }: Props) {
+  const [expanded, setExpanded] = useState(false);
   const clashes = entries.filter(
     (entry) =>
       entry.homeManagers.length > 0 &&
@@ -89,8 +91,14 @@ export default function ManagerHeadToHead({ entries }: Props) {
       className="mt-3 overflow-hidden rounded-lg border border-[#d4af37]/30 bg-[#141f38]/70 [background-image:linear-gradient(135deg,rgba(212,175,55,0.12)_0%,transparent_60%)]"
       aria-labelledby="manager-head-to-head-title"
     >
-      <div className="flex items-center justify-between border-b border-white/10 px-3 py-2 sm:px-4">
-        <div>
+      <button
+        type="button"
+        className="flex w-full items-center justify-between gap-3 border-b border-white/10 px-3 py-2.5 text-left sm:pointer-events-none sm:cursor-default sm:px-4 sm:py-2"
+        onClick={() => setExpanded((open) => !open)}
+        aria-expanded={expanded}
+        aria-controls="manager-head-to-head-list"
+      >
+        <div className="min-w-0">
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]/80">
             Rivalry radar
           </p>
@@ -98,37 +106,50 @@ export default function ManagerHeadToHead({ entries }: Props) {
             Manager head-to-head
           </h4>
         </div>
-        <span className="rounded-full border border-[#d4af37]/30 bg-[#d4af37]/10 px-2 py-0.5 text-[10px] font-bold text-[#f2d36b]">
-          {clashes.length} clash{clashes.length === 1 ? '' : 'es'}
-        </span>
-      </div>
-
-      <div className="flex snap-x snap-mandatory gap-2 overflow-x-auto p-2 sm:grid sm:grid-cols-2 sm:overflow-visible sm:p-3">
-        {clashes.map((entry) => (
-          <article
-            key={entry.id}
-            className="w-[min(100%,18.5rem)] shrink-0 snap-center rounded-md border border-white/10 bg-black/25 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:w-auto sm:shrink"
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="rounded-full border border-[#d4af37]/30 bg-[#d4af37]/10 px-2 py-0.5 text-[10px] font-bold text-[#f2d36b]">
+            {clashes.length} clash{clashes.length === 1 ? '' : 'es'}
+          </span>
+          <span
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#d4af37]/35 bg-[#1a2744] text-sm text-[#e8dfc8] sm:hidden"
+            aria-hidden
           >
-            <div className="grid grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)] items-center gap-2">
-              <ManagerSide
-                managers={entry.homeManagers}
-                teamName={entry.homeTeam.name}
-                align="right"
-              />
-              <div className="text-center">
-                <p className="text-base font-black tabular-nums text-white">{scoreLabel(entry)}</p>
-                <p className="text-[9px] uppercase tracking-wide text-neutral-500">
-                  {entry.status === 'in-play' ? 'Live' : entry.status === 'finished' ? 'FT' : 'KO'}
-                </p>
+            {expanded ? '−' : '+'}
+          </span>
+        </div>
+      </button>
+
+      <div
+        id="manager-head-to-head-list"
+        className={`${expanded ? 'block' : 'hidden'} sm:block`}
+      >
+        <div className="grid gap-2 p-2 sm:grid-cols-2 sm:p-3">
+          {clashes.map((entry) => (
+            <article
+              key={entry.id}
+              className="rounded-md border border-white/10 bg-black/25 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+            >
+              <div className="grid grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)] items-center gap-2">
+                <ManagerSide
+                  managers={entry.homeManagers}
+                  teamName={entry.homeTeam.name}
+                  align="right"
+                />
+                <div className="text-center">
+                  <p className="text-base font-black tabular-nums text-white">{scoreLabel(entry)}</p>
+                  <p className="text-[9px] uppercase tracking-wide text-neutral-500">
+                    {entry.status === 'in-play' ? 'Live' : entry.status === 'finished' ? 'FT' : 'KO'}
+                  </p>
+                </div>
+                <ManagerSide
+                  managers={entry.awayManagers}
+                  teamName={entry.awayTeam.name}
+                  align="left"
+                />
               </div>
-              <ManagerSide
-                managers={entry.awayManagers}
-                teamName={entry.awayTeam.name}
-                align="left"
-              />
-            </div>
-          </article>
-        ))}
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -18,7 +18,7 @@ export default function PyramidMobileJumpNav() {
 
   return (
     <nav
-      className="sticky top-0 z-30 -mx-4 mb-1 border-b border-[#d4af37]/20 bg-[#121c33]/95 px-4 py-2 backdrop-blur-md sm:hidden"
+      className="sticky top-0 z-30 -mx-4 mb-1 border-b border-[#d4af37]/20 bg-[#121c33] px-4 py-2 shadow-[0_10px_16px_#121c33] sm:hidden"
       aria-label="Jump to section"
     >
       <div className="flex gap-1.5">

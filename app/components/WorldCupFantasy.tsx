@@ -844,7 +844,7 @@ function MatchdaySchedule({
   return (
     <section id="pyramid-matchday" className={`scroll-mt-14 ${t.c.fixturesSection}`}>
       {t.id === 'english-pyramid' ? (
-        <div className="sticky top-12 z-20 -mx-1 mb-2 rounded-lg bg-[#121c33]/95 px-1 py-1 backdrop-blur-md sm:static sm:top-auto sm:z-auto sm:mx-0 sm:mb-0 sm:bg-transparent sm:px-0 sm:py-0 sm:backdrop-blur-none">
+        <div className="sticky top-12 z-20 -mx-1 mb-2 rounded-lg bg-[#121c33] px-1 py-1 shadow-[0_8px_14px_#121c33] sm:static sm:top-auto sm:z-auto sm:mx-0 sm:mb-0 sm:bg-transparent sm:px-0 sm:py-0 sm:shadow-none">
           <MatchdayHeroStrip
             schedule={schedule}
             selectedDate={selectedDate}
