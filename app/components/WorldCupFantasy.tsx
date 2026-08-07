@@ -844,17 +844,15 @@ function MatchdaySchedule({
   return (
     <section id="pyramid-matchday" className={`scroll-mt-3 ${t.c.fixturesSection}`}>
       {t.id === 'english-pyramid' ? (
-        <div className="sticky top-0 z-20 -mx-1 mb-2 rounded-lg bg-[#121c33] px-1 py-1 shadow-[0_8px_14px_#121c33] sm:static sm:top-auto sm:z-auto sm:mx-0 sm:mb-0 sm:bg-transparent sm:px-0 sm:py-0 sm:shadow-none">
-          <MatchdayHeroStrip
-            schedule={schedule}
-            selectedDate={selectedDate}
-            showDayNav={schedule.fixtureDates.length > 1}
-            canGoPrevious={canGoPrevious}
-            canGoNext={canGoNext}
-            onPreviousDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex - 1])}
-            onNextDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
-          />
-        </div>
+        <MatchdayHeroStrip
+          schedule={schedule}
+          selectedDate={selectedDate}
+          showDayNav={schedule.fixtureDates.length > 1}
+          canGoPrevious={canGoPrevious}
+          canGoNext={canGoNext}
+          onPreviousDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex - 1])}
+          onNextDay={() => setSelectedDate(schedule.fixtureDates[selectedIndex + 1])}
+        />
       ) : null}
       {t.id === 'english-pyramid' && !squadsSealed ? <ManagerHeadToHead entries={dayEntries} /> : null}
       {t.id === 'english-pyramid' && !squadsSealed ? (
