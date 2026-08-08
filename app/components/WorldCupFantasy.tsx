@@ -2066,12 +2066,12 @@ function PlayerSquadCard({
           </div>
         ) : (
           <div className="space-y-2.5 sm:space-y-3">
-            <div className="flex items-start gap-3 sm:block">
-              <div className="grid w-[6.75rem] shrink-0 grid-cols-2 gap-1.5 sm:mx-auto sm:mb-3 sm:w-fit sm:gap-3">
+            <div className="flex flex-col items-center sm:block">
+              <div className="mb-3 grid w-fit shrink-0 grid-cols-2 gap-3 sm:mx-auto sm:w-fit">
                 <button
                   type="button"
                   onClick={() => setEnlarged('manager')}
-                  className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} size-[3.15rem] min-h-0 sm:size-32 md:size-36`}
+                  className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} size-[5.5rem] min-h-0 sm:size-32 md:size-36`}
                   aria-label={`View enlarged photo of ${managerLabel}`}
                 >
                   <img
@@ -2083,7 +2083,7 @@ function PlayerSquadCard({
                 <button
                   type="button"
                   onClick={() => setEnlarged('crest')}
-                  className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} relative size-[3.15rem] min-h-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
+                  className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} relative size-[5.5rem] min-h-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
                   aria-label={`View enlarged ${managerLabel} club crest`}
                 >
                   <span
@@ -2093,8 +2093,8 @@ function PlayerSquadCard({
                   />
                 </button>
               </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <div className="min-w-0 w-full flex-1">
+                <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 sm:flex sm:flex-wrap sm:gap-x-2">
                   <span className="inline-flex items-center gap-1">
                     <span className={isLeader ? t.c.squadRankBadgeLeader : t.c.squadRankBadge}>{rank}</span>
                     {t.id === 'english-pyramid' ? (
@@ -2102,7 +2102,13 @@ function PlayerSquadCard({
                     ) : null}
                   </span>
                   <PlayerIdentity player={player} heading />
-                  {isEliminated ? <span className={t.c.squadEliminatedBadge}>Eliminated</span> : null}
+                  {isEliminated ? (
+                    <span
+                      className={`${t.c.squadEliminatedBadge} col-span-3 row-start-2 justify-self-center sm:row-auto sm:justify-self-auto`}
+                    >
+                      Eliminated
+                    </span>
+                  ) : null}
                   <span className={`text-sm font-semibold tabular-nums ${t.c.points}`}>
                     <AnimatedCounter value={player.points} /> pts
                   </span>
@@ -2116,7 +2122,7 @@ function PlayerSquadCard({
                     ) : null}
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-neutral-400">
+                <p className="mt-2 text-center text-xs text-neutral-400 sm:mt-1 sm:text-left">
                   GD <GoalDifferenceValue goalDifference={player.goalDifference} />
                   {t.id === 'english-pyramid' ? (
                     <>
@@ -2141,6 +2147,7 @@ function PlayerSquadCard({
                       player={player}
                       rank={rank}
                       totalPlayers={totalPlayers}
+                      className="w-full"
                     />
                   ) : null}
                 </div>
