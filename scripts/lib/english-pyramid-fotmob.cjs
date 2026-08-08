@@ -14,8 +14,7 @@ function normalizeTeamName(value) {
     .toLowerCase()
     .replace(/&/g, ' and ')
     .replace(/\bfootball club\b/g, ' ')
-    .replace(/\bfc\b/g, ' ')
-    .replace(/\bafc\b/g, ' ')
+    .replace(/\b(?:afc|fc|town|borough)\b/g, ' ')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
 }

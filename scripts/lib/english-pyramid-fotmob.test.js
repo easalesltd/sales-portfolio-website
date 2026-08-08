@@ -8,6 +8,8 @@ describe('english-pyramid-fotmob', () => {
   it('matches harmless club-name variants', () => {
     expect(normalizeTeamName('AFC Hornchurch')).toBe('hornchurch');
     expect(normalizeTeamName('Dagenham & Redbridge FC')).toBe('dagenham and redbridge');
+    expect(normalizeTeamName('Hampton & Richmond Borough')).toBe('hampton and richmond');
+    expect(normalizeTeamName('Billericay Town')).toBe('billericay');
   });
 
   it('finds the correct National League fixture in a daily payload', () => {

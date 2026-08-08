@@ -61,6 +61,10 @@ describe('english-pyramid-fotmob-live-scores', () => {
     expect(normalizeFotMobTeamName('Dagenham & Redbridge FC')).toBe(
       'dagenham and redbridge'
     );
+    expect(normalizeFotMobTeamName('Hampton & Richmond Borough')).toBe(
+      'hampton and richmond'
+    );
+    expect(normalizeFotMobTeamName('Billericay Town')).toBe('billericay');
   });
 
   it('parses only National League matches and maps a live score to the fixture', () => {
