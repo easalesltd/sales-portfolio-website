@@ -19,6 +19,10 @@ describe('english-pyramid-live-scores', () => {
     expect(normalizeEspnAbbrevToTeamCode('eng.5', 'HAR', '19262')).toBe('HAR');
     expect(normalizeEspnAbbrevToTeamCode('eng.4', 'NEW')).toBe('NEW');
     expect(normalizeEspnAbbrevToTeamCode('eng.1', 'NEW')).toBe('NEW');
+    expect(normalizeEspnAbbrevToTeamCode('eng.2', 'LCN')).toBe('LIN');
+    expect(normalizeEspnAbbrevToTeamCode('eng.3', 'BRT')).toBe('BTN');
+    expect(normalizeEspnAbbrevToTeamCode('eng.4', 'CHL')).toBe('CHT');
+    expect(normalizeEspnAbbrevToTeamCode('eng.5', 'HOR')).toBe('HRN');
   });
 
   it('parses in-progress ESPN events but skips scheduled fixtures', () => {
@@ -104,6 +108,22 @@ describe('english-pyramid-live-scores', () => {
     ]);
 
     expect(keys).toEqual([{ slug: 'eng.2', ymd: '20260815' }]);
+  });
+
+  it('builds a fetch key when the drafted club is the away side', () => {
+    const keys = scoreboardFetchKeysForInPlayEntries([
+      {
+        id: '2026-08-15-bost-ald',
+        utcDate: '2026-08-15T14:00:00Z',
+        status: 'in-play',
+        homeTeam: { name: 'Boston United', tla: 'BOST', flag: 'NL' },
+        awayTeam: { name: 'Aldershot Town', tla: 'ALD', flag: 'NL' },
+        homeManagers: [],
+        awayManagers: [],
+      },
+    ]);
+
+    expect(keys).toEqual([{ slug: 'eng.5', ymd: '20260815' }]);
   });
 
   it('promotes in-play fixtures to finished with provisional matches when ESPN reports FT', () => {

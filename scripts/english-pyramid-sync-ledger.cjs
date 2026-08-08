@@ -10,6 +10,7 @@ const {
   parseEspnScoreboard,
 } = require('./lib/english-pyramid-espn-scoreboard.cjs');
 const { fetchFwpResultForFixture, OUR_NLN_NLS_CODES } = require('./lib/english-pyramid-fwp-nln-nls.cjs');
+const { fetchFotMobResultForFixture } = require('./lib/english-pyramid-fotmob.cjs');
 const {
   getDueFixtureOptionsFromEnv,
   getDueFixtures,
@@ -62,7 +63,7 @@ async function loadEspnEventsForFixture(fixture, cache) {
   return findEspnEventForFixture(cache.get(cacheKey), fixture.homeTla, fixture.awayTla);
 }
 
-async function resolveFinalResult(fixture, espnCache) {
+async function resolveFinalResult(fixture, espnCache, fotMobCache) {
   if (isNlnNlsFixture(fixture)) {
     const fwpMatch = await fetchFwpResultForFixture(fixture);
     if (!fwpMatch) {
@@ -105,15 +106,56 @@ async function resolveFinalResult(fixture, espnCache) {
     return { status: 'waiting', detail: `ESPN status "${espnMatch.period}" is not final` };
   }
 
+  let redCards = {
+    homeRedCards: espnMatch.homeRedCards,
+    awayRedCards: espnMatch.awayRedCards,
+  };
+  let redsUnchecked = false;
+  let comment = 'Verified final result (ESPN sync).';
+
+  if (slug === 'eng.5') {
+    try {
+      const fotMobMatch = await fetchFotMobResultForFixture(fixture, fotMobCache);
+      if (fotMobMatch) {
+        if (
+          fotMobMatch.homeGoals !== espnMatch.homeGoals ||
+          fotMobMatch.awayGoals !== espnMatch.awayGoals
+        ) {
+          return {
+            status: 'waiting',
+            detail:
+              `ESPN/FotMob final-score mismatch ` +
+              `(${espnMatch.homeGoals}-${espnMatch.awayGoals} vs ` +
+              `${fotMobMatch.homeGoals}-${fotMobMatch.awayGoals})`,
+          };
+        }
+
+        const redsDisagree =
+          fotMobMatch.homeRedCards !== espnMatch.homeRedCards ||
+          fotMobMatch.awayRedCards !== espnMatch.awayRedCards;
+        redCards = {
+          homeRedCards: Math.max(espnMatch.homeRedCards, fotMobMatch.homeRedCards),
+          awayRedCards: Math.max(espnMatch.awayRedCards, fotMobMatch.awayRedCards),
+        };
+        redsUnchecked = redsDisagree;
+        comment = redsDisagree
+          ? 'Verified final score (ESPN + FotMob). Red-card feeds disagree — redsUnchecked.'
+          : 'Verified final result and red cards (ESPN + FotMob).';
+      }
+    } catch (error) {
+      comment =
+        `Verified final result (ESPN sync). FotMob cross-check unavailable: ` +
+        `${error instanceof Error ? error.message : error}`;
+    }
+  }
+
   return {
     status: 'ready',
     goals: { homeGoals: espnMatch.homeGoals, awayGoals: espnMatch.awayGoals },
-    redCards: {
-      homeRedCards: espnMatch.homeRedCards,
-      awayRedCards: espnMatch.awayRedCards,
-    },
+    redCards,
+    redsUnchecked,
     label: espnMatch.period,
-    comment: 'Verified final result (ESPN sync).',
+    comment,
   };
 }
 
@@ -122,13 +164,14 @@ async function main() {
   const dueOptions = getDueFixtureOptionsFromEnv();
   const dueFixtures = await getDueFixtures(source, dueOptions);
   const espnCache = new Map();
+  const fotMobCache = { day: new Map(), detail: new Map() };
   const pendingEntries = [];
   const skipped = [];
 
   for (const fixture of dueFixtures) {
     let resolved;
     try {
-      resolved = await resolveFinalResult(fixture, espnCache);
+      resolved = await resolveFinalResult(fixture, espnCache, fotMobCache);
     } catch (error) {
       skipped.push(
         `${fixture.id}: result lookup failed (${error instanceof Error ? error.message : error})`,

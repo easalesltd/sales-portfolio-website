@@ -11,6 +11,7 @@ import {
   fetchFwpLiveEventsForInPlayEntries,
   isFwpFullTimePeriod,
 } from '@/app/lib/english-pyramid-fwp-live-scores';
+import { fetchFotMobLiveEventsForInPlayEntries } from '@/app/lib/english-pyramid-fotmob-live-scores';
 
 const DIVISION_TO_ESPN_SLUG: Record<string, string> = {
   PL: 'eng.1',
@@ -22,20 +23,85 @@ const DIVISION_TO_ESPN_SLUG: Record<string, string> = {
 
 /** ESPN abbreviation → sweepstake code (per league slug). Mirrors scripts/lib/english-pyramid-fixture-lib.cjs */
 const ESPN_ABBREV_BY_SLUG: Record<string, Record<string, string>> = {
-  'eng.1': { MNC: 'MCI', MAN: 'MUN', ARS: 'ARS', AVL: 'AVL', CHE: 'CHE', LIV: 'LIV', NEW: 'NEW' },
-  'eng.2': { WHU: 'WHU', WOL: 'WOL', BUR: 'BUR', MID: 'MID', BIR: 'BIR', SHU: 'SHU', SOU: 'SOU', BOL: 'BOL' },
-  'eng.3': { LEI: 'LEI', SHW: 'SHW', LTN: 'LUT', STO: 'STP', PLY: 'PLY', HUD: 'HUD' },
+  'eng.1': {
+    MNC: 'MCI',
+    MAN: 'MUN',
+    ARS: 'ARS',
+    AVL: 'AVL',
+    CHE: 'CHE',
+    LIV: 'LIV',
+    NEW: 'NEW',
+    HUL: 'HUL',
+    COV: 'COV',
+    IPS: 'IPS',
+    SUN: 'SUN',
+    FUL: 'FUL',
+    LEE: 'LEE',
+    CRY: 'CRY',
+  },
+  'eng.2': {
+    WHU: 'WHU',
+    WOL: 'WOL',
+    BUR: 'BUR',
+    MID: 'MID',
+    BIR: 'BIR',
+    SHU: 'SHU',
+    SOU: 'SOU',
+    BOL: 'BOL',
+    LCN: 'LIN',
+    CHA: 'CHA',
+    CAR: 'CDF',
+    PNE: 'PNE',
+    POR: 'POR',
+    BLK: 'BLK',
+  },
+  'eng.3': {
+    LEI: 'LEI',
+    SHW: 'SHW',
+    LTN: 'LUT',
+    STO: 'STP',
+    PLY: 'PLY',
+    HUD: 'HUD',
+    MKD: 'MKD',
+    BRO: 'BRO',
+    WIM: 'WIM',
+    BRT: 'BTN',
+    CAM: 'CAM',
+    LEY: 'LEY',
+    NCO: 'NCO',
+    OXF: 'OXF',
+  },
   'eng.4': {
     BAR: 'BAR',
-    ROT: 'ROT',
     PTV: 'PVL',
     SAL: 'SAL',
     CHES: 'CHS',
     BRI: 'BRST',
     GRI: 'GRI',
     YORK: 'YOR',
+    NEW: 'NWP',
+    CHL: 'CHT',
+    ACC: 'ACC',
+    TRN: 'TRN',
+    SHR: 'SHR',
+    FLE: 'FLE',
+    CRA: 'CRA',
   },
-  'eng.5': { CAR: 'CAR', SOUT: 'STD', FGR: 'FGR', BOR: 'BORE', SCU: 'SCU' },
+  'eng.5': {
+    CAR: 'CAR',
+    SOUT: 'STD',
+    FGR: 'FGR',
+    BOR: 'BORE',
+    SCU: 'SCU',
+    BRW: 'BRW',
+    HOR: 'HRN',
+    WEA: 'WEA',
+    ALT: 'ALT',
+    ALD: 'ALD',
+    KID: 'KID',
+    SUT: 'SUT',
+    TAM: 'TAM',
+  },
 };
 
 /** ESPN team id → sweepstake code when abbreviation alone is ambiguous. */
@@ -69,6 +135,7 @@ export type LiveFixtureScore = {
   period: string;
   homeRedCards: number;
   awayRedCards: number;
+  postponed?: boolean;
 };
 
 type EspnScoreboardEvent = {
@@ -79,6 +146,7 @@ type EspnScoreboardEvent = {
   period: string;
   homeRedCards: number;
   awayRedCards: number;
+  postponed?: boolean;
 };
 
 type ScoreboardFetchKey = {
@@ -120,7 +188,9 @@ export function scoreboardFetchKeysForInPlayEntries(
   const keys = new Map<string, ScoreboardFetchKey>();
 
   for (const entry of entries) {
-    const slug = espnSlugForTeamCode(entry.homeTeam.tla);
+    const slug =
+      espnSlugForTeamCode(entry.homeTeam.tla) ??
+      espnSlugForTeamCode(entry.awayTeam.tla);
     if (!slug) continue;
 
     const ymd = entry.utcDate.slice(0, 10).replace(/-/g, '');
@@ -314,7 +384,44 @@ export function matchLiveScoreForFixture(
     period: match.period,
     homeRedCards: match.homeRedCards,
     awayRedCards: match.awayRedCards,
+    postponed: match.postponed,
   };
+}
+
+/**
+ * Preserve the primary score feed, supplement red-card totals from FotMob, and
+ * accept a supplementary full-time result when the primary feed still lags.
+ */
+export function mergeLiveScoreEvents(
+  primaryEvents: readonly EspnScoreboardEvent[],
+  supplementaryEvents: readonly EspnScoreboardEvent[]
+): EspnScoreboardEvent[] {
+  const merged = new Map<string, EspnScoreboardEvent>(
+    primaryEvents.map((event) => [`${event.homeTla}|${event.awayTla}`, { ...event }] as const)
+  );
+
+  for (const supplementary of supplementaryEvents) {
+    const key = `${supplementary.homeTla}|${supplementary.awayTla}`;
+    const primary = merged.get(key);
+    if (!primary) {
+      merged.set(key, { ...supplementary });
+      continue;
+    }
+
+    const primaryFinished =
+      isEspnFullTimePeriod(primary.period) || isFwpFullTimePeriod(primary.period);
+    const supplementaryFinished =
+      isEspnFullTimePeriod(supplementary.period) || isFwpFullTimePeriod(supplementary.period);
+    const useSupplementaryResult = !primaryFinished && supplementaryFinished;
+
+    merged.set(key, {
+      ...(useSupplementaryResult ? supplementary : primary),
+      homeRedCards: Math.max(primary.homeRedCards, supplementary.homeRedCards),
+      awayRedCards: Math.max(primary.awayRedCards, supplementary.awayRedCards),
+    });
+  }
+
+  return [...merged.values()];
 }
 
 export function applyLiveScoresToSchedule(
@@ -330,6 +437,14 @@ export function applyLiveScoresToSchedule(
 
       const live = matchLiveScoreForFixture(entry, events);
       if (!live) return entry;
+
+      if (live.postponed) {
+        return {
+          ...entry,
+          status: 'postponed',
+          livePeriod: 'Postponed',
+        };
+      }
 
       if (isEspnFullTimePeriod(live.period) || isFwpFullTimePeriod(live.period)) {
         const finishedEntry: MatchdayEntry = {
@@ -386,14 +501,15 @@ export async function enrichMatchdayScheduleWithLiveScores(
   }
 
   const fetchKeys = scoreboardFetchKeysForInPlayEntries(inPlayEntries);
-  const [espnEvents, fwpEvents] = await Promise.all([
+  const [espnEvents, fwpEvents, fotMobEvents] = await Promise.all([
     fetchKeys.length > 0
       ? getCachedScoreboardEventsForKeys(fetchKeys).catch(() => [] as EspnScoreboardEvent[])
       : Promise.resolve([] as EspnScoreboardEvent[]),
     fetchFwpLiveEventsForInPlayEntries(inPlayEntries).catch(() => []),
+    fetchFotMobLiveEventsForInPlayEntries(inPlayEntries).catch(() => []),
   ]);
 
-  const events = [...espnEvents, ...fwpEvents];
+  const events = mergeLiveScoreEvents([...espnEvents, ...fwpEvents], fotMobEvents);
   if (events.length === 0) {
     return { schedule, provisionalMatches: [] };
   }

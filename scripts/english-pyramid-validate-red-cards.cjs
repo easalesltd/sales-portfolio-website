@@ -9,6 +9,7 @@ const {
   findEspnEventForFixture,
   parseEspnScoreboard,
 } = require('./lib/english-pyramid-espn-scoreboard.cjs');
+const { fetchFotMobResultForFixture } = require('./lib/english-pyramid-fotmob.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/english-pyramid-fantasy.ts');
@@ -55,14 +56,24 @@ function parseManualMatches() {
     return {
       id: readString(objectSource, /id: '([^']+)'/, 'id'),
       utcDate: readString(objectSource, /utcDate: '([^']+)'/, 'utcDate'),
+      homeName: readString(
+        objectSource,
+        /homeTeam: \{ name: '((?:\\'|[^'])*)', tla: '[^']+' \}/,
+        'home team name',
+      ).replace(/\\'/g, "'"),
       homeTla: readString(
         objectSource,
-        /homeTeam: \{ name: '[^']+', tla: '([^']+)' \}/,
+        /homeTeam: \{ name: '(?:\\'|[^'])*', tla: '([^']+)' \}/,
         'home team TLA',
       ),
+      awayName: readString(
+        objectSource,
+        /awayTeam: \{ name: '((?:\\'|[^'])*)', tla: '[^']+' \}/,
+        'away team name',
+      ).replace(/\\'/g, "'"),
       awayTla: readString(
         objectSource,
-        /awayTeam: \{ name: '[^']+', tla: '([^']+)' \}/,
+        /awayTeam: \{ name: '(?:\\'|[^'])*', tla: '([^']+)' \}/,
         'away team TLA',
       ),
       homeGoals: readNumber(objectSource, 'homeGoals'),
@@ -76,7 +87,9 @@ function parseManualMatches() {
 const { isEspnFinalPeriod } = require('./lib/world-cup-espn-finals.cjs');
 
 async function loadEspnEventsForMatch(match, cache) {
-  const slug = espnSlugForTeamCode(match.homeTla);
+  const slug =
+    espnSlugForTeamCode(match.homeTla) ??
+    espnSlugForTeamCode(match.awayTla);
   const dateParam = espnDateParamFromUtcDate(match.utcDate);
   if (!slug || !dateParam) return null;
 
@@ -92,10 +105,15 @@ async function loadEspnEventsForMatch(match, cache) {
 async function main() {
   const manualMatches = parseManualMatches();
   const errors = [];
-  const checked = [];
+  const espnChecked = [];
+  const fotMobChecked = [];
   const espnCache = new Map();
+  const fotMobCache = { day: new Map(), detail: new Map() };
 
   for (const match of manualMatches) {
+    const slug =
+      espnSlugForTeamCode(match.homeTla) ??
+      espnSlugForTeamCode(match.awayTla);
     let espnMatch;
     try {
       espnMatch = await loadEspnEventsForMatch(match, espnCache);
@@ -103,26 +121,56 @@ async function main() {
       console.warn(
         `Skipping ESPN red-card check for ${match.id}: ${error instanceof Error ? error.message : error}`,
       );
-      continue;
     }
 
-    if (!espnMatch) continue;
-    if (!isEspnFinalPeriod(espnMatch.period)) continue;
-    if (espnMatch.homeGoals !== match.homeGoals || espnMatch.awayGoals !== match.awayGoals) {
-      continue;
+    if (
+      espnMatch &&
+      isEspnFinalPeriod(espnMatch.period) &&
+      espnMatch.homeGoals === match.homeGoals &&
+      espnMatch.awayGoals === match.awayGoals
+    ) {
+      espnChecked.push(match.id);
+
+      if (match.homeRedCards < espnMatch.homeRedCards) {
+        errors.push(
+          `${match.id}: ledger homeRedCards=${match.homeRedCards} but ESPN reports ${espnMatch.homeRedCards}`,
+        );
+      }
+      if (match.awayRedCards < espnMatch.awayRedCards) {
+        errors.push(
+          `${match.id}: ledger awayRedCards=${match.awayRedCards} but ESPN reports ${espnMatch.awayRedCards}`,
+        );
+      }
     }
 
-    checked.push(match.id);
+    if (slug === 'eng.5') {
+      try {
+        const fotMobMatch = await fetchFotMobResultForFixture(match, fotMobCache);
+        if (!fotMobMatch) continue;
+        if (
+          fotMobMatch.homeGoals !== match.homeGoals ||
+          fotMobMatch.awayGoals !== match.awayGoals
+        ) {
+          console.warn(`Skipping FotMob red-card check for ${match.id}: final score differs.`);
+          continue;
+        }
 
-    if (match.homeRedCards < espnMatch.homeRedCards) {
-      errors.push(
-        `${match.id}: ledger homeRedCards=${match.homeRedCards} but ESPN reports ${espnMatch.homeRedCards}`,
-      );
-    }
-    if (match.awayRedCards < espnMatch.awayRedCards) {
-      errors.push(
-        `${match.id}: ledger awayRedCards=${match.awayRedCards} but ESPN reports ${espnMatch.awayRedCards}`,
-      );
+        fotMobChecked.push(match.id);
+        if (match.homeRedCards < fotMobMatch.homeRedCards) {
+          errors.push(
+            `${match.id}: ledger homeRedCards=${match.homeRedCards} but FotMob reports ${fotMobMatch.homeRedCards}`,
+          );
+        }
+        if (match.awayRedCards < fotMobMatch.awayRedCards) {
+          errors.push(
+            `${match.id}: ledger awayRedCards=${match.awayRedCards} but FotMob reports ${fotMobMatch.awayRedCards}`,
+          );
+        }
+      } catch (error) {
+        console.warn(
+          `Skipping FotMob red-card check for ${match.id}: ${error instanceof Error ? error.message : error}`,
+        );
+      }
     }
   }
 
@@ -135,7 +183,8 @@ async function main() {
   }
 
   console.log(
-    `Validated English pyramid red cards against ESPN for ${checked.length} ledger match(es).`,
+    `Validated English pyramid red cards against ESPN for ${espnChecked.length} ledger match(es) ` +
+      `and FotMob for ${fotMobChecked.length} National League match(es).`,
   );
 }
 

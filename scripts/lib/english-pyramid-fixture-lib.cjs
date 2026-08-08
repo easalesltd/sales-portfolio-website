@@ -671,15 +671,37 @@ function summarizeNlFixtureStatus(localFixtures, remoteFixtures, now = new Date(
   };
 }
 
-const SWEEPSTAKE_DIVISION_BY_CODE = {
-  MCI: 'PL', MUN: 'PL', ARS: 'PL', AVL: 'PL', CHE: 'PL', LIV: 'PL', NEW: 'PL',
-  WHU: 'CH', WOL: 'CH', BUR: 'CH', MID: 'CH', BIR: 'CH', SHU: 'CH', SOU: 'CH', BOL: 'CH',
-  LEI: 'L1', SHW: 'L1', LUT: 'L1', STP: 'L1', PLY: 'L1', HUD: 'L1',
-  BAR: 'L2', ROT: 'L2', PVL: 'L2', SAL: 'L2', CHS: 'L2', BRST: 'L2', GRI: 'L2', YOR: 'L2',
-  CAR: 'NL', STD: 'NL', FGR: 'NL', BORE: 'NL', HPL: 'NL', SCU: 'NL',
-  SSH: 'NLN', MAC: 'NLN', MER: 'NLN', WRK: 'NLN', DAR: 'NLN', BUX: 'NLN', CHF: 'NLN',
-  DAG: 'NLS', TOR: 'NLS', HOR: 'NLS', WSM: 'NLS', MAI: 'NLS', EBB: 'NLS', CLM: 'NLS',
-};
+const SWEEPSTAKE_DIVISION_BY_CODE = {};
+for (const [slug, mapping] of Object.entries(ESPN_ABBREV_BY_SLUG)) {
+  const divisionId = {
+    'eng.1': 'PL',
+    'eng.2': 'CH',
+    'eng.3': 'L1',
+    'eng.4': 'L2',
+    'eng.5': 'NL',
+  }[slug];
+  if (!divisionId) continue;
+  for (const code of Object.values(mapping)) {
+    SWEEPSTAKE_DIVISION_BY_CODE[code] = divisionId;
+  }
+  for (const code of Object.values(ESPN_TEAM_ID_BY_SLUG[slug] ?? {})) {
+    SWEEPSTAKE_DIVISION_BY_CODE[code] = divisionId;
+  }
+}
+
+for (const code of [
+  'MOR', 'SSH', 'MAC', 'BUX', 'CHF', 'DAR', 'WRK',
+  'HEB', 'SPA', 'BED', 'HBO', 'HED', 'OXC', 'MAR',
+]) {
+  SWEEPSTAKE_DIVISION_BY_CODE[code] = 'NLN';
+}
+
+for (const code of [
+  'TOR', 'DAG', 'CLM', 'EBB', 'FNH', 'MAI', 'WSM',
+  'WAH', 'DOV', 'AFT', 'SBY', 'CHU', 'TON', 'HOR',
+]) {
+  SWEEPSTAKE_DIVISION_BY_CODE[code] = 'NLS';
+}
 
 module.exports = {
   CUP_SEASON_SLUG_PATTERN,

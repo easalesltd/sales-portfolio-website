@@ -15,13 +15,30 @@ const DIVISION_TO_ESPN_SLUG = {
   NL: 'eng.5',
 };
 
-const SWEEPSTAKE_DIVISION_BY_CODE = {
-  MCI: 'PL', MUN: 'PL', ARS: 'PL', AVL: 'PL', CHE: 'PL', LIV: 'PL', NEW: 'PL',
-  WHU: 'CH', WOL: 'CH', BUR: 'CH', MID: 'CH', BIR: 'CH', SHU: 'CH', SOU: 'CH', BOL: 'CH',
-  LEI: 'L1', SHW: 'L1', LUT: 'L1', STP: 'L1', PLY: 'L1', HUD: 'L1',
-  BAR: 'L2', ROT: 'L2', PVL: 'L2', SAL: 'L2', CHS: 'L2', BRST: 'L2', GRI: 'L2', YOR: 'L2',
-  CAR: 'NL', STD: 'NL', FGR: 'NL', BORE: 'NL', HPL: 'NL', SCU: 'NL',
+const DIVISION_BY_ESPN_SLUG = {
+  'eng.1': 'PL',
+  'eng.2': 'CH',
+  'eng.3': 'L1',
+  'eng.4': 'L2',
+  'eng.5': 'NL',
 };
+
+/**
+ * Derive this from the canonical ESPN mappings so every drafted club is
+ * covered after a redraw. A stale hand-maintained subset silently skipped
+ * survival-band fixtures when neither side was a title pick.
+ */
+const SWEEPSTAKE_DIVISION_BY_CODE = {};
+for (const [slug, mapping] of Object.entries(ESPN_ABBREV_BY_SLUG)) {
+  const divisionId = DIVISION_BY_ESPN_SLUG[slug];
+  if (!divisionId) continue;
+  for (const code of Object.values(mapping)) {
+    SWEEPSTAKE_DIVISION_BY_CODE[code] = divisionId;
+  }
+  for (const code of Object.values(ESPN_TEAM_ID_BY_SLUG[slug] ?? {})) {
+    SWEEPSTAKE_DIVISION_BY_CODE[code] = divisionId;
+  }
+}
 
 function parseScore(value) {
   if (value == null) return null;

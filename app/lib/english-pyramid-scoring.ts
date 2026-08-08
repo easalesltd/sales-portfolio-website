@@ -114,7 +114,7 @@ export type TodaysResultEntry = UpcomingFixtureEntry & {
   awayGoals: number;
 };
 
-export type MatchdayEntryStatus = 'upcoming' | 'in-play' | 'finished';
+export type MatchdayEntryStatus = 'upcoming' | 'in-play' | 'finished' | 'postponed';
 
 export type MatchdayEntry = UpcomingFixtureEntry & {
   status: MatchdayEntryStatus;

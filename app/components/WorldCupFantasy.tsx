@@ -723,6 +723,10 @@ function MatchdayStatusBadge({
     return <span className={t.c.fixturesFt}>Full time</span>;
   }
 
+  if (status === 'postponed') {
+    return <span className={t.c.fixturesFt}>Postponed</span>;
+  }
+
   return null;
 }
 
