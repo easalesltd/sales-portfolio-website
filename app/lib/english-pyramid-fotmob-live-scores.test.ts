@@ -65,6 +65,8 @@ describe('english-pyramid-fotmob-live-scores', () => {
       'hampton and richmond'
     );
     expect(normalizeFotMobTeamName('Billericay Town')).toBe('billericay');
+    expect(normalizeFotMobTeamName('Dover Athletic')).toBe('dover');
+    expect(normalizeFotMobTeamName('Chelmsford City')).toBe('chelmsford');
   });
 
   it('parses only National League matches and maps a live score to the fixture', () => {
