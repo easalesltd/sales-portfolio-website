@@ -1995,6 +1995,84 @@ function managerPhotoFrameClass(isLeader: boolean, isLast: boolean, themeId: Swe
   return '';
 }
 
+function SquadIdentityMedia({
+  managerLabel,
+  managerImage,
+  clubCrest,
+  photoFrame,
+  photoToneClass,
+  leaderPhotoClass,
+  interactive = true,
+  onEnlargeManager,
+  onEnlargeCrest,
+}: {
+  managerLabel: string;
+  managerImage: string;
+  clubCrest: string;
+  photoFrame: string;
+  photoToneClass: string;
+  leaderPhotoClass: string;
+  interactive?: boolean;
+  onEnlargeManager?: () => void;
+  onEnlargeCrest?: () => void;
+}) {
+  const t = useSweepstakeTheme();
+  const managerClass = `${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} size-14 sm:size-[4.5rem]${
+    interactive ? '' : ' !cursor-default hover:!border-inherit hover:!ring-0'
+  }`;
+  const crestClass = `${t.c.squadCrestBadge} ${photoToneClass} size-7 sm:size-9${
+    interactive ? '' : ' !cursor-default hover:!scale-100 hover:!border-inherit'
+  }`;
+
+  return (
+    <div className="relative shrink-0 self-start pb-1 pr-1">
+      {interactive && onEnlargeManager ? (
+        <button
+          type="button"
+          onClick={onEnlargeManager}
+          className={managerClass}
+          aria-label={`View enlarged photo of ${managerLabel}`}
+        >
+          <img
+            src={managerPhotoSrc(managerImage)}
+            alt={`${managerLabel} manager`}
+            className="h-full w-full object-cover object-center"
+          />
+        </button>
+      ) : (
+        <div className={managerClass} aria-hidden>
+          <img
+            src={managerPhotoSrc(managerImage)}
+            alt=""
+            className="h-full w-full object-cover object-center"
+          />
+        </div>
+      )}
+      {interactive && onEnlargeCrest ? (
+        <button
+          type="button"
+          onClick={onEnlargeCrest}
+          className={crestClass}
+          aria-label={`View enlarged ${managerLabel} club crest`}
+        >
+          <span
+            className="absolute inset-[3px] block bg-contain bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${clubCrest})` }}
+            aria-hidden
+          />
+        </button>
+      ) : (
+        <div className={crestClass} aria-hidden>
+          <span
+            className="absolute inset-[3px] block bg-contain bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${clubCrest})` }}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PlayerSquadCard({
   rank,
   player,
@@ -2050,10 +2128,14 @@ function PlayerSquadCard({
       <div className={`px-3 py-2.5 sm:px-4 sm:py-3 ${isEliminated ? 'opacity-95' : ''}`}>
         {squadsSealed ? (
           <div className="flex items-center gap-3">
-            <img
-              src={managerPhotoSrc(player.managerImage)}
-              alt=""
-              className="h-12 w-12 shrink-0 rounded-lg border border-[#d4af37]/35 object-cover"
+            <SquadIdentityMedia
+              managerLabel={managerLabel}
+              managerImage={player.managerImage}
+              clubCrest={player.clubCrest}
+              photoFrame={photoFrame}
+              photoToneClass=""
+              leaderPhotoClass=""
+              interactive={false}
             />
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
@@ -2062,37 +2144,20 @@ function PlayerSquadCard({
               </div>
               <p className="mt-0.5 text-xs text-[#e8dfc8]/60">Sealed · reveal 7pm Friday</p>
             </div>
-            <img src={player.clubCrest} alt="" className="h-10 w-10 shrink-0 object-contain" />
           </div>
         ) : (
           <div className="space-y-2.5 sm:space-y-3">
-            <div className="flex items-start gap-3 sm:block">
-              <div className="grid w-[6.75rem] shrink-0 grid-cols-2 gap-1.5 sm:mx-auto sm:mb-3 sm:w-fit sm:gap-3">
-                <button
-                  type="button"
-                  onClick={() => setEnlarged('manager')}
-                  className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} size-[3.15rem] min-h-0 sm:size-32 md:size-36`}
-                  aria-label={`View enlarged photo of ${managerLabel}`}
-                >
-                  <img
-                    src={managerPhotoSrc(player.managerImage)}
-                    alt={`${managerLabel} manager`}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setEnlarged('crest')}
-                  className={`${t.c.squadPhotoBtn} ${photoFrame} ${photoToneClass} ${leaderPhotoClass} relative size-[3.15rem] min-h-0 cursor-zoom-in overflow-hidden sm:size-32 md:size-36`}
-                  aria-label={`View enlarged ${managerLabel} club crest`}
-                >
-                  <span
-                    className="absolute inset-0 block bg-contain bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${player.clubCrest})` }}
-                    aria-hidden
-                  />
-                </button>
-              </div>
+            <div className="flex items-start gap-3">
+              <SquadIdentityMedia
+                managerLabel={managerLabel}
+                managerImage={player.managerImage}
+                clubCrest={player.clubCrest}
+                photoFrame={photoFrame}
+                photoToneClass={photoToneClass}
+                leaderPhotoClass={leaderPhotoClass}
+                onEnlargeManager={() => setEnlarged('manager')}
+                onEnlargeCrest={() => setEnlarged('crest')}
+              />
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="inline-flex items-center gap-1">

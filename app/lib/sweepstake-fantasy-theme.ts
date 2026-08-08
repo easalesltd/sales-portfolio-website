@@ -76,6 +76,7 @@ export type SweepstakeFantasyTheme = {
     squadRankBadge: string;
     squadRankBadgeLeader: string;
     squadPhotoBtn: string;
+    squadCrestBadge: string;
     chartWrap: string;
     chartLegendPoints: string;
     chartLegendBtnSelected: string;
@@ -193,7 +194,9 @@ export const worldCupFantasyTheme: SweepstakeFantasyTheme = {
     squadRankBadgeLeader:
       'inline-flex h-6 w-6 items-center justify-center rounded-full bg-teal-950 text-xs font-bold text-teal-200 ring-1 ring-teal-500/50',
     squadPhotoBtn:
-      'relative flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30 sm:size-32 md:size-36',
+      'relative flex shrink-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-xl border border-neutral-700/80 bg-neutral-900 transition hover:border-teal-600/60 hover:ring-2 hover:ring-teal-600/30',
+    squadCrestBadge:
+      'absolute -bottom-1 -right-1 z-10 flex cursor-zoom-in items-center justify-center overflow-hidden rounded-md border border-neutral-600 bg-neutral-950 shadow-[0_2px_8px_rgba(0,0,0,0.55)] transition hover:border-teal-500/70 hover:scale-105',
     chartWrap: 'overflow-x-auto overflow-y-visible rounded-lg border border-neutral-700/80 bg-neutral-950/50',
     chartLegendPoints: 'tabular-nums text-teal-300',
     chartLegendBtnSelected: 'border-teal-400 ring-2 ring-teal-500/40',
@@ -311,7 +314,9 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
     squadRankBadgeLeader:
       'inline-flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-[#f5e2a3] via-[#d4af37] to-[#8b6914] text-xs font-bold text-[#0a0f1a] ring-2 ring-[#d4af37]/40',
     squadPhotoBtn:
-      'relative flex aspect-square w-full min-w-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-lg border border-[#1a2744] bg-[#0a0f1a] transition hover:border-[#d4af37]/50 hover:ring-2 hover:ring-[#d4af37]/25 sm:size-32 md:size-36',
+      'relative flex shrink-0 cursor-zoom-in items-center justify-center overflow-hidden rounded-xl border border-[#1a2744] bg-[#0a0f1a] transition hover:border-[#d4af37]/50 hover:ring-2 hover:ring-[#d4af37]/25',
+    squadCrestBadge:
+      'absolute -bottom-1 -right-1 z-10 flex cursor-zoom-in items-center justify-center overflow-hidden rounded-md border border-[#d4af37]/40 bg-[#0a0f1a] shadow-[0_2px_10px_rgba(0,0,0,0.55)] transition hover:border-[#d4af37]/80 hover:scale-105',
     chartWrap: 'overflow-x-auto overflow-y-visible rounded-lg border border-[#d4af37]/20 sweepstake-card-glass',
     chartLegendPoints: 'tabular-nums text-[#d4af37]',
     chartLegendBtnSelected: 'border-[#d4af37] ring-2 ring-[#d4af37]/35',
