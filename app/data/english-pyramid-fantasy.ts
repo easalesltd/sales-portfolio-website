@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Redraw night. Seals cracked. Scott waltzes off with Arsenal and Hull — title favourite Velcroed to a relegation corpse, and he still looks smug. Ash gets Manchester United and Sunderland: two flavours of northern heartbreak in one carrier bag. Dave pockets City and Ipswich like Pep owes him a personal call. Ben’s holding Liverpool and Coventry — champagne taste, food-bank survival pick. Nest’s Villa–Leeds double is peak “we’re a big club actually” bollocks. Chris invents a narrative around Newcastle and Palace before kick-off. Jon’s Chelsea–Fulham west London sandwich is soft as fuck. Zero points. Balls roll tomorrow. Bottle a 1–0 and you’re getting named.';
+  'Opening Saturday and Chris is already 19 points deep like he bribed the referee at every rung — Tonbridge smacked four past Braintree and Chester pinched one at Chorley while the rest of you were still finding the car park. Ash is breathing down his neck on 17. Scott, you drew Arsenal in the redraw and somehow finished bottom on 10 — classic big-club tourist energy. Slough–Ebbsfleet bottled it and got postponed, which is still more dignified than a few of these survival picks. Jon 14, Nest 13, Ben 12, Dave 11: mid-table mush. Season\'s on.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -627,7 +627,370 @@ export type EnglishPyramidManualMatch = {
   redsUnchecked?: boolean;
 };
 
-export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[] = [];
+export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[] = [
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/dover-athletic/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-bil-dov',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Billericay Town', tla: 'BIL' },
+    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/tonbridge-angels/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-brt-ton',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Braintree Town', tla: 'BRT' },
+    awayTeam: { name: 'Tonbridge Angels', tla: 'TON' },
+    homeGoals: 0,
+    awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/buxton/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-bux-her',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Buxton', tla: 'BUX' },
+    awayTeam: { name: 'Hereford', tla: 'HER' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chester/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-cho-chf',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Chorley', tla: 'CHO' },
+    awayTeam: { name: 'Chester FC', tla: 'CHF' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/darlington/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-dar-wrk',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Darlington', tla: 'DAR' },
+    awayTeam: { name: 'Worksop Town', tla: 'WRK' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/dagenham-and-redbridge/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-dor-dag',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
+    awayTeam: { name: 'Dagenham & Redbridge', tla: 'DAG' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/farnham-town/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-fnh-aft',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Farnham Town', tla: 'FNH' },
+    awayTeam: { name: 'AFC Totton', tla: 'AFT' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/walton-and-hersham/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-fol-wah',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
+    awayTeam: { name: 'Walton & Hersham', tla: 'WAH' },
+    homeGoals: 5,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/hebburn-town/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-heb-spt',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Hebburn Town', tla: 'HEB' },
+    awayTeam: { name: 'Southport', tla: 'SPT' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chelmsford-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-hem-clm',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
+    awayTeam: { name: 'Chelmsford City', tla: 'CLM' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/harborough-town/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-klt-hbo',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'King\'s Lynn Town', tla: 'KLT' },
+    awayTeam: { name: 'Harborough Town', tla: 'HBO' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/maidstone-united/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-mai-far',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Maidstone United', tla: 'MAI' },
+    awayTeam: { name: 'Farnborough', tla: 'FAR' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/marine/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-mar-mac',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Marine', tla: 'MAR' },
+    awayTeam: { name: 'Macclesfield', tla: 'MAC' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/hednesford-town/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-mer-hed',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Merthyr Town', tla: 'MER' },
+    awayTeam: { name: 'Hednesford Town', tla: 'HED' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/morecambe/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-mor-spe',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Morecambe', tla: 'MOR' },
+    awayTeam: { name: 'Spennymoor Town', tla: 'SPE' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/oxford-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-oxc-bed',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Oxford City', tla: 'OXC' },
+    awayTeam: { name: 'Bedford Town', tla: 'BED' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/spalding-united/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-rad-spa',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Radcliffe', tla: 'RAD' },
+    awayTeam: { name: 'Spalding United', tla: 'SPA' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/salisbury/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-sby-hrb',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Salisbury', tla: 'SBY' },
+    awayTeam: { name: 'Hampton & Richmond Borough', tla: 'HRB' },
+    homeGoals: 5,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/south-shields/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-sca-ssh',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Scarborough Athletic', tla: 'SCA' },
+    awayTeam: { name: 'South Shields', tla: 'SSH' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/torquay-united/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-tor-hor',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Torquay United', tla: 'TOR' },
+    awayTeam: { name: 'Horsham', tla: 'HOR' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/weston-super-mare/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-08-wsm-chu',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
+    awayTeam: { name: 'Chesham United', tla: 'CHU' },
+    homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-alt-std',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Altrincham', tla: 'ALT' },
+    awayTeam: { name: 'Southend United', tla: 'STD' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-bore-tam',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Boreham Wood', tla: 'BORE' },
+    awayTeam: { name: 'Tamworth', tla: 'TAM' },
+    homeGoals: 3,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-bost-ald',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Boston United', tla: 'BOST' },
+    awayTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-car-wor',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Carlisle United', tla: 'CAR' },
+    awayTeam: { name: 'Worthing', tla: 'WOR' },
+    homeGoals: 2,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-fgr-hal',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    awayTeam: { name: 'FC Halifax Town', tla: 'HAL' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-fyl-wea',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'AFC Fylde', tla: 'FYL' },
+    awayTeam: { name: 'Wealdstone', tla: 'WEA' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-hpl-brw',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Hartlepool United', tla: 'HPL' },
+    awayTeam: { name: 'Barrow', tla: 'BRW' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-hrn-kid',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Hornchurch', tla: 'HRN' },
+    awayTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+    homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-scu-yeo',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+    awayTeam: { name: 'Yeovil Town', tla: 'YEO' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-08-wok-sut',
+    utcDate: '2026-08-08T14:00Z',
+    homeTeam: { name: 'Woking', tla: 'WOK' },
+    awayTeam: { name: 'Sutton United', tla: 'SUT' },
+    homeGoals: 0,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+];
 
 export type EnglishPyramidFixture = {
   id: string;
@@ -635,6 +998,8 @@ export type EnglishPyramidFixture = {
   utcDate: string;
   homeTeam: { name: string; tla: string };
   awayTeam: { name: string; tla: string };
+  /** True when the league match was postponed — no ledger result expected until rescheduled. */
+  postponed?: boolean;
 };
 
 /** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-08-06 via npm run english-pyramid:fetch-fixtures. */
@@ -758,6 +1123,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-08-08T14:00:00Z',
     homeTeam: { name: 'Slough Town', tla: 'SLO' },
     awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
+    /** FotMob + BBC: postponed (PP) on original 2026-08-08 15:00 UK kick-off. */
+    postponed: true,
   },
   {
     id: '2026-08-08-tor-hor',

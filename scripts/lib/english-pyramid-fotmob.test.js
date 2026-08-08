@@ -40,6 +40,32 @@ describe('english-pyramid-fotmob', () => {
     expect(match?.id).toBe(5906358);
   });
 
+  it('finds National League North/South fixtures in the same daily payload', () => {
+    const match = findFotMobMatchForFixture(
+      {
+        leagues: [
+          {
+            name: 'National League South',
+            matches: [
+              {
+                id: 5907484,
+                home: { name: 'Billericay', longName: 'Billericay', score: 2 },
+                away: { name: 'Dover', longName: 'Dover', score: 0 },
+                status: { finished: true },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        homeName: 'Billericay Town',
+        awayName: 'Dover Athletic',
+      },
+    );
+
+    expect(match?.id).toBe(5907484);
+  });
+
   it('parses final scores and explicit red-card totals', () => {
     expect(
       parseFotMobFinal(

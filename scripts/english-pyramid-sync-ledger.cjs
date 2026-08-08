@@ -65,21 +65,59 @@ async function loadEspnEventsForFixture(fixture, cache) {
 
 async function resolveFinalResult(fixture, espnCache, fotMobCache) {
   if (isNlnNlsFixture(fixture)) {
-    const fwpMatch = await fetchFwpResultForFixture(fixture);
-    if (!fwpMatch) {
-      return { status: 'waiting', detail: 'FWP result not final yet' };
+    let fwpError = null;
+    try {
+      const fwpMatch = await fetchFwpResultForFixture(fixture);
+      if (fwpMatch) {
+        return {
+          status: 'ready',
+          goals: { homeGoals: fwpMatch.homeGoals, awayGoals: fwpMatch.awayGoals },
+          redCards: {
+            homeRedCards: fwpMatch.homeRedCards,
+            awayRedCards: fwpMatch.awayRedCards,
+          },
+          redsUnchecked: true,
+          label: `FWP ${fwpMatch.period}`,
+          comment:
+            'Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked.',
+        };
+      }
+    } catch (error) {
+      fwpError = error instanceof Error ? error.message : String(error);
     }
+
+    try {
+      const fotMobMatch = await fetchFotMobResultForFixture(fixture, fotMobCache);
+      if (fotMobMatch) {
+        return {
+          status: 'ready',
+          goals: { homeGoals: fotMobMatch.homeGoals, awayGoals: fotMobMatch.awayGoals },
+          redCards: {
+            homeRedCards: fotMobMatch.homeRedCards,
+            awayRedCards: fotMobMatch.awayRedCards,
+          },
+          redsUnchecked: true,
+          label: 'FT',
+          comment: fwpError
+            ? `Verified final score (FotMob; FWP unavailable: ${fwpError}). Red cards from FotMob — redsUnchecked.`
+            : 'Verified final score (FotMob; FWP not final yet). Red cards from FotMob — redsUnchecked.',
+        };
+      }
+    } catch (error) {
+      const fotMobError = error instanceof Error ? error.message : String(error);
+      return {
+        status: 'waiting',
+        detail: fwpError
+          ? `FWP failed (${fwpError}); FotMob failed (${fotMobError})`
+          : `FWP not final; FotMob failed (${fotMobError})`,
+      };
+    }
+
     return {
-      status: 'ready',
-      goals: { homeGoals: fwpMatch.homeGoals, awayGoals: fwpMatch.awayGoals },
-      redCards: {
-        homeRedCards: fwpMatch.homeRedCards,
-        awayRedCards: fwpMatch.awayRedCards,
-      },
-      redsUnchecked: true,
-      label: `FWP ${fwpMatch.period}`,
-      comment:
-        'Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked.',
+      status: 'waiting',
+      detail: fwpError
+        ? `FWP failed (${fwpError}); FotMob result not final yet`
+        : 'FWP/FotMob result not final yet',
     };
   }
 
@@ -207,19 +245,30 @@ async function main() {
   }
 
   const updatedSource = appendManualMatches(source, pendingEntries);
+  const appendedCount = updatedSource === source ? 0 : pendingEntries.length;
 
   if (!writeChanges) {
     console.log(
-      `Dry run: ${pendingEntries.length} fixture(s) ready. Re-run with --write to update the ledger.`,
+      `Dry run: ${pendingEntries.length} fixture(s) ready` +
+        `${appendedCount === 0 && pendingEntries.length > 0 ? ' (none new after dedupe)' : ''}. ` +
+        `Re-run with --write to update the ledger.`,
     );
+    return;
+  }
+
+  if (appendedCount === 0) {
+    console.error(
+      `Ready fixtures (${pendingEntries.length}) were filtered out before write — ledger parse/dedupe bug?`,
+    );
+    process.exitCode = 1;
     return;
   }
 
   fs.writeFileSync(dataPath, updatedSource, 'utf8');
   const remainingDue = await getDueFixtures(updatedSource, dueOptions);
-  setOutput('synced_count', `${pendingEntries.length}`);
+  setOutput('synced_count', `${appendedCount}`);
   setOutput('remaining_due', `${remainingDue.length}`);
-  console.log(`Appended ${pendingEntries.length} English pyramid result(s) to the manual ledger.`);
+  console.log(`Appended ${appendedCount} English pyramid result(s) to the manual ledger.`);
 
   if (skipped.length > 0) {
     console.log('Still waiting on finals for:');

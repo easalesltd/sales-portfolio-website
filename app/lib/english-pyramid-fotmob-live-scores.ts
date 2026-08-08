@@ -154,10 +154,10 @@ export function matchFotMobEventToFixture(
     awayTla: fixture.awayTeam.tla,
     homeGoals,
     awayGoals,
-    // The day feed has the final score but not a dependable dismissal list.
-    // Keep this non-final until ESPN or the ledger sync verifies match details.
+    // FotMob day feed is good enough for provisional FT (especially NLN/NLS when
+    // FWP is blocked). Ledger sync remains the authoritative red-card source.
     period: match.status.finished
-      ? 'Awaiting final verification'
+      ? 'FT'
       : match.status.liveTime?.short?.trim() || 'In progress',
     homeRedCards: parseNonNegativeInteger(match.status.numberOfHomeRedCards) ?? 0,
     awayRedCards: parseNonNegativeInteger(match.status.numberOfAwayRedCards) ?? 0,

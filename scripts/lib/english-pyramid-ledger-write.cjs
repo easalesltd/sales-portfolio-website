@@ -2,10 +2,10 @@
  * Append English pyramid manual ledger entries to english-pyramid-fantasy.ts.
  */
 
-const { findManualMatchesArrayOpen } = require('./world-cup-ledger-write.cjs');
 const {
   assertLedgerMonotonic,
   filterNewLedgerEntries,
+  findManualMatchesArrayOpen,
   parseManualMatchIds,
 } = require('./sweepstake-ledger-guard.cjs');
 
@@ -75,7 +75,11 @@ function appendManualMatches(source, entries) {
     throw new Error(`Unable to locate ${exportName} closing bracket.`);
   }
 
-  const block = `${newEntries.join('\n')}\n`;
+  const arrayBody = source.slice(arrayOpen + 1, arrayClose);
+  const insertingIntoEmpty = arrayBody.trim().length === 0;
+  const block = insertingIntoEmpty
+    ? `\n${newEntries.join('\n')}\n`
+    : `${newEntries.join('\n')}\n`;
   const updatedSource = `${source.slice(0, arrayClose)}${block}${source.slice(arrayClose)}`;
   assertLedgerMonotonic(beforeIds, parseManualMatchIds(updatedSource, exportName), exportName);
   return updatedSource;

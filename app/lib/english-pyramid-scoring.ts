@@ -370,6 +370,10 @@ function buildMatchdayEntriesForDate(
         };
       }
 
+      if (fixture.postponed) {
+        return { ...base, status: 'postponed' as const, livePeriod: 'Postponed' };
+      }
+
       if (Date.parse(fixture.utcDate) <= nowMs) {
         return { ...base, status: 'in-play' as const };
       }

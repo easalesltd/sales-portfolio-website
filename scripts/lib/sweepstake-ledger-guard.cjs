@@ -2,16 +2,58 @@
  * Guardrails so automated sync never drops manual ledger entries.
  */
 
-function parseManualMatchIds(source, exportName) {
-  const pattern = new RegExp(
-    `export const ${exportName}[\\s\\S]*?= \\[([\\s\\S]*?)\\n\\](?: as const)?;`,
-  );
-  const match = source.match(pattern);
-  if (!match) {
-    throw new Error(`Unable to find ${exportName} in data source.`);
+/**
+ * Index of the `[` that opens `export const <exportName> … = [ … ]`.
+ * Handles empty one-line arrays (`= []`) and multiline ledgers.
+ */
+function findManualMatchesArrayOpen(source, exportName) {
+  const header = `export const ${exportName}`;
+  const exportIndex = source.indexOf(header);
+  if (exportIndex === -1) {
+    throw new Error(`Unable to locate ${exportName}.`);
   }
 
-  return [...match[1].matchAll(/id: '([^']+)'/g)].map((entry) => entry[1]);
+  // Only search until the next top-level export so we never latch onto a later
+  // fixtures array when the ledger is still the empty one-liner `= []`.
+  const afterExport = source.slice(exportIndex);
+  const nextExportOffset = afterExport.indexOf('\nexport ', header.length);
+  const searchWindow =
+    nextExportOffset === -1 ? afterExport : afterExport.slice(0, nextExportOffset);
+  const opener = searchWindow.match(/=\s*\[/);
+  if (!opener || opener.index == null) {
+    throw new Error(`Unable to locate ${exportName} array opener.`);
+  }
+
+  return exportIndex + opener.index + opener[0].length - 1;
+}
+
+function extractManualMatchesArrayBody(source, exportName) {
+  const arrayOpen = findManualMatchesArrayOpen(source, exportName);
+  let depth = 0;
+  let arrayClose = -1;
+
+  for (let i = arrayOpen; i < source.length; i += 1) {
+    const char = source[i];
+    if (char === '[') depth += 1;
+    else if (char === ']') {
+      depth -= 1;
+      if (depth === 0) {
+        arrayClose = i;
+        break;
+      }
+    }
+  }
+
+  if (arrayClose === -1) {
+    throw new Error(`Unable to locate ${exportName} closing bracket.`);
+  }
+
+  return source.slice(arrayOpen + 1, arrayClose);
+}
+
+function parseManualMatchIds(source, exportName) {
+  const body = extractManualMatchesArrayBody(source, exportName);
+  return [...body.matchAll(/id: '([^']+)'/g)].map((entry) => entry[1]);
 }
 
 function findRemovedLedgerIds(beforeIds, afterIds) {
@@ -67,8 +109,10 @@ function filterNewLedgerEntries(source, entries, exportName, idPattern = /id: '(
 module.exports = {
   assertLedgerMonotonic,
   assertNoDuplicateLedgerIds,
+  extractManualMatchesArrayBody,
   filterNewLedgerEntries,
   findDuplicateLedgerIds,
+  findManualMatchesArrayOpen,
   findRemovedLedgerIds,
   parseManualMatchIds,
 };

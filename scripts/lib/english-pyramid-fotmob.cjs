@@ -31,10 +31,19 @@ function fotMobDateParam(utcDate) {
   return /^\d{8}$/.test(value) ? value : null;
 }
 
+function isNationalLeagueFamily(name) {
+  const normalized = String(name ?? '').trim().toLowerCase();
+  return (
+    normalized === 'national league' ||
+    normalized === 'national league north' ||
+    normalized === 'national league south'
+  );
+}
+
 function nationalLeagueMatches(payload) {
   if (!payload || typeof payload !== 'object' || !Array.isArray(payload.leagues)) return [];
   return payload.leagues
-    .filter((league) => String(league?.name ?? '').trim().toLowerCase() === 'national league')
+    .filter((league) => isNationalLeagueFamily(league?.name))
     .flatMap((league) => (Array.isArray(league.matches) ? league.matches : []));
 }
 

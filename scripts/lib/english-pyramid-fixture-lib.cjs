@@ -259,6 +259,7 @@ function normalizeFixture(fixture) {
       name: fixture.awayTeam.name,
       tla: fixture.awayTeam.tla.toUpperCase(),
     },
+    ...(fixture.postponed ? { postponed: true } : {}),
   };
 }
 
@@ -503,7 +504,7 @@ function parseFixturesFromSource(source = readDataFileSource()) {
   }
 
   const fixturePattern =
-    /id: '([^']+)',\s*utcDate: '([^']+)',\s*homeTeam: \{ name: '((?:\\'|[^'])*)', tla: '([^']+)' \},\s*awayTeam: \{ name: '((?:\\'|[^'])*)', tla: '([^']+)' \}/g;
+    /id: '([^']+)',\s*utcDate: '([^']+)',\s*homeTeam: \{ name: '((?:\\'|[^'])*)', tla: '([^']+)' \},\s*awayTeam: \{ name: '((?:\\'|[^'])*)', tla: '([^']+)' \}((?:\s*,\s*(?:\/\*\*[\s\S]*?\*\/\s*)?postponed: true)*)/g;
 
   return [...block[1].matchAll(fixturePattern)].map((match) =>
     normalizeFixture({
@@ -511,6 +512,7 @@ function parseFixturesFromSource(source = readDataFileSource()) {
       utcDate: match[2],
       homeTeam: { name: match[3].replace(/\\'/g, "'"), tla: match[4] },
       awayTeam: { name: match[5].replace(/\\'/g, "'"), tla: match[6] },
+      postponed: typeof match[7] === 'string' && /postponed:\s*true/.test(match[7]),
     })
   );
 }

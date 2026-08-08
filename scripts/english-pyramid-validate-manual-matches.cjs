@@ -71,12 +71,12 @@ function parseManualMatches() {
       utcDate: readString(objectSource, /utcDate: '([^']+)'/, 'utcDate'),
       homeTla: readString(
         objectSource,
-        /homeTeam: \{ name: '[^']+', tla: '([^']+)' \}/,
+        /homeTeam: \{ name: '(?:\\.|[^'\\])*', tla: '([^']+)' \}/,
         'home team TLA',
       ),
       awayTla: readString(
         objectSource,
-        /awayTeam: \{ name: '[^']+', tla: '([^']+)' \}/,
+        /awayTeam: \{ name: '(?:\\.|[^'\\])*', tla: '([^']+)' \}/,
         'away team TLA',
       ),
       homeGoals: readNumber(objectSource, 'homeGoals', 'homeGoals'),
@@ -127,6 +127,7 @@ const fixtures = parseFixturesFromSource(source).map((fixture) => ({
   utcDate: fixture.utcDate,
   homeTla: fixture.homeTeam.tla,
   awayTla: fixture.awayTeam.tla,
+  postponed: fixture.postponed === true,
 }));
 const seenIds = new Set(manualMatches.map((match) => match.id));
 const errors = [];
@@ -134,7 +135,11 @@ const errors = [];
 validateManualMatchesAgainstFixtures(manualMatches, fixtures, errors, {
   requireAllInFixtures: true,
 });
-await validateOverdueFixturesWithEspn(seenIds, fixtures, errors);
+await validateOverdueFixturesWithEspn(
+  seenIds,
+  fixtures.filter((fixture) => !fixture.postponed),
+  errors,
+);
 
 if (errors.length > 0) {
   console.error('English pyramid manual match validation failed:');

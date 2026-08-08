@@ -72,12 +72,12 @@ function parseMatches() {
       id: readString(objectSource, /id: '([^']+)'/, 'id'),
       homeTeam: readString(
         objectSource,
-        /homeTeam: \{ name: '[^']+', tla: '([^']+)' \}/,
+        /homeTeam: \{ name: '(?:\\.|[^'\\])*', tla: '([^']+)' \}/,
         'home team'
       ),
       awayTeam: readString(
         objectSource,
-        /awayTeam: \{ name: '[^']+', tla: '([^']+)' \}/,
+        /awayTeam: \{ name: '(?:\\.|[^'\\])*', tla: '([^']+)' \}/,
         'away team'
       ),
       homeGoals: readNumber(objectSource, 'homeGoals'),

@@ -1,11 +1,12 @@
 /**
  * Append sweepstake manual ledger entries (shared helper for pyramid / tournament games).
- * `findManualMatchesArrayOpen` is used by English pyramid; World Cup restore uses the same shape.
+ * Array open/close helpers live in `sweepstake-ledger-guard.cjs` (re-exported here).
  */
 
 const {
   assertLedgerMonotonic,
   filterNewLedgerEntries,
+  findManualMatchesArrayOpen,
   parseManualMatchIds,
 } = require('./sweepstake-ledger-guard.cjs');
 
@@ -35,21 +36,6 @@ function formatManualMatchEntry(fixture, goals, redCards, comment = 'Verified fi
   lines.push('  },');
 
   return lines.join('\n');
-}
-
-function findManualMatchesArrayOpen(source, exportName) {
-  const header = `export const ${exportName}`;
-  const exportIndex = source.indexOf(header);
-  if (exportIndex === -1) {
-    throw new Error(`Unable to locate ${exportName}.`);
-  }
-
-  const arrayOpen = source.indexOf('= [', exportIndex);
-  if (arrayOpen === -1) {
-    throw new Error(`Unable to locate ${exportName} array opener.`);
-  }
-
-  return arrayOpen + 2;
 }
 
 function appendManualMatches(source, entries, exportName = 'WORLD_CUP_FANTASY_MANUAL_MATCHES') {

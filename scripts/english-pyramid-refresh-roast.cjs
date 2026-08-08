@@ -87,12 +87,12 @@ function parseMatches(source) {
       utcDate: readString(objectSource, /utcDate: '([^']+)'/, 'utcDate'),
       homeTeam: readString(
         objectSource,
-        /homeTeam: \{ name: '[^']+', tla: '([^']+)' \}/,
+        /homeTeam: \{ name: '(?:\\.|[^'\\])*', tla: '([^']+)' \}/,
         'home team'
       ),
       awayTeam: readString(
         objectSource,
-        /awayTeam: \{ name: '[^']+', tla: '([^']+)' \}/,
+        /awayTeam: \{ name: '(?:\\.|[^'\\])*', tla: '([^']+)' \}/,
         'away team'
       ),
       homeGoals: readNumber(objectSource, 'homeGoals'),

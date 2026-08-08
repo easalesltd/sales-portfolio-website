@@ -114,7 +114,7 @@ describe('english-pyramid-fotmob-live-scores', () => {
     });
   });
 
-  it('does not treat a day-feed final as verified full time', () => {
+  it('treats a day-feed final as FT so the UI can leave awaiting-verification limbo', () => {
     const matches = parseFotMobNationalLeagueMatches({
       leagues: [
         {
@@ -139,7 +139,7 @@ describe('english-pyramid-fotmob-live-scores', () => {
         },
         matches
       )?.period
-    ).toBe('Awaiting final verification');
+    ).toBe('FT');
   });
 
   it('supplements ESPN with richer red-card totals without replacing its live score', () => {

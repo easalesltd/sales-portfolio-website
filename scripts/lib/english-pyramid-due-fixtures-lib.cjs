@@ -89,11 +89,13 @@ function listUnrecordedFixtures(source) {
     homeTla: fixture.homeTeam.tla,
     awayName: fixture.awayTeam.name,
     awayTla: fixture.awayTeam.tla,
+    postponed: fixture.postponed === true,
   }));
   const recordedMatchIds = parseRecordedMatchIds(source);
 
   return fixtures.filter((fixture) => {
     if (recordedMatchIds.has(fixture.id)) return false;
+    if (fixture.postponed) return false;
 
     const kickoff = new Date(fixture.utcDate);
     if (Number.isNaN(kickoff.getTime())) {

@@ -17,6 +17,25 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES = [
 
 assert.deepEqual(parseManualMatchIds(sampleSource, 'WORLD_CUP_FANTASY_MANUAL_MATCHES'), ['a', 'b']);
 
+const emptyPyramidLedger = `
+export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[] = [];
+
+export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
+  { id: '2026-08-08-alt-std', utcDate: '2026-08-08T14:00Z' },
+  { id: '2026-08-08-bil-dov', utcDate: '2026-08-08T14:00:00Z' },
+];
+`;
+
+assert.deepEqual(parseManualMatchIds(emptyPyramidLedger, 'ENGLISH_PYRAMID_MANUAL_MATCHES'), []);
+assert.deepEqual(
+  filterNewLedgerEntries(
+    emptyPyramidLedger,
+    ["  { id: '2026-08-08-alt-std', homeGoals: 1, awayGoals: 3 },"],
+    'ENGLISH_PYRAMID_MANUAL_MATCHES',
+  ).map((entry) => entry.match(/id: '([^']+)'/)?.[1]),
+  ['2026-08-08-alt-std'],
+);
+
 assertLedgerMonotonic(['a'], ['a', 'b']);
 assert.throws(() => assertLedgerMonotonic(['a', 'b'], ['b']), /would remove 1 recorded match/);
 
