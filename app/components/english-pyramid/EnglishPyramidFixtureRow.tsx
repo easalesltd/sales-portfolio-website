@@ -94,7 +94,7 @@ export default function EnglishPyramidFixtureRow({
           <div className="min-w-0">{kickoff}</div>
           {statusBadge}
         </div>
-        <div className="grid w-full grid-cols-[minmax(0,1fr)_2.25rem_minmax(0,1fr)] items-start gap-x-2">
+        <div className="grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-start gap-x-2">
           <FixtureSide
             teamName={entry.homeTeam.name}
             divisionId={entry.homeTeam.flag}
@@ -103,7 +103,9 @@ export default function EnglishPyramidFixtureRow({
             align="right"
             compact
           />
-          <div className="flex justify-center self-start pt-0.5 [&_span]:mx-0">{score}</div>
+          <div className="flex min-w-[2.75rem] justify-center self-start whitespace-nowrap pt-0.5 [&_span]:mx-0">
+            {score}
+          </div>
           <FixtureSide
             teamName={entry.awayTeam.name}
             divisionId={entry.awayTeam.flag}

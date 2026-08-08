@@ -737,7 +737,7 @@ function MatchdayFixtureScore({
 
   if (entry.status === 'finished' && entry.homeGoals != null && entry.awayGoals != null) {
     return (
-      <span className={t.c.fixturesScore}>
+      <span className={`${t.c.fixturesScore} whitespace-nowrap`}>
         {formatMatchScore(entry.homeGoals, entry.awayGoals, entry.homePenalties, entry.awayPenalties)}
       </span>
     );
@@ -750,7 +750,7 @@ function MatchdayFixtureScore({
   ) {
     return (
       <span
-        className={`${t.c.fixturesLiveScore} rounded border border-emerald-500/20 bg-emerald-950/40 px-1.5 py-0.5 motion-safe:animate-live-border ${
+        className={`${t.c.fixturesLiveScore} whitespace-nowrap rounded border border-emerald-500/20 bg-emerald-950/40 px-1.5 py-0.5 motion-safe:animate-live-border ${
           goalFlash ? 'motion-safe:animate-goal-flash' : ''
         }`}
       >
