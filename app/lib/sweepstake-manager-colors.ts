@@ -17,7 +17,7 @@ const ENGLISH_PYRAMID_MANAGER_COLORS: Record<string, string> = {
   nest: '#c084fc',
   chris: '#facc15',
   scott: '#f43f5e',
-  dave: '#a3e635',
+  dave: '#e8dfc8',
   ben: '#2dd4bf',
 };
 
