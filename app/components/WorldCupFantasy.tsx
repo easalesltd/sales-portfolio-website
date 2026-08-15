@@ -21,7 +21,6 @@ import {
 } from '@/app/lib/english-pyramid-scoring';
 import type { SweepstakeFantasyThemeId } from '@/app/lib/sweepstake-fantasy-theme';
 import {
-  compareTeamCodesByDraftDivision,
   formatTeamNameWithSeed,
   sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
@@ -1835,10 +1834,13 @@ function TeamMiniTable({
   const [pinnedTeamCode, setPinnedTeamCode] = useState<string | null>(null);
   const [hoverTeamCode, setHoverTeamCode] = useState<string | null>(null);
 
-  const orderedTeams =
-    t.id === 'english-pyramid'
-      ? [...teams].sort((a, b) => compareTeamCodesByDraftDivision(a.code, b.code))
-      : teams;
+  const orderedTeams = [...teams].sort(
+    (a, b) =>
+      b.points - a.points ||
+      b.goalDifference - a.goalDifference ||
+      b.bonusPoints - a.bonusPoints ||
+      a.name.localeCompare(b.name)
+  );
 
   const toggleTeam = (teamCode: string) => {
     setHoverTeamCode(null);
