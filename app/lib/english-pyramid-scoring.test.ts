@@ -15,7 +15,7 @@ import {
   getPreSeasonTablePlace,
   sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
-import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring } from '@/app/lib/english-pyramid-scoring';
+import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring, buildPlayerProgressSeries } from '@/app/lib/english-pyramid-scoring';
 
 describe('english-pyramid draft fairness', () => {
   it('gives every manager two clubs from each draft division', () => {
@@ -247,5 +247,44 @@ describe('english-pyramid match scoring explanation', () => {
         { label: 'Red card', points: 1 },
       ],
     });
+  });
+});
+
+describe('english-pyramid season progress series', () => {
+  it('groups multiple same-day results into one chart point', () => {
+    const players = [
+      { id: 'jon', name: 'Jon', teamName: 'Jon FC', clubCrest: '/jon.png' },
+      { id: 'ash', name: 'Ash', teamName: 'Ash FC', clubCrest: '/ash.png' },
+    ];
+    const match = (id: string, utcDate: string, byPlayer: Record<string, number>) => ({
+      match: {
+        id,
+        utcDate,
+        status: 'FINISHED',
+        homeTeam: { name: 'Home', tla: 'HOM' },
+        awayTeam: { name: 'Away', tla: 'AWY' },
+        homeGoals: 1,
+        awayGoals: 0,
+        homeRedCards: 0,
+        awayRedCards: 0,
+      },
+      byPlayer,
+    });
+
+    const series = buildPlayerProgressSeries(
+      players,
+      [
+        match('b', '2026-08-15T14:00:00Z', { jon: 3 }),
+        match('a', '2026-08-15T11:30:00Z', { jon: 5, ash: 1 }),
+        match('c', '2026-08-08T14:00:00Z', { ash: 4 }),
+      ],
+      { groupByDay: true }
+    );
+
+    const jon = series.find((row) => row.playerId === 'jon')!;
+    expect(jon.points.map((point) => point.total)).toEqual([0, 0, 8]);
+    expect(jon.currentTotal).toBe(8);
+    const ash = series.find((row) => row.playerId === 'ash')!;
+    expect(ash.points.map((point) => point.total)).toEqual([0, 4, 5]);
   });
 });

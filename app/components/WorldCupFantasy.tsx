@@ -1282,7 +1282,9 @@ function StandingsProgressChart({
     );
   }
 
-  const series = buildPlayerProgressSeries(standings, scoringMatches);
+  const series = buildPlayerProgressSeries(standings, scoringMatches, {
+    groupByDay: t.id === 'english-pyramid',
+  });
   const pointCount = series[0]?.points.length ?? 0;
   const plotHeight = height - padding.top - padding.bottom;
   const allTotals = series.flatMap((row) => row.points.map((point) => point.total));
@@ -2573,6 +2575,12 @@ function WorldCupFantasyView({
                 </div>
               ) : null}
 
+              <section id="pyramid-progress" className="scroll-mt-3">
+                <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>
+                <p className="text-xs text-neutral-500">{progressChartDescription}</p>
+                <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
+              </section>
+
               <MatchdaySchedule
                 schedule={data.matchdaySchedule}
                 standings={data.standings}
@@ -2581,12 +2589,6 @@ function WorldCupFantasyView({
                 flashingMatchIds={flashingMatchIds}
                 squadsSealed={data.redraw?.squadsHidden ?? false}
               />
-
-              <section className={t.id === 'english-pyramid' ? 'hidden sm:block' : undefined}>
-                <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>
-                <p className="text-xs text-neutral-500">{progressChartDescription}</p>
-                <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
-              </section>
 
               <SweepstakeAwards standings={data.standings} scoringMatches={data.allScoringMatches} />
 

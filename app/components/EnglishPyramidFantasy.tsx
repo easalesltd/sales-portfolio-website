@@ -37,6 +37,7 @@ export default function EnglishPyramidFantasy({ onClose, standalone = false }: P
       noResultsMessage="No finished matches yet — check back once the 2026/27 league season starts."
       resultsUpdateNote="Fixtures flip to In play at kick-off and refresh here every minute. Live scores: ESPN for Premier League through National League, Football Web Pages for NL North/South, with FotMob fallback and red-card cross-checking across the National divisions. Points appear only after a verified FT; the ledger still commits automatically later. Unconfirmed lower-league reds remain labelled “reds unchecked”."
       progressChartTitle="Season progress"
+      progressChartDescription="Cumulative points after each matchday — tap a crest for the current total."
     />
   );
 }

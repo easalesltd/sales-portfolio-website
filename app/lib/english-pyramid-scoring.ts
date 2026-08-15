@@ -743,27 +743,57 @@ export type PlayerProgressSeries = {
 
 export function buildPlayerProgressSeries(
   players: readonly Pick<PlayerStanding, 'id' | 'name' | 'teamName' | 'clubCrest'>[],
-  scoringMatches: MatchPointsEntry[]
+  scoringMatches: MatchPointsEntry[],
+  options?: { groupByDay?: boolean }
 ): PlayerProgressSeries[] {
   const chronological = [...scoringMatches].reverse();
-  const snapshots: Record<string, number>[] = [
-    Object.fromEntries(players.map((player) => [player.id, 0])),
-  ];
+  const emptyTotals = () => Object.fromEntries(players.map((player) => [player.id, 0]));
 
-  for (const entry of chronological) {
+  type Step = { label: string; utcDate: string; deltas: Record<string, number> };
+  let steps: Step[];
+
+  if (options?.groupByDay) {
+    const order: string[] = [];
+    const byDay = new Map<string, Record<string, number>>();
+    for (const entry of chronological) {
+      const day = entry.match.utcDate.slice(0, 10);
+      if (!byDay.has(day)) {
+        byDay.set(day, emptyTotals());
+        order.push(day);
+      }
+      const bucket = byDay.get(day)!;
+      for (const player of players) {
+        bucket[player.id] += entry.byPlayer[player.id] ?? 0;
+      }
+    }
+    steps = order.map((day) => ({
+      label: formatSweepstakeShortDate(`${day}T12:00:00Z`),
+      utcDate: `${day}T12:00:00Z`,
+      deltas: byDay.get(day)!,
+    }));
+  } else {
+    steps = chronological.map((entry) => ({
+      label: formatSweepstakeShortDate(entry.match.utcDate),
+      utcDate: entry.match.utcDate,
+      deltas: Object.fromEntries(players.map((player) => [player.id, entry.byPlayer[player.id] ?? 0])),
+    }));
+  }
+
+  const snapshots: Record<string, number>[] = [emptyTotals()];
+  for (const step of steps) {
     const next = { ...snapshots[snapshots.length - 1] };
     for (const player of players) {
-      next[player.id] += entry.byPlayer[player.id] ?? 0;
+      next[player.id] += step.deltas[player.id] ?? 0;
     }
     snapshots.push(next);
   }
 
   const pointsTimeline: Omit<PlayerProgressPoint, 'total'>[] = [
-    { index: 0, label: 'Start', utcDate: chronological[0]?.match.utcDate ?? '' },
-    ...chronological.map((entry, matchIndex) => ({
+    { index: 0, label: 'Start', utcDate: steps[0]?.utcDate ?? '' },
+    ...steps.map((step, matchIndex) => ({
       index: matchIndex + 1,
-      label: formatSweepstakeShortDate(entry.match.utcDate),
-      utcDate: entry.match.utcDate,
+      label: step.label,
+      utcDate: step.utcDate,
     })),
   ];
 
