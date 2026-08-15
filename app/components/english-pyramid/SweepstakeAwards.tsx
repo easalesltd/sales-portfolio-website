@@ -1,324 +1,243 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { PlayerStanding, MatchPointsEntry } from '@/app/lib/english-pyramid-scoring';
 import { useSweepstakeTheme } from '@/app/components/SweepstakeThemeContext';
-import { teamCodeMatches } from '@/app/data/english-pyramid-fantasy';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
+import {
+  awardWinnerLabel,
+  computeSweepstakeAwards,
+  type SweepstakeAwardResult,
+} from '@/app/lib/english-pyramid-awards';
 
 type Props = {
   standings: PlayerStanding[];
   scoringMatches: MatchPointsEntry[];
 };
 
-type Award = {
-  id: string;
-  title: string;
-  emoji: string;
-  statLabel: string;
-  description: string;
-};
+function WinnerNames({ winners }: { winners: PlayerStanding[] }) {
+  const t = useSweepstakeTheme();
+  return (
+    <>
+      {winners.map((winner, idx) => {
+        const color = managerColorForPlayer(winner.id, t.id);
+        return (
+          <span key={winner.id} className="inline text-xs font-semibold">
+            {idx > 0 ? <span className="text-neutral-500"> &amp; </span> : null}
+            <span style={color ? { color } : undefined}>{winner.teamName ?? winner.name}</span>
+          </span>
+        );
+      })}
+    </>
+  );
+}
 
-const AWARDS_CONFIG: Award[] = [
-  {
-    id: 'red-cards',
-    title: 'Most passionate Dirty Bastard Award',
-    emoji: '🟥',
-    statLabel: 'Red Cards',
-    description: 'For the manager whose squad treats the pitch like a cage fight. Thanks to the pyramid rules, these leg-breakers actually earn them points.',
-  },
-  {
-    id: 'boring-draws',
-    title: 'The Sleep Merchant',
-    emoji: '😴',
-    statLabel: '0–0 Draws',
-    description: 'Refusing to score, refusing to concede, and refusing to entertain. Their teams specialize in defensive lockouts, costing -1 point each time.',
-  },
-  {
-    id: 'clean-sheets',
-    title: 'Bus Parking Inspector',
-    emoji: '🛡️',
-    statLabel: 'Clean Sheets',
-    description: 'Masters of the defensive dark arts. Ten men behind the ball, shameless time-wasting, and zero goals conceded. Professional party poopers.',
-  },
-  {
-    id: 'goals-scored-3plus',
-    title: 'The Gung-Ho Gladiator',
-    emoji: '🔥',
-    statLabel: '3+ Goal Matches',
-    description: 'All attack, zero concern for defending. Only knows how to run forward, racking up +1 point bonuses while leaving their own back door wide open.',
-  },
-  {
-    id: 'goals-conceded-3plus',
-    title: 'The Leaky Bucket',
-    emoji: '🗑️',
-    statLabel: '3+ Conceded',
-    description: 'Defending like dizzy toddlers chasing a balloon. Conceding 3 or more goals in a single game to lose a point. Training is clearly optional.',
-  },
-  {
-    id: 'losses',
-    title: 'The Wooden Spoon',
-    emoji: '🥄',
-    statLabel: 'Total Defeats',
-    description: 'Winning matches is hard, but losing this consistently takes real dedication. For the manager whose clubs are the ultimate charity cases of the pyramid.',
-  },
-  {
-    id: 'draws',
-    title: 'The Scrap Merchant',
-    emoji: '🍀',
-    statLabel: 'Total Draws',
-    description: 'Winning is overrated when you can draw your way to safety. Masters of scraping late equalizers and grinding out ugly points to avoid defeat.',
-  },
-  {
-    id: 'goals-for',
-    title: 'The Goal Machine',
-    emoji: '⚽',
-    statLabel: 'Total Goals',
-    description: 'Whose clubs just cannot stop putting the ball in the net. Defense? Never heard of her. They just want goals, goals, and more goals.',
-  },
-  {
-    id: 'goals-against',
-    title: 'Heavy Baggage Award',
-    emoji: '🧳',
-    statLabel: 'Goals Conceded',
-    description: 'Carrying the heaviest defensive baggage in the entire league. Their goalkeepers have back pain from constantly picking the ball out of the net.',
-  },
-];
+function AwardCard({ award }: { award: SweepstakeAwardResult }) {
+  const t = useSweepstakeTheme();
+  const hasWinners = award.winners.length > 0;
+
+  return (
+    <article
+      className={`${t.c.squadCard} flex flex-col justify-between overflow-hidden p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]`}
+    >
+      <div>
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <span className="text-2xl" role="img" aria-hidden="true">
+              {award.emoji}
+            </span>
+            <h4 className="mt-1 text-sm font-bold text-white leading-tight">{award.title}</h4>
+          </div>
+          {hasWinners ? (
+            <span className={`text-xl font-black tabular-nums ${t.c.points}`}>{award.value}</span>
+          ) : (
+            <span className="text-xs font-semibold uppercase text-neutral-500">Pending</span>
+          )}
+        </div>
+        <p className="mt-2 text-xs leading-normal text-neutral-400">{award.description}</p>
+      </div>
+      <div className="mt-4 border-t border-neutral-800/60 pt-2.5">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
+          {hasWinners ? 'Leader(s)' : 'Status'}
+        </span>
+        <div className="mt-0.5 min-w-0 truncate">
+          {hasWinners ? (
+            <WinnerNames winners={award.winners} />
+          ) : (
+            <span className="text-xs font-medium text-neutral-400">Pending league fixtures</span>
+          )}
+        </div>
+        {hasWinners ? (
+          <span className="mt-0.5 block text-[10px] text-neutral-500">
+            {award.value} {award.statLabel.toLowerCase()}
+          </span>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
+function CompactAwardRow({
+  award,
+  expanded,
+  onToggle,
+}: {
+  award: SweepstakeAwardResult;
+  expanded: boolean;
+  onToggle: () => void;
+}) {
+  const t = useSweepstakeTheme();
+  const hasWinners = award.winners.length > 0;
+  const panelId = `award-detail-${award.id}`;
+
+  return (
+    <li className="border-b border-neutral-800 last:border-b-0">
+      <button
+        type="button"
+        className="flex w-full items-center gap-2 px-2.5 py-2 text-left"
+        onClick={onToggle}
+        aria-expanded={expanded}
+        aria-controls={panelId}
+      >
+        <span className="w-6 shrink-0 text-center text-base" role="img" aria-hidden="true">
+          {award.emoji}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-xs font-bold leading-tight text-white">{award.shortTitle}</span>
+          <span className="mt-0.5 block truncate text-[11px] leading-tight">
+            {hasWinners ? (
+              <WinnerNames winners={award.winners} />
+            ) : (
+              <span className="font-medium text-neutral-500">Pending</span>
+            )}
+          </span>
+        </span>
+        {hasWinners ? (
+          <span className={`shrink-0 text-sm font-black tabular-nums ${t.c.points}`}>{award.value}</span>
+        ) : (
+          <span className="shrink-0 text-[10px] font-semibold uppercase text-neutral-600">—</span>
+        )}
+      </button>
+      {expanded ? (
+        <p id={panelId} className="px-2.5 pb-2.5 pl-9 text-[11px] leading-snug text-neutral-400">
+          {award.description}
+          {hasWinners ? (
+            <span className="mt-1 block text-[10px] text-neutral-500">
+              {award.value} {award.statLabel.toLowerCase()}
+            </span>
+          ) : null}
+        </p>
+      ) : null}
+    </li>
+  );
+}
 
 export default function SweepstakeAwards({ standings, scoringMatches }: Props) {
   const t = useSweepstakeTheme();
+  const [expanded, setExpanded] = useState(false);
+  const [openAwardId, setOpenAwardId] = useState<string | null>(null);
 
-  const awardsData = useMemo(() => {
-    // 1. Initialise player stat trackers
-    const stats = {
-      redCards: new Map<string, number>(),
-      boringDraws: new Map<string, number>(),
-      cleanSheets: new Map<string, number>(),
-      goalsScored3Plus: new Map<string, number>(),
-      goalsConceded3Plus: new Map<string, number>(),
-      losses: new Map<string, number>(),
-      draws: new Map<string, number>(),
-      goalsFor: new Map<string, number>(),
-      goalsAgainst: new Map<string, number>(),
-    };
-
-    // Prepopulate maps with all players in standings
-    for (const player of standings) {
-      stats.redCards.set(player.id, player.redCards);
-      stats.draws.set(player.id, player.draws);
-      stats.losses.set(player.id, player.losses);
-      stats.goalsFor.set(player.id, player.goalsFor);
-      stats.goalsAgainst.set(player.id, player.goalsAgainst);
-      stats.boringDraws.set(player.id, 0);
-      stats.cleanSheets.set(player.id, 0);
-      stats.goalsScored3Plus.set(player.id, 0);
-      stats.goalsConceded3Plus.set(player.id, 0);
-    }
-
-    // Helper to find which manager(s) own a team TLA in the draft pool
-    const getManagersForTeam = (tla: string): string[] => {
-      const ids: string[] = [];
-      for (const player of standings) {
-        if (player.teams.some((code) => teamCodeMatches(tla, code))) {
-          ids.push(player.id);
-        }
-      }
-      return ids;
-    };
-
-    // 2. Scan finished matches to compute match-specific achievements
-    for (const entry of scoringMatches) {
-      const { match } = entry;
-      if (match.homeGoals == null || match.awayGoals == null) continue;
-
-      const hGoals = match.homeGoals;
-      const aGoals = match.awayGoals;
-
-      const homeManagerIds = getManagersForTeam(match.homeTeam.tla);
-      const awayManagerIds = getManagersForTeam(match.awayTeam.tla);
-
-      // Boring 0-0 Draws
-      if (hGoals === 0 && aGoals === 0) {
-        for (const id of [...homeManagerIds, ...awayManagerIds]) {
-          stats.boringDraws.set(id, (stats.boringDraws.get(id) || 0) + 1);
-        }
-      }
-
-      // Clean Sheets (Goals Conceded = 0, Goals Scored > 0)
-      if (hGoals > 0 && aGoals === 0) {
-        for (const id of homeManagerIds) {
-          stats.cleanSheets.set(id, (stats.cleanSheets.get(id) || 0) + 1);
-        }
-      }
-      if (aGoals > 0 && hGoals === 0) {
-        for (const id of awayManagerIds) {
-          stats.cleanSheets.set(id, (stats.cleanSheets.get(id) || 0) + 1);
-        }
-      }
-
-      // 3+ goals scored
-      if (hGoals >= 3) {
-        for (const id of homeManagerIds) {
-          stats.goalsScored3Plus.set(id, (stats.goalsScored3Plus.get(id) || 0) + 1);
-        }
-      }
-      if (aGoals >= 3) {
-        for (const id of awayManagerIds) {
-          stats.goalsScored3Plus.set(id, (stats.goalsScored3Plus.get(id) || 0) + 1);
-        }
-      }
-
-      // 3+ goals conceded
-      if (aGoals >= 3) {
-        for (const id of homeManagerIds) {
-          stats.goalsConceded3Plus.set(id, (stats.goalsConceded3Plus.get(id) || 0) + 1);
-        }
-      }
-      if (hGoals >= 3) {
-        for (const id of awayManagerIds) {
-          stats.goalsConceded3Plus.set(id, (stats.goalsConceded3Plus.get(id) || 0) + 1);
-        }
-      }
-
-      // We no longer track flat-track wins since it was replaced by total losses (pre-aggregated on PlayerStanding)
-    }
-
-    // 3. Select winners for each award type
-    return AWARDS_CONFIG.map((award) => {
-      let mapToUse: Map<string, number>;
-      switch (award.id) {
-        case 'red-cards':
-          mapToUse = stats.redCards;
-          break;
-        case 'boring-draws':
-          mapToUse = stats.boringDraws;
-          break;
-        case 'clean-sheets':
-          mapToUse = stats.cleanSheets;
-          break;
-        case 'goals-scored-3plus':
-          mapToUse = stats.goalsScored3Plus;
-          break;
-        case 'goals-conceded-3plus':
-          mapToUse = stats.goalsConceded3Plus;
-          break;
-        case 'losses':
-          mapToUse = stats.losses;
-          break;
-        case 'draws':
-          mapToUse = stats.draws;
-          break;
-        case 'goals-for':
-          mapToUse = stats.goalsFor;
-          break;
-        case 'goals-against':
-          mapToUse = stats.goalsAgainst;
-          break;
-        default:
-          mapToUse = new Map();
-      }
-
-      let maxVal = -1;
-      let winners: PlayerStanding[] = [];
-
-      for (const player of standings) {
-        const val = mapToUse.get(player.id) || 0;
-        if (val > maxVal) {
-          maxVal = val;
-          winners = [player];
-        } else if (val === maxVal && val > 0) {
-          winners.push(player);
-        }
-      }
-
-      const hasWinner = maxVal > 0;
-
-      return {
-        ...award,
-        value: hasWinner ? maxVal : 0,
-        winners: hasWinner ? winners : [],
-      };
-    });
-  }, [standings, scoringMatches]);
+  const awardsData = useMemo(
+    () => computeSweepstakeAwards(standings, scoringMatches),
+    [standings, scoringMatches]
+  );
 
   const hasMatches = scoringMatches.length > 0;
+  const liveAwards = awardsData.filter((award) => award.winners.length > 0);
+
+  useEffect(() => {
+    const onJump = (event: Event) => {
+      const id = (event as CustomEvent<string>).detail;
+      if (id === 'pyramid-awards') setExpanded(true);
+    };
+    window.addEventListener('pyramid-jump', onJump);
+    return () => window.removeEventListener('pyramid-jump', onJump);
+  }, []);
 
   return (
-    <section aria-labelledby="sweepstake-awards-title" className="mt-6">
-      <h3 id="sweepstake-awards-title" className={`mb-3 ${t.c.sectionHeading}`}>
-        Stats Corner &amp; Awards
-      </h3>
-      {!hasMatches ? (
-        <div className={`${t.c.squadCard} p-4 text-center text-xs text-neutral-400 sm:text-sm`}>
-          Awards will fill in once the first league matches are played and stats are recorded.
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {awardsData.map((award) => {
-            const hasWinners = award.winners.length > 0;
-            return (
-              <article
-                key={award.id}
-                className={`${t.c.squadCard} flex flex-col justify-between overflow-hidden p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]`}
+    <section id="pyramid-awards" aria-label="Stats Corner and Awards" className="mt-6 scroll-mt-3">
+      <div className="sm:hidden">
+        <div className={`${t.c.squadCard} overflow-hidden`}>
+          <button
+            type="button"
+            className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left"
+            onClick={() => setExpanded((open) => !open)}
+            aria-expanded={expanded}
+            aria-controls="sweepstake-awards-mobile-list"
+          >
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#d4af37]/80">
+                Stats corner
+              </p>
+              <h3 className="text-sm font-bold text-white">Awards</h3>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <span className="rounded-full border border-[#d4af37]/30 bg-[#d4af37]/10 px-2 py-0.5 text-[10px] font-bold text-[#f2d36b]">
+                {hasMatches ? `${liveAwards.length} live` : 'Pending'}
+              </span>
+              <span
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#d4af37]/35 bg-[#1a2744] text-sm text-[#e8dfc8]"
+                aria-hidden
               >
-                <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <span className="text-2xl" role="img" aria-hidden="true">
-                        {award.emoji}
-                      </span>
-                      <h4 className="mt-1 text-sm font-bold text-white leading-tight">
-                        {award.title}
-                      </h4>
-                    </div>
-                    {hasWinners ? (
-                      <span className={`text-xl font-black tabular-nums ${t.c.points}`}>
-                        {award.value}
-                      </span>
-                    ) : (
-                      <span className="text-xs font-semibold text-neutral-500 uppercase">
-                        Pending
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-2 text-xs text-neutral-400 leading-normal">
-                    {award.description}
-                  </p>
-                </div>
-                <div className="mt-4 border-t border-neutral-800/60 pt-2.5">
-                  <span className="text-[10px] uppercase font-semibold text-neutral-500 tracking-wider">
-                    {hasWinners ? 'Leader(s)' : 'Status'}
-                  </span>
-                  <div className="mt-0.5 min-w-0 truncate">
-                    {hasWinners ? (
-                      award.winners.map((winner, idx) => {
-                        const color = managerColorForPlayer(winner.id, t.id);
-                        return (
-                          <span key={winner.id} className="inline text-xs font-semibold">
-                            {idx > 0 ? <span className="text-neutral-500"> &amp; </span> : null}
-                            <span style={color ? { color } : undefined}>
-                              {winner.teamName ?? winner.name}
-                            </span>
-                          </span>
-                        );
-                      })
-                    ) : (
-                      <span className="text-xs font-medium text-neutral-400">
-                        Pending league fixtures
-                      </span>
-                    )}
-                  </div>
-                  {hasWinners && (
-                    <span className="mt-0.5 block text-[10px] text-neutral-500">
-                      {award.value} {award.statLabel.toLowerCase()}
-                    </span>
-                  )}
-                </div>
-              </article>
-            );
-          })}
+                {expanded ? '−' : '+'}
+              </span>
+            </div>
+          </button>
+
+          {!expanded && hasMatches && liveAwards.length > 0 ? (
+            <div className="flex gap-1.5 overflow-x-auto border-t border-neutral-800/60 px-2.5 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {liveAwards.map((award) => (
+                <span
+                  key={award.id}
+                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/10 bg-black/30 px-2 py-1 text-[11px] font-semibold text-neutral-200"
+                >
+                  <span aria-hidden="true">{award.emoji}</span>
+                  <span className="max-w-[7.5rem] truncate">{awardWinnerLabel(award.winners)}</span>
+                  <span className={`tabular-nums ${t.c.points}`}>{award.value}</span>
+                </span>
+              ))}
+            </div>
+          ) : null}
+
+          {expanded ? (
+            <div id="sweepstake-awards-mobile-list">
+              {!hasMatches ? (
+                <p className="border-t border-neutral-800/60 px-3 py-3 text-center text-xs text-neutral-400">
+                  Awards will fill in once the first league matches are played and stats are recorded.
+                </p>
+              ) : (
+                <ul className="border-t border-neutral-800/60">
+                  {awardsData.map((award) => (
+                    <CompactAwardRow
+                      key={award.id}
+                      award={award}
+                      expanded={openAwardId === award.id}
+                      onToggle={() =>
+                        setOpenAwardId((current) => (current === award.id ? null : award.id))
+                      }
+                    />
+                  ))}
+                </ul>
+              )}
+            </div>
+          ) : null}
         </div>
-      )}
+      </div>
+
+      <div className="hidden sm:block">
+        <h3 className={`mb-3 ${t.c.sectionHeading}`}>Stats Corner &amp; Awards</h3>
+        {!hasMatches ? (
+          <div className={`${t.c.squadCard} p-4 text-center text-xs text-neutral-400 sm:text-sm`}>
+            Awards will fill in once the first league matches are played and stats are recorded.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {awardsData.map((award) => (
+              <AwardCard key={award.id} award={award} />
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

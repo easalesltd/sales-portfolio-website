@@ -2502,9 +2502,7 @@ function WorldCupFantasyView({
                 <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
               </section>
 
-              <div className={t.id === 'english-pyramid' ? 'hidden sm:block' : undefined}>
-                <SweepstakeAwards standings={data.standings} scoringMatches={data.allScoringMatches} />
-              </div>
+              <SweepstakeAwards standings={data.standings} scoringMatches={data.allScoringMatches} />
 
               <section id="pyramid-squads" className="scroll-mt-3">
                 <h3 className={`mb-3 ${t.c.sectionHeading}`}>Player squads</h3>
