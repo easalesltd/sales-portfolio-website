@@ -8,6 +8,7 @@ import {
   type EnglishPyramidManualMatch,
   type EnglishPyramidFantasyPlayer,
 } from '@/app/data/english-pyramid-fantasy';
+import { formatSweepstakeShortDate } from '@/app/lib/sweepstake-datetime';
 
 const DIVISION_LABEL_BY_ID = Object.fromEntries(ENGLISH_PYRAMID_DIVISIONS.map((d) => [d.id, d.label]));
 
@@ -630,11 +631,7 @@ export function buildPlayerProgressSeries(
     { index: 0, label: 'Start', utcDate: chronological[0]?.match.utcDate ?? '' },
     ...chronological.map((entry, matchIndex) => ({
       index: matchIndex + 1,
-      label: new Date(entry.match.utcDate).toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'short',
-        timeZone: 'UTC',
-      }),
+      label: formatSweepstakeShortDate(entry.match.utcDate),
       utcDate: entry.match.utcDate,
     })),
   ];

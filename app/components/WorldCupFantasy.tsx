@@ -25,6 +25,7 @@ import {
   formatTeamNameWithSeed,
   sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
+import { formatFixtureKickoff, formatSweepstakeDate } from '@/app/lib/sweepstake-datetime';
 import { useLiveGoalAlerts } from '@/app/hooks/useLiveGoalAlerts';
 import { usePullToRefresh } from '@/app/hooks/usePullToRefresh';
 import DivisionBadge from './english-pyramid/DivisionBadge';
@@ -417,11 +418,7 @@ function MatchScoringPlayersLine({
 }
 
 function formatResultTickerDate(utcDate: string): string {
-  return new Date(utcDate).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    timeZone: 'UTC',
-  });
+  return formatSweepstakeDate(utcDate);
 }
 
 function playerDisplayLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): string {
@@ -430,17 +427,6 @@ function playerDisplayLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): 
 
 function fixtureManagerLabel(manager: Pick<FixtureManager, 'name' | 'teamName'>): string {
   return manager.teamName ? `${manager.teamName} (${manager.name})` : manager.name;
-}
-
-function formatFixtureKickoff(utcDate: string): string {
-  return new Date(utcDate).toLocaleString('en-GB', {
-    weekday: 'short',
-    day: '2-digit',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'UTC',
-  });
 }
 
 function formatGoalDifference(goalDifference: number): string {
@@ -1672,11 +1658,7 @@ function OverallStandings({
 }
 
 function formatTeamMatchDate(utcDate: string): string {
-  return new Date(utcDate).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    timeZone: 'UTC',
-  });
+  return formatSweepstakeDate(utcDate);
 }
 
 function teamMatchDisplaysForTeam(
@@ -2571,7 +2553,7 @@ function WorldCupFantasyView({
                               {match.awayTeam.tla}
                             </span>
                             <span className="text-xs text-neutral-500">
-                              {new Date(match.utcDate).toLocaleDateString('en-GB')}
+                              {formatSweepstakeDate(match.utcDate)}
                             </span>
                           </div>
                           {scoringPlayers.length > 0 ? (
