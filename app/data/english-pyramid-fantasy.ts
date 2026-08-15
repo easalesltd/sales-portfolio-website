@@ -1079,6 +1079,63 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/marine/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-15-her-mar',
+    utcDate: '2026-08-15T14:00:00Z',
+    homeTeam: { name: 'Hereford', tla: 'HER' },
+    awayTeam: { name: 'Marine', tla: 'MAR' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/buxton/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-15-spt-bux',
+    utcDate: '2026-08-15T14:00:00Z',
+    homeTeam: { name: 'Southport', tla: 'SPT' },
+    awayTeam: { name: 'Buxton', tla: 'BUX' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 1,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-gri-exe',
+    utcDate: '2026-08-15T14:00Z',
+    homeTeam: { name: 'Grimsby Town', tla: 'GRI' },
+    awayTeam: { name: 'Exeter City', tla: 'EXE' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-trn-shr',
+    utcDate: '2026-08-15T14:00Z',
+    homeTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
+    awayTeam: { name: 'Shrewsbury Town', tla: 'SHR' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-yor-brst',
+    utcDate: '2026-08-15T14:00Z',
+    homeTeam: { name: 'York City', tla: 'YOR' },
+    awayTeam: { name: 'Bristol Rovers', tla: 'BRST' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
