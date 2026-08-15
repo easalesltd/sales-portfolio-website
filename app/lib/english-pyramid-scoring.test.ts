@@ -15,7 +15,7 @@ import {
   getPreSeasonTablePlace,
   sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
-import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch } from '@/app/lib/english-pyramid-scoring';
+import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring } from '@/app/lib/english-pyramid-scoring';
 
 describe('english-pyramid draft fairness', () => {
   it('gives every manager two clubs from each draft division', () => {
@@ -198,5 +198,54 @@ describe('english-pyramid scoreTeamMatch', () => {
     expect(scoreTeamMatch(2, 0, 1, false).total).toBe(6);
     // Loss 0-4 with two reds: 0 −3 conceded (−1) + 2 reds (+2) = 1
     expect(scoreTeamMatch(0, 4, 2).total).toBe(1);
+  });
+});
+
+describe('english-pyramid match scoring explanation', () => {
+  it('shows a red-card point cancelled by conceding three', () => {
+    const scored = scoreTeamMatch(0, 3, 1, false);
+    expect(scored.total).toBe(0);
+    expect(explainTeamMatchLines(scored, false)).toEqual([
+      { label: 'Loss', points: 0 },
+      { label: '3 goals conceded (3+)', points: -1 },
+      { label: 'Red card', points: 1 },
+    ]);
+  });
+
+  it('explains Newport 3-0 Rochdale with a Dale red', () => {
+    const explanation = explainMatchdayScoring({
+      id: '2026-08-15-nwp-rch',
+      utcDate: '2026-08-15T11:30:00Z',
+      status: 'finished',
+      homeTeam: { name: 'Newport County', tla: 'NWP', flag: 'L2' },
+      awayTeam: { name: 'Rochdale', tla: 'RCH', flag: 'L2' },
+      homeManagers: [{ id: 'jon', name: 'Jon', teamName: 'Jon FC', teamCode: 'NWP' }],
+      awayManagers: [],
+      homeGoals: 3,
+      awayGoals: 0,
+      homeRedCards: 0,
+      awayRedCards: 1,
+    });
+
+    expect(explanation?.sides[0]).toMatchObject({
+      teamTla: 'NWP',
+      inSweepstake: true,
+      total: 5,
+      lines: [
+        { label: 'Home win', points: 3 },
+        { label: 'Clean sheet', points: 1 },
+        { label: '3 goals scored (3+)', points: 1 },
+      ],
+    });
+    expect(explanation?.sides[1]).toMatchObject({
+      teamTla: 'RCH',
+      inSweepstake: false,
+      total: 0,
+      lines: [
+        { label: 'Loss', points: 0 },
+        { label: '3 goals conceded (3+)', points: -1 },
+        { label: 'Red card', points: 1 },
+      ],
+    });
   });
 });

@@ -222,6 +222,133 @@ export function scoreTeamMatch(
   };
 }
 
+export type MatchScoreExplainLine = {
+  label: string;
+  points: number;
+};
+
+export function explainTeamMatchLines(scored: TeamMatchScore, isHome: boolean): MatchScoreExplainLine[] {
+  const lines: MatchScoreExplainLine[] = [];
+
+  if (scored.boringMatchPenalty !== 0) {
+    lines.push({
+      label: 'Boring 0–0 (no draw or clean-sheet points)',
+      points: scored.boringMatchPenalty,
+    });
+  } else if (scored.outcome === 'win') {
+    lines.push({
+      label: isHome ? 'Home win' : 'Away win',
+      points: scored.points,
+    });
+  } else if (scored.outcome === 'draw') {
+    lines.push({
+      label: 'Draw',
+      points: scored.points,
+    });
+  } else {
+    lines.push({
+      label: 'Loss',
+      points: scored.points,
+    });
+  }
+
+  if (scored.cleanSheetBonus > 0) {
+    lines.push({ label: 'Clean sheet', points: scored.cleanSheetBonus });
+  }
+  if (scored.bonus > 0) {
+    lines.push({
+      label: `${scored.goalsFor} goals scored (3+)`,
+      points: scored.bonus,
+    });
+  }
+  if (scored.concededPenalty < 0) {
+    lines.push({
+      label: `${scored.goalsAgainst} goals conceded (3+)`,
+      points: scored.concededPenalty,
+    });
+  }
+  if (scored.redCardPenalty !== 0) {
+    lines.push({
+      label: scored.redCards === 1 ? 'Red card' : `${scored.redCards} red cards`,
+      points: scored.redCardPenalty,
+    });
+  }
+
+  return lines;
+}
+
+export type MatchSideExplanation = {
+  teamName: string;
+  teamTla: string;
+  isHome: boolean;
+  inSweepstake: boolean;
+  managerLabels: string[];
+  managerIds: string[];
+  total: number;
+  lines: MatchScoreExplainLine[];
+  redsUnchecked?: boolean;
+};
+
+export type MatchScoringExplanation = {
+  live: boolean;
+  sides: [MatchSideExplanation, MatchSideExplanation];
+};
+
+function managerLabelsForSide(managers: readonly FixtureManager[]): string[] {
+  return managers.map((manager) => manager.teamName ?? manager.name);
+}
+
+function explainMatchSide(
+  team: { name: string; tla: string },
+  managers: readonly FixtureManager[],
+  isHome: boolean,
+  goalsFor: number,
+  goalsAgainst: number,
+  redCards: number,
+  redsUnchecked?: boolean
+): MatchSideExplanation {
+  const scored = scoreTeamMatch(goalsFor, goalsAgainst, redCards, isHome);
+  return {
+    teamName: team.name,
+    teamTla: team.tla,
+    isHome,
+    inSweepstake: ENGLISH_PYRAMID_TEAM_BY_CODE[team.tla] != null,
+    managerLabels: managerLabelsForSide(managers),
+    managerIds: managers.map((manager) => manager.id),
+    total: scored.total,
+    lines: explainTeamMatchLines(scored, isHome),
+    redsUnchecked: redsUnchecked === true ? true : undefined,
+  };
+}
+
+export function explainMatchdayScoring(entry: MatchdayEntry): MatchScoringExplanation | null {
+  const homeGoals = entry.status === 'in-play' ? entry.liveHomeGoals : entry.homeGoals;
+  const awayGoals = entry.status === 'in-play' ? entry.liveAwayGoals : entry.awayGoals;
+  if (homeGoals == null || awayGoals == null) return null;
+
+  return {
+    live: entry.status === 'in-play',
+    sides: [
+      explainMatchSide(
+        entry.homeTeam,
+        entry.homeManagers,
+        true,
+        homeGoals,
+        awayGoals,
+        entry.homeRedCards ?? 0
+      ),
+      explainMatchSide(
+        entry.awayTeam,
+        entry.awayManagers,
+        false,
+        awayGoals,
+        homeGoals,
+        entry.awayRedCards ?? 0
+      ),
+    ],
+  };
+}
+
 export function manualMatchToResult(match: EnglishPyramidManualMatch): EnglishPyramidMatchResult {
   return {
     id: match.id,

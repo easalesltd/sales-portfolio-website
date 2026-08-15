@@ -34,6 +34,7 @@ import EnglishPyramidPrizeFundPanel from './english-pyramid/EnglishPyramidPrizeF
 import LiveGoalAlertsToggle from './english-pyramid/LiveGoalAlertsToggle';
 import MatchdayHeroStrip from './english-pyramid/MatchdayHeroStrip';
 import EnglishPyramidFixtureRow from './english-pyramid/EnglishPyramidFixtureRow';
+import MatchScoringExplainPanel from './english-pyramid/MatchScoringExplainPanel';
 import ManagerHeadToHead from './english-pyramid/ManagerHeadToHead';
 import TeamRedCardMarker from './english-pyramid/TeamRedCardMarker';
 import EnglishPyramidWeeklyShareButton from './english-pyramid/EnglishPyramidWeeklyShareButton';
@@ -845,6 +846,7 @@ function MatchdaySchedule({
   const t = useSweepstakeTheme();
   const [selectedDate, setSelectedDate] = useState(schedule.defaultDate);
   const [managerFilter, setManagerFilter] = useState<string>('all');
+  const [expandedMatchId, setExpandedMatchId] = useState<string | null>(null);
   const scoringByMatchId = new Map(scoringMatches.map((entry) => [entry.match.id, entry] as const));
   const flashingIds = useMemo(() => new Set(flashingMatchIds), [flashingMatchIds]);
   const selectedIndex = schedule.fixtureDates.indexOf(selectedDate);
@@ -866,6 +868,7 @@ function MatchdaySchedule({
 
   useEffect(() => {
     setManagerFilter('all');
+    setExpandedMatchId(null);
   }, [selectedDate]);
 
   return (
@@ -981,61 +984,94 @@ function MatchdaySchedule({
               : [];
             const goalFlash = flashingIds.has(entry.id);
 
+            const expanded = expandedMatchId === entry.id;
+
             return (
               <li
                 key={entry.id}
                 className={`px-3 py-1.5 sm:px-3 sm:py-2 ${entry.status === 'in-play' ? t.c.fixturesRowLive : ''}`}
               >
                 {t.id === 'english-pyramid' ? (
-                  <EnglishPyramidFixtureRow
-                    entry={entry}
-                    kickoff={
-                      <time
-                        dateTime={entry.utcDate}
-                        className={
-                          entry.status === 'in-play' ? t.c.fixturesKickoffLive : t.c.fixturesKickoff
+                  <>
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      className="w-full cursor-pointer rounded-md text-left transition hover:bg-white/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4af37]"
+                      aria-expanded={expanded}
+                      aria-label={
+                        expanded
+                          ? `Hide scoring breakdown for ${entry.homeTeam.name} versus ${entry.awayTeam.name}`
+                          : `Show scoring breakdown for ${entry.homeTeam.name} versus ${entry.awayTeam.name}`
+                      }
+                      onClick={() =>
+                        setExpandedMatchId((current) => (current === entry.id ? null : entry.id))
+                      }
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          setExpandedMatchId((current) => (current === entry.id ? null : entry.id));
                         }
-                      >
-                        {formatFixtureKickoff(entry.utcDate)}
-                      </time>
-                    }
-                    statusBadge={
-                      <MatchdayStatusBadge status={entry.status} livePeriod={entry.livePeriod} />
-                    }
-                    score={<MatchdayFixtureScore entry={entry} goalFlash={goalFlash} />}
-                    homeManagersLabel={
-                      entry.placeholderSide === 'home' || entry.placeholderSide === 'both' ? null : (
-                        <FixtureTeamManagers managers={entry.homeManagers} />
-                      )
-                    }
-                    awayManagersLabel={
-                      entry.placeholderSide === 'away' || entry.placeholderSide === 'both' ? null : (
-                        <FixtureTeamManagers managers={entry.awayManagers} />
-                      )
-                    }
-                    roundLabel={
-                      entry.roundLabel ? (
-                        <p className={t.c.fixturesRound}>{entry.roundLabel}</p>
-                      ) : undefined
-                    }
-                    winnerPathLabel={
-                      entry.status === 'finished' && entry.winnerPathLabel ? (
-                        <p className={t.c.fixturesWinnerPath}>Winner → {entry.winnerPathLabel}</p>
-                      ) : undefined
-                    }
-                    pointsLine={
-                      scoringPlayers.length > 0 && scoringEntry ? (
-                        <p className={t.c.fixturesPoints}>
-                          <MatchScoringPlayersLine
-                            players={standings}
-                            byPlayer={scoringEntry.byPlayer}
-                            match={scoringEntry.match}
-                            matchScoringHelpers={matchScoringHelpers}
-                          />
-                        </p>
-                      ) : undefined
-                    }
-                  />
+                      }}
+                    >
+                      <EnglishPyramidFixtureRow
+                        entry={entry}
+                        kickoff={
+                          <time
+                            dateTime={entry.utcDate}
+                            className={
+                              entry.status === 'in-play' ? t.c.fixturesKickoffLive : t.c.fixturesKickoff
+                            }
+                          >
+                            {formatFixtureKickoff(entry.utcDate)}
+                          </time>
+                        }
+                        statusBadge={
+                          <MatchdayStatusBadge status={entry.status} livePeriod={entry.livePeriod} />
+                        }
+                        score={<MatchdayFixtureScore entry={entry} goalFlash={goalFlash} />}
+                        homeManagersLabel={
+                          entry.placeholderSide === 'home' || entry.placeholderSide === 'both' ? null : (
+                            <FixtureTeamManagers managers={entry.homeManagers} />
+                          )
+                        }
+                        awayManagersLabel={
+                          entry.placeholderSide === 'away' || entry.placeholderSide === 'both' ? null : (
+                            <FixtureTeamManagers managers={entry.awayManagers} />
+                          )
+                        }
+                        roundLabel={
+                          entry.roundLabel ? (
+                            <p className={t.c.fixturesRound}>{entry.roundLabel}</p>
+                          ) : undefined
+                        }
+                        winnerPathLabel={
+                          entry.status === 'finished' && entry.winnerPathLabel ? (
+                            <p className={t.c.fixturesWinnerPath}>Winner → {entry.winnerPathLabel}</p>
+                          ) : undefined
+                        }
+                        pointsLine={
+                          scoringPlayers.length > 0 && scoringEntry ? (
+                            <p className={t.c.fixturesPoints}>
+                              <MatchScoringPlayersLine
+                                players={standings}
+                                byPlayer={scoringEntry.byPlayer}
+                                match={scoringEntry.match}
+                                matchScoringHelpers={matchScoringHelpers}
+                              />
+                              <span className="ml-2 text-[10px] font-medium text-neutral-500">
+                                {expanded ? 'Hide breakdown' : 'Tap for breakdown'}
+                              </span>
+                            </p>
+                          ) : entry.status === 'finished' || entry.status === 'in-play' ? (
+                            <p className="mt-1 text-[10px] font-medium text-neutral-500">
+                              {expanded ? 'Hide scoring' : 'Tap for scoring'}
+                            </p>
+                          ) : undefined
+                        }
+                      />
+                    </div>
+                    {expanded ? <MatchScoringExplainPanel entry={entry} /> : null}
+                  </>
                 ) : (
                   <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:gap-3">
                     <div className="shrink-0 sm:w-[8.75rem]">
