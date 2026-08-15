@@ -20,10 +20,6 @@ import {
   matchInvolvesTeam as pyramidMatchInvolvesTeam,
 } from '@/app/lib/english-pyramid-scoring';
 import type { SweepstakeFantasyThemeId } from '@/app/lib/sweepstake-fantasy-theme';
-import {
-  formatTeamNameWithSeed,
-  sortTeamCodesByDraftDivision,
-} from '@/app/data/english-pyramid-fantasy';
 import { formatFixtureKickoff, formatSweepstakeDate } from '@/app/lib/sweepstake-datetime';
 import { useLiveGoalAlerts } from '@/app/hooks/useLiveGoalAlerts';
 import { usePullToRefresh } from '@/app/hooks/usePullToRefresh';
@@ -1868,6 +1864,7 @@ function TeamMiniTable({
           <table className="min-w-full text-left text-xs sm:text-sm">
             <thead className="bg-neutral-950/80 text-neutral-400">
               <tr>
+                <th className="px-2 py-1.5 font-medium sm:px-3">#</th>
                 <th className="px-2 py-1.5 font-medium sm:px-3">Team</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">Form</th>
                 <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">Pld</th>
@@ -1881,7 +1878,7 @@ function TeamMiniTable({
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-800 text-neutral-100">
-              {orderedTeams.map((team) => {
+              {orderedTeams.map((team, index) => {
                 const isPinned = pinnedTeamCode === team.code;
                 const isHighlighted = displayTeamCode === team.code;
                 const isEliminated = team.eliminated === true;
@@ -1901,6 +1898,7 @@ function TeamMiniTable({
                       if (prefersFinePointerHover()) setHoverTeamCode(team.code);
                     }}
                   >
+                    <td className="px-2 py-1.5 tabular-nums text-neutral-400 sm:px-3">{index + 1}</td>
                     <td className="px-2 py-1.5 sm:px-3">
                       <button
                         type="button"
@@ -1914,7 +1912,7 @@ function TeamMiniTable({
                         {t.id === 'english-pyramid' ? (
                           <>
                             <DivisionBadge divisionId={team.flag} />
-                            {formatTeamNameWithSeed(team.code)}
+                            {team.name}
                           </>
                         ) : formatTeamLabel ? (
                           formatTeamLabel(team.code)
@@ -2232,16 +2230,20 @@ function PlayerSquadCard({
             ) : null}
             <p className="hidden flex-wrap gap-x-2 gap-y-1 text-xs text-neutral-300 sm:flex">
               {t.id === 'english-pyramid'
-                ? sortTeamCodesByDraftDivision(player.teams).map((code) => {
-                    const team = player.teamBreakdown.find((entry) => entry.code === code);
-                    const divisionId = team?.flag ?? '';
-                    return (
-                      <span key={code} className="inline-flex items-center">
-                        <DivisionBadge divisionId={divisionId} />
-                        {formatTeamNameWithSeed(code)}
+                ? [...player.teamBreakdown]
+                    .sort(
+                      (a, b) =>
+                        b.points - a.points ||
+                        b.goalDifference - a.goalDifference ||
+                        b.bonusPoints - a.bonusPoints ||
+                        a.name.localeCompare(b.name)
+                    )
+                    .map((team) => (
+                      <span key={team.code} className="inline-flex items-center">
+                        <DivisionBadge divisionId={team.flag} />
+                        {team.name}
                       </span>
-                    );
-                  })
+                    ))
                 : player.teams.map(formatTeamLabel).join(' · ')}
             </p>
           </div>
