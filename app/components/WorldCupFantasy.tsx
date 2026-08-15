@@ -1585,22 +1585,21 @@ function OverallStandings({
   const showRankMovement = t.id === 'english-pyramid';
   const mobileGridClass =
     t.id === 'english-pyramid'
-      ? 'grid-cols-[1.75rem_minmax(0,1fr)_auto_2.5rem]'
-      : 'grid-cols-[1.75rem_minmax(0,1fr)_2rem_2.5rem]';
+      ? 'grid-cols-[1.6rem_minmax(0,1fr)_1.7rem_1.7rem_1.9rem_2.25rem]'
+      : 'grid-cols-[1.6rem_minmax(0,1fr)_1.7rem_1.7rem_1.9rem_2rem_2.25rem]';
 
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
         <div
-          className={`grid ${mobileGridClass} items-center gap-x-2 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500`}
+          className={`grid ${mobileGridClass} items-center gap-x-1.5 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500`}
         >
           <span>#</span>
           <span>Club</span>
-          {t.id === 'english-pyramid' ? (
-            <span className="text-right">Form</span>
-          ) : (
-            <span className="text-right">Left</span>
-          )}
+          <span className="text-right">GF</span>
+          <span className="text-right">GA</span>
+          <span className="text-right">GD</span>
+          {t.id === 'english-pyramid' ? null : <span className="text-right">Left</span>}
           <span className="text-right">Pts</span>
         </div>
         <ul className="divide-y divide-neutral-800">
@@ -1617,7 +1616,7 @@ function OverallStandings({
                   scrollToPlayerSquad(row.id);
                 }
               }}
-              className={`grid ${mobileGridClass} cursor-pointer items-center gap-x-2 px-2 py-0.5 transition-colors hover:bg-neutral-800/60 ${
+              className={`grid ${mobileGridClass} cursor-pointer items-center gap-x-1.5 px-2 py-0.5 transition-colors hover:bg-neutral-800/60 ${
                 isWorldCupPlayerEliminated(row, t.id)
                   ? `${t.c.standingsRowEliminated} text-red-200/90`
                   : index === 0
@@ -1644,18 +1643,30 @@ function OverallStandings({
                   <Sparkline playerId={row.id} scoringMatches={scoringMatches} />
                 </span>
                 {row.teamName ? (
-                  <ManagerName
-                    playerId={row.id}
-                    name={row.name}
-                    className="block text-[10px] font-medium"
-                  />
+                  <span className="flex min-w-0 items-baseline justify-between gap-1.5">
+                    <ManagerName
+                      playerId={row.id}
+                      name={row.name}
+                      className="min-w-0 truncate text-[10px] font-medium"
+                    />
+                    {t.id === 'english-pyramid' ? (
+                      <span className="shrink-0 text-[10px] tabular-nums text-neutral-400">
+                        W{row.wins} D{row.draws} L{row.losses}
+                      </span>
+                    ) : null}
+                  </span>
+                ) : t.id === 'english-pyramid' ? (
+                  <span className="block text-[10px] tabular-nums text-neutral-400">
+                    W{row.wins} D{row.draws} L{row.losses}
+                  </span>
                 ) : null}
               </span>
-              {t.id === 'english-pyramid' ? (
-                <span className="shrink-0 text-right text-[10px] tabular-nums text-neutral-400">
-                  W{row.wins} D{row.draws} L{row.losses}
-                </span>
-              ) : (
+              <span className="shrink-0 text-right text-[11px] tabular-nums text-neutral-300">{row.goalsFor}</span>
+              <span className="shrink-0 text-right text-[11px] tabular-nums text-neutral-300">{row.goalsAgainst}</span>
+              <span className="shrink-0 text-right text-[11px]">
+                <GoalDifferenceValue goalDifference={row.goalDifference} />
+              </span>
+              {t.id === 'english-pyramid' ? null : (
                 <span
                   className={`shrink-0 text-right text-xs font-medium tabular-nums ${
                     isWorldCupPlayerEliminated(row, t.id) ? 'font-bold text-red-300' : 'text-neutral-200'
@@ -1897,7 +1908,9 @@ function TeamMiniTable({
                 <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">D</th>
                 <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">L</th>
                 <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">{bonusColumnLabel}</th>
-                <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">GD</th>
+                <th className="px-1.5 py-1.5 font-medium text-right sm:px-3">GF</th>
+                <th className="px-1.5 py-1.5 font-medium text-right sm:px-3">GA</th>
+                <th className="px-1.5 py-1.5 font-medium text-right sm:px-3">GD</th>
                 <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">Red</th>
                 <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pts</th>
               </tr>
@@ -1961,7 +1974,9 @@ function TeamMiniTable({
                     <td className="hidden px-2 py-1.5 text-right sm:table-cell sm:px-3">
                       <PointsValue value={team.bonusPoints} />
                     </td>
-                    <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">
+                    <td className="px-1.5 py-1.5 text-right tabular-nums sm:px-3">{team.goalsFor}</td>
+                    <td className="px-1.5 py-1.5 text-right tabular-nums sm:px-3">{team.goalsAgainst}</td>
+                    <td className="px-1.5 py-1.5 text-right tabular-nums sm:px-3">
                       <GoalDifferenceValue goalDifference={team.goalDifference} />
                     </td>
                     <td className={`hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3 ${t.c.negative}`}>
