@@ -1585,17 +1585,24 @@ function OverallStandings({
   const showRankMovement = t.id === 'english-pyramid';
   const mobileGridClass =
     t.id === 'english-pyramid'
-      ? 'grid-cols-[1.6rem_minmax(0,1fr)_1.7rem_1.7rem_1.9rem_2.25rem]'
-      : 'grid-cols-[1.6rem_minmax(0,1fr)_1.7rem_1.7rem_1.9rem_2rem_2.25rem]';
+      ? 'grid-cols-[1.35rem_minmax(0,1fr)_1.05rem_1.05rem_1.05rem_1.25rem_1.25rem_1.45rem_1.7rem]'
+      : 'grid-cols-[1.35rem_minmax(0,1fr)_1.25rem_1.25rem_1.45rem_1.7rem_1.7rem]';
 
   return (
     <>
       <div className="overflow-hidden rounded-lg border border-neutral-700 sm:hidden">
         <div
-          className={`grid ${mobileGridClass} items-center gap-x-1.5 border-b border-neutral-800 bg-neutral-950 px-2 py-1 text-[10px] font-medium uppercase tracking-wide text-neutral-500`}
+          className={`grid ${mobileGridClass} items-center gap-x-1 border-b border-neutral-800 bg-neutral-950 px-1.5 py-1 text-[9px] font-medium uppercase tracking-wide text-neutral-500`}
         >
           <span>#</span>
           <span>Club</span>
+          {t.id === 'english-pyramid' ? (
+            <>
+              <span className="text-right">W</span>
+              <span className="text-right">D</span>
+              <span className="text-right">L</span>
+            </>
+          ) : null}
           <span className="text-right">GF</span>
           <span className="text-right">GA</span>
           <span className="text-right">GD</span>
@@ -1616,7 +1623,7 @@ function OverallStandings({
                   scrollToPlayerSquad(row.id);
                 }
               }}
-              className={`grid ${mobileGridClass} cursor-pointer items-center gap-x-1.5 px-2 py-0.5 transition-colors hover:bg-neutral-800/60 ${
+              className={`grid ${mobileGridClass} cursor-pointer items-center gap-x-1 px-1.5 py-0.5 transition-colors hover:bg-neutral-800/60 ${
                 isWorldCupPlayerEliminated(row, t.id)
                   ? `${t.c.standingsRowEliminated} text-red-200/90`
                   : index === 0
@@ -1637,38 +1644,38 @@ function OverallStandings({
                   showMovement={showRankMovement}
                 />
               </span>
-              <span className="block min-w-0">
-                <span className="block text-xs font-medium leading-snug text-white flex items-center flex-wrap">
-                  <span>{playerDisplayLabel(row)}</span>
-                  <Sparkline playerId={row.id} scoringMatches={scoringMatches} />
+              <span className="block min-w-0 pr-1">
+                <span className="block truncate text-xs font-medium leading-snug text-white">
+                  {playerDisplayLabel(row)}
                 </span>
                 {row.teamName ? (
-                  <span className="flex min-w-0 items-baseline justify-between gap-1.5">
+                  <span className="flex min-w-0 items-center gap-1">
                     <ManagerName
                       playerId={row.id}
                       name={row.name}
                       className="min-w-0 truncate text-[10px] font-medium"
                     />
-                    {t.id === 'english-pyramid' ? (
-                      <span className="shrink-0 text-[10px] tabular-nums text-neutral-400">
-                        W{row.wins} D{row.draws} L{row.losses}
-                      </span>
-                    ) : null}
+                    <Sparkline playerId={row.id} scoringMatches={scoringMatches} />
                   </span>
-                ) : t.id === 'english-pyramid' ? (
-                  <span className="block text-[10px] tabular-nums text-neutral-400">
-                    W{row.wins} D{row.draws} L{row.losses}
-                  </span>
-                ) : null}
+                ) : (
+                  <Sparkline playerId={row.id} scoringMatches={scoringMatches} />
+                )}
               </span>
-              <span className="shrink-0 text-right text-[11px] tabular-nums text-neutral-300">{row.goalsFor}</span>
-              <span className="shrink-0 text-right text-[11px] tabular-nums text-neutral-300">{row.goalsAgainst}</span>
-              <span className="shrink-0 text-right text-[11px]">
+              {t.id === 'english-pyramid' ? (
+                <>
+                  <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.wins}</span>
+                  <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.draws}</span>
+                  <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.losses}</span>
+                </>
+              ) : null}
+              <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.goalsFor}</span>
+              <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.goalsAgainst}</span>
+              <span className="text-right text-[10px]">
                 <GoalDifferenceValue goalDifference={row.goalDifference} />
               </span>
               {t.id === 'english-pyramid' ? null : (
                 <span
-                  className={`shrink-0 text-right text-xs font-medium tabular-nums ${
+                  className={`text-right text-[10px] font-medium tabular-nums ${
                     isWorldCupPlayerEliminated(row, t.id) ? 'font-bold text-red-300' : 'text-neutral-200'
                   }`}
                   title={teamsLeftLabel(row, t.id)}
@@ -1676,7 +1683,7 @@ function OverallStandings({
                   {teamsLeftCount(row, t.id)}
                 </span>
               )}
-              <span className="shrink-0 text-right text-sm font-bold">
+              <span className="text-right text-xs font-bold">
                 <PointsValue value={row.points} animate />
               </span>
             </li>
