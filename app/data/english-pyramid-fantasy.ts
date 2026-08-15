@@ -990,6 +990,29 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/dagenham-and-redbridge/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-14-dag-fnh',
+    utcDate: '2026-08-14T19:00:00Z',
+    homeTeam: { name: 'Dagenham & Redbridge', tla: 'DAG' },
+    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-14-wol-blk',
+    utcDate: '2026-08-14T19:00Z',
+    homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+    awayTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
