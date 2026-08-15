@@ -10,16 +10,18 @@ export default function TeamRedCardMarker({ count, className = '' }: Props) {
 
   return (
     <span
-      className={`inline-flex items-center gap-0.5 ${className}`}
+      className={`inline-flex shrink-0 items-center gap-0.5 text-red-500 ${className}`}
       title={label}
       aria-label={label}
     >
       {Array.from({ length: Math.min(count, 3) }, (_, index) => (
         <span
           key={index}
-          className="inline-block size-2 rounded-full bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.85)] ring-1 ring-red-200/70"
+          className="inline-flex h-2.5 w-2.5 shrink-0 items-center justify-center text-[11px] leading-none sm:h-2 sm:w-2 sm:text-[9px]"
           aria-hidden
-        />
+        >
+          ●
+        </span>
       ))}
     </span>
   );

@@ -40,19 +40,21 @@ function FixtureSide({
       >
         {!compact && align === 'left' ? <DivisionBadge divisionId={divisionId} /> : null}
         <span
-          className={`min-w-0 font-medium leading-snug ${
-            compact ? `basis-full ${nameAlignClass}` : ''
+          className={`inline-flex min-w-0 items-center gap-1 font-medium leading-snug ${
+            compact ? `basis-full ${nameAlignClass} ${rowAlignClass}` : ''
           } ${
             compact ? 'text-xs sm:text-sm' : 'text-sm'
           } ${isPlaceholder ? 'italic text-neutral-400' : 'text-neutral-100'}`}
         >
-          {teamName}
+          {compact && align === 'right' ? <TeamRedCardMarker count={redCards} /> : null}
+          <span className="min-w-0">{teamName}</span>
+          {compact && align === 'left' ? <TeamRedCardMarker count={redCards} /> : null}
         </span>
         {(!compact && align === 'right') || compact ? (
           <DivisionBadge divisionId={divisionId} className={compact ? 'mr-0' : ''} />
         ) : null}
       </div>
-      <TeamRedCardMarker count={redCards} />
+      {compact ? null : <TeamRedCardMarker count={redCards} />}
       {managersLabel ? (
         <p className={`leading-snug text-neutral-400 ${compact ? 'text-[10px]' : 'text-[11px]'}`}>
           {managersLabel}
