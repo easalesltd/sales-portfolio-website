@@ -408,8 +408,7 @@ function MatchScoringPlayersLine({
             {index > 0 ? ' · ' : null}
             <ManagerName playerId={player.id} name={playerDisplayLabel(player)} className="text-inherit font-medium" />{' '}
             {outcome ? <MatchOutcomeLetter outcome={outcome} /> : null}{' '}
-            {points >= 0 ? '+' : ''}
-            {points}
+            <PointsValue value={points} signed />
           </span>
         );
       })}
@@ -444,6 +443,37 @@ function GoalDifferenceValue({ goalDifference }: { goalDifference: number }) {
         : 'text-neutral-300';
 
   return <span className={`tabular-nums ${tone}`}>{formatGoalDifference(goalDifference)}</span>;
+}
+
+function pointsToneClass(value: number, positiveClass: string, negativeClass: string): string {
+  if (value > 0) return positiveClass;
+  if (value < 0) return negativeClass;
+  return 'text-neutral-400';
+}
+
+function PointsValue({
+  value,
+  signed = false,
+  suffix,
+  className = '',
+  animate = false,
+}: {
+  value: number;
+  signed?: boolean;
+  suffix?: string;
+  className?: string;
+  animate?: boolean;
+}) {
+  const t = useSweepstakeTheme();
+  const prefix = signed && value >= 0 ? '+' : '';
+
+  return (
+    <span className={`tabular-nums ${pointsToneClass(value, t.c.positive, t.c.negative)} ${className}`}>
+      {prefix}
+      {animate ? <AnimatedCounter value={value} /> : value}
+      {suffix}
+    </span>
+  );
 }
 
 function RankMovementIndicator({ change }: { change?: number | null }) {
@@ -1427,7 +1457,7 @@ function StandingsProgressChart({
                 {standing?.allTeamsEliminated ? (
                   <span className={`${t.c.squadEliminatedBadge} no-underline`}>Out</span>
                 ) : null}
-                <span className={`tabular-nums ${t.c.chartLegendPoints}`}>{row.currentTotal} pts</span>
+                <PointsValue value={row.currentTotal} suffix=" pts" className="font-semibold" />
               </li>
             );
           })}
@@ -1566,8 +1596,8 @@ function OverallStandings({
                   {teamsLeftCount(row, t.id)}
                 </span>
               )}
-              <span className={`shrink-0 text-right text-sm tabular-nums ${t.c.pointsBold}`}>
-                <AnimatedCounter value={row.points} />
+              <span className="shrink-0 text-right text-sm font-bold">
+                <PointsValue value={row.points} animate />
               </span>
             </li>
           ))}
@@ -1640,13 +1670,15 @@ function OverallStandings({
                 <td className="px-3 py-2 text-right tabular-nums">{row.wins}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.draws}</td>
                 <td className="px-3 py-2 text-right tabular-nums">{row.losses}</td>
-                <td className="px-3 py-2 text-right tabular-nums">{row.bonusPoints}</td>
+                <td className="px-3 py-2 text-right">
+                  <PointsValue value={row.bonusPoints} />
+                </td>
                 <td className="px-3 py-2 text-right">
                   <GoalDifferenceValue goalDifference={row.goalDifference} />
                 </td>
                 <td className={`px-3 py-2 text-right tabular-nums ${t.c.negative}`}>{row.redCards}</td>
-                <td className={`px-3 py-2 text-right font-semibold tabular-nums ${index === 0 ? t.c.points : ''}`}>
-                  <AnimatedCounter value={row.points} />
+                <td className="px-3 py-2 text-right font-semibold">
+                  <PointsValue value={row.points} animate />
                 </td>
               </tr>
             ))}
@@ -1722,9 +1754,8 @@ function TeamResultsPanel({
                 <MatchOutcomeLetter outcome={teamMatchDisplayOutcomeLetter(result)} />
                 <TeamMatchAdjustments result={result} />
               </span>
-              <span className={t.c.teamResultsPoints}>
-                {result.points >= 0 ? '+' : ''}
-                {result.points} pts
+              <span className="shrink-0 font-semibold">
+                <PointsValue value={result.points} signed suffix=" pts" />
               </span>
             </li>
           ))}
@@ -1853,7 +1884,9 @@ function TeamMiniTable({
                     <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">{team.wins}</td>
                     <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">{team.draws}</td>
                     <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">{team.losses}</td>
-                    <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">{team.bonusPoints}</td>
+                    <td className="hidden px-2 py-1.5 text-right sm:table-cell sm:px-3">
+                      <PointsValue value={team.bonusPoints} />
+                    </td>
                     <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">
                       <GoalDifferenceValue goalDifference={team.goalDifference} />
                     </td>
@@ -1861,11 +1894,11 @@ function TeamMiniTable({
                       {team.redCards}
                     </td>
                     <td
-                      className={`px-2 py-1.5 text-right font-semibold tabular-nums sm:px-3 ${
-                        isEliminated ? `${t.c.negative} opacity-90` : ''
+                      className={`px-2 py-1.5 text-right font-semibold sm:px-3 ${
+                        isEliminated ? 'opacity-90' : ''
                       }`}
                     >
-                      {team.points}
+                      <PointsValue value={team.points} />
                     </td>
                   </tr>
                 );
@@ -2095,8 +2128,8 @@ function PlayerSquadCard({
                       Eliminated
                     </span>
                   ) : null}
-                  <span className={`text-sm font-semibold tabular-nums ${t.c.points}`}>
-                    <AnimatedCounter value={player.points} /> pts
+                  <span className="text-sm font-semibold">
+                    <PointsValue value={player.points} animate suffix=" pts" />
                   </span>
                   <span className="hidden sm:inline">
                     {t.id === 'english-pyramid' ? (
