@@ -235,6 +235,23 @@ function useProgressChartLayout() {
   return layout;
 }
 
+function useElementWidth<T extends HTMLElement>() {
+  const [node, setNode] = useState<T | null>(null);
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (!node) return;
+
+    const update = () => setWidth(node.clientWidth);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [node]);
+
+  return { ref: setNode, width };
+}
+
 function ScoringRulesBlock({ rules = SCORING_RULES }: { rules?: readonly string[] }) {
   const t = useSweepstakeTheme();
 
@@ -1273,7 +1290,8 @@ function StandingsProgressChart({
   const t = useSweepstakeTheme();
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
   const { height, crestSize, padding } = useProgressChartLayout();
-  const { xStep, lineWidth, yHeadroomPoints } = PROGRESS_CHART;
+  const { ref: wrapRef, width: wrapWidth } = useElementWidth<HTMLDivElement>();
+  const { lineWidth, yHeadroomPoints } = PROGRESS_CHART;
   const finishedMatchCount = scoringMatches.length;
 
   if (finishedMatchCount === 0) {
@@ -1295,7 +1313,6 @@ function StandingsProgressChart({
   const yRange = Math.max(yMax - yMin, 1);
   const selectedSeries = selectedPlayerId ? series.find((row) => row.playerId === selectedPlayerId) : null;
 
-  const xForIndex = (index: number) => padding.left + index * xStep;
   const yForTotal = (total: number) =>
     padding.top + plotHeight - ((total - yMin) / yRange) * plotHeight;
 
@@ -1303,9 +1320,6 @@ function StandingsProgressChart({
     const value = yMin + (yRange * tickIndex) / 4;
     return { value: Math.round(value), y: yForTotal(value) };
   });
-
-  const xLabelStride = Math.max(1, Math.ceil((pointCount - 1) / 10));
-  const xLabels = series[0]?.points.filter((_, index) => index === 0 || index % xLabelStride === 0 || index === pointCount - 1) ?? [];
 
   const toggleSelectedPlayer = (playerId: string) => {
     setSelectedPlayerId((current) => (current === playerId ? null : playerId));
@@ -1317,18 +1331,27 @@ function StandingsProgressChart({
       ? `${selectedStanding.teamName ?? selectedSeries.label} · ${selectedSeries.currentTotal} pts`
       : '';
   const selectedLabelWidth = selectedLabelText ? Math.max(108, selectedLabelText.length * 6.2 + 20) : 0;
-  const chartWidth =
-    padding.left + padding.right + selectedLabelWidth + Math.max(1, pointCount - 1) * xStep;
+  const endLabelRoom = Math.max(selectedLabelWidth, crestSize + 24);
+  const minXStep = t.id === 'english-pyramid' ? 88 : PROGRESS_CHART.xStep;
+  const containerWidth = wrapWidth > 0 ? wrapWidth : 800;
+  const usableWidth = Math.max(120, containerWidth - padding.left - padding.right - endLabelRoom);
+  const xStep = Math.max(minXStep, usableWidth / Math.max(1, pointCount - 1));
+  const chartWidth = padding.left + padding.right + endLabelRoom + Math.max(1, pointCount - 1) * xStep;
+  const xLabelStride = Math.max(1, Math.ceil(72 / xStep), Math.ceil((pointCount - 1) / 12));
+  const xLabels = series[0]?.points.filter((_, index) => index === 0 || index % xLabelStride === 0 || index === pointCount - 1) ?? [];
+
+  const xForIndex = (index: number) => padding.left + index * xStep;
 
   return (
       <div className={`mt-3 space-y-3`}>
-      <div className={t.c.chartWrap}>
+      <div className={t.c.chartWrap} ref={wrapRef}>
         <svg
           role="img"
           aria-label="Cumulative fantasy points by manager across the tournament"
           viewBox={`0 0 ${chartWidth} ${height}`}
-          className="block min-w-full"
-          style={{ width: chartWidth, height, minWidth: '100%' }}
+          preserveAspectRatio="xMinYMid meet"
+          className="block"
+          style={{ width: chartWidth, height }}
         >
           {yTicks.map((tick) => (
             <g key={tick.value}>
@@ -1356,7 +1379,7 @@ function StandingsProgressChart({
               key={`${point.index}-${point.label}`}
               x={xForIndex(point.index)}
               y={height - 12}
-              textAnchor="middle"
+              textAnchor={point.index === 0 ? 'start' : point.index === pointCount - 1 ? 'end' : 'middle'}
               className="fill-neutral-500 text-[10px]"
             >
               {point.label}
