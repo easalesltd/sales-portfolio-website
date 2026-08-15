@@ -65,7 +65,7 @@ export default function MatchScoringExplainPanel({ entry }: Props) {
                     {side.managerLabels.join(' · ')}
                   </span>
                 ) : (
-                  'No manager — this result doesn't score for anyone'
+                  "No manager — this result doesn't score for anyone"
                 )}
               </p>
               <ul className="mt-1 space-y-0.5">
@@ -90,7 +90,7 @@ export default function MatchScoringExplainPanel({ entry }: Props) {
                 <span className={`tabular-nums ${pointsClass(side.total, t.c.positive, t.c.negative)}`}>
                   {side.managerLabels.length > 0
                     ? `${signedPoints(side.total)} pts`
-                    : `${signedPoints(side.total)} · doesn't count`}
+                    : `${signedPoints(side.total)} · does not count`}
                 </span>
               </p>
             </article>
