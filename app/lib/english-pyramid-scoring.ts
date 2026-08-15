@@ -123,6 +123,8 @@ export type MatchdayEntry = UpcomingFixtureEntry & {
   awayGoals?: number;
   liveHomeGoals?: number;
   liveAwayGoals?: number;
+  homeRedCards?: number;
+  awayRedCards?: number;
   livePeriod?: string;
   /** Reserved for tournament bracket UI (World Cup / Euros restore). */
   homePenalties?: number;
@@ -368,6 +370,8 @@ function buildMatchdayEntriesForDate(
           status: 'finished' as const,
           homeGoals: recorded.homeGoals!,
           awayGoals: recorded.awayGoals!,
+          homeRedCards: recorded.homeRedCards,
+          awayRedCards: recorded.awayRedCards,
         };
       }
 

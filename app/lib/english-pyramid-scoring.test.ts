@@ -1,8 +1,11 @@
+/** @jest-environment node */
+
 import { describe, expect, it } from '@jest/globals';
 import {
   ENGLISH_PYRAMID_DIVISIONS,
   ENGLISH_PYRAMID_FANTASY_PLAYERS,
   ENGLISH_PYRAMID_FIXTURES,
+  ENGLISH_PYRAMID_MANUAL_MATCHES,
   ENGLISH_PYRAMID_TEAM_BY_CODE,
   formatPreSeasonTablePlace,
   formatTeamNameWithSeed,
@@ -12,7 +15,7 @@ import {
   getPreSeasonTablePlace,
   sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
-import { getMatchdaySchedule, scoreTeamMatch } from '@/app/lib/english-pyramid-scoring';
+import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch } from '@/app/lib/english-pyramid-scoring';
 
 describe('english-pyramid draft fairness', () => {
   it('gives every manager two clubs from each draft division', () => {
@@ -123,6 +126,26 @@ describe('english-pyramid matchday schedule', () => {
         expect.objectContaining({
           homeTeam: expect.objectContaining({ tla: 'BUX' }),
           awayTeam: expect.objectContaining({ tla: 'HER' }),
+        }),
+      ])
+    );
+  });
+
+  it('carries recorded red cards onto finished matchday rows', () => {
+    const schedule = getMatchdaySchedule(
+      ENGLISH_PYRAMID_FIXTURES,
+      ENGLISH_PYRAMID_MANUAL_MATCHES.map(manualMatchToResult),
+      ENGLISH_PYRAMID_FANTASY_PLAYERS,
+      new Date('2026-08-08T18:00:00Z')
+    );
+
+    expect(schedule.schedulesByDate['2026-08-08']).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: '2026-08-08-alt-std',
+          status: 'finished',
+          homeRedCards: 1,
+          awayRedCards: 0,
         }),
       ])
     );

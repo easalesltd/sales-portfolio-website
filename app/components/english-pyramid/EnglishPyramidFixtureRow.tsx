@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import type { MatchdayEntry } from '@/app/lib/english-pyramid-scoring';
 import DivisionBadge from './DivisionBadge';
+import TeamRedCardMarker from './TeamRedCardMarker';
 
 type FixtureSideProps = {
   teamName: string;
@@ -11,6 +12,7 @@ type FixtureSideProps = {
   isPlaceholder: boolean;
   align: 'left' | 'right';
   compact?: boolean;
+  redCards?: number;
 };
 
 function FixtureSide({
@@ -20,6 +22,7 @@ function FixtureSide({
   isPlaceholder,
   align,
   compact = false,
+  redCards = 0,
 }: FixtureSideProps) {
   const alignClass = align === 'right' ? 'items-end text-right' : 'items-start text-left';
   const nameAlignClass = align === 'right' ? 'text-right' : 'text-left';
@@ -49,6 +52,7 @@ function FixtureSide({
           <DivisionBadge divisionId={divisionId} className={compact ? 'mr-0' : ''} />
         ) : null}
       </div>
+      <TeamRedCardMarker count={redCards} />
       {managersLabel ? (
         <p className={`leading-snug text-neutral-400 ${compact ? 'text-[10px]' : 'text-[11px]'}`}>
           {managersLabel}
@@ -102,6 +106,7 @@ export default function EnglishPyramidFixtureRow({
             isPlaceholder={homeIsPlaceholder}
             align="right"
             compact
+            redCards={entry.homeRedCards}
           />
           <div className="flex min-w-[2.75rem] justify-center self-start whitespace-nowrap pt-0.5 [&_span]:mx-0">
             {score}
@@ -113,6 +118,7 @@ export default function EnglishPyramidFixtureRow({
             isPlaceholder={awayIsPlaceholder}
             align="left"
             compact
+            redCards={entry.awayRedCards}
           />
         </div>
       </div>
@@ -129,6 +135,7 @@ export default function EnglishPyramidFixtureRow({
           managersLabel={homeManagersLabel}
           isPlaceholder={homeIsPlaceholder}
           align="right"
+          redCards={entry.homeRedCards}
         />
         <div className="flex items-center justify-center">{score}</div>
         <FixtureSide
@@ -137,6 +144,7 @@ export default function EnglishPyramidFixtureRow({
           managersLabel={awayManagersLabel}
           isPlaceholder={awayIsPlaceholder}
           align="left"
+          redCards={entry.awayRedCards}
         />
       </div>
 

@@ -452,6 +452,8 @@ export function applyLiveScoresToSchedule(
           status: 'finished',
           homeGoals: live.homeGoals,
           awayGoals: live.awayGoals,
+          homeRedCards: live.homeRedCards,
+          awayRedCards: live.awayRedCards,
         };
         provisionalMatches.push(
           provisionalMatchFromFinishedEntry(finishedEntry, {
@@ -467,6 +469,8 @@ export function applyLiveScoresToSchedule(
         liveHomeGoals: live.homeGoals,
         liveAwayGoals: live.awayGoals,
         livePeriod: live.period,
+        homeRedCards: live.homeRedCards,
+        awayRedCards: live.awayRedCards,
       };
     });
   }

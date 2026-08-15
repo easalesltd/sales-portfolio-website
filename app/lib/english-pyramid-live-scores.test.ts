@@ -161,6 +161,8 @@ describe('english-pyramid-live-scores', () => {
       status: 'finished',
       homeGoals: 2,
       awayGoals: 1,
+      homeRedCards: 1,
+      awayRedCards: 0,
     });
     expect(provisionalMatches).toEqual([
       expect.objectContaining({
@@ -194,5 +196,45 @@ describe('english-pyramid-live-scores', () => {
 
     expect(events[0]?.homeRedCards).toBe(1);
     expect(events[0]?.awayRedCards).toBe(0);
+  });
+
+  it('copies live red cards onto in-play matchday rows', () => {
+    const schedule: MatchdaySchedule = {
+      defaultDate: '2026-08-15',
+      fixtureDates: ['2026-08-15'],
+      schedulesByDate: {
+        '2026-08-15': [
+          {
+            id: '2026-08-15-shu-bir',
+            utcDate: '2026-08-15T14:00:00Z',
+            status: 'in-play',
+            homeTeam: { name: 'Sheffield United', tla: 'SHU', flag: '🛡️' },
+            awayTeam: { name: 'Birmingham City', tla: 'BIR', flag: '🛡️' },
+            homeManagers: [],
+            awayManagers: [],
+          },
+        ],
+      },
+    };
+
+    const { schedule: enriched } = applyLiveScoresToSchedule(schedule, [
+      {
+        homeTla: 'SHU',
+        awayTla: 'BIR',
+        homeGoals: 1,
+        awayGoals: 0,
+        period: 'Second Half',
+        homeRedCards: 0,
+        awayRedCards: 1,
+      },
+    ]);
+
+    expect(enriched.schedulesByDate['2026-08-15'][0]).toMatchObject({
+      status: 'in-play',
+      liveHomeGoals: 1,
+      liveAwayGoals: 0,
+      homeRedCards: 0,
+      awayRedCards: 1,
+    });
   });
 });

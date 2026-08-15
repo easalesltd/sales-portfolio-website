@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { MatchdayEntry } from '@/app/lib/english-pyramid-scoring';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import { useSweepstakeTheme } from '../SweepstakeThemeContext';
+import TeamRedCardMarker from './TeamRedCardMarker';
 
 type Props = {
   entries: MatchdayEntry[];
@@ -27,10 +28,12 @@ function ManagerSide({
   managers,
   teamName,
   align,
+  redCards = 0,
 }: {
   managers: Manager[];
   teamName: string;
   align: 'left' | 'right';
+  redCards?: number;
 }) {
   const t = useSweepstakeTheme();
   const primaryColor = managers[0] ? managerColorForPlayer(managers[0].id, t.id) : undefined;
@@ -69,6 +72,10 @@ function ManagerSide({
           />
         ) : null}
       </p>
+      <TeamRedCardMarker
+        count={redCards}
+        className={`mt-0.5 w-full ${align === 'right' ? 'justify-end' : 'justify-start'}`}
+      />
     </div>
   );
 }
@@ -134,6 +141,7 @@ export default function ManagerHeadToHead({ entries }: Props) {
                   managers={entry.homeManagers}
                   teamName={entry.homeTeam.name}
                   align="right"
+                  redCards={entry.homeRedCards}
                 />
                 <div className="text-center">
                   <p className="text-base font-black tabular-nums text-white">{scoreLabel(entry)}</p>
@@ -145,6 +153,7 @@ export default function ManagerHeadToHead({ entries }: Props) {
                   managers={entry.awayManagers}
                   teamName={entry.awayTeam.name}
                   align="left"
+                  redCards={entry.awayRedCards}
                 />
               </div>
             </article>

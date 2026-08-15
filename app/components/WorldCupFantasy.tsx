@@ -35,6 +35,7 @@ import LiveGoalAlertsToggle from './english-pyramid/LiveGoalAlertsToggle';
 import MatchdayHeroStrip from './english-pyramid/MatchdayHeroStrip';
 import EnglishPyramidFixtureRow from './english-pyramid/EnglishPyramidFixtureRow';
 import ManagerHeadToHead from './english-pyramid/ManagerHeadToHead';
+import TeamRedCardMarker from './english-pyramid/TeamRedCardMarker';
 import EnglishPyramidWeeklyShareButton from './english-pyramid/EnglishPyramidWeeklyShareButton';
 import PyramidMobileJumpNav from './english-pyramid/PyramidMobileJumpNav';
 import RedrawRevealExperience from './english-pyramid/RedrawRevealExperience';
@@ -797,16 +798,22 @@ function MatchdayFixtureLine({ entry }: { entry: MatchdayEntry }) {
         <p className={t.c.fixturesRound}>{entry.roundLabel}</p>
       ) : null}
       <p className="text-sm leading-snug text-neutral-100">
-        <span className={`font-medium ${homeIsPlaceholder ? 'italic text-neutral-400' : ''}`}>
-          {entry.homeTeam.flag} {entry.homeTeam.name}
+        <span className={`inline-flex flex-col items-start font-medium ${homeIsPlaceholder ? 'italic text-neutral-400' : ''}`}>
+          <span>
+            {entry.homeTeam.flag} {entry.homeTeam.name}
+          </span>
+          <TeamRedCardMarker count={entry.homeRedCards ?? 0} />
         </span>
         <span className="text-neutral-600"> · </span>
         <span className="text-xs text-neutral-400">
           {!homeIsPlaceholder ? <FixtureTeamManagers managers={entry.homeManagers} /> : null}
         </span>
         <MatchdayFixtureScore entry={entry} />
-        <span className={`font-medium ${awayIsPlaceholder ? 'italic text-neutral-400' : ''}`}>
-          {entry.awayTeam.flag} {entry.awayTeam.name}
+        <span className={`inline-flex flex-col items-start font-medium ${awayIsPlaceholder ? 'italic text-neutral-400' : ''}`}>
+          <span>
+            {entry.awayTeam.flag} {entry.awayTeam.name}
+          </span>
+          <TeamRedCardMarker count={entry.awayRedCards ?? 0} />
         </span>
         <span className="text-neutral-600"> · </span>
         <span className="text-xs text-neutral-400">
@@ -1113,11 +1120,17 @@ function LatestResultsTicker({
         </div>
         <div className={t.c.tickerCardInner}>
           <div className={t.c.tickerScore}>
-            <span>{match.homeTeam.tla}</span>
+            <span className="inline-flex flex-col items-center">
+              <span>{match.homeTeam.tla}</span>
+              <TeamRedCardMarker count={match.homeRedCards} />
+            </span>
             <span className={t.c.tickerScoreBadge}>
               {formatMatchScore(match.homeGoals, match.awayGoals, match.homePenalties, match.awayPenalties)}
             </span>
-            <span>{match.awayTeam.tla}</span>
+            <span className="inline-flex flex-col items-center">
+              <span>{match.awayTeam.tla}</span>
+              <TeamRedCardMarker count={match.awayRedCards} />
+            </span>
           </div>
         </div>
         {scoringPlayers.length > 0 ? (
@@ -2573,15 +2586,21 @@ function WorldCupFantasyView({
                       return (
                         <li key={match.id} className={t.c.recentResultItem}>
                           <div className="flex flex-wrap items-center justify-between gap-2">
-                            <span className="text-neutral-100">
-                              {match.homeTeam.tla}{' '}
+                            <span className="inline-flex flex-wrap items-center gap-x-1 text-neutral-100">
+                              <span className="inline-flex flex-col items-center">
+                                <span>{match.homeTeam.tla}</span>
+                                <TeamRedCardMarker count={match.homeRedCards} />
+                              </span>
                               {formatMatchScore(
                                 match.homeGoals,
                                 match.awayGoals,
                                 match.homePenalties,
                                 match.awayPenalties,
-                              )}{' '}
-                              {match.awayTeam.tla}
+                              )}
+                              <span className="inline-flex flex-col items-center">
+                                <span>{match.awayTeam.tla}</span>
+                                <TeamRedCardMarker count={match.awayRedCards} />
+                              </span>
                             </span>
                             <span className="text-xs text-neutral-500">
                               {formatSweepstakeDate(match.utcDate)}
