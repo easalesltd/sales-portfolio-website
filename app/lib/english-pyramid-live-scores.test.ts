@@ -17,12 +17,55 @@ describe('english-pyramid-live-scores', () => {
     expect(normalizeEspnAbbrevToTeamCode('eng.4', 'YORK')).toBe('YOR');
     expect(normalizeEspnAbbrevToTeamCode('eng.5', 'HAR', '323')).toBe('HPL');
     expect(normalizeEspnAbbrevToTeamCode('eng.5', 'HAR', '19262')).toBe('HAR');
-    expect(normalizeEspnAbbrevToTeamCode('eng.4', 'NEW')).toBe('NEW');
+    expect(normalizeEspnAbbrevToTeamCode('eng.4', 'NEW')).toBe('NWP');
     expect(normalizeEspnAbbrevToTeamCode('eng.1', 'NEW')).toBe('NEW');
     expect(normalizeEspnAbbrevToTeamCode('eng.2', 'LCN')).toBe('LIN');
+    expect(normalizeEspnAbbrevToTeamCode('eng.2', 'CAR')).toBe('CDF');
+    expect(normalizeEspnAbbrevToTeamCode('eng.5', 'CAR')).toBe('CAR');
     expect(normalizeEspnAbbrevToTeamCode('eng.3', 'BRT')).toBe('BTN');
+    expect(normalizeEspnAbbrevToTeamCode('eng.3', 'BAR')).toBe('BSL');
+    expect(normalizeEspnAbbrevToTeamCode('eng.4', 'BAR')).toBe('BAR');
     expect(normalizeEspnAbbrevToTeamCode('eng.4', 'CHL')).toBe('CHT');
     expect(normalizeEspnAbbrevToTeamCode('eng.5', 'HOR')).toBe('HRN');
+  });
+
+  it('remaps League One Barnsley (ESPN BAR) onto fixture code BSL', () => {
+    const events = parseEspnScoreboard('eng.3', {
+      events: [
+        {
+          status: { type: { description: 'Second Half', shortDetail: "76'" } },
+          competitions: [
+            {
+              competitors: [
+                { homeAway: 'home', team: { abbreviation: 'BAR' }, score: '0' },
+                { homeAway: 'away', team: { abbreviation: 'BRO' }, score: '1' },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(events[0]).toMatchObject({
+      homeTla: 'BSL',
+      awayTla: 'BRO',
+      homeGoals: 0,
+      awayGoals: 1,
+    });
+
+    expect(
+      matchLiveScoreForFixture(
+        {
+          homeTeam: { name: 'Barnsley', tla: 'BSL', flag: 'L1' },
+          awayTeam: { name: 'Bromley', tla: 'BRO', flag: 'L1' },
+        },
+        events
+      )
+    ).toMatchObject({
+      homeGoals: 0,
+      awayGoals: 1,
+      period: "76'",
+    });
   });
 
   it('parses in-progress ESPN events but skips scheduled fixtures', () => {

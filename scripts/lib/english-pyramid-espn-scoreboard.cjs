@@ -5,7 +5,7 @@
 
 const { countRedCardsFromEspnCompetition } = require('./espn-red-cards.cjs');
 const { normalizeEspnEventDate } = require('./espn-kickoff.cjs');
-const { ESPN_ABBREV_BY_SLUG, ESPN_TEAM_ID_BY_SLUG } = require('./english-pyramid-fixture-lib.cjs');
+const { ESPN_ABBREV_BY_SLUG, ESPN_TEAM_ID_BY_SLUG, ESPN_OPPONENT_ABBREV_COLLISION } = require('./english-pyramid-fixture-lib.cjs');
 
 const DIVISION_TO_ESPN_SLUG = {
   PL: 'eng.1',
@@ -57,6 +57,8 @@ function normalizeEspnAbbrevToTeamCode(slug, abbrev, teamId) {
   if (!upper) return null;
   const mapped = ESPN_ABBREV_BY_SLUG[slug]?.[upper];
   if (mapped) return mapped;
+  const collision = ESPN_OPPONENT_ABBREV_COLLISION[slug]?.[upper];
+  if (collision) return collision;
   return upper;
 }
 

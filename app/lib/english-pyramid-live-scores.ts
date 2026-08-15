@@ -110,6 +110,11 @@ const ESPN_TEAM_ID_BY_SLUG: Record<string, Record<string, string>> = {
   'eng.5': { '323': 'HPL' },
 };
 
+/** Keep in sync with ESPN_OPPONENT_ABBREV_COLLISION in scripts/lib/english-pyramid-fixture-lib.cjs */
+const ESPN_OPPONENT_ABBREV_COLLISION: Record<string, Record<string, string>> = {
+  'eng.3': { BAR: 'BSL' },
+};
+
 const REDIS_CACHE_KEY_PREFIX = 'english-pyramid:espn-scoreboard:v1';
 const CACHE_TTL_SECONDS = 90;
 
@@ -172,6 +177,8 @@ export function normalizeEspnAbbrevToTeamCode(
   const upper = abbrev.trim().toUpperCase();
   const mapped = ESPN_ABBREV_BY_SLUG[slug]?.[upper];
   if (mapped) return mapped;
+  const collision = ESPN_OPPONENT_ABBREV_COLLISION[slug]?.[upper];
+  if (collision) return collision;
   // Opponent abbrev only — do not alias across leagues (eng.4 NEW = Newport County).
   return upper;
 }

@@ -125,6 +125,15 @@ const ESPN_TEAM_ID_BY_SLUG = {
   'eng.5': { 323: 'HPL' }, // Hartlepool United (abbrev HAR; Harrogate is also HAR)
 };
 
+/**
+ * ESPN reuses abbreviations across divisions. Opponent codes that collide with
+ * a drafted club (eng.3 Barnsley=BAR vs eng.4 Barnet=BAR) must be remapped so
+ * live scores and the ledger match fixture TLAs (BSL vs BRO, not BAR vs BRO).
+ */
+const ESPN_OPPONENT_ABBREV_COLLISION = {
+  'eng.3': { BAR: 'BSL' },
+};
+
 const TEAM_NAME_BY_CODE = {
   MCI: 'Manchester City',
   MUN: 'Manchester United',
@@ -312,10 +321,7 @@ function resolveTeam(slug, competitor, roster) {
    * *our* codes for a different club (eng.3 Barnsley=BAR vs eng.4 Barnet=BAR), remap so
    * we never attribute the wrong club’s results to a sweepstake side.
    */
-  const OPPONENT_ABBREV_COLLISION = {
-    'eng.3': { BAR: 'BSL' }, // Barnsley — Barnet owns BAR in our L2 pool
-  };
-  const collisionCode = OPPONENT_ABBREV_COLLISION[slug]?.[abbrev];
+  const collisionCode = ESPN_OPPONENT_ABBREV_COLLISION[slug]?.[abbrev];
   if (collisionCode || OUR_CODES.has(abbrev)) {
     return {
       code: collisionCode ?? `${abbrev}_OPP`,
@@ -710,6 +716,7 @@ module.exports = {
   dataPath,
   ESPN_ABBREV_BY_SLUG,
   ESPN_TEAM_ID_BY_SLUG,
+  ESPN_OPPONENT_ABBREV_COLLISION,
   LEAGUE_SLUGS,
   NL_SWEEPSTAKE_CODES,
   NATIONAL_LEAGUE_FIXTURES_RELEASE_DATE,
