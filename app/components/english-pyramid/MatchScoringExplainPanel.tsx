@@ -52,19 +52,20 @@ export default function MatchScoringExplainPanel({ entry }: Props) {
             ? managerColorForPlayer(side.managerIds[0], t.id)
             : undefined;
           return (
-            <article key={side.teamTla} className="min-w-0">
+            <article
+              key={side.teamTla}
+              className={`min-w-0 ${side.managerLabels.length === 0 ? 'opacity-70' : ''}`}
+            >
               <p className="truncate text-xs font-semibold text-neutral-100">
                 {side.isHome ? 'Home' : 'Away'} · {side.teamName}
               </p>
-              <p className="truncate text-[11px] text-neutral-400">
+              <p className="text-[11px] leading-snug text-neutral-400">
                 {side.managerLabels.length > 0 ? (
                   <span style={managerColor ? { color: managerColor } : undefined}>
                     {side.managerLabels.join(' · ')}
                   </span>
-                ) : side.inSweepstake ? (
-                  'Sweepstake club'
                 ) : (
-                  'Not in the sweepstake'
+                  'No manager — this result doesn't score for anyone'
                 )}
               </p>
               <ul className="mt-1 space-y-0.5">
@@ -83,10 +84,13 @@ export default function MatchScoringExplainPanel({ entry }: Props) {
                 ))}
               </ul>
               <p className="mt-1 flex items-baseline justify-between gap-3 border-t border-white/10 pt-1 text-xs font-semibold">
-                <span className="text-neutral-200">Total</span>
+                <span className="text-neutral-200">
+                  {side.managerLabels.length > 0 ? 'Total' : 'Would have been'}
+                </span>
                 <span className={`tabular-nums ${pointsClass(side.total, t.c.positive, t.c.negative)}`}>
-                  {signedPoints(side.total)}
-                  {side.inSweepstake ? ' pts' : ''}
+                  {side.managerLabels.length > 0
+                    ? `${signedPoints(side.total)} pts`
+                    : `${signedPoints(side.total)} · doesn't count`}
                 </span>
               </p>
             </article>
