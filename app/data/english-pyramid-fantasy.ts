@@ -1013,6 +1013,72 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-bol-pne',
+    utcDate: '2026-08-15T11:30Z',
+    homeTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
+    awayTeam: { name: 'Preston North End', tla: 'PNE' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-nco-lei',
+    utcDate: '2026-08-15T11:30Z',
+    homeTeam: { name: 'Notts County', tla: 'NCO' },
+    awayTeam: { name: 'Leicester City', tla: 'LEI' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-nwp-rch',
+    utcDate: '2026-08-15T11:30Z',
+    homeTeam: { name: 'Newport County', tla: 'NWP' },
+    awayTeam: { name: 'Rochdale', tla: 'RCH' },
+    homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-old-pvl',
+    utcDate: '2026-08-15T11:30Z',
+    homeTeam: { name: 'Oldham Athletic', tla: 'OLD' },
+    awayTeam: { name: 'Port Vale', tla: 'PVL' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-oxf-mkd',
+    utcDate: '2026-08-15T11:30Z',
+    homeTeam: { name: 'Oxford United', tla: 'OXF' },
+    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-rea-lut',
+    utcDate: '2026-08-15T11:30Z',
+    homeTeam: { name: 'Reading', tla: 'REA' },
+    awayTeam: { name: 'Luton Town', tla: 'LUT' },
+    homeGoals: 3,
+    awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
