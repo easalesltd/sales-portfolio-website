@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
 import ImageModal from './ImageModal'
 
 interface ImageGalleryProps {
@@ -91,16 +90,12 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
           onClick={() => setLightboxOpen(true)}
         />
 
-        <Image
+        <img
           src={currentSrc}
           alt={`Gallery image ${currentIndex + 1}`}
-          fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          priority={currentIndex === 0}
-          quality={85}
-          className={`object-contain transition-opacity duration-500 pointer-events-none ${
+          className={`absolute inset-0 h-full w-full object-cover object-center pointer-events-none ${
             isLoading ? 'opacity-0' : 'opacity-100'
-          }`}
+          } transition-opacity duration-500`}
           onLoad={() => setIsLoading(false)}
         />
 
@@ -119,8 +114,8 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
                 }}
                 className={`h-2 rounded-full transition-all duration-300 ${
                   currentIndex === index
-                    ? 'bg-neutral-900 dark:bg-white w-4'
-                    : 'bg-neutral-400/80 hover:bg-neutral-600 dark:bg-white/50 dark:hover:bg-white/75 w-2'
+                    ? 'bg-white w-4'
+                    : 'bg-white/50 hover:bg-white/75 w-2'
                 }`}
                 aria-label={`Go to image ${index + 1}`}
               />
