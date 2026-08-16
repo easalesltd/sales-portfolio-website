@@ -14,7 +14,6 @@ export default function AboutDropdown() {
   const aboutItems = [
     { name: 'About Dave', href: '/about' },
     { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
-    { name: 'FAQ', href: '/faq' },
     { name: 'Blog / Press', href: '/blog' },
     { name: 'Recipes', href: '/recipes' },
     { name: 'Contact Dave', href: '/contact' },
@@ -45,7 +44,6 @@ export default function AboutDropdown() {
     pathname.startsWith('/about') ||
     pathname === '/recipes' ||
     pathname === '/what-is-a-sales-agent' ||
-    pathname === '/faq' ||
     pathname.startsWith('/blog');
 
   return (

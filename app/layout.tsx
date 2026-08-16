@@ -617,12 +617,6 @@ export default async function RootLayout({
                 <span aria-hidden className="text-gray-300 dark:text-neutral-700">
                   |
                 </span>
-                <Link href="/faq" className="underline underline-offset-2 hover:text-neutral-950 hover:no-underline dark:hover:text-neutral-100">
-                  FAQ
-                </Link>
-                <span aria-hidden className="text-gray-300 dark:text-neutral-700">
-                  |
-                </span>
                 <Link href="/cookies" className="underline underline-offset-2 hover:text-neutral-950 hover:no-underline dark:hover:text-neutral-100">
                   Cookies
                 </Link>

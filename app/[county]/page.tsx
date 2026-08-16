@@ -3,11 +3,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { companies } from '@/app/data/companies';
 import {
-  BUSINESS,
   SERVICE_AREAS,
   SITE_URL,
   serviceAreaBySlug,
-  type ServiceArea,
 } from '@/app/data/business-entity';
 import { getCspNonce } from '@/app/lib/csp-nonce';
 import HomeRequestVisitCTA from '@/app/components/home/HomeRequestVisitCTA';
@@ -16,23 +14,6 @@ export const dynamicParams = false;
 
 export function generateStaticParams() {
   return SERVICE_AREAS.map((area) => ({ county: area.slug }));
-}
-
-function countyFaqs(area: ServiceArea) {
-  return [
-    {
-      question: `Who is the greeting card sales agent in ${area.name}?`,
-      answer: area.intro,
-    },
-    {
-      question: `Does East Anglian Sales LTD visit shops in ${area.name}?`,
-      answer: `Yes. Dave Langdon visits independent retailers, garden centres, farm shops, and gift shops in ${area.name}, including ${area.towns.slice(0, 5).join(', ')}, and surrounding towns.`,
-    },
-    {
-      question: `How do I book a wholesale greeting card visit in ${area.name}?`,
-      answer: `Request an agent visit on easalesltd.co.uk, call ${BUSINESS.telephoneDisplay}, or email ${BUSINESS.email}. East Anglian Sales LTD is trade-only — it does not sell cards to the public.`,
-    },
-  ];
 }
 
 export async function generateMetadata({
@@ -70,7 +51,6 @@ export default async function CountyPage({
   if (!area) notFound();
 
   const nonce = await getCspNonce();
-  const faqs = countyFaqs(area);
   const jsonLd = [
     {
       '@context': 'https://schema.org',
@@ -82,15 +62,6 @@ export default async function CountyPage({
       about: { '@id': `${SITE_URL}/#organization` },
       mainEntity: { '@id': `${SITE_URL}/#person` },
       isPartOf: { '@id': `${SITE_URL}/#website` },
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: faqs.map((faq) => ({
-        '@type': 'Question',
-        name: faq.question,
-        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
-      })),
     },
     {
       '@context': 'https://schema.org',
@@ -149,26 +120,8 @@ export default async function CountyPage({
         </Link>
       </p>
 
-      <h2 className="mt-10 text-xl font-semibold text-gray-900 dark:text-white">
-        {area.name} greeting card agent FAQs
-      </h2>
-      <dl className="mt-4 space-y-6">
-        {faqs.map((faq) => (
-          <div key={faq.question}>
-            <dt className="font-semibold text-gray-900 dark:text-white">{faq.question}</dt>
-            <dd className="mt-1 text-gray-700 dark:text-neutral-300">{faq.answer}</dd>
-          </div>
-        ))}
-      </dl>
-
-      <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="mt-10">
         <HomeRequestVisitCTA />
-        <Link
-          href="/faq"
-          className="inline-flex items-center justify-center px-6 py-3 min-h-[3rem] rounded-md font-medium border border-neutral-950 text-neutral-950 hover:bg-neutral-50 dark:border-white dark:text-white dark:hover:bg-neutral-900"
-        >
-          More FAQs
-        </Link>
       </div>
     </article>
   );

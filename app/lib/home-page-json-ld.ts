@@ -1,12 +1,12 @@
 import {
   HOME_PAGE_META_DESCRIPTION,
 } from '@/app/lib/home-page-meta-description';
-import { HOME_FAQS, faqJsonLd } from '@/app/data/business-faqs';
 import { SITE_URL } from '@/app/data/business-entity';
 
 /**
- * Homepage-only structured data (WebPage, WebSite, BreadcrumbList, FAQPage).
- * FAQ copy must match the visible questions in HomeFaqSection.
+ * Homepage-only structured data (WebPage, WebSite, BreadcrumbList).
+ * Kept out of the root layout so inner routes do not claim to be the homepage.
+ * FAQPage lives on `/faq` only — the homepage has no FAQ UI.
  */
 export function getHomePageJsonLd() {
   return [
@@ -40,10 +40,6 @@ export function getHomePageJsonLd() {
       mainEntity: {
         '@id': `${SITE_URL}/#organization`,
       },
-      speakable: {
-        '@type': 'SpeakableSpecification',
-        cssSelector: ['#home-faq-heading', 'h1'],
-      },
     },
     {
       '@context': 'https://schema.org',
@@ -58,6 +54,5 @@ export function getHomePageJsonLd() {
         },
       ],
     },
-    faqJsonLd(HOME_FAQS, `${SITE_URL}/#faq`),
   ];
 }
