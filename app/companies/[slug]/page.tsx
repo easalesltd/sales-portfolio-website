@@ -344,45 +344,47 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   ] : [];
 
   const ohhDeerBaseImages = resolvedParams.slug === 'ohh-deer' ? [
+    '/images/companies/ohh-deer/official/back-to-school.jpg',
+    '/images/companies/ohh-deer/official/catalogue-banner.jpg',
+    '/images/companies/ohh-deer/official/uni-banner.jpg',
+    '/images/companies/ohh-deer/official/tiny-notebooks-lifestyle.jpg',
+    '/images/companies/ohh-deer/official/planners-lifestyle.jpg',
+    '/images/companies/ohh-deer/official/gift-bags.jpg',
+    '/images/companies/ohh-deer/official/acrylic-keyrings.jpg',
+    '/images/companies/ohh-deer/official/alice-wonderland.jpg',
+    '/images/companies/ohh-deer/official/cath-kidston-charms.jpg',
     '/images/companies/ohh-deer/Tiny-Notebooks-Web-Square.jpg',
     '/images/companies/ohh-deer/Cath-Kidston-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer/Beth-Evans-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer/Daily-Planners-Web-Asset-Square.jpg',
     '/images/companies/ohh-deer/Laura-Ashley-Web-Asset-Square.jpg',
-    '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.16.png',
-    '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.22.png',
-    '/images/companies/ohh-deer/Screenshot 2025-11-24 at 12.18.27.png',
-    '/images/companies/ohh-deer/ODFK13957-Frank-The-Frog-WEB (1).jpg'
+    '/images/companies/ohh-deer/Daily-Planners-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer/Beth-Evans-Web-Asset-Square.jpg',
+    '/images/companies/ohh-deer/ODFK13957-Frank-The-Frog-WEB (1).jpg',
   ] : [];
 
   const globalJourneyBaseImages = resolvedParams.slug === 'global-journey-gifts' ? [
-    '/images/companies/global-journey/Screenshot 2025-05-17 at 08.34.04.png',
-    '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.54.png',
-    '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.48.png',
-    '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.35.png',
-    '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.13.png',
-    '/images/companies/global-journey/Screenshot 2025-05-17 at 08.33.00.png'
+    '/images/companies/global-journey/official/cake-candles.jpg',
+    '/images/companies/global-journey/official/magnetic-gifts.jpg',
+    '/images/companies/global-journey/official/mothers-fathers-day.jpg',
+    '/images/companies/global-journey/official/notebooks.jpg',
+    '/images/companies/global-journey/official/worry-monsters.jpg',
+    '/images/companies/global-journey/official/woody-pals.jpg',
+    '/images/companies/global-journey/official/christmas-pets.jpg',
+    '/images/companies/global-journey/official/dispensers.jpg',
+    '/images/companies/global-journey/official/mugs.jpg',
+    '/images/companies/global-journey/official/pearl-pendants.jpg',
   ] : [];
 
 
   const mintPublishingBaseImages = resolvedParams.slug === 'mint-publishing' ? [
-    '/images/companies/mint-publishing/1-1-27.jpeg',
-    '/images/companies/mint-publishing/1-1-26.jpeg',
-    '/images/companies/mint-publishing/1-1-29.jpeg',
-    '/images/companies/mint-publishing/1-1-25.jpeg',
-    '/images/companies/mint-publishing/1-19.jpeg',
-    '/images/companies/mint-publishing/1-30.jpeg',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.23.28.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.23.32.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.23.44.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.23.50.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.24.26.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.24.39.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.24.50.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.25.00.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.27.07.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.28.57.png',
-    '/images/companies/mint-publishing/Screenshot 2025-12-19 at 23.29.11.png'
+    '/images/companies/mint-publishing/official/banner-1-1-24.jpg',
+    '/images/companies/mint-publishing/official/banner-1-1-25.jpg',
+    '/images/companies/mint-publishing/official/banner-1-1-26.jpg',
+    '/images/companies/mint-publishing/official/banner-1-1-27.jpg',
+    '/images/companies/mint-publishing/official/banner-1-1-28.jpg',
+    '/images/companies/mint-publishing/official/range-1-28.jpg',
+    '/images/companies/mint-publishing/official/about-studio.jpg',
+    '/images/companies/mint-publishing/Katie.png',
+    '/images/companies/mint-publishing/Lost-The-Plot.png',
   ] : [];
 
   const cgbGiftwareBaseImages = resolvedParams.slug === 'cgb-giftware' ? [

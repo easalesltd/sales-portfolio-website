@@ -36,9 +36,9 @@ export const companies: Company[] = [
     name: "Emotional Rescue",
     slug: "emotional-rescue",
     description: "Creators of unique and innovative greeting cards, bringing emotion and creativity to every occasion.",
-    logoUrl: "/images/companies/emotional-rescue/Screenshot 2025-05-16 at 17.22.49.png",
+    logoUrl: "/images/companies/emotional-rescue/official/logo.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1rObjRfP-H7HqfaVZtc1cP0t_FUkr1EB-?usp=drive_link",
-    websiteUrl: "https://www.emotional-rescue.co.uk"
+    websiteUrl: "https://www.emotional-rescue.com"
   },
   {
     id: "global-journey-gifts",
@@ -47,7 +47,7 @@ export const companies: Company[] = [
     description: "Our unique and original gift ranges are supplied on customised displays with vibrant Point of Sale, in order to showcase the product and maximise sales. We also supply high-quality coin dispenser machines and interactive retail solutions for tourist attractions, museums, and visitor centres.",
     logoUrl: "/images/logos/global-journey-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1NSdH5hnpczlDwv9z1DyhE9p9-XXLsmSX?usp=drive_link",
-    websiteUrl: "https://www.globaljourney.com"
+    websiteUrl: "https://globaljourney.co.uk"
   },
   {
     id: "mint-publishing",
@@ -56,7 +56,7 @@ export const companies: Company[] = [
     description: "M!NT is your fully refreshed and refreshingly different publisher of (mostly funny) birthday, blank and captioned greetings cards. We are proud to supply the official Katie Abey Greeting Cards range.",
     logoUrl: "/images/logos/MINT-PUBLISHING-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1nCipeZFu9PpqIMJoHcYbUXqdvvFcYrNd?usp=drive_link",
-    websiteUrl: "https://www.mintpublishing.co.uk",
+    websiteUrl: "https://mint-publishing.co.uk",
     videos: ["/videos/companies/mint-publishing/trade show.mp4"],
     brandLogos: [
       "/images/logos/MINT-PUBLISHING-placeholder.png"
@@ -82,7 +82,7 @@ export const companies: Company[] = [
     description: "Ohh Deer is a UK-based company founded in 2011 by Jamie Mitchell and Mark Callaby, known for its playful, artistic, and inclusive greeting cards, stationery, and gifts. We are proud to supply the official Cath Kidston greeting cards and stationery range, featuring their iconic floral and vintage-inspired designs, as well as the beautiful Laura Ashley collection of greeting cards, gift bags, and wrapping paper.",
     logoUrl: "/images/logos/ohh-deer-placeholder.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1bxt-iirM_JX6JKZkjOhvK_s6boa89SSg?usp=drive_link",
-    websiteUrl: "https://wholesale.ohhdeer.com",
+    websiteUrl: "https://ohhdeerwholesale.com",
     videos: ["/videos/companies/ohh-deer/trade show.mp4"],
     brandLogos: [
       "/images/logos/ohh-deer-placeholder.png"

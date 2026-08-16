@@ -67,84 +67,54 @@ const SHOWCASE_SLIDES: ShowcaseSlide[] = [
       'Large gift hamper and gourmet gifting wholesale display — Dave Langdon East Anglia trade portfolio',
   },
   {
-    src: '/images/showcase/Screenshot 2025-05-18 at 09.18.07.png',
+    src: '/images/companies/ohh-deer/official/back-to-school.jpg',
     alt:
-      'Card and gift fixture at an East Anglia independent — Dave Langdon greeting card sales representative visit photo',
+      'Ohh Deer back-to-school stationery and cards hero — Dave Langdon wholesale greeting card agent East Anglia',
   },
   {
-    src: '/images/showcase/Screenshot 2025-06-03 at 21.45.03.png',
+    src: '/images/companies/ohh-deer/official/catalogue-banner.jpg',
     alt:
-      'Wholesale ranges on display during a shop appointment — Dave Langdon Suffolk Norfolk sales agent portfolio',
+      'Ohh Deer wholesale catalogue range banner — Dave Langdon trade portfolio East Anglia',
   },
   {
-    src: '/images/showcase/Screenshot 2025-06-03 at 21.45.27.png',
+    src: '/images/companies/mint-publishing/official/banner-1-1-26.jpg',
     alt:
-      'Retailer shelf or spinner with greeting cards — Dave Langdon East Anglia wholesale portfolio',
+      'Mint Publishing greeting card range hero from their trade site — Dave Langdon East Anglia sales agent',
   },
   {
-    src: '/images/showcase/Screenshot 2025-07-07 at 09.31.03-optimized.png',
+    src: '/images/companies/mint-publishing/official/banner-1-1-27.jpg',
     alt:
-      'Gift shop greeting card selection East Anglia — Dave Langdon independent retailer support',
+      'Mint Publishing humorous birthday cards hero — Dave Langdon wholesale greeting cards East Anglia',
   },
   {
-    src: '/images/showcase/Screenshot 2025-08-30 at 17.42.49.png',
+    src: '/images/companies/global-journey/official/cake-candles.jpg',
     alt:
-      'Seasonal cards and gifts merchandised in store — Dave Langdon trade sales agent photo',
+      'Global Journey cake candles gift range hero — Dave Langdon wholesale gifts East Anglia',
   },
   {
-    src: '/images/showcase/Screenshot 2025-11-24 at 12.30.52.png',
+    src: '/images/companies/global-journey/official/worry-monsters.jpg',
     alt:
-      'Christmas or Q4 card display for wholesale customers — Dave Langdon East Anglia rep showcase',
+      'Global Journey worry monsters retail display — Dave Langdon giftware sales agent East Anglia',
   },
   {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.39.30.png',
+    src: '/images/companies/museums-and-galleries/official/range-cards.jpg',
     alt:
-      'Greeting card publisher POS in an independent shop — Dave Langdon sales agent East Anglian Sales Ltd',
+      'Museums & Galleries licensed art greeting cards range — Dave Langdon wholesale East Anglia portfolio',
   },
   {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.40.59.png',
+    src: '/images/companies/rudi-and-bear/official/wholesale-hero.jpg',
     alt:
-      'Retailer card stand with bestseller designs — Dave Langdon wholesale greeting cards portfolio',
+      'Rudi & Bear Ned characters wholesale hero — Dave Langdon East Anglia toy and gift agent',
   },
   {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.41.18.png',
+    src: '/images/companies/boxer-gifts/official/deadly-blooms.jpg',
     alt:
-      'Gift and card retail bay photographed on route — Dave Langdon Norfolk Suffolk Essex agent',
+      'Boxer Gifts Deadly Blooms catalogue photography — Dave Langdon wholesale gift agent East Anglia',
   },
   {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.42.49.png',
+    src: '/images/companies/emotional-rescue/emo_web.jpeg',
     alt:
-      'Wholesale stationery and cards on display — Dave Langdon East Anglia shop visit snapshot',
-  },
-  {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.43.00.png',
-    alt:
-      'Independent store greeting card department — Dave Langdon sales agent portfolio East Anglia',
-  },
-  {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.43.40.png',
-    alt:
-      'Card racks and gift lines at a local retailer — Dave Langdon wholesale trade photography',
-  },
-  {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.44.30.png',
-    alt:
-      'Publisher ranges merchandised for East Anglia shops — Dave Langdon greeting card rep',
-  },
-  {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.44.45.png',
-    alt:
-      'Shop display refresh with new season cards — Dave Langdon giftware wholesale agent',
-  },
-  {
-    src: '/images/showcase/Screenshot 2025-12-19 at 20.46.04.png',
-    alt:
-      'Farm shop or gift store card selection — Dave Langdon East Anglia wholesale portfolio',
-  },
-  {
-    src: '/images/showcase/Screenshot 2026-01-18 at 13.06.13.png',
-    alt:
-      'New year card and gift display for retailers — Dave Langdon sales agent East Anglia 2026',
+      'Emotional Rescue humorous greeting cards — Dave Langdon wholesale card agent East Anglia',
   },
   {
     src: '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg',
