@@ -38,7 +38,7 @@ const THEMES: Record<string, Omit<BrandPageTheme, 'slug'>> = {
     bodyFont: 'poppins',
     headingTransform: 'uppercase',
     headingTracking: '0.16em',
-    radius: '0px',
+    radius: '0.75rem',
     page: '#ee59a0',
   },
   'ohh-deer': {

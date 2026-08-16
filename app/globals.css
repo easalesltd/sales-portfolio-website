@@ -110,9 +110,9 @@ body {
   font-weight: 500;
 }
 .brand-honour .brand-card {
-  background: var(--brand-card) !important;
+  background: var(--brand-card, #ffffff) !important;
   /* Cap full-pill radii so honour themes cannot turn page cards into stadiums. */
-  border-radius: min(var(--brand-radius), 1.5rem);
+  border-radius: min(var(--brand-radius, 0.75rem), 1.5rem);
 }
 .brand-honour .brand-rule {
   background: var(--brand-accent) !important;

@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getCspNonce } from '@/app/lib/csp-nonce'
 import { companies } from '../../data/companies'
@@ -468,30 +467,24 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Company Information */}
             <div
-              className={`brand-card ${hasVideoBackground ? 'bg-white/90 backdrop-blur-md dark:bg-neutral-900/90' : 'dark:bg-neutral-900 dark:border dark:border-neutral-800'} rounded-xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl`}
+              className={`brand-card rounded-xl p-6 sm:p-8 shadow-lg transition-all duration-300 hover:shadow-xl ${
+                isCambridgeDarkBrand
+                  ? 'border border-neutral-800'
+                  : hasVideoBackground
+                    ? 'bg-white/90 backdrop-blur-md'
+                    : 'bg-white'
+              }`}
             >
               <div
-                className={`h-60 relative mb-8 group rounded-lg overflow-hidden ${
-                  /* Always paint a dark field for logoUrlDark assets — not `dark:bg-*` only, or SSR/first paint is white-on-white (invisible) until JS adds html.dark */
-                  useLightMarkOnDark ? 'bg-black' : ''
+                className={`mb-8 flex aspect-[3/2] w-full items-center justify-center overflow-hidden rounded-lg p-4 sm:p-6 ${
+                  useLightMarkOnDark ? 'bg-black' : 'bg-white'
                 }`}
               >
-                {!useLightMarkOnDark && (
-                  <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent to-gray-50/10 group-hover:to-gray-50/20 dark:to-transparent dark:group-hover:to-white/5 transition-all duration-300 pointer-events-none" />
-                )}
-                <Image
+                <img
                   src={companyPageLogoSrc}
                   alt={partnerBrandLogoAlt(company.name)}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority
-                  className={`object-contain p-6 z-10 transition-transform duration-300 group-hover:scale-105 ${
-                    /* logoUrlDark file is black artwork on transparent — invert so it reads as white on bg-black */
-                    invertLightMarkOnDark
-                      ? 'invert'
-                      : useLightMarkOnDark
-                        ? ''
-                        : 'dark:brightness-0 dark:invert'
+                  className={`max-h-full max-w-full object-contain ${
+                    invertLightMarkOnDark ? 'invert' : ''
                   }`}
                 />
               </div>
@@ -730,7 +723,13 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
 
             {/* Order Form */}
             <div
-              className={`brand-card ${hasVideoBackground ? 'bg-white/80 backdrop-blur-sm dark:bg-neutral-900/90' : 'bg-white dark:bg-neutral-900'} rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl dark:border dark:border-neutral-800`}
+              className={`brand-card rounded-xl shadow-lg p-6 sm:p-8 transition-all duration-300 hover:shadow-xl ${
+                isCambridgeDarkBrand
+                  ? 'border border-neutral-800'
+                  : hasVideoBackground
+                    ? 'bg-white/90 backdrop-blur-sm'
+                    : 'bg-white'
+              }`}
             >
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-6 relative">
                 Place an Order
