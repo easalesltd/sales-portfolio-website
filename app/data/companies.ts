@@ -116,7 +116,6 @@ export const companies: Company[] = [
     slug: "rudi-and-bear",
     description: "Ned has been bringing smiles to little adventurers since 2017. Hand-painted in Cornwall and packed plastic-free in a signature gift box, Rudi & Bear makes collectable Neds for independent toy shops, gift shops, garden centres, museums and visitor attractions — including bespoke collabs for local landmarks, brand colours and themed collections.",
     logoUrl: "/images/logos/rudi-and-bear.png",
-    logoUrlDark: "/images/logos/rudi-and-bear.png",
     catalogueUrl: "https://cdn.shopify.com/s/files/1/1002/8980/6719/files/RudiandBear.pdf?v=1785927953",
     websiteUrl: "https://rudiandbear.co.uk/pages/wholesale"
   },

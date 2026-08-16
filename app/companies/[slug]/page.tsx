@@ -442,9 +442,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const useLightMarkOnDark = Boolean(company.logoUrlDark);
   const isCambridgeDarkBrand = resolvedParams.slug === 'cambridge-confectionery-company';
   const invertLightMarkOnDark =
-    useLightMarkOnDark &&
-    !isCambridgeDarkBrand &&
-    resolvedParams.slug !== 'rudi-and-bear';
+    useLightMarkOnDark && !isCambridgeDarkBrand;
 
   const content = (
     <>

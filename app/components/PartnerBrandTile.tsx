@@ -12,9 +12,7 @@ import { partnerBrandLogoAlt } from '../lib/partner-brand-logo-alt';
 export default function PartnerBrandTile({ company }: { company: Company }) {
   const useLightMarkOnDarkTile = Boolean(company.logoUrlDark);
   const invertLightMarkOnDarkTile =
-    useLightMarkOnDarkTile &&
-    company.id !== 'cambridge-confectionery-company' &&
-    company.id !== 'rudi-and-bear';
+    useLightMarkOnDarkTile && company.id !== 'cambridge-confectionery-company';
   const logoSrc = company.logoUrlDark ?? company.logoUrl;
 
   return (
