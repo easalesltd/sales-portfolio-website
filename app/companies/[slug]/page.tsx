@@ -255,9 +255,16 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
 
   // Define base image arrays
   const paperSaladBaseImages = resolvedParams.slug === 'paper-salad' ? [
-    '/images/companies/paper-salad/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
-    '/images/companies/paper-salad/43a8e5ac-f223-4213-a4ca-c0c7d53aed48_1500x.jpeg',
-    '/images/companies/paper-salad/Birthday_Collection_copy_1500x.jpeg'
+    '/images/companies/paper-salad/official/colour-hub.jpg',
+    '/images/companies/paper-salad/official/sunshine.jpg',
+    '/images/companies/paper-salad/official/gold-dust.jpg',
+    '/images/companies/paper-salad/official/hunky-dory.jpg',
+    '/images/companies/paper-salad/official/cameo.jpg',
+    '/images/companies/paper-salad/official/alchemy.jpg',
+    '/images/companies/paper-salad/official/jamboree.jpg',
+    '/images/companies/paper-salad/official/hoopla.jpg',
+    '/images/companies/paper-salad/official/fleurescent.jpg',
+    '/images/companies/paper-salad/official/birthday.jpg',
   ] : [];
 
   const emotionalRescueBaseImages = resolvedParams.slug === 'emotional-rescue' ? [
@@ -436,7 +443,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Company Information */}
             <div
-              className={`${hasVideoBackground ? 'bg-white/90 backdrop-blur-md dark:bg-neutral-900/90' : 'dark:bg-neutral-900 dark:border dark:border-neutral-800'} rounded-xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl`}
+              className={`brand-card ${hasVideoBackground ? 'bg-white/90 backdrop-blur-md dark:bg-neutral-900/90' : 'dark:bg-neutral-900 dark:border dark:border-neutral-800'} rounded-xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl`}
             >
               <div
                 className={`h-60 relative mb-8 group rounded-lg overflow-hidden ${
@@ -467,7 +474,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                 <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 relative">
                   {company.name}
                   {/* Dark bar on light SSR; switches with dark: when html.dark (Cambridge route) hydrates — avoids white-on-white flash */}
-                  <div className="h-1 w-20 mt-2 bg-neutral-950 dark:bg-white" />
+                  <div className="brand-rule h-1 w-20 mt-2 bg-neutral-950 dark:bg-white" />
                 </h1>
                 <p className="text-xl leading-relaxed text-gray-600 dark:text-neutral-300">{company.description}</p>
                 
@@ -476,6 +483,13 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                     <>
                       <div className="mb-8">
                         <ImageGallery images={paperSaladImages} interval={6000} />
+                        <p className="mt-2 text-xs text-gray-500">
+                          Range photography from{' '}
+                          <a href="https://www.papersalad.com/" className="underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+                            Paper Salad
+                          </a>
+                          .
+                        </p>
                       </div>
                       {company.videos && company.videos.length > 0 && (
                         <div className="mb-8">
@@ -626,8 +640,8 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       rel="noopener noreferrer"
                       className={
                         isCambridgeDarkBrand
-                          ? 'inline-flex items-center px-6 py-3 border-2 border-neutral-950 text-base font-medium rounded-xl shadow-sm text-neutral-950 bg-white hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-950 dark:border-white dark:focus:ring-white dark:focus:ring-offset-neutral-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'
-                          : 'inline-flex items-center px-6 py-3 border border-neutral-950 text-base font-medium rounded-xl shadow-sm text-white bg-neutral-950 hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-950 dark:focus:ring-offset-neutral-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'
+                          ? 'brand-cta inline-flex items-center px-6 py-3 border-2 border-neutral-950 text-base font-medium rounded-xl shadow-sm text-neutral-950 bg-white hover:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-950 dark:border-white dark:focus:ring-white dark:focus:ring-offset-neutral-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'
+                          : 'brand-cta inline-flex items-center px-6 py-3 border border-neutral-950 text-base font-medium rounded-xl shadow-sm text-white bg-neutral-950 hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-950 dark:focus:ring-offset-neutral-900 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5'
                       }
                     >
                     <svg 
@@ -645,17 +659,27 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                     Download Catalogue
                     </a>
                   )}
+                  {company.websiteUrl && company.websiteUrl.trim() !== '' && (
+                    <a
+                      href={company.websiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="brand-cta inline-flex items-center px-6 py-3 border text-base font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+                    >
+                      Visit {company.name}
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Order Form */}
             <div
-              className={`${hasVideoBackground ? 'bg-white/80 backdrop-blur-sm dark:bg-neutral-900/90' : 'bg-white dark:bg-neutral-900'} rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl dark:border dark:border-neutral-800`}
+              className={`brand-card ${hasVideoBackground ? 'bg-white/80 backdrop-blur-sm dark:bg-neutral-900/90' : 'bg-white dark:bg-neutral-900'} rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl dark:border dark:border-neutral-800`}
             >
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-6 relative">
                 Place an Order
-                <div className="h-1 w-16 mt-2 bg-neutral-950 dark:bg-white" />
+                <div className="brand-rule h-1 w-16 mt-2 bg-neutral-950 dark:bg-white" />
               </h2>
               <OrderForm companyName={company.name} companySlug={company.slug} invertedPrimaryButtons={isCambridgeDarkBrand} />
             </div>

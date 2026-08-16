@@ -94,6 +94,36 @@ body {
   background: rgb(var(--background-rgb));
 }
 
+.brand-honour {
+  font-family: var(--brand-body-font), ui-sans-serif, system-ui, sans-serif;
+  color: var(--brand-text);
+}
+.brand-honour h1,
+.brand-honour h2,
+.brand-honour h3 {
+  font-family: var(--brand-heading-font), ui-sans-serif, system-ui, sans-serif;
+  color: var(--brand-heading);
+  text-transform: var(--brand-transform);
+  letter-spacing: var(--brand-tracking);
+  font-weight: 500;
+}
+.brand-honour .brand-card {
+  background: var(--brand-card) !important;
+  border-radius: var(--brand-radius);
+}
+.brand-honour .brand-rule {
+  background: var(--brand-accent) !important;
+}
+.brand-honour .brand-cta {
+  background: var(--brand-accent) !important;
+  color: var(--brand-accent-fg) !important;
+  border-color: var(--brand-accent) !important;
+  border-radius: var(--brand-radius) !important;
+  text-transform: var(--brand-transform);
+  letter-spacing: var(--brand-tracking);
+  font-family: var(--brand-heading-font), ui-sans-serif, system-ui, sans-serif;
+}
+
 /* Company pages in dark mode (html.dark): form fields inside main — avoids styling modals in the header */
 .dark main input[type='text'],
 .dark main input[type='email'],
