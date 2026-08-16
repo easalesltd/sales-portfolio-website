@@ -9,7 +9,7 @@ function aboutSrc(file: string): string {
   return encodeURI(`/images/about/${file}`);
 }
 
-/** Filenames match `public/images/about` (descriptive names for SEO). Desktop wall: 4-col grid. */
+/** Filenames match `public/images/about` (descriptive names for SEO). Desktop wall: 4×4 grid. */
 const aboutImages = [
   {
     src: aboutSrc('Selfie with Cards N Things Norwich.jpg'),
@@ -67,6 +67,11 @@ const aboutImages = [
       'Dave Langdon running Cancer Research UK Pretty Muddy 5k with Langdon’s team — Ipswich greeting card sales agent East Anglia',
   },
   {
+    src: aboutSrc('Brewery Cycle Tour 2026.jpg'),
+    alt:
+      'Dave Langdon on the Brewery Cycle Tour 2026 with the group in derrière jerseys — Ipswich greeting card sales agent East Anglia',
+  },
+  {
     src: aboutSrc('Tarzan Fun in Orwell Country Park.jpg'),
     alt:
       'Dave Langdon outdoors at Orwell Country Park Ipswich Suffolk — East Anglia greeting card sales agent',
@@ -80,6 +85,11 @@ const aboutImages = [
     src: aboutSrc('Up an Austrian Moutain wearing Flip Flops, as you do.JPG'),
     alt:
       'Dave Langdon hiking in the Austrian mountains — Suffolk based Dave Langdon greeting card sales agent holiday photo',
+  },
+  {
+    src: aboutSrc('Visiting friends in Copenhagen.jpg'),
+    alt:
+      'Dave Langdon visiting friends in Copenhagen at Nyhavn with family — Ipswich based greeting card sales agent East Anglia',
   },
 ];
 

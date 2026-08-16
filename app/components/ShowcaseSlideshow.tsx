@@ -92,11 +92,6 @@ const SHOWCASE_SLIDES: ShowcaseSlide[] = [
       'Global Journey cake candles gift range hero — Dave Langdon wholesale gifts East Anglia',
   },
   {
-    src: '/images/companies/global-journey/official/worry-monsters.jpg',
-    alt:
-      'Global Journey worry monsters retail display — Dave Langdon giftware sales agent East Anglia',
-  },
-  {
     src: '/images/companies/museums-and-galleries/official/range-cards.jpg',
     alt:
       'Museums & Galleries licensed art greeting cards range — Dave Langdon wholesale East Anglia portfolio',

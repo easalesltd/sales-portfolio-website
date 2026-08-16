@@ -366,7 +366,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     '/images/companies/global-journey/official/magnetic-gifts.jpg',
     '/images/companies/global-journey/official/mothers-fathers-day.jpg',
     '/images/companies/global-journey/official/notebooks.jpg',
-    '/images/companies/global-journey/official/worry-monsters.jpg',
     '/images/companies/global-journey/official/woody-pals.jpg',
     '/images/companies/global-journey/official/christmas-pets.jpg',
     '/images/companies/global-journey/official/dispensers.jpg',
