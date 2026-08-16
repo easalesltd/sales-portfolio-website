@@ -18,7 +18,7 @@ export const companies: Company[] = [
     name: "Boxer Gifts",
     slug: "boxer-gifts",
     description: "Welcome to the fun club! Here at Boxer Gifts, we are designers, innovators, manufacturers, and suppliers of unique, fun and quality wholesale gift items.",
-    logoUrl: "/images/logos/boxer-gifts-placeholder.png.png",
+    logoUrl: "/images/logos/boxer-gifts.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1NHeoQnTz2rtiGUjHJscqG53-erEaT1EM?usp=sharing",
     websiteUrl: "https://www.boxergifts.com"
   },
@@ -27,7 +27,7 @@ export const companies: Company[] = [
     name: "David Fischhoff",
     slug: "david-fischhoff",
     description: "We are a family owned wholesale and import business specialising in artificial flowers, grave ornaments & memorial ornaments specialists.",
-    logoUrl: "/images/companies/david-fischhoff/logo-transparent.png",
+    logoUrl: "/images/logos/david-fischhoff.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1286x38eZGahw2tET8ueZ7y56frI5uog2?usp=drive_link",
     websiteUrl: "https://www.davidfischhoff.co.uk"
   },
@@ -36,7 +36,7 @@ export const companies: Company[] = [
     name: "Emotional Rescue",
     slug: "emotional-rescue",
     description: "Creators of unique and innovative greeting cards, bringing emotion and creativity to every occasion.",
-    logoUrl: "/images/companies/emotional-rescue/official/logo.png",
+    logoUrl: "/images/logos/emotional-rescue.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1rObjRfP-H7HqfaVZtc1cP0t_FUkr1EB-?usp=drive_link",
     websiteUrl: "https://www.emotional-rescue.com"
   },
@@ -45,7 +45,7 @@ export const companies: Company[] = [
     name: "Global Journey Gifts",
     slug: "global-journey-gifts",
     description: "Our unique and original gift ranges are supplied on customised displays with vibrant Point of Sale, in order to showcase the product and maximise sales. We also supply high-quality coin dispenser machines and interactive retail solutions for tourist attractions, museums, and visitor centres.",
-    logoUrl: "/images/logos/global-journey-placeholder.png",
+    logoUrl: "/images/logos/global-journey.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1NSdH5hnpczlDwv9z1DyhE9p9-XXLsmSX?usp=drive_link",
     websiteUrl: "https://globaljourney.co.uk"
   },
@@ -54,12 +54,12 @@ export const companies: Company[] = [
     name: "Mint Publishing",
     slug: "mint-publishing",
     description: "M!NT is your fully refreshed and refreshingly different publisher of (mostly funny) birthday, blank and captioned greetings cards. We are proud to supply the official Katie Abey Greeting Cards range.",
-    logoUrl: "/images/logos/MINT-PUBLISHING-placeholder.png",
+    logoUrl: "/images/logos/mint-publishing.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1nCipeZFu9PpqIMJoHcYbUXqdvvFcYrNd?usp=drive_link",
     websiteUrl: "https://mint-publishing.co.uk",
     videos: ["/videos/companies/mint-publishing/trade show.mp4"],
     brandLogos: [
-      "/images/logos/MINT-PUBLISHING-placeholder.png"
+      "/images/logos/mint-publishing.png"
     ]
   },
   {
@@ -67,12 +67,12 @@ export const companies: Company[] = [
     name: "Museums and Galleries",
     slug: "museums-and-galleries",
     description: "Home of the finest arts brands. We are the UK's leading publisher of licensed art and design-led greetings cards and gift stationery. And in 2026, we're delighted to welcome Angela Harding, Peter Rabbit and Henry Fraser to our greeting card ranges.",
-    logoUrl: "/images/logos/museums-galleries-placeholder.png",
+    logoUrl: "/images/logos/museums-and-galleries.png",
     catalogueUrl: "https://drive.google.com/drive/folders/14VzcZeRwdH5RTVK5JDyovfrMr7YSdT0D?usp=drive_link",
     websiteUrl: "https://museumsgalleries.co.uk",
     videos: ["/videos/companies/museums-and-galleries/trade-show.mp4"],
     brandLogos: [
-      "/images/logos/museums-galleries-placeholder.png"
+      "/images/logos/museums-and-galleries.png"
     ]
   },
   {
@@ -80,12 +80,12 @@ export const companies: Company[] = [
     name: "Ohh Deer",
     slug: "ohh-deer",
     description: "Ohh Deer is a UK-based company founded in 2011 by Jamie Mitchell and Mark Callaby, known for its playful, artistic, and inclusive greeting cards, stationery, and gifts. We are proud to supply the official Cath Kidston greeting cards and stationery range, featuring their iconic floral and vintage-inspired designs, as well as the beautiful Laura Ashley collection of greeting cards, gift bags, and wrapping paper.",
-    logoUrl: "/images/logos/ohh-deer-placeholder.png",
+    logoUrl: "/images/logos/ohh-deer.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1bxt-iirM_JX6JKZkjOhvK_s6boa89SSg?usp=drive_link",
     websiteUrl: "https://ohhdeerwholesale.com",
     videos: ["/videos/companies/ohh-deer/trade show.mp4"],
     brandLogos: [
-      "/images/logos/ohh-deer-placeholder.png"
+      "/images/logos/ohh-deer.png"
     ]
   },
   {
@@ -93,12 +93,12 @@ export const companies: Company[] = [
     name: "Paper Salad",
     slug: "paper-salad",
     description: "The home of neon bright greeting cards & stationery! Our designs are painted by hand and creatively pieced together to create quirky cards at our Cheshire studio, all printed by specialist UK printers.",
-    logoUrl: "/images/logos/paper-salad-placeholder.png",
+    logoUrl: "/images/logos/paper-salad.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1x1-87N__h5257lsUjeHaYSOc9CjvId89?usp=drive_link",
     websiteUrl: "https://www.papersalad.com",
     videos: ["/videos/companies/paper-salad/trade show.mp4"],
     brandLogos: [
-      "/images/logos/paper-salad-placeholder.png"
+      "/images/logos/paper-salad.png"
     ]
   },
   {
@@ -106,9 +106,9 @@ export const companies: Company[] = [
     name: "Peppermint Grove",
     slug: "peppermint-grove",
     description: "Peppermint Grove offers luxurious home fragrance and bath & body care, handmade in Australia and beautifully presented in custom-designed glassware.",
-    logoUrl: "/images/logos/peppermint-grove-placeholder.png",
+    logoUrl: "/images/logos/peppermint-grove.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1M80gJ4gK6y4ywlNR3SoaKGV0mWq6S_6P?usp=drive_link",
-    websiteUrl: "https://peppermintgroveaustralia.com"
+    websiteUrl: "https://peppermintgrovefragrances.com"
   },
   {
     id: "rudi-and-bear",
@@ -124,7 +124,7 @@ export const companies: Company[] = [
     name: "Star Editions",
     slug: "star-editions",
     description: "Star Editions supplies bespoke merchandise, licensed greeting cards and giftware — including Richard Briggs and Dave Thompson ranges — finished in the UK for East Anglia retailers.",
-    logoUrl: "/images/logos/star-editions-placeholder.png",
+    logoUrl: "/images/logos/star-editions.png",
     catalogueUrl: "https://drive.google.com/drive/folders/1KoXselEgD5deBx2ml8OT1DfkqqtQD0IS?usp=drive_link",
     websiteUrl: "https://www.stareditions.com"
   },
