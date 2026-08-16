@@ -73,7 +73,7 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
   return (
     <>
       <div
-        className="relative w-full h-[400px] overflow-hidden rounded-xl touch-pan-y bg-neutral-100 dark:bg-neutral-900"
+        className="relative w-full aspect-[3/2] overflow-hidden rounded-xl touch-pan-y bg-neutral-100 dark:bg-neutral-900"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -136,7 +136,7 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
                 e.stopPropagation()
                 goToPrevious()
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300 z-[2]"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300 z-[2]"
               aria-label="Previous image"
             >
               ←
@@ -147,7 +147,7 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
                 e.stopPropagation()
                 goToNext()
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300 z-[2]"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-full transition-all duration-300 z-[2]"
               aria-label="Next image"
             >
               →
