@@ -85,7 +85,7 @@ export default async function CountyPage({
         nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <p className="text-sm font-medium uppercase tracking-wide text-teal-800 dark:text-teal-400">
+      <p className="site-accent text-sm font-medium uppercase tracking-wide">
         {area.regionLabel} · Trade only
       </p>
       <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white md:text-4xl">
@@ -115,7 +115,7 @@ export default async function CountyPage({
         {companies.map((company) => company.name).join(', ')}.
       </p>
       <p className="mt-2">
-        <Link href="/#partner-brands" className="text-teal-800 underline underline-offset-2 hover:no-underline dark:text-teal-400">
+        <Link href="/#partner-brands" className="site-link">
           See partner brands
         </Link>
       </p>

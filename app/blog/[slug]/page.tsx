@@ -157,7 +157,7 @@ export default async function BlogArticlePage({
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
         <Link
           href="/blog"
-          className="inline-flex text-sm font-medium text-teal-700 dark:text-teal-400 hover:underline mb-8"
+          className="site-link-quiet inline-flex text-sm font-medium mb-8"
         >
           ← Blog / Press
         </Link>
@@ -196,7 +196,7 @@ export default async function BlogArticlePage({
             {article.quotes.map((quote) => (
               <blockquote
                 key={quote}
-                className="border-l-4 border-teal-600/80 bg-teal-50/60 px-4 py-3 text-base italic leading-relaxed text-gray-800 dark:border-teal-400/70 dark:bg-teal-950/30 dark:text-neutral-200 sm:text-lg"
+                className="border-l-4 border-neutral-950 bg-neutral-50 px-4 py-3 text-base italic leading-relaxed text-gray-800 dark:border-neutral-100 dark:bg-neutral-900/50 dark:text-neutral-200 sm:text-lg"
               >
                 “{quote}”
               </blockquote>
@@ -218,7 +218,7 @@ export default async function BlogArticlePage({
               href={article.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-medium text-teal-700 dark:text-teal-400 hover:underline"
+              className="site-link-quiet font-medium"
             >
               View original piece
             </a>

@@ -80,6 +80,19 @@
   --background-rgb: 255, 255, 255;
 }
 
+/* Commercial chrome: one ink accent for links, rules and buttons (not teal + black). */
+@layer components {
+  .site-link {
+    @apply text-neutral-950 underline underline-offset-2 hover:no-underline dark:text-neutral-100;
+  }
+  .site-link-quiet {
+    @apply text-neutral-950 hover:underline dark:text-neutral-100;
+  }
+  .site-accent {
+    @apply text-neutral-950 dark:text-neutral-100;
+  }
+}
+
 .dark {
   color-scheme: dark;
 }

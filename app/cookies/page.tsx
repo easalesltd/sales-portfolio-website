@@ -113,7 +113,7 @@ export default async function CookiesPage() {
               href="https://tools.google.com/dlpage/gaoptout"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-teal-700 dark:text-teal-400"
+              className="site-link-quiet"
             >
               tools.google.com/dlpage/gaoptout
             </a>
@@ -123,7 +123,7 @@ export default async function CookiesPage() {
           <h2 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">Contact</h2>
           <p>
             Questions about this cookie policy? Email{' '}
-            <a href="mailto:dave@easalesltd.co.uk" className="text-teal-700 dark:text-teal-400">
+            <a href="mailto:dave@easalesltd.co.uk" className="site-link-quiet">
               dave@easalesltd.co.uk
             </a>
             .

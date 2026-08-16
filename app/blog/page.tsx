@@ -79,7 +79,7 @@ export default async function BlogIndexPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
-        <p className="text-sm font-medium text-teal-700 dark:text-teal-400 mb-2">
+        <p className="site-accent text-sm font-medium mb-2">
           Writing
         </p>
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
@@ -114,7 +114,7 @@ export default async function BlogIndexPage() {
                   ) : null}
                   <Link
                     href={`/blog/${article.slug}`}
-                    className="block p-6 sm:p-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-500"
+                    className="block p-6 sm:p-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-neutral-950 dark:focus-visible:ring-neutral-100"
                   >
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-500 dark:text-neutral-400">
                       <time dateTime={article.publishedAt}>
@@ -129,13 +129,13 @@ export default async function BlogIndexPage() {
                         </>
                       ) : null}
                     </div>
-                    <h2 className="mt-3 text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white group-hover:text-teal-700 dark:group-hover:text-teal-400 transition-colors">
+                    <h2 className="mt-3 text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white transition-colors">
                       {article.title}
                     </h2>
                     <p className="mt-3 text-gray-600 dark:text-neutral-300 leading-relaxed">
                       {article.excerpt}
                     </p>
-                    <span className="mt-4 inline-flex text-sm font-medium text-teal-700 dark:text-teal-400">
+                    <span className="site-accent mt-4 inline-flex text-sm font-medium underline-offset-2 group-hover:underline">
                       Read article
                       <span className="ml-1 group-hover:translate-x-0.5 transition-transform" aria-hidden>
                         →

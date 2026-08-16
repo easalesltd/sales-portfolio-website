@@ -40,7 +40,7 @@ export default function HomeAboutSection() {
             {SERVICE_AREAS.map((area, index) => (
               <span key={area.slug}>
                 {index > 0 ? ' · ' : ''}
-                <Link href={`/${area.slug}`} className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                <Link href={`/${area.slug}`} className="site-link">
                   {area.name}
                 </Link>
               </span>

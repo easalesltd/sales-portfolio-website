@@ -59,7 +59,7 @@ export default function SiteIndexPage() {
         <ul className="mt-4 grid gap-2 sm:grid-cols-2">
           {corePages.map((page) => (
             <li key={page.href}>
-              <Link href={page.href} className="text-teal-700 hover:underline dark:text-teal-400">
+              <Link href={page.href} className="site-link-quiet">
                 {page.label}
               </Link>
             </li>
@@ -74,7 +74,7 @@ export default function SiteIndexPage() {
             <li key={company.id}>
               <Link
                 href={`/companies/${company.slug}`}
-                className="text-teal-700 hover:underline dark:text-teal-400"
+                className="site-link-quiet"
               >
                 {company.name}
               </Link>
@@ -91,7 +91,7 @@ export default function SiteIndexPage() {
               <li key={article.slug}>
                 <Link
                   href={`/blog/${article.slug}`}
-                  className="text-teal-700 hover:underline dark:text-teal-400"
+                  className="site-link-quiet"
                 >
                   {article.title}
                 </Link>
@@ -109,7 +109,7 @@ export default function SiteIndexPage() {
               <li key={recipe.slug}>
                 <Link
                   href={`/recipes/${recipe.slug}`}
-                  className="text-teal-700 hover:underline dark:text-teal-400"
+                  className="site-link-quiet"
                 >
                   {recipe.title}
                 </Link>

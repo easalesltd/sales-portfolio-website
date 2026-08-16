@@ -259,14 +259,14 @@ export default function BespokeConfectioneryDisplaysClient() {
           </section>
 
           <section className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-            <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
+            <p className="text-sm font-semibold uppercase tracking-wide text-neutral-950">
               Display Solutions
             </p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">
               Bespoke Confectionery Displays
             </h1>
             <p className="text-lg text-gray-700 mt-4 max-w-3xl leading-relaxed">
-              <SupplierLink className="font-semibold text-emerald-900 hover:underline" /> supplies
+              <SupplierLink className="site-link font-semibold" /> supplies
               impulse and pick-and-mix confectionery for museum shops, heritage sites, visitor
               attractions, garden centres and destination retail. East Anglian Sales LTD is the sales
               agent for {AGENT_REGIONS}.
@@ -280,9 +280,9 @@ export default function BespokeConfectioneryDisplaysClient() {
             <div className="mt-8 grid gap-4 md:grid-cols-2">
               <a
                 href="#bespoke-labelling"
-                className="rounded-lg border border-blue-200 bg-blue-50 px-5 py-4 text-left transition hover:border-blue-400 hover:bg-blue-100"
+                className="rounded-lg border border-neutral-200 bg-neutral-50 px-5 py-4 text-left transition hover:border-neutral-950 hover:bg-neutral-100"
               >
-                <p className="text-sm font-medium text-blue-700">Option 1</p>
+                <p className="text-sm font-medium text-neutral-950">Option 1</p>
                 <p className="text-xl font-semibold text-gray-900 mt-1">Bespoke labelling</p>
                 <p className="text-gray-700 mt-2 text-sm leading-relaxed">
                   Your logo on compostable labels and matching display artwork.
@@ -291,7 +291,7 @@ export default function BespokeConfectioneryDisplaysClient() {
 
               <a
                 href="#cambridge-branded"
-                className="rounded-lg border border-gray-200 bg-gray-50 px-5 py-4 text-left transition hover:border-gray-400 hover:bg-gray-100"
+                className="rounded-lg border border-neutral-200 bg-neutral-50 px-5 py-4 text-left transition hover:border-neutral-950 hover:bg-neutral-100"
               >
                 <p className="text-sm font-medium text-gray-700">Option 2</p>
                 <p className="text-xl font-semibold text-gray-900 mt-1">Cambridge branded</p>
@@ -304,18 +304,18 @@ export default function BespokeConfectioneryDisplaysClient() {
 
           <section
             id="plastic-free-packaging"
-            className="scroll-mt-28 overflow-hidden rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-teal-50 shadow-lg p-6 md:p-10"
+            className="scroll-mt-28 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-lg p-6 md:p-10"
           >
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Plastic free packaging</h2>
             <p className="mt-3 text-gray-700 max-w-3xl leading-relaxed">
               Every programme uses the same pick-up bags from{' '}
-              <SupplierLink className="font-semibold text-emerald-900 hover:underline" /> — wood pulp,
+              <SupplierLink className="site-link font-semibold" /> — wood pulp,
               not conventional plastic.
             </p>
             <ul className="mt-6 space-y-3 max-w-3xl">
               {packagingPoints.map((point) => (
                 <li key={point} className="flex gap-3 text-gray-800 leading-relaxed">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-600" aria-hidden />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-950" aria-hidden />
                   {point}
                 </li>
               ))}
@@ -352,7 +352,7 @@ export default function BespokeConfectioneryDisplaysClient() {
 
             <p className="border-t border-neutral-800 px-6 pb-6 text-center text-sm text-neutral-400 md:px-10 md:pb-8">
               Want something similar?{' '}
-              <Link href="/contact" className="font-semibold text-amber-300 hover:text-amber-200">
+              <Link href="/contact" className="font-semibold text-white underline underline-offset-2 hover:no-underline">
                 Get in touch
               </Link>
               .

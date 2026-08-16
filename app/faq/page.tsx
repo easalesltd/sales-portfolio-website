@@ -49,7 +49,7 @@ export default async function FaqPage() {
 
       <section className="mt-12">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Counties covered</h2>
-        <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-teal-800 dark:text-teal-400">
+        <ul className="site-accent mt-3 flex flex-wrap gap-x-4 gap-y-2">
           {SERVICE_AREAS.map((area) => (
             <li key={area.slug}>
               <Link href={`/${area.slug}`} className="underline underline-offset-2 hover:no-underline">

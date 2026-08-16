@@ -255,7 +255,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
             <div className="p-6 overflow-y-auto max-h-[calc(100vh-8rem)]">
               {flow === 'verify_sent' ? (
                 <div className="space-y-4 text-center py-4">
-                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-teal-100 text-teal-700 text-2xl font-bold">
+                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-neutral-100 text-neutral-950 text-2xl font-bold">
                     ✉
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900">Check your email</h3>
@@ -395,7 +395,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                             newCompanies[index].checked = !newCompanies[index].checked;
                             setCompanies(newCompanies);
                           }}
-                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          className="h-4 w-4 text-neutral-950 focus:ring-neutral-950 border-gray-300 rounded"
                         />
                         <label className="ml-2 text-sm text-gray-700">{company.name}</label>
                       </div>

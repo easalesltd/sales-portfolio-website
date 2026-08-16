@@ -58,11 +58,11 @@ export default function CookieConsentBanner() {
           We use optional analytics cookies to understand how visitors use our site and improve it. You can accept or
           reject analytics cookies. Strictly necessary cookies (for example security on our contact forms) are always
           used. See our{' '}
-          <Link href="/cookies" className="font-medium text-teal-700 underline underline-offset-2 hover:no-underline dark:text-teal-400">
+          <Link href="/cookies" className="site-link font-medium">
             cookie policy
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" className="font-medium text-teal-700 underline underline-offset-2 hover:no-underline dark:text-teal-400">
+          <Link href="/privacy" className="site-link font-medium">
             privacy policy
           </Link>
           .

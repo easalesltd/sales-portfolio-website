@@ -193,7 +193,7 @@ function OrderVerifySentPanel({
     <div className="mb-6 space-y-4 rounded-lg border border-neutral-200 bg-white px-4 py-6 text-center dark:border-neutral-700 dark:bg-neutral-900/50">
       <div
         className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full text-2xl font-bold ${
-          invertedPrimaryButtons ? 'bg-white/15 text-white' : 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-200'
+          invertedPrimaryButtons ? 'bg-white/15 text-white' : 'bg-neutral-100 text-neutral-950 dark:bg-neutral-800 dark:text-neutral-100'
         }`}
       >
         ✉

@@ -80,13 +80,13 @@ export default function DisplaySolutionsClient() {
   }) => (
     <div 
       className={`bg-white rounded-lg shadow-lg p-6 transition-all duration-300 h-full hover:-translate-y-0.5 ${
-        expandedSection === title ? 'ring-2 ring-blue-500' : 'hover:shadow-xl'
+        expandedSection === title ? 'ring-2 ring-neutral-950' : 'hover:shadow-xl'
       }`}
       onClick={() => setExpandedSection(expandedSection === title ? null : title)}
     >
       <div className="flex justify-between items-center cursor-pointer">
         <h2 className="text-2xl font-semibold text-gray-900">{title}</h2>
-        <span className="text-blue-500">
+        <span className="text-neutral-950">
           {expandedSection === title ? '▼' : '▶'}
         </span>
       </div>
@@ -97,7 +97,7 @@ export default function DisplaySolutionsClient() {
         ))}
       </ul>
       <div className="mt-4">
-        <span className="text-blue-600 text-sm">
+        <span className="text-neutral-950 text-sm">
           {expandedSection === title ? 'Click to collapse' : 'Click to view examples'}
         </span>
       </div>

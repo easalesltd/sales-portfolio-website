@@ -161,27 +161,27 @@ export default function AboutPageClient() {
                   </p>
                   <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
                     <li>
-                      <Link href="/suffolk" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                      <Link href="/suffolk" className="site-link">
                         Suffolk
                       </Link>
                     </li>
                     <li>
-                      <Link href="/norfolk" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                      <Link href="/norfolk" className="site-link">
                         Norfolk
                       </Link>
                     </li>
                     <li>
-                      <Link href="/essex" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                      <Link href="/essex" className="site-link">
                         Essex
                       </Link>
                     </li>
                     <li>
-                      <Link href="/cambridgeshire" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                      <Link href="/cambridgeshire" className="site-link">
                         Cambridgeshire
                       </Link>
                     </li>
                     <li>
-                      <Link href="/hertfordshire" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                      <Link href="/hertfordshire" className="site-link">
                         Hertfordshire
                       </Link>
                     </li>

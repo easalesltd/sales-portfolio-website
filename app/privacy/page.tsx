@@ -52,13 +52,13 @@ export default async function PrivacyPage() {
             <li>VAT number: 481 2602 07</li>
             <li>
               Email:{' '}
-              <a href="mailto:dave@easalesltd.co.uk" className="text-teal-700 dark:text-teal-400">
+              <a href="mailto:dave@easalesltd.co.uk" className="site-link-quiet">
                 dave@easalesltd.co.uk
               </a>
             </li>
             <li>
               Phone:{' '}
-              <a href="tel:07709197915" className="text-teal-700 dark:text-teal-400">
+              <a href="tel:07709197915" className="site-link-quiet">
                 07709 197915
               </a>
             </li>
@@ -143,7 +143,7 @@ export default async function PrivacyPage() {
           </ul>
           <p>
             To exercise your rights, contact us at{' '}
-            <a href="mailto:dave@easalesltd.co.uk" className="text-teal-700 dark:text-teal-400">
+            <a href="mailto:dave@easalesltd.co.uk" className="site-link-quiet">
               dave@easalesltd.co.uk
             </a>
             .
@@ -157,7 +157,7 @@ export default async function PrivacyPage() {
 
           <p className="text-sm text-gray-600 dark:text-neutral-400">
             For details of cookies used on this site, see our{' '}
-            <Link href="/cookies" className="text-teal-700 dark:text-teal-400">
+            <Link href="/cookies" className="site-link-quiet">
               cookie policy
             </Link>
             .

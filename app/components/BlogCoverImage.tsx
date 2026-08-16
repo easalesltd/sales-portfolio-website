@@ -29,7 +29,7 @@ export default function BlogCoverImage({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`relative w-full overflow-hidden bg-gray-100 dark:bg-neutral-800 cursor-zoom-in group/img focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-neutral-950 ${aspectClassName} ${className}`}
+        className={`relative w-full overflow-hidden bg-gray-100 dark:bg-neutral-800 cursor-zoom-in group/img focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 dark:focus-visible:ring-neutral-100 dark:focus-visible:ring-offset-neutral-950 ${aspectClassName} ${className}`}
         aria-label={`View full size: ${alt}`}
       >
         <Image
