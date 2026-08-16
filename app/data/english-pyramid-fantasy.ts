@@ -1615,6 +1615,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-16-wat-sou',
+    utcDate: '2026-08-16T12:30Z',
+    homeTeam: { name: 'Watford', tla: 'WAT' },
+    awayTeam: { name: 'Southampton', tla: 'SOU' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
