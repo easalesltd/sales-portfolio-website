@@ -1604,6 +1604,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 1,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-15-shu-bir',
+    utcDate: '2026-08-15T16:30Z',
+    homeTeam: { name: 'Sheffield United', tla: 'SHU' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
