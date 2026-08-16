@@ -249,7 +249,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
 
   const hasVideoBackground = [
     'museums-and-galleries', 
-    'ohh-deer',
     'boxer-gifts',
     'emotional-rescue',
     'peppermint-grove',
