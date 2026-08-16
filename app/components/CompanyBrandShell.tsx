@@ -17,13 +17,17 @@ export default function CompanyBrandShell({
   const darkBrandPage = slug === 'cambridge-confectionery-company';
 
   useLayoutEffect(() => {
-    if (!darkBrandPage) return;
-    const root = document.documentElement;
-    root.classList.add('dark');
+    const main = document.getElementById('main-content');
+    const pageColor = theme.page && theme.page !== 'transparent' ? theme.page : '';
+    const previousMain = main?.style.backgroundColor ?? '';
+    if (main && pageColor) main.style.backgroundColor = pageColor;
+    if (darkBrandPage) document.documentElement.classList.add('dark');
+
     return () => {
-      root.classList.remove('dark');
+      if (main) main.style.backgroundColor = previousMain;
+      if (darkBrandPage) document.documentElement.classList.remove('dark');
     };
-  }, [darkBrandPage]);
+  }, [darkBrandPage, theme.page]);
 
   const brandStyle = {
     '--brand-accent': theme.accent,
@@ -34,6 +38,7 @@ export default function CompanyBrandShell({
     '--brand-transform': theme.headingTransform,
     '--brand-tracking': theme.headingTracking,
     '--brand-radius': theme.radius,
+    '--brand-page': theme.page ?? 'transparent',
     '--brand-heading-font': `var(--font-brand-${theme.headingFont})`,
     '--brand-body-font': `var(--font-brand-${theme.bodyFont})`,
   } as CSSProperties;

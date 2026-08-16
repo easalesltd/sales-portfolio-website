@@ -97,6 +97,8 @@ body {
 .brand-honour {
   font-family: var(--brand-body-font), ui-sans-serif, system-ui, sans-serif;
   color: var(--brand-text);
+  background: var(--brand-page, transparent);
+  min-height: 100%;
 }
 .brand-honour h1,
 .brand-honour h2,

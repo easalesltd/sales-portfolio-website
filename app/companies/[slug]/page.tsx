@@ -244,7 +244,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
 
   const hasVideoBackground = [
     'museums-and-galleries', 
-    'paper-salad', 
     'ohh-deer',
     'boxer-gifts',
     'emotional-rescue',
@@ -438,7 +437,11 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
           }}
         />
       ))}
-      <div className="min-h-screen pt-3 pb-12 sm:pt-5 md:py-12 dark:bg-neutral-950 transition-colors duration-300">
+      <div
+        className={`min-h-screen pt-3 pb-12 sm:pt-5 md:py-12 ${
+          isCambridgeDarkBrand ? 'bg-neutral-950' : 'bg-transparent'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Company Information */}

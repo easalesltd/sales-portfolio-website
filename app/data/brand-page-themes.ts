@@ -10,6 +10,7 @@ export type BrandPageTheme = {
   headingTransform: 'uppercase' | 'none';
   headingTracking: string;
   radius: string;
+  page?: string;
 };
 
 const DEFAULT_THEME: Omit<BrandPageTheme, 'slug'> = {
@@ -23,6 +24,7 @@ const DEFAULT_THEME: Omit<BrandPageTheme, 'slug'> = {
   headingTransform: 'none',
   headingTracking: '0',
   radius: '0.75rem',
+  page: 'transparent',
 };
 
 const THEMES: Record<string, Omit<BrandPageTheme, 'slug'>> = {
@@ -37,6 +39,7 @@ const THEMES: Record<string, Omit<BrandPageTheme, 'slug'>> = {
     headingTransform: 'uppercase',
     headingTracking: '0.16em',
     radius: '0px',
+    page: '#ee59a0',
   },
   'ohh-deer': {
     accent: '#111111',
@@ -185,7 +188,7 @@ const THEMES: Record<string, Omit<BrandPageTheme, 'slug'>> = {
 };
 
 export function getBrandPageTheme(slug: string): BrandPageTheme {
-  return { slug, ...(THEMES[slug] ?? DEFAULT_THEME) };
+  return { slug, page: 'transparent', ...DEFAULT_THEME, ...(THEMES[slug] ?? {}) };
 }
 
 export function brandFontVar(font: BrandPageTheme['headingFont'] | BrandPageTheme['bodyFont']): string {
