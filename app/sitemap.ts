@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { companies } from './data/companies';
+import { SERVICE_AREAS } from './data/business-entity';
 import { getAllMagazineArticles } from './data/magazine-articles';
 import { getAllRecipes } from './data/recipes';
 
@@ -31,7 +32,9 @@ const STATIC_ROUTES: StaticRoute[] = [
   { pathname: '/site-index', priority: 0.4, changeFrequency: 'monthly' },
   { pathname: '/blog', priority: 0.75, changeFrequency: 'monthly' },
   { pathname: '/recipes', priority: 0.7, changeFrequency: 'monthly' },
+  { pathname: '/faq', priority: 0.85, changeFrequency: 'monthly' },
   { pathname: '/llms.txt', priority: 0.5, changeFrequency: 'monthly' },
+  { pathname: '/llms-full.txt', priority: 0.4, changeFrequency: 'monthly' },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -44,6 +47,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: route.changeFrequency,
       priority: route.priority,
+    });
+  }
+
+  for (const area of SERVICE_AREAS) {
+    const pathname = `/${area.slug}`;
+    urls.set(pathname, {
+      url: `${SITE_URL}${pathname}`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.85,
     });
   }
 

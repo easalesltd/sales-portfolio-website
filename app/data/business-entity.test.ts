@@ -1,0 +1,59 @@
+import { BUSINESS, SERVICE_AREAS, serviceAreaBySlug } from '@/app/data/business-entity';
+import { BUSINESS_FAQS, HOME_FAQS, faqJsonLd } from '@/app/data/business-faqs';
+import { buildLlmsFullTxt, buildLlmsTxt } from '@/app/lib/llms-txt';
+
+describe('business entity facts for GEO', () => {
+  it('covers every county with a dedicated page slug', () => {
+    expect(SERVICE_AREAS.map((area) => area.slug)).toEqual([
+      'suffolk',
+      'norfolk',
+      'essex',
+      'cambridgeshire',
+      'hertfordshire',
+    ]);
+    expect(BUSINESS.counties).toEqual([
+      'Suffolk',
+      'Norfolk',
+      'Essex',
+      'Cambridgeshire',
+      'Hertfordshire',
+    ]);
+  });
+
+  it('keeps company number and trade-only disambiguation stable', () => {
+    expect(BUSINESS.companyNumber).toBe('14725288');
+    expect(serviceAreaBySlug('suffolk')?.intro).toContain('Ipswich');
+    expect(BUSINESS.sameAs.join(' ')).toContain('company/14725288');
+  });
+});
+
+describe('FAQ schema', () => {
+  it('emits visible-home FAQ copy into JSON-LD', () => {
+    const schema = faqJsonLd(HOME_FAQS, 'https://www.easalesltd.co.uk/#faq');
+    expect(schema.mainEntity).toHaveLength(6);
+    expect(schema.mainEntity[0]).toMatchObject({
+      '@type': 'Question',
+      name: HOME_FAQS[0].question,
+      acceptedAnswer: { text: HOME_FAQS[0].answer },
+    });
+    expect(BUSINESS_FAQS.length).toBeGreaterThan(HOME_FAQS.length);
+  });
+});
+
+describe('llms.txt', () => {
+  it('states the entity, territory, and citation URLs', () => {
+    const txt = buildLlmsTxt();
+    expect(txt).toContain('Dave Langdon');
+    expect(txt).toContain('Hertfordshire');
+    expect(txt).toContain('https://www.easalesltd.co.uk/faq');
+    expect(txt).toContain('https://www.easalesltd.co.uk/suffolk');
+    expect(txt).toContain('not a publisher');
+  });
+
+  it('full source warns models not to treat the LTD date as the start of Dave’s career', () => {
+    const full = buildLlmsFullTxt();
+    expect(full).toContain('incorporated');
+    expect(full).toContain('David Fischhoff');
+    expect(full).toContain('Companies House');
+  });
+});

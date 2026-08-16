@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import FadeInOnScroll from '../FadeInOnScroll';
 import HomeRequestVisitCTA from './HomeRequestVisitCTA';
+import { SERVICE_AREAS } from '@/app/data/business-entity';
 
 /** Intro + CTAs with scroll-in motion (client-only for Framer Motion). */
 export default function HomeAboutSection() {
@@ -23,7 +24,7 @@ export default function HomeAboutSection() {
         <FadeInOnScroll delay={0.3}>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
             I work with a carefully chosen set of publishers and gift suppliers, covering Suffolk, Norfolk, Essex,
-            and Cambridgeshire, visiting regularly, not just dropping off stock and disappearing. Whether you run an
+            Cambridgeshire, and Hertfordshire, visiting regularly, not just dropping off stock and disappearing. Whether you run an
             independent shop, garden centre, farm shop, or retail store, I can help you find the right ranges, get
             your display working harder, and keep things fresh with new designs as they come through.
           </p>
@@ -31,6 +32,19 @@ export default function HomeAboutSection() {
         <FadeInOnScroll delay={0.4}>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
             If you&apos;d like a visit to see the latest ranges, I&apos;d love to come and have a chat.
+          </p>
+        </FadeInOnScroll>
+        <FadeInOnScroll delay={0.48}>
+          <p className="text-sm text-gray-600 mb-6">
+            Territory:{' '}
+            {SERVICE_AREAS.map((area, index) => (
+              <span key={area.slug}>
+                {index > 0 ? ' · ' : ''}
+                <Link href={`/${area.slug}`} className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                  {area.name}
+                </Link>
+              </span>
+            ))}
           </p>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.55}>

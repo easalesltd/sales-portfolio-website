@@ -211,6 +211,8 @@ export default async function RootLayout({
           as="image"
           type="image/x-icon"
         />
+        <link rel="alternate" type="text/plain" title="LLM site summary" href="/llms.txt" />
+        <link rel="alternate" type="text/plain" title="LLM full source" href="/llms-full.txt" />
         
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -310,7 +312,23 @@ export default async function RootLayout({
                 ],
                 "sameAs": [
                   "https://www.instagram.com/eastangliansalesltd/",
-                  "https://www.linkedin.com/company/east-anglian-sales-ltd"
+                  "https://www.linkedin.com/company/east-anglian-sales-ltd",
+                  "https://find-and-update.company-information.service.gov.uk/company/14725288",
+                  UK_GREETING_CARD_ASSOCIATION_URL
+                ],
+                "identifier": {
+                  "@type": "PropertyValue",
+                  "name": "Company Number",
+                  "propertyID": "CompanyNumber",
+                  "value": "14725288"
+                },
+                "disambiguatingDescription": "Trade-only greeting card and gift sales agency for East Anglia retailers. Not a high-street shop and not a publisher.",
+                "knowsAbout": [
+                  "Greeting card sales agent",
+                  "Wholesale greeting cards",
+                  "Giftware sales agent",
+                  "East Anglia independent retail",
+                  "Retail display solutions"
                 ],
                 "memberOf": {
                   "@type": "Organization",
@@ -430,6 +448,11 @@ export default async function RootLayout({
                 "@id": "https://www.easalesltd.co.uk/#person",
                 "name": "Dave Langdon",
                 "alternateName": ["David Langdon"],
+                "url": "https://www.easalesltd.co.uk/about",
+                "sameAs": [
+                  "https://www.linkedin.com/in/dave-langdon-709a8547",
+                  "https://www.instagram.com/eastangliansalesltd/"
+                ],
                 "jobTitle": ["Greeting Card Sales Agent", "Giftware Sales Agent", "Sales Agent"],
                 "occupation": {
                   "@type": "Occupation",
@@ -590,6 +613,12 @@ export default async function RootLayout({
               <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
                 <Link href="/privacy" className="underline underline-offset-2 hover:text-neutral-950 hover:no-underline dark:hover:text-neutral-100">
                   Privacy
+                </Link>
+                <span aria-hidden className="text-gray-300 dark:text-neutral-700">
+                  |
+                </span>
+                <Link href="/faq" className="underline underline-offset-2 hover:text-neutral-950 hover:no-underline dark:hover:text-neutral-100">
+                  FAQ
                 </Link>
                 <span aria-hidden className="text-gray-300 dark:text-neutral-700">
                   |

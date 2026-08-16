@@ -25,6 +25,12 @@ const corePages = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About Dave' },
   { href: '/what-is-a-sales-agent', label: 'What Is a Sales Agent?' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/suffolk', label: 'Greeting card agent — Suffolk' },
+  { href: '/norfolk', label: 'Greeting card agent — Norfolk' },
+  { href: '/essex', label: 'Greeting card agent — Essex' },
+  { href: '/cambridgeshire', label: 'Greeting card agent — Cambridgeshire' },
+  { href: '/hertfordshire', label: 'Greeting card agent — Hertfordshire' },
   { href: '/display-solutions', label: 'Display Solutions' },
   { href: '/display-solutions/bespoke-confectionery-displays', label: 'Bespoke Confectionery Displays' },
   { href: '/temporary-rep-cover', label: 'Temporary Rep Cover' },
@@ -34,6 +40,7 @@ const corePages = [
   { href: '/blog', label: 'Blog / Press' },
   { href: '/recipes', label: 'Recipes' },
   { href: '/llms.txt', label: 'llms.txt (AI / LLM site summary)' },
+  { href: '/llms-full.txt', label: 'llms-full.txt (AI / LLM full source)' },
 ] as const;
 
 export default function SiteIndexPage() {

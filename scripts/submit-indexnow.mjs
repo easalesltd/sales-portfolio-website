@@ -61,7 +61,21 @@ function parseArgs(argv) {
 function resolveUrlList(rawUrls, siteBaseUrl, submitSitemap) {
   const urls = [...rawUrls];
   if (submitSitemap) {
-    urls.push('/sitemap.xml', '/llms.txt', '/', '/about', '/contact', '/what-is-a-sales-agent');
+    urls.push(
+      '/sitemap.xml',
+      '/llms.txt',
+      '/llms-full.txt',
+      '/faq',
+      '/',
+      '/about',
+      '/contact',
+      '/what-is-a-sales-agent',
+      '/suffolk',
+      '/norfolk',
+      '/essex',
+      '/cambridgeshire',
+      '/hertfordshire'
+    );
   }
 
   if (urls.length === 0) {

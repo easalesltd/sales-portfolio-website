@@ -4,6 +4,7 @@ import { getCspNonce } from './lib/csp-nonce';
 import { getHomePageJsonLd } from './lib/home-page-json-ld';
 import { HOME_PAGE_META_DESCRIPTION } from './lib/home-page-meta-description';
 import HomeAboutSection from './components/home/HomeAboutSection';
+import HomeFaqSection from './components/home/HomeFaqSection';
 import HomeHeroSlideshow from './components/home/HomeHeroSlideshow';
 import HomePartnerBrandsSection from './components/home/HomePartnerBrandsSection';
 
@@ -46,6 +47,8 @@ export default async function HomePage() {
       </div>
 
       <HomeAboutSection />
+
+      <HomeFaqSection />
 
       <HomePartnerBrandsSection companies={companies} />
     </main>

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import ImageModal from "../components/ImageModal";
 import VideoBackground from "../components/VideoBackground";
 import FadeInOnScroll from "../components/FadeInOnScroll";
@@ -105,7 +106,7 @@ export default function AboutPageClient() {
                 <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">Meet Dave</h1>
                 <p className="text-sm md:text-lg text-white drop-shadow-lg leading-relaxed">
                   Dave established East Anglian Sales Ltd in 2022, bringing over a decade of experience as a rep in East Anglia.
-                  Dave has built strong relationships with retailers across Suffolk, Norfolk, Essex, and Cambridgeshire,
+                  Dave has built strong relationships with retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire,
                   understanding their unique needs and helping them succeed with expert greeting card sales representation.
                 </p>
               </FadeInOnScroll>
@@ -159,10 +160,31 @@ export default function AboutPageClient() {
                     I proudly serve retailers across East Anglia, including:
                   </p>
                   <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
-                    <li>Suffolk</li>
-                    <li>Norfolk</li>
-                    <li>Essex</li>
-                    <li>Cambridgeshire</li>
+                    <li>
+                      <Link href="/suffolk" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                        Suffolk
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/norfolk" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                        Norfolk
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/essex" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                        Essex
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/cambridgeshire" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                        Cambridgeshire
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/hertfordshire" className="text-teal-800 underline underline-offset-2 hover:no-underline">
+                        Hertfordshire
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </FadeInOnScroll>
