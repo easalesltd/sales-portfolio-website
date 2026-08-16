@@ -651,14 +651,15 @@ function RedCardTally({ count }: { count: number }) {
 }
 
 function FormSummary({
+  playedMatches,
   wins,
   draws,
   losses,
   redCards,
-}: Pick<PlayerStanding, 'wins' | 'draws' | 'losses' | 'redCards'>) {
+}: Pick<PlayerStanding, 'playedMatches' | 'wins' | 'draws' | 'losses' | 'redCards'>) {
   return (
     <>
-      W{wins} D{draws} L{losses} <RedCardTally count={redCards} />
+      P{playedMatches} W{wins} D{draws} L{losses} <RedCardTally count={redCards} />
     </>
   );
 }
@@ -1585,7 +1586,7 @@ function OverallStandings({
   const showRankMovement = t.id === 'english-pyramid';
   const mobileGridClass =
     t.id === 'english-pyramid'
-      ? 'grid-cols-[1.35rem_minmax(0,1fr)_1.05rem_1.05rem_1.05rem_1.25rem_1.25rem_1.45rem_1.7rem]'
+      ? 'grid-cols-[1.25rem_minmax(0,1fr)_1.2rem_0.95rem_0.95rem_0.95rem_1.15rem_1.15rem_1.35rem_1.55rem]'
       : 'grid-cols-[1.35rem_minmax(0,1fr)_1.25rem_1.25rem_1.45rem_1.7rem_1.7rem]';
 
   return (
@@ -1598,6 +1599,7 @@ function OverallStandings({
           <span>Club</span>
           {t.id === 'english-pyramid' ? (
             <>
+              <span className="text-right">P</span>
               <span className="text-right">W</span>
               <span className="text-right">D</span>
               <span className="text-right">L</span>
@@ -1663,6 +1665,7 @@ function OverallStandings({
               </span>
               {t.id === 'english-pyramid' ? (
                 <>
+                  <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.playedMatches}</span>
                   <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.wins}</span>
                   <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.draws}</span>
                   <span className="text-right text-[10px] tabular-nums text-neutral-300">{row.losses}</span>
@@ -2243,6 +2246,7 @@ function PlayerSquadCard({
                     <>
                       {' · '}
                       <FormSummary
+                        playedMatches={player.playedMatches}
                         wins={player.wins}
                         draws={player.draws}
                         losses={player.losses}

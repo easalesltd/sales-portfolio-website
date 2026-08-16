@@ -9,7 +9,7 @@ function aboutSrc(file: string): string {
   return encodeURI(`/images/about/${file}`);
 }
 
-/** Filenames match `public/images/about` (descriptive names for SEO). Desktop wall: 4×3 grid. */
+/** Filenames match `public/images/about` (descriptive names for SEO). Desktop wall: 4-col grid. */
 const aboutImages = [
   {
     src: aboutSrc('Selfie with Cards N Things Norwich.jpg'),
@@ -52,9 +52,19 @@ const aboutImages = [
       'Dave Langdon family day at Legoland — greeting card sales representative East Anglian Sales Ltd',
   },
   {
+    src: aboutSrc('Triple decker shower display.jpg'),
+    alt:
+      'Dave Langdon’s children pulling off a triple-decker shower display in the pool — Ipswich based greeting card sales agent East Anglia',
+  },
+  {
     src: aboutSrc('Family Picture after completing Carten 100 for Anthony Nolan.jpg'),
     alt:
       'Dave Langdon family after Carten 100 charity ride for Anthony Nolan — card and gift wholesale agent East Anglia',
+  },
+  {
+    src: aboutSrc('Pretty Muddy 5k for Cancer Research UK.jpg'),
+    alt:
+      'Dave Langdon running Cancer Research UK Pretty Muddy 5k with Langdon’s team — Ipswich greeting card sales agent East Anglia',
   },
   {
     src: aboutSrc('Tarzan Fun in Orwell Country Park.jpg'),

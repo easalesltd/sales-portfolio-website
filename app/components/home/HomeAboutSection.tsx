@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import FadeInOnScroll from '../FadeInOnScroll';
 import HomeRequestVisitCTA from './HomeRequestVisitCTA';
-import { SERVICE_AREAS } from '@/app/data/business-entity';
 
 /** Intro + CTAs with scroll-in motion (client-only for Framer Motion). */
 export default function HomeAboutSection() {
@@ -32,19 +31,6 @@ export default function HomeAboutSection() {
         <FadeInOnScroll delay={0.4}>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
             If you&apos;d like a visit to see the latest ranges, I&apos;d love to come and have a chat.
-          </p>
-        </FadeInOnScroll>
-        <FadeInOnScroll delay={0.48}>
-          <p className="text-sm text-gray-600 mb-6">
-            Territory:{' '}
-            {SERVICE_AREAS.map((area, index) => (
-              <span key={area.slug}>
-                {index > 0 ? ' · ' : ''}
-                <Link href={`/${area.slug}`} className="site-link">
-                  {area.name}
-                </Link>
-              </span>
-            ))}
           </p>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.55}>
