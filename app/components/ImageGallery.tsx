@@ -75,7 +75,7 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
     <>
       <div
         ref={containerRef}
-        className="relative w-full h-[400px] overflow-hidden rounded-xl touch-pan-y"
+        className="relative w-full h-[min(70vw,480px)] min-h-[320px] overflow-hidden rounded-xl touch-pan-y bg-zinc-100 dark:bg-neutral-800"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -94,13 +94,13 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
         />
 
         <Image
-          src={images[currentIndex]}
+          src={encodeURI(images[currentIndex])}
           alt={`Gallery image ${currentIndex + 1}`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
           priority={currentIndex === 0}
           quality={85}
-          className={`object-cover transition-opacity duration-500 pointer-events-none ${
+          className={`object-contain p-3 transition-opacity duration-500 pointer-events-none ${
             isLoading ? 'opacity-0' : 'opacity-100'
           }`}
           onLoadingComplete={() => setIsLoading(false)}
@@ -108,7 +108,7 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
 
         {images.length > 1 && (
           <Image
-            src={images[(currentIndex + 1) % images.length]}
+            src={encodeURI(images[(currentIndex + 1) % images.length])}
             alt=""
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
@@ -132,8 +132,8 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
               }}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 currentIndex === index
-                  ? 'bg-white w-4'
-                  : 'bg-white/50 hover:bg-white/75'
+                  ? 'bg-zinc-900 dark:bg-white w-4'
+                  : 'bg-zinc-400/80 hover:bg-zinc-600 dark:bg-white/50 dark:hover:bg-white/75'
               }`}
               aria-label={`Go to image ${index + 1}`}
             />
@@ -167,7 +167,7 @@ export default function ImageGallery({ images, interval = 5000 }: ImageGalleryPr
       <ImageModal
         isOpen={lightboxOpen}
         onClose={closeLightbox}
-        imageSrc={images[currentIndex]}
+        imageSrc={encodeURI(images[currentIndex])}
         alt={`Gallery image ${currentIndex + 1}`}
         onPrevious={images.length > 1 ? modalPrevious : undefined}
         onNext={images.length > 1 ? modalNext : undefined}

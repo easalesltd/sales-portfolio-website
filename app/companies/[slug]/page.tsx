@@ -277,17 +277,17 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   ] : [];
 
   const museumsAndGalleriesBaseImages = resolvedParams.slug === 'museums-and-galleries' ? [
-    '/images/companies/museums-and-galleries/7d55e712-89d5-448b-aa75-f4cec8b7cf87.jpeg',
-    '/images/companies/museums-and-galleries/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
-    '/images/companies/museums-and-galleries/cc0ff00f-b373-4a7f-ae5c-fa1e61f846fa.jpeg',
-    '/images/companies/museums-and-galleries/ed555a28-c3ea-4cd8-b056-3a0dfebb2890.jpeg',
-    '/images/companies/museums-and-galleries/4a44abec-ce62-4e46-878b-8cbad6b03da2.jpeg',
-    '/images/companies/museums-and-galleries/f13f19a1-1349-4e84-89d5-e6ffe231f308.jpeg',
-    '/images/companies/museums-and-galleries/1b4833b0-54b9-4457-95fb-7b94df0b0389.jpeg',
-    '/images/companies/museums-and-galleries/59a26b7f-162c-454e-9efd-c483fae2ecfa.jpeg',
-    '/images/companies/museums-and-galleries/Screenshot 2025-12-19 at 23.19.11.png',
-    '/images/companies/museums-and-galleries/Screenshot 2025-12-19 at 23.20.13.png',
-    '/images/companies/museums-and-galleries/Screenshot 2025-12-19 at 23.20.30.png'
+    '/images/companies/museums-and-galleries/official/range-cards.jpg',
+    '/images/companies/museums-and-galleries/official/range-stationery.jpg',
+    '/images/companies/museums-and-galleries/official/range-gift.jpg',
+    '/images/companies/museums-and-galleries/official/range-square.jpeg',
+    '/images/companies/museums-and-galleries/official/portrait-1.jpg',
+    '/images/companies/museums-and-galleries/official/portrait-2.jpg',
+    '/images/companies/museums-and-galleries/official/portrait-3.jpg',
+    '/images/companies/museums-and-galleries/official/collection-1.jpg',
+    '/images/companies/museums-and-galleries/official/collection-2.jpg',
+    '/images/companies/museums-and-galleries/official/collection-3.jpg',
+    '/images/companies/museums-and-galleries/official/collection-4.jpg',
   ] : [];
 
   const starEditionsBaseImages = resolvedParams.slug === 'star-editions' ? [
@@ -320,13 +320,16 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   ] : [];
 
   const boxerGiftsBaseImages = resolvedParams.slug === 'boxer-gifts' ? [
-    '/images/companies/boxer-gifts/website_featured__1.jpeg',
-    '/images/companies/boxer-gifts/BB2228_Squeezy_peas_d441.webp',
-    '/images/companies/boxer-gifts/GA3174__33eb.webp',
-    '/images/companies/boxer-gifts/YME0101_i_love_you_mummy_4040.webp',
-    '/images/companies/boxer-gifts/Untitled_550_550_px_4_.png',
-    '/images/companies/boxer-gifts/Let_Us_Inspire_You_Images.png',
-    '/images/companies/boxer-gifts/Meet_The_Team_Block_-_Mobile.png'
+    '/images/companies/boxer-gifts/official/liar-liar.jpg',
+    '/images/companies/boxer-gifts/official/squeezy-peas.jpg',
+    '/images/companies/boxer-gifts/official/dancing-vase.jpg',
+    '/images/companies/boxer-gifts/official/tulip-mug.jpg',
+    '/images/companies/boxer-gifts/official/tequila-racers.jpg',
+    '/images/companies/boxer-gifts/official/skinny-dippin.jpg',
+    '/images/companies/boxer-gifts/official/deadly-blooms.jpg',
+    '/images/companies/boxer-gifts/official/i-love-you-mummy.jpg',
+    '/images/companies/boxer-gifts/official/serial-killers.jpg',
+    '/images/companies/boxer-gifts/official/poop-book.jpg',
   ] : [];
 
   const davidFischhoffBaseImages = resolvedParams.slug === 'david-fischhoff' ? [
@@ -477,7 +480,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                 <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 relative">
                   {company.name}
                   {/* Dark bar on light SSR; switches with dark: when html.dark (Cambridge route) hydrates — avoids white-on-white flash */}
-                  <div className="brand-rule h-1 w-20 mt-2 bg-neutral-950 dark:bg-white" />
+                  <div className="brand-rule h-1 w-28 mt-2 bg-neutral-950 dark:bg-white" />
                 </h1>
                 <p className="text-xl leading-relaxed text-gray-600 dark:text-neutral-300">{company.description}</p>
                 
@@ -521,6 +524,13 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                     <>
                       <div className="mb-8">
                         <ImageGallery images={museumsAndGalleriesImages} interval={5500} />
+                        <p className="mt-2 text-xs text-gray-500">
+                          Range photography from{' '}
+                          <a href="https://museumsgalleries.co.uk/" className="underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+                            Museums &amp; Galleries
+                          </a>
+                          .
+                        </p>
                       </div>
                       {company.videos && company.videos.length > 0 && (
                         <div className="mb-8">
@@ -553,6 +563,13 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                   {resolvedParams.slug === 'boxer-gifts' && (
                     <div className="mb-8">
                       <ImageGallery images={boxerGiftsImages} interval={5000} />
+                      <p className="mt-2 text-xs text-gray-500">
+                        Product photography from{' '}
+                        <a href="https://www.boxergifts.com/" className="underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+                          Boxer Gifts
+                        </a>
+                        .
+                      </p>
                     </div>
                   )}
                   {resolvedParams.slug === 'david-fischhoff' && (
