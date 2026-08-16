@@ -35,6 +35,11 @@ const nextConfig = {
         destination: '/contact',
         permanent: true,
       },
+      {
+        source: '/companies/real-and-exciting-designs',
+        destination: '/',
+        permanent: true,
+      },
     ]
   },
   async headers() {

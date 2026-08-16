@@ -173,17 +173,18 @@ const THEMES: Record<string, Omit<BrandPageTheme, 'slug'>> = {
     headingTracking: '0.12em',
     radius: '0px',
   },
-  'real-and-exciting-designs': {
-    accent: '#db2777',
+  'rudi-and-bear': {
+    accent: '#dc954d',
     accentForeground: '#ffffff',
-    text: '#4b5563',
-    heading: '#831843',
+    text: '#4d4c4b',
+    heading: '#111111',
     card: '#ffffff',
     headingFont: 'jost',
     bodyFont: 'poppins',
-    headingTransform: 'uppercase',
-    headingTracking: '0.1em',
-    radius: '0.25rem',
+    headingTransform: 'none',
+    headingTracking: '0',
+    radius: '0.75rem',
+    page: '#fffdf9',
   },
 };
 

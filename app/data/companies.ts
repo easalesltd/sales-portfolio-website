@@ -111,13 +111,14 @@ export const companies: Company[] = [
     websiteUrl: "https://peppermintgroveaustralia.com"
   },
   {
-    id: "real-and-exciting-designs",
-    name: "Real and Exciting Designs",
-    slug: "real-and-exciting-designs",
-    description: "Real and Exciting Designs produces a trendy and sophisticated range of Everyday and Christmas Greetings Cards, as well as fabulous Foiled Gift wrap and Notebooks.",
-    logoUrl: "/images/logos/real-&-exciting-logo.png",
-    catalogueUrl: "https://drive.google.com/drive/folders/1BPWb0wygqyzrQQCdga1Z6jzc6jz5EYus?usp=drive_link",
-    websiteUrl: ""
+    id: "rudi-and-bear",
+    name: "Rudi & Bear",
+    slug: "rudi-and-bear",
+    description: "Ned has been bringing smiles to little adventurers since 2017. Hand-painted in Cornwall and packed plastic-free in a signature gift box, Rudi & Bear makes collectable Neds for independent toy shops, gift shops, garden centres, museums and visitor attractions — including bespoke collabs for local landmarks, brand colours and themed collections.",
+    logoUrl: "/images/logos/rudi-and-bear.png",
+    logoUrlDark: "/images/logos/rudi-and-bear.png",
+    catalogueUrl: "https://cdn.shopify.com/s/files/1/1002/8980/6719/files/RudiandBear.pdf?v=1785927953",
+    websiteUrl: "https://rudiandbear.co.uk/pages/wholesale"
   },
   {
     id: "star-editions",

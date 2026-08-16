@@ -109,7 +109,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: 'Star Editions | Licensed Cards & Bespoke Giftware',
       description:
         'Star Editions wholesale licensed greeting cards and giftware — including Richard Briggs and Dave Thompson ranges, finished in the UK.',
-    }
+    },
+    'rudi-and-bear': {
+      title: 'Rudi & Bear | Hand-Painted Neds for Independent Retailers',
+      description:
+        'Rudi & Bear wholesale — hand-painted Neds from Cornwall, plastic-free gift boxes, display stands and bespoke collabs for toy shops, gift shops, garden centres and visitor attractions.',
+    },
   };
 
   const metadata = companyMetadata[resolvedParams.slug as keyof typeof companyMetadata];
@@ -409,6 +414,17 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     '/images/companies/the-cambridge-confectionery-company/Toffe-Crunch-600x600.png'
   ] : [];
 
+  const rudiAndBearBaseImages = resolvedParams.slug === 'rudi-and-bear' ? [
+    '/images/companies/rudi-and-bear/official/wholesale-hero.jpg',
+    '/images/companies/rudi-and-bear/official/neds.jpg',
+    '/images/companies/rudi-and-bear/official/display.jpg',
+    '/images/companies/rudi-and-bear/official/catalogue-cover.jpg',
+    '/images/companies/rudi-and-bear/official/collab-inspo.png',
+    '/images/companies/rudi-and-bear/official/locations.jpg',
+    '/images/companies/rudi-and-bear/official/brand-message.jpg',
+    '/images/companies/rudi-and-bear/official/characters.jpg',
+  ] : [];
+
   // Shuffle all image arrays
   const paperSaladImages = shuffleArray(paperSaladBaseImages);
   const emotionalRescueImages = shuffleArray(emotionalRescueBaseImages);
@@ -422,11 +438,15 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const mintPublishingImages = shuffleArray(mintPublishingBaseImages);
   const cgbGiftwareImages = shuffleArray(cgbGiftwareBaseImages);
   const cambridgeConfectioneryCompanyImages = shuffleArray(cambridgeConfectioneryCompanyBaseImages);
+  const rudiAndBearImages = shuffleArray(rudiAndBearBaseImages);
 
   const companyPageLogoSrc = company.logoUrlDark ?? company.logoUrl;
   const useLightMarkOnDark = Boolean(company.logoUrlDark);
   const isCambridgeDarkBrand = resolvedParams.slug === 'cambridge-confectionery-company';
-  const invertLightMarkOnDark = useLightMarkOnDark && !isCambridgeDarkBrand;
+  const invertLightMarkOnDark =
+    useLightMarkOnDark &&
+    !isCambridgeDarkBrand &&
+    resolvedParams.slug !== 'rudi-and-bear';
 
   const content = (
     <>
@@ -650,6 +670,22 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       <ImageGallery images={cambridgeConfectioneryCompanyImages} interval={5000} />
                     </div>
                   )}
+                  {resolvedParams.slug === 'rudi-and-bear' && (
+                    <div className="mb-8">
+                      <ImageGallery images={rudiAndBearImages} interval={5500} />
+                      <p className="mt-2 text-xs text-gray-500">
+                        Wholesale photography from{' '}
+                        <a href="https://rudiandbear.co.uk/pages/wholesale" className="underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+                          Rudi &amp; Bear
+                        </a>
+                        . Watch how Ned is made on{' '}
+                        <a href="https://youtu.be/ZD7nWVt-Q74" className="underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+                          YouTube
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap gap-4 mt-8">
@@ -730,6 +766,7 @@ function productSchemaImages(company: Company): string[] {
   const logo = `${SITE_ORIGIN}${company.logoUrl}`;
   const heroBySlug: Partial<Record<Company['slug'], string>> = {
     'peppermint-grove': `${SITE_ORIGIN}/images/companies/peppermint-grove/PGA_Uk_Diffuser_Category_d8e301ee-42b8-4ef0-9d68-5221f68c83b3.jpeg`,
+    'rudi-and-bear': `${SITE_ORIGIN}/images/companies/rudi-and-bear/official/display.jpg`,
   };
   const hero = heroBySlug[company.slug];
   return hero && hero !== logo ? [hero, logo] : [logo];
@@ -969,6 +1006,21 @@ function generateStructuredData(company: Company) {
         'Custom Cards',
         'Personalized Cards',
         'Tailored Cards',
+        'East Anglia Retail',
+        'Hertfordshire Retail',
+        'Cambridgeshire Retail'
+      ]
+    },
+    'rudi-and-bear': {
+      name: 'Rudi & Bear Sales Agent - Hand-Painted Neds in East Anglia, Hertfordshire & Cambridgeshire',
+      description: 'Hand-painted collectable Neds from Cornwall, plastic-free packaging, retail display stands and bespoke collaborations for independent retailers.',
+      categories: [
+        'Collectable Gifts',
+        'Hand-painted Gifts',
+        "Children's Gifts",
+        'Toy Shop Gifts',
+        'Visitor Attraction Gifts',
+        'Garden Centre Gifts',
         'East Anglia Retail',
         'Hertfordshire Retail',
         'Cambridgeshire Retail'

@@ -11,7 +11,7 @@ Do **not** replace or “simplify” this pattern. It was chosen deliberately af
 
 - Render partner tiles with **`app/components/PartnerBrandTile.tsx`** (or equivalent logic kept in one dedicated component — **do not** inline a different image strategy on the homepage without updating this rule).
 - Logo area: **native `<img>`** with **`max-h-full max-w-full object-contain`**, inside a **flex** container (`items-center justify-center`) with **`aspect-[3/2]`** and padding — **not** `<Image fill />` for the partner grid logos.
-- Visual rules: strip uses **`logoUrlDark ?? logoUrl`**. If **`logoUrlDark`** is set, tile top band is **`bg-black`** and **`invert` the logo**, **except** **`company.id === 'cambridge-confectionery-company'`** (black strip, **no** invert).
+- Visual rules: strip uses **`logoUrlDark ?? logoUrl`**. If **`logoUrlDark`** is set, tile top band is **`bg-black`** and **`invert` the logo**, **except** **`company.id === 'cambridge-confectionery-company'`** or **`company.id === 'rudi-and-bear'`** (black strip, **no** invert).
 - Use **`partnerBrandLogoAlt()`** from **`app/lib/partner-brand-logo-alt.ts`** for `alt` text.
 
 ## Do not
