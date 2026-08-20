@@ -192,7 +192,7 @@ function latestMatchdaySummary(matches, players, searchNames, names) {
     const awayMgr = managerForTeam(players, match.awayTeam, searchNames);
     const home = clubLabel(match.homeTeam, names);
     const away = clubLabel(match.awayTeam, names);
-    const score = `${match.homeGoals}–${match.awayGoals}`;
+    const score = `${match.homeGoals}-${match.awayGoals}`;
 
     if (match.homeGoals > match.awayGoals && homeMgr) {
       bits.push(`${homeMgr.name}'s ${home} beat ${away} ${score}`);
@@ -200,13 +200,13 @@ function latestMatchdaySummary(matches, players, searchNames, names) {
       bits.push(`${awayMgr.name}'s ${away} nicked it ${score} at ${home}`);
     } else if (match.homeGoals === 0 && match.awayGoals === 0) {
       const namesOnPitch = [homeMgr?.name, awayMgr?.name].filter(Boolean).join('/');
-      bits.push(`${namesOnPitch || 'someone'} served up a boring 0–0 (${home}–${away})`);
+      bits.push(`${namesOnPitch || 'someone'} served up a boring 0-0 (${home} vs ${away})`);
     } else {
       bits.push(`${home} ${score} ${away}`);
     }
   }
 
-  return { latestDate, dayMatches, summary: bits.slice(0, 4).join('; ') };
+  return { latestDate, dayMatches, summary: bits.slice(0, 6).join('. ') };
 }
 
 function hashPick(seed, length) {
@@ -215,9 +215,41 @@ function hashPick(seed, length) {
   return h % length;
 }
 
-function buildRoast(standings, dayInfo) {
+function sanitiseRoast(text) {
+  return String(text)
+    .replace(/\u2014/g, '. ')
+    .replace(/\u2013/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/\s+\./g, '.')
+    .replace(/\.+/g, (match) => (match.length > 3 ? '...' : match))
+    .trim();
+}
+
+function pickFreshTemplate(templates, seed, previousRoast) {
+  const previous = String(previousRoast || '').toLowerCase();
+  const start = hashPick(seed, templates.length);
+  if (!previous) return templates[start];
+
+  for (let offset = 0; offset < templates.length; offset += 1) {
+    const candidate = templates[(start + offset) % templates.length];
+    const distinctive = candidate
+      .toLowerCase()
+      .split(/\n+/)
+      .map((line) => line.trim())
+      .filter((line) => line.length > 12 && !line.includes('pts') && !/\d+-\d+/.test(line));
+    const repeats = distinctive.some((line) => previous.includes(line.slice(0, 28)));
+    if (!repeats) return candidate;
+  }
+
+  return templates[start];
+}
+
+function buildRoast(standings, dayInfo, previousRoast = '') {
   if (standings.length === 0) {
-    return 'Pre-season. Zero points. The ledger is empty and somehow everyone still looks soft.';
+    return sanitiseRoast('Pre-season. Zero points. The ledger is empty and somehow everyone still looks soft.');
   }
 
   const leader = standings[0];
@@ -225,23 +257,30 @@ function buildRoast(standings, dayInfo) {
   const mid = standings[Math.floor(standings.length / 2)];
 
   if (!dayInfo) {
-    return `${leader.name} tops the empty table on ${leader.points} while ${bottom.name} is already last on ${bottom.points}. August can't come soon enough.`;
+    return sanitiseRoast(
+      `${leader.name} tops the empty table on ${leader.points} while ${bottom.name} is already last on ${bottom.points}. August can't come soon enough.`,
+    );
   }
 
   const templates = [
-    `${leader.name} leads on ${leader.points} after ${dayInfo.summary}. ${bottom.name} is bottom on ${bottom.points} and looks like absolute pants.`,
-    `Matchday ${dayInfo.latestDate}: ${dayInfo.summary}. ${leader.name} sits pretty on ${leader.points}; ${bottom.name} is rotting on ${bottom.points}. Soft.`,
-    `${bottom.name} is bottom on ${bottom.points} while ${leader.name} swans about on ${leader.points}. Today's damage: ${dayInfo.summary}.`,
-    `Table says ${leader.name} ${leader.points}, ${bottom.name} ${bottom.points}. From the day's carnage — ${dayInfo.summary} — somebody needs to grow a pair.`,
-    `${mid.name} is stuck in mid-table mediocrity while ${leader.name} leads on ${leader.points} and ${bottom.name} props up the league on ${bottom.points}. ${dayInfo.summary}.`,
+    `${leader.name} is top on ${leader.points} and still looks like a fraud.\n\n${dayInfo.summary}.\n\n${bottom.name} is rotting on ${bottom.points}. Absolute pants.`,
+    `${bottom.name} is last on ${bottom.points}. Sit down.\n\n${leader.name} swans about on ${leader.points}. ${dayInfo.summary}. Soft.`,
+    `Table: ${leader.name} ${leader.points}, ${bottom.name} ${bottom.points}. Spineless.\n\n${dayInfo.summary}.`,
+    `${leader.name} leads on ${leader.points}. ${mid.name} is the human equivalent of a 1-1.\n\n${dayInfo.summary}.\n\n${bottom.name} is bottom on ${bottom.points} and it is tragic.`,
+    `${dayInfo.summary}.\n\n${leader.name} is first on ${leader.points}. ${bottom.name} is last on ${bottom.points}. Do one.`,
+    `${leader.name} on ${leader.points}. Congrats, nobody clapped.\n\n${dayInfo.summary}.\n\n${bottom.name} on ${bottom.points} is a war crime against entertainment.`,
   ];
 
   const seed = `${dayInfo.latestDate}:${dayInfo.dayMatches.map((m) => m.id).join(',')}:${leader.points}:${bottom.points}`;
-  return templates[hashPick(seed, templates.length)];
+  return sanitiseRoast(pickFreshTemplate(templates, seed, previousRoast));
 }
 
-function escapeSingleQuotes(value) {
-  return String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+function escapeRoastForTs(value) {
+  return sanitiseRoast(value)
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/\r\n/g, '\n')
+    .replace(/\n/g, '\\n');
 }
 
 function replaceDailyUpdate(source, roast) {
@@ -251,7 +290,7 @@ function replaceDailyUpdate(source, roast) {
   }
   return source.replace(
     pattern,
-    `export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =\n  '${escapeSingleQuotes(roast)}';`
+    `export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =\n  '${escapeRoastForTs(roast)}';`
   );
 }
 
@@ -263,7 +302,10 @@ function main() {
   const matches = parseMatches(beforeSource);
   const standings = computeStandings(players, matches, searchNames);
   const dayInfo = latestMatchdaySummary(matches, players, searchNames, names);
-  const roast = buildRoast(standings, dayInfo);
+  const previousRoast = beforeSource.match(
+    /export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =\s*'((?:\\'|[^'])*)'\s*;/,
+  )?.[1];
+  const roast = sanitiseRoast(buildRoast(standings, dayInfo, previousRoast));
 
   console.log('Proposed daily roast:');
   console.log(roast);

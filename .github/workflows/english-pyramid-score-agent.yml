@@ -149,7 +149,7 @@ jobs:
           - update only app/data/english-pyramid-fantasy.ts
           - append only newly finished league matches with explicit homeRedCards and awayRedCards
           - refresh ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE when the table changes
-          - roast tone: foul-mouthed Grok / Tesla-cabin energy — sweary, rude, British football, funny; vary the gags; never invent scores
+          - roast tone: fouler Grok / Tesla-cabin energy. Sweary, rude, British football. Short paragraphs. NEVER use em dashes or en dashes (write 0-1 with a hyphen). Do not repeat gags from the previous roast. Vary the jokes. Never invent scores.
           - run npm run english-pyramid:standings and mirror computed totals in the roast
           - run npm run english-pyramid:validate:scores before finishing
 

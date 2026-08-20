@@ -142,7 +142,7 @@ async function renderWeeklyCard({
   ctx.fillText('THIS WEEK’S ROAST', 80, roastTop);
   ctx.fillStyle = '#f5f5f0';
   ctx.font = '600 27px system-ui, sans-serif';
-  const roastBottom = drawWrappedText(ctx, `“${roast}”`, 80, roastTop + 48, WIDTH - 160, 38, 5);
+  const roastBottom = drawWrappedText(ctx, `“${roast.replace(/\n+/g, ' ')}”`, 80, roastTop + 48, WIDTH - 160, 38, 5);
 
   const potValue = prizeFund?.currentValueGbp ?? prizeFund?.investedAmountGbp;
   if (potValue != null) {

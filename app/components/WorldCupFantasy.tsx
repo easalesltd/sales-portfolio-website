@@ -1278,6 +1278,26 @@ function progressLineColor(index: number, colors: readonly string[]): string {
   return colors[index % colors.length];
 }
 
+function RoastCopy({ text, mobileCollapsed }: { text: string; mobileCollapsed: boolean }) {
+  const paragraphs = text
+    .split(/\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  return (
+    <div className="mt-2 space-y-2.5 text-sm leading-relaxed text-neutral-100">
+      {paragraphs.map((paragraph, index) => (
+        <p
+          key={`${index}-${paragraph.slice(0, 24)}`}
+          className={mobileCollapsed && index >= 2 ? 'hidden sm:block' : undefined}
+        >
+          {paragraph}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 function progressTeamLabel(player: Pick<PlayerStanding, 'name' | 'teamName'>): string {
   return player.teamName ? `${player.teamName} (${player.name})` : player.name;
 }
@@ -2594,13 +2614,10 @@ function WorldCupFantasyView({
                     </button>
                   ) : null}
                 </div>
-                <p
-                  className={`mt-2 text-sm leading-relaxed text-neutral-100 ${
-                    t.id === 'english-pyramid' && !roastExpanded ? 'line-clamp-3 sm:line-clamp-none' : ''
-                  }`}
-                >
-                  {data.dailyUpdate}
-                </p>
+                <RoastCopy
+                  text={data.dailyUpdate}
+                  mobileCollapsed={t.id === 'english-pyramid' && !roastExpanded}
+                />
                 {t.id === 'english-pyramid' ? (
                   <EnglishPyramidWeeklyShareButton
                     standings={data.standings}
