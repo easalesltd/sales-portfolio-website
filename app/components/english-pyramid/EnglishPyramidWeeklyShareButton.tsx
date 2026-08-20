@@ -215,7 +215,7 @@ export default function EnglishPyramidWeeklyShareButton(props: Props) {
       type="button"
       onClick={() => void share()}
       disabled={status === 'working'}
-      className="mt-3 inline-flex items-center rounded-md border border-[#d4af37]/40 bg-[#d4af37]/10 px-3 py-1.5 text-xs font-bold text-[#f2d36b] transition hover:bg-[#d4af37]/20 disabled:opacity-60"
+      className="inline-flex items-center rounded-md border border-[#d4af37]/40 bg-[#d4af37]/10 px-3 py-1.5 text-xs font-bold text-[#f2d36b] transition hover:bg-[#d4af37]/20 disabled:opacity-60"
     >
       {label}
     </button>

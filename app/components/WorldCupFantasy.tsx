@@ -33,6 +33,7 @@ import MatchScoringExplainPanel from './english-pyramid/MatchScoringExplainPanel
 import ManagerHeadToHead from './english-pyramid/ManagerHeadToHead';
 import TeamRedCardMarker from './english-pyramid/TeamRedCardMarker';
 import EnglishPyramidWeeklyShareButton from './english-pyramid/EnglishPyramidWeeklyShareButton';
+import ClassifiedRoastButton from './english-pyramid/ClassifiedRoastButton';
 import PyramidMobileJumpNav from './english-pyramid/PyramidMobileJumpNav';
 import RedrawRevealExperience from './english-pyramid/RedrawRevealExperience';
 import RedrawCountdownBanner from './english-pyramid/RedrawCountdownBanner';
@@ -2619,11 +2620,14 @@ function WorldCupFantasyView({
                   mobileCollapsed={t.id === 'english-pyramid' && !roastExpanded}
                 />
                 {t.id === 'english-pyramid' ? (
-                  <EnglishPyramidWeeklyShareButton
-                    standings={data.standings}
-                    roast={data.dailyUpdate}
-                    prizeFund={data.prizeFund}
-                  />
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <ClassifiedRoastButton roast={data.dailyUpdate} />
+                    <EnglishPyramidWeeklyShareButton
+                      standings={data.standings}
+                      roast={data.dailyUpdate}
+                      prizeFund={data.prizeFund}
+                    />
+                  </div>
                 ) : null}
               </section>
 
