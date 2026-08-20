@@ -2627,15 +2627,6 @@ function WorldCupFantasyView({
                 </div>
               ) : null}
 
-              <section id="pyramid-progress" className="scroll-mt-3">
-                <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>
-                <p className="text-xs text-neutral-500">{progressChartDescription}</p>
-                <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
-                {t.id === 'english-pyramid' && !(data.redraw?.squadsHidden) ? (
-                  <DraftOverachievementChart standings={data.standings} />
-                ) : null}
-              </section>
-
               <MatchdaySchedule
                 schedule={data.matchdaySchedule}
                 standings={data.standings}
@@ -2644,6 +2635,15 @@ function WorldCupFantasyView({
                 flashingMatchIds={flashingMatchIds}
                 squadsSealed={data.redraw?.squadsHidden ?? false}
               />
+
+              <section id="pyramid-progress" className="scroll-mt-3">
+                <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>
+                <p className="text-xs text-neutral-500">{progressChartDescription}</p>
+                <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
+                {t.id === 'english-pyramid' && !(data.redraw?.squadsHidden) ? (
+                  <DraftOverachievementChart standings={data.standings} />
+                ) : null}
+              </section>
 
               <SweepstakeAwards standings={data.standings} scoringMatches={data.allScoringMatches} />
 

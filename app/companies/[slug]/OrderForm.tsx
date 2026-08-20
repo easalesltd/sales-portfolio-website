@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useId } from 'react'
 import emailjs from '@emailjs/browser'
 import dynamic from 'next/dynamic'
+import { FORM_TEXT_FIELD_CLASS } from '@/app/lib/form-field-classes'
 
 // Dynamically import Confetti to avoid SSR issues
 const ReactConfetti = dynamic(() => import('react-confetti'), {
@@ -454,7 +455,7 @@ function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryBut
                 type="text"
                 id="companyName"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                 value={contactInfo.companyName}
                 onChange={(e) => handleContactInfoChange('companyName', e.target.value)}
               />
@@ -465,7 +466,7 @@ function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryBut
                 type="text"
                 id="contactPerson"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                 value={contactInfo.contactPerson}
                 onChange={(e) => handleContactInfoChange('contactPerson', e.target.value)}
               />
@@ -476,7 +477,7 @@ function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryBut
                 id="address"
                 required
                 rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                 value={contactInfo.address}
                 onChange={(e) => handleContactInfoChange('address', e.target.value)}
               />
@@ -487,7 +488,7 @@ function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryBut
                 <input
                   type="text"
                   id="contactDetails"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                  className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                   value={contactInfo.contactDetails}
                   onChange={(e) => handleContactInfoChange('contactDetails', e.target.value)}
                 />
@@ -498,7 +499,7 @@ function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryBut
                   type="email"
                   id="emailAddress"
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                  className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                   value={contactInfo.emailAddress}
                   onChange={(e) => handleContactInfoChange('emailAddress', e.target.value)}
                 />
@@ -524,7 +525,7 @@ function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryBut
                     <input
                       type="text"
                       required
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                      className={FORM_TEXT_FIELD_CLASS}
                       value={line.productCode}
                       onChange={(e) => handleLineChange(index, 'productCode', e.target.value)}
                       placeholder="Enter product code"
@@ -535,7 +536,7 @@ function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryBut
                       type="number"
                       required
                       min="1"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                      className={FORM_TEXT_FIELD_CLASS}
                       value={line.quantity}
                       onChange={(e) => handleLineChange(index, 'quantity', e.target.value)}
                       placeholder="Enter quantity"
@@ -572,7 +573,7 @@ function PeppermintGroveOrderForm({ companyName, companySlug, invertedPrimaryBut
           <textarea
             id="notes"
             rows={4}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+            className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
@@ -827,7 +828,7 @@ function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = f
                 type="text"
                 id="companyName"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                 value={contactInfo.companyName}
                 onChange={(e) => handleContactInfoChange('companyName', e.target.value)}
               />
@@ -838,7 +839,7 @@ function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = f
                 type="text"
                 id="contactPerson"
                 required
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                 value={contactInfo.contactPerson}
                 onChange={(e) => handleContactInfoChange('contactPerson', e.target.value)}
               />
@@ -849,7 +850,7 @@ function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = f
                 id="address"
                 required
                 rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                 value={contactInfo.address}
                 onChange={(e) => handleContactInfoChange('address', e.target.value)}
               />
@@ -860,7 +861,7 @@ function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = f
                 <input
                   type="text"
                   id="contactDetails"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                  className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                   value={contactInfo.contactDetails}
                   onChange={(e) => handleContactInfoChange('contactDetails', e.target.value)}
                 />
@@ -871,7 +872,7 @@ function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = f
                   type="email"
                   id="emailAddress"
                   required
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                  className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                   value={contactInfo.emailAddress}
                   onChange={(e) => handleContactInfoChange('emailAddress', e.target.value)}
                 />
@@ -897,7 +898,7 @@ function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = f
                     <input
                       type="text"
                       required
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                      className={FORM_TEXT_FIELD_CLASS}
                       value={line.productCode}
                       onChange={(e) => handleLineChange(index, 'productCode', e.target.value)}
                       placeholder="Enter product code"
@@ -908,7 +909,7 @@ function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = f
                       type="number"
                       required
                       min="1"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+                      className={FORM_TEXT_FIELD_CLASS}
                       value={line.quantity}
                       onChange={(e) => handleLineChange(index, 'quantity', e.target.value)}
                       placeholder="Enter quantity"
@@ -945,7 +946,7 @@ function DefaultOrderForm({ companyName, companySlug, invertedPrimaryButtons = f
           <textarea
             id="notes"
             rows={4}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-neutral-500 focus:ring-neutral-500 sm:text-sm"
+            className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />

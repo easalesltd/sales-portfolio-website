@@ -7,8 +7,8 @@ type JumpTarget = {
 
 const TARGETS: JumpTarget[] = [
   { id: 'pyramid-standings', label: 'Standings' },
-  { id: 'pyramid-progress', label: 'Progress' },
   { id: 'pyramid-matchday', label: 'Matchday' },
+  { id: 'pyramid-progress', label: 'Progress' },
   { id: 'pyramid-awards', label: 'Awards' },
   { id: 'pyramid-squads', label: 'Squads' },
 ];

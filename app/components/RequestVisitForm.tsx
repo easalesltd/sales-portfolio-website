@@ -5,6 +5,7 @@ import emailjs from '@emailjs/browser';
 import dynamic from 'next/dynamic';
 import { trackGaEvent } from '@/app/lib/ga-event';
 import { companies as partnerCompanies } from '@/app/data/companies';
+import { FORM_TEXT_FIELD_CLASS } from '@/app/lib/form-field-classes';
 
 // Dynamically import Confetti to avoid SSR issues
 const ReactConfetti = dynamic(() => import('react-confetti'), {
@@ -297,7 +298,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                   <input
                     type="text"
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   />
@@ -308,7 +309,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                   <input
                     type="text"
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                     value={formData.businessName}
                     onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
                   />
@@ -318,7 +319,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                   <label className="block text-sm font-medium text-gray-700">Business Address</label>
                   <textarea
                     required
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                     rows={3}
                     value={formData.businessAddress}
                     onChange={(e) => setFormData({ ...formData, businessAddress: e.target.value })}
@@ -331,7 +332,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                     <input
                       type="email"
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
@@ -342,7 +343,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                     <input
                       type="tel"
                       required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     />
@@ -355,7 +356,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                     type="text"
                     required
                     placeholder="e.g., Any Tuesday, Week of 15th March, etc."
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                     value={formData.datesAvailable}
                     onChange={(e) => setFormData({ ...formData, datesAvailable: e.target.value })}
                   />
@@ -364,7 +365,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Notes</label>
                   <textarea
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    className={`mt-1 ${FORM_TEXT_FIELD_CLASS}`}
                     rows={3}
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
@@ -385,7 +386,7 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
                             newCompanies[index].checked = !newCompanies[index].checked;
                             setCompanies(newCompanies);
                           }}
-                          className="h-4 w-4 text-neutral-950 focus:ring-neutral-950 border-gray-300 rounded"
+                          className="h-4 w-4 rounded border border-neutral-400 text-neutral-950 focus:ring-neutral-950"
                         />
                         <label className="ml-2 text-sm text-gray-700">{company.name}</label>
                       </div>
