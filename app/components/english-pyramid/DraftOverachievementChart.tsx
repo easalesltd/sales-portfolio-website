@@ -173,27 +173,6 @@ export default function DraftOverachievementChart({ standings }: Props) {
           );
         })}
       </ul>
-
-      {stats.punchingUp.length > 0 ? (
-        <div>
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-[#d4af37]/80">
-            Survival clubs beating the title average
-          </p>
-          <ul className="mt-1.5 flex flex-wrap gap-1.5">
-            {stats.punchingUp.slice(0, 10).map((club) => (
-              <li
-                key={`${club.managerId}-${club.code}`}
-                className="rounded-full border border-emerald-500/30 bg-emerald-950/40 px-2.5 py-0.5 text-[11px] text-emerald-200"
-              >
-                {club.name} · {formatPpg(club.ppg)} ppg
-                <span className="text-emerald-200/60"> · {club.managerName}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p className="text-xs text-neutral-500">No survival club is beating the title-pick average yet.</p>
-      )}
     </div>
   );
 }

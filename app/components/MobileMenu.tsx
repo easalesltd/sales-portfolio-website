@@ -154,8 +154,11 @@ export default function MobileMenu() {
               {/* Brands Section */}
               <div>
                 <button
+                  type="button"
                   onClick={() => setIsBrandsExpanded(!isBrandsExpanded)}
                   className="flex items-center justify-between w-full text-lg font-medium text-gray-900 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors mb-2"
+                  aria-expanded={isBrandsExpanded}
+                  aria-controls="mobile-menu-brands-subnav"
                 >
                   Our Partner Brands
                   <svg 
@@ -167,7 +170,12 @@ export default function MobileMenu() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                <div className={`space-y-3 overflow-hidden transition-all duration-300 ${isBrandsExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} mt-2`}>
+                <div
+                  id="mobile-menu-brands-subnav"
+                  className={`mt-2 space-y-3 overflow-hidden transition-all duration-300 ${
+                    isBrandsExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
                   {companies.map((company) => (
                     <Link
                       key={company.id}

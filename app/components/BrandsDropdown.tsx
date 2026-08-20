@@ -95,7 +95,7 @@ export default function BrandsDropdown() {
       {isOpen && (
         <div className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
           <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-            <div className="relative grid gap-6 bg-white dark:bg-neutral-900 px-5 py-6 sm:gap-8 sm:p-8">
+            <div className="relative grid max-h-[min(70vh,40rem)] gap-6 overflow-y-auto bg-white dark:bg-neutral-900 px-5 py-6 sm:gap-8 sm:p-8">
               <div className="-m-3">
                 <h3 className="text-base font-medium text-gray-900 dark:text-neutral-100">Our Partner Brands</h3>
                 <div className="mt-2 space-y-2">

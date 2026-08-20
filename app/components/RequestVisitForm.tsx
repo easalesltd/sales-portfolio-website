@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import dynamic from 'next/dynamic';
 import { trackGaEvent } from '@/app/lib/ga-event';
+import { companies as partnerCompanies } from '@/app/data/companies';
 
 // Dynamically import Confetti to avoid SSR issues
 const ReactConfetti = dynamic(() => import('react-confetti'), {
@@ -30,20 +31,9 @@ export default function RequestVisitForm({ isOpen, onClose }: { isOpen: boolean;
     emailjs.init("bQOrMB40ft605dNrW");
   }, []);
 
-  const [companies, setCompanies] = useState<Company[]>([
-    { name: 'Boxer Gifts', checked: false },
-    { name: 'David Fischhoff', checked: false },
-    { name: 'Emotional Rescue', checked: false },
-    { name: 'Global Journey Gifts', checked: false },
-    { name: 'Mint Publishing', checked: false },
-    { name: 'Museums & Galleries', checked: false },
-    { name: 'Ohh Deer', checked: false },
-    { name: 'Paper Salad', checked: false },
-    { name: 'Peppermint Grove', checked: false },
-    { name: 'Rudi & Bear', checked: false },
-    { name: 'The Cambridge Confectionery Company', checked: false },
-    { name: 'Star Editions', checked: false },
-  ]);
+  const [companies, setCompanies] = useState<Company[]>(() =>
+    partnerCompanies.map((company) => ({ name: company.name, checked: false }))
+  );
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');

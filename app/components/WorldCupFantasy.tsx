@@ -1498,6 +1498,7 @@ function StandingsProgressChart({
         Tap a crest on the chart to see the team name and current points.
       </p>
 
+      {t.id === 'english-pyramid' ? null : (
       <ul className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-neutral-300">
         {series
           .slice()
@@ -1533,6 +1534,7 @@ function StandingsProgressChart({
             );
           })}
       </ul>
+      )}
     </div>
   );
 }
