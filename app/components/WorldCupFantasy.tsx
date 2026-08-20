@@ -39,6 +39,7 @@ import RedrawCountdownBanner from './english-pyramid/RedrawCountdownBanner';
 import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeContext';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import SweepstakeAwards from './english-pyramid/SweepstakeAwards';
+import DraftOverachievementChart from './english-pyramid/DraftOverachievementChart';
 
 type SweepstakeResponse = EnglishPyramidFantasyResponse;
 
@@ -2628,6 +2629,9 @@ function WorldCupFantasyView({
                 <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>
                 <p className="text-xs text-neutral-500">{progressChartDescription}</p>
                 <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />
+                {t.id === 'english-pyramid' && !(data.redraw?.squadsHidden) ? (
+                  <DraftOverachievementChart standings={data.standings} />
+                ) : null}
               </section>
 
               <MatchdaySchedule
