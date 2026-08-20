@@ -5,6 +5,7 @@ const {
   assertLedgerMonotonic,
   assertNoDuplicateLedgerIds,
   filterNewLedgerEntries,
+  countManualMatches,
   parseManualMatchIds,
 } = require('./sweepstake-ledger-guard.cjs');
 
@@ -16,6 +17,8 @@ export const WORLD_CUP_FANTASY_MANUAL_MATCHES = [
 `;
 
 assert.deepEqual(parseManualMatchIds(sampleSource, 'WORLD_CUP_FANTASY_MANUAL_MATCHES'), ['a', 'b']);
+assert.equal(countManualMatches(sampleSource, 'WORLD_CUP_FANTASY_MANUAL_MATCHES'), 2);
+assert.equal(parseManualMatchIds(sampleSource, 'WORLD_CUP_FANTASY_MANUAL_MATCHES').size, undefined);
 
 const emptyPyramidLedger = `
 export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[] = [];

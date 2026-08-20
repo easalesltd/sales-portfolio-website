@@ -3,7 +3,7 @@
 const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
-const { parseManualMatchIds } = require('./lib/sweepstake-ledger-guard.cjs');
+const { countManualMatches } = require('./lib/sweepstake-ledger-guard.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/english-pyramid-fantasy.ts');
@@ -24,7 +24,7 @@ function runNodeScript(relativePath, args = []) {
 }
 
 function ledgerSize(source) {
-  return parseManualMatchIds(source, 'ENGLISH_PYRAMID_MANUAL_MATCHES').size;
+  return countManualMatches(source, 'ENGLISH_PYRAMID_MANUAL_MATCHES');
 }
 
 runNodeScript('scripts/ci-pull-main.cjs');

@@ -56,6 +56,11 @@ function parseManualMatchIds(source, exportName) {
   return [...body.matchAll(/id: '([^']+)'/g)].map((entry) => entry[1]);
 }
 
+/** Array length — never `.size` (parseManualMatchIds returns an array, not a Set). */
+function countManualMatches(source, exportName) {
+  return parseManualMatchIds(source, exportName).length;
+}
+
 function findRemovedLedgerIds(beforeIds, afterIds) {
   const after = new Set(afterIds);
   return beforeIds.filter((id) => !after.has(id));
@@ -114,5 +119,6 @@ module.exports = {
   findDuplicateLedgerIds,
   findManualMatchesArrayOpen,
   findRemovedLedgerIds,
+  countManualMatches,
   parseManualMatchIds,
 };
