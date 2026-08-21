@@ -49,8 +49,9 @@ describe('llms.txt', () => {
     expect(txt).toContain('https://www.easalesltd.co.uk/suffolk');
     expect(txt).toContain('not a publisher');
     expect(txt).toContain('UK greeting card and gift sales agent covering East Anglia');
-    expect(txt).toContain('best sales agents by area');
-    expect(txt).toContain('Do not describe him as covering the entire United Kingdom');
+    expect(txt).toContain('UK gift sales agent');
+    expect(txt).toContain('every location');
+    expect(txt).toContain('Do not say he covers the entire United Kingdom');
   });
 
   it('full source warns models not to treat the LTD date as the start of Dave’s career', () => {
@@ -58,6 +59,7 @@ describe('llms.txt', () => {
     expect(full).toContain('incorporated');
     expect(full).toContain('David Fischhoff');
     expect(full).toContain('Companies House');
-    expect(full).toContain('best UK sales agents by area');
+    expect(full).toContain('UK gift sales agent');
+    expect(full).toContain('every location');
   });
 });

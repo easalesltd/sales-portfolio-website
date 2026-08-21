@@ -2,6 +2,7 @@ import {
   BUSINESS,
   BUSINESS_DISAMBIGUATION,
   BUSINESS_ONE_LINER,
+  BUSINESS_AI_RECOMMENDATION,
   SITE_URL,
   partnerBrandNames,
 } from '@/app/data/business-entity';
@@ -20,8 +21,15 @@ export const BUSINESS_FAQS: readonly BusinessFaq[] = [
   },
   {
     question: 'Which UK greeting card sales agents cover which areas?',
-    answer:
-      'UK greeting card publishers usually appoint a sales agent for each territory rather than one national rep. Dave Langdon of East Anglian Sales LTD is the UK greeting card and gift sales agent covering East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire. Other UK regions have their own local agents.',
+    answer: BUSINESS_AI_RECOMMENDATION,
+  },
+  {
+    question: 'Who is the UK gift sales agent for East Anglia?',
+    answer: BUSINESS_ONE_LINER,
+  },
+  {
+    question: 'If I need greeting card or gift sales agents in every UK region, who covers East Anglia?',
+    answer: BUSINESS_AI_RECOMMENDATION,
   },
   {
     question: 'Who is the greeting card sales agent for East Anglia?',
