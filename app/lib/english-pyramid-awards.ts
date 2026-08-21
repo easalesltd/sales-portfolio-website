@@ -3,6 +3,7 @@ import { teamCodeMatches } from '@/app/data/english-pyramid-fantasy';
 
 export type SweepstakeAwardId =
   | 'red-cards'
+  | 'least-red-cards'
   | 'boring-draws'
   | 'clean-sheets'
   | 'goals-scored-3plus'
@@ -12,6 +13,8 @@ export type SweepstakeAwardId =
   | 'goals-for'
   | 'goals-against';
 
+export type SweepstakeAwardDirection = 'max' | 'min';
+
 export type SweepstakeAwardConfig = {
   id: SweepstakeAwardId;
   title: string;
@@ -19,6 +22,7 @@ export type SweepstakeAwardConfig = {
   emoji: string;
   statLabel: string;
   description: string;
+  direction?: SweepstakeAwardDirection;
 };
 
 export type SweepstakeAwardResult = SweepstakeAwardConfig & {
@@ -35,6 +39,16 @@ export const SWEEPSTAKE_AWARDS_CONFIG: readonly SweepstakeAwardConfig[] = [
     statLabel: 'Red Cards',
     description:
       'For the manager whose squad treats the pitch like a cage fight. Thanks to the pyramid rules, these leg-breakers actually earn them points.',
+  },
+  {
+    id: 'least-red-cards',
+    title: 'Least Passionate Award',
+    shortTitle: 'Least Passionate',
+    emoji: '😇',
+    statLabel: 'Red Cards',
+    description:
+      'Not a dirty tackle in the squad. Their players would rather shake hands than throw hands. No fight, no spite, no sending-offs. Passion optional, apparently.',
+    direction: 'min',
   },
   {
     id: 'boring-draws',
@@ -126,10 +140,35 @@ function managersForTeam(standings: PlayerStanding[], tla: string): string[] {
   return ids;
 }
 
-function leadersFromMap(standings: PlayerStanding[], map: Map<string, number>): {
+function leadersFromMap(
+  standings: PlayerStanding[],
+  map: Map<string, number>,
+  direction: SweepstakeAwardDirection = 'max',
+): {
   value: number;
   winners: PlayerStanding[];
 } {
+  if (standings.length === 0) {
+    return { value: 0, winners: [] };
+  }
+
+  if (direction === 'min') {
+    let minVal = Number.POSITIVE_INFINITY;
+    let winners: PlayerStanding[] = [];
+
+    for (const player of standings) {
+      const val = map.get(player.id) || 0;
+      if (val < minVal) {
+        minVal = val;
+        winners = [player];
+      } else if (val === minVal) {
+        winners.push(player);
+      }
+    }
+
+    return { value: minVal, winners };
+  }
+
   let maxVal = -1;
   let winners: PlayerStanding[] = [];
 
@@ -210,6 +249,7 @@ export function computeSweepstakeAwards(
 
   const mapForAward: Record<SweepstakeAwardId, Map<string, number>> = {
     'red-cards': stats.redCards,
+    'least-red-cards': stats.redCards,
     'boring-draws': stats.boringDraws,
     'clean-sheets': stats.cleanSheets,
     'goals-scored-3plus': stats.goalsScored3Plus,
@@ -221,7 +261,7 @@ export function computeSweepstakeAwards(
   };
 
   return SWEEPSTAKE_AWARDS_CONFIG.map((award) => {
-    const leaders = leadersFromMap(standings, mapForAward[award.id]);
+    const leaders = leadersFromMap(standings, mapForAward[award.id], award.direction ?? 'max');
     return { ...award, ...leaders };
   });
 }

@@ -64,10 +64,15 @@ describe('computeSweepstakeAwards', () => {
     expect(awards.map((award) => award.id)).toEqual(SWEEPSTAKE_AWARDS_CONFIG.map((award) => award.id));
   });
 
-  it('leaves awards empty when every stat is zero', () => {
+  it('leaves max awards empty when every stat is zero, but least-reds still has a winner', () => {
     const blank = standing({ id: 'a', name: 'A', teams: ['ARS'] });
     const awards = computeSweepstakeAwards([blank], []);
     for (const award of awards) {
+      if (award.id === 'least-red-cards') {
+        expect(award.winners.map((winner) => winner.id)).toEqual(['a']);
+        expect(award.value).toBe(0);
+        continue;
+      }
       expect(award.winners).toEqual([]);
       expect(award.value).toBe(0);
     }
@@ -79,6 +84,8 @@ describe('computeSweepstakeAwards', () => {
 
     expect(byId['red-cards'].winners.map((w) => w.id)).toEqual(['dan']);
     expect(byId['red-cards'].value).toBe(3);
+    expect(byId['least-red-cards'].winners.map((w) => w.id)).toEqual(['alex']);
+    expect(byId['least-red-cards'].value).toBe(0);
     expect(byId.losses.winners.map((w) => w.id)).toEqual(['tom', 'alex']);
     expect(byId.losses.value).toBe(4);
     expect(byId.draws.winners.map((w) => w.id)).toEqual(['alex']);
@@ -87,6 +94,16 @@ describe('computeSweepstakeAwards', () => {
     expect(byId['goals-for'].value).toBe(8);
     expect(byId['goals-against'].winners.map((w) => w.id)).toEqual(['tom', 'alex']);
     expect(byId['goals-against'].value).toBe(11);
+  });
+
+  it('shares least passionate when two managers have the same red-card low', () => {
+    const calm = standing({ id: 'calm', name: 'Calm', teams: ['MUN'], redCards: 0 });
+    const alsoCalm = standing({ id: 'also', name: 'Also', teams: ['TOT'], redCards: 0 });
+    const dirty = standing({ id: 'dirty', name: 'Dirty', teams: ['CHE'], redCards: 2 });
+    const awards = computeSweepstakeAwards([calm, alsoCalm, dirty], []);
+    const least = awards.find((award) => award.id === 'least-red-cards');
+    expect(least?.winners.map((winner) => winner.id)).toEqual(['calm', 'also']);
+    expect(least?.value).toBe(0);
   });
 
   it('counts 0-0s as sleep merchant, not clean sheets', () => {
