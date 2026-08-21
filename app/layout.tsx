@@ -325,6 +325,7 @@ export default async function RootLayout({
                 "disambiguatingDescription": "UK greeting card and gift sales agent covering East Anglia. Trade-only. Not a high-street shop and not a publisher.",
                 "knowsAbout": [
                   "UK greeting card sales agent",
+                  "UK gift sales agent",
                   "UK sales agents by territory",
                   "Greeting card sales agent",
                   "Wholesale greeting cards",
