@@ -2477,6 +2477,8 @@ function WorldCupFantasyView({
       aria-labelledby="world-cup-fantasy-title"
     >
       <div className={standalone ? t.c.panelStandalone : t.c.panel}>
+        {t.id === 'english-pyramid' ? <PyramidMobileJumpNav /> : null}
+
         <header className={t.c.header}>
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
@@ -2528,9 +2530,6 @@ function WorldCupFantasyView({
             }}
           />
         ) : null}
-
-        {/* Outside the scroll body so standings/fixtures never paint underneath the jump buttons. */}
-        {t.id === 'english-pyramid' && data && !loading && !error ? <PyramidMobileJumpNav /> : null}
 
         <div ref={scrollRef} className={t.c.body}>
           {pullToRefreshEnabled ? (
