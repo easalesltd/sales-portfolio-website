@@ -6,13 +6,20 @@ const { parseFixturesFromSource } = require('./lib/english-pyramid-fixture-lib.c
 const {
   validateManualMatchesAgainstFixtures,
 } = require('./lib/sweepstake-ledger-validation.cjs');
-const { resolveFixtureKickoff } = require('./lib/english-pyramid-due-fixtures-lib.cjs');
+const {
+  DEFAULT_UPDATE_DELAY_MINUTES,
+  resolveFixtureKickoff,
+} = require('./lib/english-pyramid-due-fixtures-lib.cjs');
+const {
+  DEFAULT_HARD_OVERDUE_MINUTES,
+  classifyUnrecordedFixtureOverdue,
+} = require('./lib/english-pyramid-overdue-classification.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/english-pyramid-fantasy.ts');
 const source = fs.readFileSync(dataPath, 'utf8');
 
-const DEFAULT_RESULT_FINALITY_BUFFER_MINUTES = 110;
+const DEFAULT_RESULT_FINALITY_BUFFER_MINUTES = DEFAULT_UPDATE_DELAY_MINUTES;
 
 const resultFinalityBufferMinutes = Number.parseInt(
   process.env.ENGLISH_PYRAMID_RESULT_FINALITY_BUFFER_MINUTES ||
@@ -109,14 +116,32 @@ async function validateOverdueFixturesWithEspn(seenIds, fixtures, errors) {
 
     const effectiveKickoff = new Date(kickoffInfo.effectiveUtcDate);
     const minutesSinceKickoff = (now.getTime() - effectiveKickoff.getTime()) / 60000;
-    if (minutesSinceKickoff >= resultFinalityBufferMinutes) {
-      const delayNote = kickoffInfo.isDelayed
-        ? ` (ESPN kick-off ${kickoffInfo.effectiveUtcDate}, delayed ${kickoffInfo.delayMinutes}m from schedule)`
-        : '';
-      errors.push(
-        `${fixture.id}: kicked off ${Math.floor(minutesSinceKickoff)} minutes ago but has no manual result yet${delayNote}`,
-      );
+    const verdict = classifyUnrecordedFixtureOverdue({
+      minutesSinceKickoff,
+      bufferMinutes: resultFinalityBufferMinutes,
+      hardOverdueMinutes: DEFAULT_HARD_OVERDUE_MINUTES,
+      espnMatch: kickoffInfo.espnMatch,
+      espnLookupFailed: kickoffInfo.espnLookupFailed === true,
+    });
+
+    if (!verdict.overdue) {
+      if (verdict.reason !== 'within-buffer') {
+        const espnNote = kickoffInfo.espnMatch?.period
+          ? ` ESPN ${kickoffInfo.espnMatch.period}.`
+          : '';
+        console.log(
+          `Waiting on ${fixture.id}: ${verdict.reason} (${Math.floor(minutesSinceKickoff)}m after kick-off).${espnNote}`,
+        );
+      }
+      continue;
     }
+
+    const delayNote = kickoffInfo.isDelayed
+      ? ` (ESPN kick-off ${kickoffInfo.effectiveUtcDate}, delayed ${kickoffInfo.delayMinutes}m from schedule)`
+      : '';
+    errors.push(
+      `${fixture.id}: kicked off ${Math.floor(minutesSinceKickoff)} minutes ago but has no manual result yet (${verdict.reason})${delayNote}`,
+    );
   }
 }
 

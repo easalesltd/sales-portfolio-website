@@ -90,10 +90,6 @@ jobs:
         id: after_sync
         run: node scripts/english-pyramid-due-fixtures.cjs
 
-      - name: Validate synced scores
-        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
-        run: npm run english-pyramid:validate:scores
-
       - name: Build after score sync
         if: steps.scores.outputs.scores_changed == 'true'
         run: npm run build
@@ -109,7 +105,7 @@ jobs:
           if [[ "${{ steps.scores.outputs.scores_changed }}" == "true" ]]; then
             needs_agent=true
           fi
-          if [[ "${{ steps.after_sync.outputs.due }}" == "true" ]]; then
+          if [[ "${{ steps.after_sync.outputs.needs_followup }}" == "true" ]]; then
             needs_agent=true
           fi
           if [[ "${{ steps.due.outputs.forced }}" == "true" ]]; then
@@ -166,9 +162,7 @@ jobs:
 
       - name: Validate agent changes
         if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
-        run: |
-          npm run english-pyramid:standings
-          npm run english-pyramid:validate:scores
+        run: npm run english-pyramid:standings
 
       - name: Validate changed files
         if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
@@ -204,3 +198,7 @@ jobs:
             --message "Update English pyramid sweepstake scores and roast" \
             --output-name agent_changed \
             --ledger-guard english-pyramid
+
+      - name: Validate synced scores
+        if: steps.match_window.outputs.should_run == 'true' && (steps.due.outputs.due == 'true' || steps.due.outputs.forced == 'true')
+        run: npm run english-pyramid:validate:scores

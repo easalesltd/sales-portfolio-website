@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris is top on 57 and it is a joke. Sheffield Wednesday lost 0-1 at home to Bradford. League One, own ground, bottled it, still first. Soft as shite.\n\nBen is 50. Dagenham smashed Walton 0-2. Hebburn nicked Worksop 1-0. That is graft, not hiding behind Tuesday\'s leftovers.\n\nScott is 48. Horsham leathered Hampton 2-0 then Darlington rolled over for Chris\'s Chester. Spineless.\n\nNest is 38. Farnham nicked a win. Chesham got done. You are the human equivalent of a 1-1.\n\nAsh and Dave are glued on 32. Totton stuffed 0-3. Marine and Walton got battered. Two managers, one sinking ship.\n\nJon is last on 30. Macclesfield served a boring 0-0. Ebbsfleet keep postponing. You were "leading on 20" at Saturday lunchtime. Sit the fuck down.';
+  'Scott\'s Arsenal stuffed Coventry 3-0 at home. Clean sheet, three and more, plus 5. He is 53 and briefly looks like he knows what he is doing.\n\nBen owns the other lot. Coventry shipped three, minus 1, down to 49. Survival pick, survived nothing.\n\nChris is still top on 57 without a club kicking a ball. Friday night, feet up, watching other people work.\n\nNest is 38. Ash and Dave are stuck on 32. Jon is last on 30. Four of you contributed vibes. Congrats.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -1848,6 +1848,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Bradford City', tla: 'BRD' },
     homeGoals: 0,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-21-ars-cov',
+    utcDate: '2026-08-21T19:00Z',
+    homeTeam: { name: 'Arsenal', tla: 'ARS' },
+    awayTeam: { name: 'Coventry City', tla: 'COV' },
+    homeGoals: 3,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },

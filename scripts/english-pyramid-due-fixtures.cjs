@@ -8,6 +8,7 @@ const {
   getMatchdaySweepDue,
   readDataFileSource,
 } = require('./lib/english-pyramid-due-fixtures-lib.cjs');
+const { dueFixtureNeedsFollowUp } = require('./lib/english-pyramid-overdue-classification.cjs');
 
 const forceAgent = process.env.ENGLISH_PYRAMID_FORCE_AGENT === '1';
 
@@ -30,12 +31,14 @@ async function main() {
 
   const hasDueFixtures = dueFixtures.length > 0;
   const isDue = hasDueFixtures || matchdaySweepDue;
+  const needsFollowup = dueFixtures.some(dueFixtureNeedsFollowUp) || matchdaySweepDue;
 
   const fixtureList = hasDueFixtures
     ? await formatDueFixturesWithEspnHints(dueFixtures, source)
     : matchdaySweepMessage;
 
   setOutput('due', isDue ? 'true' : 'false');
+  setOutput('needs_followup', needsFollowup ? 'true' : 'false');
   setOutput('forced', forceAgent ? 'true' : 'false');
   setOutput('scan_mode', hasDueFixtures ? 'fixtures' : matchdaySweepDue ? 'matchday' : 'none');
   setOutput('fixtures', fixtureList);

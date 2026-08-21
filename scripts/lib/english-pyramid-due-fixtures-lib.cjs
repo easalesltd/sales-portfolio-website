@@ -116,19 +116,31 @@ async function resolveFixtureKickoff(fixture, now, updateDelayMinutes, cache) {
   const needsLookup = shouldLookupEspnKickoff(fixture.utcDate, now, updateDelayMinutes);
 
   if (!needsLookup && !scheduledDue) {
-    return resolveEffectiveKickoff(fixture.utcDate, null);
+    return {
+      ...resolveEffectiveKickoff(fixture.utcDate, null),
+      espnMatch: null,
+      espnLookupFailed: false,
+    };
   }
 
   try {
     const espnMatch = await loadEspnEventsForFixture(fixture, cache);
-    return resolveEffectiveKickoff(fixture.utcDate, espnMatch);
+    return {
+      ...resolveEffectiveKickoff(fixture.utcDate, espnMatch),
+      espnMatch,
+      espnLookupFailed: false,
+    };
   } catch (error) {
     console.warn(
       `Unable to resolve ESPN kick-off for ${fixture.id}: ${
         error instanceof Error ? error.message : error
       }`,
     );
-    return resolveEffectiveKickoff(fixture.utcDate, null);
+    return {
+      ...resolveEffectiveKickoff(fixture.utcDate, null),
+      espnMatch: null,
+      espnLookupFailed: true,
+    };
   }
 }
 
@@ -343,4 +355,5 @@ module.exports = {
   parseSweepstakeTeamCodes,
   readDataFileSource,
   resolveFixtureKickoff,
+  loadEspnEventsForFixture,
 };
