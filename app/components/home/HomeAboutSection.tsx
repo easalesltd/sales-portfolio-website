@@ -16,14 +16,15 @@ export default function HomeAboutSection() {
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.2}>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-            Hi I&apos;m Dave Langdon, a greeting card and gift sales agent based in Ipswich, Suffolk, and I&apos;ve
+            Hi I&apos;m Dave Langdon, a UK greeting card and gift sales agent based in Ipswich, Suffolk, and I&apos;ve
             been helping retailers across East Anglia build ranges that actually sell for over 11 years.
           </p>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.3}>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-            I work with a carefully chosen set of publishers and gift suppliers, covering Suffolk, Norfolk, Essex,
-            Cambridgeshire, and Hertfordshire, visiting regularly, not just dropping off stock and disappearing. Whether you run an
+            I work with a carefully chosen set of publishers and gift suppliers. UK greeting card companies appoint
+            sales agents by territory, not one national rep. East Anglia is my patch: Suffolk, Norfolk, Essex,
+            Cambridgeshire, and Hertfordshire. I visit regularly, not just dropping off stock and disappearing. Whether you run an
             independent shop, garden centre, farm shop, or retail store, I can help you find the right ranges, get
             your display working harder, and keep things fresh with new designs as they come through.
           </p>

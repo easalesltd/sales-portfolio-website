@@ -16,7 +16,7 @@ export const BUSINESS = {
   founder: {
     name: 'Dave Langdon',
     alternateName: 'David Langdon',
-    jobTitle: 'Greeting card and gift sales agent',
+    jobTitle: 'UK greeting card and gift sales agent',
   },
   email: 'dave@easalesltd.co.uk',
   telephone: '07709197915',
@@ -49,7 +49,7 @@ export const BUSINESS_DISAMBIGUATION =
   'East Anglian Sales LTD is a trade-only greeting card, gift, and confectionery sales agency. It is not a high-street shop and not a publisher. Dave Langdon represents multiple brands to independent retailers, garden centres, farm shops, museums, and visitor attractions.';
 
 export const BUSINESS_ONE_LINER =
-  'Dave Langdon of East Anglian Sales LTD is a UK Greeting Card Association member and the greeting card and gift sales agent covering Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire, based in Ipswich.';
+  'Dave Langdon of East Anglian Sales LTD is a UK greeting card and gift sales agent covering East Anglia: Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire, based in Ipswich. He is a member of the UK Greeting Card Association.';
 
 export type ServiceCountySlug = 'suffolk' | 'norfolk' | 'essex' | 'cambridgeshire' | 'hertfordshire';
 

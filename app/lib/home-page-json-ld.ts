@@ -15,7 +15,7 @@ export function getHomePageJsonLd() {
       '@type': 'WebPage',
       '@id': `${SITE_URL}/#webpage`,
       url: SITE_URL,
-      name: 'East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent',
+      name: 'East Anglian Sales LTD | Dave Langdon — UK Greeting Card Sales Agent | East Anglia',
       description: HOME_PAGE_META_DESCRIPTION,
       inLanguage: 'en-GB',
       isPartOf: {

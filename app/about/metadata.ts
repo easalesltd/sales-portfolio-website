@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About Dave Langdon | East Anglian Sales",
   description:
-    "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
+    "Meet Dave Langdon — UK greeting card and gift sales agent covering East Anglia, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
   openGraph: {
     title: "About Dave Langdon | East Anglian Sales",
     description:
-      "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
+      "Meet Dave Langdon — UK greeting card and gift sales agent covering East Anglia, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
     type: "website",
     locale: "en_GB",
     siteName: "East Anglian Sales LTD",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "About Dave Langdon | East Anglian Sales",
     description:
-      "Meet Dave Langdon — East Anglia's greeting card and gift sales agent, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
+      "Meet Dave Langdon — UK greeting card and gift sales agent covering East Anglia, based in Ipswich with over 11 years' experience helping independent retailers build ranges that sell.",
     images: [
       "https://www.easalesltd.co.uk/images/showcase/showcase1.jpeg",
       "https://www.easalesltd.co.uk/images/showcase/showcase2.jpeg"

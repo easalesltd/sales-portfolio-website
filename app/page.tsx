@@ -9,18 +9,18 @@ import HomePartnerBrandsSection from './components/home/HomePartnerBrandsSection
 
 export const metadata: Metadata = {
   title: {
-    absolute: 'East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent',
+    absolute: 'East Anglian Sales LTD | UK Greeting Card Sales Agent Covering East Anglia',
   },
   description: HOME_PAGE_META_DESCRIPTION,
   alternates: {
     canonical: 'https://www.easalesltd.co.uk',
   },
   openGraph: {
-    title: 'East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent',
+    title: 'East Anglian Sales LTD | UK Greeting Card Sales Agent Covering East Anglia',
     description: HOME_PAGE_META_DESCRIPTION,
   },
   twitter: {
-    title: 'East Anglian Sales LTD | Dave Langdon — Greeting Card & Gift Sales Agent',
+    title: 'East Anglian Sales LTD | UK Greeting Card Sales Agent Covering East Anglia',
     description: HOME_PAGE_META_DESCRIPTION,
   },
 };

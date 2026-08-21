@@ -84,8 +84,8 @@ const DisplaySolutionsDropdown = dynamic(
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Greeting Card & Gift Sales Agent',
-    default: 'Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia',
+    template: '%s | UK Greeting Card Sales Agent',
+    default: 'Dave Langdon - UK Greeting Card Sales Agent | East Anglia',
   },
   description: HOME_PAGE_META_DESCRIPTION,
   icons: {
@@ -125,7 +125,7 @@ export const metadata: Metadata = {
       : {}),
   },
   openGraph: {
-    title: "Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia",
+    title: "Dave Langdon - UK Greeting Card Sales Agent | East Anglia",
     description: HOME_PAGE_META_DESCRIPTION,
     type: "website",
     locale: "en_GB",
@@ -176,7 +176,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Dave Langdon - Greeting Card & Gift Sales Agent | East Anglia',
+    title: 'Dave Langdon - UK Greeting Card Sales Agent | East Anglia',
     description: HOME_PAGE_META_DESCRIPTION,
     site: '@eastangliansalesltd',
     creator: '@DaveLangdon',
@@ -306,7 +306,7 @@ export default async function RootLayout({
                     "telephone": "07709197915",
                     "email": "dave@easalesltd.co.uk",
                     "contactType": "sales",
-                    "areaServed": ["Suffolk", "Norfolk", "Essex", "Cambridgeshire", "Hertfordshire"],
+                    "areaServed": ["East Anglia", "Suffolk", "Norfolk", "Essex", "Cambridgeshire", "Hertfordshire"],
                     "availableLanguage": "English"
                   }
                 ],
@@ -322,8 +322,10 @@ export default async function RootLayout({
                   "propertyID": "CompanyNumber",
                   "value": "14725288"
                 },
-                "disambiguatingDescription": "Trade-only greeting card and gift sales agency for East Anglia retailers. Not a high-street shop and not a publisher.",
+                "disambiguatingDescription": "UK greeting card and gift sales agent covering East Anglia. Trade-only. Not a high-street shop and not a publisher.",
                 "knowsAbout": [
+                  "UK greeting card sales agent",
+                  "UK sales agents by territory",
                   "Greeting card sales agent",
                   "Wholesale greeting cards",
                   "Giftware sales agent",
@@ -337,6 +339,14 @@ export default async function RootLayout({
                   "url": UK_GREETING_CARD_ASSOCIATION_URL
                 },
                 "areaServed": [
+                  {
+                    "@type": "AdministrativeArea",
+                    "name": "East Anglia",
+                    "containedInPlace": {
+                      "@type": "Country",
+                      "name": "United Kingdom"
+                    }
+                  },
                   {
                     "@type": "State",
                     "name": "Suffolk",
@@ -416,17 +426,17 @@ export default async function RootLayout({
                   "@type": "Person",
                   "name": "Dave Langdon",
                   "alternateName": "David Langdon",
-                  "jobTitle": ["Greeting Card Sales Agent", "Giftware Sales Agent", "Sales Agent"],
+                  "jobTitle": ["UK Greeting Card Sales Agent", "Greeting Card Sales Agent", "Giftware Sales Agent", "Sales Agent"],
                   "occupation": {
                     "@type": "Occupation",
-                    "name": "Greeting Card Sales Agent",
+                    "name": "UK Greeting Card Sales Agent",
                     "occupationLocation": {
                       "@type": "City",
                       "name": "Ipswich"
                     },
                     "skills": "Greeting Card Sales, Giftware Sales, Retail Supplier, Wholesale Agent"
                   },
-                  "description": "Dave Langdon, also known as David Langdon, is a professional Greeting Card Sales Agent and Giftware Sales Agent with over a decade of experience in East Anglia"
+                  "description": "Dave Langdon, also known as David Langdon, is a UK greeting card and gift sales agent covering East Anglia, with over a decade of experience."
                 },
                 "openingHours": "Mo-Fr 09:00-17:00",
                 "openingHoursSpecification": [
@@ -453,16 +463,18 @@ export default async function RootLayout({
                   "https://www.linkedin.com/in/dave-langdon-709a8547",
                   "https://www.instagram.com/eastangliansalesltd/"
                 ],
-                "jobTitle": ["Greeting Card Sales Agent", "Giftware Sales Agent", "Sales Agent"],
+                "jobTitle": ["UK Greeting Card Sales Agent", "Greeting Card Sales Agent", "Giftware Sales Agent", "Sales Agent"],
                 "occupation": {
                   "@type": "Occupation",
-                  "name": "Greeting Card Sales Agent",
+                  "name": "UK Greeting Card Sales Agent",
                   "occupationLocation": {
                     "@type": "City",
                     "name": "Ipswich"
                   }
                 },
                 "knowsAbout": [
+                  "UK greeting card sales agent",
+                  "UK sales agents by territory",
                   "Greeting Card Sales",
                   "Giftware Sales",
                   "Retail Supplier",
@@ -481,7 +493,7 @@ export default async function RootLayout({
                   "addressRegion": "Suffolk",
                   "addressCountry": "GB"
                 },
-                "description": "Dave Langdon, also known as David Langdon, is a UK-based professional Greeting Card Sales Agent and Giftware Sales Agent based in Ipswich, Suffolk. With over a decade of experience, Dave serves retailers across East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
+                "description": "Dave Langdon, also known as David Langdon, is a UK greeting card and gift sales agent covering East Anglia, based in Ipswich, Suffolk. With over a decade of experience, he serves retailers across Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire."
               }
             ])
           }}

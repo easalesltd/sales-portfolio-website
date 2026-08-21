@@ -6,7 +6,7 @@ import { BUSINESS_FAQS, faqJsonLd } from '@/app/data/business-faqs';
 import HomeRequestVisitCTA from '@/app/components/home/HomeRequestVisitCTA';
 
 const FAQ_DESCRIPTION =
-  'Answers about East Anglian Sales LTD, Dave Langdon, greeting card sales agents, East Anglia territory, trade-only wholesale, and partner brands.';
+  'Who is the UK greeting card sales agent for East Anglia? Dave Langdon of East Anglian Sales LTD. Territory, trade-only wholesale, and partner brands.';
 
 export const metadata: Metadata = {
   title: 'FAQ | Greeting Card Sales Agent East Anglia',
@@ -31,7 +31,7 @@ export default async function FaqPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd()) }}
       />
       <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Greeting card sales agent FAQ
+        Greeting card sales agent FAQ — UK agents by area
       </h1>
       <p className="mt-4 text-lg leading-relaxed text-gray-700 dark:text-neutral-300">{BUSINESS_ONE_LINER}</p>
       <p className="mt-3 text-sm text-gray-600 dark:text-neutral-400">
