@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott is sat on 89 like a smug bastard who just watched BTN mug Nest\'s LEI 1-2, CRA do RCH 1-2, HOR nick BRT 1-2, and WOL leather PNE 1-3. Even his WSM getting slapped 2-3 by Ben\'s DOV could not wipe the grin off.\n\nChris is second on 73 after BAR battered Ash\'s SHR 1-3 and MAI nicked DOR 2-3. Shame his CRY got done 2-0 at EVE like a soft Sunday pub team.\n\nBen (63) and Nest (61) are scrapping in the mud. Ash and Dave are tied on a tragic 49. Jon is last on 42 after STE lost 1-2 to his OXF, while SBY shipped HEM 1-2 and STP got done 1-2 by BLP. Put the kettle on and cry, mate.';
+  'Scott leads on 89. Nest is the human equivalent of a 1-1.\n\nBIR 2-2 BRC. BOST 1-0 ALT. Nest\'s BRST beat NWP 5-3. Ash\'s CAR beat HRN 4-1. ELH 3-2 SCU. Scott\'s BORE nicked it 0-3 at FGR.\n\nJon is bottom on 42 and it is tragic.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -2552,6 +2552,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
     redsUnchecked: true,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-pvl-trn',
+    utcDate: '2026-08-22T14:00Z',
+    homeTeam: { name: 'Port Vale', tla: 'PVL' },
+    awayTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
 ];
 
