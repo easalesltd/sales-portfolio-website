@@ -2477,7 +2477,11 @@ function WorldCupFantasyView({
       aria-labelledby="world-cup-fantasy-title"
     >
       <div className={standalone ? t.c.panelStandalone : t.c.panel}>
-        {t.id === 'english-pyramid' ? <PyramidMobileJumpNav /> : null}
+        {t.id === 'english-pyramid' ? (
+          <div className="hidden sm:block">
+            <PyramidMobileJumpNav />
+          </div>
+        ) : null}
 
         <header className={t.c.header}>
           <div className="flex items-start justify-between gap-3">
@@ -2511,6 +2515,12 @@ function WorldCupFantasyView({
             ) : null}
           </div>
         </header>
+
+        {t.id === 'english-pyramid' ? (
+          <div className="sm:hidden">
+            <PyramidMobileJumpNav />
+          </div>
+        ) : null}
 
         {showRedrawReveal && data ? (
           <RedrawRevealExperience
