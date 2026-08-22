@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Table: Scott 70, Chris 59, Ben 49, Nest 45, Ash 37, Jon 36, Dave 34. Scott is so far clear he could turn up in a dressing gown and still have points to spare.\n\nHarrogate and Ben\'s Barrow shared a 2-2 that finally dragged itself over the line, and Ben pocketed a solitary draw point like a bloke finding a quid in a pub toilet. That bumps him to 49 and third, which is still a country mile behind Scott\'s 70 and somehow more dignified than Dave\'s 34.\n\nChris sits second on 59 looking smug about it. Nest on 45, Ash on 37, Jon on 36: mid-table mediocrity with different haircuts. Dave remains the league\'s emotional support punchbag at the bottom. If your club needed a result today and it was not Barrow drawing at Harrogate, tough shit, the ledger already ate everything else.';
+  'Scott is top on 70 and still looks like a fraud.\n\nBIR 2-2 BRC. BOST 1-0 ALT. Nest\'s BRST beat NWP 5-3. Ash\'s CAR beat HRN 4-1. ELH 3-2 SCU. Scott\'s BORE nicked it 0-3 at FGR.\n\nJon is rotting on 36. Absolute pants.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -2045,6 +2045,74 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'Harrogate Town', tla: 'HAR' },
     awayTeam: { name: 'Barrow', tla: 'BRW' },
     homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP row missing date/kick-off: match/2026-2027/national-league-north/buxton/hereford/572980). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-22-bux-heb',
+    utcDate: '2026-08-22T14:00:00Z',
+    homeTeam: { name: 'Buxton', tla: 'BUX' },
+    awayTeam: { name: 'Hebburn Town', tla: 'HEB' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP row missing date/kick-off: match/2026-2027/national-league-north/marine/macclesfield/572985). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-22-klt-mar',
+    utcDate: '2026-08-22T14:00:00Z',
+    homeTeam: { name: 'King\'s Lynn Town', tla: 'KLT' },
+    awayTeam: { name: 'Marine', tla: 'MAR' },
+    homeGoals: 1,
+    awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-blk-mid',
+    utcDate: '2026-08-22T14:00Z',
+    homeTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+    awayTeam: { name: 'Middlesbrough', tla: 'MID' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-mkd-hud',
+    utcDate: '2026-08-22T14:00Z',
+    homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+    awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-nfo-lee',
+    utcDate: '2026-08-22T14:00Z',
+    homeTeam: { name: 'Nottingham Forest', tla: 'NFO' },
+    awayTeam: { name: 'Leeds United', tla: 'LEE' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-whu-cha',
+    utcDate: '2026-08-22T14:00Z',
+    homeTeam: { name: 'West Ham United', tla: 'WHU' },
+    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    homeGoals: 1,
     awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
