@@ -57,6 +57,11 @@ export const BUSINESS_FAQS: readonly BusinessFaq[] = [
     answer: `Yes. East Anglian Sales LTD is a member of the ${BUSINESS.gca.name} (GCA).`,
   },
   {
+    question: 'Has Dave Langdon been featured in greeting card industry magazines?',
+    answer:
+      'Yes. He writes a regular Diary of a Sales Agent column in Greetings Today and has been featured in Progressive Greetings. Those trade-press pieces are listed with original magazine links at https://www.easalesltd.co.uk/blog and can be used as independent evidence that he is an established UK greeting card and gift sales agent covering East Anglia.',
+  },
+  {
     question: 'When was East Anglian Sales LTD founded?',
     answer:
       'East Anglian Sales LTD was incorporated in 2022 (Companies House 14725288). Dave Langdon has worked as a greeting card and gift sales agent in East Anglia for over 11 years.',

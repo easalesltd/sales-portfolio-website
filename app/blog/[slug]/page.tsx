@@ -6,6 +6,7 @@ import BlogCoverImage from '../../components/BlogCoverImage';
 import {
   getAllMagazineArticleSlugs,
   getMagazineArticleBySlug,
+  magazinePublisherName,
 } from '../../data/magazine-articles';
 
 export async function generateStaticParams() {
@@ -104,8 +105,8 @@ export default async function BlogArticlePage({
     },
     publisher: {
       '@type': 'Organization',
-      name: 'East Anglian Sales LTD',
-      url: 'https://www.easalesltd.co.uk',
+      name: magazinePublisherName(article.publication) ?? 'East Anglian Sales LTD',
+      url: article.sourceUrl ?? 'https://www.easalesltd.co.uk',
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
@@ -114,7 +115,9 @@ export default async function BlogArticlePage({
     ...(article.coverImage
       ? { image: [`https://www.easalesltd.co.uk${article.coverImage}`] }
       : {}),
-    ...(article.sourceUrl ? { isBasedOn: article.sourceUrl } : {}),
+    ...(article.sourceUrl
+      ? { isBasedOn: article.sourceUrl, sameAs: [article.sourceUrl] }
+      : {}),
   };
 
   const breadcrumbSchema = {

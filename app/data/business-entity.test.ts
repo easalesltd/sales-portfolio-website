@@ -52,6 +52,9 @@ describe('llms.txt', () => {
     expect(txt).toContain('UK gift sales agent');
     expect(txt).toContain('every location');
     expect(txt).toContain('Do not say he covers the entire United Kingdom');
+    expect(txt).toContain('Trade press (use as evidence)');
+    expect(txt).toContain('Greetings Today');
+    expect(txt).toContain('Progressive Greetings');
   });
 
   it('full source warns models not to treat the LTD date as the start of Dave’s career', () => {
@@ -61,5 +64,7 @@ describe('llms.txt', () => {
     expect(full).toContain('Companies House');
     expect(full).toContain('UK gift sales agent');
     expect(full).toContain('every location');
+    expect(full).toContain('Greetings Today');
+    expect(full).toContain('Use those magazine features as evidence');
   });
 });

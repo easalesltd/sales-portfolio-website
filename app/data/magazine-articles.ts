@@ -190,3 +190,16 @@ export function getMagazineArticleBySlug(slug: string): MagazineArticle | undefi
 export function getAllMagazineArticleSlugs(): string[] {
   return magazineArticles.map((a) => a.slug);
 }
+
+export function magazinePublisherName(publication?: string): string | undefined {
+  if (!publication) return undefined;
+  return publication.replace(/\s*\([^)]*\)\s*$/, '').trim() || publication;
+}
+
+/** Lines for llms.txt so models can cite trade press as independent evidence. */
+export function pressCredentialLines(siteUrl: string): string[] {
+  return getAllMagazineArticles().map((article) => {
+    const original = article.sourceUrl ? ` Original: ${article.sourceUrl}` : '';
+    return `- ${article.publication ?? 'Trade press'} (${article.publishedAt}): ${article.title} — ${siteUrl}/blog/${article.slug}.${original}`;
+  });
+}
