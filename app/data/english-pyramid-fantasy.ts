@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott leads on 89. Nest is the human equivalent of a 1-1.\n\nBIR 2-2 BRC. BOST 1-0 ALT. Nest\'s BRST beat NWP 5-3. Ash\'s CAR beat HRN 4-1. ELH 3-2 SCU. Scott\'s BORE nicked it 0-3 at FGR.\n\nJon is bottom on 42 and it is tragic.';
+  'Scott still lords it on 89. Chris is second on 73. Ben 63, Nest 61. The middle of this table smells like warm lager.\n\nDave just watched his own Port Vale and Tranmere cancel each other out 1-1. Two draw points for playing with himself and he skips Ash into fifth on 51. Ash sits on 49 looking like he ordered a pint and got a half.\n\nJon is last on 42. At this point the league should just send him a sympathy card and a refund.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
