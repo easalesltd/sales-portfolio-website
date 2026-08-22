@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Arsenal stuffed Coventry 3-0 at home. Clean sheet, three and more, plus 5. He is 53 and briefly looks like he knows what he is doing.\n\nBen owns the other lot. Coventry shipped three, minus 1, down to 49. Survival pick, survived nothing.\n\nChris is still top on 57 without a club kicking a ball. Friday night, feet up, watching other people work.\n\nNest is 38. Ash and Dave are stuck on 32. Jon is last on 30. Four of you contributed vibes. Congrats.';
+  'Table: Scott 70, Dave 34. Spineless.\n\nBIR 2-2 BRC. BOST 1-0 ALT. Nest\'s BRST beat NWP 5-3. Ash\'s CAR beat HRN 4-1. ELH 3-2 SCU. Scott\'s BORE nicked it 0-3 at FGR.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -1861,6 +1861,182 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-bir-brc',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Birmingham City', tla: 'BIR' },
+    awayTeam: { name: 'Bristol City', tla: 'BRC' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-bost-alt',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Boston United', tla: 'BOST' },
+    awayTeam: { name: 'Altrincham', tla: 'ALT' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-brst-nwp',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Bristol Rovers', tla: 'BRST' },
+    awayTeam: { name: 'Newport County', tla: 'NWP' },
+    homeGoals: 5,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-car-hrn',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Carlisle United', tla: 'CAR' },
+    awayTeam: { name: 'Hornchurch', tla: 'HRN' },
+    homeGoals: 4,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-elh-scu',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Eastleigh', tla: 'ELH' },
+    awayTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-fgr-bore',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
+    homeGoals: 0,
+    awayGoals: 3,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-hal-tam',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'FC Halifax Town', tla: 'HAL' },
+    awayTeam: { name: 'Tamworth', tla: 'TAM' },
+    homeGoals: 4,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-hul-mun',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Hull City', tla: 'HUL' },
+    awayTeam: { name: 'Manchester United', tla: 'MUN' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-kid-ald',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+    awayTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 2,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-lin-por',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Lincoln City', tla: 'LIN' },
+    awayTeam: { name: 'Portsmouth', tla: 'POR' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-lut-nco',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Luton Town', tla: 'LUT' },
+    awayTeam: { name: 'Notts County', tla: 'NCO' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-sal-chs',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Salford City', tla: 'SAL' },
+    awayTeam: { name: 'Chesterfield', tla: 'CHS' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-sol-std',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Solihull Moors', tla: 'SOL' },
+    awayTeam: { name: 'Southend United', tla: 'STD' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-sut-hpl',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Sutton United', tla: 'SUT' },
+    awayTeam: { name: 'Hartlepool United', tla: 'HPL' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-22-wal-gri',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Walsall', tla: 'WAL' },
+    awayTeam: { name: 'Grimsby Town', tla: 'GRI' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-22-wor-wea',
+    utcDate: '2026-08-22T11:30Z',
+    homeTeam: { name: 'Worthing', tla: 'WOR' },
+    awayTeam: { name: 'Wealdstone', tla: 'WEA' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
   },
 ];
 
