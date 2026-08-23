@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon is last on 42. Sit down.\n\nScott swans about on 89. WBA 3-1 BUR. BHA 4-0 AVL. Dave\'s MCI beat BOU 2-1. Soft.';
+  'Scott on 89. Congrats, nobody clapped.\n\nWBA 3-1 BUR. BHA 4-0 AVL. Dave\'s MCI beat BOU 2-1. NEW 2-2 LIV.\n\nJon on 42 is a war crime against entertainment.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -2594,6 +2594,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'AFC Bournemouth', tla: 'BOU' },
     homeGoals: 2,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-23-new-liv',
+    utcDate: '2026-08-23T15:30Z',
+    homeTeam: { name: 'Newcastle United', tla: 'NEW' },
+    awayTeam: { name: 'Liverpool', tla: 'LIV' },
+    homeGoals: 2,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
