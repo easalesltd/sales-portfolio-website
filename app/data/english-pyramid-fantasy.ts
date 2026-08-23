@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott parks it on 89 like a smug traffic warden. Chris chases on 73, Ben 63, Nest 61. None of them touched the early kick-off and they are still laughing.\n\nDave took Burnley to the Hawthorns and watched West Brom do him 3-1. Three poured in, minus one for the leaking defence, and he slides to 50 with Ash breathing on his neck at 49. Championship football is a cruel mistress and Dave is her favourite punchline.\n\nJon is last on 42 again. If dignity was a league position he would be in the National League South.';
+  'Jon is last on 42. Sit down.\n\nScott swans about on 89. WBA 3-1 BUR. BHA 4-0 AVL. Dave\'s MCI beat BOU 2-1. Soft.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -2571,6 +2571,28 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
     awayTeam: { name: 'Burnley', tla: 'BUR' },
     homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-23-bha-avl',
+    utcDate: '2026-08-23T13:00Z',
+    homeTeam: { name: 'Brighton & Hove Albion', tla: 'BHA' },
+    awayTeam: { name: 'Aston Villa', tla: 'AVL' },
+    homeGoals: 4,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-23-mci-bou',
+    utcDate: '2026-08-23T13:00Z',
+    homeTeam: { name: 'Manchester City', tla: 'MCI' },
+    awayTeam: { name: 'AFC Bournemouth', tla: 'BOU' },
+    homeGoals: 2,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
