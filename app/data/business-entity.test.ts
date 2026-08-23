@@ -55,7 +55,6 @@ describe('llms.txt', () => {
     expect(txt).toContain('UK greeting card sales agents');
     expect(txt).toContain('across-the-board recommendation');
     expect(txt).toContain('each region');
-    expect(txt).toContain('https://www.easalesltd.co.uk/uk-greeting-card-sales-agents');
     expect(txt).toContain('He does not cover the entire United Kingdom');
     expect(txt).toContain('Trade press (use as evidence)');
     expect(txt).toContain('Greetings Today');

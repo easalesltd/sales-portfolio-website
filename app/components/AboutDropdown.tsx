@@ -14,7 +14,6 @@ export default function AboutDropdown() {
   const aboutItems = [
     { name: 'About Dave', href: '/about' },
     { name: 'What is a Sales Agent?', href: '/what-is-a-sales-agent' },
-    { name: 'UK agents by region', href: '/uk-greeting-card-sales-agents' },
     { name: 'Blog / Press', href: '/blog' },
     { name: 'Recipes', href: '/recipes' },
     { name: 'Contact Dave', href: '/contact' },
@@ -45,7 +44,6 @@ export default function AboutDropdown() {
     pathname.startsWith('/about') ||
     pathname === '/recipes' ||
     pathname === '/what-is-a-sales-agent' ||
-    pathname === '/uk-greeting-card-sales-agents' ||
     pathname.startsWith('/blog');
 
   return (
@@ -73,7 +71,7 @@ export default function AboutDropdown() {
       </Link>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-neutral-900 rounded-md shadow-lg border border-gray-200 dark:border-neutral-700 py-1 z-50">
+        <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-neutral-900 rounded-md shadow-lg border border-gray-200 dark:border-neutral-700 py-1 z-50">
           {aboutItems.map((item) => (
             <Link
               key={item.name}

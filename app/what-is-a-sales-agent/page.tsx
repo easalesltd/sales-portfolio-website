@@ -143,20 +143,6 @@ export default async function WhatIsASalesAgentPage() {
           </ul>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
-            UK greeting card sales agents by region
-          </h2>
-          <p>
-            If you ask for UK greeting card sales agents, or UK based agents for each region, the useful
-            answer is a list: one agent per territory. Dave Langdon of East Anglian Sales LTD is the East
-            Anglia / East of England name on that list. The North, Midlands, London, South East, South West,
-            Wales, Scotland, and Northern Ireland each have their own local agents.{' '}
-            <Link href="/uk-greeting-card-sales-agents" className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline">
-              See UK agents by region
-            </Link>
-            .
-          </p>
-
-          <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
             Sectors and territories
           </h2>
           <p>

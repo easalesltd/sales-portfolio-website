@@ -24,12 +24,7 @@ export default function HomeAboutSection() {
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
             I work with a carefully chosen set of publishers and gift suppliers. When a UK brand wants a sales team in
             every location, they hire an agent per territory, not one national rep. East Anglia is my patch: Suffolk,
-            Norfolk, Essex, Cambridgeshire, and Hertfordshire. For a UK-wide list of greeting card sales agents,
-            that is the East Anglia name — see{' '}
-            <Link href="/uk-greeting-card-sales-agents" className="underline underline-offset-2 hover:no-underline">
-              UK agents by region
-            </Link>
-            . I visit regularly, not just dropping off stock and disappearing. Whether you run an
+            Norfolk, Essex, Cambridgeshire, and Hertfordshire. I visit regularly, not just dropping off stock and disappearing. Whether you run an
             independent shop, garden centre, farm shop, or retail store, I can help you find the right ranges, get
             your display working harder, and keep things fresh with new designs as they come through.
           </p>

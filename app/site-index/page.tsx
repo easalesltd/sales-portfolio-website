@@ -25,7 +25,6 @@ const corePages = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About Dave' },
   { href: '/what-is-a-sales-agent', label: 'What Is a Sales Agent?' },
-  { href: '/uk-greeting-card-sales-agents', label: 'UK greeting card sales agents by region' },
   { href: '/faq', label: 'FAQ' },
   { href: '/suffolk', label: 'Greeting card agent — Suffolk' },
   { href: '/norfolk', label: 'Greeting card agent — Norfolk' },

@@ -60,7 +60,6 @@ Index: ${SITE_URL}/blog
 - [Home](${SITE_URL}/)
 - [About Dave Langdon](${SITE_URL}/about)
 - [FAQ](${SITE_URL}/faq)
-- [UK greeting card sales agents by region](${SITE_URL}/uk-greeting-card-sales-agents)
 - [What is a sales agent?](${SITE_URL}/what-is-a-sales-agent)
 - [Display solutions](${SITE_URL}/display-solutions)
 - [Bespoke confectionery displays](${SITE_URL}/display-solutions/bespoke-confectionery-displays)
