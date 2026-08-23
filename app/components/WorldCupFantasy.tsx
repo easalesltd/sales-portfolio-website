@@ -1200,8 +1200,16 @@ function LatestResultsTicker({
 
   return (
     <section className="w-full" aria-label="Latest sweepstake results ticker">
-      <div className="flex justify-center sm:hidden" aria-live="polite">
-        {renderResultCard(matches[activeIndex], activeIndex)}
+      <div className="grid justify-items-center sm:hidden" aria-live="polite">
+        {matches.map((entry, index) => (
+          <div
+            key={`${entry.match.id}-mobile-${index}`}
+            className={`col-start-1 row-start-1 ${index === activeIndex ? '' : 'invisible'}`}
+            aria-hidden={index !== activeIndex}
+          >
+            {renderResultCard(entry, index)}
+          </div>
+        ))}
       </div>
 
       <div className={t.c.tickerWrap}>
