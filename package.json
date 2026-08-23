@@ -24,7 +24,7 @@
     "optimize:images:large": "node scripts/optimize-public-images.mjs --aggressive",
     "seo:indexnow": "node scripts/submit-indexnow.mjs",
     "english-pyramid:validate": "npm run english-pyramid:validate:scores",
-    "english-pyramid:validate:scores": "node scripts/english-pyramid-validate-manual-matches.cjs && node scripts/english-pyramid-validate-red-cards.cjs",
+    "english-pyramid:validate:scores": "node scripts/english-pyramid-validate-manual-matches.cjs && node scripts/english-pyramid-validate-red-cards.cjs && node scripts/english-pyramid-validate-roast.cjs",
     "english-pyramid:sync": "node scripts/english-pyramid-sync-ledger.cjs --write",
     "english-pyramid:ci-sync-commit": "node scripts/english-pyramid-ci-sync-commit.cjs",
     "english-pyramid:standings": "node scripts/english-pyramid-standings-summary.cjs",

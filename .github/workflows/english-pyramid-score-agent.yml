@@ -145,7 +145,7 @@ jobs:
           - update only app/data/english-pyramid-fantasy.ts
           - append only newly finished league matches with explicit homeRedCards and awayRedCards
           - refresh ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE when the table changes
-          - roast tone: fouler Grok / Tesla-cabin energy. Sweary, rude, British football. Short paragraphs. NEVER use em dashes or en dashes (write 0-1 with a hyphen). Do not repeat gags from the previous roast. Vary the jokes. Never invent scores.
+          - roast tone: fouler Grok / Tesla-cabin energy. Sweary, rude, British football. Short paragraphs. NEVER use em dashes or en dashes (write 0-1 with a hyphen). Name managers and clubs. Never dump TLA scorelines like WBA 3-1 BUR. Include every manager's current total. Do not repeat gags from the previous roast. Vary the jokes. Never invent scores.
           - run npm run english-pyramid:standings and mirror computed totals in the roast
           - run npm run english-pyramid:validate:scores before finishing
 
@@ -162,7 +162,9 @@ jobs:
 
       - name: Validate agent changes
         if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''
-        run: npm run english-pyramid:standings
+        run: |
+          npm run english-pyramid:standings
+          node scripts/english-pyramid-validate-roast.cjs
 
       - name: Validate changed files
         if: steps.match_window.outputs.should_run == 'true' && steps.agent.outputs.needs_agent == 'true' && env.CURSOR_API_KEY != ''

@@ -11,7 +11,7 @@ const TRACKED_PATHS = 'app/data/english-pyramid-fantasy.ts';
 
 const commitMessage =
   process.env.ENGLISH_PYRAMID_CI_COMMIT_MESSAGE ||
-  'Sync English pyramid sweepstake scores from ESPN.\n\nDeterministic ledger append for finished league fixtures on ESPN tiers; NL North/South via FWP. Template roast refreshes when new results land.';
+  'Sync English pyramid sweepstake scores from ESPN.\n\nDeterministic ledger append for finished league fixtures on ESPN tiers; NL North/South via FWP. Named recap roast refreshes when new results land.';
 
 function runNodeScript(relativePath, args = []) {
   const result = spawnSync(process.execPath, [path.join(repoRoot, relativePath), ...args], {
