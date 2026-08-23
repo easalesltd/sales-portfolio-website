@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott on 89. Congrats, nobody clapped.\n\nWBA 3-1 BUR. BHA 4-0 AVL. Dave\'s MCI beat BOU 2-1. NEW 2-2 LIV.\n\nJon on 42 is a war crime against entertainment.';
+  'Nest\'s Villa went 4-0 down before half time and had a man sent off for kicking out. Minus 1 for the hiding, plus 1 for the red, net zero. He is still 61. That is the least embarrassing part.\n\nDave\'s Burnley got leathered 3-1 at West Brom, minus 1. Then City nicked a 2-1 in the 93rd minute so he still banks 3 and sits on 53 like he meant the double act. He did not.\n\nChris and Ben drew 2-2 at St James. Last kick penalty. One point each. Chris 74, Ben 64. A handshake and a sit down.\n\nScott is still top on 89 without a club kicking a ball. Again. Ash 49. Jon 42. Sunday off, still last.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -2576,7 +2576,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayRedCards: 0,
   },
   {
-    /** Verified final result (ESPN sync). */
+    /** Verified final result (ESPN sync). João Gomes straight red 40'. */
     id: '2026-08-23-bha-avl',
     utcDate: '2026-08-23T13:00Z',
     homeTeam: { name: 'Brighton & Hove Albion', tla: 'BHA' },
