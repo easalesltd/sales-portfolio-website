@@ -1,4 +1,5 @@
 import { getCspNonce } from '@/app/lib/csp-nonce';
+import { FACEBOOK_PAGE_URL } from '@/app/data/business-entity';
 import AboutPageClient from './AboutPageClient';
 
 const aboutSchema = {
@@ -29,6 +30,7 @@ const aboutSchema = {
     contactType: 'sales',
   },
   sameAs: [
+    FACEBOOK_PAGE_URL,
     'https://www.instagram.com/eastangliansalesltd/',
     'https://www.linkedin.com/in/dave-langdon-709a8547',
   ],

@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
-import { FaEnvelope, FaInstagram, FaPhone } from 'react-icons/fa';
+import { FaEnvelope, FaFacebook, FaInstagram, FaPhone } from 'react-icons/fa';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
 import { companies, type Company } from './data/companies';
@@ -22,6 +22,7 @@ import {
   UK_GREETING_CARD_ASSOCIATION_NAME,
   UK_GREETING_CARD_ASSOCIATION_URL,
 } from './lib/home-page-meta-description';
+import { BUSINESS, FACEBOOK_PAGE_URL } from './data/business-entity';
 
 // Optimize font loading with display swap and preload
 const inter = Inter({ 
@@ -310,12 +311,7 @@ export default async function RootLayout({
                     "availableLanguage": "English"
                   }
                 ],
-                "sameAs": [
-                  "https://www.instagram.com/eastangliansalesltd/",
-                  "https://www.linkedin.com/company/east-anglian-sales-ltd",
-                  "https://find-and-update.company-information.service.gov.uk/company/14725288",
-                  UK_GREETING_CARD_ASSOCIATION_URL
-                ],
+                "sameAs": [...BUSINESS.sameAs],
                 "identifier": {
                   "@type": "PropertyValue",
                   "name": "Company Number",
@@ -460,10 +456,7 @@ export default async function RootLayout({
                 "name": "Dave Langdon",
                 "alternateName": ["David Langdon"],
                 "url": "https://www.easalesltd.co.uk/about",
-                "sameAs": [
-                  "https://www.linkedin.com/in/dave-langdon-709a8547",
-                  "https://www.instagram.com/eastangliansalesltd/"
-                ],
+                "sameAs": [...BUSINESS.personSameAs],
                 "jobTitle": ["UK Greeting Card Sales Agent", "Greeting Card Sales Agent", "Giftware Sales Agent", "Sales Agent"],
                 "occupation": {
                   "@type": "Occupation",
@@ -584,20 +577,31 @@ export default async function RootLayout({
 
               <div className="order-1 lg:order-2 text-center border-t-0 pt-0 lg:pt-0 flex flex-col items-center lg:items-center min-w-0">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100 mb-4 w-full">
-                  Follow Dave on Instagram
+                  Follow East Anglian Sales
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-neutral-400 mb-4 max-w-sm mx-auto leading-relaxed">
                   Shop visits, new ranges, and snapshots from the road across East Anglia.
                 </p>
-                <a
-                  href="https://www.instagram.com/eastangliansalesltd/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold border border-neutral-900 dark:border-neutral-200 text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-950 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-800 dark:focus-visible:ring-neutral-300 dark:focus-visible:ring-offset-neutral-950"
-                >
-                  <FaInstagram className="h-5 w-5 shrink-0" aria-hidden />
-                  @eastangliansalesltd
-                </a>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href={FACEBOOK_PAGE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold border border-neutral-900 dark:border-neutral-200 text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-950 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-800 dark:focus-visible:ring-neutral-300 dark:focus-visible:ring-offset-neutral-950"
+                  >
+                    <FaFacebook className="h-5 w-5 shrink-0" aria-hidden />
+                    Facebook
+                  </a>
+                  <a
+                    href="https://www.instagram.com/eastangliansalesltd/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-semibold border border-neutral-900 dark:border-neutral-200 text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-950 hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-800 dark:focus-visible:ring-neutral-300 dark:focus-visible:ring-offset-neutral-950"
+                  >
+                    <FaInstagram className="h-5 w-5 shrink-0" aria-hidden />
+                    @eastangliansalesltd
+                  </a>
+                </div>
               </div>
 
               <div className="order-2 lg:order-3 text-center lg:text-right border-t border-gray-200 dark:border-neutral-800 pt-10 lg:border-t-0 lg:pt-0 min-w-0">

@@ -6,6 +6,9 @@ import {
 
 export const SITE_URL = 'https://www.easalesltd.co.uk';
 
+export const FACEBOOK_PAGE_URL =
+  'https://www.facebook.com/profile.php?id=61593412992985';
+
 export const BUSINESS = {
   legalName: 'East Anglian Sales LTD',
   tradingNames: ['East Anglian Sales', 'EA Sales', 'East Anglian Sales Ltd'] as const,
@@ -30,12 +33,14 @@ export const BUSINESS = {
   },
   counties: ['Suffolk', 'Norfolk', 'Essex', 'Cambridgeshire', 'Hertfordshire'] as const,
   sameAs: [
+    FACEBOOK_PAGE_URL,
     'https://www.instagram.com/eastangliansalesltd/',
     'https://www.linkedin.com/company/east-anglian-sales-ltd',
     'https://find-and-update.company-information.service.gov.uk/company/14725288',
     UK_GREETING_CARD_ASSOCIATION_URL,
   ] as const,
   personSameAs: [
+    FACEBOOK_PAGE_URL,
     'https://www.linkedin.com/in/dave-langdon-709a8547',
     'https://www.instagram.com/eastangliansalesltd/',
   ] as const,

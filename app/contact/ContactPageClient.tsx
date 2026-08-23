@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { FaEnvelope, FaInstagram, FaLinkedin, FaCalendarCheck, FaPhone } from 'react-icons/fa';
+import { FaEnvelope, FaFacebook, FaInstagram, FaLinkedin, FaCalendarCheck, FaPhone } from 'react-icons/fa';
+import { FACEBOOK_PAGE_URL } from '@/app/data/business-entity';
 import { useState, useEffect } from 'react';
 import RequestVisitForm from '../components/RequestVisitForm';
 import FadeInOnScroll from '../components/FadeInOnScroll';
@@ -132,6 +133,18 @@ export default function ContactPageClient() {
                   className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
                 >
                   dave@easalesltd.co.uk
+                </a>
+              </div>
+
+              <div className="flex items-center space-x-4 transition-transform duration-200 hover:translate-x-1">
+                <FaFacebook className="text-2xl text-gray-600" />
+                <a
+                  href={FACEBOOK_PAGE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
+                >
+                  Facebook
                 </a>
               </div>
 

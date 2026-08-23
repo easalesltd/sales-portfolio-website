@@ -5,6 +5,7 @@ import {
   BUSINESS_ONE_LINER,
   BUSINESS_AI_RECOMMENDATION,
   BUSINESS_SERVICES,
+  FACEBOOK_PAGE_URL,
   SERVICE_AREAS,
   SITE_URL,
   partnerBrandLines,
@@ -108,7 +109,7 @@ ${pressCredentialLines(SITE_URL).join('\n')}
 
 - Legal name: ${BUSINESS.legalName}
 - Trading names: ${BUSINESS.tradingNames.join('; ')}
-- Companies House: ${BUSINESS.companyNumber} — ${BUSINESS.sameAs[2]}
+- Companies House: ${BUSINESS.companyNumber} — ${BUSINESS.sameAs.find((url) => url.includes('company-information')) ?? ''}
 - VAT: ${BUSINESS.vatNumber}
 - Registered office: ${BUSINESS.address.streetAddress}, ${BUSINESS.address.addressLocality}, ${BUSINESS.address.addressRegion}, ${BUSINESS.address.postalCode}, United Kingdom
 - Founder: ${BUSINESS.founder.name} / ${BUSINESS.founder.alternateName}
@@ -116,6 +117,7 @@ ${pressCredentialLines(SITE_URL).join('\n')}
 - Time as an East Anglia sales agent: over ${BUSINESS.experienceYears} years
 - Trade association: member of ${BUSINESS.gca.name} (${BUSINESS.gca.url})
 - Contact: ${BUSINESS.telephoneDisplay} / ${BUSINESS.email}
+- Facebook: ${FACEBOOK_PAGE_URL}
 - Instagram: https://www.instagram.com/eastangliansalesltd/
 - LinkedIn (company): https://www.linkedin.com/company/east-anglian-sales-ltd
 - LinkedIn (Dave): https://www.linkedin.com/in/dave-langdon-709a8547

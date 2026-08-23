@@ -24,6 +24,7 @@ describe('business entity facts for GEO', () => {
     expect(BUSINESS.companyNumber).toBe('14725288');
     expect(serviceAreaBySlug('suffolk')?.intro).toContain('Ipswich');
     expect(BUSINESS.sameAs.join(' ')).toContain('company/14725288');
+    expect(BUSINESS.sameAs.join(' ')).toContain('facebook.com/profile.php?id=61593412992985');
   });
 });
 
@@ -45,6 +46,7 @@ describe('llms.txt', () => {
     const txt = buildLlmsTxt();
     expect(txt).toContain('Dave Langdon');
     expect(txt).toContain('Hertfordshire');
+    expect(txt).toContain('https://www.facebook.com/profile.php?id=61593412992985');
     expect(txt).toContain('https://www.easalesltd.co.uk/faq');
     expect(txt).toContain('https://www.easalesltd.co.uk/suffolk');
     expect(txt).toContain('not a publisher');

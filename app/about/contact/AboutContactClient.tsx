@@ -2,10 +2,12 @@
 
 import {
   FaEnvelope,
+  FaFacebook,
   FaInstagram,
   FaLinkedin,
   FaPhone,
 } from "react-icons/fa";
+import { FACEBOOK_PAGE_URL } from "@/app/data/business-entity";
 import FadeInOnScroll from "../../components/FadeInOnScroll";
 import { trackGaEvent } from "@/app/lib/ga-event";
 
@@ -58,6 +60,27 @@ export default function AboutContactClient() {
                     className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300 break-all"
                   >
                     dave@easalesltd.co.uk
+                  </a>
+                </dd>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <dt className="sr-only">Facebook</dt>
+                <FaFacebook
+                  className="text-2xl text-gray-600 dark:text-neutral-400 shrink-0 mt-0.5"
+                  aria-hidden
+                />
+                <dd>
+                  <span className="block text-sm font-semibold text-gray-500 dark:text-neutral-400 mb-1">
+                    Facebook
+                  </span>
+                  <a
+                    href={FACEBOOK_PAGE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-lg text-neutral-900 font-medium hover:text-neutral-600 transition-colors dark:text-neutral-100 dark:hover:text-neutral-300"
+                  >
+                    East Anglian Sales LTD
                   </a>
                 </dd>
               </div>

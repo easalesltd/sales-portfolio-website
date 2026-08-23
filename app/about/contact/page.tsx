@@ -1,4 +1,5 @@
 import { getCspNonce } from '@/app/lib/csp-nonce';
+import { FACEBOOK_PAGE_URL } from '@/app/data/business-entity';
 import AboutContactClient from './AboutContactClient';
 
 const contactSchema = {
@@ -16,6 +17,7 @@ const contactSchema = {
     telephone: '+447709197915',
     email: 'dave@easalesltd.co.uk',
     sameAs: [
+      FACEBOOK_PAGE_URL,
       'https://www.instagram.com/eastangliansalesltd/',
       'https://www.linkedin.com/in/dave-langdon-709a8547',
     ],
