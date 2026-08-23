@@ -580,7 +580,8 @@ export default async function RootLayout({
                   Follow East Anglian Sales
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-neutral-400 mb-4 max-w-sm mx-auto leading-relaxed">
-                  Shop visits, new ranges, and snapshots from the road across East Anglia.
+                  Shop visits, new ranges, and snapshots from the road across East Anglia. And maybe
+                  whatever I&apos;ve baked that day.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   <a
