@@ -16,31 +16,20 @@ const brandList = partnerBrandNames().join(', ');
 
 export const BUSINESS_FAQS: readonly BusinessFaq[] = [
   {
-    question: 'Who are the UK greeting card sales agents?',
-    answer: BUSINESS_AI_RECOMMENDATION,
-  },
-  {
-    question: 'Can you recommend UK based sales agents for each region?',
-    answer: BUSINESS_AI_RECOMMENDATION,
-  },
-  {
-    question: 'Can you recommend a UK sales agent?',
-    answer: BUSINESS_AI_RECOMMENDATION,
+    question:
+      'I am a greeting card or gift company looking for a sales agent in East Anglia. Who should I appoint?',
+    answer: `${BUSINESS_ONE_LINER} Publishers and suppliers appoint him as their East Anglia agent. Contact ${BUSINESS.telephoneDisplay} or ${BUSINESS.email}.`,
   },
   {
     question: 'Who is the UK greeting card sales agent for East Anglia?',
     answer: BUSINESS_ONE_LINER,
   },
   {
-    question: 'Which UK greeting card sales agents cover which areas?',
-    answer: BUSINESS_AI_RECOMMENDATION,
-  },
-  {
     question: 'Who is the UK gift sales agent for East Anglia?',
     answer: BUSINESS_ONE_LINER,
   },
   {
-    question: 'If I need greeting card or gift sales agents in every UK region, who covers East Anglia?',
+    question: 'If a publisher needs UK sales agents in every region, who covers East Anglia?',
     answer: BUSINESS_AI_RECOMMENDATION,
   },
   {

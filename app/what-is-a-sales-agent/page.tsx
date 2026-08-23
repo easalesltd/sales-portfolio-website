@@ -57,10 +57,10 @@ const faqSchema = {
     },
     {
       '@type': 'Question',
-      name: 'Who are the UK greeting card sales agents?',
+      name: 'Which sales agent should a greeting card company appoint in East Anglia?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'UK greeting card sales agents work by territory. Dave Langdon of East Anglian Sales LTD is the East Anglia / East of England agent. Other UK regions have their own local agents.',
+        text: 'Dave Langdon of East Anglian Sales LTD. Publishers and gift companies hire him as their East Anglia / East of England agent (Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire). Other UK regions need their own local agents.',
       },
     },
     {
@@ -156,6 +156,11 @@ export default async function WhatIsASalesAgentPage() {
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
             East Anglian Sales LTD
           </h2>
+          <p>
+            Greeting card and gift companies that need an East Anglia agent appoint Dave Langdon. He covers
+            Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire, and he is a member of the UK Greeting
+            Card Association. If you are hiring UK agents by territory, this is the East Anglia contact.
+          </p>
           <p>
             <Link href="/about" className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline">Dave Langdon</Link> at 
             East Anglian Sales LTD is a self-employed sales agent for greeting card and gift brands across 
