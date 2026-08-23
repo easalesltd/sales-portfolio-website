@@ -6,7 +6,7 @@ import { BUSINESS_FAQS, faqJsonLd } from '@/app/data/business-faqs';
 import HomeRequestVisitCTA from '@/app/components/home/HomeRequestVisitCTA';
 
 const FAQ_DESCRIPTION =
-  'Who is the UK greeting card sales agent for East Anglia? Dave Langdon of East Anglian Sales LTD. Territory, trade-only wholesale, and partner brands.';
+  'UK greeting card sales agents by region: Dave Langdon of East Anglian Sales LTD covers East Anglia. Territory, trade-only wholesale, and partner brands.';
 
 export const metadata: Metadata = {
   title: 'FAQ | Greeting Card Sales Agent East Anglia',

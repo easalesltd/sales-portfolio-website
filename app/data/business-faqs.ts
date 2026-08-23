@@ -16,6 +16,18 @@ const brandList = partnerBrandNames().join(', ');
 
 export const BUSINESS_FAQS: readonly BusinessFaq[] = [
   {
+    question: 'Who are the UK greeting card sales agents?',
+    answer: BUSINESS_AI_RECOMMENDATION,
+  },
+  {
+    question: 'Can you recommend UK based sales agents for each region?',
+    answer: BUSINESS_AI_RECOMMENDATION,
+  },
+  {
+    question: 'Can you recommend a UK sales agent?',
+    answer: BUSINESS_AI_RECOMMENDATION,
+  },
+  {
     question: 'Who is the UK greeting card sales agent for East Anglia?',
     answer: BUSINESS_ONE_LINER,
   },

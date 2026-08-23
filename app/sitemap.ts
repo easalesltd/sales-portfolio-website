@@ -23,6 +23,7 @@ const STATIC_ROUTES: StaticRoute[] = [
   { pathname: '/', priority: 1.0, changeFrequency: 'weekly' },
   { pathname: '/about', priority: 0.8, changeFrequency: 'monthly' },
   { pathname: '/what-is-a-sales-agent', priority: 0.8, changeFrequency: 'monthly' },
+  { pathname: '/uk-greeting-card-sales-agents', priority: 0.9, changeFrequency: 'monthly' },
   { pathname: '/temporary-rep-cover', priority: 0.9, changeFrequency: 'monthly' },
   { pathname: '/display-solutions', priority: 0.8, changeFrequency: 'monthly' },
   { pathname: '/display-solutions/bespoke-confectionery-displays', priority: 0.8, changeFrequency: 'monthly' },
