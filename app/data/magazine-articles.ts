@@ -29,6 +29,35 @@ export interface MagazineArticle {
 /** Display titles: `Publication, Issue — Piece name | Dave Langdon` */
 const magazineArticlesUnsorted: MagazineArticle[] = [
   {
+    slug: 'diary-sales-agent-september-october-2026',
+    title: 'Greetings Today, September/October 2026 — Diary of a Sales Agent | Dave Langdon',
+    metaTitle:
+      'Diary of a Sales Agent — Greetings Today Sep/Oct 2026 | Dave Langdon, East Anglia',
+    metaDescription:
+      'Dave Langdon’s Greetings Today diary: August on the road, Autumn Fair, spring preorders, and Q4 gift lines. East Anglia greeting card and gift agent.',
+    excerpt:
+      'August chaos, a missed Harrogate, and a Cornish-pasty detour to the NEC — Dave looks ahead to autumn shows, spring preorders, and Christmas gift lines.',
+    publishedAt: '2026-08-21',
+    publication: 'Greetings Today (September/October 2026)',
+    coverImage: encodeURI(
+      '/images/blog/Greetings Today September:October 2026 Diary of a Sales Agent Dave Langdon.jpg'
+    ),
+    sourceUrl:
+      'https://issuu.com/lemapublisihng/docs/greetings_today_september_october_2026',
+    quotes: [
+      'I’ll be at the NEC straight from a wedding in Cornwall so will be 50% Cornish pasty.',
+      'What are we doing to make trade shows unmissable?',
+      'Focus on both extremes; heartfelt and funny. Words of affirmation and ridicule for the win.',
+    ],
+    paragraphs: [
+      'This instalment of Diary of a Sales Agent appears on page 53 of the September/October 2026 issue of Greetings Today from Lema Publishing.',
+      'August, Dave writes, is a strange month: coastal customers swamped with seasonal trade, Christmas deliveries already shipping, Q4 stocking, the annual air-con debate — plus moving house and a condemned boiler. He missed Harrogate Home & Gift for personal reasons, but Ohh Deer, Museums & Galleries, M!NT, Global Journey and Boxer Gifts held the fort. Footfall was down; order values were up, a pattern he is seeing across shows.',
+      'That prompts a line he credits to a Widdop Illingworth uncle (Stuart): what are we doing to make trade shows unmissable? Autumn Fair and Glee combining at the NEC is his example of organisers trying. He will be there straight from a wedding in Cornwall — “50% Cornish pasty” — and asks that if you see a doughy pastry ball resembling a middle-aged man, you roll him between CGB Giftware, Global Journey, Paper Salad and Ohh Deer. Not towards the casino.',
+      'With Christmas card buying mostly wrapped up, attention turns to spring preorders. His tactic after years of pre-selling the season: order all spring together for January delivery, so smaller Easter and Father’s Day orders do not miss carriage. Ranges ready include Emotional Rescue, Paper Salad and Ohh Deer, with the same advice as last year — heartfelt and funny. If Dad opens his Father’s Day card and laughs, the year is a success.',
+      'Q4 gift lines he is backing include Rudi & Bear launching via CGB Giftware at Autumn Fair, Cambridge Confectionery chocolate fingers, Ohh Deer Silly Beans, Peppermint Grove 100ml diffusers, Boxer gifting books (Bob Mortimer among the sellers), M!NT To Be Frank keyrings, and Museums & Galleries puzzles. He hopes to see the trade at the NEC or Top Drawer.',
+    ],
+  },
+  {
     slug: 'progressive-greetings-winnie-the-pooh-february-2026',
     title: 'Progressive Greetings, February 2026 — Winnie the Pooh agent feature | Dave Langdon',
     metaTitle:
