@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Nest\'s Villa went 4-0 down before half time and had a man sent off for kicking out. Minus 1 for the hiding, plus 1 for the red, net zero. He is still 61. That is the least embarrassing part.\n\nDave\'s Burnley got leathered 3-1 at West Brom, minus 1. Then City nicked a 2-1 in the 93rd minute so he still banks 3 and sits on 53 like he meant the double act. He did not.\n\nChris and Ben drew 2-2 at St James. Last kick penalty. One point each. Chris 74, Ben 64. A handshake and a sit down.\n\nScott is still top on 89 without a club kicking a ball. Again. Ash 49. Jon 42. Sunday off, still last.';
+  'Jon\'s Fulham and Chelsea played each other and finished 2-3. No win points, minus 1 for leaking three for one, plus 4 for the away win, plus 1 for three or more for the other. Jon is on 46.\n\nScott still leads on 89 without a club kicking a ball.\n\nTable: Scott 89, Chris 74, Ben 64, Nest 61, Dave 53, Ash 49, Jon 46.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -2605,6 +2605,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Liverpool', tla: 'LIV' },
     homeGoals: 2,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-24-ful-che',
+    utcDate: '2026-08-24T19:00Z',
+    homeTeam: { name: 'Fulham', tla: 'FUL' },
+    awayTeam: { name: 'Chelsea', tla: 'CHE' },
+    homeGoals: 2,
+    awayGoals: 3,
     homeRedCards: 0,
     awayRedCards: 0,
   },
