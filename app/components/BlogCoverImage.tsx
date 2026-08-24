@@ -9,7 +9,7 @@ type BlogCoverImageProps = {
   alt: string;
   sizes?: string;
   priority?: boolean;
-  /** e.g. aspect-[2/1] */
+  /** e.g. aspect-[3/2] — magazine pages are portrait; 3/2 shows the masthead without a grey side strip */
   aspectClassName?: string;
   className?: string;
 };
@@ -19,7 +19,7 @@ export default function BlogCoverImage({
   alt,
   sizes = '(max-width: 768px) 100vw, 42rem',
   priority = false,
-  aspectClassName = 'aspect-[2/1]',
+  aspectClassName = 'aspect-[3/2]',
   className = '',
 }: BlogCoverImageProps) {
   const [open, setOpen] = useState(false);
@@ -36,7 +36,7 @@ export default function BlogCoverImage({
           src={src}
           alt=""
           fill
-          className="object-cover transition-transform duration-300 group-hover/img:scale-[1.02]"
+          className="object-cover object-top transition-transform duration-300 group-hover/img:scale-[1.02]"
           sizes={sizes}
           priority={priority}
         />
