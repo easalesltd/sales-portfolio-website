@@ -41,12 +41,14 @@ When the user asks to redraw squads to current betting odds (planned ~7 Aug 2026
 ## Fixtures and kick-off times
 
 - Maintain `ENGLISH_PYRAMID_FIXTURES` with **every league match** involving our **98 clubs** (not just games between sweepstake clubs).
-- Refresh the bulk schedule with `npm run english-pyramid:fetch-fixtures -- --write` (ESPN: PL → NL; Football Web Pages: NL North/South).
-- **National League (tier 5)** fixtures typically publish around **10 July** each summer. `.github/workflows/english-pyramid-fixture-check.yml` polls ESPN twice daily **10–20 July** (plus weekly Mondays) and auto-commits when eng.5 fixtures appear.
+- Refresh the bulk schedule with `npm run english-pyramid:fetch-fixtures -- --write` (ESPN: PL → NL; Football Web Pages: NL North/South). Fetch merge keeps existing kick-off times when FWP has already replaced KO with a score (so finished 19:45 games are not rewritten as 15:00) and preserves `postponed: true`.
+- **Brought-forward / wrong-day KOs:** fixture ids include the date (`2026-08-29-oxc-bux`). If a Saturday 15:00 is moved to Friday 19:45, the id changes. Ledger sync runs `english-pyramid:reconcile-schedule` first (FotMob NL family + ESPN PL→NL, matched by home+away not id) and rewrites the fixture before looking for a result. Daily GitHub Action `.github/workflows/english-pyramid-fixture-check.yml` (06:00 UTC) auto-commits ESPN/FWP date moves.
+- **Postponements:** set `postponed: true` on the fixture (keep the original id/utcDate until it is rearranged). Do not leave a postponed game unrecorded — it will look overdue and the score job will keep polling. FotMob `cancelled` / ESPN postponed / FWP `P:P` are applied automatically on sync; `npm run english-pyramid:validate` fails if a live source says postponed and the repo does not. Manual: `npm run english-pyramid:reconcile-schedule -- --write`.
+- **National League (tier 5)** fixtures typically publish around **10 July** each summer. `.github/workflows/english-pyramid-fixture-check.yml` polls ESPN twice daily **10–20 July** (plus daily 06:00 UTC) and auto-commits when eng.5 fixtures appear.
 - **NL North / South** come from Football Web Pages team fixture pages (`scripts/lib/english-pyramid-fwp-nln-nls.cjs`). Same fetch/check commands refresh them; kick-offs are Europe/London → UTC. If FWP returns Cloudflare 403, the fetcher falls back to BBC Sport month fixture pages.
 - **League only** — cup ties (FA Cup, League Cup, etc.) are excluded automatically (season slug + single-leg pair filter; FWP filters to `national-league-north` / `national-league-south` only).
-- Weekly GitHub Action `.github/workflows/english-pyramid-fixture-check.yml` compares remote sources to the repo and auto-refreshes when kick-offs move (international breaks, postponements).
-- Manual drift check: `npm run english-pyramid:check-fixtures` (add `--write` to apply).
+- Daily GitHub Action `.github/workflows/english-pyramid-fixture-check.yml` compares remote sources to the repo and auto-refreshes when kick-offs move (bring-forwards, international breaks, postponements).
+- Manual drift check: `npm run english-pyramid:check-fixtures` (add `--write` to apply). `npm run english-pyramid:reconcile-schedule` is the near-window live check (FotMob + ESPN).
 - First matchday opens on the earliest fixture date in the ledger (e.g. Championship often kicks off Friday before the main Saturday batch).
 - Store `utcDate` as **UTC ISO-8601** (`2026-08-09T14:00:00Z`) converted from the **Europe/London** kick-off (handles GMT/BST).
 - Typical UK kick-offs: **12:30**, **15:00**, **17:30** (weekend), **19:45** / **20:00** (midweek). Full-time is usually ~115 minutes later.

@@ -200,7 +200,33 @@ async function resolveFinalResult(fixture, espnCache, fotMobCache) {
 async function main() {
   const source = readDataFileSource(dataPath);
   const dueOptions = getDueFixtureOptionsFromEnv();
-  const dueFixtures = await getDueFixtures(source, dueOptions);
+  const {
+    applySchedulePatches,
+    collectLivePatches,
+    describePatches,
+  } = require('./lib/english-pyramid-schedule-reconcile.cjs');
+
+  let workingSource = source;
+  try {
+    const schedulePatches = await collectLivePatches(workingSource, { now: dueOptions.now });
+    if (schedulePatches.length > 0) {
+      console.log('Schedule drift before score sync:');
+      for (const line of describePatches(schedulePatches)) {
+        console.log(`- ${line}`);
+      }
+      if (writeChanges) {
+        workingSource = applySchedulePatches(workingSource, schedulePatches);
+        fs.writeFileSync(dataPath, workingSource, 'utf8');
+        console.log('Updated fixture dates / postponements from live sources.');
+      }
+    }
+  } catch (error) {
+    console.warn(
+      `Schedule reconcile failed (${error instanceof Error ? error.message : error}); continuing with local fixtures.`,
+    );
+  }
+
+  const dueFixtures = await getDueFixtures(workingSource, dueOptions);
   const espnCache = new Map();
   const fotMobCache = { day: new Map(), detail: new Map() };
   const pendingEntries = [];
@@ -244,8 +270,8 @@ async function main() {
     return;
   }
 
-  const updatedSource = appendManualMatches(source, pendingEntries);
-  const appendedCount = updatedSource === source ? 0 : pendingEntries.length;
+  const updatedSource = appendManualMatches(workingSource, pendingEntries);
+  const appendedCount = updatedSource === workingSource ? 0 : pendingEntries.length;
 
   if (!writeChanges) {
     console.log(

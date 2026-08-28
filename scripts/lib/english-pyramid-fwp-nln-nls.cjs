@@ -278,16 +278,42 @@ function decodeHtmlEntities(value) {
     .trim();
 }
 
+function htmlToVisibleText(html) {
+  return decodeHtmlEntities(
+    String(html || '')
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim(),
+  );
+}
+
+function isFwpPostponedText(text) {
+  const raw = String(text || '').trim().toLowerCase();
+  const compact = raw.replace(/\s+/g, '');
+  return (
+    compact === 'p:p' ||
+    compact === 'p-p' ||
+    compact === 'p.p' ||
+    compact === 'pp' ||
+    compact === 'postponed' ||
+    /\bpostponed\b/.test(raw)
+  );
+}
+
+function extractScorePair(text) {
+  const matches = [...String(text || '').matchAll(/(\d+)\s*-\s*(\d+)/g)];
+  if (matches.length === 0) return null;
+  const last = matches[matches.length - 1];
+  return { left: Number(last[1]), right: Number(last[2]) };
+}
+
 function isFwpScoreText(text) {
-  return /^\d+\s*-\s*\d+$/.test(String(text || '').trim());
+  return extractScorePair(text) != null && !isFwpPostponedText(text);
 }
 
 function parseScorePair(text) {
-  const match = String(text || '')
-    .trim()
-    .match(/^(\d+)\s*-\s*(\d+)$/);
-  if (!match) return null;
-  return { left: Number(match[1]), right: Number(match[2]) };
+  return extractScorePair(text);
 }
 
 /**
@@ -352,10 +378,12 @@ function parseTeamFixtureRows(html, expectedCompSlug) {
     const homeSlug = parts[3];
     const awaySlug = parts[4];
     const dateMatch = body.match(/data-export="(\d{1,2}\/\d{1,2}\/\d{4})"/);
-    const koMatch = body.match(/class="ko-score"[^>]*>([^<]+)/);
+    const koTd = body.match(/<td class="ko-score"[^>]*>([\s\S]*?)<\/td>/i);
     const venueMatch = body.match(/class="[^"]*venue[^"]*"[^>]*>([^<]+)/);
-    if (!dateMatch || !koMatch) {
-      throw new Error(`FWP row missing date/kick-off: ${href}`);
+    const koText = htmlToVisibleText(koTd ? koTd[1] : '');
+    if (!dateMatch) {
+      console.warn(`FWP row missing date (skipped): ${href}`);
+      continue;
     }
 
     rows.push({
@@ -364,7 +392,7 @@ function parseTeamFixtureRows(html, expectedCompSlug) {
       homeSlug,
       awaySlug,
       dateExport: dateMatch[1],
-      koText: decodeHtmlEntities(koMatch[1]),
+      koText,
       venue: venueMatch ? decodeHtmlEntities(venueMatch[1]) : null,
     });
   }
@@ -373,11 +401,15 @@ function parseTeamFixtureRows(html, expectedCompSlug) {
 }
 
 function kickoffTextForUtc(row) {
-  // Once finished, FWP replaces kick-off with the score — keep a stable afternoon default.
-  if (isFwpScoreText(row.koText) || parseFinishedHomeAwayGoals(row.title, row.koText, row.venue).final) {
+  // Finished / postponed rows replace kick-off with a score or P:P.
+  if (
+    isFwpPostponedText(row.koText) ||
+    isFwpScoreText(row.koText) ||
+    parseFinishedHomeAwayGoals(row.title, row.koText, row.venue).final
+  ) {
     return '3pm';
   }
-  return row.koText;
+  return row.koText || '3pm';
 }
 
 async function fetchClubLeagueFixtures(code) {
@@ -396,6 +428,12 @@ async function fetchClubLeagueFixtures(code) {
     const away = resolveTeamFromSlug(row.awaySlug);
     if (!home.isOurs && !away.isOurs) continue;
 
+    const postponed =
+      isFwpPostponedText(row.koText) || /\bpostponed\b/i.test(row.title);
+    const inferredKickoff =
+      postponed ||
+      isFwpScoreText(row.koText) ||
+      parseFinishedHomeAwayGoals(row.title, row.koText, row.venue).final;
     const utcDate = parseUkDateToUtcIso(row.dateExport, kickoffTextForUtc(row));
     fixtures.push({
       id: fixtureId(utcDate, home.code, away.code),
@@ -407,6 +445,8 @@ async function fetchClubLeagueFixtures(code) {
       ),
       source: 'fwp',
       competition: expectedComp,
+      kickoffInferred: inferredKickoff,
+      ...(postponed ? { postponed: true } : {}),
     });
   }
 
@@ -675,6 +715,8 @@ module.exports = {
   fetchAllNlnNlsFixturesFromFwp,
   fetchClubLeagueFixtures,
   fetchFwpResultForFixture,
+  htmlToVisibleText,
+  isFwpPostponedText,
   isFwpScoreText,
   londonLocalToUtcIso,
   parseFinishedHomeAwayGoals,

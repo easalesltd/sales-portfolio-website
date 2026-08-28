@@ -109,6 +109,10 @@ function parseFotMobFinal(match, detail) {
   return { homeGoals: homeScore, awayGoals: awayScore, homeRedCards, awayRedCards };
 }
 
+function isFotMobPostponed(match) {
+  return Boolean(match?.status?.cancelled);
+}
+
 async function fetchFotMobResultForFixture(fixture, caches = {}) {
   const date = fotMobDateParam(fixture.utcDate);
   if (!date) return null;
@@ -137,6 +141,8 @@ async function fetchFotMobResultForFixture(fixture, caches = {}) {
 module.exports = {
   fetchFotMobResultForFixture,
   findFotMobMatchForFixture,
+  isFotMobPostponed,
+  nationalLeagueMatches,
   normalizeTeamName,
   parseFotMobFinal,
 };

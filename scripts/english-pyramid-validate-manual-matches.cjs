@@ -11,6 +11,10 @@ const {
   resolveFixtureKickoff,
 } = require('./lib/english-pyramid-due-fixtures-lib.cjs');
 const {
+  collectLivePatches,
+  describePatches,
+} = require('./lib/english-pyramid-schedule-reconcile.cjs');
+const {
   DEFAULT_HARD_OVERDUE_MINUTES,
   classifyUnrecordedFixtureOverdue,
 } = require('./lib/english-pyramid-overdue-classification.cjs');
@@ -165,6 +169,17 @@ await validateOverdueFixturesWithEspn(
   fixtures.filter((fixture) => !fixture.postponed),
   errors,
 );
+
+try {
+  const schedulePatches = await collectLivePatches(source, { now });
+  for (const line of describePatches(schedulePatches)) {
+    errors.push(`Live schedule drift: ${line}`);
+  }
+} catch (error) {
+  console.warn(
+    `Live schedule reconcile unavailable (${error instanceof Error ? error.message : error}); skipped.`,
+  );
+}
 
 if (errors.length > 0) {
   console.error('English pyramid manual match validation failed:');

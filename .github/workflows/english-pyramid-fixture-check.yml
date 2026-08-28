@@ -2,8 +2,9 @@ name: English Pyramid Fixture Check
 
 on:
   schedule:
-    # Monday 06:00 UTC — catch post-weekend reschedules / international break updates.
-    - cron: '0 6 * * 1'
+    # Daily 06:00 UTC — catch Friday-night bring-forwards and same-week postponements
+    # before the weekend 15:00 batch. Monday still covered.
+    - cron: '0 6 * * *'
     # National League fixtures publish ~10 July — poll twice daily 10–20 July (UTC).
     - cron: '0 7,19 10-20 7 *'
   workflow_dispatch:

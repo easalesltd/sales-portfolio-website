@@ -89,9 +89,33 @@ function parseEspnScoreboardEvent(event, slug, ignoreStatuses) {
   const statusName = event.status?.type?.name ?? '';
   const statusState = event.status?.type?.state ?? '';
 
+  const statusBlob = `${period} ${statusName} ${statusState}`;
+  const isPostponed = /postpon/i.test(statusBlob);
+  const normalizedPeriod = period.trim().toLowerCase();
+
+  if (isPostponed) {
+    if (ignoreStatuses?.has('postponed') || ignoreStatuses?.has(normalizedPeriod)) return null;
+    if (!homeAbbrev || !awayAbbrev) return null;
+    const homeTla = normalizeEspnAbbrevToTeamCode(slug, homeAbbrev, home?.team?.id);
+    const awayTla = normalizeEspnAbbrevToTeamCode(slug, awayAbbrev, away?.team?.id);
+    if (!homeTla || !awayTla) return null;
+    return {
+      homeTla,
+      awayTla,
+      homeGoals: homeGoals ?? 0,
+      awayGoals: awayGoals ?? 0,
+      period: 'Postponed',
+      homeRedCards: 0,
+      awayRedCards: 0,
+      utcDate,
+      statusName,
+      statusState,
+      postponed: true,
+    };
+  }
+
   if (!homeAbbrev || !awayAbbrev || homeGoals == null || awayGoals == null) return null;
 
-  const normalizedPeriod = period.trim().toLowerCase();
   if (ignoreStatuses?.has(normalizedPeriod)) return null;
 
   const homeTla = normalizeEspnAbbrevToTeamCode(slug, homeAbbrev, home?.team?.id);

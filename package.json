@@ -31,7 +31,8 @@
     "english-pyramid:roast": "node scripts/english-pyramid-refresh-roast.cjs",
     "english-pyramid:due": "node scripts/english-pyramid-due-fixtures.cjs",
     "english-pyramid:fetch-fixtures": "node scripts/english-pyramid-fetch-fixtures.cjs",
-    "english-pyramid:check-fixtures": "node scripts/english-pyramid-check-fixtures.cjs"
+    "english-pyramid:check-fixtures": "node scripts/english-pyramid-check-fixtures.cjs",
+    "english-pyramid:reconcile-schedule": "node scripts/english-pyramid-reconcile-schedule.cjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

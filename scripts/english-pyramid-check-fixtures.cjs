@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const {
   compareFixtureLists,
   fetchAllLeagueFixtures,
+  mergeRemoteFixturesWithLocal,
   parseFixturesFromSource,
   summarizeNlFixtureStatus,
   summarizePerTeam,
@@ -25,7 +26,8 @@ async function main() {
   const write = process.argv.includes('--write');
   const localFixtures = parseFixturesFromSource();
   const { fixtures: remoteFixtures, bySlug } = await fetchAllLeagueFixtures();
-  const diff = compareFixtureLists(localFixtures, remoteFixtures);
+  const comparableRemote = mergeRemoteFixturesWithLocal(localFixtures, remoteFixtures);
+  const diff = compareFixtureLists(localFixtures, comparableRemote);
   const nlStatus = summarizeNlFixtureStatus(localFixtures, remoteFixtures);
 
   console.log(`Local fixtures: ${localFixtures.length}`);
@@ -87,6 +89,20 @@ async function main() {
     console.log(`\nRescheduled (${diff.rescheduled.length}):`);
     for (const entry of diff.rescheduled.slice(0, 20)) {
       console.log(`  ~ ${formatFixtureLine(entry.before)} → ${entry.after.utcDate}`);
+    }
+  }
+
+  if (diff.movedCalendarDay?.length > 0) {
+    console.log(`\nMoved to a different calendar day (${diff.movedCalendarDay.length}):`);
+    for (const entry of diff.movedCalendarDay.slice(0, 20)) {
+      console.log(`  ~ ${formatFixtureLine(entry.before)} → ${entry.after.utcDate}`);
+    }
+  }
+
+  if (diff.postponedDrift?.length > 0) {
+    console.log(`\nPostponed on the remote source but not in the repo (${diff.postponedDrift.length}):`);
+    for (const entry of diff.postponedDrift.slice(0, 20)) {
+      console.log(`  ! ${formatFixtureLine(entry.before)}`);
     }
   }
 

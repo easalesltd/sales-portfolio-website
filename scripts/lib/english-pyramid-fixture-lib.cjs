@@ -276,6 +276,64 @@ function fixtureKey(fixture) {
   return `${fixture.utcDate}|${fixture.homeTeam.tla}|${fixture.awayTeam.tla}`;
 }
 
+function directedPairKey(fixture) {
+  const home = fixture.homeTeam?.tla || fixture.homeTla;
+  const away = fixture.awayTeam?.tla || fixture.awayTla;
+  return `${home}|${away}`;
+}
+
+function londonCalendarDate(iso) {
+  const parsed = new Date(iso);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/London',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(parsed);
+}
+
+function findNearestDirectedPair(fixtures, target) {
+  const key = directedPairKey(target);
+  const targetMs = Date.parse(target.utcDate);
+  const matches = fixtures.filter((fixture) => directedPairKey(fixture) === key);
+  if (matches.length === 0 || Number.isNaN(targetMs)) return null;
+  return matches.sort(
+    (a, b) => Math.abs(Date.parse(a.utcDate) - targetMs) - Math.abs(Date.parse(b.utcDate) - targetMs),
+  )[0];
+}
+
+function mergeRemoteFixturesWithLocal(localFixtures, remoteFixtures) {
+  const merged = remoteFixtures.map((remote) => {
+    const local = findNearestDirectedPair(localFixtures, remote);
+    if (!local) return normalizeFixture(remote);
+
+    const sameDay = londonCalendarDate(local.utcDate) === londonCalendarDate(remote.utcDate);
+    let utcDate = remote.utcDate;
+    let id = remote.id;
+    if (remote.kickoffInferred && sameDay) {
+      utcDate = local.utcDate;
+      id = local.id;
+    }
+    const postponed = Boolean(remote.postponed || (local.postponed && sameDay));
+    return normalizeFixture({ ...remote, utcDate, id, postponed });
+  });
+
+  for (const local of localFixtures) {
+    if (!local.postponed) continue;
+    const already = merged.some(
+      (remote) =>
+        remote.id === local.id ||
+        (directedPairKey(remote) === directedPairKey(local) &&
+          londonCalendarDate(remote.utcDate) === londonCalendarDate(local.utcDate)),
+    );
+    if (!already) merged.push(normalizeFixture(local));
+  }
+
+  merged.sort((a, b) => a.utcDate.localeCompare(b.utcDate) || a.id.localeCompare(b.id));
+  return merged;
+}
+
 async function fetchLeagueRoster(slug) {
   const payload = await fetchJson(
     `https://site.api.espn.com/apis/site/v2/sports/soccer/${slug}/teams?limit=100`
@@ -525,12 +583,15 @@ function parseFixturesFromSource(source = readDataFileSource()) {
 
 function formatFixtureBlock(fixtures, fetchedOn = new Date().toISOString().slice(0, 10)) {
   const lines = fixtures.map((fixture) => {
+    const postponedBlock = fixture.postponed
+      ? `    /** League match postponed — no ledger result until it is rearranged. */\n    postponed: true,\n`
+      : '';
     return `  {
     id: '${fixture.id}',
     utcDate: '${fixture.utcDate}',
     homeTeam: { name: '${fixture.homeTeam.name.replace(/'/g, "\\'")}', tla: '${fixture.homeTeam.tla}' },
     awayTeam: { name: '${fixture.awayTeam.name.replace(/'/g, "\\'")}', tla: '${fixture.awayTeam.tla}' },
-  }`;
+${postponedBlock}  }`;
   });
 
   return `/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched ${fetchedOn} via npm run english-pyramid:fetch-fixtures. */
@@ -541,7 +602,9 @@ ${lines.join(',\n')},
 
 function writeFixturesToDataFile(fixtures) {
   const source = readDataFileSource();
-  const block = formatFixtureBlock(fixtures);
+  const localFixtures = parseFixturesFromSource(source);
+  const merged = mergeRemoteFixturesWithLocal(localFixtures, fixtures);
+  const block = formatFixtureBlock(merged);
   const pattern =
     /\/\*\* Sweepstake fixtures[\s\S]*?\*\/\nexport const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture\[\] = \[[\s\S]*?\];/;
 
@@ -549,7 +612,15 @@ function writeFixturesToDataFile(fixtures) {
     throw new Error(`Unable to locate ENGLISH_PYRAMID_FIXTURES block in ${dataPath}`);
   }
 
-  fs.writeFileSync(dataPath, source.replace(pattern, block));
+  let next = source.replace(pattern, block);
+  for (const local of localFixtures) {
+    const mergedMatch =
+      merged.find((fixture) => fixture.id === local.id) || findNearestDirectedPair(merged, local);
+    if (mergedMatch && mergedMatch.id !== local.id) {
+      next = next.replaceAll(`id: '${local.id}'`, `id: '${mergedMatch.id}'`);
+    }
+  }
+  fs.writeFileSync(dataPath, next);
 }
 
 function compareFixtureLists(localFixtures, remoteFixtures) {
@@ -577,13 +648,51 @@ function compareFixtureLists(localFixtures, remoteFixtures) {
     }
   }
 
-  // Same teams but new kick-off (id includes date) — surface as added+removed pairs too.
-  const addedKeys = new Set(added.map((fixture) => `${fixture.homeTeam.tla}|${fixture.awayTeam.tla}`));
-  for (const fixture of removed) {
-    addedKeys.add(`${fixture.homeTeam.tla}|${fixture.awayTeam.tla}`);
+  const usedAdded = new Set();
+  const movedCalendarDay = [];
+  const stillRemoved = [];
+  for (const local of removed) {
+    const pair = directedPairKey(local);
+    const remoteIndex = added.findIndex(
+      (remote, index) => !usedAdded.has(index) && directedPairKey(remote) === pair,
+    );
+    if (remoteIndex >= 0) {
+      const remote = added[remoteIndex];
+      usedAdded.add(remoteIndex);
+      if (londonCalendarDate(local.utcDate) !== londonCalendarDate(remote.utcDate)) {
+        movedCalendarDay.push({ before: local, after: remote });
+      } else {
+        rescheduled.push({ before: local, after: remote });
+      }
+    } else {
+      stillRemoved.push(local);
+    }
+  }
+  const stillAdded = added.filter((_, index) => !usedAdded.has(index));
+
+  const postponedDrift = [];
+  for (const remote of remoteFixtures) {
+    if (!remote.postponed) continue;
+    const local = localById.get(remote.id) || findNearestDirectedPair(localFixtures, remote);
+    if (local && !local.postponed) {
+      postponedDrift.push({ before: local, after: remote });
+    }
   }
 
-  return { added, removed, rescheduled, changed: added.length + removed.length + rescheduled.length > 0 };
+  return {
+    added: stillAdded,
+    removed: stillRemoved,
+    rescheduled,
+    movedCalendarDay,
+    postponedDrift,
+    changed:
+      stillAdded.length +
+        stillRemoved.length +
+        rescheduled.length +
+        movedCalendarDay.length +
+        postponedDrift.length >
+      0,
+  };
 }
 
 /** Abbrevs reused across divisions on ESPN (Cardiff vs Carlisle, Newport vs Newcastle). */
@@ -725,10 +834,14 @@ module.exports = {
   TEAM_NAME_BY_CODE,
   collapseRescheduledDuplicates,
   compareFixtureLists,
+  directedPairKey,
   fetchAllLeagueFixtures,
   fetchLeagueFixtures,
+  findNearestDirectedPair,
   formatFixtureBlock,
   isOnOrAfterNlReleaseDate,
+  londonCalendarDate,
+  mergeRemoteFixturesWithLocal,
   parseFixturesFromSource,
   expectedMatchesForTeamCode,
   resolveOurCode,
