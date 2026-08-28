@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Boreham Wood beat Boston United 2-1 at home. Plus 3 for the home win, net plus 3. Scott is on 92.\n\nJon is still last on 46.\n\nTable: Scott 92, Chris 74, Ben 64, Nest 61, Dave 53, Ash 49, Jon 46.';
+  'Scott was right twice. Oxford City played tonight and we had them down for Saturday like idiots. They lost 2-3 at home to Buxton and leaked three, minus 1. Kidderminster still stuffed Southend 3-1 for five, Boreham Wood\'s Thursday 2-1 is in. He is 96. Still top. Still going to mention it.\n\nNest\'s Buxton won 3-2 at Oxford City: away win, three goals, five points. Hornchurch did the 1-0. Southend leaked three. Harborough lost. He is 69 and climbs over Dave.\n\nChris\'s Hednesford nicked 2-1 and Aldershot put three past Harrogate, then Forest Green got blanked at Fylde and Palace shipped four at home to City. He is 80. The National League paid him; the Premier League mugged him.\n\nBen\'s Morecambe won 2-1 and Tamworth nicked 3-2. Barrow lost 2-1 at home to Yeovil like they had somewhere better to be. He is 71.\n\nDave had the greedy night. Sutton won 1-0 at Gateshead with a clean sheet and a red, Scunthorpe leathered Solihull 3-1, City smashed Palace 4-1. He is 68 and now looking at Nest as well as Scott.\n\nJon\'s Altrincham won 2-1, Birmingham won 2-1 at Wrexham, and Hartlepool lost 1-0 at home with a sending off so he still banks the red. He is 54. That is a night. It is not a title tilt.\n\nAsh made Wealdstone draw 1-1 with his own Carlisle. Two clubs, one score, last on 51. He played himself and still finished bottom. Of course he did.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -2630,6 +2630,185 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP row missing date/kick-off: match/2026-2027/national-league-north/merthyr-town/hednesford-town/572986). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-28-hed-hbo',
+    utcDate: '2026-08-28T18:45:00Z',
+    homeTeam: { name: 'Hednesford Town', tla: 'HED' },
+    awayTeam: { name: 'Harborough Town', tla: 'HBO' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP row missing date/kick-off: match/2026-2027/national-league-north/morecambe/spennymoor-town/572987). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-28-mor-tel',
+    utcDate: '2026-08-28T18:45:00Z',
+    homeTeam: { name: 'Morecambe', tla: 'MOR' },
+    awayTeam: { name: 'AFC Telford United', tla: 'TEL' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-ald-har',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    awayTeam: { name: 'Harrogate Town', tla: 'HAR' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-alt-hal',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Altrincham', tla: 'ALT' },
+    awayTeam: { name: 'FC Halifax Town', tla: 'HAL' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-brw-yeo',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Barrow', tla: 'BRW' },
+    awayTeam: { name: 'Yeovil Town', tla: 'YEO' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-fyl-fgr',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'AFC Fylde', tla: 'FYL' },
+    awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-gat-sut',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Gateshead', tla: 'GAT' },
+    awayTeam: { name: 'Sutton United', tla: 'SUT' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-hpl-elh',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Hartlepool United', tla: 'HPL' },
+    awayTeam: { name: 'Eastleigh', tla: 'ELH' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-hrn-wok',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Hornchurch', tla: 'HRN' },
+    awayTeam: { name: 'Woking', tla: 'WOK' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-scu-sol',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+    awayTeam: { name: 'Solihull Moors', tla: 'SOL' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-std-kid',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Southend United', tla: 'STD' },
+    awayTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-tam-wor',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Tamworth', tla: 'TAM' },
+    awayTeam: { name: 'Worthing', tla: 'WOR' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 2,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-08-28-wea-car',
+    utcDate: '2026-08-28T18:45Z',
+    homeTeam: { name: 'Wealdstone', tla: 'WEA' },
+    awayTeam: { name: 'Carlisle United', tla: 'CAR' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-28-cry-mci',
+    utcDate: '2026-08-28T19:00Z',
+    homeTeam: { name: 'Crystal Palace', tla: 'CRY' },
+    awayTeam: { name: 'Manchester City', tla: 'MCI' },
+    homeGoals: 1,
+    awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-28-wxm-bir',
+    utcDate: '2026-08-28T19:00Z',
+    homeTeam: { name: 'Wrexham', tla: 'WXM' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-28-oxc-bux',
+    utcDate: '2026-08-28T18:45:00Z',
+    homeTeam: { name: 'Oxford City', tla: 'OXC' },
+    awayTeam: { name: 'Buxton', tla: 'BUX' },
+    homeGoals: 2,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -3943,8 +4122,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Radcliffe', tla: 'RAD' },
   },
   {
-    id: '2026-08-29-oxc-bux',
-    utcDate: '2026-08-29T14:00:00Z',
+    id: '2026-08-28-oxc-bux',
+    utcDate: '2026-08-28T18:45:00Z',
     homeTeam: { name: 'Oxford City', tla: 'OXC' },
     awayTeam: { name: 'Buxton', tla: 'BUX' },
   },
