@@ -17,6 +17,7 @@ const {
 } = require('./english-pyramid-espn-scoreboard.cjs');
 const {
   findFotMobMatchForFixture,
+  isFotMobMatchGoingAhead,
   isFotMobPostponed,
   nationalLeagueMatches,
 } = require('./english-pyramid-fotmob.cjs');
@@ -75,6 +76,12 @@ function datesToScan(fixtures, now, pastDays, futureDays) {
   return [...dates].sort();
 }
 
+function sameLondonDay(leftIso, rightIso) {
+  const left = londonCalendarDate(leftIso);
+  const right = londonCalendarDate(rightIso);
+  return Boolean(left && right && left === right);
+}
+
 function patchesFromFotMobDay(fixtures, date, payload) {
   const patches = [];
   const matches = nationalLeagueMatches(payload);
@@ -87,11 +94,25 @@ function patchesFromFotMobDay(fixtures, date, payload) {
     });
     if (!match) continue;
 
+    const matchUtc = match.status?.utcTime;
+    const matchDay = londonCalendarDate(matchUtc) || date;
+    const fixtureDay = londonCalendarDate(fixture.utcDate);
+    if (fixtureDay && matchDay && fixtureDay !== matchDay) continue;
+
     if (isFotMobPostponed(match) && !fixture.postponed) {
       patches.push({
         type: 'postpone',
         id: fixture.id,
         note: `FotMob marked postponed (${date}).`,
+      });
+      continue;
+    }
+
+    if (fixture.postponed && isFotMobMatchGoingAhead(match)) {
+      patches.push({
+        type: 'unpostpone',
+        id: fixture.id,
+        note: `FotMob lists this match as going ahead (${date}).`,
       });
       continue;
     }
@@ -128,6 +149,16 @@ function patchesFromEspnEvents(fixtures, events) {
       });
       continue;
     }
+    if (fixture.postponed && !event.postponed) {
+      if (!event.utcDate || sameLondonDay(event.utcDate, fixture.utcDate)) {
+        patches.push({
+          type: 'unpostpone',
+          id: fixture.id,
+          note: 'ESPN lists this match as going ahead.',
+        });
+        continue;
+      }
+    }
     if (!event.utcDate || fixture.postponed) continue;
     const liveDay = londonCalendarDate(event.utcDate);
     const localDay = londonCalendarDate(fixture.utcDate);
@@ -149,7 +180,9 @@ function dedupePatches(patches) {
   const unique = [];
   for (const patch of patches) {
     const key =
-      patch.type === 'move' ? `move:${patch.fromId}:${patch.toId}` : `postpone:${patch.id}`;
+      patch.type === 'move'
+        ? `move:${patch.fromId}:${patch.toId}`
+        : `${patch.type}:${patch.id}`;
     if (seen.has(key)) continue;
     seen.add(key);
     unique.push(patch);
@@ -177,6 +210,17 @@ function applySchedulePatches(source, patches) {
         pattern,
         `$1$2$3\n    /** ${patch.note || 'League match postponed — no ledger result until it is rearranged.'} */\n    postponed: true,`,
       );
+      continue;
+    }
+
+    if (patch.type === 'unpostpone') {
+      const pattern = fixtureObjectPattern(patch.id);
+      const match = next.match(pattern);
+      if (!match) {
+        throw new Error(`Unable to clear postponed flag on ${patch.id}.`);
+      }
+      if (!match[4]) continue;
+      next = next.replace(pattern, '$1$2$3');
       continue;
     }
 
@@ -265,6 +309,7 @@ async function collectLivePatches(source, options = {}) {
 function describePatches(patches) {
   return patches.map((patch) => {
     if (patch.type === 'postpone') return `${patch.id}: postponed (${patch.note})`;
+    if (patch.type === 'unpostpone') return `${patch.id}: not postponed (${patch.note})`;
     return `${patch.fromId} → ${patch.toId} ${patch.utcDate} (${patch.note})`;
   });
 }
@@ -275,6 +320,7 @@ module.exports = {
   applySchedulePatches,
   collectLivePatches,
   describePatches,
+  isFotMobMatchGoingAhead,
   isFotMobPostponed,
   londonCalendarDate,
   patchesFromEspnEvents,

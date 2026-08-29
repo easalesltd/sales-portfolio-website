@@ -280,4 +280,50 @@ describe('english-pyramid-live-scores', () => {
       awayRedCards: 1,
     });
   });
+
+  it('overrides a stale postponed fixture when a live source has the score', () => {
+    const schedule: MatchdaySchedule = {
+      defaultDate: '2026-08-29',
+      fixtureDates: ['2026-08-29'],
+      schedulesByDate: {
+        '2026-08-29': [
+          {
+            id: '2026-08-29-hor-fnh',
+            utcDate: '2026-08-29T14:00:00Z',
+            status: 'postponed',
+            livePeriod: 'Postponed',
+            homeTeam: { name: 'Horsham', tla: 'HOR', flag: 'NLS' },
+            awayTeam: { name: 'Farnham Town', tla: 'FNH', flag: 'NLS' },
+            homeManagers: [],
+            awayManagers: [],
+          },
+        ],
+      },
+    };
+
+    const { schedule: enriched, provisionalMatches } = applyLiveScoresToSchedule(schedule, [
+      {
+        homeTla: 'HOR',
+        awayTla: 'FNH',
+        homeGoals: 1,
+        awayGoals: 2,
+        period: 'FT',
+        homeRedCards: 0,
+        awayRedCards: 0,
+      },
+    ]);
+
+    expect(enriched.schedulesByDate['2026-08-29'][0]).toMatchObject({
+      status: 'finished',
+      homeGoals: 1,
+      awayGoals: 2,
+    });
+    expect(provisionalMatches).toEqual([
+      expect.objectContaining({
+        id: '2026-08-29-hor-fnh',
+        homeGoals: 1,
+        awayGoals: 2,
+      }),
+    ]);
+  });
 });

@@ -315,7 +315,9 @@ function mergeRemoteFixturesWithLocal(localFixtures, remoteFixtures) {
       utcDate = local.utcDate;
       id = local.id;
     }
-    const postponed = Boolean(remote.postponed || (local.postponed && sameDay));
+    // Remote same-day listing is source of truth. A stale local postponed
+    // flag must not survive once FWP/ESPN list the match as going ahead.
+    const postponed = Boolean(remote.postponed);
     return normalizeFixture({ ...remote, utcDate, id, postponed });
   });
 
@@ -679,18 +681,33 @@ function compareFixtureLists(localFixtures, remoteFixtures) {
     }
   }
 
+  const falsePostponedDrift = [];
+  for (const local of localFixtures) {
+    if (!local.postponed) continue;
+    const remote = remoteById.get(local.id) || findNearestDirectedPair(remoteFixtures, local);
+    if (
+      remote &&
+      !remote.postponed &&
+      londonCalendarDate(remote.utcDate) === londonCalendarDate(local.utcDate)
+    ) {
+      falsePostponedDrift.push({ before: local, after: remote });
+    }
+  }
+
   return {
     added: stillAdded,
     removed: stillRemoved,
     rescheduled,
     movedCalendarDay,
     postponedDrift,
+    falsePostponedDrift,
     changed:
       stillAdded.length +
         stillRemoved.length +
         rescheduled.length +
         movedCalendarDay.length +
-        postponedDrift.length >
+        postponedDrift.length +
+        falsePostponedDrift.length >
       0,
   };
 }

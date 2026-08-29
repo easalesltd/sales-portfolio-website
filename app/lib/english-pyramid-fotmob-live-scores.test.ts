@@ -92,6 +92,35 @@ describe('english-pyramid-fotmob-live-scores', () => {
     });
   });
 
+  it('does not treat a cancelled-but-finished FotMob row as postponed', () => {
+    expect(
+      matchFotMobEventToFixture(
+        {
+          homeTeam: { name: 'Horsham', tla: 'HOR', flag: 'NLS' },
+          awayTeam: { name: 'Farnham Town', tla: 'FNH', flag: 'NLS' },
+        },
+        [
+          {
+            id: 5907536,
+            home: { name: 'Horsham', longName: 'Horsham', score: 1 },
+            away: { name: 'Farnham Town', longName: 'Farnham Town', score: 2 },
+            status: {
+              cancelled: true,
+              started: true,
+              finished: true,
+            },
+          },
+        ]
+      )
+    ).toMatchObject({
+      homeTla: 'HOR',
+      awayTla: 'FNH',
+      homeGoals: 1,
+      awayGoals: 2,
+      period: 'FT',
+    });
+  });
+
   it('marks postponed tier-six fixtures instead of leaving them falsely live', () => {
     const matches = parseFotMobNationalLeagueMatches(payload);
     expect(
