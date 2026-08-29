@@ -1999,7 +1999,7 @@ function TeamMiniTable({
           if (prefersFinePointerHover() && pinnedTeamCode == null) setHoverTeamCode(null);
         }}
       >
-        <div className="sm:hidden">
+        <div className="overflow-x-clip overscroll-x-none touch-pan-y sm:hidden">
           <div className="grid grid-cols-[1.15rem_minmax(0,1fr)_2.75rem_1.2rem_1.2rem_1.4rem_1.5rem] items-center gap-x-1 border-b border-neutral-800 bg-neutral-950/80 px-1.5 py-1 text-[9px] font-medium uppercase tracking-wide text-neutral-500">
             <span>#</span>
             <span>Team</span>
