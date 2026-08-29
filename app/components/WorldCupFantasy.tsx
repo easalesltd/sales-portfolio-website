@@ -362,7 +362,7 @@ function FormChips({ outcomes }: { outcomes: Array<'W' | 'L' | 'D'> }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-0.5" aria-label={`Form ${outcomes.join(' ')}`}>
+    <span className="inline-flex items-center gap-px sm:gap-0.5" aria-label={`Form ${outcomes.join(' ')}`}>
       {outcomes.map((outcome, index) => (
         <MatchOutcomeLetter key={`${outcome}-${index}`} outcome={outcome} />
       ))}
@@ -1999,23 +1999,88 @@ function TeamMiniTable({
           if (prefersFinePointerHover() && pinnedTeamCode == null) setHoverTeamCode(null);
         }}
       >
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-xs sm:text-sm">
+        <div className="sm:hidden">
+          <div className="grid grid-cols-[1.15rem_minmax(0,1fr)_2.75rem_1.2rem_1.2rem_1.4rem_1.5rem] items-center gap-x-1 border-b border-neutral-800 bg-neutral-950/80 px-1.5 py-1 text-[9px] font-medium uppercase tracking-wide text-neutral-500">
+            <span>#</span>
+            <span>Team</span>
+            <span className="text-right">Form</span>
+            <span className="text-right">GF</span>
+            <span className="text-right">GA</span>
+            <span className="text-right">GD</span>
+            <span className="text-right">Pts</span>
+          </div>
+          <ul className="divide-y divide-neutral-800">
+            {orderedTeams.map((team, index) => {
+              const isPinned = pinnedTeamCode === team.code;
+              const isHighlighted = displayTeamCode === team.code;
+              const isEliminated = team.eliminated === true;
+              const form = lastFiveFormOutcomes(team.code, scoringMatches, matchScoringHelpers);
+              return (
+                <li
+                  key={team.code}
+                  className={`grid min-w-0 grid-cols-[1.15rem_minmax(0,1fr)_2.75rem_1.2rem_1.2rem_1.4rem_1.5rem] items-center gap-x-1 px-1.5 py-1.5 text-xs ${
+                    isEliminated
+                      ? 'bg-red-950/15 text-red-300/90'
+                      : isHighlighted
+                        ? t.c.teamHighlight
+                        : ''
+                  }`}
+                >
+                  <span className="tabular-nums text-neutral-400">{index + 1}</span>
+                  <button
+                    type="button"
+                    onClick={() => toggleTeam(team.code)}
+                    aria-expanded={isPinned}
+                    aria-controls="team-results-panel"
+                    title={team.name}
+                    className={`flex min-w-0 items-center text-left ${t.c.accentFocus} ${
+                      isEliminated ? t.c.negative : t.c.accentHover
+                    }`}
+                  >
+                    {t.id === 'english-pyramid' ? (
+                      <>
+                        <DivisionBadge divisionId={team.flag} />
+                        <span className="min-w-0 truncate">{team.name}</span>
+                      </>
+                    ) : (
+                      <span className="min-w-0 truncate">
+                        {formatTeamLabel ? formatTeamLabel(team.code) : `${team.flag} ${team.name}`}
+                      </span>
+                    )}
+                  </button>
+                  <span className="justify-self-end text-[10px] leading-none">
+                    <FormChips outcomes={form} />
+                  </span>
+                  <span className="text-right tabular-nums">{team.goalsFor}</span>
+                  <span className="text-right tabular-nums">{team.goalsAgainst}</span>
+                  <span className="text-right tabular-nums">
+                    <GoalDifferenceValue goalDifference={team.goalDifference} />
+                  </span>
+                  <span className="text-right font-semibold">
+                    <PointsValue value={team.points} />
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className="hidden overflow-x-auto sm:block">
+          <table className="min-w-full text-left text-sm">
             <thead className="bg-neutral-950/80 text-neutral-400">
               <tr>
-                <th className="px-2 py-1.5 font-medium sm:px-3">#</th>
-                <th className="px-2 py-1.5 font-medium sm:px-3">Team</th>
-                <th className="px-2 py-1.5 font-medium text-right sm:px-3">Form</th>
-                <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">Pld</th>
-                <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">W</th>
-                <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">D</th>
-                <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">L</th>
-                <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">{bonusColumnLabel}</th>
-                <th className="px-1.5 py-1.5 font-medium text-right sm:px-3">GF</th>
-                <th className="px-1.5 py-1.5 font-medium text-right sm:px-3">GA</th>
-                <th className="px-1.5 py-1.5 font-medium text-right sm:px-3">GD</th>
-                <th className="hidden px-2 py-1.5 font-medium text-right sm:table-cell sm:px-3">Red</th>
-                <th className="px-2 py-1.5 font-medium text-right sm:px-3">Pts</th>
+                <th className="px-3 py-1.5 font-medium">#</th>
+                <th className="px-3 py-1.5 font-medium">Team</th>
+                <th className="px-3 py-1.5 font-medium text-right">Form</th>
+                <th className="px-3 py-1.5 font-medium text-right">Pld</th>
+                <th className="px-3 py-1.5 font-medium text-right">W</th>
+                <th className="px-3 py-1.5 font-medium text-right">D</th>
+                <th className="px-3 py-1.5 font-medium text-right">L</th>
+                <th className="px-3 py-1.5 font-medium text-right">{bonusColumnLabel}</th>
+                <th className="px-3 py-1.5 font-medium text-right">GF</th>
+                <th className="px-3 py-1.5 font-medium text-right">GA</th>
+                <th className="px-3 py-1.5 font-medium text-right">GD</th>
+                <th className="px-3 py-1.5 font-medium text-right">Red</th>
+                <th className="px-3 py-1.5 font-medium text-right">Pts</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-800 text-neutral-100">
@@ -2039,8 +2104,8 @@ function TeamMiniTable({
                       if (prefersFinePointerHover()) setHoverTeamCode(team.code);
                     }}
                   >
-                    <td className="px-2 py-1.5 tabular-nums text-neutral-400 sm:px-3">{index + 1}</td>
-                    <td className="px-2 py-1.5 sm:px-3">
+                    <td className="px-3 py-1.5 tabular-nums text-neutral-400">{index + 1}</td>
+                    <td className="px-3 py-1.5">
                       <button
                         type="button"
                         onClick={() => toggleTeam(team.code)}
@@ -2067,29 +2132,23 @@ function TeamMiniTable({
                         ) : null}
                       </button>
                     </td>
-                    <td className="px-2 py-1.5 text-right text-[11px] sm:px-3 sm:text-xs">
+                    <td className="px-3 py-1.5 text-right text-xs">
                       <FormChips outcomes={form} />
                     </td>
-                    <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">{team.playedMatches}</td>
-                    <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">{team.wins}</td>
-                    <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">{team.draws}</td>
-                    <td className="hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3">{team.losses}</td>
-                    <td className="hidden px-2 py-1.5 text-right sm:table-cell sm:px-3">
+                    <td className="px-3 py-1.5 text-right tabular-nums">{team.playedMatches}</td>
+                    <td className="px-3 py-1.5 text-right tabular-nums">{team.wins}</td>
+                    <td className="px-3 py-1.5 text-right tabular-nums">{team.draws}</td>
+                    <td className="px-3 py-1.5 text-right tabular-nums">{team.losses}</td>
+                    <td className="px-3 py-1.5 text-right">
                       <PointsValue value={team.bonusPoints} />
                     </td>
-                    <td className="px-1.5 py-1.5 text-right tabular-nums sm:px-3">{team.goalsFor}</td>
-                    <td className="px-1.5 py-1.5 text-right tabular-nums sm:px-3">{team.goalsAgainst}</td>
-                    <td className="px-1.5 py-1.5 text-right tabular-nums sm:px-3">
+                    <td className="px-3 py-1.5 text-right tabular-nums">{team.goalsFor}</td>
+                    <td className="px-3 py-1.5 text-right tabular-nums">{team.goalsAgainst}</td>
+                    <td className="px-3 py-1.5 text-right tabular-nums">
                       <GoalDifferenceValue goalDifference={team.goalDifference} />
                     </td>
-                    <td className={`hidden px-2 py-1.5 text-right tabular-nums sm:table-cell sm:px-3 ${t.c.negative}`}>
-                      {team.redCards}
-                    </td>
-                    <td
-                      className={`px-2 py-1.5 text-right font-semibold sm:px-3 ${
-                        isEliminated ? 'opacity-90' : ''
-                      }`}
-                    >
+                    <td className={`px-3 py-1.5 text-right tabular-nums ${t.c.negative}`}>{team.redCards}</td>
+                    <td className={`px-3 py-1.5 text-right font-semibold ${isEliminated ? 'opacity-90' : ''}`}>
                       <PointsValue value={team.points} />
                     </td>
                   </tr>
