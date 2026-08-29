@@ -2009,7 +2009,7 @@ function TeamMiniTable({
             <span className="text-right">GD</span>
             <span className="text-right">Pts</span>
           </div>
-          <ul className="divide-y divide-neutral-800">
+          <ul className="divide-y divide-neutral-800 text-neutral-100">
             {orderedTeams.map((team, index) => {
               const isPinned = pinnedTeamCode === team.code;
               const isHighlighted = displayTeamCode === team.code;
@@ -2018,7 +2018,7 @@ function TeamMiniTable({
               return (
                 <li
                   key={team.code}
-                  className={`grid min-w-0 grid-cols-[1.15rem_minmax(0,1fr)_2.75rem_1.2rem_1.2rem_1.4rem_1.5rem] items-center gap-x-1 px-1.5 py-1.5 text-xs ${
+                  className={`grid min-w-0 grid-cols-[1.15rem_minmax(0,1fr)_2.75rem_1.2rem_1.2rem_1.4rem_1.5rem] items-center gap-x-1 px-1.5 py-1.5 text-xs text-neutral-100 ${
                     isEliminated
                       ? 'bg-red-950/15 text-red-300/90'
                       : isHighlighted
@@ -2033,7 +2033,7 @@ function TeamMiniTable({
                     aria-expanded={isPinned}
                     aria-controls="team-results-panel"
                     title={team.name}
-                    className={`flex min-w-0 items-center text-left ${t.c.accentFocus} ${
+                    className={`flex min-w-0 items-center text-left text-neutral-100 ${t.c.accentFocus} ${
                       isEliminated ? t.c.negative : t.c.accentHover
                     }`}
                   >
