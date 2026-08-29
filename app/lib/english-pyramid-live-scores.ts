@@ -440,7 +440,7 @@ export function applyLiveScoresToSchedule(
 
   for (const [date, entries] of Object.entries(schedule.schedulesByDate)) {
     schedulesByDate[date] = entries.map((entry) => {
-      if (entry.status !== 'in-play') return entry;
+      if (entry.status !== 'in-play' && entry.status !== 'postponed') return entry;
 
       const live = matchLiveScoreForFixture(entry, events);
       if (!live) return entry;
@@ -461,6 +461,7 @@ export function applyLiveScoresToSchedule(
           awayGoals: live.awayGoals,
           homeRedCards: live.homeRedCards,
           awayRedCards: live.awayRedCards,
+          livePeriod: undefined,
         };
         provisionalMatches.push(
           provisionalMatchFromFinishedEntry(finishedEntry, {
@@ -473,6 +474,7 @@ export function applyLiveScoresToSchedule(
 
       return {
         ...entry,
+        status: 'in-play',
         liveHomeGoals: live.homeGoals,
         liveAwayGoals: live.awayGoals,
         livePeriod: live.period,
@@ -503,21 +505,21 @@ async function getCachedScoreboardEventsForKeys(
 export async function enrichMatchdayScheduleWithLiveScores(
   schedule: MatchdaySchedule
 ): Promise<LiveScoresEnrichment> {
-  const inPlayEntries = Object.values(schedule.schedulesByDate)
+  const liveCandidateEntries = Object.values(schedule.schedulesByDate)
     .flat()
-    .filter((entry) => entry.status === 'in-play');
+    .filter((entry) => entry.status === 'in-play' || entry.status === 'postponed');
 
-  if (inPlayEntries.length === 0) {
+  if (liveCandidateEntries.length === 0) {
     return { schedule, provisionalMatches: [] };
   }
 
-  const fetchKeys = scoreboardFetchKeysForInPlayEntries(inPlayEntries);
+  const fetchKeys = scoreboardFetchKeysForInPlayEntries(liveCandidateEntries);
   const [espnEvents, fwpEvents, fotMobEvents] = await Promise.all([
     fetchKeys.length > 0
       ? getCachedScoreboardEventsForKeys(fetchKeys).catch(() => [] as EspnScoreboardEvent[])
       : Promise.resolve([] as EspnScoreboardEvent[]),
-    fetchFwpLiveEventsForInPlayEntries(inPlayEntries).catch(() => []),
-    fetchFotMobLiveEventsForInPlayEntries(inPlayEntries).catch(() => []),
+    fetchFwpLiveEventsForInPlayEntries(liveCandidateEntries).catch(() => []),
+    fetchFotMobLiveEventsForInPlayEntries(liveCandidateEntries).catch(() => []),
   ]);
 
   const events = mergeLiveScoreEvents([...espnEvents, ...fwpEvents], fotMobEvents);

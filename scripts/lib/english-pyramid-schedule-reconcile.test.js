@@ -67,6 +67,28 @@ describe('fixture merge and compare', () => {
     const block = formatFixtureBlock([{ ...saturday, postponed: true }]);
     expect(block).toContain("postponed: true");
   });
+
+  it('drops a stale same-day postponed flag when the remote listing is still on', () => {
+    const merged = mergeRemoteFixturesWithLocal(
+      [{ ...saturday, postponed: true }],
+      [{ ...saturday }],
+    );
+    expect(merged[0].postponed).toBeUndefined();
+  });
+
+  it('keeps a genuine postponement when the remote listing is also postponed', () => {
+    const merged = mergeRemoteFixturesWithLocal(
+      [{ ...saturday, postponed: true }],
+      [{ ...saturday, postponed: true }],
+    );
+    expect(merged[0].postponed).toBe(true);
+  });
+
+  it('reports a repo postponement that the remote source no longer agrees with', () => {
+    const diff = compareFixtureLists([{ ...saturday, postponed: true }], [{ ...saturday }]);
+    expect(diff.falsePostponedDrift).toHaveLength(1);
+    expect(diff.changed).toBe(true);
+  });
 });
 
 describe('live schedule patches', () => {
@@ -146,5 +168,109 @@ describe('live schedule patches', () => {
     ]);
     expect(updated).toContain('postponed: true');
     expect(updated).toContain('FotMob marked postponed');
+  });
+
+  it('does not postpone a match FotMob has already started or finished', () => {
+    const patches = patchesFromFotMobDay(
+      [horsham],
+      '2026-08-29',
+      {
+        leagues: [
+          {
+            name: 'National League South',
+            matches: [
+              {
+                id: 1,
+                home: { name: 'Horsham', longName: 'Horsham' },
+                away: { name: 'Farnham', longName: 'Farnham Town' },
+                status: {
+                  cancelled: true,
+                  started: true,
+                  finished: true,
+                  utcTime: '2026-08-29T14:00:00Z',
+                  scoreStr: '1 - 2',
+                },
+              },
+            ],
+          },
+        ],
+      },
+    );
+    expect(patches).toEqual([]);
+  });
+
+  it('clears a stale postponed flag when FotMob lists the match as going ahead', () => {
+    const patches = patchesFromFotMobDay(
+      [{ ...horsham, postponed: true }],
+      '2026-08-29',
+      {
+        leagues: [
+          {
+            name: 'National League South',
+            matches: [
+              {
+                id: 1,
+                home: { name: 'Horsham', longName: 'Horsham' },
+                away: { name: 'Farnham', longName: 'Farnham Town' },
+                status: {
+                  cancelled: false,
+                  started: true,
+                  finished: true,
+                  utcTime: '2026-08-29T14:00:00Z',
+                  scoreStr: '1 - 2',
+                },
+              },
+            ],
+          },
+        ],
+      },
+    );
+    expect(patches).toEqual([
+      expect.objectContaining({ type: 'unpostpone', id: '2026-08-29-hor-fnh' }),
+    ]);
+  });
+
+  it('ignores a cancelled listing from a different London day', () => {
+    const patches = patchesFromFotMobDay(
+      [horsham],
+      '2026-08-28',
+      {
+        leagues: [
+          {
+            name: 'National League South',
+            matches: [
+              {
+                id: 1,
+                home: { name: 'Horsham', longName: 'Horsham' },
+                away: { name: 'Farnham', longName: 'Farnham Town' },
+                status: {
+                  cancelled: true,
+                  utcTime: '2026-08-28T14:00:00Z',
+                },
+              },
+            ],
+          },
+        ],
+      },
+    );
+    expect(patches).toEqual([]);
+  });
+
+  it('removes postponed: true when applying an unpostpone patch', () => {
+    const source = `export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
+  {
+    id: '2026-08-29-hor-fnh',
+    utcDate: '2026-08-29T14:00:00Z',
+    homeTeam: { name: 'Horsham', tla: 'HOR' },
+    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
+    /** FotMob marked postponed (2026-08-29). */
+    postponed: true,
+  },
+];`;
+    const updated = applySchedulePatches(source, [
+      { type: 'unpostpone', id: '2026-08-29-hor-fnh', note: 'FotMob lists this match as going ahead.' },
+    ]);
+    expect(updated).not.toContain('postponed: true');
+    expect(updated).not.toContain('FotMob marked postponed');
   });
 });

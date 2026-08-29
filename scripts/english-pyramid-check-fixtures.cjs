@@ -106,6 +106,15 @@ async function main() {
     }
   }
 
+  if (diff.falsePostponedDrift?.length > 0) {
+    console.log(
+      `\nMarked postponed in the repo but the remote source still lists the match (${diff.falsePostponedDrift.length}):`,
+    );
+    for (const entry of diff.falsePostponedDrift.slice(0, 20)) {
+      console.log(`  ! ${formatFixtureLine(entry.before)}`);
+    }
+  }
+
   if (write) {
     writeFixturesToDataFile(remoteFixtures);
     console.log(

@@ -109,8 +109,17 @@ function parseFotMobFinal(match, detail) {
   return { homeGoals: homeScore, awayGoals: awayScore, homeRedCards, awayRedCards };
 }
 
+function isFotMobMatchGoingAhead(match) {
+  const status = match?.status;
+  if (!status) return false;
+  if (status.started === true || status.finished === true || status.ongoing === true) return true;
+  if (status.scoreStr) return true;
+  if (status.cancelled) return false;
+  return Boolean(status.utcTime);
+}
+
 function isFotMobPostponed(match) {
-  return Boolean(match?.status?.cancelled);
+  return Boolean(match?.status?.cancelled) && !isFotMobMatchGoingAhead(match);
 }
 
 async function fetchFotMobResultForFixture(fixture, caches = {}) {
@@ -141,6 +150,7 @@ async function fetchFotMobResultForFixture(fixture, caches = {}) {
 module.exports = {
   fetchFotMobResultForFixture,
   findFotMobMatchForFixture,
+  isFotMobMatchGoingAhead,
   isFotMobPostponed,
   nationalLeagueMatches,
   normalizeTeamName,

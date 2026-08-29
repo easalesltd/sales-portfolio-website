@@ -3,7 +3,10 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useState, useMemo, useRef, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
-import { formatTeamLabel as formatPyramidTeamLabel } from '@/app/data/english-pyramid-fantasy';
+import {
+  formatTeamLabel as formatPyramidTeamLabel,
+  type EnglishPyramidOfficialStatement,
+} from '@/app/data/english-pyramid-fantasy';
 import type { EnglishPyramidFantasyResponse } from '@/app/api/english-pyramid-fantasy/route';
 import type {
   FixtureManager,
@@ -1330,6 +1333,49 @@ function PlayerIdentity({
 
 function progressLineColor(index: number, colors: readonly string[]): string {
   return colors[index % colors.length];
+}
+
+function OfficialStatementPanel({
+  statement,
+}: {
+  statement: EnglishPyramidOfficialStatement;
+}) {
+  const issued = formatSweepstakeDate(statement.issuedAtUtc);
+  const paragraphs = statement.body
+    .split(/\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  return (
+    <section
+      aria-labelledby="pyramid-official-statement"
+      className="rounded-lg border border-[#d4af37]/40 bg-[#141f38]/90 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+    >
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#d4af37]/80">
+        From the stewards{issued ? ` · ${issued}` : ''}
+      </p>
+      <h3 id="pyramid-official-statement" className="mt-1 text-sm font-semibold tracking-wide text-[#e8dfc8]">
+        {statement.headline}
+      </h3>
+      <div className="mt-2 space-y-2.5 text-sm leading-relaxed text-neutral-100">
+        {paragraphs.map((paragraph, index) => {
+          const isSubhead = paragraph === 'Investigation' || paragraph === 'Resolution';
+          return (
+            <p
+              key={`${index}-${paragraph.slice(0, 24)}`}
+              className={
+                isSubhead
+                  ? 'pt-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d4af37]'
+                  : undefined
+              }
+            >
+              {paragraph}
+            </p>
+          );
+        })}
+      </div>
+    </section>
+  );
 }
 
 function RoastCopy({ text, mobileCollapsed }: { text: string; mobileCollapsed: boolean }) {
@@ -2737,6 +2783,10 @@ function WorldCupFantasyView({
                 standings={data.standings}
                 matchScoringHelpers={matchScoringHelpers}
               />
+
+              {t.id === 'english-pyramid' && data.officialStatement ? (
+                <OfficialStatementPanel statement={data.officialStatement} />
+              ) : null}
 
               <section className={t.c.roastSection}>
                 <div className="flex items-start justify-between gap-3">

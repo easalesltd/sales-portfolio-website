@@ -134,7 +134,11 @@ export function matchFotMobEventToFixture(
 
   const homeGoals = parseNonNegativeInteger(match.home.score);
   const awayGoals = parseNonNegativeInteger(match.away.score);
-  if (match.status.cancelled) {
+  const goingAhead =
+    match.status.started === true ||
+    match.status.finished === true ||
+    match.status.ongoing === true;
+  if (match.status.cancelled && !goingAhead) {
     return {
       homeTla: fixture.homeTeam.tla,
       awayTla: fixture.awayTeam.tla,
