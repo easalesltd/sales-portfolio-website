@@ -41,6 +41,7 @@ import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeCo
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import SweepstakeAwards from './english-pyramid/SweepstakeAwards';
 import DraftOverachievementChart from './english-pyramid/DraftOverachievementChart';
+import { pyramidMobileProgressChartHeight } from '@/app/lib/english-pyramid-progress-chart-layout';
 
 type SweepstakeResponse = EnglishPyramidFantasyResponse;
 
@@ -216,9 +217,49 @@ const PROGRESS_CHART_LAYOUTS = {
   desktop: { id: 'desktop' as const, height: 520, crestSize: 28, padding: { top: 40, right: 40, bottom: 48, left: 44 } },
 } as const;
 
-/** Taller plot on phones so stacked manager lines separate; still fits the screen width. */
-const PYRAMID_MOBILE_PROGRESS_HEIGHT = 500;
-const PYRAMID_MOBILE_PROGRESS_PADDING = { top: 36, right: 8, bottom: 40, left: 32 };
+const PYRAMID_MOBILE_PROGRESS_PADDING = { top: 28, right: 8, bottom: 36, left: 32 };
+
+function usePyramidMobileProgressHeight(enabled: boolean): number {
+  const [height, setHeight] = useState(320);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    const root = document.querySelector('[data-sweepstake-theme="english-pyramid"]');
+    if (!(root instanceof HTMLElement)) return;
+
+    const update = () => {
+      const header = root.querySelector('header');
+      const navs = root.querySelectorAll('nav[aria-label="Jump to section"]');
+      let navHeight = 56;
+      navs.forEach((nav) => {
+        if (!(nav instanceof HTMLElement)) return;
+        const measured = nav.getBoundingClientRect().height;
+        if (measured > 0) navHeight = measured;
+      });
+      const styles = getComputedStyle(root);
+      setHeight(
+        pyramidMobileProgressChartHeight({
+          viewportHeight: window.visualViewport?.height ?? window.innerHeight,
+          overlayPadTop: Number.parseFloat(styles.paddingTop) || 0,
+          overlayPadBottom: Number.parseFloat(styles.paddingBottom) || 0,
+          headerHeight: header instanceof HTMLElement ? header.getBoundingClientRect().height : 144,
+          navHeight,
+        }),
+      );
+    };
+
+    update();
+    window.visualViewport?.addEventListener('resize', update);
+    window.addEventListener('resize', update);
+    return () => {
+      window.visualViewport?.removeEventListener('resize', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [enabled]);
+
+  return height;
+}
 
 type ProgressChartLayout = (typeof PROGRESS_CHART_LAYOUTS)[keyof typeof PROGRESS_CHART_LAYOUTS];
 
@@ -1329,6 +1370,8 @@ function StandingsProgressChart({
   const { ref: wrapRef, width: wrapWidth } = useElementWidth<HTMLDivElement>();
   const { lineWidth, yHeadroomPoints } = PROGRESS_CHART;
   const finishedMatchCount = scoringMatches.length;
+  const isPyramidMobile = t.id === 'english-pyramid' && layout.id === 'mobile';
+  const fittedMobileHeight = usePyramidMobileProgressHeight(isPyramidMobile);
 
   if (finishedMatchCount === 0) {
     return (
@@ -1336,8 +1379,7 @@ function StandingsProgressChart({
     );
   }
 
-  const isPyramidMobile = t.id === 'english-pyramid' && layout.id === 'mobile';
-  const height = isPyramidMobile ? PYRAMID_MOBILE_PROGRESS_HEIGHT : layout.height;
+  const height = isPyramidMobile ? fittedMobileHeight : layout.height;
   const padding = isPyramidMobile ? PYRAMID_MOBILE_PROGRESS_PADDING : layout.padding;
 
   const series = buildPlayerProgressSeries(standings, scoringMatches, {
