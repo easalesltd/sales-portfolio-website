@@ -350,6 +350,28 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
   'Scott\'s Wolves beat Stoke City 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then his Horsham lot got turned over 1-2 at home by Nest\'s Farnham Town and banked a fat zero. Scott is on 100.\n\nChris\'s Barnet and Cheltenham Town played each other and finished 2-2. Plus 1 for the draw for one, plus 1 for the draw for the other. Chris is on 82.\n\nBen\'s Liverpool drew 2-2 with Forest. Plus 1 for the draw, net plus 1. Then Middlesbrough beat West Brom 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Ben is on 76.\n\nNest\'s Leicester served up a boring 0-0 against MK Dons. Minus 1 for the 0-0. Then Farnham Town nicked a 2-1 away win at Horsham. Plus 4 for the away win, net plus 3. Nest is on 72.\n\nDave\'s Port Vale served up a boring 0-0 against Crewe Alexandra. Minus 1 for the 0-0, net minus 1. Dave is on 67.\n\nAsh\'s MK Dons served up a boring 0-0 against Leicester. Minus 1 for the 0-0, net minus 1. Ash is on 50.\n\nTable: Scott 100, Chris 82, Ben 76, Nest 72, Dave 67, Jon 54, Ash 50.';
 
+export type EnglishPyramidOfficialStatement = {
+  headline: string;
+  issuedAtUtc: string;
+  body: string;
+};
+
+/** Public steward note. Set to null when there is nothing to publish. */
+export const ENGLISH_PYRAMID_OFFICIAL_STATEMENT: EnglishPyramidOfficialStatement | null = {
+  headline: 'Official statement: Horsham vs Farnham Town',
+  issuedAtUtc: '2026-08-29T16:05:00Z',
+  body:
+    'We owe the league an apology.\n\n' +
+    'This afternoon the board listed Horsham vs Farnham Town as postponed. That was wrong. The National League South match kicked off at 15:00 UK as scheduled and finished Horsham 1-2 Farnham Town. There were no red cards. Nest\'s Farnham Town take plus 4 for the away win. Scott\'s Horsham take nothing. Scott remains on 100. Nest moves to 72.\n\n' +
+    'We are sorry to Scott, Nest, and everyone watching the page during the game. A false postponement hid the score while the match was live and after full time.\n\n' +
+    'Investigation\n\n' +
+    'On Friday night, 28 August, the automated schedule job marked the fixture postponed after FotMob treated it as cancelled. That write only ever added a postponement. It never cleared one. The fixture refresh then kept the local flag whenever the pairing was still on the same day. The live score feed only updated in-play rows, so a Postponed label never picked up the 1-2.\n\n' +
+    'The same Friday job correctly recorded genuine Ebbsfleet postponements, including Farnborough vs Ebbsfleet today and Ebbsfleet vs Horsham on Monday. Those still stand. Horsham vs Farnham was not one of them.\n\n' +
+    'Resolution\n\n' +
+    'The false flag is gone. The 1-2 is in the ledger. Sync now un-postpones a match when FotMob or ESPN still list it as going ahead. A cancelled listing from a different London day cannot postpone Saturday\'s fixture. Fetch merge trusts the live same-day listing. Validation fails if the repo says postponed and the source still has the game on. The page will also show a live or full-time score even if a stale postponement is sitting in the data.\n\n' +
+    'The Daily roast below is the usual matchday recap. This note is the official record of the error.',
+};
+
 /**
  * Prize pot invested in an all-world accumulating fund.
  * Fill in `units`, `purchasePriceGbp`, and `investedAt` after the buy —
