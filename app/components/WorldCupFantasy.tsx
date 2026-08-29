@@ -211,10 +211,14 @@ const PROGRESS_CHART = {
 } as const;
 
 const PROGRESS_CHART_LAYOUTS = {
-  mobile: { height: 288, crestSize: 24, padding: { top: 28, right: 36, bottom: 36, left: 40 } },
-  tablet: { height: 400, crestSize: 26, padding: { top: 34, right: 38, bottom: 42, left: 42 } },
-  desktop: { height: 520, crestSize: 28, padding: { top: 40, right: 40, bottom: 48, left: 44 } },
+  mobile: { id: 'mobile' as const, height: 288, crestSize: 24, padding: { top: 28, right: 36, bottom: 36, left: 40 } },
+  tablet: { id: 'tablet' as const, height: 400, crestSize: 26, padding: { top: 34, right: 38, bottom: 42, left: 42 } },
+  desktop: { id: 'desktop' as const, height: 520, crestSize: 28, padding: { top: 40, right: 40, bottom: 48, left: 44 } },
 } as const;
+
+/** Taller plot on phones so stacked manager lines separate; still fits the screen width. */
+const PYRAMID_MOBILE_PROGRESS_HEIGHT = 500;
+const PYRAMID_MOBILE_PROGRESS_PADDING = { top: 36, right: 8, bottom: 40, left: 32 };
 
 type ProgressChartLayout = (typeof PROGRESS_CHART_LAYOUTS)[keyof typeof PROGRESS_CHART_LAYOUTS];
 
@@ -1320,7 +1324,8 @@ function StandingsProgressChart({
 }) {
   const t = useSweepstakeTheme();
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
-  const { height, crestSize, padding } = useProgressChartLayout();
+  const layout = useProgressChartLayout();
+  const { crestSize } = layout;
   const { ref: wrapRef, width: wrapWidth } = useElementWidth<HTMLDivElement>();
   const { lineWidth, yHeadroomPoints } = PROGRESS_CHART;
   const finishedMatchCount = scoringMatches.length;
@@ -1330,6 +1335,10 @@ function StandingsProgressChart({
       <p className="mt-2 text-sm text-neutral-400">Progress chart fills in once the first results are recorded.</p>
     );
   }
+
+  const isPyramidMobile = t.id === 'english-pyramid' && layout.id === 'mobile';
+  const height = isPyramidMobile ? PYRAMID_MOBILE_PROGRESS_HEIGHT : layout.height;
+  const padding = isPyramidMobile ? PYRAMID_MOBILE_PROGRESS_PADDING : layout.padding;
 
   const series = buildPlayerProgressSeries(standings, scoringMatches, {
     groupByDay: t.id === 'english-pyramid',
@@ -1366,8 +1375,12 @@ function StandingsProgressChart({
   const minXStep = t.id === 'english-pyramid' ? 88 : PROGRESS_CHART.xStep;
   const containerWidth = wrapWidth > 0 ? wrapWidth : 800;
   const usableWidth = Math.max(120, containerWidth - padding.left - padding.right - endLabelRoom);
-  const xStep = Math.max(minXStep, usableWidth / Math.max(1, pointCount - 1));
-  const chartWidth = padding.left + padding.right + endLabelRoom + Math.max(1, pointCount - 1) * xStep;
+  const xStep = isPyramidMobile
+    ? usableWidth / Math.max(1, pointCount - 1)
+    : Math.max(minXStep, usableWidth / Math.max(1, pointCount - 1));
+  const chartWidth = isPyramidMobile
+    ? containerWidth
+    : padding.left + padding.right + endLabelRoom + Math.max(1, pointCount - 1) * xStep;
   const xLabelStride = Math.max(1, Math.ceil(72 / xStep), Math.ceil((pointCount - 1) / 12));
   const xLabels = series[0]?.points.filter((_, index) => index === 0 || index % xLabelStride === 0 || index === pointCount - 1) ?? [];
 
@@ -1375,14 +1388,19 @@ function StandingsProgressChart({
 
   return (
       <div className={`mt-3 space-y-3`}>
-      <div className={t.c.chartWrap} ref={wrapRef}>
+      <div
+        className={t.c.chartWrap}
+        ref={wrapRef}
+        style={isPyramidMobile ? { overflowX: 'hidden', minHeight: height } : undefined}
+      >
+        {isPyramidMobile && wrapWidth <= 0 ? null : (
         <svg
           role="img"
           aria-label="Cumulative fantasy points by manager across the tournament"
           viewBox={`0 0 ${chartWidth} ${height}`}
           preserveAspectRatio="xMinYMid meet"
-          className="block"
-          style={{ width: chartWidth, height }}
+          className="block max-w-full"
+          style={{ width: isPyramidMobile ? '100%' : chartWidth, height }}
         >
           {yTicks.map((tick) => (
             <g key={tick.value}>
@@ -1521,6 +1539,7 @@ function StandingsProgressChart({
             );
           })}
         </svg>
+        )}
       </div>
 
       <p className="text-xs text-neutral-500">
