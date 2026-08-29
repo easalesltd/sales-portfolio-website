@@ -6,6 +6,7 @@ import {
   buildDraftOverachievement,
   draftSlotLabel,
   draftStrengthSlotIndex,
+  managerBandChartMax,
 } from '@/app/lib/english-pyramid-overachievement';
 
 function team(overrides: Partial<TeamStanding> & Pick<TeamStanding, 'code' | 'name'>): TeamStanding {
@@ -94,5 +95,34 @@ describe('buildDraftOverachievement', () => {
     const stats = buildDraftOverachievement([dave]);
     expect(stats.dogsOverachieving).toBe(false);
     expect(stats.punchingUp).toEqual([]);
+  });
+});
+
+describe('managerBandChartMax', () => {
+  it('uses the highest title or dogs PPG across every manager', () => {
+    expect(
+      managerBandChartMax([
+        {
+          managerId: 'dave',
+          managerName: 'Dave',
+          teamName: 'Creamers',
+          titlePpg: 1.3,
+          survivalPpg: 2.21,
+          titlePoints: 0,
+          survivalPoints: 0,
+          dogsAhead: true,
+        },
+        {
+          managerId: 'scott',
+          managerName: 'Scott',
+          teamName: 'Objection',
+          titlePpg: 2.53,
+          survivalPpg: 2.4,
+          titlePoints: 0,
+          survivalPoints: 0,
+          dogsAhead: false,
+        },
+      ]),
+    ).toBe(2.53);
   });
 });

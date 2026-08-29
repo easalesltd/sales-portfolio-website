@@ -5,6 +5,7 @@ import type { PlayerStanding } from '@/app/lib/english-pyramid-scoring';
 import {
   buildDraftOverachievement,
   formatPpg,
+  managerBandChartMax,
 } from '@/app/lib/english-pyramid-overachievement';
 import { useSweepstakeTheme } from '../SweepstakeThemeContext';
 
@@ -31,6 +32,7 @@ export default function DraftOverachievementChart({ standings }: Props) {
   }
 
   const maxPpg = Math.max(...stats.slots.map((slot) => slot.avgPpg), stats.titlePpg, 0.5);
+  const barMax = managerBandChartMax(stats.managers);
   const yMax = maxPpg * 1.15;
   const plotW = 640;
   const plotH = CHART_HEIGHT - PAD.top - PAD.bottom;
@@ -51,7 +53,7 @@ export default function DraftOverachievementChart({ standings }: Props) {
         <p className="mt-1 text-xs text-neutral-500">
           Bars are average fantasy points per game at each draft seed. Left is title #1; right is
           relegation favourite (R1). Green survival bars sit above the title average — those seeds
-          are punching up.
+          are punching up. Manager Title/Dogs bars below share one scale.
         </p>
       </div>
 
@@ -151,7 +153,6 @@ export default function DraftOverachievementChart({ standings }: Props) {
       <ul className="grid gap-1.5 sm:grid-cols-2">
         {stats.managers.map((row) => {
           const label = row.teamName ? `${row.teamName} (${row.managerName})` : row.managerName;
-          const max = Math.max(row.titlePpg, row.survivalPpg, 0.01);
           return (
             <li
               key={row.managerId}
@@ -166,8 +167,8 @@ export default function DraftOverachievementChart({ standings }: Props) {
                 )}
               </div>
               <div className="mt-1.5 space-y-1">
-                <SeedBar label="Title" value={row.titlePpg} max={max} color={TITLE_FILL} />
-                <SeedBar label="Dogs" value={row.survivalPpg} max={max} color={row.dogsAhead ? DOGS_FILL : SURVIVAL_FILL} />
+                <SeedBar label="Title" value={row.titlePpg} max={barMax} color={TITLE_FILL} />
+                <SeedBar label="Dogs" value={row.survivalPpg} max={barMax} color={row.dogsAhead ? DOGS_FILL : SURVIVAL_FILL} />
               </div>
             </li>
           );
@@ -188,7 +189,7 @@ function SeedBar({
   max: number;
   color: string;
 }) {
-  const width = Math.max(4, (value / max) * 100);
+  const width = max > 0 ? (value / max) * 100 : 0;
   return (
     <div className="flex items-center gap-2">
       <span className="w-10 shrink-0 text-[10px] uppercase tracking-wide text-neutral-500">{label}</span>

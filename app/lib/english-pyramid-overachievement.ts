@@ -190,3 +190,9 @@ export function buildDraftOverachievement(standings: PlayerStanding[]): DraftOve
 export function formatPpg(value: number): string {
   return value.toFixed(2);
 }
+
+/** Shared bar scale so one manager's 2.53 is visibly longer than another's 1.30. */
+export function managerBandChartMax(managers: readonly ManagerBandSplit[]): number {
+  if (managers.length === 0) return 0.01;
+  return Math.max(...managers.flatMap((row) => [row.titlePpg, row.survivalPpg]), 0.01);
+}
