@@ -354,12 +354,17 @@ export type EnglishPyramidOfficialStatement = {
   headline: string;
   issuedAtUtc: string;
   body: string;
+  /** Optional press-conference photo shown above the statement. */
+  imageUrl?: string;
+  imageAlt?: string;
 };
 
 /** Public steward note. Set to null when there is nothing to publish. */
 export const ENGLISH_PYRAMID_OFFICIAL_STATEMENT: EnglishPyramidOfficialStatement | null = {
   headline: 'Official statement: Horsham vs Farnham Town',
   issuedAtUtc: '2026-08-29T16:05:00Z',
+  imageUrl: '/images/english-pyramid-fantasy/steward-statement.jpg',
+  imageAlt: 'The league stewards issue a formal apology with their family on the driveway',
   body:
     'We owe the league an apology.\n\n' +
     'This afternoon the board listed Horsham vs Farnham Town as postponed. That was wrong. The National League South match kicked off at 15:00 UK as scheduled and finished Horsham 1-2 Farnham Town. There were no red cards. Nest\'s Farnham Town take plus 4 for the away win. Scott\'s Horsham take nothing. Scott remains on 100. Nest moves to 72.\n\n' +

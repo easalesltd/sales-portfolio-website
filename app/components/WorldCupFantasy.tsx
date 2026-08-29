@@ -1349,30 +1349,42 @@ function OfficialStatementPanel({
   return (
     <section
       aria-labelledby="pyramid-official-statement"
-      className="rounded-lg border border-[#d4af37]/40 bg-[#141f38]/90 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+      className="overflow-hidden rounded-lg border border-[#d4af37]/40 bg-[#141f38]/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
     >
-      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#d4af37]/80">
-        From the stewards{issued ? ` · ${issued}` : ''}
-      </p>
-      <h3 id="pyramid-official-statement" className="mt-1 text-sm font-semibold tracking-wide text-[#e8dfc8]">
-        {statement.headline}
-      </h3>
-      <div className="mt-2 space-y-2.5 text-sm leading-relaxed text-neutral-100">
-        {paragraphs.map((paragraph, index) => {
-          const isSubhead = paragraph === 'Investigation' || paragraph === 'Resolution';
-          return (
-            <p
-              key={`${index}-${paragraph.slice(0, 24)}`}
-              className={
-                isSubhead
-                  ? 'pt-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d4af37]'
-                  : undefined
-              }
-            >
-              {paragraph}
-            </p>
-          );
-        })}
+      {statement.imageUrl ? (
+        // Native img: keep the press-conference still centred without next/image fill quirks.
+        <img
+          src={statement.imageUrl}
+          alt={statement.imageAlt ?? ''}
+          className="block w-full bg-black object-cover object-[center_30%]"
+          width={320}
+          height={180}
+        />
+      ) : null}
+      <div className="px-4 py-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#d4af37]/80">
+          From the stewards{issued ? ` · ${issued}` : ''}
+        </p>
+        <h3 id="pyramid-official-statement" className="mt-1 text-sm font-semibold tracking-wide text-[#e8dfc8]">
+          {statement.headline}
+        </h3>
+        <div className="mt-2 space-y-2.5 text-sm leading-relaxed text-neutral-100">
+          {paragraphs.map((paragraph, index) => {
+            const isSubhead = paragraph === 'Investigation' || paragraph === 'Resolution';
+            return (
+              <p
+                key={`${index}-${paragraph.slice(0, 24)}`}
+                className={
+                  isSubhead
+                    ? 'pt-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d4af37]'
+                    : undefined
+                }
+              >
+                {paragraph}
+              </p>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
