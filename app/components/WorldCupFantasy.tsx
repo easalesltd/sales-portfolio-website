@@ -45,6 +45,10 @@ import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import SweepstakeAwards from './english-pyramid/SweepstakeAwards';
 import DraftOverachievementChart from './english-pyramid/DraftOverachievementChart';
 import { pyramidMobileProgressChartHeight } from '@/app/lib/english-pyramid-progress-chart-layout';
+import {
+  LATEST_RESULT_MOBILE_SLOT,
+  LATEST_RESULT_MOBILE_STACK,
+} from '@/app/lib/sweepstake-ticker-layout';
 
 type SweepstakeResponse = EnglishPyramidFantasyResponse;
 
@@ -1248,11 +1252,11 @@ function LatestResultsTicker({
 
   return (
     <section className="w-full" aria-label="Latest sweepstake results ticker">
-      <div className="grid justify-items-center sm:hidden" aria-live="polite">
+      <div className={LATEST_RESULT_MOBILE_STACK} aria-live="polite">
         {matches.map((entry, index) => (
           <div
             key={`${entry.match.id}-mobile-${index}`}
-            className={`col-start-1 row-start-1 ${index === activeIndex ? '' : 'invisible'}`}
+            className={`${LATEST_RESULT_MOBILE_SLOT} ${index === activeIndex ? '' : 'invisible'}`}
             aria-hidden={index !== activeIndex}
           >
             {renderResultCard(entry, index)}

@@ -1,3 +1,5 @@
+import { TICKER_CARD_SIZE } from '@/app/lib/sweepstake-ticker-layout';
+
 export type SweepstakeFantasyThemeId = 'world-cup' | 'english-pyramid';
 
 export type SweepstakeFantasyTheme = {
@@ -145,14 +147,14 @@ export const worldCupFantasyTheme: SweepstakeFantasyTheme = {
     navBtn:
       'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-sky-700/70 bg-sky-950/50 text-sm font-semibold text-sky-100 transition hover:bg-sky-900/60 disabled:cursor-not-allowed disabled:border-neutral-800 disabled:bg-neutral-950/40 disabled:text-neutral-600',
     tickerCard:
-      'min-w-[17rem] shrink-0 rounded-lg border border-lime-500/35 bg-neutral-950 px-3 py-2 shadow-[0_0_18px_rgba(132,204,22,0.14)] md:min-w-[21rem] xl:min-w-[24rem]',
+      `${TICKER_CARD_SIZE} rounded-lg border border-lime-500/35 bg-neutral-950 px-3 py-2 shadow-[0_0_18px_rgba(132,204,22,0.14)]`,
     tickerCardLabel: 'text-[9px] font-semibold uppercase tracking-[0.26em] text-lime-500/80',
     tickerCardInner:
       'mt-1 rounded-md border border-lime-900/80 bg-black px-3 py-2 [background-image:radial-gradient(rgba(132,204,22,0.16)_1px,transparent_1px)] [background-size:4px_4px]',
     tickerScore:
       'flex items-center justify-center gap-2 font-mono text-lg font-bold tracking-[0.16em] text-lime-300 [text-shadow:0_0_12px_rgba(132,204,22,0.9)] sm:text-xl xl:text-2xl',
     tickerScoreBadge: 'rounded border border-lime-500/40 bg-lime-400/10 px-2 tabular-nums',
-    tickerMatch: 'mt-1.5 truncate text-center text-[11px] font-medium text-teal-200 sm:text-xs',
+    tickerMatch: 'mt-1.5 w-full truncate text-center text-[11px] font-medium text-teal-200 sm:text-xs',
     tickerWrap:
       'hidden overflow-hidden rounded-xl border border-lime-400/40 bg-neutral-950 px-3 py-3 shadow-[0_0_26px_rgba(132,204,22,0.18)] motion-reduce:overflow-x-auto sm:block lg:px-4',
     tickerHeader: 'mb-2 flex items-center justify-between gap-3 px-1 text-[10px] font-semibold uppercase tracking-[0.28em] text-lime-500/80',
@@ -260,14 +262,14 @@ export const englishPyramidFantasyTheme: SweepstakeFantasyTheme = {
     navBtn:
       'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[#d4af37]/35 bg-[#1a2744]/80 text-sm font-semibold text-[#e8dfc8] transition hover:bg-[#d4af37]/15 disabled:cursor-not-allowed disabled:border-neutral-800 disabled:bg-[#0a0f1a]/40 disabled:text-neutral-600',
     tickerCard:
-      'min-w-[17rem] shrink-0 rounded-lg border border-[#d4af37]/35 sweepstake-card-glass px-3 py-2 shadow-[0_0_20px_rgba(212,175,55,0.12)] md:min-w-[21rem] xl:min-w-[24rem]',
+      `${TICKER_CARD_SIZE} rounded-lg border border-[#d4af37]/35 sweepstake-card-glass px-3 py-2 shadow-[0_0_20px_rgba(212,175,55,0.12)]`,
     tickerCardLabel: 'text-[9px] font-semibold uppercase tracking-[0.26em] text-[#d4af37]/75',
     tickerCardInner:
       'mt-1 rounded-md border border-[#d4af37]/20 bg-[#0a0f1a] px-3 py-2 [background-image:radial-gradient(rgba(212,175,55,0.12)_1px,transparent_1px)] [background-size:4px_4px]',
     tickerScore:
       'flex items-center justify-center gap-2 font-mono text-lg font-bold tracking-[0.16em] text-[#d4af37] [text-shadow:0_0_14px_rgba(212,175,55,0.55)] sm:text-xl xl:text-2xl',
     tickerScoreBadge: 'rounded border border-[#d4af37]/40 bg-[#d4af37]/10 px-2 tabular-nums',
-    tickerMatch: 'mt-1.5 truncate text-center text-[11px] font-medium text-[#e8dfc8]/85 sm:text-xs',
+    tickerMatch: 'mt-1.5 w-full truncate text-center text-[11px] font-medium text-[#e8dfc8]/85 sm:text-xs',
     tickerWrap:
       'hidden overflow-hidden rounded-xl border border-[#d4af37]/30 bg-[#0a0f1a] px-3 py-3 shadow-[0_0_28px_rgba(212,175,55,0.1)] motion-reduce:overflow-x-auto sm:block lg:px-4',
     tickerHeader:
