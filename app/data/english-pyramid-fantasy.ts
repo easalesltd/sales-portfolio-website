@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Wolves beat Stoke City 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Scott is on 100.\n\nChris\'s Barnet and Cheltenham Town played each other and finished 2-2. Plus 1 for the draw for one, plus 1 for the draw for the other. Chris is on 82.\n\nBen\'s Liverpool drew 2-2 with Forest. Plus 1 for the draw, net plus 1. Then Middlesbrough beat West Brom 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Ben is on 76.\n\nNest\'s Leicester served up a boring 0-0 against MK Dons. Minus 1 for the 0-0, net minus 1. Nest is on 68.\n\nDave\'s Port Vale served up a boring 0-0 against Crewe Alexandra. Minus 1 for the 0-0, net minus 1. Dave is on 67.\n\nAsh\'s MK Dons served up a boring 0-0 against Leicester. Minus 1 for the 0-0, net minus 1. Ash is on 50.\n\nTable: Scott 100, Chris 82, Ben 76, Nest 68, Dave 67, Jon 54, Ash 50.';
+  'Scott\'s Wolves beat Stoke City 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then his Horsham lot got turned over 1-2 at home by Nest\'s Farnham Town and banked a fat zero. Scott is on 100.\n\nChris\'s Barnet and Cheltenham Town played each other and finished 2-2. Plus 1 for the draw for one, plus 1 for the draw for the other. Chris is on 82.\n\nBen\'s Liverpool drew 2-2 with Forest. Plus 1 for the draw, net plus 1. Then Middlesbrough beat West Brom 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Ben is on 76.\n\nNest\'s Leicester served up a boring 0-0 against MK Dons. Minus 1 for the 0-0. Then Farnham Town nicked a 2-1 away win at Horsham. Plus 4 for the away win, net plus 3. Nest is on 72.\n\nDave\'s Port Vale served up a boring 0-0 against Crewe Alexandra. Minus 1 for the 0-0, net minus 1. Dave is on 67.\n\nAsh\'s MK Dons served up a boring 0-0 against Leicester. Minus 1 for the 0-0, net minus 1. Ash is on 50.\n\nTable: Scott 100, Chris 82, Ben 76, Nest 72, Dave 67, Jon 54, Ash 50.';
 
 /**
  * Prize pot invested in an all-world accumulating fund.
@@ -2875,6 +2875,18 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final score (FotMob). Red cards from FotMob — redsUnchecked. */
+    id: '2026-08-29-hor-fnh',
+    utcDate: '2026-08-29T14:00:00Z',
+    homeTeam: { name: 'Horsham', tla: 'HOR' },
+    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -4182,8 +4194,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-08-29T14:00:00Z',
     homeTeam: { name: 'Horsham', tla: 'HOR' },
     awayTeam: { name: 'Farnham Town', tla: 'FNH' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-08-29-mai-sby',
