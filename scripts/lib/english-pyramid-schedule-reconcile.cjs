@@ -97,9 +97,10 @@ function patchesFromFotMobDay(fixtures, date, payload) {
     const matchUtc = match.status?.utcTime;
     const matchDay = londonCalendarDate(matchUtc) || date;
     const fixtureDay = londonCalendarDate(fixture.utcDate);
-    if (fixtureDay && matchDay && fixtureDay !== matchDay) continue;
+    const sameDay = Boolean(fixtureDay && matchDay && fixtureDay === matchDay);
 
     if (isFotMobPostponed(match) && !fixture.postponed) {
+      if (!sameDay) continue;
       patches.push({
         type: 'postpone',
         id: fixture.id,
@@ -108,7 +109,7 @@ function patchesFromFotMobDay(fixtures, date, payload) {
       continue;
     }
 
-    if (fixture.postponed && isFotMobMatchGoingAhead(match)) {
+    if (fixture.postponed && isFotMobMatchGoingAhead(match) && sameDay) {
       patches.push({
         type: 'unpostpone',
         id: fixture.id,
