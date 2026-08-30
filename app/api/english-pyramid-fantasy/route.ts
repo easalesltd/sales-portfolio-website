@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import {
   ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE,
   ENGLISH_PYRAMID_OFFICIAL_STATEMENT,
+  publishedOfficialStatement,
   ENGLISH_PYRAMID_FIXTURES,
   ENGLISH_PYRAMID_MANUAL_MATCHES,
   ENGLISH_PYRAMID_FANTASY_PLAYERS,
@@ -123,7 +124,7 @@ export async function GET(request: NextRequest) {
     title: 'English Pyramid Sweepstake 2026/27',
     scoring: ENGLISH_PYRAMID_FANTASY_SCORING,
     dailyUpdate: ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE,
-    officialStatement: ENGLISH_PYRAMID_OFFICIAL_STATEMENT,
+    officialStatement: publishedOfficialStatement(ENGLISH_PYRAMID_OFFICIAL_STATEMENT),
     sweepstakeIntro: ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
     sweepstakeFairness: ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
     prizeFund,

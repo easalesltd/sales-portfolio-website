@@ -2,7 +2,10 @@
 
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { ENGLISH_PYRAMID_OFFICIAL_STATEMENT } from '@/app/data/english-pyramid-fantasy';
+import {
+  ENGLISH_PYRAMID_OFFICIAL_STATEMENT,
+  publishedOfficialStatement,
+} from '@/app/data/english-pyramid-fantasy';
 
 describe('Horsham postponement official statement', () => {
   it('apologises, records the 1-2, and explains the false postpone', () => {
@@ -18,6 +21,13 @@ describe('Horsham postponement official statement', () => {
     expect(statement.body).toMatch(/Investigation/);
     expect(statement.body).toMatch(/Resolution/);
     expect(statement.body).not.toMatch(/[—–]/);
+  });
+
+  it('stays live through Sunday and drops at Monday 00:00 London', () => {
+    const statement = ENGLISH_PYRAMID_OFFICIAL_STATEMENT!;
+    expect(statement.expiresAtUtc).toBe('2026-08-30T23:00:00Z');
+    expect(publishedOfficialStatement(statement, new Date('2026-08-30T21:00:00Z'))).toBe(statement);
+    expect(publishedOfficialStatement(statement, new Date('2026-08-30T23:00:00Z'))).toBeNull();
   });
 
   it('ships the press-conference photo used at the top of the statement', () => {

@@ -357,12 +357,27 @@ export type EnglishPyramidOfficialStatement = {
   /** Optional press-conference photo shown above the statement. */
   imageUrl?: string;
   imageAlt?: string;
+  /** Hide from the public page at this instant. Omit to keep it until set to null. */
+  expiresAtUtc?: string;
 };
+
+export function publishedOfficialStatement(
+  statement: EnglishPyramidOfficialStatement | null,
+  now = new Date()
+): EnglishPyramidOfficialStatement | null {
+  if (!statement) return null;
+  if (!statement.expiresAtUtc) return statement;
+  const expiresAt = Date.parse(statement.expiresAtUtc);
+  if (Number.isNaN(expiresAt) || now.getTime() >= expiresAt) return null;
+  return statement;
+}
 
 /** Public steward note. Set to null when there is nothing to publish. */
 export const ENGLISH_PYRAMID_OFFICIAL_STATEMENT: EnglishPyramidOfficialStatement | null = {
   headline: 'Official statement: Horsham vs Farnham Town',
   issuedAtUtc: '2026-08-29T16:05:00Z',
+  /** Monday 31 Aug 2026, 00:00 Europe/London (BST). */
+  expiresAtUtc: '2026-08-30T23:00:00Z',
   imageUrl: '/images/english-pyramid-fantasy/steward-statement.jpg',
   imageAlt: 'The league stewards issue a formal apology with their family on the driveway',
   body:
