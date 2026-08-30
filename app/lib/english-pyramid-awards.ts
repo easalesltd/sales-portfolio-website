@@ -37,7 +37,7 @@ export const SWEEPSTAKE_AWARDS_CONFIG: readonly SweepstakeAwardConfig[] = [
   {
     id: 'days-at-top',
     title: "Someone's Doing Well",
-    shortTitle: 'Doing Well',
+    shortTitle: "Someone's Doing Well",
     emoji: '😎',
     statLabel: 'Days at the Top',
     description:
@@ -46,7 +46,7 @@ export const SWEEPSTAKE_AWARDS_CONFIG: readonly SweepstakeAwardConfig[] = [
   {
     id: 'days-at-bottom',
     title: 'Bottom Feeder/Shagger',
-    shortTitle: 'Bottom Shagger',
+    shortTitle: 'Bottom Feeder/Shagger',
     emoji: '🪱',
     statLabel: 'Days at the Bottom',
     description:
