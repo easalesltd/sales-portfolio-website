@@ -93,11 +93,11 @@ export default function BrandsDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute left-1/2 z-10 mt-3 w-screen max-w-xl -translate-x-1/2 transform px-2 sm:px-0">
+        <div className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-2 sm:px-0">
           <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="relative bg-white px-5 py-5 dark:bg-neutral-900 sm:p-6">
               <h3 className="text-base font-medium text-gray-900 dark:text-neutral-100">My Partner Brands</h3>
-              <div className="mt-3 grid grid-cols-1 gap-x-3 sm:grid-cols-2">
+              <div className="mt-2">
                 {companies.map((company) => (
                   <Link
                     key={company.id}
