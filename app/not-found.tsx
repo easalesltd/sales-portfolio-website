@@ -61,7 +61,7 @@ export default function NotFound() {
               Display Solutions
             </Link>
             <Link href="/companies" className="text-neutral-900 hover:text-neutral-600 hover:underline dark:text-neutral-100 dark:hover:text-neutral-300">
-              Our Partner Brands
+              My Partner Brands
             </Link>
             <Link href="/temporary-rep-cover" className="text-neutral-900 hover:text-neutral-600 hover:underline dark:text-neutral-100 dark:hover:text-neutral-300">
               Temporary Rep Cover

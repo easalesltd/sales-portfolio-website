@@ -111,7 +111,7 @@ export default function MobileMenu() {
                 Home
               </Link>
               
-              {/* About Section — expandable, same pattern as Our Partner Brands */}
+              {/* About Section — expandable, same pattern as My Partner Brands */}
               <div>
                 <button
                   type="button"
@@ -160,7 +160,7 @@ export default function MobileMenu() {
                   aria-expanded={isBrandsExpanded}
                   aria-controls="mobile-menu-brands-subnav"
                 >
-                  Our Partner Brands
+                  My Partner Brands
                   <svg 
                     className={`w-5 h-5 transform transition-transform ${isBrandsExpanded ? 'rotate-180' : ''}`} 
                     fill="none" 

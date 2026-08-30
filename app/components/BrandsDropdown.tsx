@@ -47,7 +47,7 @@ export default function BrandsDropdown() {
     return (
       <div className="relative">
         <button className="text-gray-700 dark:text-neutral-200 px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900 flex items-center">
-          Our Partner Brands
+          My Partner Brands
           <svg
             className="ml-2 h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +85,7 @@ export default function BrandsDropdown() {
         onClick={handleClick}
         className="text-gray-700 dark:text-neutral-200 px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900 flex items-center"
       >
-        Our Partner Brands
+        My Partner Brands
         <ChevronDownIcon
           className={`ml-2 h-5 w-5 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
           aria-hidden="true"
@@ -97,7 +97,7 @@ export default function BrandsDropdown() {
           <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
             <div className="relative grid max-h-[min(70vh,40rem)] gap-6 overflow-y-auto bg-white dark:bg-neutral-900 px-5 py-6 sm:gap-8 sm:p-8">
               <div className="-m-3">
-                <h3 className="text-base font-medium text-gray-900 dark:text-neutral-100">Our Partner Brands</h3>
+                <h3 className="text-base font-medium text-gray-900 dark:text-neutral-100">My Partner Brands</h3>
                 <div className="mt-2 space-y-2">
                   {companies.map((company) => (
                     <Link

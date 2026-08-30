@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { companies } from '@/app/data/companies';
 import { getAllMagazineArticles } from '@/app/data/magazine-articles';
 import { getAllRecipes } from '@/app/data/recipes';
+import { pageSocialFields } from '@/app/lib/site-social-meta';
 
 const SITE_INDEX_DESCRIPTION =
   'A crawl-friendly index of pages on East Anglian Sales LTD, including partner brands, articles, recipes, and core service pages.';
@@ -10,15 +11,11 @@ const SITE_INDEX_DESCRIPTION =
 export const metadata: Metadata = {
   title: 'Site Index',
   description: SITE_INDEX_DESCRIPTION,
-  alternates: {
-    canonical: 'https://www.easalesltd.co.uk/site-index',
-  },
-  openGraph: {
+  ...pageSocialFields({
     title: 'Site Index | East Anglian Sales LTD',
     description: SITE_INDEX_DESCRIPTION,
-    url: 'https://www.easalesltd.co.uk/site-index',
-    type: 'website',
-  },
+    path: '/site-index',
+  }),
 };
 
 const corePages = [
@@ -68,7 +65,7 @@ export default function SiteIndexPage() {
       </section>
 
       <section className="mt-10">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Partner Brands</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">My Partner Brands</h2>
         <ul className="mt-4 grid gap-2 sm:grid-cols-2">
           {companies.map((company) => (
             <li key={company.id}>
