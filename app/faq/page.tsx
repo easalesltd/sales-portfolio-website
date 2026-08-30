@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getCspNonce } from '@/app/lib/csp-nonce';
-import { BUSINESS, BUSINESS_ONE_LINER, SERVICE_AREAS, SITE_URL } from '@/app/data/business-entity';
+import { BUSINESS, BUSINESS_ONE_LINER, SERVICE_AREAS } from '@/app/data/business-entity';
+import { pageSocialFields } from '@/app/lib/site-social-meta';
 import { BUSINESS_FAQS, faqJsonLd } from '@/app/data/business-faqs';
 import HomeRequestVisitCTA from '@/app/components/home/HomeRequestVisitCTA';
 
@@ -11,13 +12,11 @@ const FAQ_DESCRIPTION =
 export const metadata: Metadata = {
   title: 'FAQ | Greeting Card Sales Agent East Anglia',
   description: FAQ_DESCRIPTION,
-  alternates: { canonical: `${SITE_URL}/faq` },
-  openGraph: {
+  ...pageSocialFields({
     title: 'FAQ | East Anglian Sales LTD',
     description: FAQ_DESCRIPTION,
-    url: `${SITE_URL}/faq`,
-    type: 'website',
-  },
+    path: '/faq',
+  }),
 };
 
 export default async function FaqPage() {

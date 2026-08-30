@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { HOME_PAGE_LEAD_ANSWER } from '@/app/lib/home-page-meta-description';
 import FadeInOnScroll from '../FadeInOnScroll';
 import HomeRequestVisitCTA from './HomeRequestVisitCTA';
 
@@ -15,10 +16,7 @@ export default function HomeAboutSection() {
           </h1>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.2}>
-          <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-            Hi I&apos;m Dave Langdon, a UK greeting card and gift sales agent based in Ipswich, Suffolk, and I&apos;ve
-            been helping retailers across East Anglia build ranges that actually sell for over 11 years.
-          </p>
+          <p className="text-lg text-gray-700 mb-6 leading-relaxed">{HOME_PAGE_LEAD_ANSWER}</p>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.3}>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">

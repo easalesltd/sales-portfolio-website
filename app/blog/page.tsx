@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { getCspNonce } from '@/app/lib/csp-nonce';
 import BlogCoverImage from '../components/BlogCoverImage';
 import { getAllMagazineArticles } from '../data/magazine-articles';
+import { pageSocialFields } from '../lib/site-social-meta';
 
 const BLOG_DESCRIPTION =
   'Articles and trade press features by Dave Langdon — columns in Greetings Today and Progressive Greetings covering the greeting card industry and life on the road in East Anglia.';
@@ -10,20 +11,11 @@ const BLOG_DESCRIPTION =
 export const metadata: Metadata = {
   title: 'Blog / Press',
   description: BLOG_DESCRIPTION,
-  openGraph: {
-    type: 'website',
+  ...pageSocialFields({
     title: 'Blog / Press | Dave Langdon',
     description: BLOG_DESCRIPTION,
-    url: 'https://www.easalesltd.co.uk/blog',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'Blog / Press | Dave Langdon',
-    description: BLOG_DESCRIPTION,
-  },
-  alternates: {
-    canonical: 'https://www.easalesltd.co.uk/blog',
-  },
+    path: '/blog',
+  }),
 };
 
 function formatDate(iso: string): string {

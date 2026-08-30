@@ -8,6 +8,7 @@ import {
   serviceAreaBySlug,
 } from '@/app/data/business-entity';
 import { getCspNonce } from '@/app/lib/csp-nonce';
+import { pageSocialFields } from '@/app/lib/site-social-meta';
 import HomeRequestVisitCTA from '@/app/components/home/HomeRequestVisitCTA';
 
 export const dynamicParams = false;
@@ -31,13 +32,11 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/${area.slug}` },
-    openGraph: {
+    ...pageSocialFields({
       title,
       description,
-      url: `${SITE_URL}/${area.slug}`,
-      type: 'website',
-    },
+      path: `/${area.slug}`,
+    }),
   };
 }
 

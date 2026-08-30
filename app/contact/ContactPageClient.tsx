@@ -97,7 +97,12 @@ export default function ContactPageClient() {
           </div>
         ) : null}
         <FadeInOnScroll>
-          <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Contact Us</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Contact Us</h1>
+          <p className="mx-auto mb-8 max-w-2xl text-center text-lg leading-relaxed text-gray-700">
+            Trade customers can request an agent visit, call 07709 197915, or email dave@easalesltd.co.uk.
+            Dave Langdon covers Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire only: wholesale
+            greeting cards, gifts, and displays for independent retailers, not the public.
+          </p>
         </FadeInOnScroll>
 
         <FadeInOnScroll delay={0.12} direction="up">

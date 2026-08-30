@@ -11,161 +11,40 @@ type ShowcaseSlide = { src: string; alt: string };
 
 /** Homepage hero — descriptive alts only (no layout/CSS change); keep file list in sync with public/images/showcase. */
 const SHOWCASE_SLIDES: ShowcaseSlide[] = [
-  {
-    src: '/images/showcase/1-1-25.jpeg',
-    alt:
-      'Seasonal greeting card display at an East Anglia shop — Dave Langdon wholesale greeting card sales agent portfolio',
-  },
-  {
-    src: '/images/showcase/1066f4f9-50ba-4dfb-8f5d-703151fd119e.jpeg',
-    alt:
-      'Greeting card spinner or stand on an independent retail visit — Dave Langdon Suffolk Norfolk Essex Cambridgeshire sales agent',
-  },
-  {
-    src: '/images/showcase/1755245031292398.jpg',
-    alt:
-      'Wholesale gift and greeting card range photographed for retailers — East Anglia sales rep Dave Langdon',
-  },
-  {
-    src: '/images/showcase/1755253128244036.jpg',
-    alt:
-      'Card and gift point of sale display on a shop floor — Dave Langdon greeting card agent East Anglia',
-  },
-  {
-    src: '/images/showcase/4003f792-f399-4cc5-8802-e2bfcd93c330.jpeg',
-    alt:
-      'Independent retailer greeting card bay — Dave Langdon wholesale trade portfolio East Anglian Sales Ltd',
-  },
-  {
-    src: '/images/showcase/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg',
-    alt:
-      'Garden centre or gift shop greeting card fixture — Dave Langdon giftware sales agent East Anglia',
-  },
-  {
-    src: '/images/showcase/901d0ddb-3e10-4a3d-aeee-c2d207eba557.jpeg',
-    alt:
-      'Retail card publisher ranges on display — Dave Langdon wholesale greeting cards East Anglia visit',
-  },
-  {
-    src: '/images/showcase/Fudge-hero-1536x600.png',
-    alt:
-      'Wholesale fudge and confectionery hero display for gift retailers — Dave Langdon East Anglia sales agent',
-  },
-  {
-    src: '/images/showcase/Hero-sticks-1024x600.png',
-    alt:
-      'Chocolate sticks and confectionery wholesale POS — gift sales agent Dave Langdon East Anglia',
-  },
+  { src: '/images/showcase/1-1-25.jpeg', alt: 'Seasonal greeting cards on a shop display' },
+  { src: '/images/showcase/1066f4f9-50ba-4dfb-8f5d-703151fd119e.jpeg', alt: 'Greeting card spinner in an independent shop' },
+  { src: '/images/showcase/1755245031292398.jpg', alt: 'Wholesale greeting cards and gifts laid out for a retailer' },
+  { src: '/images/showcase/1755253128244036.jpg', alt: 'Card and gift point of sale on a shop floor' },
+  { src: '/images/showcase/4003f792-f399-4cc5-8802-e2bfcd93c330.jpeg', alt: 'Greeting card bay in an independent retailer' },
+  { src: '/images/showcase/6c27d66e-3695-49a1-b4a4-d7967106679b.jpeg', alt: 'Greeting card fixture in a garden centre' },
+  { src: '/images/showcase/901d0ddb-3e10-4a3d-aeee-c2d207eba557.jpeg', alt: 'Publisher greeting card ranges on a retail display' },
+  { src: '/images/showcase/Fudge-hero-1536x600.png', alt: 'Wholesale fudge and confectionery display' },
+  { src: '/images/showcase/Hero-sticks-1024x600.png', alt: 'Chocolate sticks on a wholesale confectionery stand' },
   {
     src: '/images/showcase/IMG_0670_copy_bdc70bf1-59fc-476e-9c6d-bf96f508ee40_1500x.jpeg',
-    alt:
-      'Greeting cards and stationery photographed on a retailer call — Dave Langdon Ipswich based wholesale agent',
+    alt: 'Greeting cards and stationery on a retailer counter',
   },
-  {
-    src: '/images/showcase/Large-Hamper-1024x600.png',
-    alt:
-      'Large gift hamper and gourmet gifting wholesale display — Dave Langdon East Anglia trade portfolio',
-  },
-  {
-    src: '/images/companies/ohh-deer/official/back-to-school.jpg',
-    alt:
-      'Ohh Deer back-to-school stationery and cards hero — Dave Langdon wholesale greeting card agent East Anglia',
-  },
-  {
-    src: '/images/companies/ohh-deer/official/catalogue-banner.jpg',
-    alt:
-      'Ohh Deer wholesale catalogue range banner — Dave Langdon trade portfolio East Anglia',
-  },
-  {
-    src: '/images/companies/mint-publishing/official/banner-1-1-26.jpg',
-    alt:
-      'Mint Publishing greeting card range hero from their trade site — Dave Langdon East Anglia sales agent',
-  },
-  {
-    src: '/images/companies/mint-publishing/official/banner-1-1-27.jpg',
-    alt:
-      'Mint Publishing humorous birthday cards hero — Dave Langdon wholesale greeting cards East Anglia',
-  },
-  {
-    src: '/images/companies/global-journey/official/cake-candles.jpg',
-    alt:
-      'Global Journey cake candles gift range hero — Dave Langdon wholesale gifts East Anglia',
-  },
-  {
-    src: '/images/companies/museums-and-galleries/official/range-cards.jpg',
-    alt:
-      'Museums & Galleries licensed art greeting cards range — Dave Langdon wholesale East Anglia portfolio',
-  },
-  {
-    src: '/images/companies/rudi-and-bear/official/wholesale-hero.jpg',
-    alt:
-      'Rudi & Bear Ned characters wholesale hero — Dave Langdon East Anglia toy and gift agent',
-  },
-  {
-    src: '/images/companies/boxer-gifts/official/deadly-blooms.jpg',
-    alt:
-      'Boxer Gifts Deadly Blooms catalogue photography — Dave Langdon wholesale gift agent East Anglia',
-  },
-  {
-    src: '/images/companies/emotional-rescue/emo_web.jpeg',
-    alt:
-      'Emotional Rescue humorous greeting cards — Dave Langdon wholesale card agent East Anglia',
-  },
-  {
-    src: '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg',
-    alt:
-      'Wholesale greeting card layout on retailer visit — Dave Langdon East Anglian Sales Ltd showcase',
-  },
-  {
-    src: '/images/showcase/bd66610d-a7c2-4835-9657-9e4248cf7400.jpeg',
-    alt:
-      'Card and gift shelving at an East Anglia business — Dave Langdon wholesale agent photo',
-  },
-  {
-    src: '/images/showcase/d40a6860-3952-4308-b87b-770c946035a3.jpeg',
-    alt:
-      'Independent shop wholesale order display — Dave Langdon greeting card sales East Anglia',
-  },
-  {
-    src: '/images/showcase/image (17).png',
-    alt:
-      'Mixed giftware and card wholesale hero image — Dave Langdon partner brands East Anglia',
-  },
-  {
-    src: '/images/showcase/mix-hero-1024x600.png',
-    alt:
-      'Mixed greeting cards and gifts wholesale hero banner — Dave Langdon East Anglia sales agent homepage',
-  },
-  {
-    src: '/images/showcase/showcase1.jpeg',
-    alt:
-      'Retail greeting card display example — Dave Langdon wholesale supplier visit portfolio photo one',
-  },
-  {
-    src: '/images/showcase/showcase2.jpeg',
-    alt:
-      'Shop card fixture and gifting display — Dave Langdon East Anglia independent retailer showcase two',
-  },
-  {
-    src: '/images/showcase/showcase4.jpeg',
-    alt:
-      'Greeting cards merchandised for trade customers — Dave Langdon sales rep showcase photo three',
-  },
-  {
-    src: '/images/showcase/paper-salad-mothers-day-amazing-mum.jpg',
-    alt:
-      'Paper Salad Mother’s Day greeting card range on hot pink — Dave Langdon wholesale East Anglia portfolio',
-  },
-  {
-    src: '/images/showcase/paper-salad-valentines-range.jpg',
-    alt:
-      'Paper Salad Valentine’s Day card range with punny designs — Dave Langdon wholesale greeting cards East Anglia',
-  },
-  {
-    src: '/images/showcase/paper-salad-mothers-day-queen-of-mums.jpg',
-    alt:
-      'Paper Salad Mother’s Day cards including Queen of Mums and Cool Mums Club — Dave Langdon trade showcase',
-  },
+  { src: '/images/showcase/Large-Hamper-1024x600.png', alt: 'Large wholesale gift hamper' },
+  { src: '/images/companies/ohh-deer/official/back-to-school.jpg', alt: 'Ohh Deer back-to-school stationery and cards' },
+  { src: '/images/companies/ohh-deer/official/catalogue-banner.jpg', alt: 'Ohh Deer wholesale catalogue range' },
+  { src: '/images/companies/mint-publishing/official/banner-1-1-26.jpg', alt: 'Mint Publishing greeting card range' },
+  { src: '/images/companies/mint-publishing/official/banner-1-1-27.jpg', alt: 'Mint Publishing humorous birthday cards' },
+  { src: '/images/companies/global-journey/official/cake-candles.jpg', alt: 'Global Journey cake candles gift range' },
+  { src: '/images/companies/museums-and-galleries/official/range-cards.jpg', alt: 'Museums and Galleries licensed art greeting cards' },
+  { src: '/images/companies/rudi-and-bear/official/wholesale-hero.jpg', alt: 'Rudi and Bear Ned character gifts' },
+  { src: '/images/companies/boxer-gifts/official/deadly-blooms.jpg', alt: 'Boxer Gifts Deadly Blooms catalogue' },
+  { src: '/images/companies/emotional-rescue/emo_web.jpeg', alt: 'Emotional Rescue humorous greeting cards' },
+  { src: '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg', alt: 'Greeting cards laid out on a retailer visit' },
+  { src: '/images/showcase/bd66610d-a7c2-4835-9657-9e4248cf7400.jpeg', alt: 'Card and gift shelves in a shop' },
+  { src: '/images/showcase/d40a6860-3952-4308-b87b-770c946035a3.jpeg', alt: 'Wholesale order display in an independent shop' },
+  { src: '/images/showcase/image (17).png', alt: 'Mixed giftware and greeting cards' },
+  { src: '/images/showcase/mix-hero-1024x600.png', alt: 'Mixed greeting cards and gifts' },
+  { src: '/images/showcase/showcase1.jpeg', alt: 'Retail greeting card display' },
+  { src: '/images/showcase/showcase2.jpeg', alt: 'Shop card fixture and gift display' },
+  { src: '/images/showcase/showcase4.jpeg', alt: 'Greeting cards merchandised for trade customers' },
+  { src: '/images/showcase/paper-salad-mothers-day-amazing-mum.jpg', alt: 'Paper Salad Mother’s Day greeting cards' },
+  { src: '/images/showcase/paper-salad-valentines-range.jpg', alt: 'Paper Salad Valentine’s Day greeting cards' },
+  { src: '/images/showcase/paper-salad-mothers-day-queen-of-mums.jpg', alt: 'Paper Salad Queen of Mums greeting cards' },
 ];
 
 export default function ShowcaseSlideshow() {

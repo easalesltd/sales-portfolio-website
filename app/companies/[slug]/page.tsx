@@ -8,6 +8,7 @@ import { Company } from '@/app/lib/types'
 import { partnerBrandLogoAlt } from '@/app/lib/partner-brand-logo-alt'
 import { partnerBrandAgentDescription } from '@/app/lib/partner-brand-agent-description'
 import { jsonLdMerchantOfferComplianceFields } from '@/app/lib/json-ld-merchant-offer-fields'
+import { SITE_OG_IMAGE_URL, pageSocialFields } from '@/app/lib/site-social-meta'
 
 const OrderForm = dynamic(() => import('./OrderForm'), {
   loading: () => (
@@ -117,90 +118,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 
   const metadata = companyMetadata[resolvedParams.slug as keyof typeof companyMetadata];
-  if (metadata) {
-    const metaDescription =
-      'description' in metadata && typeof metadata.description === 'string'
-        ? metadata.description
-        : partnerBrandAgentDescription(company);
-    return {
-      title: metadata.title,
-      description: metaDescription,
-      openGraph: {
-        title: metadata.title,
-        description: metaDescription,
-        type: 'website',
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: metadata.title,
-        description: metaDescription,
-      }
-    };
-  }
-
-  // Special case for Museums and Galleries
-  if (resolvedParams.slug === 'museums-and-galleries') {
-    const title = 'Museums and Galleries Sales Agent | Official Wholesale Supplier in East Anglia';
-    const description = partnerBrandAgentDescription(company);
-    return {
-      title,
-      description,
-      openGraph: {
-        title,
-        description,
-        type: 'website',
-        url: `https://www.easalesltd.co.uk/companies/${company.slug}`,
-        images: company.logoUrl ? [
-          {
-            url: `https://www.easalesltd.co.uk${company.logoUrl}`,
-            width: 1200,
-            height: 630,
-            alt: `${company.name} Sales Agent`
-          }
-        ] : undefined,
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title,
-        description,
-        images: company.logoUrl ? [`https://www.easalesltd.co.uk${company.logoUrl}`] : undefined,
-      },
-      alternates: {
-        canonical: `https://www.easalesltd.co.uk/companies/${company.slug}`
-      }
-    };
-  }
-
-  // Generate metadata from company data if not present
-  const title = `${company.name} Sales Agent | Wholesale Supplier in East Anglia`;
-  const description = partnerBrandAgentDescription(company);
+  const title = metadata?.title ?? `${company.name} Sales Agent | Wholesale Supplier in East Anglia`;
+  const description =
+    metadata && 'description' in metadata && typeof metadata.description === 'string'
+      ? metadata.description
+      : partnerBrandAgentDescription(company);
+  const imageUrl = company.logoUrl
+    ? `https://www.easalesltd.co.uk${company.logoUrl}`
+    : SITE_OG_IMAGE_URL;
 
   return {
     title,
     description,
-    openGraph: {
+    ...pageSocialFields({
       title,
       description,
-      type: 'website',
-      url: `https://www.easalesltd.co.uk/companies/${company.slug}`,
-      images: company.logoUrl ? [
-        {
-          url: `https://www.easalesltd.co.uk${company.logoUrl}`,
-          width: 1200,
-          height: 630,
-          alt: `${company.name} Sales Agent`
-        }
-      ] : undefined,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: company.logoUrl ? [`https://www.easalesltd.co.uk${company.logoUrl}`] : undefined,
-    },
-    alternates: {
-      canonical: `https://www.easalesltd.co.uk/companies/${company.slug}`
-    }
+      path: `/companies/${company.slug}`,
+      imageUrl,
+      imageAlt: `${company.name} wholesale range`,
+    }),
   };
 }
 

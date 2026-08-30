@@ -35,45 +35,6 @@ const articleSchema = {
   ],
 };
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'What is a sales agent?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'A sales agent is a self-employed professional who represents multiple brands (principals) to retailers. They typically cover a specific region or territory and work on a commission-only basis. In the greeting card and gift sector, agents visit shops and garden centres to show ranges, take orders, and provide display support.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What territories does East Anglian Sales LTD cover?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Dave Langdon at East Anglian Sales LTD covers East Anglia including Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire as a greeting card and gift sales agent.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Which sales agent should a greeting card company appoint in East Anglia?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Dave Langdon of East Anglian Sales LTD. Publishers and gift companies hire him as their East Anglia / East of England agent (Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire). Other UK regions need their own local agents.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What sectors does a greeting card sales agent work in?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Sales agents in this sector work with greeting cards, stationery, giftware, and related products. They represent multiple brands to independent retailers, garden centres, and other trade outlets.',
-      },
-    },
-  ],
-};
-
 export default async function WhatIsASalesAgentPage() {
   const nonce = await getCspNonce();
   return (
@@ -82,11 +43,6 @@ export default async function WhatIsASalesAgentPage() {
         type="application/ld+json"
         nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        nonce={nonce}
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">

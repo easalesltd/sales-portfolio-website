@@ -38,13 +38,11 @@ const STATIC_ROUTES: StaticRoute[] = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
   const urls = new Map<string, MetadataRoute.Sitemap[number]>();
 
   for (const route of STATIC_ROUTES) {
     urls.set(route.pathname, {
       url: `${SITE_URL}${route.pathname}`,
-      lastModified,
       changeFrequency: route.changeFrequency,
       priority: route.priority,
     });
@@ -54,7 +52,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const pathname = `/${area.slug}`;
     urls.set(pathname, {
       url: `${SITE_URL}${pathname}`,
-      lastModified,
       changeFrequency: 'monthly',
       priority: 0.85,
     });
@@ -64,7 +61,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const pathname = `/companies/${company.slug}`;
     urls.set(pathname, {
       url: `${SITE_URL}${pathname}`,
-      lastModified,
       changeFrequency: 'monthly',
       priority: 0.7,
     });
@@ -74,7 +70,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const pathname = `/recipes/${recipe.slug}`;
     urls.set(pathname, {
       url: `${SITE_URL}${pathname}`,
-      lastModified,
       changeFrequency: 'monthly',
       priority: 0.8,
     });

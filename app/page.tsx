@@ -3,33 +3,30 @@ import { companies } from './data/companies';
 import { getCspNonce } from './lib/csp-nonce';
 import { getHomePageJsonLd } from './lib/home-page-json-ld';
 import { HOME_PAGE_META_DESCRIPTION } from './lib/home-page-meta-description';
+import { pageSocialFields } from './lib/site-social-meta';
 import HomeAboutSection from './components/home/HomeAboutSection';
 import HomeHeroSlideshow from './components/home/HomeHeroSlideshow';
 import HomePartnerBrandsSection from './components/home/HomePartnerBrandsSection';
 
+const HOME_TITLE = 'East Anglian Sales LTD | UK Greeting Card Sales Agent Covering East Anglia';
+
 export const metadata: Metadata = {
   title: {
-    absolute: 'East Anglian Sales LTD | UK Greeting Card Sales Agent Covering East Anglia',
+    absolute: HOME_TITLE,
   },
   description: HOME_PAGE_META_DESCRIPTION,
-  alternates: {
-    canonical: 'https://www.easalesltd.co.uk',
-  },
-  openGraph: {
-    title: 'East Anglian Sales LTD | UK Greeting Card Sales Agent Covering East Anglia',
+  ...pageSocialFields({
+    title: HOME_TITLE,
     description: HOME_PAGE_META_DESCRIPTION,
-  },
-  twitter: {
-    title: 'East Anglian Sales LTD | UK Greeting Card Sales Agent Covering East Anglia',
-    description: HOME_PAGE_META_DESCRIPTION,
-  },
+    path: '/',
+  }),
 };
 
 export default async function HomePage() {
   const nonce = await getCspNonce();
 
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen">
       <script
         id="home-page-schema"
         type="application/ld+json"
@@ -48,6 +45,6 @@ export default async function HomePage() {
       <HomeAboutSection />
 
       <HomePartnerBrandsSection companies={companies} />
-    </main>
+    </div>
   );
 }
