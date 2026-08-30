@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Luton Town lost 5-2 at Mansfield Town. No win points, minus 1 for leaking three, net minus 1. Scott is on 110.\n\nChris\'s AFC Wimbledon beat Wigan Athletic 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Chris is on 106.\n\nNest\'s Leeds United drew 1-1 with Brentford. Plus 1 for the draw, net plus 1. Nest is on 83.\n\nJon\'s Chelsea beat Brighton 4-3 at home. Plus 3 for the home win, plus 1 for three or more, minus 1 for leaking three, net plus 3. Then Fulham lost 1-0 at Sunderland. No win points, net zero. Jon is on 71.\n\nAsh\'s Sunderland beat Fulham 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Ash is on 70.\n\nTable: Scott 110, Chris 106, Ben 90, Nest 83, Dave 79, Jon 71, Ash 70.';
+  'Scott\'s Luton Town lost 5-2 at Mansfield Town. No win points, minus 1 for leaking three, net minus 1. Scott is on 110.\n\nChris\'s AFC Wimbledon beat Wigan Athletic 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Chris is on 106.\n\nNest\'s Leeds United drew 1-1 with Brentford. Plus 1 for the draw, net plus 1. Nest is on 83.\n\nDave\'s Ipswich lost 5-2 at United. No win points, minus 1 for leaking three, net minus 1. Dave is on 78.\n\nAsh\'s Sunderland beat Fulham 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then United beat Ipswich 5-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Ash is on 74.\n\nJon\'s Chelsea beat Brighton 4-3 at home. Plus 3 for the home win, plus 1 for three or more, minus 1 for leaking three, net plus 3. Then Fulham lost 1-0 at Sunderland. No win points, net zero. Jon is on 71.\n\nTable: Scott 110, Chris 106, Ben 90, Nest 83, Dave 78, Ash 74, Jon 71.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -3424,6 +3424,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     utcDate: '2026-08-30T14:00Z',
     homeTeam: { name: 'Mansfield Town', tla: 'MNF' },
     awayTeam: { name: 'Luton Town', tla: 'LUT' },
+    homeGoals: 5,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-30-mun-ips',
+    utcDate: '2026-08-30T15:30Z',
+    homeTeam: { name: 'Manchester United', tla: 'MUN' },
+    awayTeam: { name: 'Ipswich Town', tla: 'IPS' },
     homeGoals: 5,
     awayGoals: 2,
     homeRedCards: 0,
