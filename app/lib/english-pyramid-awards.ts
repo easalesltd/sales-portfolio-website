@@ -1,7 +1,10 @@
 import type { MatchPointsEntry, PlayerStanding } from '@/app/lib/english-pyramid-scoring';
 import { teamCodeMatches } from '@/app/data/english-pyramid-fantasy';
+import { sweepstakeLondonDayKey } from '@/app/lib/sweepstake-datetime';
 
 export type SweepstakeAwardId =
+  | 'days-at-top'
+  | 'days-at-bottom'
   | 'red-cards'
   | 'least-red-cards'
   | 'boring-draws'
@@ -31,6 +34,24 @@ export type SweepstakeAwardResult = SweepstakeAwardConfig & {
 };
 
 export const SWEEPSTAKE_AWARDS_CONFIG: readonly SweepstakeAwardConfig[] = [
+  {
+    id: 'days-at-top',
+    title: "Someone's Doing Well",
+    shortTitle: 'Doing Well',
+    emoji: '😎',
+    statLabel: 'Days at the Top',
+    description:
+      'Most calendar days sat pretty at the summit. Someone is doing well. The rest of you can look up and suffer.',
+  },
+  {
+    id: 'days-at-bottom',
+    title: 'Bottom Feeder/Shagger',
+    shortTitle: 'Bottom Shagger',
+    emoji: '🪱',
+    statLabel: 'Days at the Bottom',
+    description:
+      'Most calendar days propping up the entire league. A dedicated bottom feeder. A shagger of the table underside.',
+  },
   {
     id: 'red-cards',
     title: 'Most passionate Dirty Bastard Award',
@@ -189,9 +210,78 @@ function leadersFromMap(
   };
 }
 
+function addLondonDay(dayKey: string, delta: number): string {
+  const [year, month, day] = dayKey.split('-').map(Number);
+  return new Date(Date.UTC(year, month - 1, day + delta, 12)).toISOString().slice(0, 10);
+}
+
+function inclusiveLondonDays(fromKey: string, toKey: string): number {
+  if (toKey < fromKey) return 0;
+  const from = Date.parse(`${fromKey}T12:00:00Z`);
+  const to = Date.parse(`${toKey}T12:00:00Z`);
+  return Math.round((to - from) / 86_400_000) + 1;
+}
+
+/** Calendar days as table leader / last, after each UK matchday. Ties share the day. */
+export function countLeagueTableDays(
+  standings: PlayerStanding[],
+  scoringMatches: MatchPointsEntry[],
+  now: Date = new Date()
+): { top: Map<string, number>; bottom: Map<string, number> } {
+  const top = new Map(standings.map((player) => [player.id, 0]));
+  const bottom = new Map(standings.map((player) => [player.id, 0]));
+  if (standings.length === 0) return { top, bottom };
+
+  const byDay = new Map<string, MatchPointsEntry[]>();
+  for (const entry of scoringMatches) {
+    if (entry.match.homeGoals == null || entry.match.awayGoals == null) continue;
+    const day = sweepstakeLondonDayKey(entry.match.utcDate);
+    const bucket = byDay.get(day);
+    if (bucket) bucket.push(entry);
+    else byDay.set(day, [entry]);
+  }
+
+  const matchdays = [...byDay.keys()].sort();
+  if (matchdays.length === 0) return { top, bottom };
+
+  const totals = Object.fromEntries(standings.map((player) => [player.id, 0]));
+  const snapshots: { day: string; topIds: string[]; bottomIds: string[] }[] = [];
+
+  for (const day of matchdays) {
+    for (const entry of byDay.get(day)!) {
+      for (const player of standings) {
+        totals[player.id] += entry.byPlayer[player.id] ?? 0;
+      }
+    }
+    const scores = standings.map((player) => totals[player.id]);
+    const best = Math.max(...scores);
+    const worst = Math.min(...scores);
+    snapshots.push({
+      day,
+      topIds: best === worst ? [] : standings.filter((player) => totals[player.id] === best).map((player) => player.id),
+      bottomIds:
+        best === worst ? [] : standings.filter((player) => totals[player.id] === worst).map((player) => player.id),
+    });
+  }
+
+  const today = sweepstakeLondonDayKey(now.toISOString());
+  for (let index = 0; index < snapshots.length; index += 1) {
+    const snapshot = snapshots[index];
+    const nextDay = snapshots[index + 1]?.day;
+    const until = nextDay ? addLondonDay(nextDay, -1) : today;
+    const days = inclusiveLondonDays(snapshot.day, until);
+    if (days <= 0) continue;
+    increment(top, snapshot.topIds, days);
+    increment(bottom, snapshot.bottomIds, days);
+  }
+
+  return { top, bottom };
+}
+
 export function computeSweepstakeAwards(
   standings: PlayerStanding[],
-  scoringMatches: MatchPointsEntry[]
+  scoringMatches: MatchPointsEntry[],
+  options?: { now?: Date }
 ): SweepstakeAwardResult[] {
   const stats = {
     redCards: new Map<string, number>(),
@@ -216,6 +306,8 @@ export function computeSweepstakeAwards(
     stats.goalsScored3Plus.set(player.id, 0);
     stats.goalsConceded3Plus.set(player.id, 0);
   }
+
+  const tableDays = countLeagueTableDays(standings, scoringMatches, options?.now);
 
   for (const entry of scoringMatches) {
     const { match } = entry;
@@ -248,6 +340,8 @@ export function computeSweepstakeAwards(
   }
 
   const mapForAward: Record<SweepstakeAwardId, Map<string, number>> = {
+    'days-at-top': tableDays.top,
+    'days-at-bottom': tableDays.bottom,
     'red-cards': stats.redCards,
     'least-red-cards': stats.redCards,
     'boring-draws': stats.boringDraws,

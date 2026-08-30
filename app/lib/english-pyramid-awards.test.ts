@@ -37,12 +37,14 @@ function match(partial: {
   away: string;
   hg: number | null;
   ag: number | null;
+  utcDate?: string;
+  byPlayer?: Record<string, number>;
 }): MatchPointsEntry {
   return {
-    byPlayer: {},
+    byPlayer: partial.byPlayer ?? {},
     match: {
       id: partial.id,
-      utcDate: '2026-08-15T14:00:00Z',
+      utcDate: partial.utcDate ?? '2026-08-15T14:00:00Z',
       status: 'FINISHED',
       homeTeam: { name: partial.home, tla: partial.home },
       awayTeam: { name: partial.away, tla: partial.away },
@@ -145,6 +147,81 @@ describe('computeSweepstakeAwards', () => {
     const byId = Object.fromEntries(awards.map((award) => [award.id, award]));
     expect(byId['boring-draws'].winners).toEqual([]);
     expect(byId['clean-sheets'].winners).toEqual([]);
+  });
+
+  it('counts calendar days as table leader and bottom feeder', () => {
+    const awards = computeSweepstakeAwards(
+      [dan, tom, alex],
+      [
+        match({
+          id: 'd1',
+          home: 'ARS',
+          away: 'CHE',
+          hg: 1,
+          ag: 0,
+          utcDate: '2026-08-08T14:00:00Z',
+          byPlayer: { dan: 8, tom: 2, alex: 2 },
+        }),
+        match({
+          id: 'd2',
+          home: 'ARS',
+          away: 'LIV',
+          hg: 1,
+          ag: 0,
+          utcDate: '2026-08-15T14:00:00Z',
+          byPlayer: { dan: 1, tom: 10, alex: 1 },
+        }),
+      ],
+      { now: new Date('2026-08-16T12:00:00Z') }
+    );
+    const byId = Object.fromEntries(awards.map((award) => [award.id, award]));
+    expect(byId['days-at-top'].winners.map((winner) => winner.id)).toEqual(['dan']);
+    expect(byId['days-at-top'].value).toBe(7);
+    expect(byId['days-at-bottom'].winners.map((winner) => winner.id)).toEqual(['alex']);
+    expect(byId['days-at-bottom'].value).toBe(9);
+  });
+
+  it('shares days at the top when two managers are level and someone else is last', () => {
+    const awards = computeSweepstakeAwards(
+      [dan, tom, alex],
+      [
+        match({
+          id: 'd1',
+          home: 'ARS',
+          away: 'CHE',
+          hg: 1,
+          ag: 0,
+          utcDate: '2026-08-15T14:00:00Z',
+          byPlayer: { dan: 8, tom: 8, alex: 2 },
+        }),
+      ],
+      { now: new Date('2026-08-15T18:00:00Z') }
+    );
+    const byId = Object.fromEntries(awards.map((award) => [award.id, award]));
+    expect(byId['days-at-top'].winners.map((winner) => winner.id)).toEqual(['dan', 'tom']);
+    expect(byId['days-at-top'].value).toBe(1);
+    expect(byId['days-at-bottom'].winners.map((winner) => winner.id)).toEqual(['alex']);
+  });
+
+  it('leaves table awards empty when everyone is still level', () => {
+    const awards = computeSweepstakeAwards(
+      [dan, tom],
+      [
+        match({
+          id: 'd1',
+          home: 'ARS',
+          away: 'CHE',
+          hg: 1,
+          ag: 0,
+          utcDate: '2026-08-15T14:00:00Z',
+          byPlayer: { dan: 5, tom: 5 },
+        }),
+      ],
+      { now: new Date('2026-08-15T18:00:00Z') }
+    );
+    const byId = Object.fromEntries(awards.map((award) => [award.id, award]));
+    expect(byId['days-at-top'].winners).toEqual([]);
+    expect(byId['days-at-bottom'].winners).toEqual([]);
   });
 });
 
