@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { HOME_PAGE_LEAD_ANSWER } from '@/app/lib/home-page-meta-description';
 import FadeInOnScroll from '../FadeInOnScroll';
 import HomeRequestVisitCTA from './HomeRequestVisitCTA';
 
@@ -16,20 +15,21 @@ export default function HomeAboutSection() {
           </h1>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.2}>
-          <p className="text-lg text-gray-700 mb-6 leading-relaxed">{HOME_PAGE_LEAD_ANSWER}</p>
+          <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+            Hi, I&apos;m Dave Langdon, an independent sales agent covering Suffolk, Norfolk, Essex, Cambridgeshire, and
+            Hertfordshire, selling into independent shops, garden centres, and farm shops across East Anglia.
+          </p>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.3}>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-            I work with a carefully chosen set of publishers and gift suppliers. When a UK brand wants a sales team in
-            every location, they hire an agent per territory, not one national rep. East Anglia is my patch: Suffolk,
-            Norfolk, Essex, Cambridgeshire, and Hertfordshire. I visit regularly, not just dropping off stock and disappearing. Whether you run an
-            independent shop, garden centre, farm shop, or retail store, I can help you find the right ranges, get
-            your display working harder, and keep things fresh with new designs as they come through.
+            Greeting cards are my main focus, but I also carry a fantastic range of gifts and confectionery. The
+            companies I represent are market leaders, the best in their fields and I am very lucky to be able to
+            represent them all.
           </p>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.4}>
           <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-            If you&apos;d like a visit to see the latest ranges, I&apos;d love to come and have a chat.
+            You will find all companies and catalogues, below. Please get in touch if you&apos;d like a visit.
           </p>
         </FadeInOnScroll>
         <FadeInOnScroll delay={0.55}>
