@@ -16,6 +16,7 @@ import {
   formatSignedPoints,
   heatmapCellTone,
 } from '@/app/lib/english-pyramid-catch-up';
+import { draftSlotPlainLabel } from '@/app/lib/english-pyramid-overachievement';
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import { useSweepstakeTheme } from '../SweepstakeThemeContext';
 import DivisionBadge from './DivisionBadge';
@@ -217,7 +218,7 @@ export default function PyramidCatchUpSection({ standings, scoringMatches }: Pro
                     <span className="min-w-0 truncate">
                       {club.name}{' '}
                       <span className="text-neutral-500">
-                        {club.slotLabel} · {club.managerName}
+                        {draftSlotPlainLabel(club.band, club.rank)} · {club.managerName}
                       </span>
                     </span>
                     <span className="shrink-0 tabular-nums text-emerald-400">{formatSignedPoints(Number(club.delta.toFixed(2)))}</span>
@@ -237,7 +238,7 @@ export default function PyramidCatchUpSection({ standings, scoringMatches }: Pro
                     <span className="min-w-0 truncate">
                       {club.name}{' '}
                       <span className="text-neutral-500">
-                        {club.slotLabel} · {club.managerName}
+                        {draftSlotPlainLabel(club.band, club.rank)} · {club.managerName}
                       </span>
                     </span>
                     <span className="shrink-0 tabular-nums text-red-400">{club.delta.toFixed(2)}</span>

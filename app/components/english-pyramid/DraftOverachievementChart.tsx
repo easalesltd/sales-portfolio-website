@@ -12,8 +12,8 @@ import { useSweepstakeTheme } from '../SweepstakeThemeContext';
 const TITLE_FILL = '#d4af37';
 const SURVIVAL_FILL = '#c45c4a';
 const DOGS_FILL = '#34d399';
-const CHART_HEIGHT = 168;
-const PAD = { top: 12, right: 8, bottom: 28, left: 28 };
+const CHART_HEIGHT = 188;
+const PAD = { top: 24, right: 8, bottom: 36, left: 28 };
 
 type Props = {
   standings: PlayerStanding[];
@@ -51,9 +51,10 @@ export default function DraftOverachievementChart({ standings }: Props) {
         <h3 className={`mb-1 ${t.c.sectionHeading}`}>Dogs vs favourites</h3>
         <p className="text-sm leading-relaxed text-[#e8dfc8]/90">{verdict}</p>
         <p className="mt-1 text-xs text-neutral-500">
-          Bars are average fantasy points per game at each draft seed. Left is title #1; right is
-          relegation favourite (R1). Green survival bars sit above the title average — those seeds
-          are punching up. Manager Title/Dogs bars below share one scale.
+          Each bar is the average fantasy points per game for that draft rank. Title 1 is the
+          strongest title favourite. Dog 1 on the far right is the biggest relegation favourite.
+          Green bars are dogs beating the title average. Manager Title/Dogs bars below share one
+          scale.
         </p>
       </div>
 
@@ -106,11 +107,27 @@ export default function DraftOverachievementChart({ standings }: Props) {
                   textAnchor="middle"
                   className="fill-neutral-400 text-[9px] font-semibold"
                 >
-                  {slot.slotLabel}
+                  {slot.rank}
                 </text>
               </g>
             );
           })}
+          <text
+            x={PAD.left + (7 * (barW + barGap) - barGap) / 2}
+            y={14}
+            textAnchor="middle"
+            className="fill-[#d4af37] text-[9px] font-semibold"
+          >
+            Title picks
+          </text>
+          <text
+            x={PAD.left + 7 * (barW + barGap) + (7 * (barW + barGap) - barGap) / 2}
+            y={14}
+            textAnchor="middle"
+            className="fill-[#34d399] text-[9px] font-semibold"
+          >
+            Relegation dogs
+          </text>
           <line
             x1={PAD.left + 7 * (barW + barGap) - barGap / 2}
             x2={PAD.left + 7 * (barW + barGap) - barGap / 2}
@@ -137,11 +154,11 @@ export default function DraftOverachievementChart({ standings }: Props) {
         <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-[#d4af37]/15 px-3 py-2 text-[10px] text-neutral-400">
           <span className="inline-flex items-center gap-1.5">
             <span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: TITLE_FILL }} />
-            Title seeds
+            Title picks (1 = strongest favourite)
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: SURVIVAL_FILL }} />
-            Survival seeds
+            Relegation dogs (1 = most likely down)
           </span>
           <span className="inline-flex items-center gap-1.5">
             <span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: DOGS_FILL }} />

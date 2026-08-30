@@ -5,6 +5,7 @@ import type { PlayerStanding, TeamStanding } from '@/app/lib/english-pyramid-sco
 import {
   buildDraftOverachievement,
   draftSlotLabel,
+  draftSlotPlainLabel,
   draftStrengthSlotIndex,
   managerBandChartMax,
 } from '@/app/lib/english-pyramid-overachievement';
@@ -58,6 +59,8 @@ describe('draftStrengthSlotIndex', () => {
     expect(draftStrengthSlotIndex('survival', 1)).toBe(13);
     expect(draftSlotLabel('title', 1)).toBe('T1');
     expect(draftSlotLabel('survival', 1)).toBe('R1');
+    expect(draftSlotPlainLabel('title', 1)).toBe('Title #1');
+    expect(draftSlotPlainLabel('survival', 1)).toBe('Dog #1');
   });
 });
 

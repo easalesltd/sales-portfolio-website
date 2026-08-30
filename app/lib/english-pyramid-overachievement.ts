@@ -70,6 +70,11 @@ export function draftSlotLabel(band: DraftBand, rank: number): string {
   return band === 'title' ? `T${rank}` : `R${rank}`;
 }
 
+/** Human label: Title #1, Dog #1 (biggest relegation favourite). */
+export function draftSlotPlainLabel(band: DraftBand, rank: number): string {
+  return band === 'title' ? `Title #${rank}` : `Dog #${rank}`;
+}
+
 function ppgOf(points: number, played: number): number {
   return played > 0 ? points / played : 0;
 }
