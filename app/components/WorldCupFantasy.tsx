@@ -44,6 +44,7 @@ import { SweepstakeThemeProvider, useSweepstakeTheme } from './SweepstakeThemeCo
 import { managerColorForPlayer } from '@/app/lib/sweepstake-manager-colors';
 import SweepstakeAwards from './english-pyramid/SweepstakeAwards';
 import DraftOverachievementChart from './english-pyramid/DraftOverachievementChart';
+import PyramidCatchUpSection from './english-pyramid/PyramidCatchUpSection';
 import { pyramidMobileProgressChartHeight } from '@/app/lib/english-pyramid-progress-chart-layout';
 import {
   LATEST_RESULT_MOBILE_SLOT,
@@ -2861,6 +2862,13 @@ function WorldCupFantasyView({
               />
 
               <section id="pyramid-progress" className="scroll-mt-3">
+                {t.id === 'english-pyramid' && !(data.redraw?.squadsHidden) ? (
+                  <PyramidCatchUpSection
+                    standings={data.standings}
+                    scoringMatches={data.allScoringMatches}
+                    matchdaySchedule={data.matchdaySchedule}
+                  />
+                ) : null}
                 <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>
                 <p className="text-xs text-neutral-500">{progressChartDescription}</p>
                 <StandingsProgressChart standings={data.standings} scoringMatches={data.allScoringMatches} />

@@ -15,7 +15,7 @@ import {
   getPreSeasonTablePlace,
   sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
-import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring, buildPlayerProgressSeries } from '@/app/lib/english-pyramid-scoring';
+import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring, buildPlayerProgressSeries, buildPeriodProgress } from '@/app/lib/english-pyramid-scoring';
 
 describe('english-pyramid draft fairness', () => {
   it('gives every manager two clubs from each draft division', () => {
@@ -286,5 +286,57 @@ describe('english-pyramid season progress series', () => {
     expect(jon.currentTotal).toBe(8);
     const ash = series.find((row) => row.playerId === 'ash')!;
     expect(ash.points.map((point) => point.total)).toEqual([0, 4, 5]);
+  });
+});
+
+describe('buildPeriodProgress', () => {
+  const players = [
+    { id: 'scott', name: 'Scott', teamName: 'Objection', clubCrest: '/s.png', points: 40 },
+    { id: 'chris', name: 'Chris', teamName: 'Cajuicey', clubCrest: '/c.png', points: 30 },
+  ];
+  const match = (id: string, utcDate: string, byPlayer: Record<string, number>) => ({
+    match: {
+      id,
+      utcDate,
+      status: 'FINISHED' as const,
+      homeTeam: { name: 'Home', tla: 'HOM' },
+      awayTeam: { name: 'Away', tla: 'AWY' },
+      homeGoals: 1,
+      awayGoals: 0,
+      homeRedCards: 0,
+      awayRedCards: 0,
+    },
+    byPlayer,
+  });
+
+  it('flags a chaser who outscored the leader on the latest day', () => {
+    const day = buildPeriodProgress(
+      players,
+      [
+        match('old', '2026-08-15T14:00:00Z', { scott: 10, chris: 2 }),
+        match('new', '2026-08-29T14:00:00Z', { scott: 4, chris: 12 }),
+      ],
+      'day'
+    );
+    expect(day?.label).toMatch(/29 Aug/);
+    const chris = day?.rows.find((row) => row.playerId === 'chris');
+    expect(chris?.catchingUp).toBe(true);
+    expect(chris?.vsLeader).toBe(8);
+    expect(day?.rows[0]?.playerId).toBe('chris');
+  });
+
+  it('sums a Monday to Sunday week', () => {
+    const week = buildPeriodProgress(
+      players,
+      [
+        match('sat', '2026-08-29T14:00:00Z', { scott: 6, chris: 3 }),
+        match('sun', '2026-08-30T13:00:00Z', { scott: 2, chris: 8 }),
+        match('old', '2026-08-22T14:00:00Z', { scott: 20 }),
+      ],
+      'week'
+    );
+    expect(week?.periodKey).toBe('2026-08-24');
+    expect(week?.rows.find((row) => row.playerId === 'chris')?.points).toBe(11);
+    expect(week?.rows.find((row) => row.playerId === 'scott')?.points).toBe(8);
   });
 });

@@ -4,6 +4,8 @@ import {
   formatFixtureKickoff,
   formatSweepstakeDate,
   formatSweepstakeShortDate,
+  formatSweepstakeWeekdayDate,
+  sweepstakeLondonDayKey,
 } from '@/app/lib/sweepstake-datetime';
 
 describe('sweepstake datetime (Europe/London)', () => {
@@ -26,5 +28,7 @@ describe('sweepstake datetime (Europe/London)', () => {
   it('formats match dates on the UK calendar day', () => {
     expect(formatSweepstakeDate('2026-08-15T14:00:00Z')).toBe('15 Aug');
     expect(formatSweepstakeShortDate('2026-08-15T14:00:00Z')).toBe('15 Aug');
+    expect(formatSweepstakeWeekdayDate('2026-08-15T14:00:00Z')).toBe('Sat 15 Aug');
+    expect(sweepstakeLondonDayKey('2026-08-15T14:00:00Z')).toBe('2026-08-15');
   });
 });

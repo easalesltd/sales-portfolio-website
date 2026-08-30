@@ -8,7 +8,13 @@ import {
   type EnglishPyramidManualMatch,
   type EnglishPyramidFantasyPlayer,
 } from '@/app/data/english-pyramid-fantasy';
-import { formatSweepstakeShortDate } from '@/app/lib/sweepstake-datetime';
+import {
+  formatSweepstakeShortDate,
+  formatSweepstakeWeekRange,
+  formatSweepstakeWeekdayDate,
+  sweepstakeLondonDayKey,
+  sweepstakeLondonWeekKey,
+} from '@/app/lib/sweepstake-datetime';
 
 const DIVISION_LABEL_BY_ID = Object.fromEntries(ENGLISH_PYRAMID_DIVISIONS.map((d) => [d.id, d.label]));
 
@@ -811,6 +817,106 @@ export function buildPlayerProgressSeries(
       currentTotal: snapshots[snapshots.length - 1][player.id] ?? 0,
     };
   });
+}
+
+export type PeriodProgressPeriod = 'day' | 'week';
+
+export type PeriodProgressRow = {
+  playerId: string;
+  managerName: string;
+  teamName: string | null;
+  crest: string;
+  points: number;
+  seasonPoints: number;
+  seasonGap: number;
+  vsLeader: number;
+  catchingUp: boolean;
+  leading: boolean;
+};
+
+export type PeriodProgress = {
+  period: PeriodProgressPeriod;
+  periodKey: string;
+  label: string;
+  matchCount: number;
+  rows: PeriodProgressRow[];
+};
+
+/** Latest UK day or Mon-Sun week totals, with who is closing on the season leader. */
+export function buildPeriodProgress(
+  players: readonly Pick<PlayerStanding, 'id' | 'name' | 'teamName' | 'clubCrest' | 'points'>[],
+  scoringMatches: MatchPointsEntry[],
+  period: PeriodProgressPeriod
+): PeriodProgress | null {
+  if (players.length === 0 || scoringMatches.length === 0) return null;
+
+  const keyOf = period === 'week' ? sweepstakeLondonWeekKey : sweepstakeLondonDayKey;
+  const byPeriod = new Map<string, { points: Record<string, number>; matchCount: number; utcDate: string }>();
+  for (const entry of scoringMatches) {
+    const periodKey = keyOf(entry.match.utcDate);
+    let bucket = byPeriod.get(periodKey);
+    if (!bucket) {
+      bucket = {
+        points: Object.fromEntries(players.map((player) => [player.id, 0])),
+        matchCount: 0,
+        utcDate: entry.match.utcDate,
+      };
+      byPeriod.set(periodKey, bucket);
+    }
+    bucket.matchCount += 1;
+    if (entry.match.utcDate > bucket.utcDate) bucket.utcDate = entry.match.utcDate;
+    for (const player of players) {
+      bucket.points[player.id] += entry.byPlayer[player.id] ?? 0;
+    }
+  }
+
+  const latestKey = [...byPeriod.keys()].sort().at(-1);
+  if (!latestKey) return null;
+  const bucket = byPeriod.get(latestKey)!;
+  const leaderSeason = Math.max(...players.map((player) => player.points));
+  const leaderIds = players.filter((player) => player.points === leaderSeason).map((player) => player.id);
+  const leaderPeriod = Math.max(...leaderIds.map((id) => bucket.points[id] ?? 0));
+
+  const rows = players
+    .map((player) => {
+      const points = bucket.points[player.id] ?? 0;
+      const seasonGap = leaderSeason - player.points;
+      const vsLeader = points - leaderPeriod;
+      return {
+        playerId: player.id,
+        managerName: player.name,
+        teamName: player.teamName,
+        crest: player.clubCrest,
+        points,
+        seasonPoints: player.points,
+        seasonGap,
+        vsLeader,
+        catchingUp: seasonGap > 0 && vsLeader > 0,
+        leading: seasonGap === 0,
+      };
+    })
+    .sort(
+      (a, b) =>
+        Number(b.catchingUp) - Number(a.catchingUp) ||
+        b.points - a.points ||
+        a.seasonGap - b.seasonGap ||
+        a.managerName.localeCompare(b.managerName)
+    );
+
+  return {
+    period,
+    periodKey: latestKey,
+    label:
+      period === 'week'
+        ? formatSweepstakeWeekRange(latestKey)
+        : formatSweepstakeWeekdayDate(bucket.utcDate),
+    matchCount: bucket.matchCount,
+    rows,
+  };
+}
+
+export function periodProgressBarMax(rows: readonly Pick<PeriodProgressRow, 'points'>[]): number {
+  return Math.max(...rows.map((row) => Math.abs(row.points)), 1);
 }
 
 
