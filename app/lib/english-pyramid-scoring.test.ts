@@ -339,4 +339,20 @@ describe('buildPeriodProgress', () => {
     expect(week?.rows.find((row) => row.playerId === 'chris')?.points).toBe(11);
     expect(week?.rows.find((row) => row.playerId === 'scott')?.points).toBe(8);
   });
+
+  it('sums the latest UK calendar month', () => {
+    const month = buildPeriodProgress(
+      players,
+      [
+        match('july', '2026-07-25T14:00:00Z', { scott: 20, chris: 4 }),
+        match('aug1', '2026-08-08T14:00:00Z', { scott: 6, chris: 3 }),
+        match('aug2', '2026-08-29T14:00:00Z', { scott: 2, chris: 10 }),
+      ],
+      'month'
+    );
+    expect(month?.periodKey).toBe('2026-08');
+    expect(month?.label).toBe('August 2026');
+    expect(month?.rows.find((row) => row.playerId === 'chris')?.points).toBe(13);
+    expect(month?.rows.find((row) => row.playerId === 'scott')?.points).toBe(8);
+  });
 });

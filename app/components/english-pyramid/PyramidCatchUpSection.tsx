@@ -63,7 +63,7 @@ export default function PyramidCatchUpSection({ standings, scoringMatches }: Pro
             </p>
           </div>
           <div className="inline-flex shrink-0 rounded-md border border-[#d4af37]/35 p-0.5">
-            {(['day', 'week'] as const).map((option) => (
+            {(['day', 'week', 'month'] as const).map((option) => (
               <button
                 key={option}
                 type="button"

@@ -67,6 +67,20 @@ export function sweepstakeLondonWeekKey(utcDate: string): string {
   return noon.toISOString().slice(0, 10);
 }
 
+/** YYYY-MM on the UK calendar. */
+export function sweepstakeLondonMonthKey(utcDate: string): string {
+  return sweepstakeLondonDayKey(utcDate).slice(0, 7);
+}
+
+/** e.g. August 2026 */
+export function formatSweepstakeMonth(monthKey: string): string {
+  return new Date(`${monthKey}-15T12:00:00Z`).toLocaleDateString('en-GB', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
 /** e.g. 24 Aug to 30 Aug */
 export function formatSweepstakeWeekRange(mondayKey: string): string {
   const [year, month, day] = mondayKey.split('-').map(Number);

@@ -9,10 +9,12 @@ import {
   type EnglishPyramidFantasyPlayer,
 } from '@/app/data/english-pyramid-fantasy';
 import {
+  formatSweepstakeMonth,
   formatSweepstakeShortDate,
   formatSweepstakeWeekRange,
   formatSweepstakeWeekdayDate,
   sweepstakeLondonDayKey,
+  sweepstakeLondonMonthKey,
   sweepstakeLondonWeekKey,
 } from '@/app/lib/sweepstake-datetime';
 
@@ -819,7 +821,7 @@ export function buildPlayerProgressSeries(
   });
 }
 
-export type PeriodProgressPeriod = 'day' | 'week';
+export type PeriodProgressPeriod = 'day' | 'week' | 'month';
 
 export type PeriodProgressRow = {
   playerId: string;
@@ -842,7 +844,7 @@ export type PeriodProgress = {
   rows: PeriodProgressRow[];
 };
 
-/** Latest UK day or Mon-Sun week totals, with who is closing on the season leader. */
+/** Latest UK day, Mon-Sun week, or calendar month totals, with who is closing on the season leader. */
 export function buildPeriodProgress(
   players: readonly Pick<PlayerStanding, 'id' | 'name' | 'teamName' | 'clubCrest' | 'points'>[],
   scoringMatches: MatchPointsEntry[],
@@ -850,7 +852,12 @@ export function buildPeriodProgress(
 ): PeriodProgress | null {
   if (players.length === 0 || scoringMatches.length === 0) return null;
 
-  const keyOf = period === 'week' ? sweepstakeLondonWeekKey : sweepstakeLondonDayKey;
+  const keyOf =
+    period === 'week'
+      ? sweepstakeLondonWeekKey
+      : period === 'month'
+        ? sweepstakeLondonMonthKey
+        : sweepstakeLondonDayKey;
   const byPeriod = new Map<string, { points: Record<string, number>; matchCount: number; utcDate: string }>();
   for (const entry of scoringMatches) {
     const periodKey = keyOf(entry.match.utcDate);
@@ -909,7 +916,9 @@ export function buildPeriodProgress(
     label:
       period === 'week'
         ? formatSweepstakeWeekRange(latestKey)
-        : formatSweepstakeWeekdayDate(bucket.utcDate),
+        : period === 'month'
+          ? formatSweepstakeMonth(latestKey)
+          : formatSweepstakeWeekdayDate(bucket.utcDate),
     matchCount: bucket.matchCount,
     rows,
   };
