@@ -78,7 +78,7 @@ export default function BrandsDropdown() {
       onMouseLeave={() => {
         closeTimeout.current = setTimeout(() => {
           setIsOpen(false);
-        }, 50); // Faster close to prevent overlap
+        }, 180);
       }}
     >
       <button
@@ -93,24 +93,22 @@ export default function BrandsDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
+        <div className="absolute left-1/2 z-10 mt-3 w-screen max-w-xl -translate-x-1/2 transform px-2 sm:px-0">
           <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-            <div className="relative grid max-h-[min(70vh,40rem)] gap-6 overflow-y-auto bg-white dark:bg-neutral-900 px-5 py-6 sm:gap-8 sm:p-8">
-              <div className="-m-3">
-                <h3 className="text-base font-medium text-gray-900 dark:text-neutral-100">My Partner Brands</h3>
-                <div className="mt-2 space-y-2">
-                  {companies.map((company) => (
-                    <Link
-                      key={company.id}
-                      href={`/companies/${company.slug}`}
-                      prefetch={false}
-                      className="block px-4 py-2 text-sm text-gray-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-800"
-                      role="menuitem"
-                    >
-                      {company.name}
-                    </Link>
-                  ))}
-                </div>
+            <div className="relative bg-white px-5 py-5 dark:bg-neutral-900 sm:p-6">
+              <h3 className="text-base font-medium text-gray-900 dark:text-neutral-100">My Partner Brands</h3>
+              <div className="mt-3 grid grid-cols-1 gap-x-3 sm:grid-cols-2">
+                {companies.map((company) => (
+                  <Link
+                    key={company.id}
+                    href={`/companies/${company.slug}`}
+                    prefetch={false}
+                    className="block rounded-md px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                    role="menuitem"
+                  >
+                    {company.name}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
