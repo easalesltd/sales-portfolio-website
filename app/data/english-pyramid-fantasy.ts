@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Wolves beat Stoke City 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Horsham lost 2-1 at home to Farnham Town. No win points, net zero. Then Chesterfield lost 2-1 at Rotherham United. No win points, net zero. Then Darlington lost 2-1 at home to Macclesfield. No win points, net zero. Then Weston-super-Mare won 3-1 at Hemel Hempstead Town. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Bolton Wanderers lost 1-0 at home to Lincoln City. No win points, net zero. Then Hull City won 1-0 at Coventry City. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Crawley Town lost 2-0 at home to Bristol Rovers. No win points, net zero. Then Burton Albion lost 2-1 at Notts County. No win points, plus 1 for the red, net plus 1. Scott is on 111.\n\nChris\'s Barnet drew 2-2 with Cheltenham Town. Plus 1 for the draw, net plus 1. Then Cheltenham Town drew 2-2 with Barnet. Plus 1 for the draw, net plus 1. Then Tonbridge Angels drew 2-2 with Billericay Town. Plus 1 for the draw, net plus 1. Then Chester FC drew 1-1 with Hereford. Plus 1 for the draw, net plus 1. Then Maidstone United beat Salisbury 2-1 at home. Plus 3 for the home win, net plus 3. Then Lincoln City won 1-0 at Bolton Wanderers. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Wednesday beat Bromley 7-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then West Ham drew 1-1 with Watford. Plus 1 for the draw, net plus 1. Then Newcastle won 2-0 at Spurs. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Chris is on 102.\n\nBen\'s Liverpool drew 2-2 with Forest. Plus 1 for the draw, net plus 1. Then Middlesbrough beat West Brom 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Dover Athletic drew 3-3 with Braintree Town. Plus 1 for the draw, plus 1 for three or more, minus 1 for leaking three, net plus 1. Then Hebburn Town beat King\'s Lynn Town 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Dagenham & Redbridge lost 3-0 at Truro City. No win points, minus 1 for leaking three, net minus 1. Then Huddersfield Town won 2-1 at Cambridge United. Plus 4 for the away win, net plus 4. Then Cardiff City drew 2-2 with Sheffield United. Plus 1 for the draw, net plus 1. Then Coventry City lost 1-0 at home to Hull City. No win points, net zero. Then Grimsby Town drew 2-2 with Fleetwood Town. Plus 1 for the draw, net plus 1. Then Fleetwood Town drew 2-2 with Grimsby Town. Plus 1 for the draw, net plus 1. Then Notts County beat Burton Albion 2-1 at home. Plus 3 for the home win, net plus 3. Ben is on 90.\n\nNest\'s Leicester served up a boring 0-0 against MK Dons. Minus 1 for the 0-0, net minus 1. Then Farnham Town won 2-1 at Horsham. Plus 4 for the away win, net plus 4. Then Chesham United won 4-0 at AFC Totton. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more, net plus 6. Then Blackburn Rovers lost 2-1 at home to QPR. No win points, net zero. Then Sheffield United drew 2-2 with Cardiff City. Plus 1 for the draw, net plus 1. Then Bristol Rovers won 2-0 at Crawley Town. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Bromley lost 7-2 at Wednesday. No win points, minus 1 for leaking three, net minus 1. Then Accrington Stanley lost 3-2 at Walsall. No win points, minus 1 for leaking three, net minus 1. Nest is on 82.\n\nDave\'s Port Vale served up a boring 0-0 against Crewe Alexandra. Minus 1 for the 0-0, net minus 1. Then Marine beat Radcliffe 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Worksop Town lost 3-1 at Spalding United. No win points, minus 1 for leaking three, net minus 1. Then Torquay United drew 1-1 with Hampton & Richmond Borough. Plus 1 for the draw, net plus 1. Then Walton & Hersham lost 4-1 at home to Dorking Wanderers. No win points, minus 1 for leaking three, net minus 1. Then Cambridge United lost 2-1 at home to Huddersfield Town. No win points, net zero. Then Charlton Athletic beat Preston North End 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Burnley lost 4-1 at Norwich City. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Then Tranmere Rovers drew 2-2 with Newport County. Plus 1 for the draw, net plus 1. Then Plymouth Argyle beat Bradford City 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Dave is on 79.\n\nJon\'s Bedford Town beat Spennymoor Town 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Then Macclesfield won 2-1 at Darlington. Plus 4 for the away win, net plus 4. Then Salisbury lost 2-1 at Maidstone United. No win points, net zero. Then Portsmouth lost 2-1 at Bristol City. No win points, net zero. Then Newport County drew 2-2 with Tranmere Rovers. Plus 1 for the draw, net plus 1. Then Salford City lost 1-0 at Shrewsbury Town. No win points, net zero. Then Stockport County beat Wycombe Wanderers 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Jon is on 68.\n\nAsh\'s MK Dons served up a boring 0-0 against Leicester. Minus 1 for the 0-0, net minus 1. Then AFC Totton lost 4-0 at home to Chesham United. No win points, minus 1 for leaking three, net minus 1. Then South Shields served up a boring 0-0 against Brackley Town. Minus 1 for the 0-0, net minus 1. Then Chelmsford City beat Maidenhead United 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Spalding United beat Worksop Town 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Preston North End lost 1-0 at Charlton Athletic. No win points, net zero. Then Leyton Orient lost 3-1 at home to Barnsley. No win points, minus 1 for leaking three, net minus 1. Then Shrewsbury Town beat Salford City 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Southampton beat Millwall 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then York City beat Exeter City 2-1 at home. Plus 3 for the home win, net plus 3. Ash is on 66.\n\nTable: Scott 111, Chris 102, Ben 90, Nest 82, Dave 79, Jon 68, Ash 66.';
+  'Scott\'s Luton Town lost 5-2 at Mansfield Town. No win points, minus 1 for leaking three, net minus 1. Scott is on 110.\n\nChris\'s AFC Wimbledon beat Wigan Athletic 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Chris is on 106.\n\nNest\'s Leeds United drew 1-1 with Brentford. Plus 1 for the draw, net plus 1. Nest is on 83.\n\nJon\'s Chelsea beat Brighton 4-3 at home. Plus 3 for the home win, plus 1 for three or more, minus 1 for leaking three, net plus 3. Then Fulham lost 1-0 at Sunderland. No win points, net zero. Jon is on 71.\n\nAsh\'s Sunderland beat Fulham 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Ash is on 70.\n\nTable: Scott 110, Chris 106, Ben 90, Nest 83, Dave 79, Jon 71, Ash 70.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -3370,6 +3370,61 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'Tottenham Hotspur', tla: 'TOT' },
     awayTeam: { name: 'Newcastle United', tla: 'NEW' },
     homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-30-che-bha',
+    utcDate: '2026-08-30T13:00Z',
+    homeTeam: { name: 'Chelsea', tla: 'CHE' },
+    awayTeam: { name: 'Brighton & Hove Albion', tla: 'BHA' },
+    homeGoals: 4,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-30-lee-bre',
+    utcDate: '2026-08-30T13:00Z',
+    homeTeam: { name: 'Leeds United', tla: 'LEE' },
+    awayTeam: { name: 'Brentford', tla: 'BRE' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-30-sun-ful',
+    utcDate: '2026-08-30T13:00Z',
+    homeTeam: { name: 'Sunderland', tla: 'SUN' },
+    awayTeam: { name: 'Fulham', tla: 'FUL' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-30-wim-wga',
+    utcDate: '2026-08-30T13:00Z',
+    homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
+    awayTeam: { name: 'Wigan Athletic', tla: 'WGA' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-08-30-mnf-lut',
+    utcDate: '2026-08-30T14:00Z',
+    homeTeam: { name: 'Mansfield Town', tla: 'MNF' },
+    awayTeam: { name: 'Luton Town', tla: 'LUT' },
+    homeGoals: 5,
     awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
