@@ -7,17 +7,8 @@ import {
   formatPpg,
   type DraftClubRow,
 } from '@/app/lib/english-pyramid-overachievement';
-import type {
-  MatchdayEntry,
-  MatchdaySchedule,
-  MatchPointsEntry,
-  PlayerStanding,
-} from '@/app/lib/english-pyramid-scoring';
-import {
-  formatSweepstakeWeekRange,
-  sweepstakeLondonDayKey,
-  sweepstakeLondonWeekKey,
-} from '@/app/lib/sweepstake-datetime';
+import type { MatchPointsEntry, PlayerStanding } from '@/app/lib/english-pyramid-scoring';
+import { sweepstakeLondonDayKey } from '@/app/lib/sweepstake-datetime';
 
 const DEAD_CLUBS_PER_MANAGER = 2;
 
@@ -136,105 +127,6 @@ export function heatmapCellTone(ppg: number, minPpg: number, maxPpg: number, pla
   if (t >= 0.5) return 'bg-[#d4af37]/18 text-[#e8dfc8]';
   if (t >= 0.25) return 'bg-[#1a2744] text-[#e8dfc8]/85';
   return 'bg-[#3f1d24] text-[#f0c4cc]';
-}
-
-export type ScheduleLuckRow = {
-  managerId: string;
-  managerName: string;
-  teamName: string | null;
-  games: number;
-  home: number;
-  clashes: number;
-  midweek: number;
-  freeMidweek: number;
-};
-
-export type ScheduleLuck = {
-  weekKey: string;
-  label: string;
-  upcoming: boolean;
-  rows: ScheduleLuckRow[];
-} | null;
-
-function londonWeekdayMon1(utcDate: string): number {
-  const name = new Date(utcDate).toLocaleDateString('en-GB', {
-    weekday: 'short',
-    timeZone: 'Europe/London',
-  });
-  const map: Record<string, number> = { Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6, Sun: 7 };
-  return map[name] ?? 0;
-}
-
-function isMidweek(utcDate: string): boolean {
-  const day = londonWeekdayMon1(utcDate);
-  return day >= 1 && day <= 4;
-}
-
-function flattenSchedule(schedule: MatchdaySchedule): MatchdayEntry[] {
-  return Object.values(schedule.schedulesByDate).flat();
-}
-
-export function buildScheduleLuck(schedule: MatchdaySchedule, now = new Date()): ScheduleLuck {
-  const entries = flattenSchedule(schedule).filter(
-    (entry) => entry.status === 'upcoming' || entry.status === 'in-play'
-  );
-  if (entries.length === 0) return null;
-
-  const thisWeek = sweepstakeLondonWeekKey(now.toISOString());
-  const remainingThisWeek = entries.filter((entry) => sweepstakeLondonWeekKey(entry.utcDate) === thisWeek);
-  const pool =
-    remainingThisWeek.length > 0
-      ? remainingThisWeek
-      : entries
-          .slice()
-          .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
-  const weekKey =
-    remainingThisWeek.length > 0 ? thisWeek : sweepstakeLondonWeekKey(pool[0]!.utcDate);
-  const weekEntries = pool.filter((entry) => sweepstakeLondonWeekKey(entry.utcDate) === weekKey);
-  if (weekEntries.length === 0) return null;
-
-  const byManager = new Map<string, ScheduleLuckRow>();
-  const touch = (manager: MatchdayEntry['homeManagers'][number], home: boolean, clash: boolean, midweek: boolean) => {
-    let row = byManager.get(manager.id);
-    if (!row) {
-      row = {
-        managerId: manager.id,
-        managerName: manager.name,
-        teamName: manager.teamName,
-        games: 0,
-        home: 0,
-        clashes: 0,
-        midweek: 0,
-        freeMidweek: 0,
-      };
-      byManager.set(manager.id, row);
-    }
-    row.games += 1;
-    if (home) row.home += 1;
-    if (clash) row.clashes += 1;
-    if (midweek) row.midweek += 1;
-    if (midweek && !clash) row.freeMidweek += 1;
-  };
-
-  for (const entry of weekEntries) {
-    const midweek = isMidweek(entry.utcDate);
-    const homeIds = new Set(entry.homeManagers.map((manager) => manager.id));
-    const awayIds = new Set(entry.awayManagers.map((manager) => manager.id));
-    const clash = [...homeIds].some((id) => [...awayIds].some((other) => other !== id));
-    for (const manager of entry.homeManagers) touch(manager, true, clash, midweek);
-    for (const manager of entry.awayManagers) touch(manager, false, clash, midweek);
-  }
-
-  const rows = [...byManager.values()].sort(
-    (a, b) => b.games - a.games || b.home - a.home || a.managerName.localeCompare(b.managerName)
-  );
-
-  return {
-    weekKey,
-    label: formatSweepstakeWeekRange(weekKey),
-    upcoming: remainingThisWeek.length === 0,
-    rows,
-  };
 }
 
 export type SeedFormClub = DraftClubRow & {

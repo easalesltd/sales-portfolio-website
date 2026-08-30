@@ -2866,7 +2866,6 @@ function WorldCupFantasyView({
                   <PyramidCatchUpSection
                     standings={data.standings}
                     scoringMatches={data.allScoringMatches}
-                    matchdaySchedule={data.matchdaySchedule}
                   />
                 ) : null}
                 <h3 className={`mb-1 ${t.c.sectionHeading}`}>{progressChartTitle}</h3>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import type { MatchdaySchedule, MatchPointsEntry, PlayerStanding } from '@/app/lib/english-pyramid-scoring';
+import type { MatchPointsEntry, PlayerStanding } from '@/app/lib/english-pyramid-scoring';
 import {
   buildPeriodProgress,
   periodProgressBarMax,
@@ -11,7 +11,6 @@ import {
   buildDeadClubs,
   buildDivisionHeatmap,
   buildGapToFirst,
-  buildScheduleLuck,
   buildSeedForm,
   formatPpg,
   formatSignedPoints,
@@ -24,7 +23,6 @@ import DivisionBadge from './DivisionBadge';
 type Props = {
   standings: PlayerStanding[];
   scoringMatches: MatchPointsEntry[];
-  matchdaySchedule: MatchdaySchedule;
 };
 
 function managerLabel(teamName: string | null, name: string): string {
@@ -37,7 +35,7 @@ function signedClass(value: number, positive: string, negative: string): string 
   return 'text-neutral-400';
 }
 
-export default function PyramidCatchUpSection({ standings, scoringMatches, matchdaySchedule }: Props) {
+export default function PyramidCatchUpSection({ standings, scoringMatches }: Props) {
   const t = useSweepstakeTheme();
   const [period, setPeriod] = useState<PeriodProgressPeriod>('day');
 
@@ -48,7 +46,6 @@ export default function PyramidCatchUpSection({ standings, scoringMatches, match
   const gap = useMemo(() => buildGapToFirst(standings, scoringMatches), [standings, scoringMatches]);
   const dead = useMemo(() => buildDeadClubs(standings), [standings]);
   const heat = useMemo(() => buildDivisionHeatmap(standings), [standings]);
-  const luck = useMemo(() => buildScheduleLuck(matchdaySchedule), [matchdaySchedule]);
   const seed = useMemo(() => buildSeedForm(standings), [standings]);
   const barMax = board ? periodProgressBarMax(board.rows) : 1;
 
@@ -202,28 +199,6 @@ export default function PyramidCatchUpSection({ standings, scoringMatches, match
           </div>
         </div>
       </section>
-
-      {luck ? (
-        <section>
-          <h3 className={`mb-1 ${t.c.sectionHeading}`}>Schedule luck</h3>
-          <p className="mb-2 text-xs text-neutral-500">
-            {luck.upcoming ? 'Next week' : 'This week'} · {luck.label}. Home games, clashes with another manager, and free midweek fixtures.
-          </p>
-          <ul className="space-y-1.5 text-xs text-neutral-100">
-            {luck.rows.map((row) => (
-              <li
-                key={row.managerId}
-                className="flex flex-col gap-0.5 rounded-md border border-[#d4af37]/10 bg-[#0a0f1a]/40 px-2.5 py-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-2"
-              >
-                <span className="min-w-0 truncate font-medium">{row.managerName}</span>
-                <span className="tabular-nums text-neutral-400">
-                  {row.games} games · {row.home} home · {row.clashes} clash · {row.freeMidweek} free midweek
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
 
       <section>
         <h3 className={`mb-1 ${t.c.sectionHeading}`}>Form vs draft seed</h3>

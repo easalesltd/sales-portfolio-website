@@ -5,10 +5,9 @@ import {
   buildDeadClubs,
   buildDivisionHeatmap,
   buildGapToFirst,
-  buildScheduleLuck,
   buildSeedForm,
 } from '@/app/lib/english-pyramid-catch-up';
-import type { MatchdayEntry, MatchdaySchedule, MatchPointsEntry, PlayerStanding, TeamStanding } from '@/app/lib/english-pyramid-scoring';
+import type { MatchPointsEntry, PlayerStanding, TeamStanding } from '@/app/lib/english-pyramid-scoring';
 
 function team(overrides: Partial<TeamStanding> & Pick<TeamStanding, 'code' | 'name'>): TeamStanding {
   return {
@@ -68,19 +67,6 @@ function match(id: string, utcDate: string, byPlayer: Record<string, number>): M
   };
 }
 
-function fixture(
-  overrides: Partial<MatchdayEntry> & Pick<MatchdayEntry, 'id' | 'utcDate'>
-): MatchdayEntry {
-  return {
-    homeTeam: { name: 'Home', tla: 'HOM', flag: '' },
-    awayTeam: { name: 'Away', tla: 'AWY', flag: '' },
-    homeManagers: [],
-    awayManagers: [],
-    status: 'upcoming',
-    ...overrides,
-  };
-}
-
 describe('buildDeadClubs', () => {
   it('names the two lowest-scoring sides that have played', () => {
     const rows = buildDeadClubs([
@@ -135,41 +121,6 @@ describe('buildGapToFirst', () => {
     expect(gap?.typicalMatchday).toBe(15);
     expect(gap?.rows.find((row) => row.managerId === 'chris')?.matchdaysBehind).toBeCloseTo(20 / 15);
     expect(gap?.rows.find((row) => row.managerId === 'scott')?.leading).toBe(true);
-  });
-});
-
-describe('buildScheduleLuck', () => {
-  it('counts remaining games, homes, clashes and free midweek', () => {
-    const dave = { id: 'dave', name: 'Dave', teamName: 'Creamers', teamCode: 'ARS' };
-    const scott = { id: 'scott', name: 'Scott', teamName: 'Objection', teamCode: 'HUL' };
-    const schedule: MatchdaySchedule = {
-      defaultDate: '2026-09-01',
-      fixtureDates: ['2026-09-01', '2026-09-02'],
-      schedulesByDate: {
-        '2026-09-01': [
-          fixture({
-            id: 'mid',
-            utcDate: '2026-09-01T18:45:00Z',
-            homeManagers: [dave],
-            status: 'upcoming',
-          }),
-        ],
-        '2026-09-02': [
-          fixture({
-            id: 'clash',
-            utcDate: '2026-09-05T14:00:00Z',
-            homeManagers: [dave],
-            awayManagers: [scott],
-            status: 'upcoming',
-          }),
-        ],
-      },
-    };
-
-    const luck = buildScheduleLuck(schedule, new Date('2026-08-30T12:00:00Z'));
-    expect(luck?.upcoming).toBe(true);
-    const daveRow = luck?.rows.find((row) => row.managerId === 'dave');
-    expect(daveRow).toMatchObject({ games: 2, home: 2, clashes: 1, midweek: 1, freeMidweek: 1 });
   });
 });
 
