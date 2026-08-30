@@ -108,7 +108,7 @@ export default function PyramidCatchUpSection({ standings, scoringMatches }: Pro
                   </div>
                   <p className="mt-0.5 text-[10px] text-neutral-500">
                     {row.leading
-                      ? 'Season leader'
+                      ? 'Season leader (Bell End)'
                       : row.catchingUp
                         ? `Catching up · ${formatSignedPoints(row.vsLeader)} vs the leader this ${period}`
                         : `${row.seasonGap} behind overall`}
@@ -133,7 +133,7 @@ export default function PyramidCatchUpSection({ standings, scoringMatches }: Pro
                   <span className="min-w-0 truncate">{row.managerName}</span>
                   <span className="shrink-0 tabular-nums text-neutral-400">
                     {row.leading
-                      ? 'Leading'
+                      ? 'Leading (Bell End)'
                       : `${row.seasonGap} pts · ${row.matchdaysBehind?.toFixed(1)} matchdays`}
                   </span>
                 </li>
