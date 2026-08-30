@@ -83,6 +83,8 @@ describe('buildDraftOverachievement', () => {
     expect(stats.managers[0]?.dogsAhead).toBe(true);
     expect(stats.slots[0]?.avgPpg).toBe(1);
     expect(stats.slots[13]?.avgPpg).toBe(4);
+    expect(stats.slots[13]?.clubRows.map((row) => row.code)).toEqual(['HUL']);
+    expect(stats.slots[13]?.clubRows[0]?.managerName).toBe('Dave');
   });
 
   it('does not flag dogs when title picks still score more per game', () => {

@@ -29,6 +29,7 @@ export type DraftSlotAverage = {
   band: DraftBand;
   rank: number;
   clubs: number;
+  clubRows: DraftClubRow[];
   avgPpg: number;
   totalPoints: number;
   played: number;
@@ -127,6 +128,7 @@ function emptySlots(): DraftSlotAverage[] {
       band,
       rank,
       clubs: 0,
+      clubRows: [],
       avgPpg: 0,
       totalPoints: 0,
       played: 0,
@@ -144,11 +146,13 @@ export function buildDraftOverachievement(standings: PlayerStanding[]): DraftOve
     const slot = slots[club.slotIndex];
     if (!slot) continue;
     slot.clubs += 1;
+    slot.clubRows.push(club);
     slot.totalPoints += club.points;
     slot.played += club.played;
   }
   for (const slot of slots) {
     slot.avgPpg = ppgOf(slot.totalPoints, slot.played);
+    slot.clubRows.sort((a, b) => b.ppg - a.ppg || a.name.localeCompare(b.name));
   }
 
   const managers: ManagerBandSplit[] = standings.map((player) => {

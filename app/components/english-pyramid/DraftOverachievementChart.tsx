@@ -1,11 +1,13 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { PlayerStanding } from '@/app/lib/english-pyramid-scoring';
 import {
   buildDraftOverachievement,
+  draftSlotPlainLabel,
   formatPpg,
   managerBandChartMax,
+  type DraftSlotAverage,
 } from '@/app/lib/english-pyramid-overachievement';
 import { useSweepstakeTheme } from '../SweepstakeThemeContext';
 
@@ -19,9 +21,16 @@ type Props = {
   standings: PlayerStanding[];
 };
 
+function managerLabel(teamName: string | null, name: string): string {
+  return teamName ? `${teamName} (${name})` : name;
+}
+
 export default function DraftOverachievementChart({ standings }: Props) {
   const t = useSweepstakeTheme();
   const stats = useMemo(() => buildDraftOverachievement(standings), [standings]);
+  const [pinnedSlot, setPinnedSlot] = useState<number | null>(null);
+  const [hoveredSlot, setHoveredSlot] = useState<number | null>(null);
+  const selectedSlot = hoveredSlot ?? pinnedSlot;
 
   if (!stats.playedAny) {
     return (
@@ -53,14 +62,14 @@ export default function DraftOverachievementChart({ standings }: Props) {
         <p className="mt-1 text-xs text-neutral-500">
           Each bar is the average fantasy points per game for that draft rank. Title 1 is the
           strongest title favourite. Dog 1 on the far right is the biggest relegation favourite.
-          Green bars are dogs beating the title average. Manager Title/Dogs bars below share one
-          scale.
+          Green bars are dogs beating the title average. Hover or tap a bar to see the seven clubs
+          at that rank. Manager Title/Dogs bars below share one scale.
         </p>
       </div>
 
       <div className={t.c.chartWrap}>
         <svg
-          role="img"
+          role="group"
           aria-label={verdict}
           viewBox={`0 0 ${plotW} ${CHART_HEIGHT}`}
           className="block h-auto w-full"
@@ -90,8 +99,38 @@ export default function DraftOverachievementChart({ standings }: Props) {
             const punching = slot.band === 'survival' && slot.avgPpg > stats.titlePpg && slot.played > 0;
             const fill =
               slot.band === 'title' ? TITLE_FILL : punching ? DOGS_FILL : SURVIVAL_FILL;
+            const selected = selectedSlot === slot.slotIndex;
+            const label = draftSlotPlainLabel(slot.band, slot.rank);
             return (
-              <g key={slot.slotLabel}>
+              <g
+                key={slot.slotLabel}
+                role="button"
+                tabIndex={0}
+                aria-pressed={selected}
+                aria-label={`${label}, ${formatPpg(slot.avgPpg)} points per game. Hover or tap to see the managers.`}
+                className="cursor-pointer"
+                onPointerEnter={(event) => {
+                  if (event.pointerType === 'mouse') setHoveredSlot(slot.slotIndex);
+                }}
+                onPointerLeave={(event) => {
+                  if (event.pointerType === 'mouse') setHoveredSlot(null);
+                }}
+                onClick={() =>
+                  setPinnedSlot((current) => (current === slot.slotIndex ? null : slot.slotIndex))
+                }
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter' && event.key !== ' ') return;
+                  event.preventDefault();
+                  setPinnedSlot((current) => (current === slot.slotIndex ? null : slot.slotIndex));
+                }}
+              >
+                <rect
+                  x={x - 1}
+                  y={PAD.top}
+                  width={barW + 2}
+                  height={plotH}
+                  fill="transparent"
+                />
                 <rect
                   x={x}
                   y={yFor(slot.avgPpg)}
@@ -100,12 +139,14 @@ export default function DraftOverachievementChart({ standings }: Props) {
                   rx={2}
                   fill={fill}
                   opacity={slot.played > 0 ? 1 : 0.25}
+                  stroke={selected ? '#f5e2a3' : 'transparent'}
+                  strokeWidth={selected ? 1.5 : 0}
                 />
                 <text
                   x={x + barW / 2}
                   y={CHART_HEIGHT - 8}
                   textAnchor="middle"
-                  className="fill-neutral-400 text-[9px] font-semibold"
+                  className={`text-[9px] font-semibold ${selected ? 'fill-[#f5e2a3]' : 'fill-neutral-400'}`}
                 >
                   {slot.rank}
                 </text>
@@ -151,6 +192,10 @@ export default function DraftOverachievementChart({ standings }: Props) {
             Title avg {formatPpg(stats.titlePpg)}
           </text>
         </svg>
+        <SlotBreakdown
+          slot={selectedSlot == null ? null : stats.slots[selectedSlot] ?? null}
+          titlePpg={stats.titlePpg}
+        />
         <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-[#d4af37]/15 px-3 py-2 text-[10px] text-neutral-400">
           <span className="inline-flex items-center gap-1.5">
             <span className="inline-block h-2 w-2 rounded-sm" style={{ backgroundColor: TITLE_FILL }} />
@@ -190,6 +235,49 @@ export default function DraftOverachievementChart({ standings }: Props) {
             </li>
           );
         })}
+      </ul>
+    </div>
+  );
+}
+
+function SlotBreakdown({
+  slot,
+  titlePpg,
+}: {
+  slot: DraftSlotAverage | null;
+  titlePpg: number;
+}) {
+  if (!slot) {
+    return (
+      <p className="border-t border-[#d4af37]/15 px-3 py-2 text-[11px] text-neutral-500">
+        Hover or tap a bar to see the managers and clubs at that rank.
+      </p>
+    );
+  }
+
+  const punching = slot.band === 'survival' && slot.avgPpg > titlePpg && slot.played > 0;
+  return (
+    <div className="border-t border-[#d4af37]/15 px-3 py-2.5">
+      <p className="text-xs font-semibold text-[#f5e2a3]">
+        {draftSlotPlainLabel(slot.band, slot.rank)}
+        <span className="ml-1.5 font-normal text-neutral-400">
+          {formatPpg(slot.avgPpg)} pts/game
+          {punching ? ' · beating the title average' : ''}
+        </span>
+      </p>
+      <ul className="mt-1.5 space-y-1">
+        {slot.clubRows.map((club) => (
+          <li
+            key={`${club.managerId}-${club.code}`}
+            className="flex items-baseline justify-between gap-2 text-[11px] text-neutral-100"
+          >
+            <span className="min-w-0 truncate">
+              <span className="font-medium text-[#e8dfc8]">{managerLabel(club.teamName, club.managerName)}</span>
+              <span className="text-neutral-400"> · {club.name}</span>
+            </span>
+            <span className="shrink-0 tabular-nums text-neutral-300">{formatPpg(club.ppg)}</span>
+          </li>
+        ))}
       </ul>
     </div>
   );
