@@ -123,6 +123,24 @@ export type TodaysResultEntry = UpcomingFixtureEntry & {
   awayGoals: number;
 };
 
+/** One club's dismissals in a finished ledger match. */
+export type AwardedRedCard = {
+  matchId: string;
+  utcDate: string;
+  homeTeam: { name: string; tla: string };
+  awayTeam: { name: string; tla: string };
+  homeGoals: number;
+  awayGoals: number;
+  team: { name: string; tla: string };
+  opponent: { name: string; tla: string };
+  isHome: boolean;
+  redCards: number;
+  /** +1 per red when the club is in a sweepstake squad; otherwise 0. */
+  points: number;
+  managers: FixtureManager[];
+  redsUnchecked?: boolean;
+};
+
 export type MatchdayEntryStatus = 'upcoming' | 'in-play' | 'finished' | 'postponed';
 
 export type MatchdayEntry = UpcomingFixtureEntry & {
@@ -404,6 +422,79 @@ function managersForTeam(
       teamName: player.teamName ?? null,
       teamCode,
     }));
+}
+
+export function listAwardedRedCards(
+  matches: readonly EnglishPyramidMatchResult[],
+  players: readonly EnglishPyramidFantasyPlayer[]
+): AwardedRedCard[] {
+  const awards: AwardedRedCard[] = [];
+  const finished = [...matches]
+    .filter(
+      (match) =>
+        match.status.toUpperCase() === 'FINISHED' &&
+        match.homeGoals != null &&
+        match.awayGoals != null
+    )
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate) || a.id.localeCompare(b.id));
+
+  for (const match of finished) {
+    const sides = [
+      {
+        team: match.homeTeam,
+        opponent: match.awayTeam,
+        isHome: true,
+        redCards: match.homeRedCards ?? 0,
+      },
+      {
+        team: match.awayTeam,
+        opponent: match.homeTeam,
+        isHome: false,
+        redCards: match.awayRedCards ?? 0,
+      },
+    ] as const;
+
+    for (const side of sides) {
+      if (side.redCards <= 0) continue;
+      const managers = managersForTeam(players, side.team.tla);
+      awards.push({
+        matchId: match.id,
+        utcDate: match.utcDate,
+        homeTeam: match.homeTeam,
+        awayTeam: match.awayTeam,
+        homeGoals: match.homeGoals!,
+        awayGoals: match.awayGoals!,
+        team: side.team,
+        opponent: side.opponent,
+        isHome: side.isHome,
+        redCards: side.redCards,
+        points:
+          managers.length > 0 ? side.redCards * ENGLISH_PYRAMID_FANTASY_SCORING.redCardPenalty : 0,
+        managers,
+        redsUnchecked: match.redsUnchecked === true ? true : undefined,
+      });
+    }
+  }
+
+  return awards;
+}
+
+export function describeAwardedRedCard(award: AwardedRedCard): string {
+  const redLabel = award.redCards === 1 ? '1 red' : `${award.redCards} reds`;
+  const venue = award.isHome ? `home vs ${award.opponent.name}` : `away at ${award.opponent.name}`;
+  return `${award.team.name}, ${redLabel} ${venue} (${award.homeGoals}-${award.awayGoals})`;
+}
+
+export function awardedRedCardTotals(awards: readonly AwardedRedCard[]): {
+  dismissals: number;
+  matches: number;
+  scoringPoints: number;
+} {
+  return {
+    dismissals: awards.reduce((sum, award) => sum + award.redCards, 0),
+    matches: new Set(awards.map((award) => award.matchId)).size,
+    scoringPoints: awards.reduce((sum, award) => sum + award.points, 0),
+  };
 }
 
 function fixtureTeamWithMeta(team: EnglishPyramidFixture['homeTeam']): UpcomingFixtureEntry['homeTeam'] {

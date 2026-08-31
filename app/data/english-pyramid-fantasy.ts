@@ -388,7 +388,7 @@ export const ENGLISH_PYRAMID_OFFICIAL_STATEMENT: EnglishPyramidOfficialStatement
     'The live view pulled dismissals from FotMob while the matches were in play. When Football Web Pages posted the full-time scores for National League North and South, the ledger write stored the goals and forced both red-card totals to 0. The live overlay then stopped touching finished rows, so the cards vanished from the board and from the points. ESPN can also drop its live red-card flag after full time. The same pattern would have bitten any later match.\n\n' +
     'Resolution\n\n' +
     'The four reds are back in the ledger. Sync now keeps the higher of Football Web Pages and FotMob and will not write a 0 over a dismissal FotMob already counted. The live page keeps the highest red-card total it has seen, including on finished same-day rows, and stores that floor so a later empty feed cannot wipe it. Standings follow that floor until the ledger is right.\n\n' +
-    'The Daily roast below is the usual matchday recap. This note is the official record of the error.',
+    'The Daily roast below is the usual matchday recap. This note is the official record of the error. Every red card recorded so far is listed at the bottom of this note.',
 };
 
 /**

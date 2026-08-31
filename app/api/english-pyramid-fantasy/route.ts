@@ -22,7 +22,9 @@ import {
 import {
   computeStandings,
   getMatchdaySchedule,
+  listAwardedRedCards,
   manualMatchToResult,
+  type AwardedRedCard,
   type MatchPointsEntry,
   type MatchdaySchedule,
   type PlayerStanding,
@@ -51,6 +53,8 @@ export type EnglishPyramidFantasyResponse = {
   scoring: typeof ENGLISH_PYRAMID_FANTASY_SCORING;
   dailyUpdate: string;
   officialStatement: typeof ENGLISH_PYRAMID_OFFICIAL_STATEMENT;
+  /** Every ledger dismissal, shown under the steward statement. */
+  redCardAwards: AwardedRedCard[];
   sweepstakeIntro: string;
   sweepstakeFairness: string;
   prizeFund: EnglishPyramidPrizeFundSnapshot;
@@ -128,6 +132,9 @@ export async function GET(request: NextRequest) {
     scoring: ENGLISH_PYRAMID_FANTASY_SCORING,
     dailyUpdate: ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE,
     officialStatement: publishedOfficialStatement(ENGLISH_PYRAMID_OFFICIAL_STATEMENT),
+    redCardAwards: squadsHidden
+      ? []
+      : listAwardedRedCards(matches, ENGLISH_PYRAMID_FANTASY_PLAYERS),
     sweepstakeIntro: ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
     sweepstakeFairness: ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
     prizeFund,

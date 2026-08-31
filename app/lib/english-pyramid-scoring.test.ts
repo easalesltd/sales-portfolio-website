@@ -15,7 +15,7 @@ import {
   getPreSeasonTablePlace,
   sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
-import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring, buildPlayerProgressSeries, buildPeriodProgress } from '@/app/lib/english-pyramid-scoring';
+import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring, buildPlayerProgressSeries, buildPeriodProgress, listAwardedRedCards, describeAwardedRedCard, awardedRedCardTotals } from '@/app/lib/english-pyramid-scoring';
 
 describe('english-pyramid draft fairness', () => {
   it('gives every manager two clubs from each draft division', () => {
@@ -356,3 +356,134 @@ describe('buildPeriodProgress', () => {
     expect(month?.rows.find((row) => row.playerId === 'scott')?.points).toBe(8);
   });
 });
+
+describe('english-pyramid awarded red-card ledger', () => {
+  const players = [
+    {
+      id: 'scott',
+      name: 'Scott',
+      managerImage: '/scott.png',
+      clubCrest: '/scott.png',
+      teams: ['DAR', 'OXC'],
+      draftNote: '',
+    },
+    {
+      id: 'ben',
+      name: 'Ben',
+      managerImage: '/ben.png',
+      clubCrest: '/ben.png',
+      teams: ['DAG'],
+      draftNote: '',
+    },
+  ] as const;
+
+  it('lists every dismissal, scores sweepstake clubs, and skips empty red totals', () => {
+    const awards = listAwardedRedCards(
+      [
+        manualMatchToResult({
+          id: '2026-08-31-rad-dar',
+          utcDate: '2026-08-31T14:00:00Z',
+          homeTeam: { name: 'Radcliffe', tla: 'RAD' },
+          awayTeam: { name: 'Darlington', tla: 'DAR' },
+          homeGoals: 0,
+          awayGoals: 1,
+          homeRedCards: 0,
+          awayRedCards: 1,
+        }),
+        manualMatchToResult({
+          id: '2026-08-08-bux-her',
+          utcDate: '2026-08-08T14:00:00Z',
+          homeTeam: { name: 'Buxton', tla: 'BUX' },
+          awayTeam: { name: 'Hereford', tla: 'HER' },
+          homeGoals: 2,
+          awayGoals: 1,
+          homeRedCards: 0,
+          awayRedCards: 2,
+          redsUnchecked: true,
+        }),
+        manualMatchToResult({
+          id: '2026-08-31-wsm-clm',
+          utcDate: '2026-08-31T14:00:00Z',
+          homeTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
+          awayTeam: { name: 'Chelmsford City', tla: 'CLM' },
+          homeGoals: 1,
+          awayGoals: 1,
+          homeRedCards: 0,
+          awayRedCards: 0,
+        }),
+      ],
+      players
+    );
+
+    expect(awards).toHaveLength(2);
+    expect(awards[0]).toMatchObject({
+      matchId: '2026-08-08-bux-her',
+      team: { tla: 'HER' },
+      isHome: false,
+      redCards: 2,
+      points: 0,
+      managers: [],
+      redsUnchecked: true,
+    });
+    expect(awards[1]).toMatchObject({
+      matchId: '2026-08-31-rad-dar',
+      team: { tla: 'DAR' },
+      isHome: false,
+      redCards: 1,
+      points: 1,
+      managers: [expect.objectContaining({ id: 'scott', name: 'Scott' })],
+    });
+    expect(describeAwardedRedCard(awards[1])).toBe(
+      'Darlington, 1 red away at Radcliffe (0-1)'
+    );
+    expect(describeAwardedRedCard(awards[0])).toBe(
+      'Hereford, 2 reds away at Buxton (2-1)'
+    );
+    expect(describeAwardedRedCard(awards[0])).not.toMatch(/[—–]/);
+    expect(awardedRedCardTotals(awards)).toEqual({
+      dismissals: 3,
+      matches: 2,
+      scoringPoints: 1,
+    });
+  });
+
+  it('includes every current ledger dismissal and the restored Bank Holiday reds', () => {
+    const awards = listAwardedRedCards(
+      ENGLISH_PYRAMID_MANUAL_MATCHES.map(manualMatchToResult),
+      ENGLISH_PYRAMID_FANTASY_PLAYERS
+    );
+    const ledgerReds = ENGLISH_PYRAMID_MANUAL_MATCHES.reduce(
+      (sum, match) => sum + (match.homeRedCards ?? 0) + (match.awayRedCards ?? 0),
+      0
+    );
+
+    expect(awards.length).toBeGreaterThan(0);
+    expect(awardedRedCardTotals(awards).dismissals).toBe(ledgerReds);
+    expect(awards.every((award) => award.redCards > 0)).toBe(true);
+
+    const byMatchTeam = new Map(
+      awards.map((award) => [`${award.matchId}:${award.team.tla}`, award] as const)
+    );
+    expect(byMatchTeam.get('2026-08-31-rad-dar:DAR')).toMatchObject({
+      redCards: 1,
+      points: 1,
+      managers: [expect.objectContaining({ id: 'scott' })],
+    });
+    expect(byMatchTeam.get('2026-08-31-wrk-oxc:OXC')).toMatchObject({
+      redCards: 1,
+      points: 1,
+      managers: [expect.objectContaining({ id: 'scott' })],
+    });
+    expect(byMatchTeam.get('2026-08-31-dag-slo:DAG')).toMatchObject({
+      redCards: 1,
+      points: 1,
+      managers: [expect.objectContaining({ id: 'ben' })],
+    });
+    expect(byMatchTeam.get('2026-08-31-mdh-aft:MDH')).toMatchObject({
+      redCards: 1,
+      points: 0,
+      managers: [],
+    });
+  });
+});
+

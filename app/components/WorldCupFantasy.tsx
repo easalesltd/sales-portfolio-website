@@ -9,6 +9,7 @@ import {
 } from '@/app/data/english-pyramid-fantasy';
 import type { EnglishPyramidFantasyResponse } from '@/app/api/english-pyramid-fantasy/route';
 import type {
+  AwardedRedCard,
   FixtureManager,
   MatchPointsEntry,
   MatchdayEntry,
@@ -37,6 +38,7 @@ import ManagerHeadToHead from './english-pyramid/ManagerHeadToHead';
 import TeamRedCardMarker from './english-pyramid/TeamRedCardMarker';
 import EnglishPyramidWeeklyShareButton from './english-pyramid/EnglishPyramidWeeklyShareButton';
 import ClassifiedRoastButton from './english-pyramid/ClassifiedRoastButton';
+import OfficialStatementRedCards from './english-pyramid/OfficialStatementRedCards';
 import PyramidMobileJumpNav from './english-pyramid/PyramidMobileJumpNav';
 import RedrawRevealExperience from './english-pyramid/RedrawRevealExperience';
 import RedrawCountdownBanner from './english-pyramid/RedrawCountdownBanner';
@@ -1342,8 +1344,10 @@ function progressLineColor(index: number, colors: readonly string[]): string {
 
 function OfficialStatementPanel({
   statement,
+  redCardAwards = [],
 }: {
   statement: EnglishPyramidOfficialStatement;
+  redCardAwards?: readonly AwardedRedCard[];
 }) {
   const issued = formatSweepstakeDate(statement.issuedAtUtc);
   const paragraphs = statement.body
@@ -1390,6 +1394,7 @@ function OfficialStatementPanel({
             );
           })}
         </div>
+        <OfficialStatementRedCards awards={redCardAwards} />
       </div>
     </section>
   );
@@ -2802,7 +2807,10 @@ function WorldCupFantasyView({
               />
 
               {t.id === 'english-pyramid' && data.officialStatement ? (
-                <OfficialStatementPanel statement={data.officialStatement} />
+                <OfficialStatementPanel
+                  statement={data.officialStatement}
+                  redCardAwards={data.redCardAwards}
+                />
               ) : null}
 
               <section className={t.c.roastSection}>

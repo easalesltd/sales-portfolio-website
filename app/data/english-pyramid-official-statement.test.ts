@@ -26,6 +26,7 @@ describe('vanished red cards official statement', () => {
     expect(statement.body).toContain('100');
     expect(statement.body).toMatch(/Investigation/);
     expect(statement.body).toMatch(/Resolution/);
+    expect(statement.body).toMatch(/every red card recorded so far/i);
     expect(statement.body).not.toMatch(/[—–]/);
   });
 
