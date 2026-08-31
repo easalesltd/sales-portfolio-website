@@ -69,17 +69,42 @@ async function resolveFinalResult(fixture, espnCache, fotMobCache) {
     try {
       const fwpMatch = await fetchFwpResultForFixture(fixture);
       if (fwpMatch) {
+        let redCards = {
+          homeRedCards: fwpMatch.homeRedCards,
+          awayRedCards: fwpMatch.awayRedCards,
+        };
+        let redsUnchecked = true;
+        let comment =
+          'Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked.';
+
+        try {
+          const fotMobMatch = await fetchFotMobResultForFixture(fixture, fotMobCache);
+          if (
+            fotMobMatch &&
+            fotMobMatch.homeGoals === fwpMatch.homeGoals &&
+            fotMobMatch.awayGoals === fwpMatch.awayGoals
+          ) {
+            redCards = {
+              homeRedCards: Math.max(redCards.homeRedCards, fotMobMatch.homeRedCards),
+              awayRedCards: Math.max(redCards.awayRedCards, fotMobMatch.awayRedCards),
+            };
+            redsUnchecked = false;
+            comment =
+              redCards.homeRedCards > 0 || redCards.awayRedCards > 0
+                ? 'Verified final score (Football Web Pages). Red cards from FotMob match details.'
+                : 'Verified final score (Football Web Pages + FotMob). No red cards.';
+          }
+        } catch {
+          // Keep the FWP score. Reds stay unchecked if FotMob is unavailable.
+        }
+
         return {
           status: 'ready',
           goals: { homeGoals: fwpMatch.homeGoals, awayGoals: fwpMatch.awayGoals },
-          redCards: {
-            homeRedCards: fwpMatch.homeRedCards,
-            awayRedCards: fwpMatch.awayRedCards,
-          },
-          redsUnchecked: true,
+          redCards,
+          redsUnchecked,
           label: `FWP ${fwpMatch.period}`,
-          comment:
-            'Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked.',
+          comment,
         };
       }
     } catch (error) {

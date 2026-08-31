@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Darlington won 1-0 at Radcliffe. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Oxford City won 1-0 at Worksop Town. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Weston-super-Mare drew 1-1 with Chelmsford City. Plus 1 for the draw, net plus 1. Then Kidderminster Harriers drew 1-1 with Barrow. Plus 1 for the draw, net plus 1. Then Boreham Wood won 3-2 at Worthing. Plus 4 for the away win, plus 1 for three or more, net plus 5. Scott is on 127.\n\nChris\'s Chester FC lost 1-0 at home to Morecambe. No win points, net zero. Then Maidstone United won 4-1 at Hampton & Richmond Borough. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Hednesford Town drew 1-1 with Spennymoor Town. Plus 1 for the draw, net plus 1. Then Tonbridge Angels beat Walton & Hersham 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Aldershot Town drew 1-1 with Eastleigh. Plus 1 for the draw, net plus 1. Then Forest Green lost 2-1 at home to Altrincham. No win points, net zero. Chris is on 117.\n\nNest\'s Buxton beat Merthyr Town 2-1 at home. Plus 3 for the home win, net plus 3. Then Chesham United drew 2-2 with Dover Athletic. Plus 1 for the draw, net plus 1. Then Farnham Town beat Torquay United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Harborough Town beat Marine 2-1 at home. Plus 3 for the home win, net plus 3. Then Hornchurch won 3-2 at Boston United. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Southend United drew 1-1 with Woking. Plus 1 for the draw, net plus 1. Nest is on 100.\n\nBen\'s Morecambe won 1-0 at Chester FC. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Dover Athletic drew 2-2 with Chesham United. Plus 1 for the draw, net plus 1. Then Dagenham & Redbridge beat Slough Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Hebburn Town lost 3-0 at Macclesfield. No win points, minus 1 for leaking three, net minus 1. Then Barrow drew 1-1 with Kidderminster Harriers. Plus 1 for the draw, net plus 1. Then Tamworth lost 3-2 at Yeovil Town. No win points, minus 1 for leaking three, net minus 1. Ben is on 99.\n\nJon\'s Macclesfield beat Hebburn Town 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Then Salisbury beat Billericay Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Bedford Town won 1-0 at AFC Telford United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Altrincham won 2-1 at Forest Green. Plus 4 for the away win, net plus 4. Jon is on 89.\n\nAsh\'s AFC Totton drew 1-1 with Maidenhead United. Plus 1 for the draw, net plus 1. Then South Shields drew 1-1 with Spalding United. Plus 1 for the draw, net plus 1. Then Spalding United drew 1-1 with South Shields. Plus 1 for the draw, net plus 1. Then Chelmsford City drew 1-1 with Weston-super-Mare. Plus 1 for the draw, net plus 1. Then Carlisle United beat Scunthorpe United 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Wealdstone won 2-0 at Sutton United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Ash is on 87.\n\nDave\'s Torquay United lost 2-0 at Farnham Town. No win points, net zero. Then Marine lost 2-1 at Harborough Town. No win points, net zero. Then Walton & Hersham lost 5-1 at Tonbridge Angels. No win points, minus 1 for leaking three, net minus 1. Then Worksop Town lost 1-0 at home to Oxford City. No win points, net zero. Then Scunthorpe United lost 4-2 at Carlisle United. No win points, minus 1 for leaking three, net minus 1. Then Sutton United lost 2-0 at home to Wealdstone. No win points, plus 1 for the red, net plus 1. Dave is on 77.\n\nTable: Scott 127, Chris 117, Nest 100, Ben 99, Jon 89, Ash 87, Dave 77.';
+  'Scott\'s Darlington won 1-0 at Radcliffe. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for the red, net plus 6. Then Oxford City won 1-0 at Worksop Town. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for the red, net plus 6. Then Weston-super-Mare drew 1-1 with Chelmsford City. Plus 1 for the draw, net plus 1. Then Kidderminster Harriers drew 1-1 with Barrow. Plus 1 for the draw, net plus 1. Then Boreham Wood won 3-2 at Worthing. Plus 4 for the away win, plus 1 for three or more, net plus 5. Scott is on 129.\n\nChris\'s Chester FC lost 1-0 at home to Morecambe. No win points, net zero. Then Maidstone United won 4-1 at Hampton & Richmond Borough. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Hednesford Town drew 1-1 with Spennymoor Town. Plus 1 for the draw, net plus 1. Then Tonbridge Angels beat Walton & Hersham 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Aldershot Town drew 1-1 with Eastleigh. Plus 1 for the draw, net plus 1. Then Forest Green lost 2-1 at home to Altrincham. No win points, net zero. Chris is on 117.\n\nNest\'s Buxton beat Merthyr Town 2-1 at home. Plus 3 for the home win, net plus 3. Then Chesham United drew 2-2 with Dover Athletic. Plus 1 for the draw, net plus 1. Then Farnham Town beat Torquay United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Harborough Town beat Marine 2-1 at home. Plus 3 for the home win, net plus 3. Then Hornchurch won 3-2 at Boston United. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Southend United drew 1-1 with Woking. Plus 1 for the draw, net plus 1. Nest is on 100.\n\nBen\'s Morecambe won 1-0 at Chester FC. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Dover Athletic drew 2-2 with Chesham United. Plus 1 for the draw, net plus 1. Then Dagenham & Redbridge beat Slough Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for the red, net plus 5. Then Hebburn Town lost 3-0 at Macclesfield. No win points, minus 1 for leaking three, net minus 1. Then Barrow drew 1-1 with Kidderminster Harriers. Plus 1 for the draw, net plus 1. Then Tamworth lost 3-2 at Yeovil Town. No win points, minus 1 for leaking three, net minus 1. Ben is on 100.\n\nJon\'s Macclesfield beat Hebburn Town 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Then Salisbury beat Billericay Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Bedford Town won 1-0 at AFC Telford United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Altrincham won 2-1 at Forest Green. Plus 4 for the away win, net plus 4. Jon is on 89.\n\nAsh\'s AFC Totton drew 1-1 with Maidenhead United. Plus 1 for the draw, net plus 1. Then South Shields drew 1-1 with Spalding United. Plus 1 for the draw, net plus 1. Then Spalding United drew 1-1 with South Shields. Plus 1 for the draw, net plus 1. Then Chelmsford City drew 1-1 with Weston-super-Mare. Plus 1 for the draw, net plus 1. Then Carlisle United beat Scunthorpe United 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Wealdstone won 2-0 at Sutton United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Ash is on 87.\n\nDave\'s Torquay United lost 2-0 at Farnham Town. No win points, net zero. Then Marine lost 2-1 at Harborough Town. No win points, net zero. Then Walton & Hersham lost 5-1 at Tonbridge Angels. No win points, minus 1 for leaking three, net minus 1. Then Worksop Town lost 1-0 at home to Oxford City. No win points, net zero. Then Scunthorpe United lost 4-2 at Carlisle United. No win points, minus 1 for leaking three, net minus 1. Then Sutton United lost 2-0 at home to Wealdstone. No win points, plus 1 for the red, net plus 1. Dave is on 77.\n\nTable: Scott 129, Chris 117, Nest 100, Ben 100, Jon 89, Ash 87, Dave 77.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -374,21 +374,20 @@ export function publishedOfficialStatement(
 
 /** Public steward note. Set to null when there is nothing to publish. */
 export const ENGLISH_PYRAMID_OFFICIAL_STATEMENT: EnglishPyramidOfficialStatement | null = {
-  headline: 'Official statement: Horsham vs Farnham Town',
-  issuedAtUtc: '2026-08-29T16:05:00Z',
-  /** Monday 31 Aug 2026, 00:00 Europe/London (BST). */
-  expiresAtUtc: '2026-08-30T23:00:00Z',
+  headline: 'Official statement: vanished red cards',
+  issuedAtUtc: '2026-08-31T16:45:00Z',
+  /** Tuesday 1 Sep 2026, 00:00 Europe/London (BST). */
+  expiresAtUtc: '2026-08-31T23:00:00Z',
   imageUrl: '/images/english-pyramid-fantasy/steward-statement.jpg',
   imageAlt: 'The league stewards issue a formal apology with their family on the driveway',
   body:
     'We owe the league an apology.\n\n' +
-    'This afternoon the board listed Horsham vs Farnham Town as postponed. That was wrong. The National League South match kicked off at 15:00 UK as scheduled and finished Horsham 1-2 Farnham Town. There were no red cards. Nest\'s Farnham Town take plus 4 for the away win. Scott\'s Horsham take nothing. Scott remains on 100. Nest moves to 72.\n\n' +
-    'We are sorry to Scott, Nest, and everyone watching the page during the game. A false postponement hid the score while the match was live and after full time.\n\n' +
+    'This afternoon the live board showed red cards, then full time wiped them. That was wrong. Four Bank Holiday dismissals were real. Scott\'s Darlington were sent off in the 1-0 win at Radcliffe and take plus 6 (away win, clean sheet, red). Scott\'s Oxford City were sent off in the 1-0 win at Worksop Town and take plus 6 the same way. Ben\'s Dagenham & Redbridge were sent off in the 1-0 home win over Slough Town and take plus 5 (home win, clean sheet, red). Maidenhead United were sent off in the 1-1 with Ash\'s AFC Totton. Totton\'s draw still counts plus 1. The missing card was Maidenhead\'s, not Totton\'s. Scott is on 129. Ben is on 100.\n\n' +
+    'We are sorry to Scott, Ben, Ash, and everyone watching the page during the games. A live red should still be there when the referee blows.\n\n' +
     'Investigation\n\n' +
-    'On Friday night, 28 August, the automated schedule job marked the fixture postponed after FotMob treated it as cancelled. That write only ever added a postponement. It never cleared one. The fixture refresh then kept the local flag whenever the pairing was still on the same day. The live score feed only updated in-play rows, so a Postponed label never picked up the 1-2.\n\n' +
-    'The same Friday job correctly recorded genuine Ebbsfleet postponements, including Farnborough vs Ebbsfleet today and Ebbsfleet vs Horsham on Monday. Those still stand. Horsham vs Farnham was not one of them.\n\n' +
+    'The live view pulled dismissals from FotMob while the matches were in play. When Football Web Pages posted the full-time scores for National League North and South, the ledger write stored the goals and forced both red-card totals to 0. The live overlay then stopped touching finished rows, so the cards vanished from the board and from the points. ESPN can also drop its live red-card flag after full time. The same pattern would have bitten any later match.\n\n' +
     'Resolution\n\n' +
-    'The false flag is gone. The 1-2 is in the ledger. Sync now un-postpones a match when FotMob or ESPN still list it as going ahead. A cancelled listing from a different London day cannot postpone Saturday\'s fixture. Fetch merge trusts the live same-day listing. Validation fails if the repo says postponed and the source still has the game on. The page will also show a live or full-time score even if a stale postponement is sitting in the data.\n\n' +
+    'The four reds are back in the ledger. Sync now keeps the higher of Football Web Pages and FotMob and will not write a 0 over a dismissal FotMob already counted. The live page keeps the highest red-card total it has seen, including on finished same-day rows, and stores that floor so a later empty feed cannot wipe it. Standings follow that floor until the ledger is right.\n\n' +
     'The Daily roast below is the usual matchday recap. This note is the official record of the error.',
 };
 
@@ -3477,16 +3476,15 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     redsUnchecked: true,
   },
   {
-    /** Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked. */
+    /** Verified final score (Football Web Pages). Red cards from FotMob match details. */
     id: '2026-08-31-dag-slo',
     utcDate: '2026-08-31T14:00:00Z',
     homeTeam: { name: 'Dagenham & Redbridge', tla: 'DAG' },
     awayTeam: { name: 'Slough Town', tla: 'SLO' },
     homeGoals: 1,
     awayGoals: 0,
-    homeRedCards: 0,
+    homeRedCards: 1,
     awayRedCards: 0,
-    redsUnchecked: true,
   },
   {
     /** Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked. */
@@ -3537,19 +3535,18 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     redsUnchecked: true,
   },
   {
-    /** Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked. */
+    /** Verified final score (Football Web Pages). Red cards from FotMob match details. */
     id: '2026-08-31-mdh-aft',
     utcDate: '2026-08-31T14:00:00Z',
     homeTeam: { name: 'Maidenhead United', tla: 'MDH' },
     awayTeam: { name: 'AFC Totton', tla: 'AFT' },
     homeGoals: 1,
     awayGoals: 1,
-    homeRedCards: 0,
+    homeRedCards: 1,
     awayRedCards: 0,
-    redsUnchecked: true,
   },
   {
-    /** Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked. */
+    /** Verified final score (Football Web Pages). Red cards from FotMob match details. */
     id: '2026-08-31-rad-dar',
     utcDate: '2026-08-31T14:00:00Z',
     homeTeam: { name: 'Radcliffe', tla: 'RAD' },
@@ -3557,8 +3554,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeGoals: 0,
     awayGoals: 1,
     homeRedCards: 0,
-    awayRedCards: 0,
-    redsUnchecked: true,
+    awayRedCards: 1,
   },
   {
     /** Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked. */
@@ -3621,7 +3617,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     redsUnchecked: true,
   },
   {
-    /** Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked. */
+    /** Verified final score (Football Web Pages). Red cards from FotMob match details. */
     id: '2026-08-31-wrk-oxc',
     utcDate: '2026-08-31T14:00:00Z',
     homeTeam: { name: 'Worksop Town', tla: 'WRK' },
@@ -3629,8 +3625,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeGoals: 0,
     awayGoals: 1,
     homeRedCards: 0,
-    awayRedCards: 0,
-    redsUnchecked: true,
+    awayRedCards: 1,
   },
   {
     /** Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked. */

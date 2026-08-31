@@ -11,7 +11,10 @@ import {
   ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
   ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
 } from '@/app/data/english-pyramid-fantasy';
-import { enrichMatchdayScheduleWithLiveScores } from '@/app/lib/english-pyramid-live-scores';
+import {
+  applyRedCardFloorsToRecordedMatches,
+  enrichMatchdayScheduleWithLiveScores,
+} from '@/app/lib/english-pyramid-live-scores';
 import {
   resolveEnglishPyramidPrizeFund,
   type EnglishPyramidPrizeFundSnapshot,
@@ -93,7 +96,7 @@ export async function GET(request: NextRequest) {
     resolveEnglishPyramidPrizeFund(),
   ]);
   const matches = [
-    ...recordedMatches,
+    ...applyRedCardFloorsToRecordedMatches(recordedMatches, matchdaySchedule),
     ...provisionalMatches.filter((match) => !recordedMatchIds.has(match.id)),
   ];
   const { standings, allScoringMatches, recentScoringMatches } = computeStandings(

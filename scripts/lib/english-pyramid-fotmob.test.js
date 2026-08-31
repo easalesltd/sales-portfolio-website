@@ -92,4 +92,34 @@ describe('english-pyramid-fotmob', () => {
       awayRedCards: 0,
     });
   });
+
+  it('keeps match-event reds when the finished status total has dropped to 0', () => {
+    expect(
+      parseFotMobFinal(
+        {
+          home: { score: 0 },
+          away: { score: 1 },
+          status: { finished: true, numberOfHomeRedCards: 0, numberOfAwayRedCards: 0 },
+        },
+        {
+          header: {
+            status: { finished: true, numberOfHomeRedCards: 0, numberOfAwayRedCards: 0 },
+            teams: [{ score: 0 }, { score: 1 }],
+          },
+          content: {
+            matchFacts: {
+              events: {
+                events: [{ type: 'Card', card: 'Red', isHome: false }],
+              },
+            },
+          },
+        },
+      ),
+    ).toEqual({
+      homeGoals: 0,
+      awayGoals: 1,
+      homeRedCards: 0,
+      awayRedCards: 1,
+    });
+  });
 });

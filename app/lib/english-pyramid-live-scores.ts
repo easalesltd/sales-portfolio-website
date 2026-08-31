@@ -5,7 +5,10 @@ import type {
   MatchdaySchedule,
 } from '@/app/lib/english-pyramid-scoring';
 import { gameLeaderboardRedis } from '@/app/lib/game-leaderboard-redis';
-import { countRedCardsFromEspnCompetition } from '@/app/lib/espn-red-cards';
+import {
+  countRedCardsFromEspnCompetition,
+  type EspnRedCardCounts,
+} from '@/app/lib/espn-red-cards';
 import { isEspnFullTimePeriod } from '@/app/lib/world-cup-espn-finals';
 import {
   fetchFwpLiveEventsForInPlayEntries,
@@ -116,7 +119,16 @@ const ESPN_OPPONENT_ABBREV_COLLISION: Record<string, Record<string, string>> = {
 };
 
 const REDIS_CACHE_KEY_PREFIX = 'english-pyramid:espn-scoreboard:v1';
+const REDIS_RED_FLOOR_PREFIX = 'english-pyramid:red-card-floor:v1';
 const CACHE_TTL_SECONDS = 90;
+/** Keep a seen dismissal after ESPN/FotMob drop it from the FT payload. */
+const RED_CARD_FLOOR_TTL_SECONDS = 48 * 60 * 60;
+/** Re-apply live reds onto recently finished ledger rows. */
+const RECENT_FINISHED_OVERLAY_MS = 36 * 60 * 60 * 1000;
+
+type MemoryRedCardFloor = EspnRedCardCounts & { savedAtMs: number };
+
+const memoryRedCardFloors = new Map<string, MemoryRedCardFloor>();
 
 type MemoryScoreboardCache = {
   events: EspnScoreboardEvent[];
@@ -374,6 +386,116 @@ function provisionalMatchFromFinishedEntry(
   };
 }
 
+export function mergeRedCardCounts(
+  current: { homeRedCards?: number; awayRedCards?: number } | null | undefined,
+  incoming: { homeRedCards?: number; awayRedCards?: number } | null | undefined
+): EspnRedCardCounts {
+  return {
+    homeRedCards: Math.max(current?.homeRedCards ?? 0, incoming?.homeRedCards ?? 0),
+    awayRedCards: Math.max(current?.awayRedCards ?? 0, incoming?.awayRedCards ?? 0),
+  };
+}
+
+export function isRecentLiveScoreCandidate(
+  entry: Pick<MatchdayEntry, 'status' | 'utcDate'>,
+  nowMs = Date.now()
+): boolean {
+  if (entry.status === 'in-play' || entry.status === 'postponed') return true;
+  if (entry.status !== 'finished') return false;
+  const kickoffMs = Date.parse(entry.utcDate);
+  if (!Number.isFinite(kickoffMs)) return false;
+  return nowMs - kickoffMs < RECENT_FINISHED_OVERLAY_MS && kickoffMs <= nowMs + 5 * 60 * 1000;
+}
+
+export function applyRedCardFloorsToRecordedMatches(
+  recorded: readonly EnglishPyramidMatchResult[],
+  schedule: MatchdaySchedule
+): EnglishPyramidMatchResult[] {
+  const byId = new Map(
+    Object.values(schedule.schedulesByDate)
+      .flat()
+      .map((entry) => [entry.id, entry] as const)
+  );
+
+  return recorded.map((match) => {
+    const row = byId.get(match.id);
+    if (!row) return match;
+    const reds = mergeRedCardCounts(match, row);
+    if (
+      reds.homeRedCards === (match.homeRedCards ?? 0) &&
+      reds.awayRedCards === (match.awayRedCards ?? 0)
+    ) {
+      return match;
+    }
+    return { ...match, ...reds };
+  });
+}
+
+function redCardFloorKey(id: string): string {
+  return `${REDIS_RED_FLOOR_PREFIX}:${id}`;
+}
+
+async function loadRedCardFloors(ids: readonly string[]): Promise<Map<string, EspnRedCardCounts>> {
+  const floors = new Map<string, EspnRedCardCounts>();
+  const nowMs = Date.now();
+
+  for (const id of ids) {
+    const cached = memoryRedCardFloors.get(id);
+    if (!cached || nowMs - cached.savedAtMs >= RED_CARD_FLOOR_TTL_SECONDS * 1000) continue;
+    floors.set(id, { homeRedCards: cached.homeRedCards, awayRedCards: cached.awayRedCards });
+  }
+
+  const redis = gameLeaderboardRedis();
+  if (!redis) return floors;
+
+  const missing = ids.filter((id) => !floors.has(id));
+  if (missing.length === 0) return floors;
+
+  try {
+    const values = await Promise.all(
+      missing.map((id) => redis.get<EspnRedCardCounts>(redCardFloorKey(id)))
+    );
+    missing.forEach((id, index) => {
+      const value = values[index];
+      if (!value || typeof value.homeRedCards !== 'number' || typeof value.awayRedCards !== 'number') {
+        return;
+      }
+      floors.set(id, {
+        homeRedCards: value.homeRedCards,
+        awayRedCards: value.awayRedCards,
+      });
+    });
+  } catch {
+    // Floors are optional; live feeds still apply for this request.
+  }
+
+  return floors;
+}
+
+async function saveRedCardFloors(floors: ReadonlyMap<string, EspnRedCardCounts>): Promise<void> {
+  const nowMs = Date.now();
+  const persisted = new Map<string, EspnRedCardCounts>();
+  for (const [id, reds] of floors) {
+    if (reds.homeRedCards <= 0 && reds.awayRedCards <= 0) continue;
+    const next = mergeRedCardCounts(memoryRedCardFloors.get(id), reds);
+    memoryRedCardFloors.set(id, { ...next, savedAtMs: nowMs });
+    persisted.set(id, next);
+  }
+
+  const redis = gameLeaderboardRedis();
+  if (!redis || persisted.size === 0) return;
+
+  try {
+    await Promise.all(
+      [...persisted.entries()].map(([id, reds]) =>
+        redis.set(redCardFloorKey(id), reds, { ex: RED_CARD_FLOOR_TTL_SECONDS })
+      )
+    );
+  } catch {
+    // Optional cache.
+  }
+}
+
 export function matchLiveScoreForFixture(
   fixture: Pick<MatchdayEntry, 'homeTeam' | 'awayTeam'>,
   events: readonly EspnScoreboardEvent[]
@@ -433,17 +555,40 @@ export function mergeLiveScoreEvents(
 
 export function applyLiveScoresToSchedule(
   schedule: MatchdaySchedule,
-  events: readonly EspnScoreboardEvent[]
+  events: readonly EspnScoreboardEvent[],
+  options: { redCardFloors?: ReadonlyMap<string, EspnRedCardCounts> } = {}
 ): LiveScoresEnrichment {
   const schedulesByDate: Record<string, MatchdayEntry[]> = {};
   const provisionalMatches: EnglishPyramidMatchResult[] = [];
 
   for (const [date, entries] of Object.entries(schedule.schedulesByDate)) {
     schedulesByDate[date] = entries.map((entry) => {
-      if (entry.status !== 'in-play' && entry.status !== 'postponed') return entry;
-
       const live = matchLiveScoreForFixture(entry, events);
-      if (!live) return entry;
+      const reds = mergeRedCardCounts(
+        mergeRedCardCounts(entry, live),
+        options.redCardFloors?.get(entry.id)
+      );
+
+      if (entry.status === 'finished') {
+        if (
+          reds.homeRedCards === (entry.homeRedCards ?? 0) &&
+          reds.awayRedCards === (entry.awayRedCards ?? 0)
+        ) {
+          return entry;
+        }
+        return { ...entry, ...reds };
+      }
+
+      if (entry.status !== 'in-play' && entry.status !== 'postponed') return entry;
+      if (!live) {
+        if (
+          reds.homeRedCards === (entry.homeRedCards ?? 0) &&
+          reds.awayRedCards === (entry.awayRedCards ?? 0)
+        ) {
+          return entry;
+        }
+        return { ...entry, ...reds };
+      }
 
       if (live.postponed) {
         return {
@@ -459,16 +604,10 @@ export function applyLiveScoresToSchedule(
           status: 'finished',
           homeGoals: live.homeGoals,
           awayGoals: live.awayGoals,
-          homeRedCards: live.homeRedCards,
-          awayRedCards: live.awayRedCards,
+          ...reds,
           livePeriod: undefined,
         };
-        provisionalMatches.push(
-          provisionalMatchFromFinishedEntry(finishedEntry, {
-            homeRedCards: live.homeRedCards,
-            awayRedCards: live.awayRedCards,
-          })
-        );
+        provisionalMatches.push(provisionalMatchFromFinishedEntry(finishedEntry, reds));
         return finishedEntry;
       }
 
@@ -478,8 +617,7 @@ export function applyLiveScoresToSchedule(
         liveHomeGoals: live.homeGoals,
         liveAwayGoals: live.awayGoals,
         livePeriod: live.period,
-        homeRedCards: live.homeRedCards,
-        awayRedCards: live.awayRedCards,
+        ...reds,
       };
     });
   }
@@ -503,29 +641,40 @@ async function getCachedScoreboardEventsForKeys(
 }
 
 export async function enrichMatchdayScheduleWithLiveScores(
-  schedule: MatchdaySchedule
+  schedule: MatchdaySchedule,
+  nowMs = Date.now()
 ): Promise<LiveScoresEnrichment> {
   const liveCandidateEntries = Object.values(schedule.schedulesByDate)
     .flat()
-    .filter((entry) => entry.status === 'in-play' || entry.status === 'postponed');
+    .filter((entry) => isRecentLiveScoreCandidate(entry, nowMs));
 
   if (liveCandidateEntries.length === 0) {
     return { schedule, provisionalMatches: [] };
   }
 
   const fetchKeys = scoreboardFetchKeysForInPlayEntries(liveCandidateEntries);
-  const [espnEvents, fwpEvents, fotMobEvents] = await Promise.all([
+  const [espnEvents, fwpEvents, fotMobEvents, redCardFloors] = await Promise.all([
     fetchKeys.length > 0
       ? getCachedScoreboardEventsForKeys(fetchKeys).catch(() => [] as EspnScoreboardEvent[])
       : Promise.resolve([] as EspnScoreboardEvent[]),
     fetchFwpLiveEventsForInPlayEntries(liveCandidateEntries).catch(() => []),
     fetchFotMobLiveEventsForInPlayEntries(liveCandidateEntries).catch(() => []),
+    loadRedCardFloors(liveCandidateEntries.map((entry) => entry.id)),
   ]);
 
   const events = mergeLiveScoreEvents([...espnEvents, ...fwpEvents], fotMobEvents);
-  if (events.length === 0) {
+  if (events.length === 0 && redCardFloors.size === 0) {
     return { schedule, provisionalMatches: [] };
   }
 
-  return applyLiveScoresToSchedule(schedule, events);
+  const enrichment = applyLiveScoresToSchedule(schedule, events, { redCardFloors });
+  const nextFloors = new Map(redCardFloors);
+  for (const entry of Object.values(enrichment.schedule.schedulesByDate).flat()) {
+    const reds = mergeRedCardCounts(nextFloors.get(entry.id), entry);
+    if (reds.homeRedCards > 0 || reds.awayRedCards > 0) {
+      nextFloors.set(entry.id, reds);
+    }
+  }
+  await saveRedCardFloors(nextFloors);
+  return enrichment;
 }

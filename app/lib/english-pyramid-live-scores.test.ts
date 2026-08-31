@@ -326,4 +326,93 @@ describe('english-pyramid-live-scores', () => {
       }),
     ]);
   });
+
+  it('never drops a live red once the fixture is recorded as finished', () => {
+    const schedule: MatchdaySchedule = {
+      defaultDate: '2026-08-31',
+      fixtureDates: ['2026-08-31'],
+      schedulesByDate: {
+        '2026-08-31': [
+          {
+            id: '2026-08-31-wrk-oxc',
+            utcDate: '2026-08-31T14:00:00Z',
+            status: 'finished',
+            homeGoals: 0,
+            awayGoals: 1,
+            homeRedCards: 0,
+            awayRedCards: 0,
+            homeTeam: { name: 'Worksop Town', tla: 'WRK', flag: 'NLN' },
+            awayTeam: { name: 'Oxford City', tla: 'OXC', flag: 'NLN' },
+            homeManagers: [],
+            awayManagers: [],
+          },
+        ],
+      },
+    };
+
+    const { schedule: enriched, provisionalMatches } = applyLiveScoresToSchedule(schedule, [
+      {
+        homeTla: 'WRK',
+        awayTla: 'OXC',
+        homeGoals: 0,
+        awayGoals: 1,
+        period: 'FT',
+        homeRedCards: 0,
+        awayRedCards: 1,
+      },
+    ]);
+
+    expect(enriched.schedulesByDate['2026-08-31'][0]).toMatchObject({
+      status: 'finished',
+      homeGoals: 0,
+      awayGoals: 1,
+      homeRedCards: 0,
+      awayRedCards: 1,
+    });
+    expect(provisionalMatches).toEqual([]);
+  });
+
+  it('keeps a stored red-card floor when the live feed later reports zero', () => {
+    const schedule: MatchdaySchedule = {
+      defaultDate: '2026-08-31',
+      fixtureDates: ['2026-08-31'],
+      schedulesByDate: {
+        '2026-08-31': [
+          {
+            id: '2026-08-31-dag-slo',
+            utcDate: '2026-08-31T14:00:00Z',
+            status: 'in-play',
+            homeTeam: { name: 'Dagenham & Redbridge', tla: 'DAG', flag: 'NLS' },
+            awayTeam: { name: 'Slough Town', tla: 'SLO', flag: 'NLS' },
+            homeManagers: [],
+            awayManagers: [],
+          },
+        ],
+      },
+    };
+
+    const { schedule: enriched } = applyLiveScoresToSchedule(
+      schedule,
+      [
+        {
+          homeTla: 'DAG',
+          awayTla: 'SLO',
+          homeGoals: 1,
+          awayGoals: 0,
+          period: 'FT',
+          homeRedCards: 0,
+          awayRedCards: 0,
+        },
+      ],
+      {
+        redCardFloors: new Map([['2026-08-31-dag-slo', { homeRedCards: 1, awayRedCards: 0 }]]),
+      }
+    );
+
+    expect(enriched.schedulesByDate['2026-08-31'][0]).toMatchObject({
+      status: 'finished',
+      homeRedCards: 1,
+      awayRedCards: 0,
+    });
+  });
 });

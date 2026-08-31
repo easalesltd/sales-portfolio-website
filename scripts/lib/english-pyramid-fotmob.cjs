@@ -101,10 +101,14 @@ function parseFotMobFinal(match, detail) {
   if (homeScore == null || awayScore == null) return null;
 
   const eventCounts = eventRedCardCounts(detail);
-  const homeRedCards =
-    parseScore(status.numberOfHomeRedCards) ?? eventCounts.homeRedCards;
-  const awayRedCards =
-    parseScore(status.numberOfAwayRedCards) ?? eventCounts.awayRedCards;
+  const homeRedCards = Math.max(
+    parseScore(status.numberOfHomeRedCards) ?? 0,
+    eventCounts.homeRedCards,
+  );
+  const awayRedCards = Math.max(
+    parseScore(status.numberOfAwayRedCards) ?? 0,
+    eventCounts.awayRedCards,
+  );
 
   return { homeGoals: homeScore, awayGoals: awayScore, homeRedCards, awayRedCards };
 }
