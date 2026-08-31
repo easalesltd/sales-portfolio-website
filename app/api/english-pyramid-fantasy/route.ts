@@ -24,6 +24,7 @@ import {
   getMatchdaySchedule,
   listAwardedRedCards,
   manualMatchToResult,
+  withRedCardAudit,
   type AwardedRedCard,
   type MatchPointsEntry,
   type MatchdaySchedule,
@@ -126,15 +127,20 @@ export async function GET(request: NextRequest) {
   const rehearsalUnlock =
     rehearsalAllowed && request.nextUrl.searchParams.get('rehearsal') === '1';
 
+  const redCardAwards = squadsHidden
+    ? []
+    : listAwardedRedCards(matches, ENGLISH_PYRAMID_FANTASY_PLAYERS);
+  const publishedStatement = publishedOfficialStatement(ENGLISH_PYRAMID_OFFICIAL_STATEMENT);
+
   const body: EnglishPyramidFantasyResponse = {
     ok: true,
     title: 'English Pyramid Sweepstake 2026/27',
     scoring: ENGLISH_PYRAMID_FANTASY_SCORING,
     dailyUpdate: ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE,
-    officialStatement: publishedOfficialStatement(ENGLISH_PYRAMID_OFFICIAL_STATEMENT),
-    redCardAwards: squadsHidden
-      ? []
-      : listAwardedRedCards(matches, ENGLISH_PYRAMID_FANTASY_PLAYERS),
+    officialStatement: publishedStatement
+      ? { ...publishedStatement, body: withRedCardAudit(publishedStatement.body, redCardAwards) }
+      : null,
+    redCardAwards,
     sweepstakeIntro: ENGLISH_PYRAMID_SWEEPSTAKE_INTRO,
     sweepstakeFairness: ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS,
     prizeFund,

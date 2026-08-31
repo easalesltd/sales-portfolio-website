@@ -497,6 +497,45 @@ export function awardedRedCardTotals(awards: readonly AwardedRedCard[]): {
   };
 }
 
+export const RED_CARD_AUDIT_HEADING = 'Red card audit';
+
+export function formatRedCardAuditBody(awards: readonly AwardedRedCard[]): string {
+  if (awards.length === 0) return '';
+  const totals = awardedRedCardTotals(awards);
+  const dismissalLabel = totals.dismissals === 1 ? '1 dismissal' : `${totals.dismissals} dismissals`;
+  const matchLabel = totals.matches === 1 ? '1 match' : `${totals.matches} matches`;
+  const pointLabel = totals.scoringPoints === 1 ? '1 point' : `${totals.scoringPoints} points`;
+  const lines: string[] = [
+    RED_CARD_AUDIT_HEADING,
+    '',
+    `${dismissalLabel} in ${matchLabel}. Sweepstake clubs have ${pointLabel} from reds. Sweepstake clubs score plus 1 each. Clubs with no manager do not score. Unverified lower-league reds are marked.`,
+  ];
+
+  let lastDay = '';
+  for (const award of awards) {
+    const day = formatSweepstakeWeekdayDate(award.utcDate);
+    if (day !== lastDay) {
+      lines.push('', day);
+      lastDay = day;
+    }
+    const manager = award.managers[0]?.name ?? 'No manager';
+    const points = award.points > 0 ? `Plus ${award.points}` : 'Does not score';
+    const unchecked = award.redsUnchecked ? ' Reds unchecked.' : '';
+    lines.push(`${describeAwardedRedCard(award)}. ${manager}. ${points}.${unchecked}`);
+  }
+
+  return lines.join('\n');
+}
+
+export function withRedCardAudit(body: string, awards: readonly AwardedRedCard[]): string {
+  const stripped = body
+    .replace(new RegExp(`\\n*${RED_CARD_AUDIT_HEADING}\\n[\\s\\S]*$`), '')
+    .trimEnd();
+  const audit = formatRedCardAuditBody(awards);
+  if (!audit) return stripped;
+  return `${stripped}\n\n${audit}`;
+}
+
 function fixtureTeamWithMeta(team: EnglishPyramidFixture['homeTeam']): UpcomingFixtureEntry['homeTeam'] {
   const meta = ENGLISH_PYRAMID_TEAM_BY_CODE[team.tla];
   return {

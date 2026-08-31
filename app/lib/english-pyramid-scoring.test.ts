@@ -6,6 +6,7 @@ import {
   ENGLISH_PYRAMID_FANTASY_PLAYERS,
   ENGLISH_PYRAMID_FIXTURES,
   ENGLISH_PYRAMID_MANUAL_MATCHES,
+  ENGLISH_PYRAMID_OFFICIAL_STATEMENT,
   ENGLISH_PYRAMID_TEAM_BY_CODE,
   formatPreSeasonTablePlace,
   formatTeamNameWithSeed,
@@ -15,7 +16,7 @@ import {
   getPreSeasonTablePlace,
   sortTeamCodesByDraftDivision,
 } from '@/app/data/english-pyramid-fantasy';
-import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring, buildPlayerProgressSeries, buildPeriodProgress, listAwardedRedCards, describeAwardedRedCard, awardedRedCardTotals } from '@/app/lib/english-pyramid-scoring';
+import { getMatchdaySchedule, manualMatchToResult, scoreTeamMatch, explainTeamMatchLines, explainMatchdayScoring, buildPlayerProgressSeries, buildPeriodProgress, listAwardedRedCards, describeAwardedRedCard, awardedRedCardTotals, withRedCardAudit } from '@/app/lib/english-pyramid-scoring';
 
 describe('english-pyramid draft fairness', () => {
   it('gives every manager two clubs from each draft division', () => {
@@ -484,6 +485,20 @@ describe('english-pyramid awarded red-card ledger', () => {
       points: 0,
       managers: [],
     });
+  });
+
+  it('appends the red card audit at the bottom of the steward statement', () => {
+    const awards = listAwardedRedCards(
+      ENGLISH_PYRAMID_MANUAL_MATCHES.map(manualMatchToResult),
+      ENGLISH_PYRAMID_FANTASY_PLAYERS
+    );
+    const body = withRedCardAudit(ENGLISH_PYRAMID_OFFICIAL_STATEMENT!.body, awards);
+    expect(body.indexOf('Red card audit')).toBeGreaterThan(body.indexOf('Resolution'));
+    expect(body).toContain('Darlington, 1 red away at Radcliffe (0-1). Scott. Plus 1.');
+    expect(body).toContain(
+      'Maidenhead United, 1 red home vs AFC Totton (1-1). No manager. Does not score.'
+    );
+    expect(body).not.toMatch(/[—–]/);
   });
 });
 

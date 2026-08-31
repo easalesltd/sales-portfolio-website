@@ -52,7 +52,7 @@ export default function OfficialStatementRedCards({ awards }: Props) {
   return (
     <div className="mt-3 border-t border-[#d4af37]/25 pt-3">
       <h4 className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d4af37]">
-        Red cards awarded
+        Red card audit
       </h4>
       <p className="mt-1.5 text-sm leading-relaxed text-neutral-100">
         Every dismissal in the ledger. Sweepstake clubs score plus 1 each. Clubs with no manager

@@ -49,7 +49,7 @@ describe('OfficialStatementRedCards', () => {
       />
     );
 
-    expect(screen.getByRole('heading', { name: /red cards awarded/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /red card audit/i })).toBeInTheDocument();
     expect(screen.getByText(/2 dismissals in 2 matches/i)).toBeInTheDocument();
     expect(screen.getByText('Hereford, 1 red away at Buxton (2-1)')).toBeInTheDocument();
     expect(screen.getByText('Darlington, 1 red away at Radcliffe (0-1)')).toBeInTheDocument();

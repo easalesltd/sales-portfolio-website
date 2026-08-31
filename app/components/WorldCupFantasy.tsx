@@ -1350,10 +1350,13 @@ function OfficialStatementPanel({
   redCardAwards?: readonly AwardedRedCard[];
 }) {
   const issued = formatSweepstakeDate(statement.issuedAtUtc);
-  const paragraphs = statement.body
+  const allParagraphs = statement.body
     .split(/\n+/)
     .map((paragraph) => paragraph.trim())
     .filter(Boolean);
+  const auditAt = allParagraphs.findIndex((paragraph) => paragraph === 'Red card audit');
+  const paragraphs =
+    auditAt >= 0 && redCardAwards.length > 0 ? allParagraphs.slice(0, auditAt) : allParagraphs;
 
   return (
     <section
@@ -1379,14 +1382,20 @@ function OfficialStatementPanel({
         </h3>
         <div className="mt-2 space-y-2.5 text-sm leading-relaxed text-neutral-100">
           {paragraphs.map((paragraph, index) => {
-            const isSubhead = paragraph === 'Investigation' || paragraph === 'Resolution';
+            const isSubhead =
+              paragraph === 'Investigation' ||
+              paragraph === 'Resolution' ||
+              paragraph === 'Red card audit';
+            const isDateHeading = /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun) \d/.test(paragraph);
             return (
               <p
                 key={`${index}-${paragraph.slice(0, 24)}`}
                 className={
                   isSubhead
                     ? 'pt-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#d4af37]'
-                    : undefined
+                    : isDateHeading
+                      ? 'pt-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#e8dfc8]/80'
+                      : undefined
                 }
               >
                 {paragraph}
