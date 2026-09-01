@@ -26,7 +26,7 @@ const FWP_SLUG_BY_CODE = {
   HOR: 'horsham',
   WSM: 'weston-super-mare',
   MAI: 'maidstone-united',
-  EBB: 'ebbsfleet-united',
+  TRU: 'truro-city',
   CLM: 'chelmsford-city',
   FNH: 'farnham-town',
   AFT: 'afc-totton',
@@ -57,7 +57,7 @@ const FWP_LEAGUE_COMP_BY_CODE = {
   HOR: 'national-league-south',
   WSM: 'national-league-south',
   MAI: 'national-league-south',
-  EBB: 'national-league-south',
+  TRU: 'national-league-south',
   CLM: 'national-league-south',
   FNH: 'national-league-south',
   AFT: 'national-league-south',
@@ -105,7 +105,7 @@ const FWP_CODE_BY_SLUG = {
   horsham: 'HOR',
   'weston-super-mare': 'WSM',
   'maidstone-united': 'MAI',
-  'ebbsfleet-united': 'EBB',
+  'truro-city': 'TRU',
   'chelmsford-city': 'CLM',
   // NL South — opponents
   'afc-totton': 'AFT',
@@ -114,6 +114,7 @@ const FWP_CODE_BY_SLUG = {
   'chesham-united': 'CHU',
   'dorking-wanderers': 'DOR',
   'dover-athletic': 'DOV',
+  'ebbsfleet-united': 'EBB',
   farnborough: 'FAR',
   'farnham-town': 'FNH',
   'folkestone-invicta': 'FOL',
@@ -123,7 +124,6 @@ const FWP_CODE_BY_SLUG = {
   salisbury: 'SBY',
   'slough-town': 'SLO',
   'tonbridge-angels': 'TON',
-  'truro-city': 'TRU',
   'walton-and-hersham': 'WAH',
 };
 

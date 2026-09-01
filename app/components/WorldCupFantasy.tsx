@@ -1403,7 +1403,13 @@ function OfficialStatementPanel({
             );
           })}
         </div>
-        <OfficialStatementRedCards awards={redCardAwards} />
+        <OfficialStatementRedCards
+          awards={
+            /red card/i.test(statement.headline) || statement.body.includes('Red card audit')
+              ? redCardAwards
+              : []
+          }
+        />
       </div>
     </section>
   );

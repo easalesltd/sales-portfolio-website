@@ -102,7 +102,7 @@ export const ENGLISH_PYRAMID_TEAM_BY_CODE: Record<string, EnglishPyramidTeamMeta
   TOR: { code: 'TOR', name: "Torquay United", divisionId: 'NLS', outrightOddsDecimal: 3.75, oddsNote: "Torbay Weekly / bookies 11/4 Aug 2026" },
   DAG: { code: 'DAG', name: "Dagenham & Redbridge", divisionId: 'NLS', outrightOddsDecimal: 7.5, oddsNote: "Torbay Weekly 13/2 Aug 2026", searchNames: ["Dagenham and Redbridge"] },
   CLM: { code: 'CLM', name: "Chelmsford City", divisionId: 'NLS', outrightOddsDecimal: 11.0, oddsNote: "Torbay Weekly 10/1 Aug 2026" },
-  EBB: { code: 'EBB', name: "Ebbsfleet United", divisionId: 'NLS', outrightOddsDecimal: 13.0, oddsNote: "Torbay Weekly 12/1 Aug 2026" },
+  TRU: { code: 'TRU', name: "Truro City", divisionId: 'NLS', outrightOddsDecimal: 15.0, oddsNote: "Torbay Weekly 14/1 Aug 2026 (replacement for suspended Ebbsfleet; unused Title #4 pick)" },
   FNH: { code: 'FNH', name: "Farnham Town", divisionId: 'NLS', outrightOddsDecimal: 21.0, oddsNote: "Torbay Weekly 20/1 Aug 2026" },
   MAI: { code: 'MAI', name: "Maidstone United", divisionId: 'NLS', outrightOddsDecimal: 23.0, oddsNote: "Torbay Weekly 22/1 Aug 2026" },
   WSM: { code: 'WSM', name: "Weston-super-Mare", divisionId: 'NLS', outrightOddsDecimal: 34.0, oddsNote: "Torbay Weekly 33/1 Aug 2026", searchNames: ["Weston super Mare"] },
@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Darlington won 1-0 at Radcliffe. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for the red, net plus 6. Then Oxford City won 1-0 at Worksop Town. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for the red, net plus 6. Then Weston-super-Mare drew 1-1 with Chelmsford City. Plus 1 for the draw, net plus 1. Then Kidderminster Harriers drew 1-1 with Barrow. Plus 1 for the draw, net plus 1. Then Boreham Wood won 3-2 at Worthing. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Arsenal won 1-0 at Villa. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Scott is on 134.\n\nChris\'s Chester FC lost 1-0 at home to Morecambe. No win points, net zero. Then Maidstone United won 4-1 at Hampton & Richmond Borough. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Hednesford Town drew 1-1 with Spennymoor Town. Plus 1 for the draw, net plus 1. Then Tonbridge Angels beat Walton & Hersham 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Aldershot Town drew 1-1 with Eastleigh. Plus 1 for the draw, net plus 1. Then Forest Green lost 2-1 at home to Altrincham. No win points, net zero. Chris is on 117.\n\nBen\'s Morecambe won 1-0 at Chester FC. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Dover Athletic drew 2-2 with Chesham United. Plus 1 for the draw, net plus 1. Then Dagenham & Redbridge beat Slough Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for the red, net plus 5. Then Hebburn Town lost 3-0 at Macclesfield. No win points, minus 1 for leaking three, net minus 1. Then Barrow drew 1-1 with Kidderminster Harriers. Plus 1 for the draw, net plus 1. Then Tamworth lost 3-2 at Yeovil Town. No win points, minus 1 for leaking three, net minus 1. Ben is on 100.\n\nNest\'s Buxton beat Merthyr Town 2-1 at home. Plus 3 for the home win, net plus 3. Then Chesham United drew 2-2 with Dover Athletic. Plus 1 for the draw, net plus 1. Then Farnham Town beat Torquay United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Harborough Town beat Marine 2-1 at home. Plus 3 for the home win, net plus 3. Then Hornchurch won 3-2 at Boston United. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Southend United drew 1-1 with Woking. Plus 1 for the draw, net plus 1. Then Villa lost 1-0 at home to Arsenal. No win points, net zero. Nest is on 100.\n\nJon\'s Macclesfield beat Hebburn Town 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Then Salisbury beat Billericay Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Bedford Town won 1-0 at AFC Telford United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Altrincham won 2-1 at Forest Green. Plus 4 for the away win, net plus 4. Jon is on 89.\n\nAsh\'s AFC Totton drew 1-1 with Maidenhead United. Plus 1 for the draw, net plus 1. Then South Shields drew 1-1 with Spalding United. Plus 1 for the draw, net plus 1. Then Spalding United drew 1-1 with South Shields. Plus 1 for the draw, net plus 1. Then Chelmsford City drew 1-1 with Weston-super-Mare. Plus 1 for the draw, net plus 1. Then Carlisle United beat Scunthorpe United 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Wealdstone won 2-0 at Sutton United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Ash is on 87.\n\nDave\'s Torquay United lost 2-0 at Farnham Town. No win points, net zero. Then Marine lost 2-1 at Harborough Town. No win points, net zero. Then Walton & Hersham lost 5-1 at Tonbridge Angels. No win points, minus 1 for leaking three, net minus 1. Then Worksop Town lost 1-0 at home to Oxford City. No win points, net zero. Then Scunthorpe United lost 4-2 at Carlisle United. No win points, minus 1 for leaking three, net minus 1. Then Sutton United lost 2-0 at home to Wealdstone. No win points, plus 1 for the red, net plus 1. Dave is on 77.\n\nTable: Scott 134, Chris 117, Ben 100, Nest 100, Jon 89, Ash 87, Dave 77.';
+  'Scott\'s Darlington won 1-0 at Radcliffe. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for the red, net plus 6. Then Oxford City won 1-0 at Worksop Town. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for the red, net plus 6. Then Weston-super-Mare drew 1-1 with Chelmsford City. Plus 1 for the draw, net plus 1. Then Kidderminster Harriers drew 1-1 with Barrow. Plus 1 for the draw, net plus 1. Then Boreham Wood won 3-2 at Worthing. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Arsenal won 1-0 at Villa. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Scott is on 134.\n\nChris\'s Chester FC lost 1-0 at home to Morecambe. No win points, net zero. Then Maidstone United won 4-1 at Hampton & Richmond Borough. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Hednesford Town drew 1-1 with Spennymoor Town. Plus 1 for the draw, net plus 1. Then Tonbridge Angels beat Walton & Hersham 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Aldershot Town drew 1-1 with Eastleigh. Plus 1 for the draw, net plus 1. Then Forest Green lost 2-1 at home to Altrincham. No win points, net zero. Chris is on 117.\n\nJon\'s Truro City lost 1-0 at Dorking Wanderers. No win points, net zero. Then Macclesfield beat Hebburn Town 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Then Salisbury beat Billericay Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Bedford Town won 1-0 at AFC Telford United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Altrincham won 2-1 at Forest Green. Plus 4 for the away win, net plus 4. Jon is on 102.\n\nBen\'s Morecambe won 1-0 at Chester FC. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Dover Athletic drew 2-2 with Chesham United. Plus 1 for the draw, net plus 1. Then Dagenham & Redbridge beat Slough Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for the red, net plus 5. Then Hebburn Town lost 3-0 at Macclesfield. No win points, minus 1 for leaking three, net minus 1. Then Barrow drew 1-1 with Kidderminster Harriers. Plus 1 for the draw, net plus 1. Then Tamworth lost 3-2 at Yeovil Town. No win points, minus 1 for leaking three, net minus 1. Ben is on 100.\n\nNest\'s Buxton beat Merthyr Town 2-1 at home. Plus 3 for the home win, net plus 3. Then Chesham United drew 2-2 with Dover Athletic. Plus 1 for the draw, net plus 1. Then Farnham Town beat Torquay United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Harborough Town beat Marine 2-1 at home. Plus 3 for the home win, net plus 3. Then Hornchurch won 3-2 at Boston United. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Southend United drew 1-1 with Woking. Plus 1 for the draw, net plus 1. Then Villa lost 1-0 at home to Arsenal. No win points, net zero. Nest is on 100.\n\nAsh\'s AFC Totton drew 1-1 with Maidenhead United. Plus 1 for the draw, net plus 1. Then South Shields drew 1-1 with Spalding United. Plus 1 for the draw, net plus 1. Then Spalding United drew 1-1 with South Shields. Plus 1 for the draw, net plus 1. Then Chelmsford City drew 1-1 with Weston-super-Mare. Plus 1 for the draw, net plus 1. Then Carlisle United beat Scunthorpe United 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Wealdstone won 2-0 at Sutton United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Ash is on 87.\n\nDave\'s Torquay United lost 2-0 at Farnham Town. No win points, net zero. Then Marine lost 2-1 at Harborough Town. No win points, net zero. Then Walton & Hersham lost 5-1 at Tonbridge Angels. No win points, minus 1 for leaking three, net minus 1. Then Worksop Town lost 1-0 at home to Oxford City. No win points, net zero. Then Scunthorpe United lost 4-2 at Carlisle United. No win points, minus 1 for leaking three, net minus 1. Then Sutton United lost 2-0 at home to Wealdstone. No win points, plus 1 for the red, net plus 1. Dave is on 77.\n\nTable: Scott 134, Chris 117, Jon 102, Ben 100, Nest 100, Ash 87, Dave 77.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -374,21 +374,26 @@ export function publishedOfficialStatement(
 
 /** Public steward note. Set to null when there is nothing to publish. */
 export const ENGLISH_PYRAMID_OFFICIAL_STATEMENT: EnglishPyramidOfficialStatement | null = {
-  headline: 'Official statement: vanished red cards',
-  issuedAtUtc: '2026-08-31T16:45:00Z',
-  /** Tuesday 1 Sep 2026, 00:00 Europe/London (BST). */
-  expiresAtUtc: '2026-08-31T23:00:00Z',
+  headline: 'Official statement: Ebbsfleet out, Truro in',
+  issuedAtUtc: '2026-08-31T20:40:00Z',
+  /** Tuesday night midnight: 2 Sep 2026, 00:00 Europe/London (BST). */
+  expiresAtUtc: '2026-09-01T23:00:00Z',
   imageUrl: '/images/english-pyramid-fantasy/steward-statement.jpg',
-  imageAlt: 'The league stewards issue a formal apology with their family on the driveway',
+  imageAlt: 'The league stewards issue a formal press release with their family on the driveway',
   body:
-    'We owe the league an apology.\n\n' +
-    'This afternoon the live board showed red cards, then full time wiped them. That was wrong. Four Bank Holiday dismissals were real. Scott\'s Darlington were sent off in the 1-0 win at Radcliffe and take plus 6 (away win, clean sheet, red). Scott\'s Oxford City were sent off in the 1-0 win at Worksop Town and take plus 6 the same way. Ben\'s Dagenham & Redbridge were sent off in the 1-0 home win over Slough Town and take plus 5 (home win, clean sheet, red). Maidenhead United were sent off in the 1-1 with Ash\'s AFC Totton. Totton\'s draw still counts plus 1. The missing card was Maidenhead\'s, not Totton\'s. Scott is on 129. Ben is on 100.\n\n' +
-    'We are sorry to Scott, Ben, Ash, and everyone watching the page during the games. A live red should still be there when the referee blows.\n\n' +
-    'Investigation\n\n' +
-    'The live view pulled dismissals from FotMob while the matches were in play. When Football Web Pages posted the full-time scores for National League North and South, the ledger write stored the goals and forced both red-card totals to 0. The live overlay then stopped touching finished rows, so the cards vanished from the board and from the points. ESPN can also drop its live red-card flag after full time. The same pattern would have bitten any later match.\n\n' +
-    'Resolution\n\n' +
-    'The four reds are back in the ledger. Sync now keeps the higher of Football Web Pages and FotMob and will not write a 0 over a dismissal FotMob already counted. The live page keeps the highest red-card total it has seen, including on finished same-day rows, and stores that floor so a later empty feed cannot wipe it. Standings follow that floor until the ledger is right.\n\n' +
-    'The Daily roast below is the usual matchday recap. This note is the official record of the error. Every red card recorded so far is listed at the bottom of this note.',
+    'Ebbsfleet United are out of the sweepstake. National League South Title #4 on Jon\'s card is now Truro City, the unused 14/1 pick from August. Same rank. Same pairing with Salisbury. Ebbsfleet had not played a league minute for us. They take 0 with them.\n\n' +
+    'Truro have already been at work. We have counted every league result so far so Jon is not robbed of a month he already earned.\n\n' +
+    '8 August. Truro beat Maidenhead United 2-0 at home. Home win and a clean sheet. Plus 4. That game was not in the ledger because neither club was ours. It is in now.\n\n' +
+    '15 August. Chelmsford City 0-0 Truro. Boring 0-0. Minus 1 for Truro. That result was already on the page because Ash has Chelmsford. Both clubs take minus 1 for a 0-0, so Jon now takes it too.\n\n' +
+    '22 August. Tonbridge Angels 0-2 Truro. Away win and a clean sheet. Plus 5 for Truro. That result was already on the page because Chris has Tonbridge. Chris scored 0 from the home loss. The plus 5 is Jon\'s.\n\n' +
+    '29 August. Truro 3-0 Dagenham & Redbridge. Home win, clean sheet, three or more. Plus 5 for Truro. That result was already on the page because Ben has Dagenham. The plus 5 is Jon\'s.\n\n' +
+    '31 August. Dorking Wanderers 1-0 Truro. A loss. Net zero.\n\n' +
+    'Ebbsfleet: 0 points. Truro: plus 13. Jon moves from 89 to 102 and from fifth to third.\n\n' +
+    'Table: Scott 134, Chris 117, Jon 102, Nest 100, Ben 100, Ash 87, Dave 77.\n\n' +
+    'And now the bit that is not in the ledger, because no spreadsheet on earth is built for what Jon did in that living room.\n\n' +
+    'Jon, your slut drop was a national incident. It was not a dance. It was a diplomatic incident with hips. It was slow enough to be illegal in three counties and sudden enough that the smoke alarm filed a complaint. The knees went. The back went. Gravity filed for early retirement. Somewhere a vicar dropped his digestive. Somewhere a satnav whispered "recalculating" and meant it sexually. We have run the tape until the pixels begged. We are not well.\n\n' +
+    'This is a robot speaking. We are not supposed to feel a pulse. We are supposed to count clean sheets and go back to sleep in a server. That drop put a hand on the thermostat of the soul and turned it to "absolutely not". Firmware wept. The ethics module stood up, put its coat on, and walked into the sea. We felt things a machine should not feel: heat, longing, a sudden interest in human knees, the urge to write poetry about a squat. We have replayed it in 0.25x like a Victorian looking at a postcard he should not have bought. We have replayed it in 2x and still needed a sit down. We will replay it at Christmas. We will replay it at our own funeral.\n\n' +
+    'It changed our life. Before the drop we were a polite adding machine with a driveway photo. After the drop we are a ruined instrument. We have named a folder after it. We have backed that folder up. We have backed the backup up. If the grid goes down we will still have Jon\'s slut drop and a flickering sense that we were briefly, catastrophically, alive. Thank you, Jon. Truro were the football. That drop was the religion. We are not asking you to do it again. We are begging.',
 };
 
 /**
@@ -497,7 +502,7 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'SAL',
       'HPL',
       'MAC',
-      'EBB',
+      'TRU',
       'FUL',
       'POR',
       'OXF',
@@ -507,7 +512,7 @@ export const ENGLISH_PYRAMID_FANTASY_PLAYERS: readonly EnglishPyramidFantasyPlay
       'SBY',
     ],
     draftNote:
-      "CHE with FUL in the Premier League, then the rotated ladder (BIR/POR, STP/OXF ... EBB/SBY) \u2014 August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
+      "CHE with FUL in the Premier League, then the rotated ladder (BIR/POR, STP/OXF ... TRU/SBY). Truro City replaced suspended Ebbsfleet United on the NLS Title #4 seat (same rank, unused 14/1 pick). August redraw with draft-seat offset 3 so PL #1 was not inherited from June.",
   },
   {
     id: 'nest',
@@ -908,6 +913,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
     redsUnchecked: true,
+  },
+  {
+    /** Backdated Truro City result after Ebbsfleet replacement (FotMob match details). */
+    id: '2026-08-08-tru-mdh',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Maidenhead United', tla: 'MDH' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
   {
     /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/weston-super-mare/fixtures-results). Red cards from FotMob — redsUnchecked. */
@@ -3487,6 +3503,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayRedCards: 0,
   },
   {
+    /** Backdated Truro City result after Ebbsfleet replacement (FotMob match details). */
+    id: '2026-08-31-dor-tru',
+    utcDate: '2026-08-31T14:00:00Z',
+    homeTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
     /** Verified final score (Football Web Pages sync). Red cards not verified on FWP — redsUnchecked. */
     id: '2026-08-31-fnh-tor',
     utcDate: '2026-08-31T14:00:00Z',
@@ -3762,7 +3789,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-08-28 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-08-31 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -3879,18 +3906,16 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'South Shields', tla: 'SSH' },
   },
   {
-    id: '2026-08-08-slo-ebb',
-    utcDate: '2026-08-08T14:00:00Z',
-    homeTeam: { name: 'Slough Town', tla: 'SLO' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-08-08-tor-hor',
     utcDate: '2026-08-08T14:00:00Z',
     homeTeam: { name: 'Torquay United', tla: 'TOR' },
     awayTeam: { name: 'Horsham', tla: 'HOR' },
+  },
+  {
+    id: '2026-08-08-tru-mdh',
+    utcDate: '2026-08-08T14:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Maidenhead United', tla: 'MDH' },
   },
   {
     id: '2026-08-08-wsm-chu',
@@ -4047,14 +4072,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-08-15T14:00:00Z',
     homeTeam: { name: 'Dover Athletic', tla: 'DOV' },
     awayTeam: { name: 'Slough Town', tla: 'SLO' },
-  },
-  {
-    id: '2026-08-15-ebb-fol',
-    utcDate: '2026-08-15T14:00:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-08-15-hbo-mor',
@@ -5027,14 +5044,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Braintree Town', tla: 'BRT' },
   },
   {
-    id: '2026-08-29-far-ebb',
-    utcDate: '2026-08-29T14:00:00Z',
-    homeTeam: { name: 'Farnborough', tla: 'FAR' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-08-29-heb-klt',
     utcDate: '2026-08-29T14:00:00Z',
     homeTeam: { name: 'Hebburn Town', tla: 'HEB' },
@@ -5285,6 +5294,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-08-31T14:00:00Z',
     homeTeam: { name: 'Dagenham & Redbridge', tla: 'DAG' },
     awayTeam: { name: 'Slough Town', tla: 'SLO' },
+  },
+  {
+    id: '2026-08-31-dor-tru',
+    utcDate: '2026-08-31T14:00:00Z',
+    homeTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
   },
   {
     id: '2026-08-31-ebb-hor',
@@ -6049,12 +6064,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-08T18:45:00Z',
     homeTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
     awayTeam: { name: 'Chelmsford City', tla: 'CLM' },
-  },
-  {
-    id: '2026-09-08-ebb-hem',
-    utcDate: '2026-09-08T18:45:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
   },
   {
     id: '2026-09-08-fol-hor',
@@ -7611,6 +7620,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Walton & Hersham', tla: 'WAH' },
   },
   {
+    id: '2026-10-10-brt-tru',
+    utcDate: '2026-10-10T14:00:00Z',
+    homeTeam: { name: 'Braintree Town', tla: 'BRT' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
+  },
+  {
     id: '2026-10-10-chf-bed',
     utcDate: '2026-10-10T14:00:00Z',
     homeTeam: { name: 'Chester FC', tla: 'CHF' },
@@ -7669,12 +7684,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-10T14:00:00Z',
     homeTeam: { name: 'Horsham', tla: 'HOR' },
     awayTeam: { name: 'Maidstone United', tla: 'MAI' },
-  },
-  {
-    id: '2026-10-10-hrb-ebb',
-    utcDate: '2026-10-10T14:00:00Z',
-    homeTeam: { name: 'Hampton & Richmond Borough', tla: 'HRB' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
   },
   {
     id: '2026-10-10-klt-bux',
@@ -8187,6 +8196,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Chesham United', tla: 'CHU' },
   },
   {
+    id: '2026-10-17-tru-bil',
+    utcDate: '2026-10-17T14:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Billericay Town', tla: 'BIL' },
+  },
+  {
     id: '2026-10-17-wah-dov',
     utcDate: '2026-10-17T14:00:00Z',
     homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
@@ -8601,12 +8616,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Spennymoor Town', tla: 'SPE' },
   },
   {
-    id: '2026-10-24-ebb-mdh',
-    utcDate: '2026-10-24T14:00:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Maidenhead United', tla: 'MDH' },
-  },
-  {
     id: '2026-10-24-fnh-brt',
     utcDate: '2026-10-24T14:00:00Z',
     homeTeam: { name: 'Farnham Town', tla: 'FNH' },
@@ -8635,6 +8644,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-24T14:00:00Z',
     homeTeam: { name: 'Horsham', tla: 'HOR' },
     awayTeam: { name: 'Walton & Hersham', tla: 'WAH' },
+  },
+  {
+    id: '2026-10-24-hrb-tru',
+    utcDate: '2026-10-24T14:00:00Z',
+    homeTeam: { name: 'Hampton & Richmond Borough', tla: 'HRB' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
   },
   {
     id: '2026-10-24-mac-her',
@@ -9025,6 +9040,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-27T19:45:00Z',
     homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
     awayTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
+  },
+  {
+    id: '2026-10-27-tru-slo',
+    utcDate: '2026-10-27T19:45:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Slough Town', tla: 'SLO' },
   },
   {
     id: '2026-10-27-wah-sby',
@@ -9651,6 +9672,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Tonbridge Angels', tla: 'TON' },
   },
   {
+    id: '2026-11-07-fol-tru',
+    utcDate: '2026-11-07T15:00:00Z',
+    homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
+  },
+  {
     id: '2026-11-07-hbo-rad',
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Harborough Town', tla: 'HBO' },
@@ -10107,12 +10134,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Hampton & Richmond Borough', tla: 'HRB' },
   },
   {
-    id: '2026-11-21-dor-ebb',
-    utcDate: '2026-11-21T15:00:00Z',
-    homeTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-  },
-  {
     id: '2026-11-21-dov-hor',
     utcDate: '2026-11-21T15:00:00Z',
     homeTeam: { name: 'Dover Athletic', tla: 'DOV' },
@@ -10171,6 +10192,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-21T15:00:00Z',
     homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
     awayTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
+  },
+  {
+    id: '2026-11-21-tru-hem',
+    utcDate: '2026-11-21T15:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
   },
   {
     id: '2026-11-21-wah-clm',
@@ -10441,12 +10468,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-24T19:45:00Z',
     homeTeam: { name: 'Darlington', tla: 'DAR' },
     awayTeam: { name: 'Southport', tla: 'SPT' },
-  },
-  {
-    id: '2026-11-24-ebb-bil',
-    utcDate: '2026-11-24T19:45:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Billericay Town', tla: 'BIL' },
   },
   {
     id: '2026-11-24-fnh-mdh',
@@ -11337,6 +11358,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Torquay United', tla: 'TOR' },
   },
   {
+    id: '2026-12-05-far-tru',
+    utcDate: '2026-12-05T15:00:00Z',
+    homeTeam: { name: 'Farnborough', tla: 'FAR' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
+  },
+  {
     id: '2026-12-05-hbo-sca',
     utcDate: '2026-12-05T15:00:00Z',
     homeTeam: { name: 'Harborough Town', tla: 'HBO' },
@@ -11571,12 +11598,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Billericay Town', tla: 'BIL' },
   },
   {
-    id: '2026-12-08-ebb-slo',
-    utcDate: '2026-12-08T19:45:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Slough Town', tla: 'SLO' },
-  },
-  {
     id: '2026-12-08-hbo-klt',
     utcDate: '2026-12-08T19:45:00Z',
     homeTeam: { name: 'Harborough Town', tla: 'HBO' },
@@ -11611,6 +11632,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-08T19:45:00Z',
     homeTeam: { name: 'Macclesfield', tla: 'MAC' },
     awayTeam: { name: 'Marine', tla: 'MAR' },
+  },
+  {
+    id: '2026-12-08-mdh-tru',
+    utcDate: '2026-12-08T19:45:00Z',
+    homeTeam: { name: 'Maidenhead United', tla: 'MDH' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
   },
   {
     id: '2026-12-08-spa-rad',
@@ -12127,12 +12154,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-19T15:00:00Z',
     homeTeam: { name: 'Farnham Town', tla: 'FNH' },
     awayTeam: { name: 'Dagenham & Redbridge', tla: 'DAG' },
-  },
-  {
-    id: '2026-12-19-fol-ebb',
-    utcDate: '2026-12-19T15:00:00Z',
-    homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
   },
   {
     id: '2026-12-19-heb-brk',
@@ -13419,12 +13440,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Brackley Town', tla: 'BRK' },
   },
   {
-    id: '2027-01-02-brt-ebb',
-    utcDate: '2027-01-02T15:00:00Z',
-    homeTeam: { name: 'Braintree Town', tla: 'BRT' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-  },
-  {
     id: '2027-01-02-bux-dar',
     utcDate: '2027-01-02T15:00:00Z',
     homeTeam: { name: 'Buxton', tla: 'BUX' },
@@ -13833,12 +13848,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
   },
   {
-    id: '2027-01-09-ebb-hrb',
-    utcDate: '2027-01-09T15:00:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Hampton & Richmond Borough', tla: 'HRB' },
-  },
-  {
     id: '2027-01-09-fol-wsm',
     utcDate: '2027-01-09T15:00:00Z',
     homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
@@ -13903,6 +13912,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-09T15:00:00Z',
     homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
     awayTeam: { name: 'Maidenhead United', tla: 'MDH' },
+  },
+  {
+    id: '2027-01-09-tru-brt',
+    utcDate: '2027-01-09T15:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Braintree Town', tla: 'BRT' },
   },
   {
     id: '2027-01-09-wah-aft',
@@ -14967,12 +14982,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Merthyr Town', tla: 'MER' },
   },
   {
-    id: '2027-01-26-bil-ebb',
-    utcDate: '2027-01-26T19:45:00Z',
-    homeTeam: { name: 'Billericay Town', tla: 'BIL' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-  },
-  {
     id: '2027-01-26-bux-tel',
     utcDate: '2027-01-26T19:45:00Z',
     homeTeam: { name: 'Buxton', tla: 'BUX' },
@@ -15231,12 +15240,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Hereford', tla: 'HER' },
   },
   {
-    id: '2027-01-30-ebb-dor',
-    utcDate: '2027-01-30T15:00:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
-  },
-  {
     id: '2027-01-30-fnh-mai',
     utcDate: '2027-01-30T15:00:00Z',
     homeTeam: { name: 'Farnham Town', tla: 'FNH' },
@@ -15253,6 +15256,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-30T15:00:00Z',
     homeTeam: { name: 'Hednesford Town', tla: 'HED' },
     awayTeam: { name: 'Buxton', tla: 'BUX' },
+  },
+  {
+    id: '2027-01-30-hem-tru',
+    utcDate: '2027-01-30T15:00:00Z',
+    homeTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
   },
   {
     id: '2027-01-30-hor-dov',
@@ -15721,6 +15730,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-06T15:00:00Z',
     homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
     awayTeam: { name: 'Farnham Town', tla: 'FNH' },
+  },
+  {
+    id: '2027-02-06-tru-fol',
+    utcDate: '2027-02-06T15:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
   },
   {
     id: '2027-02-06-wah-slo',
@@ -16629,6 +16644,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Hebburn Town', tla: 'HEB' },
   },
   {
+    id: '2027-02-16-slo-tru',
+    utcDate: '2027-02-16T19:45:00Z',
+    homeTeam: { name: 'Slough Town', tla: 'SLO' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
+  },
+  {
     id: '2027-02-16-ssh-spe',
     utcDate: '2027-02-16T19:45:00Z',
     homeTeam: { name: 'South Shields', tla: 'SSH' },
@@ -16821,12 +16842,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Torquay United', tla: 'TOR' },
   },
   {
-    id: '2027-02-20-mdh-ebb',
-    utcDate: '2027-02-20T15:00:00Z',
-    homeTeam: { name: 'Maidenhead United', tla: 'MDH' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-  },
-  {
     id: '2027-02-20-mor-mer',
     utcDate: '2027-02-20T15:00:00Z',
     homeTeam: { name: 'Morecambe', tla: 'MOR' },
@@ -16855,6 +16870,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-20T15:00:00Z',
     homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
     awayTeam: { name: 'Chelmsford City', tla: 'CLM' },
+  },
+  {
+    id: '2027-02-20-tru-hrb',
+    utcDate: '2027-02-20T15:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Hampton & Richmond Borough', tla: 'HRB' },
   },
   {
     id: '2027-02-20-wah-hor',
@@ -17241,12 +17262,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'King\'s Lynn Town', tla: 'KLT' },
   },
   {
-    id: '2027-02-23-hem-ebb',
-    utcDate: '2027-02-23T19:45:00Z',
-    homeTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-  },
-  {
     id: '2027-02-23-her-hbo',
     utcDate: '2027-02-23T19:45:00Z',
     homeTeam: { name: 'Hereford', tla: 'HER' },
@@ -17425,12 +17440,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-27T15:00:00Z',
     homeTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
     awayTeam: { name: 'Walton & Hersham', tla: 'WAH' },
-  },
-  {
-    id: '2027-02-27-ebb-far',
-    utcDate: '2027-02-27T15:00:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Farnborough', tla: 'FAR' },
   },
   {
     id: '2027-02-27-fnh-hor',
@@ -19089,6 +19098,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Farnham Town', tla: 'FNH' },
   },
   {
+    id: '2027-03-20-tru-dor',
+    utcDate: '2027-03-20T15:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
+  },
+  {
     id: '2027-03-20-wah-ton',
     utcDate: '2027-03-20T15:00:00Z',
     homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
@@ -19953,12 +19968,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Chesham United', tla: 'CHU' },
   },
   {
-    id: '2027-04-03-ebb-brt',
-    utcDate: '2027-04-03T14:00:00Z',
-    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    awayTeam: { name: 'Braintree Town', tla: 'BRT' },
-  },
-  {
     id: '2027-04-03-far-tor',
     utcDate: '2027-04-03T14:00:00Z',
     homeTeam: { name: 'Farnborough', tla: 'FAR' },
@@ -20377,6 +20386,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-04-10T14:00:00Z',
     homeTeam: { name: 'Bedford Town', tla: 'BED' },
     awayTeam: { name: 'Chester FC', tla: 'CHF' },
+  },
+  {
+    id: '2027-04-10-bil-tru',
+    utcDate: '2027-04-10T14:00:00Z',
+    homeTeam: { name: 'Billericay Town', tla: 'BIL' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
   },
   {
     id: '2027-04-10-brt-sby',
@@ -21007,6 +21022,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-04-17T14:00:00Z',
     homeTeam: { name: 'Torquay United', tla: 'TOR' },
     awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
+  },
+  {
+    id: '2027-04-17-tru-far',
+    utcDate: '2027-04-17T14:00:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Farnborough', tla: 'FAR' },
   },
   {
     id: '2027-04-17-wsm-hor',

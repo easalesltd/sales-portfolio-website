@@ -224,7 +224,7 @@ const TEAM_NAME_BY_CODE = {
   HOR: 'Horsham',
   WSM: 'Weston-super-Mare',
   MAI: 'Maidstone United',
-  EBB: 'Ebbsfleet United',
+  TRU: 'Truro City',
   CLM: 'Chelmsford City',
   FNH: 'Farnham Town',
   AFT: 'AFC Totton',
@@ -831,7 +831,7 @@ for (const code of [
 }
 
 for (const code of [
-  'TOR', 'DAG', 'CLM', 'EBB', 'FNH', 'MAI', 'WSM',
+  'TOR', 'DAG', 'CLM', 'TRU', 'FNH', 'MAI', 'WSM',
   'WAH', 'DOV', 'AFT', 'SBY', 'CHU', 'TON', 'HOR',
 ]) {
   SWEEPSTAKE_DIVISION_BY_CODE[code] = 'NLS';
