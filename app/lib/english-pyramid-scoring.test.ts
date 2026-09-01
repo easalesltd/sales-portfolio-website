@@ -6,7 +6,6 @@ import {
   ENGLISH_PYRAMID_FANTASY_PLAYERS,
   ENGLISH_PYRAMID_FIXTURES,
   ENGLISH_PYRAMID_MANUAL_MATCHES,
-  ENGLISH_PYRAMID_OFFICIAL_STATEMENT,
   ENGLISH_PYRAMID_TEAM_BY_CODE,
   formatPreSeasonTablePlace,
   formatTeamNameWithSeed,
@@ -487,12 +486,14 @@ describe('english-pyramid awarded red-card ledger', () => {
     });
   });
 
-  it('appends the red card audit at the bottom of the steward statement', () => {
+  it('appends the red card audit at the bottom of a red-card steward statement', () => {
     const awards = listAwardedRedCards(
       ENGLISH_PYRAMID_MANUAL_MATCHES.map(manualMatchToResult),
       ENGLISH_PYRAMID_FANTASY_PLAYERS
     );
-    const body = withRedCardAudit(ENGLISH_PYRAMID_OFFICIAL_STATEMENT!.body, awards);
+    const source =
+      'We owe the league an apology.\n\nInvestigation\n\nThe cards vanished.\n\nResolution\n\nThey are back.';
+    const body = withRedCardAudit(source, awards);
     expect(body.indexOf('Red card audit')).toBeGreaterThan(body.indexOf('Resolution'));
     expect(body).toContain('Darlington, 1 red away at Radcliffe (0-1). Scott. Plus 1.');
     expect(body).toContain(

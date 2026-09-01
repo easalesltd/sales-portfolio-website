@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState, useMemo, useRef, type CSSProperties }
 import { createPortal } from 'react-dom';
 import {
   formatTeamLabel as formatPyramidTeamLabel,
+  isRedCardOfficialStatement,
   type EnglishPyramidOfficialStatement,
 } from '@/app/data/english-pyramid-fantasy';
 import type { EnglishPyramidFantasyResponse } from '@/app/api/english-pyramid-fantasy/route';
@@ -1404,11 +1405,7 @@ function OfficialStatementPanel({
           })}
         </div>
         <OfficialStatementRedCards
-          awards={
-            /red card/i.test(statement.headline) || statement.body.includes('Red card audit')
-              ? redCardAwards
-              : []
-          }
+          awards={isRedCardOfficialStatement(statement) ? redCardAwards : []}
         />
       </div>
     </section>

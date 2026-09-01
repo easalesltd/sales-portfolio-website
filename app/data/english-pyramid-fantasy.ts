@@ -372,6 +372,14 @@ export function publishedOfficialStatement(
   return statement;
 }
 
+/** True only for a red-card press note. Other steward notes stay free of the audit list. */
+export function isRedCardOfficialStatement(
+  statement: EnglishPyramidOfficialStatement | null
+): boolean {
+  if (!statement) return false;
+  return /red card/i.test(statement.headline) || statement.body.includes('Red card audit');
+}
+
 /** Public steward note. Set to null when there is nothing to publish. */
 export const ENGLISH_PYRAMID_OFFICIAL_STATEMENT: EnglishPyramidOfficialStatement | null = {
   headline: 'Official statement: Ebbsfleet out, Truro in',
