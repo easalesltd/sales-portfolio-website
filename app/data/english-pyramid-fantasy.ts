@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Chesterfield drew 1-1 with Gillingham. Plus 1 for the draw, net plus 1. Then Crawley Town drew 1-1 with Northampton Town. Plus 1 for the draw, net plus 1. Then Bolton Wanderers lost 3-2 at Sheffield United. No win points, minus 1 for leaking three, net minus 1. Then Wolves lost 4-2 at West Ham. No win points, minus 1 for leaking three, net minus 1. Scott is on 134.\n\nChris\'s Cheltenham Town beat York City 3-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Barnet drew 1-1 with Exeter City. Plus 1 for the draw, net plus 1. Then Lincoln City served up a boring 0-0 against Blackburn Rovers. Minus 1 for the 0-0, net minus 1. Then West Ham beat Wolves 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Wednesday won 2-1 at Wycombe Wanderers. Plus 4 for the away win, net plus 4. Chris is on 129.\n\nNest\'s Accrington Stanley drew 2-2 with Grimsby Town. Plus 1 for the draw, net plus 1. Then Bromley lost 5-0 at home to Leyton Orient. No win points, minus 1 for leaking three, net minus 1. Then Bristol Rovers beat Colchester United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Leicester beat Plymouth Argyle 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Blackburn Rovers served up a boring 0-0 against Lincoln City. Minus 1 for the 0-0, plus 1 for the red, net zero. Then Sheffield United beat Bolton Wanderers 3-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Nest is on 112.\n\nBen\'s Grimsby Town drew 2-2 with Accrington Stanley. Plus 1 for the draw, net plus 1. Then Notts County drew 1-1 with Doncaster Rovers. Plus 1 for the draw, net plus 1. Then Fleetwood Town drew 1-1 with Oldham Athletic. Plus 1 for the draw, net plus 1. Then Huddersfield Town beat Oxford United 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Ben is on 107.\n\nJon\'s Hartlepool United lost 1-0 at FC Halifax Town. No win points, net zero. Then Oxford United lost 3-1 at Huddersfield Town. No win points, minus 1 for leaking three, net minus 1. Then Portsmouth lost 2-0 at home to Derby County. No win points, net zero. Then Salford City beat Newport County 2-1 at home. Plus 3 for the home win, net plus 3. Then Newport County lost 2-1 at Salford City. No win points, net zero. Then Birmingham City drew 1-1 with Southampton. Plus 1 for the draw, net plus 1. Jon is on 105.\n\nAsh\'s Leyton Orient won 5-0 at Bromley. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more, net plus 6. Then York City lost 3-2 at Cheltenham Town. No win points, minus 1 for leaking three, net minus 1. Then Preston North End lost 3-1 at home to Bristol City. No win points, minus 1 for leaking three, net minus 1. Then Shrewsbury Town lost 3-0 at Rochdale. No win points, minus 1 for leaking three, net minus 1. Then Southampton drew 1-1 with Birmingham City. Plus 1 for the draw, net plus 1. Ash is on 91.\n\nDave\'s Cambridge United won 2-1 at Bradford City. Plus 4 for the away win, net plus 4. Then Plymouth Argyle lost 2-0 at Leicester. No win points, net zero. Then Port Vale lost 3-1 at Swindon Town. No win points, minus 1 for leaking three, net minus 1. Then Tranmere Rovers drew 2-2 with Rotherham United. Plus 1 for the draw, plus 1 for the red, net plus 2. Dave is on 82.\n\nTable: Scott 134, Chris 129, Nest 112, Ben 107, Jon 105, Ash 91, Dave 82.';
+  'Scott\'s Burton Albion beat AFC Wimbledon 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Luton Town beat Stockport County 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Scott is on 142.\n\nChris\'s AFC Wimbledon lost 4-1 at Burton Albion. No win points, minus 1 for leaking three, net minus 1. Chris is on 128.\n\nBen\'s Cardiff City lost 2-1 at QPR. No win points, net zero. Then Middlesbrough drew 1-1 with Burnley. Plus 1 for the draw, net plus 1. Ben is on 108.\n\nJon\'s Stockport County lost 2-0 at Luton Town. No win points, net zero. Jon is on 105.\n\nAsh\'s MK Dons lost 3-1 at Wigan Athletic. No win points, minus 1 for leaking three, net minus 1. Ash is on 90.\n\nDave\'s Charlton Athletic drew 1-1 with West Brom. Plus 1 for the draw, net plus 1. Then Burnley drew 1-1 with Middlesbrough. Plus 1 for the draw, net plus 1. Dave is on 84.\n\nTable: Scott 142, Chris 128, Nest 112, Ben 108, Jon 105, Ash 90, Dave 84.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -4044,6 +4044,72 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     utcDate: '2026-09-01T19:00Z',
     homeTeam: { name: 'Birmingham City', tla: 'BIR' },
     awayTeam: { name: 'Southampton', tla: 'SOU' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-02-btn-wim',
+    utcDate: '2026-09-02T18:45Z',
+    homeTeam: { name: 'Burton Albion', tla: 'BTN' },
+    awayTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
+    homeGoals: 4,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-02-lut-stp',
+    utcDate: '2026-09-02T18:45Z',
+    homeTeam: { name: 'Luton Town', tla: 'LUT' },
+    awayTeam: { name: 'Stockport County', tla: 'STP' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-02-qpr-cdf',
+    utcDate: '2026-09-02T18:45Z',
+    homeTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
+    awayTeam: { name: 'Cardiff City', tla: 'CDF' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-02-wba-cha',
+    utcDate: '2026-09-02T18:45Z',
+    homeTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
+    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-02-wga-mkd',
+    utcDate: '2026-09-02T18:45Z',
+    homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
+    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-02-bur-mid',
+    utcDate: '2026-09-02T19:00Z',
+    homeTeam: { name: 'Burnley', tla: 'BUR' },
+    awayTeam: { name: 'Middlesbrough', tla: 'MID' },
     homeGoals: 1,
     awayGoals: 1,
     homeRedCards: 0,
