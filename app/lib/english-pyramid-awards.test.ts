@@ -79,9 +79,9 @@ describe('computeSweepstakeAwards', () => {
     expect(drop).toBeDefined();
     expect(drop!.winners.map((winner) => winner.id)).toEqual(['jon']);
     expect(drop!.kind).toBe('honorary');
-    expect(drop!.speech).toMatch(/slut drop/i);
-    expect(drop!.speech).toContain('Jon');
-    expect(drop!.speech).not.toMatch(/[—–]/);
+    expect(drop!.description).toMatch(/slut drop/i);
+    expect(drop!.description).toContain('Jon');
+    expect(drop!.description).not.toMatch(/[—–]/);
   });
 
   it('leaves max awards empty when every stat is zero, but least-reds still has a winner', () => {

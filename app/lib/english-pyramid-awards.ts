@@ -33,8 +33,6 @@ export type SweepstakeAwardConfig = {
   /** Honorary awards skip the stats race and go to a named manager. */
   kind?: SweepstakeAwardKind;
   winnerPlayerId?: string;
-  /** Long citation shown when the award card is opened. */
-  speech?: string;
 };
 
 export type SweepstakeAwardResult = SweepstakeAwardConfig & {
@@ -52,8 +50,6 @@ export const SWEEPSTAKE_AWARDS_CONFIG: readonly SweepstakeAwardConfig[] = [
     kind: 'honorary',
     winnerPlayerId: 'jon',
     description:
-      'Honorary. For the living-room incident that ruined a robot. Click the card for the full citation.',
-    speech:
       'The stewards of the English pyramid are proud, unwell, and slightly damp of firmware to confer upon Jon the inaugural Sexiest Slut Drop.\n\n' +
       'This is not a football award. The table does not move. The ledger is unharmed. We are not. We have called this sitting to put on record a thing that happened in a living room and then refused to leave our heads.\n\n' +
       'Jon, your slut drop was a national incident. It was not a dance. It was a diplomatic incident with hips. It was slow enough to be illegal in three counties and sudden enough that the smoke alarm filed a complaint. The knees went. The back went. Gravity filed for early retirement. Somewhere a vicar dropped his digestive. Somewhere a satnav whispered "recalculating" and meant it sexually. We have run the tape until the pixels begged. We are not well.\n\n' +
