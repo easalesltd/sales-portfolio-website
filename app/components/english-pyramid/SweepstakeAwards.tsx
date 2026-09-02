@@ -59,42 +59,59 @@ function AwardCitationDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[280] flex items-end justify-center bg-black/80 p-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:items-center"
+      className="fixed inset-0 z-[280] flex items-center justify-center bg-black/80 p-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))]"
       role="dialog"
       aria-modal="true"
       aria-labelledby={`award-citation-${award.id}`}
       onClick={onClose}
     >
       <div
-        className="max-h-[min(90dvh,40rem)] w-full max-w-lg overflow-y-auto rounded-lg border border-[#d4af37]/40 bg-[#0d1528] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.55)] sm:p-5"
+        className="flex max-h-[min(90dvh,40rem)] w-full max-w-lg flex-col overflow-hidden rounded-lg border border-[#d4af37]/40 bg-[#0d1528] shadow-[0_20px_60px_rgba(0,0,0,0.55)]"
         onClick={(event) => event.stopPropagation()}
       >
-        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#d4af37]/80">
-          Honorary citation
-        </p>
-        <h4 id={`award-citation-${award.id}`} className="mt-1 text-lg font-bold text-white">
-          <span className="mr-1.5" aria-hidden="true">
-            {award.emoji}
-          </span>
-          {award.title}
-        </h4>
-        {award.winners.length > 0 ? (
-          <p className="mt-1 text-sm font-semibold text-[#e8dfc8]">
-            Awarded to {awardWinnerLabel(award.winners)}
-          </p>
-        ) : null}
-        <div className="mt-3 space-y-2.5 text-sm leading-relaxed text-neutral-100">
-          {paragraphs.map((paragraph, index) => (
-            <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
-          ))}
+        <div className="flex shrink-0 items-start gap-3 border-b border-[#d4af37]/20 px-4 py-3 sm:px-5">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#d4af37]/80">
+              Honorary citation
+            </p>
+            <h4 id={`award-citation-${award.id}`} className="mt-1 text-lg font-bold leading-tight text-white">
+              <span className="mr-1.5" aria-hidden="true">
+                {award.emoji}
+              </span>
+              {award.title}
+            </h4>
+            {award.winners.length > 0 ? (
+              <p className="mt-1 text-sm font-semibold text-[#e8dfc8]">
+                Awarded to {awardWinnerLabel(award.winners)}
+              </p>
+            ) : null}
+          </div>
+          <button
+            type="button"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-[#d4af37]/40 bg-[#1a2744] text-lg leading-none text-[#e8dfc8]"
+            onClick={onClose}
+            aria-label="Back to awards"
+          >
+            ×
+          </button>
         </div>
-        <button
-          type="button"
-          className="mt-4 min-h-10 w-full rounded-md border border-[#d4af37]/40 bg-[#1a2744] px-3 text-sm font-semibold text-[#e8dfc8]"
-          onClick={onClose}
-        >
-          Close
-        </button>
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3 sm:px-5">
+          <div className="space-y-2.5 text-sm leading-relaxed text-neutral-100">
+            {paragraphs.map((paragraph, index) => (
+              <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+        <div className="shrink-0 border-t border-[#d4af37]/20 px-4 py-3 sm:px-5">
+          <button
+            type="button"
+            className="min-h-10 w-full rounded-md border border-[#d4af37]/40 bg-[#1a2744] px-3 text-sm font-semibold text-[#e8dfc8]"
+            onClick={onClose}
+          >
+            Back to awards
+          </button>
+          <p className="mt-1.5 text-center text-[10px] text-neutral-500">Or tap the dimmed area behind this card</p>
+        </div>
       </div>
     </div>
   );
