@@ -32,14 +32,88 @@ function WinnerNames({ winners }: { winners: PlayerStanding[] }) {
   );
 }
 
-function AwardCard({ award }: { award: SweepstakeAwardResult }) {
-  const t = useSweepstakeTheme();
-  const hasWinners = award.winners.length > 0;
+function AwardCitationDialog({
+  award,
+  onClose,
+}: {
+  award: SweepstakeAwardResult;
+  onClose: () => void;
+}) {
+  const paragraphs = (award.speech ?? '')
+    .split(/\n+/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previous;
+    };
+  }, [onClose]);
 
   return (
-    <article
-      className={`${t.c.squadCard} flex flex-col justify-between overflow-hidden p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]`}
+    <div
+      className="fixed inset-0 z-[280] flex items-end justify-center bg-black/80 p-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:items-center"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`award-citation-${award.id}`}
+      onClick={onClose}
     >
+      <div
+        className="max-h-[min(90dvh,40rem)] w-full max-w-lg overflow-y-auto rounded-lg border border-[#d4af37]/40 bg-[#0d1528] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.55)] sm:p-5"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#d4af37]/80">
+          Honorary citation
+        </p>
+        <h4 id={`award-citation-${award.id}`} className="mt-1 text-lg font-bold text-white">
+          <span className="mr-1.5" aria-hidden="true">
+            {award.emoji}
+          </span>
+          {award.title}
+        </h4>
+        {award.winners.length > 0 ? (
+          <p className="mt-1 text-sm font-semibold text-[#e8dfc8]">
+            Awarded to {awardWinnerLabel(award.winners)}
+          </p>
+        ) : null}
+        <div className="mt-3 space-y-2.5 text-sm leading-relaxed text-neutral-100">
+          {paragraphs.map((paragraph, index) => (
+            <p key={`${index}-${paragraph.slice(0, 24)}`}>{paragraph}</p>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="mt-4 min-h-10 w-full rounded-md border border-[#d4af37]/40 bg-[#1a2744] px-3 text-sm font-semibold text-[#e8dfc8]"
+          onClick={onClose}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function AwardCard({
+  award,
+  onOpenSpeech,
+}: {
+  award: SweepstakeAwardResult;
+  onOpenSpeech: (award: SweepstakeAwardResult) => void;
+}) {
+  const t = useSweepstakeTheme();
+  const hasWinners = award.winners.length > 0;
+  const isHonorary = award.kind === 'honorary';
+  const clickable = Boolean(award.speech);
+
+  const body = (
+    <>
       <div>
         <div className="flex items-start justify-between gap-2">
           <div>
@@ -48,7 +122,11 @@ function AwardCard({ award }: { award: SweepstakeAwardResult }) {
             </span>
             <h4 className="mt-1 text-sm font-bold text-white leading-tight">{award.title}</h4>
           </div>
-          {hasWinners ? (
+          {isHonorary && hasWinners ? (
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-[#f2d36b]">
+              Honorary
+            </span>
+          ) : hasWinners ? (
             <span className={`text-xl font-black tabular-nums ${t.c.points}`}>{award.value}</span>
           ) : (
             <span className="text-xs font-semibold uppercase text-neutral-500">Pending</span>
@@ -67,12 +145,34 @@ function AwardCard({ award }: { award: SweepstakeAwardResult }) {
             <span className="text-xs font-medium text-neutral-400">Pending league fixtures</span>
           )}
         </div>
-        {hasWinners ? (
+        {hasWinners && !isHonorary ? (
           <span className="mt-0.5 block text-[10px] text-neutral-500">
             {award.value} {award.statLabel.toLowerCase()}
           </span>
+        ) : clickable ? (
+          <span className="mt-0.5 block text-[10px] text-[#d4af37]/80">Click for the citation</span>
         ) : null}
       </div>
+    </>
+  );
+
+  if (clickable) {
+    return (
+      <button
+        type="button"
+        className={`${t.c.squadCard} flex h-full flex-col justify-between overflow-hidden p-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]`}
+        onClick={() => onOpenSpeech(award)}
+      >
+        {body}
+      </button>
+    );
+  }
+
+  return (
+    <article
+      className={`${t.c.squadCard} flex flex-col justify-between overflow-hidden p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]`}
+    >
+      {body}
     </article>
   );
 }
@@ -81,23 +181,27 @@ function CompactAwardRow({
   award,
   expanded,
   onToggle,
+  onOpenSpeech,
 }: {
   award: SweepstakeAwardResult;
   expanded: boolean;
   onToggle: () => void;
+  onOpenSpeech: (award: SweepstakeAwardResult) => void;
 }) {
   const t = useSweepstakeTheme();
   const hasWinners = award.winners.length > 0;
+  const isHonorary = award.kind === 'honorary';
   const panelId = `award-detail-${award.id}`;
+  const clickableSpeech = Boolean(award.speech);
 
   return (
     <li className="border-b border-neutral-800 last:border-b-0">
       <button
         type="button"
         className="flex w-full items-center gap-2 px-2.5 py-2 text-left"
-        onClick={onToggle}
-        aria-expanded={expanded}
-        aria-controls={panelId}
+        onClick={() => (clickableSpeech ? onOpenSpeech(award) : onToggle())}
+        aria-expanded={clickableSpeech ? undefined : expanded}
+        aria-controls={clickableSpeech ? undefined : panelId}
       >
         <span className="w-6 shrink-0 text-center text-base" role="img" aria-hidden="true">
           {award.emoji}
@@ -112,13 +216,15 @@ function CompactAwardRow({
             )}
           </span>
         </span>
-        {hasWinners ? (
+        {isHonorary && hasWinners ? (
+          <span className="shrink-0 text-[10px] font-semibold uppercase text-[#f2d36b]">Honorary</span>
+        ) : hasWinners ? (
           <span className={`shrink-0 text-sm font-black tabular-nums ${t.c.points}`}>{award.value}</span>
         ) : (
           <span className="shrink-0 text-[10px] font-semibold uppercase text-neutral-600">—</span>
         )}
       </button>
-      {expanded ? (
+      {expanded && !clickableSpeech ? (
         <p id={panelId} className="px-2.5 pb-2.5 pl-9 text-[11px] leading-snug text-neutral-400">
           {award.description}
           {hasWinners ? (
@@ -136,6 +242,7 @@ export default function SweepstakeAwards({ standings, scoringMatches }: Props) {
   const t = useSweepstakeTheme();
   const [expanded, setExpanded] = useState(false);
   const [openAwardId, setOpenAwardId] = useState<string | null>(null);
+  const [citationAward, setCitationAward] = useState<SweepstakeAwardResult | null>(null);
 
   const awardsData = useMemo(
     () => computeSweepstakeAwards(standings, scoringMatches),
@@ -186,16 +293,36 @@ export default function SweepstakeAwards({ standings, scoringMatches }: Props) {
 
           {!expanded && hasMatches && liveAwards.length > 0 ? (
             <div className="flex gap-1.5 overflow-x-auto border-t border-neutral-800/60 px-2.5 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {liveAwards.map((award) => (
-                <span
-                  key={award.id}
-                  className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/10 bg-black/30 px-2 py-1 text-[11px] font-semibold text-neutral-200"
-                >
-                  <span aria-hidden="true">{award.emoji}</span>
-                  <span className="max-w-[7.5rem] truncate">{awardWinnerLabel(award.winners)}</span>
-                  <span className={`tabular-nums ${t.c.points}`}>{award.value}</span>
-                </span>
-              ))}
+              {liveAwards.map((award) => {
+                const chip = (
+                  <>
+                    <span aria-hidden="true">{award.emoji}</span>
+                    <span className="max-w-[7.5rem] truncate">{awardWinnerLabel(award.winners)}</span>
+                    {award.kind === 'honorary' ? null : (
+                      <span className={`tabular-nums ${t.c.points}`}>{award.value}</span>
+                    )}
+                  </>
+                );
+                const chipClass =
+                  'inline-flex shrink-0 items-center gap-1 rounded-full border border-white/10 bg-black/30 px-2 py-1 text-[11px] font-semibold text-neutral-200';
+                if (award.speech) {
+                  return (
+                    <button
+                      key={award.id}
+                      type="button"
+                      className={chipClass}
+                      onClick={() => setCitationAward(award)}
+                    >
+                      {chip}
+                    </button>
+                  );
+                }
+                return (
+                  <span key={award.id} className={chipClass}>
+                    {chip}
+                  </span>
+                );
+              })}
             </div>
           ) : null}
 
@@ -215,6 +342,7 @@ export default function SweepstakeAwards({ standings, scoringMatches }: Props) {
                       onToggle={() =>
                         setOpenAwardId((current) => (current === award.id ? null : award.id))
                       }
+                      onOpenSpeech={setCitationAward}
                     />
                   ))}
                 </ul>
@@ -233,11 +361,15 @@ export default function SweepstakeAwards({ standings, scoringMatches }: Props) {
         ) : (
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {awardsData.map((award) => (
-              <AwardCard key={award.id} award={award} />
+              <AwardCard key={award.id} award={award} onOpenSpeech={setCitationAward} />
             ))}
           </div>
         )}
       </div>
+
+      {citationAward ? (
+        <AwardCitationDialog award={citationAward} onClose={() => setCitationAward(null)} />
+      ) : null}
     </section>
   );
 }

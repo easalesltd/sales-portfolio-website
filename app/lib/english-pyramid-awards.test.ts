@@ -61,9 +61,27 @@ const tom = standing({ id: 'tom', name: 'Tom', teams: ['CHE'], redCards: 1, loss
 const alex = standing({ id: 'alex', name: 'Alex', teamName: 'Alex FC', teams: ['LIV'], redCards: 0, losses: 4, draws: 5, goalsFor: 8, goalsAgainst: 11 });
 
 describe('computeSweepstakeAwards', () => {
-  it('returns one result per award config', () => {
-    const awards = computeSweepstakeAwards([dan, tom, alex], []);
+  it('returns one result per award config when the honorary winner is in the field', () => {
+    const jon = standing({ id: 'jon', name: 'Jon', teamName: 'You Can Leif Your Hat On FC', teams: ['CHE'] });
+    const awards = computeSweepstakeAwards([dan, tom, alex, jon], []);
     expect(awards.map((award) => award.id)).toEqual(SWEEPSTAKE_AWARDS_CONFIG.map((award) => award.id));
+  });
+
+  it('hides the honorary slut drop unless Jon is in the field', () => {
+    const awards = computeSweepstakeAwards([dan, tom, alex], []);
+    expect(awards.map((award) => award.id)).not.toContain('sexiest-slut-drop');
+  });
+
+  it('awards the Sexiest Slut Drop to Jon with a citation and no dashes', () => {
+    const jon = standing({ id: 'jon', name: 'Jon', teamName: 'You Can Leif Your Hat On FC', teams: ['CHE'] });
+    const awards = computeSweepstakeAwards([dan, tom, alex, jon], []);
+    const drop = awards.find((award) => award.id === 'sexiest-slut-drop');
+    expect(drop).toBeDefined();
+    expect(drop!.winners.map((winner) => winner.id)).toEqual(['jon']);
+    expect(drop!.kind).toBe('honorary');
+    expect(drop!.speech).toMatch(/slut drop/i);
+    expect(drop!.speech).toContain('Jon');
+    expect(drop!.speech).not.toMatch(/[—–]/);
   });
 
   it('leaves max awards empty when every stat is zero, but least-reds still has a winner', () => {
@@ -73,6 +91,9 @@ describe('computeSweepstakeAwards', () => {
       if (award.id === 'least-red-cards') {
         expect(award.winners.map((winner) => winner.id)).toEqual(['a']);
         expect(award.value).toBe(0);
+        continue;
+      }
+      if (award.kind === 'honorary') {
         continue;
       }
       expect(award.winners).toEqual([]);

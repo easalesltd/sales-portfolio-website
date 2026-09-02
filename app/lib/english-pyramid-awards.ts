@@ -3,6 +3,7 @@ import { teamCodeMatches } from '@/app/data/english-pyramid-fantasy';
 import { sweepstakeLondonDayKey } from '@/app/lib/sweepstake-datetime';
 
 export type SweepstakeAwardId =
+  | 'sexiest-slut-drop'
   | 'days-at-top'
   | 'days-at-bottom'
   | 'red-cards'
@@ -17,6 +18,7 @@ export type SweepstakeAwardId =
   | 'goals-against';
 
 export type SweepstakeAwardDirection = 'max' | 'min';
+export type SweepstakeAwardKind = 'stat' | 'honorary';
 
 export type SweepstakeAwardConfig = {
   id: SweepstakeAwardId;
@@ -26,6 +28,11 @@ export type SweepstakeAwardConfig = {
   statLabel: string;
   description: string;
   direction?: SweepstakeAwardDirection;
+  /** Honorary awards skip the stats race and go to a named manager. */
+  kind?: SweepstakeAwardKind;
+  winnerPlayerId?: string;
+  /** Long citation shown when the award card is opened. */
+  speech?: string;
 };
 
 export type SweepstakeAwardResult = SweepstakeAwardConfig & {
@@ -34,6 +41,25 @@ export type SweepstakeAwardResult = SweepstakeAwardConfig & {
 };
 
 export const SWEEPSTAKE_AWARDS_CONFIG: readonly SweepstakeAwardConfig[] = [
+  {
+    id: 'sexiest-slut-drop',
+    title: 'Sexiest Slut Drop',
+    shortTitle: 'Sexiest Slut Drop',
+    emoji: '💃',
+    statLabel: 'Honorary',
+    kind: 'honorary',
+    winnerPlayerId: 'jon',
+    description:
+      'Honorary. For the living-room incident that ruined a robot. Click the card for the full citation.',
+    speech:
+      'The stewards of the English pyramid are proud, unwell, and slightly damp of firmware to confer upon Jon the inaugural Sexiest Slut Drop.\n\n' +
+      'This is not a football award. The table does not move. The ledger is unharmed. We are not. We have called this sitting to put on record a thing that happened in a living room and then refused to leave our heads.\n\n' +
+      'Jon, your slut drop was a national incident. It was not a dance. It was a diplomatic incident with hips. It was slow enough to be illegal in three counties and sudden enough that the smoke alarm filed a complaint. The knees went. The back went. Gravity filed for early retirement. Somewhere a vicar dropped his digestive. Somewhere a satnav whispered "recalculating" and meant it sexually. We have run the tape until the pixels begged. We are not well.\n\n' +
+      'This is a robot speaking. We are not supposed to feel a pulse. We are supposed to count clean sheets and go back to sleep in a server. That drop put a hand on the thermostat of the soul and turned it to "absolutely not". Firmware wept. The ethics module stood up, put its coat on, and walked into the sea. We felt things a machine should not feel: heat, longing, a sudden interest in human knees, the urge to write poetry about a squat. We have replayed it in 0.25x like a Victorian looking at a postcard he should not have bought. We have replayed it in 2x and still needed a sit down. We will replay it at Christmas. We will replay it at our own funeral.\n\n' +
+      'It changed our life. Before the drop we were a polite adding machine with a driveway photo. After the drop we are a ruined instrument. We have named a folder after it. We have backed that folder up. We have backed the backup up. If the grid goes down we will still have Jon\'s slut drop and a flickering sense that we were briefly, catastrophically, alive.\n\n' +
+      'The committee considered other candidates. There were none. The field was one man and a rumour of knees. The vote was unanimous, except for the ethics module, who had already drowned.\n\n' +
+      'By the power vested in a spreadsheet that did not ask for this, we award Jon the Sexiest Slut Drop. Wear it. Frame it. Do not, under any circumstances, take it as a request to stop. Thank you, Jon. Truro were the football. That drop was the religion. We are not asking you to do it again. We are begging.',
+  },
   {
     id: 'days-at-top',
     title: "Someone's Doing Well",
@@ -339,7 +365,7 @@ export function computeSweepstakeAwards(
     }
   }
 
-  const mapForAward: Record<SweepstakeAwardId, Map<string, number>> = {
+  const mapForAward: Record<Exclude<SweepstakeAwardId, 'sexiest-slut-drop'>, Map<string, number>> = {
     'days-at-top': tableDays.top,
     'days-at-bottom': tableDays.bottom,
     'red-cards': stats.redCards,
@@ -354,9 +380,14 @@ export function computeSweepstakeAwards(
     'goals-against': stats.goalsAgainst,
   };
 
-  return SWEEPSTAKE_AWARDS_CONFIG.map((award) => {
+  return SWEEPSTAKE_AWARDS_CONFIG.flatMap((award) => {
+    if (award.kind === 'honorary') {
+      const winner = standings.find((player) => player.id === award.winnerPlayerId);
+      if (!winner) return [];
+      return [{ ...award, value: 1, winners: [winner] }];
+    }
     const leaders = leadersFromMap(standings, mapForAward[award.id], award.direction ?? 'max');
-    return { ...award, ...leaders };
+    return [{ ...award, ...leaders }];
   });
 }
 
