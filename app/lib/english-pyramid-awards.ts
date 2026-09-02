@@ -17,6 +17,8 @@ export type SweepstakeAwardId =
   | 'goals-for'
   | 'goals-against';
 
+export type SweepstakeStatAwardId = Exclude<SweepstakeAwardId, 'sexiest-slut-drop'>;
+
 export type SweepstakeAwardDirection = 'max' | 'min';
 export type SweepstakeAwardKind = 'stat' | 'honorary';
 
@@ -365,7 +367,7 @@ export function computeSweepstakeAwards(
     }
   }
 
-  const mapForAward: Record<Exclude<SweepstakeAwardId, 'sexiest-slut-drop'>, Map<string, number>> = {
+  const mapForAward: Record<SweepstakeStatAwardId, Map<string, number>> = {
     'days-at-top': tableDays.top,
     'days-at-bottom': tableDays.bottom,
     'red-cards': stats.redCards,
@@ -381,7 +383,7 @@ export function computeSweepstakeAwards(
   };
 
   return SWEEPSTAKE_AWARDS_CONFIG.flatMap((award) => {
-    if (award.kind === 'honorary') {
+    if (award.kind === 'honorary' || award.id === 'sexiest-slut-drop') {
       const winner = standings.find((player) => player.id === award.winnerPlayerId);
       if (!winner) return [];
       return [{ ...award, value: 1, winners: [winner] }];
