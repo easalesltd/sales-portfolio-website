@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott had a filthy Wednesday. Burton Albion hammered four past AFC Wimbledon at the Pirelli, then Luton stuffed Stockport at Kenilworth without letting a sniff through. Eight points in one evening and he is parked on 142 like he pays the mortgage on the table.\n\nChris watched Wimbledon get absolutely rinsed at Burton. Four shipped, one back, and that is another point shaved off the season. Down to 128. Saka Potatoes are going lukewarm.\n\nBen got a single draw point from Middlesbrough at Burnley and sod all from Cardiff at QPR. Two clubs, one point, the classic Mulletman service charge. He crawls to 108 and nobody is clapping.\n\nJon sent Stockport to Luton and they came home empty. No goals, no drama, just a clean sheet against them. Still fifth on 105. You Can Leif Your Hat On FC remains a hat you cannot leave anywhere with dignity.\n\nAsh\'s MK Dons got bullied at Wigan. Three against, one for reply, minus one on the night. Down to 90 and the mood is grim.\n\nNest did not kick a ball but sits third on 112 watching everyone else fumble about. Lovely work if you can get it.\n\nDave\'s Charlton nicked a point at West Brom and Burnley shared with Middlesbrough. Two draws, two points, up to 84. The Creamy Creamers are still bottom but at least the fridge door opened.\n\nTable: Scott 142, Chris 128, Nest 112, Ben 108, Jon 105, Ash 90, Dave 84.';
+  'Ben\'s Liverpool won 2-0 at Ipswich. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Ben is on 113.\n\nJon\'s Altrincham beat Eastleigh 2-1 at home. Plus 3 for the home win, net plus 3. Jon is on 108.\n\nDave\'s Ipswich lost 2-0 at home to Liverpool. No win points, net zero. Dave is on 84.\n\nScott still leads on 142 without a club kicking a ball.\n\nTable: Scott 142, Chris 128, Ben 113, Nest 112, Jon 108, Ash 90, Dave 84.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -4112,6 +4112,28 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Middlesbrough', tla: 'MID' },
     homeGoals: 1,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-04-alt-elh',
+    utcDate: '2026-09-04T18:45Z',
+    homeTeam: { name: 'Altrincham', tla: 'ALT' },
+    awayTeam: { name: 'Eastleigh', tla: 'ELH' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-04-ips-liv',
+    utcDate: '2026-09-04T19:00Z',
+    homeTeam: { name: 'Ipswich Town', tla: 'IPS' },
+    awayTeam: { name: 'Liverpool', tla: 'LIV' },
+    homeGoals: 0,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
