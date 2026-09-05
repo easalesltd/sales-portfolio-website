@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Ben finally remembered he owns Liverpool. They went to Ipswich, won 2-0, kept a clean sheet, and banked five points like adults. Mulletman FC jumps to 113 and pinches third off Nest by a point. About bloody time the haircut did something useful.\n\nJon\'s Altrincham battered Eastleigh 2-1 at Moss Lane. Home win, three points, up to 108. The National League side is currently more competent than half the Premier League picks in this league, which is embarrassing for everyone else.\n\nDave\'s Ipswich hosted Liverpool and got absolutely done 0-2. No fantasy points, just another evening of Creamy Creamers staring at the ceiling. Still last on 84 and the tractor is reverse-parked in a hedge.\n\nScott sat on his hands and stayed top on 142. Chris did the same on 128. Nest watched Ben overtake him and sits fourth on 112 looking like a dinosaur who forgot the asteroid was tonight. Ash remains sixth on 90 with zero clubs involved, which is the softest way to lose ground imaginable.\n\nTable: Scott 142, Chris 128, Ben 113, Nest 112, Jon 108, Ash 90, Dave 84.';
+  'Chris\'s Aldershot Town beat FC Halifax Town 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Lincoln City drew 1-1 with Southampton. Plus 1 for the draw, net plus 1. Then Newcastle drew 2-2 with Bournemouth. Plus 1 for the draw, net plus 1. Then Wednesday won 2-1 at Peterborough United. Plus 4 for the away win, net plus 4. Chris is on 138.\n\nJon\'s Salford City beat Port Vale 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Stockport County won 4-0 at Wigan Athletic. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more, net plus 6. Jon is on 118.\n\nBen\'s Fleetwood Town beat Shrewsbury Town 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Ben is on 117.\n\nNest\'s Blackburn Rovers lost 2-1 at Preston North End. No win points, net zero. Then Southend United beat Yeovil Town 3-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Nest is on 116.\n\nAsh\'s Shrewsbury Town lost 2-0 at Fleetwood Town. No win points, net zero. Then Southampton drew 1-1 with Lincoln City. Plus 1 for the draw, net plus 1. Then Preston North End beat Blackburn Rovers 2-1 at home. Plus 3 for the home win, net plus 3. Ash is on 94.\n\nDave\'s Port Vale lost 1-0 at Salford City. No win points, net zero. Then Charlton Athletic lost 4-0 at Stoke City. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Dave is on 84.\n\nScott still leads on 142 without a club kicking a ball.\n\nTable: Scott 142, Chris 138, Jon 118, Ben 117, Nest 116, Ash 94, Dave 84.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -4134,6 +4134,116 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Liverpool', tla: 'LIV' },
     homeGoals: 0,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-05-ald-hal',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    awayTeam: { name: 'FC Halifax Town', tla: 'HAL' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-05-fle-shr',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Fleetwood Town', tla: 'FLE' },
+    awayTeam: { name: 'Shrewsbury Town', tla: 'SHR' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-05-lin-sou',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Lincoln City', tla: 'LIN' },
+    awayTeam: { name: 'Southampton', tla: 'SOU' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-05-new-bou',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Newcastle United', tla: 'NEW' },
+    awayTeam: { name: 'AFC Bournemouth', tla: 'BOU' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-05-pet-shw',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Peterborough United', tla: 'PET' },
+    awayTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-05-pne-blk',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Preston North End', tla: 'PNE' },
+    awayTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-05-sal-pvl',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Salford City', tla: 'SAL' },
+    awayTeam: { name: 'Port Vale', tla: 'PVL' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-05-std-yeo',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Southend United', tla: 'STD' },
+    awayTeam: { name: 'Yeovil Town', tla: 'YEO' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-05-stk-cha',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Stoke City', tla: 'STK' },
+    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    homeGoals: 4,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-05-wga-stp',
+    utcDate: '2026-09-05T11:30Z',
+    homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
+    awayTeam: { name: 'Stockport County', tla: 'STP' },
+    homeGoals: 0,
+    awayGoals: 4,
     homeRedCards: 0,
     awayRedCards: 0,
   },
