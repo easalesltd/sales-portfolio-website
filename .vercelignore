@@ -1,0 +1,13 @@
+# Not needed to build or serve the Next.js app on Vercel.
+# Keeps the upload smaller; Deployment Storage still counts build *output*.
+/deploy
+/cypress
+/coverage
+/.cursor
+/STRUCTURED_DATA_OPTIMIZATIONS_COMPLETE.md
+/SEO_IMPROVEMENTS_RECOMMENDATIONS.md
+/GOOGLE_AI_SUMMARY_OPTIMIZATION.md
+/GOOGLE_SEARCH_CONSOLE_CHECKLIST.md
+/BING_INDEXNOW_SETUP.md
+/CONFIRM_EMAIL_SIMPLE.md
+/diary-of-sales-agent.md
