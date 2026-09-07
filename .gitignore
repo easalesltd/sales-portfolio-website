@@ -30,6 +30,9 @@ yarn-error.log*
 .env*.local
 .env
 
+# GBBO league file fallback when Redis is not configured
+/data/gbbo-league.json
+
 # vercel
 .vercel
 
