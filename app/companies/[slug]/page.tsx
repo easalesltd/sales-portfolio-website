@@ -583,7 +583,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       <div className="mb-8">
                         <h3 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">Showroom Tour</h3>
                         <ShowroomVideo 
-                          videoSrc="/images/companies/CGB-Giftware/Showroom Tour.mp4"
+                          videoSrc="/videos/companies/cgb-giftware/background.mp4"
                           posterSrc="/images/companies/CGB-Giftware/CGB Bespoke-01.jpg"
                         />
                         <p className="text-sm text-gray-600 dark:text-neutral-400 mt-2 italic">

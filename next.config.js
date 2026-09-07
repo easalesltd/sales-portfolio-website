@@ -97,6 +97,17 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   output: 'standalone',
+  // Videos in public/ are static assets. Keep them out of Function traces so
+  // Hobby Deployment Storage is not multiplied by leftover bundle copies.
+  outputFileTracingExcludes: {
+    '*': [
+      'public/videos/**',
+      'public/images/**/*.mp4',
+      'cypress/**',
+      'deploy/**',
+      'coverage/**',
+    ],
+  },
   /**
    * When a lockfile exists in a parent folder (e.g. home directory), Next can pick that as the
    * workspace root and Turbopack fails to resolve `next/font/google` (`@vercel/turbopack-next/...`).
