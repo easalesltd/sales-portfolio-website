@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ChiefOnly } from "@/app/components/gbbo/ChiefOnly";
 import { Button, Card, Empty, Field, Pill, Points, inputClass } from "@/app/components/gbbo/ui";
 import { uid } from "@/app/lib/gbbo/ids";
 import {
@@ -37,7 +38,13 @@ export default function ScorePage() {
     [league, week],
   );
 
-  if (!episode) return <Empty title="No episode for this week" body="Increase the number of weeks in Setup." />;
+  if (!episode) {
+    return (
+      <ChiefOnly>
+        <Empty title="No episode for this week" body="Increase the number of weeks in Setup." />
+      </ChiefOnly>
+    );
+  }
 
   function patch(recipe: (current: NonNullable<typeof episode>) => void) {
     update((draft) => {
@@ -133,6 +140,7 @@ export default function ScorePage() {
   }
 
   return (
+    <ChiefOnly>
     <div className="space-y-6">
       <Card
         eyebrow="Episode ledger"
@@ -308,5 +316,6 @@ export default function ScorePage() {
         </Button>
       </Card>
     </div>
+    </ChiefOnly>
   );
 }

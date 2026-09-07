@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ChiefOnly } from "@/app/components/gbbo/ChiefOnly";
 import { Button, Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import { bakerName, companionName, draftOrder, runDraft } from "@/app/lib/gbbo/league";
 import { useLeague } from "@/app/lib/gbbo/store";
@@ -46,10 +47,15 @@ export default function DraftPage() {
   }
 
   if (league.companions.length === 0) {
-    return <Empty title="No companions yet" body="Add last year's finishing order in Setup so the draft can run in reverse." />;
+    return (
+      <ChiefOnly>
+        <Empty title="No companions yet" body="Add last year's finishing order in Setup so the draft can run in reverse." />
+      </ChiefOnly>
+    );
   }
 
   return (
+    <ChiefOnly>
     <div className="space-y-6">
       <Card
         eyebrow="Draft Master"
@@ -121,5 +127,6 @@ export default function DraftPage() {
         </Card>
       ) : null}
     </div>
+    </ChiefOnly>
   );
 }

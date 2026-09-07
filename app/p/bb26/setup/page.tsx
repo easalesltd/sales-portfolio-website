@@ -1,5 +1,6 @@
 "use client";
 
+import { ChiefOnly } from "@/app/components/gbbo/ChiefOnly";
 import { Button, Card, Field, inputClass } from "@/app/components/gbbo/ui";
 import { uid } from "@/app/lib/gbbo/ids";
 import { createEmptyLeague, emptyEpisode } from "@/app/lib/gbbo/seed";
@@ -9,6 +10,7 @@ export default function SetupPage() {
   const { league, update, replace } = useLeague();
 
   return (
+    <ChiefOnly>
     <div className="space-y-6">
       <Card eyebrow="Chief Companion" title="League setup" action={
             <div className="flex gap-2">
@@ -127,5 +129,6 @@ export default function SetupPage() {
         })}>Add a baker</Button>
       </Card>
     </div>
+    </ChiefOnly>
   );
 }

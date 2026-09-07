@@ -4,9 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bunting } from "./Bunting";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
+import { gbboSlug } from "@/app/lib/gbbo/identity";
+import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 
-const NAV = [
+const PLAYER_NAV = [
+  { href: GBBO_LEAGUE_PATH, label: "League" },
+  { href: `${GBBO_LEAGUE_PATH}/teams`, label: "My team" },
+  { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties" },
+  { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules" },
+];
+
+const CHIEF_NAV = [
   { href: GBBO_LEAGUE_PATH, label: "League" },
   { href: `${GBBO_LEAGUE_PATH}/draft`, label: "Draft" },
   { href: `${GBBO_LEAGUE_PATH}/teams`, label: "Teams" },
@@ -19,6 +28,9 @@ const NAV = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { league, loaded, saving } = useLeague();
+  const { ready, isChief, playerSlug, lockChief } = useGbboSession();
+  const player = league.companions.find((companion) => gbboSlug(companion.name) === playerSlug);
+  const nav = isChief ? CHIEF_NAV : PLAYER_NAV;
 
   return (
     <div className="relative min-h-screen">
@@ -31,11 +43,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
           <div className="text-right text-sm text-chocolate/70">
             <p>Series {league.seriesYear} · Week {league.currentWeek} of {league.totalWeeks}</p>
-            <p>{saving ? "Saving the ledger…" : loaded ? "Chief Companion ledger" : "Warming the ovens…"}</p>
+            <p>
+              {saving ? "Saving the ledger…" : !ready || !loaded ? "Warming the ovens…" : isChief ? "Chief Companion" : player ? `Playing as ${player.name}` : "Companion tent"}
+            </p>
+            {isChief ? (
+              <button className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-raspberry" onClick={() => void lockChief()}>
+                Leave the steward's desk
+              </button>
+            ) : null}
           </div>
         </div>
         <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 pb-4">
-          {NAV.map((item) => {
+          {nav.map((item) => {
             const active = pathname === item.href;
             return (
               <Link

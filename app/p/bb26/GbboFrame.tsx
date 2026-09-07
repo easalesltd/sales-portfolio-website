@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { AppShell } from '@/app/components/gbbo/AppShell';
+import { GbboSessionProvider } from '@/app/lib/gbbo/session';
 import { LeagueProvider } from '@/app/lib/gbbo/store';
 
 export function GbboFrame({ children }: { children: React.ReactNode }) {
@@ -15,8 +16,10 @@ export function GbboFrame({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <LeagueProvider>
-      <AppShell>{children}</AppShell>
-    </LeagueProvider>
+    <GbboSessionProvider>
+      <LeagueProvider>
+        <AppShell>{children}</AppShell>
+      </LeagueProvider>
+    </GbboSessionProvider>
   );
 }

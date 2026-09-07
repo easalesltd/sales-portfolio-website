@@ -1,4 +1,4 @@
-import { uid } from "./ids";
+import { bakerIdForName, companionIdForName } from "./identity";
 import type { Baker, EpisodeScore, LeagueState } from "./types";
 
 export const SERIES_17_BAKERS: Omit<Baker, "id" | "eliminatedInWeek">[] = [
@@ -54,7 +54,7 @@ export const COMPANIONS = ["Dave", "Cowie", "Guns", "Shuker", "Lee", "Nest"] as 
 
 export function createCompanions() {
   return COMPANIONS.map((name, index) => ({
-    id: uid("comp"),
+    id: companionIdForName(name),
     name,
     lastYearPlace: index + 1,
     isChief: name === "Dave",
@@ -66,7 +66,7 @@ export function createEmptyLeague(): LeagueState {
   const companions = createCompanions();
   const bakers = SERIES_17_BAKERS.map((baker) => ({
     ...baker,
-    id: uid("baker"),
+    id: bakerIdForName(baker.name),
     eliminatedInWeek: null,
   }));
   return {

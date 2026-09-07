@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
+import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
+import { gbboSlug } from "@/app/lib/gbbo/identity";
 import {
   bakerName,
   companionName,
@@ -10,10 +12,12 @@ import {
   teamForWeek,
   teamSizeForWeek,
 } from "@/app/lib/gbbo/league";
+import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 
 export default function LeaguePage() {
   const { league, loaded } = useLeague();
+  const { isChief, playerSlug, setPlayer } = useGbboSession();
   if (!loaded) return <p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>;
 
   const table = companionTotals(league);
@@ -58,24 +62,42 @@ export default function LeaguePage() {
           <Card eyebrow="This weekend" title={`Week ${league.currentWeek}`}>
             <div className="space-y-3 text-sm">
               <p>Each companion plays <strong>{size} baker{size === 1 ? "" : "s"}</strong> this week. Last week's side stands unless they substitute one baker.</p>
-              <p>{league.draftComplete ? "The draft is complete." : "The draft still needs running."}</p>
+              <p>{league.draftComplete ? "The draft is complete." : "Waiting for the Chief Companion to run the draft."}</p>
               <p>{latest ? `Last published: ${latest.title}.` : "No episode has been published yet."}</p>
               <div className="flex flex-wrap gap-2 pt-2">
                 <Pill tone="tent">Joker weeks 1–4</Pill>
                 <Pill tone="butter">One sub a week</Pill>
                 <Pill tone="raspberry">Beer baguette if late</Pill>
               </div>
-              <Link href="/p/bb26/score" className="mt-4 inline-flex rounded-full bg-raspberry px-5 py-2.5 text-sm font-bold text-flour">
-                Score this episode
-              </Link>
+              {isChief ? (
+                <Link href={`${GBBO_LEAGUE_PATH}/score`} className="mt-4 inline-flex rounded-full bg-raspberry px-5 py-2.5 text-sm font-bold text-flour">
+                  Score this episode
+                </Link>
+              ) : (
+                <Link href={`${GBBO_LEAGUE_PATH}/teams`} className="mt-4 inline-flex rounded-full bg-tent px-5 py-2.5 text-sm font-bold text-flour">
+                  {playerSlug ? "Set this week's bakers" : "Choose your name, then set your bakers"}
+                </Link>
+              )}
             </div>
           </Card>
-          <Card eyebrow="How this works" title="Recaps, then a human eye">
-            <p className="text-sm leading-7 text-chocolate/80">
-              After each episode, paste a recap or ask me to read one. Official results — Star Baker,
-              elimination, technical places — usually come through cleanly. Handshakes, drops, tears
-              and Nigella innuendos need someone who actually watched the tent.
+          <Card eyebrow="Who is playing?" title={playerSlug ? `Hello, ${league.companions.find((companion) => gbboSlug(companion.name) === playerSlug)?.name ?? "companion"}` : "Tap your name"}>
+            <p className="mb-3 text-sm text-chocolate/75">
+              The site remembers you on this phone or laptop, and it remembers the side you submit.
             </p>
+            <div className="flex flex-wrap gap-2">
+              {league.companions.map((companion) => {
+                const active = gbboSlug(companion.name) === playerSlug;
+                return (
+                  <button
+                    key={companion.id}
+                    className={`rounded-full px-4 py-2 text-sm font-bold ${active ? "bg-tent text-flour" : "bg-flour text-chocolate"}`}
+                    onClick={() => setPlayer(companion.name)}
+                  >
+                    {companion.name}
+                  </button>
+                );
+              })}
+            </div>
           </Card>
         </div>
       </div>
