@@ -7523,8 +7523,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Stoke City', tla: 'STK' },
   },
   {
-    id: '2026-09-08-oxf-rea',
-    utcDate: '2026-09-08T18:45Z',
+    id: '2026-11-04-oxf-rea',
+    utcDate: '2026-11-04T19:45Z',
     homeTeam: { name: 'Oxford United', tla: 'OXF' },
     awayTeam: { name: 'Reading', tla: 'REA' },
   },
