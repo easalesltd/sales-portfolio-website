@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris is still squatting on top with 188, the smug bastard. Hednesford Town, Maidstone United and West Ham all won away to keep his arse polished, while Chester FC and Tonbridge Angels contributed all the structural integrity of wet bog roll.\n\nScott has 166 after a properly deranged shift. Darlington got stuffed 5-2 and still nicked a red-card point, Horsham drew, Oxford City lost, Weston-super-Mare won 3-1, and Bolton Wanderers conceded three. That is not a squad, it is a pub fruit machine wired by a lunatic.\n\nJon sits on 149. Salisbury hammered Slough Town 5-1 and Bedford Town won away, rescuing a night on which Macclesfield produced a 0-0 so joyless that their red card was the most entertaining thing on the pitch. Absolute beige bastardry.\n\nBen has 143. Dover Athletic did the useful bit by winning 1-0 away, while Dagenham & Redbridge, Hebburn Town and Morecambe wandered into defeats like confused pissheads entering the wrong kebab shop. Cardiff City scraped a draw and prevented the whole evening becoming a bin fire.\n\nNest reaches 129 after Buxton battered Brackley Town 5-0 and Sheffield United won at Blackburn Rovers. Chesham United and Harborough Town then shat in the kettle, but the damage was contained. Barely.\n\nAsh is on 124 after Chelmsford City joined Dorking Wanderers in a 3-3 fever dream, Spalding United won away, South Shields won at home and Southampton beat Swansea City 3-1. AFC Totton and Preston North End lost, because apparently competence has a strict closing time.\n\nDave remains seventh on 114, but Torquay United\'s 4-0 away demolition gave the basement a fresh coat of paint. Burnley drew, while Marine and Worksop Town lost. He is still last, just with nicer curtains and the same fucking damp.\n\nTable: Chris 188, Scott 166, Jon 149, Ben 143, Nest 129, Ash 124, Dave 114.';
+  'Jon\'s Birmingham City lost 2-1 at Norwich City. No win points, net zero. Jon is on 149.\n\nDave\'s Charlton Athletic served up a boring 0-0 against QPR. Minus 1 for the 0-0, net minus 1. Dave is on 113.\n\nChris still leads on 188 without a club kicking a ball.\n\nTable: Chris 188, Scott 166, Jon 149, Ben 143, Nest 129, Ash 124, Dave 113.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -5135,6 +5135,28 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'West Ham United', tla: 'WHU' },
     homeGoals: 2,
     awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-09-nor-bir',
+    utcDate: '2026-09-09T18:45Z',
+    homeTeam: { name: 'Norwich City', tla: 'NOR' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-09-cha-qpr',
+    utcDate: '2026-09-09T19:00Z',
+    homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    awayTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
+    homeGoals: 0,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
