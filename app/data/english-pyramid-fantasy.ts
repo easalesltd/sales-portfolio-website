@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Midweek Championship cruelty with nothing for the rest of the table to do but watch two managers trip over their own feet.\n\nJon\'s Birmingham City went to Norwich City, lost 2-1, and banked the exact square root of fuck all. Net zero. He is still third on 149, which is a polite way of saying the Blues just wasted everyone\'s evening.\n\nDave\'s Charlton Athletic then produced a 0-0 against Queens Park Rangers so barren it should come with a counselling leaflet. Boring 0-0 tax: minus 1. Dave drops to 113 and remains the league\'s official basement tenant.\n\nChris sits untouched on 188. Scott still has 166. Ben is on 143, Nest 129, Ash 124. None of them had a club involved. Lucky bastards.\n\nTable: Chris 188, Scott 166, Jon 149, Ben 143, Nest 129, Ash 124, Dave 113.';
+  'Scott\'s Luton Town lost 2-1 at Stevenage. No win points, plus 1 for the red, net plus 1. Scott is on 167.\n\nChris still leads on 188 without a club kicking a ball. Dave is still last on 113.\n\nTable: Chris 188, Scott 167, Jon 149, Ben 143, Nest 129, Ash 124, Dave 113.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -5159,6 +5159,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-10-ste-lut',
+    utcDate: '2026-09-10T19:00Z',
+    homeTeam: { name: 'Stevenage', tla: 'STE' },
+    awayTeam: { name: 'Luton Town', tla: 'LUT' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
   },
 ];
 
