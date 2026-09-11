@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Luton Town lost 2-1 at Stevenage. No win points, plus 1 for the red, net plus 1. Scott is on 167.\n\nChris still leads on 188 without a club kicking a ball. Dave is still last on 113.\n\nTable: Chris 188, Scott 167, Jon 149, Ben 143, Nest 129, Ash 124, Dave 113.';
+  'Chris\'s West Ham beat Wrexham 6-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Chris is on 193.\n\nScott\'s Kidderminster Harriers beat Hartlepool United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Scott is on 171.\n\nJon\'s Hartlepool United lost 2-0 at Kidderminster Harriers. No win points, plus 1 for the red, net plus 1. Jon is on 150.\n\nDave is still last on 113.\n\nTable: Chris 193, Scott 171, Jon 150, Ben 143, Nest 129, Ash 124, Dave 113.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -5170,6 +5170,28 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 1,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-11-kid-hpl',
+    utcDate: '2026-09-11T18:45Z',
+    homeTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+    awayTeam: { name: 'Hartlepool United', tla: 'HPL' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-11-whu-wxm',
+    utcDate: '2026-09-11T19:00Z',
+    homeTeam: { name: 'West Ham United', tla: 'WHU' },
+    awayTeam: { name: 'Wrexham', tla: 'WXM' },
+    homeGoals: 6,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
 ];
 
