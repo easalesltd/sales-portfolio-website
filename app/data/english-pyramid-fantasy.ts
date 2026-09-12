@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s West Ham turned Wrexham into roadkill, 6-0 at the London Stadium. Home win, clean sheet, three-plus goals: plus 5. The bastard extends the lead on 193 and looks smug enough to bottle it later.\n\nScott\'s Kidderminster Harriers battered Jon\'s Hartlepool United 2-0 at Aggborough. Scott banks plus 4 (win and clean sheet) and sits on 171, still hunting Chris like a man who thinks effort counts.\n\nJon\'s Pool got done, shipped two, then donated a red for a pathetic plus 1. He limps to 150. Consolation points for getting a lad sent off while losing: peak National League poetry.\n\nBen (143), Nest (129) and Ash (124) sat on their arses and watched. Dave remains the league\'s emotional support cone on 113.\n\nTable: Chris 193, Scott 171, Jon 150, Ben 143, Nest 129, Ash 124, Dave 113.';
+  'Chris\'s Cheltenham Town won 3-1 at Crawley Town. Plus 4 for the away win, plus 1 for three or more, net plus 5. Chris is on 198.\n\nScott\'s Bolton Wanderers beat Cardiff City 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Crawley Town lost 3-1 at home to Cheltenham Town. No win points, minus 1 for leaking three, net minus 1. Scott is on 174.\n\nJon\'s Birmingham City won 2-1 at Derby County. Plus 4 for the away win, net plus 4. Jon is on 154.\n\nBen\'s Cardiff City lost 1-0 at Bolton Wanderers. No win points, net zero. Then Grimsby Town beat Bristol Rovers 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Tamworth lost 3-1 at Harrogate Town. No win points, minus 1 for leaking three, net minus 1. Then Notts County lost 1-0 at home to Bradford City. No win points, net zero. Then Barrow drew 2-2 with Worthing. Plus 1 for the draw, net plus 1. Ben is on 147.\n\nNest\'s Bristol Rovers lost 2-0 at Grimsby Town. No win points, plus 1 for the red, net plus 1. Nest is on 130.\n\nAsh\'s Leyton Orient lost 3-2 at home to Wycombe Wanderers. No win points, minus 1 for leaking three, net minus 1. Ash is on 123.\n\nDave is still last on 113.\n\nTable: Chris 198, Scott 174, Jon 154, Ben 147, Nest 130, Ash 123, Dave 113.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -5190,6 +5190,94 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Wrexham', tla: 'WXM' },
     homeGoals: 6,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-12-bol-cdf',
+    utcDate: '2026-09-12T11:30Z',
+    homeTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
+    awayTeam: { name: 'Cardiff City', tla: 'CDF' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-12-cra-cht',
+    utcDate: '2026-09-12T11:30Z',
+    homeTeam: { name: 'Crawley Town', tla: 'CRA' },
+    awayTeam: { name: 'Cheltenham Town', tla: 'CHT' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-12-der-bir',
+    utcDate: '2026-09-12T11:30Z',
+    homeTeam: { name: 'Derby County', tla: 'DER' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-12-gri-brst',
+    utcDate: '2026-09-12T11:30Z',
+    homeTeam: { name: 'Grimsby Town', tla: 'GRI' },
+    awayTeam: { name: 'Bristol Rovers', tla: 'BRST' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-12-har-tam',
+    utcDate: '2026-09-12T11:30Z',
+    homeTeam: { name: 'Harrogate Town', tla: 'HAR' },
+    awayTeam: { name: 'Tamworth', tla: 'TAM' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-12-ley-wyc',
+    utcDate: '2026-09-12T11:30Z',
+    homeTeam: { name: 'Leyton Orient', tla: 'LEY' },
+    awayTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
+    homeGoals: 2,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-12-nco-brd',
+    utcDate: '2026-09-12T11:30Z',
+    homeTeam: { name: 'Notts County', tla: 'NCO' },
+    awayTeam: { name: 'Bradford City', tla: 'BRD' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-12-wor-brw',
+    utcDate: '2026-09-12T11:30Z',
+    homeTeam: { name: 'Worthing', tla: 'WOR' },
+    awayTeam: { name: 'Barrow', tla: 'BRW' },
+    homeGoals: 2,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
