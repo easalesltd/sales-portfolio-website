@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Wolves won 1-0 at Sheffield United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Scott is on 200.\n\nNest\'s Sheffield United lost 1-0 at home to Wolves. No win points, net zero. Nest is on 152.\n\nChris still leads on 219 without a club kicking a ball. Dave is still last on 143.\n\nTable: Chris 219, Scott 200, Jon 165, Ben 163, Nest 152, Ash 147, Dave 143.';
+  'Scott\'s Wolves won 1-0 at Sheffield United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Scott is on 200.\n\nBen\'s Coventry City lost 5-0 at home to Brighton. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Ben is on 163.\n\nNest\'s Sheffield United lost 1-0 at home to Wolves. No win points, net zero. Nest is on 152.\n\nChris still leads on 219 without a club kicking a ball. Dave is still last on 143.\n\nTable: Chris 219, Scott 200, Jon 165, Ben 163, Nest 152, Ash 147, Dave 143.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -5938,6 +5938,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeGoals: 0,
     awayGoals: 1,
     homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-13-cov-bha',
+    utcDate: '2026-09-13T13:00Z',
+    homeTeam: { name: 'Coventry City', tla: 'COV' },
+    awayTeam: { name: 'Brighton & Hove Albion', tla: 'BHA' },
+    homeGoals: 0,
+    awayGoals: 5,
+    homeRedCards: 1,
     awayRedCards: 0,
   },
 ];
