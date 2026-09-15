@@ -9108,8 +9108,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Sutton United', tla: 'SUT' },
   },
   {
-    id: '2026-09-19-lee-cry',
-    utcDate: '2026-09-19T14:00Z',
+    id: '2026-09-20-lee-cry',
+    utcDate: '2026-09-20T13:00:00Z',
     homeTeam: { name: 'Leeds United', tla: 'LEE' },
     awayTeam: { name: 'Crystal Palace', tla: 'CRY' },
   },
@@ -9132,8 +9132,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Bradford City', tla: 'BRD' },
   },
   {
-    id: '2026-09-19-mci-sun',
-    utcDate: '2026-09-19T14:00Z',
+    id: '2026-09-20-mci-sun',
+    utcDate: '2026-09-20T13:00:00Z',
     homeTeam: { name: 'Manchester City', tla: 'MCI' },
     awayTeam: { name: 'Sunderland', tla: 'SUN' },
   },
