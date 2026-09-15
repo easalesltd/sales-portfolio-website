@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s Newcastle lost 4-1 at Leeds United. No win points, minus 1 for leaking three, net minus 1. Chris is on 218.\n\nNest\'s Leeds United beat Newcastle 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Nest is on 156.\n\nAsh is still last on 147.\n\nTable: Chris 218, Scott 200, Jon 165, Ben 163, Nest 156, Dave 149, Ash 147.';
+  'Chris\'s Aldershot Town drew 1-1 with Yeovil Town. Plus 1 for the draw, net plus 1. Then Lincoln City won 1-0 at Bristol City. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Forest Green drew 1-1 with Carlisle United. Plus 1 for the draw, net plus 1. Chris is on 225.\n\nJon\'s Truro City and Salisbury played each other and finished 0-1. No win points for one, plus 4 for the away win, plus 1 for the clean sheet for the other. Jon is on 170.\n\nBen\'s Middlesbrough drew 2-2 with Millwall. Plus 1 for the draw, net plus 1. Then Barrow lost 1-0 at Solihull Moors. No win points, plus 1 for the red, net plus 1. Then Tamworth lost 3-1 at Southend United. No win points, minus 1 for leaking three, net minus 1. Ben is on 164.\n\nNest\'s Southend United beat Tamworth 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Hornchurch lost 1-0 at Worthing. No win points, net zero. Nest is on 160.\n\nDave\'s Sutton United beat Eastleigh 2-1 at home. Plus 3 for the home win, net plus 3. Dave is on 152.\n\nAsh\'s Carlisle United drew 1-1 with Forest Green. Plus 1 for the draw, net plus 1. Then Wealdstone lost 1-0 at home to FC Halifax Town. No win points, net zero. Ash is on 148.\n\nTable: Chris 225, Scott 200, Jon 170, Ben 164, Nest 160, Dave 152, Ash 148.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -5970,6 +5970,117 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Newcastle United', tla: 'NEW' },
     homeGoals: 4,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/truro-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-09-15-tru-sby',
+    utcDate: '2026-09-15T18:45:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Salisbury', tla: 'SBY' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-15-ald-yeo',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    awayTeam: { name: 'Yeovil Town', tla: 'YEO' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-15-brc-lin',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Bristol City', tla: 'BRC' },
+    awayTeam: { name: 'Lincoln City', tla: 'LIN' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-15-car-fgr',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Carlisle United', tla: 'CAR' },
+    awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-15-mid-mil',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Middlesbrough', tla: 'MID' },
+    awayTeam: { name: 'Millwall', tla: 'MIL' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-15-sol-brw',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Solihull Moors', tla: 'SOL' },
+    awayTeam: { name: 'Barrow', tla: 'BRW' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-15-std-tam',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Southend United', tla: 'STD' },
+    awayTeam: { name: 'Tamworth', tla: 'TAM' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-15-sut-elh',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Sutton United', tla: 'SUT' },
+    awayTeam: { name: 'Eastleigh', tla: 'ELH' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-15-wea-hal',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Wealdstone', tla: 'WEA' },
+    awayTeam: { name: 'FC Halifax Town', tla: 'HAL' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-15-wor-hrn',
+    utcDate: '2026-09-15T18:45Z',
+    homeTeam: { name: 'Worthing', tla: 'WOR' },
+    awayTeam: { name: 'Hornchurch', tla: 'HRN' },
+    homeGoals: 1,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
