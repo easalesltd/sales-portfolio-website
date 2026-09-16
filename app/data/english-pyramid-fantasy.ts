@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris treated Tuesday like a buffet. Aldershot Town scraped a 1-1 with Yeovil Town for a cheap plus 1, Lincoln City nicked a filthy 0-1 at Bristol City for five (away win plus clean sheet), and Forest Green Rovers drew 1-1 with Carlisle United for another plus 1. Seven points off a midweek. Chris sits on 225 and looks smug about it.\n\nScott did absolutely fuck all again and somehow still owns second on 200. Idle bastard energy.\n\nJon\'s own squad punched itself in the face: Truro City lost 0-1 to Salisbury, so one club blanked while the other banked the away win and clean sheet for five. Jon climbs to 170 off an in-house mugging.\n\nBen\'s night was a wash. Middlesbrough drew 2-2 with Millwall (plus 1), Barrow got stuffed 1-0 at Solihull Moors but pinched a red-card point, then Tamworth shipped three in a 3-1 defeat at Southend United and took the minus 1. Net plus 1. Ben is on 164 and somehow still breathing.\n\nNest\'s Southend United battered Tamworth 3-1 at home for four (win plus the three-goal bonus), then Hornchurch rolled over 1-0 at Worthing for nothing. Nest is on 160.\n\nDave\'s Sutton United finally did something useful and beat Eastleigh 2-1 at home for three. Dave is on 152.\n\nAsh scraped a 1-1 for Carlisle United against Forest Green (plus 1) then watched Wealdstone lose 0-1 at home to FC Halifax Town like a wet paper bag. Ash remains last on 148.\n\nTable: Chris 225, Scott 200, Jon 170, Ben 164, Nest 160, Dave 152, Ash 148.';
+  'Scott\'s Kidderminster Harriers beat Gateshead 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Boreham Wood won 2-1 at Scunthorpe United. Plus 4 for the away win, net plus 4. Scott is on 208.\n\nJon\'s Altrincham and Hartlepool United played each other and finished 2-1. Plus 3 for the home win for one, no win points, plus 1 for the red for the other. Jon is on 174.\n\nDave\'s Scunthorpe United lost 2-1 at home to Boreham Wood. No win points, net zero. Dave is on 152.\n\nChris still leads on 225 without a club kicking a ball. Ash is still last on 148.\n\nTable: Chris 225, Scott 208, Jon 174, Ben 164, Nest 160, Dave 152, Ash 148.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -6081,6 +6081,40 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Hornchurch', tla: 'HRN' },
     homeGoals: 1,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final score (ESPN + FotMob). Red-card feeds disagree — redsUnchecked. */
+    id: '2026-09-16-alt-hpl',
+    utcDate: '2026-09-16T18:45Z',
+    homeTeam: { name: 'Altrincham', tla: 'ALT' },
+    awayTeam: { name: 'Hartlepool United', tla: 'HPL' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-16-kid-gat',
+    utcDate: '2026-09-16T18:45Z',
+    homeTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+    awayTeam: { name: 'Gateshead', tla: 'GAT' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-16-scu-bore',
+    utcDate: '2026-09-16T18:45Z',
+    homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+    awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
+    homeGoals: 1,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
