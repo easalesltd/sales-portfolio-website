@@ -120,15 +120,17 @@ async function resolveFixtureKickoff(fixture, now, updateDelayMinutes, cache) {
       ...resolveEffectiveKickoff(fixture.utcDate, null),
       espnMatch: null,
       espnLookupFailed: false,
+      espnApplicable: false,
     };
   }
 
   try {
-    const espnMatch = await loadEspnEventsForFixture(fixture, cache);
+    const state = await loadEspnScoreboardState(fixture, cache);
     return {
-      ...resolveEffectiveKickoff(fixture.utcDate, espnMatch),
-      espnMatch,
+      ...resolveEffectiveKickoff(fixture.utcDate, state.match),
+      espnMatch: state.match,
       espnLookupFailed: false,
+      espnApplicable: state.applicable,
     };
   } catch (error) {
     console.warn(
@@ -140,6 +142,7 @@ async function resolveFixtureKickoff(fixture, now, updateDelayMinutes, cache) {
       ...resolveEffectiveKickoff(fixture.utcDate, null),
       espnMatch: null,
       espnLookupFailed: true,
+      espnApplicable: Boolean(espnSlugForFixture(fixture)),
     };
   }
 }
@@ -184,10 +187,12 @@ function formatEspnHint(fixture, espnMatch) {
   return ` ESPN: ${scoreLine} (${finalTag}); ${redLine}.`;
 }
 
-async function loadEspnEventsForFixture(fixture, cache) {
+async function loadEspnScoreboardState(fixture, cache) {
   const slug = espnSlugForFixture(fixture);
   const dateParam = espnDateParamFromUtcDate(fixture.utcDate);
-  if (!slug || !dateParam) return null;
+  if (!slug || !dateParam) {
+    return { applicable: false, match: null, eventCount: 0 };
+  }
 
   const cacheKey = `${slug}:${dateParam}`;
   if (!cache.has(cacheKey)) {
@@ -195,7 +200,17 @@ async function loadEspnEventsForFixture(fixture, cache) {
     cache.set(cacheKey, parseEspnScoreboard(payload, slug, IGNORED_ESPN_STATUSES));
   }
 
-  return findEspnEventForFixture(cache.get(cacheKey), fixture.homeTla, fixture.awayTla);
+  const events = cache.get(cacheKey);
+  return {
+    applicable: true,
+    match: findEspnEventForFixture(events, fixture.homeTla, fixture.awayTla) ?? null,
+    eventCount: events.length,
+  };
+}
+
+async function loadEspnEventsForFixture(fixture, cache) {
+  const state = await loadEspnScoreboardState(fixture, cache);
+  return state.match;
 }
 
 async function formatDueFixturesWithEspnHints(dueFixtures, source) {
@@ -356,4 +371,5 @@ module.exports = {
   readDataFileSource,
   resolveFixtureKickoff,
   loadEspnEventsForFixture,
+  loadEspnScoreboardState,
 };

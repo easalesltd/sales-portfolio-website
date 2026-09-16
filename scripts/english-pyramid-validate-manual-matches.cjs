@@ -18,6 +18,15 @@ const {
   DEFAULT_HARD_OVERDUE_MINUTES,
   classifyUnrecordedFixtureOverdue,
 } = require('./lib/english-pyramid-overdue-classification.cjs');
+const {
+  collectDuplicateDirectedPairs,
+  collectFixtureCountMismatches,
+  collectPastUnrecordedFixtures,
+  describeIntegrityErrors,
+  formatPlayedGameAudit,
+  parseFantasyPlayersFromSource,
+  summarizePlayedGames,
+} = require('./lib/english-pyramid-fixture-integrity.cjs');
 
 const repoRoot = path.resolve(__dirname, '..');
 const dataPath = path.join(repoRoot, 'app/data/english-pyramid-fantasy.ts');
@@ -126,6 +135,7 @@ async function validateOverdueFixturesWithEspn(seenIds, fixtures, errors) {
       hardOverdueMinutes: DEFAULT_HARD_OVERDUE_MINUTES,
       espnMatch: kickoffInfo.espnMatch,
       espnLookupFailed: kickoffInfo.espnLookupFailed === true,
+      espnApplicable: kickoffInfo.espnApplicable === true,
     });
 
     if (!verdict.overdue) {
@@ -143,6 +153,12 @@ async function validateOverdueFixturesWithEspn(seenIds, fixtures, errors) {
     const delayNote = kickoffInfo.isDelayed
       ? ` (ESPN kick-off ${kickoffInfo.effectiveUtcDate}, delayed ${kickoffInfo.delayMinutes}m from schedule)`
       : '';
+    if (verdict.reason === 'stale-listing') {
+      errors.push(
+        `${fixture.id}: ESPN has no ${fixture.homeTla} vs ${fixture.awayTla} on this date ${Math.floor(minutesSinceKickoff)}m after kick-off. Rewrite the fixture to the rearranged date or mark it postponed.`,
+      );
+      continue;
+    }
     errors.push(
       `${fixture.id}: kicked off ${Math.floor(minutesSinceKickoff)} minutes ago but has no manual result yet (${verdict.reason})${delayNote}`,
     );
@@ -151,19 +167,43 @@ async function validateOverdueFixturesWithEspn(seenIds, fixtures, errors) {
 
 async function main() {
 const manualMatches = parseManualMatches();
-const fixtures = parseFixturesFromSource(source).map((fixture) => ({
+const seenIds = new Set(manualMatches.map((match) => match.id));
+const errors = [];
+const parsedFixtures = parseFixturesFromSource(source);
+const fixtures = parsedFixtures.map((fixture) => ({
   id: fixture.id,
   utcDate: fixture.utcDate,
   homeTla: fixture.homeTeam.tla,
   awayTla: fixture.awayTeam.tla,
   postponed: fixture.postponed === true,
 }));
-const seenIds = new Set(manualMatches.map((match) => match.id));
-const errors = [];
 
 validateManualMatchesAgainstFixtures(manualMatches, fixtures, errors, {
   requireAllInFixtures: true,
 });
+
+const recordedIds = seenIds;
+errors.push(
+  ...describeIntegrityErrors({
+    duplicates: collectDuplicateDirectedPairs(parsedFixtures),
+    countMismatches: collectFixtureCountMismatches(parsedFixtures),
+    pastUnrecorded: collectPastUnrecordedFixtures(parsedFixtures, recordedIds, now),
+  }),
+);
+
+const playedAudit = summarizePlayedGames(
+  parseFantasyPlayersFromSource(source),
+  parsedFixtures,
+  recordedIds,
+  now,
+);
+console.log(formatPlayedGameAudit(playedAudit));
+if (!playedAudit.balanced) {
+  errors.push(
+    'Played-game audit: at least one manager is missing a ledger result for a past league fixture.',
+  );
+}
+
 await validateOverdueFixturesWithEspn(
   seenIds,
   fixtures.filter((fixture) => !fixture.postponed),

@@ -6,6 +6,8 @@
 const { isEspnFinalPeriod } = require('./world-cup-espn-finals.cjs');
 
 const DEFAULT_HARD_OVERDUE_MINUTES = 240;
+/** After kick-off, an ESPN league with a loaded scoreboard and no matching event is a ghost listing. */
+const DEFAULT_STALE_LISTING_GRACE_MINUTES = 20;
 
 function isEspnMatchInPlay(espnMatch) {
   return Boolean(espnMatch) && !isEspnFinalPeriod(espnMatch.period, espnMatch);
@@ -15,9 +17,20 @@ function classifyUnrecordedFixtureOverdue({
   minutesSinceKickoff,
   bufferMinutes,
   hardOverdueMinutes = DEFAULT_HARD_OVERDUE_MINUTES,
+  staleListingGraceMinutes = DEFAULT_STALE_LISTING_GRACE_MINUTES,
   espnMatch = null,
   espnLookupFailed = false,
+  espnApplicable = false,
 }) {
+  if (
+    espnApplicable &&
+    !espnLookupFailed &&
+    !espnMatch &&
+    minutesSinceKickoff >= staleListingGraceMinutes
+  ) {
+    return { overdue: true, reason: 'stale-listing' };
+  }
+
   if (minutesSinceKickoff < bufferMinutes) {
     return { overdue: false, reason: 'within-buffer' };
   }
@@ -54,6 +67,7 @@ function dueFixtureNeedsFollowUp(fixture) {
 
 module.exports = {
   DEFAULT_HARD_OVERDUE_MINUTES,
+  DEFAULT_STALE_LISTING_GRACE_MINUTES,
   classifyUnrecordedFixtureOverdue,
   dueFixtureNeedsFollowUp,
   isEspnMatchInPlay,

@@ -26,7 +26,31 @@ describe('classifyUnrecordedFixtureOverdue', () => {
     ).toEqual({ overdue: true, reason: 'espn-final-missing-from-ledger' });
   });
 
-  it('waits when the score feed has not listed the fixture yet', () => {
+  it('fails when ESPN loaded that date and the match is still missing after the grace period', () => {
+    expect(
+      classifyUnrecordedFixtureOverdue({
+        minutesSinceKickoff: 25,
+        bufferMinutes: 115,
+        espnMatch: null,
+        espnLookupFailed: false,
+        espnApplicable: true,
+      }),
+    ).toEqual({ overdue: true, reason: 'stale-listing' });
+  });
+
+  it('does not treat a just-kicked-off ESPN blank as stale during the short grace', () => {
+    expect(
+      classifyUnrecordedFixtureOverdue({
+        minutesSinceKickoff: 8,
+        bufferMinutes: 115,
+        espnMatch: null,
+        espnLookupFailed: false,
+        espnApplicable: true,
+      }),
+    ).toEqual({ overdue: false, reason: 'within-buffer' });
+  });
+
+  it('waits when the score feed has not listed a non-ESPN fixture yet', () => {
     expect(
       classifyUnrecordedFixtureOverdue({
         minutesSinceKickoff: 120,
