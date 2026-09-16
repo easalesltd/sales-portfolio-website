@@ -9021,12 +9021,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
   },
   {
-    id: '2026-09-16-wol-por',
-    utcDate: '2026-09-16T18:45Z',
-    homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
-    awayTeam: { name: 'Portsmouth', tla: 'POR' },
-  },
-  {
     id: '2026-09-17-wim-mkd',
     utcDate: '2026-09-17T19:00Z',
     homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
@@ -10807,6 +10801,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-20T18:45Z',
     homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
     awayTeam: { name: 'Mansfield Town', tla: 'MNF' },
+  },
+  {
+    id: '2026-10-20-wol-por',
+    utcDate: '2026-10-20T18:45Z',
+    homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+    awayTeam: { name: 'Portsmouth', tla: 'POR' },
   },
   {
     id: '2026-10-20-yor-acc',

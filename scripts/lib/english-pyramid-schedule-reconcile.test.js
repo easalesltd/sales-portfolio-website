@@ -89,6 +89,30 @@ describe('fixture merge and compare', () => {
     expect(diff.falsePostponedDrift).toHaveLength(1);
     expect(diff.changed).toBe(true);
   });
+
+  it('keeps local-only fixtures when the remote feed omitted them', () => {
+    const localOnly = {
+      id: '2026-08-29-mac-rad',
+      utcDate: '2026-08-29T14:00:00Z',
+      homeTeam: { name: 'Macclesfield', tla: 'MAC' },
+      awayTeam: { name: 'Radcliffe', tla: 'RAD' },
+    };
+    const merged = mergeRemoteFixturesWithLocal([saturday, localOnly], [friday]);
+    expect(merged.map((fixture) => fixture.id).sort()).toEqual([
+      '2026-08-28-oxc-bux',
+      '2026-08-29-mac-rad',
+    ]);
+  });
+
+  it('does not keep a stale local date once the remote listing moved', () => {
+    const merged = mergeRemoteFixturesWithLocal([saturday], [friday]);
+    expect(merged).toEqual([
+      expect.objectContaining({
+        id: '2026-08-28-oxc-bux',
+        utcDate: '2026-08-28T18:45:00Z',
+      }),
+    ]);
+  });
 });
 
 describe('live schedule patches', () => {

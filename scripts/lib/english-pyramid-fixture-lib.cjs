@@ -322,14 +322,20 @@ function mergeRemoteFixturesWithLocal(localFixtures, remoteFixtures) {
   });
 
   for (const local of localFixtures) {
-    if (!local.postponed) continue;
     const already = merged.some(
       (remote) =>
         remote.id === local.id ||
         (directedPairKey(remote) === directedPairKey(local) &&
           londonCalendarDate(remote.utcDate) === londonCalendarDate(local.utcDate)),
     );
-    if (!already) merged.push(normalizeFixture(local));
+    if (already) continue;
+
+    // Same home+away on a different day is a rearrangement — use the remote date.
+    if (findNearestDirectedPair(merged, local)) continue;
+
+    // Remote omitted this row (thin FWP/ESPN day). Keep the local listing so a
+    // partial fetch cannot wipe NL North/South (or any other) fixtures.
+    merged.push(normalizeFixture(local));
   }
 
   merged.sort((a, b) => a.utcDate.localeCompare(b.utcDate) || a.id.localeCompare(b.id));

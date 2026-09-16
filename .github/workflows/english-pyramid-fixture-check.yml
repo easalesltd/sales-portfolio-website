@@ -41,9 +41,10 @@ jobs:
       - name: Compare fixtures with ESPN (league only)
         id: check
         run: |
+          set -o pipefail
           set +e
           node scripts/english-pyramid-check-fixtures.cjs | tee fixture-check.log
-          code=$?
+          code=${PIPESTATUS[0]}
           if [[ "$code" -eq 0 ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else

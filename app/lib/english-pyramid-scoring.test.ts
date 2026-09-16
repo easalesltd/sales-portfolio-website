@@ -131,6 +131,37 @@ describe('english-pyramid matchday schedule', () => {
     );
   });
 
+  it('lists Wolves vs Portsmouth on the rearranged 20 Oct date, not 16 Sep', () => {
+    const duringGhostKickoff = getMatchdaySchedule(
+      ENGLISH_PYRAMID_FIXTURES,
+      [],
+      ENGLISH_PYRAMID_FANTASY_PLAYERS,
+      new Date('2026-09-16T19:20:00Z')
+    );
+    const tonight = duringGhostKickoff.schedulesByDate['2026-09-16'] ?? [];
+    expect(
+      tonight.some((entry) => entry.homeTeam.tla === 'WOL' && entry.awayTeam.tla === 'POR')
+    ).toBe(false);
+
+    const rearranged = getMatchdaySchedule(
+      ENGLISH_PYRAMID_FIXTURES,
+      [],
+      ENGLISH_PYRAMID_FANTASY_PLAYERS,
+      new Date('2026-10-20T17:00:00Z')
+    );
+    expect(rearranged.schedulesByDate['2026-10-20']).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: '2026-10-20-wol-por',
+          utcDate: '2026-10-20T18:45Z',
+          status: 'upcoming',
+          homeTeam: expect.objectContaining({ tla: 'WOL' }),
+          awayTeam: expect.objectContaining({ tla: 'POR' }),
+        }),
+      ])
+    );
+  });
+
   it('carries recorded red cards onto finished matchday rows', () => {
     const schedule = getMatchdaySchedule(
       ENGLISH_PYRAMID_FIXTURES,
