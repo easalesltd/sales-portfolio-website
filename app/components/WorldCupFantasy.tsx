@@ -137,7 +137,8 @@ function Sparkline({
     })
     .join(' ');
 
-  const strokeColor = t.id === 'english-pyramid' ? '#d4af37' : '#2dd4bf';
+  const strokeColor =
+    managerColorForPlayer(playerId, t.id) ?? (t.id === 'english-pyramid' ? '#d4af37' : '#2dd4bf');
 
   return (
     <svg
@@ -1339,8 +1340,13 @@ function PlayerIdentity({
   return <ManagerName playerId={player.id} name={player.name} className="font-medium text-base" />;
 }
 
-function progressLineColor(index: number, colors: readonly string[]): string {
-  return colors[index % colors.length];
+function progressLineColor(
+  playerId: string,
+  index: number,
+  themeId: SweepstakeFantasyThemeId,
+  colors: readonly string[]
+): string {
+  return managerColorForPlayer(playerId, themeId) ?? colors[index % colors.length];
 }
 
 function OfficialStatementPanel({
@@ -1558,7 +1564,7 @@ function StandingsProgressChart({
           ))}
 
           {series.map((row, seriesIndex) => {
-            const color = progressLineColor(seriesIndex, t.chartLineColors);
+            const color = progressLineColor(row.playerId, seriesIndex, t.id, t.chartLineColors);
             const isSelected = selectedPlayerId === row.playerId;
             const path = row.points
               .map((point, index) => {
@@ -1689,7 +1695,7 @@ function StandingsProgressChart({
                   className={`inline-flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-neutral-900 transition hover:scale-105 ${
                     selectedPlayerId === row.playerId ? t.c.chartLegendBtnSelected : t.c.chartLegendBtn
                   }`}
-                  style={{ boxShadow: `0 0 0 1px ${progressLineColor(colorIndex, t.chartLineColors)}` }}
+                  style={{ boxShadow: `0 0 0 1px ${progressLineColor(row.playerId, colorIndex, t.id, t.chartLineColors)}` }}
                   aria-label={standing ? progressTeamLabel(standing) : row.label}
                   aria-pressed={selectedPlayerId === row.playerId}
                 >

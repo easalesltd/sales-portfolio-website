@@ -100,13 +100,13 @@ const WORLD_CUP_CHART = [
 ] as const;
 
 const PYRAMID_CHART = [
-  '#d4af37',
+  '#84cc16',
+  '#60a5fa',
+  '#c084fc',
+  '#facc15',
+  '#f43f5e',
   '#e8dfc8',
-  '#6b8fbf',
-  '#a83248',
-  '#c9a227',
-  '#f5f5f0',
-  '#8b6914',
+  '#2dd4bf',
 ] as const;
 
 export const worldCupFantasyTheme: SweepstakeFantasyTheme = {

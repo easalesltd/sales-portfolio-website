@@ -12,7 +12,7 @@ const WORLD_CUP_MANAGER_COLORS: Record<string, string> = {
 };
 
 const ENGLISH_PYRAMID_MANAGER_COLORS: Record<string, string> = {
-  ash: '#d4af37',
+  ash: '#84cc16',
   jon: '#60a5fa',
   nest: '#c084fc',
   chris: '#facc15',
