@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'National League midweek and Scott finally remembered he owns a football club. Kidderminster Harriers nicked Gateshead 1-0 at home, clean sheet and all, then Boreham Wood went to Scunthorpe United and pinched a 2-1 away win. Eight filthy points on the night. Scott is on 208 and suddenly looks less like a charity case.\n\nJon put Altrincham and Hartlepool United in the same bloody division and they kicked lumps out of each other. Altrincham won 2-1, Hartlepool took a red for their troubles, and Jon still banks the home win plus the dismissal bonus because he is that sort of parasite. Jon is on 174.\n\nDave\'s Scunthorpe United got turned over 2-1 at home by Boreham Wood and contributed absolutely nothing. Dave is on 152 and should apologise to the sofa.\n\nChris is still top on 225 without lifting a finger. Ben is on 164. Nest is on 160. Ash is last on 148, which is less a standing and more a missing persons report.\n\nTable: Chris 225, Scott 208, Jon 174, Ben 164, Nest 160, Dave 152, Ash 148.';
+  'Chris\'s AFC Wimbledon served up a boring 0-0 against MK Dons. Minus 1 for the 0-0, net minus 1. Chris is on 224.\n\nAsh\'s MK Dons served up a boring 0-0 against AFC Wimbledon. Minus 1 for the 0-0, net minus 1. Ash is on 147.\n\nTable: Chris 224, Scott 208, Jon 174, Ben 164, Nest 160, Dave 152, Ash 147.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -6114,6 +6114,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
     homeGoals: 1,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-17-wim-mkd',
+    utcDate: '2026-09-17T19:00Z',
+    homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
+    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+    homeGoals: 0,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
