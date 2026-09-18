@@ -226,6 +226,10 @@ function applySchedulePatches(source, patches) {
     }
 
     if (patch.type === 'move') {
+      const recordedIds = recordedMatchIds(next);
+      if (recordedIds.has(patch.fromId)) {
+        continue;
+      }
       if (patch.fromId !== patch.toId) {
         next = next.replaceAll(`id: '${patch.fromId}'`, `id: '${patch.toId}'`);
       }

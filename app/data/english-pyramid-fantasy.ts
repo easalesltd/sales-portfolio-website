@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s AFC Wimbledon served up a boring 0-0 against MK Dons. Minus 1 for the 0-0, net minus 1. Chris is on 224.\n\nAsh\'s MK Dons served up a boring 0-0 against AFC Wimbledon. Minus 1 for the 0-0, net minus 1. Ash is on 147.\n\nTable: Chris 224, Scott 208, Jon 174, Ben 164, Nest 160, Dave 152, Ash 147.';
+  'Chris\'s AFC Wimbledon served up a boring 0-0 against MK Dons. Minus 1 for the 0-0, net minus 1. Chris is on 224.\n\nAsh\'s MK Dons served up a boring 0-0 against AFC Wimbledon. Minus 1 for the 0-0, net minus 1. Ash is on 148.\n\nJon\'s Chelsea leaked three at Brentford. A 3-0 away stuffing, minus 1 for the three conceded, net minus 1. Jon is on 173.\n\nTable: Chris 224, Scott 208, Jon 173, Ben 164, Nest 160, Dave 152, Ash 148.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -2995,18 +2995,6 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Tonbridge Angels', tla: 'TON' },
     homeGoals: 2,
     awayGoals: 2,
-    homeRedCards: 0,
-    awayRedCards: 0,
-    redsUnchecked: true,
-  },
-  {
-    /** Verified final score (FotMob; FWP not final yet). Red cards from FotMob — redsUnchecked. */
-    id: '2026-09-29-brk-ssh',
-    utcDate: '2026-08-29T14:00:00Z',
-    homeTeam: { name: 'Brackley Town', tla: 'BRK' },
-    awayTeam: { name: 'South Shields', tla: 'SSH' },
-    homeGoals: 0,
-    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
     redsUnchecked: true,
@@ -6124,6 +6112,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
     awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
     homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-18-bre-che',
+    utcDate: '2026-09-18T19:00Z',
+    homeTeam: { name: 'Brentford', tla: 'BRE' },
+    awayTeam: { name: 'Chelsea', tla: 'CHE' },
+    homeGoals: 3,
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,

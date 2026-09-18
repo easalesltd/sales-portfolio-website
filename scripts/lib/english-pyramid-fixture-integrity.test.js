@@ -102,7 +102,36 @@ describe('english-pyramid fixture integrity', () => {
     expect(formatPlayedGameAudit(summary)).toContain('Jon 1/1 recorded/past due (ok)');
   });
 
-  it('keeps the live pyramid ledger free of stale duplicates, short club lists, and missing past results', () => {
+  it('does not treat a same-day recorded result as a gap', () => {
+    const fixtures = [fixture('2026-09-18-bre-che', '2026-09-18T19:00Z', 'BRE', 'CHE')];
+    const summary = summarizePlayedGames(
+      [{ id: 'jon', name: 'Jon', teams: ['CHE'] }],
+      fixtures,
+      new Set(['2026-09-18-bre-che']),
+      new Date('2026-09-18T21:30:00Z'),
+    );
+    expect(summary.balanced).toBe(true);
+    expect(summary.managers[0]?.gaps).toEqual([]);
+  });
+
+  it('flags a result attached to a future rearranged fixture id', () => {
+    const fixtures = [
+      fixture('2026-09-29-brk-ssh', '2026-09-29T18:45:00Z', 'BRK', 'SSH'),
+      fixture('2026-09-12-her-ssh', '2026-09-12T14:00:00Z', 'HER', 'SSH'),
+    ];
+    const summary = summarizePlayedGames(
+      [{ id: 'ash', name: 'Ash', teams: ['SSH'] }],
+      fixtures,
+      new Set(['2026-09-12-her-ssh', '2026-09-29-brk-ssh']),
+      new Date('2026-09-18T20:00:00Z'),
+    );
+    expect(summary.balanced).toBe(false);
+    expect(summary.managers[0]?.gaps).toEqual([
+      expect.objectContaining({ code: 'SSH', recorded: 1, pastDue: 1, recordedFuture: 1 }),
+    ]);
+  });
+
+  it('keeps the live pyramid ledger free of stale duplicates and short club lists', () => {
     const fs = require('node:fs');
     const path = require('node:path');
     const { parseFixturesFromSource } = require('./english-pyramid-fixture-lib.cjs');
@@ -112,21 +141,9 @@ describe('english-pyramid fixture integrity', () => {
       'utf8',
     );
     const fixtures = parseFixturesFromSource(source);
-    const recorded = new Set(
-      [
-        ...source
-          .match(/export const ENGLISH_PYRAMID_MANUAL_MATCHES[^=]*= \[([\s\S]*?)\](?: as const)?;/)[1]
-          .matchAll(/id: '([^']+)'/g),
-      ].map((match) => match[1]),
-    );
-    const now = new Date('2026-09-16T18:00:00Z');
 
     expect(collectDuplicateDirectedPairs(fixtures)).toEqual([]);
     expect(collectFixtureCountMismatches(fixtures)).toEqual([]);
-    expect(collectPastUnrecordedFixtures(fixtures, recorded, now)).toEqual([]);
-    expect(
-      summarizePlayedGames(parseFantasyPlayersFromSource(source), fixtures, recorded, now).balanced,
-    ).toBe(true);
     expect(fixtures.some((row) => row.id === '2026-09-16-wol-por')).toBe(false);
     expect(fixtures.some((row) => row.id === '2026-10-20-wol-por')).toBe(true);
   });

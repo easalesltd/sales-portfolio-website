@@ -4,9 +4,11 @@ const fs = require('node:fs');
 
 const {
   compareFixtureLists,
+  dataPath,
   fetchAllLeagueFixtures,
   mergeRemoteFixturesWithLocal,
   parseFixturesFromSource,
+  recordedMatchIdsFromSource,
   summarizeNlFixtureStatus,
   summarizePerTeam,
   writeFixturesToDataFile,
@@ -25,8 +27,13 @@ function formatFixtureLine(fixture) {
 async function main() {
   const write = process.argv.includes('--write');
   const localFixtures = parseFixturesFromSource();
+  const recordedIds = recordedMatchIdsFromSource(fs.readFileSync(dataPath, 'utf8'));
   const { fixtures: remoteFixtures, bySlug } = await fetchAllLeagueFixtures();
-  const comparableRemote = mergeRemoteFixturesWithLocal(localFixtures, remoteFixtures);
+  const comparableRemote = mergeRemoteFixturesWithLocal(
+    localFixtures,
+    remoteFixtures,
+    recordedIds,
+  );
   const diff = compareFixtureLists(localFixtures, comparableRemote);
   const nlStatus = summarizeNlFixtureStatus(localFixtures, remoteFixtures);
 

@@ -303,7 +303,15 @@ function findNearestDirectedPair(fixtures, target) {
   )[0];
 }
 
-function mergeRemoteFixturesWithLocal(localFixtures, remoteFixtures) {
+function recordedMatchIdsFromSource(source) {
+  const match = source.match(
+    /export const ENGLISH_PYRAMID_MANUAL_MATCHES[^=]*= \[([\s\S]*?)\](?: as const)?;/,
+  );
+  if (!match) return new Set();
+  return new Set([...match[1].matchAll(/id: '([^']+)'/g)].map((entry) => entry[1]));
+}
+
+function mergeRemoteFixturesWithLocal(localFixtures, remoteFixtures, recordedIds = new Set()) {
   const merged = remoteFixtures.map((remote) => {
     const local = findNearestDirectedPair(localFixtures, remote);
     if (!local) return normalizeFixture(remote);
@@ -330,8 +338,18 @@ function mergeRemoteFixturesWithLocal(localFixtures, remoteFixtures) {
     );
     if (already) continue;
 
-    // Same home+away on a different day is a rearrangement — use the remote date.
-    if (findNearestDirectedPair(merged, local)) continue;
+    const remotePair = findNearestDirectedPair(merged, local);
+    if (remotePair) {
+      // A recorded result means this meeting already happened. Do not replace it
+      // with a later listing of the same home+away pair (abandoned games must
+      // be removed from the ledger first, then the replay date can land).
+      if (recordedIds.has(local.id)) {
+        const index = merged.findIndex((fixture) => fixture.id === remotePair.id);
+        if (index >= 0) merged.splice(index, 1);
+        merged.push(normalizeFixture(local));
+      }
+      continue;
+    }
 
     // Remote omitted this row (thin FWP/ESPN day). Keep the local listing so a
     // partial fetch cannot wipe NL North/South (or any other) fixtures.
@@ -611,7 +629,8 @@ ${lines.join(',\n')},
 function writeFixturesToDataFile(fixtures) {
   const source = readDataFileSource();
   const localFixtures = parseFixturesFromSource(source);
-  const merged = mergeRemoteFixturesWithLocal(localFixtures, fixtures);
+  const recordedIds = recordedMatchIdsFromSource(source);
+  const merged = mergeRemoteFixturesWithLocal(localFixtures, fixtures, recordedIds);
   const block = formatFixtureBlock(merged);
   const pattern =
     /\/\*\* Sweepstake fixtures[\s\S]*?\*\/\nexport const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture\[\] = \[[\s\S]*?\];/;
@@ -620,15 +639,10 @@ function writeFixturesToDataFile(fixtures) {
     throw new Error(`Unable to locate ENGLISH_PYRAMID_FIXTURES block in ${dataPath}`);
   }
 
-  let next = source.replace(pattern, block);
-  for (const local of localFixtures) {
-    const mergedMatch =
-      merged.find((fixture) => fixture.id === local.id) || findNearestDirectedPair(merged, local);
-    if (mergedMatch && mergedMatch.id !== local.id) {
-      next = next.replaceAll(`id: '${local.id}'`, `id: '${mergedMatch.id}'`);
-    }
-  }
-  fs.writeFileSync(dataPath, next);
+  // Only rewrite the fixtures block. Retargeting ids across the whole file used
+  // to drag recorded ledger rows onto a rearranged date (abandoned Brackley vs
+  // South Shields became a 0-0 against the September replay id).
+  fs.writeFileSync(dataPath, source.replace(pattern, block));
 }
 
 function compareFixtureLists(localFixtures, remoteFixtures) {
@@ -866,6 +880,7 @@ module.exports = {
   londonCalendarDate,
   mergeRemoteFixturesWithLocal,
   parseFixturesFromSource,
+  recordedMatchIdsFromSource,
   expectedMatchesForTeamCode,
   resolveOurCode,
   summarizeNlFixtureStatus,

@@ -122,4 +122,22 @@ describe('english-pyramid-fotmob', () => {
       awayRedCards: 1,
     });
   });
+
+  it('does not treat a cancelled abandoned match as a finished 0-0', () => {
+    expect(
+      parseFotMobFinal(
+        {
+          home: { score: 0 },
+          away: { score: 0 },
+          status: { finished: true, cancelled: true },
+        },
+        {
+          header: {
+            status: { finished: true, cancelled: true },
+            teams: [{ score: 0 }, { score: 0 }],
+          },
+        },
+      ),
+    ).toBeNull();
+  });
 });

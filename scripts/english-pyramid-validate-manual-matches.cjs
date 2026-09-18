@@ -2,7 +2,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
-const { parseFixturesFromSource } = require('./lib/english-pyramid-fixture-lib.cjs');
+const { londonCalendarDate, parseFixturesFromSource } = require('./lib/english-pyramid-fixture-lib.cjs');
 const {
   validateManualMatchesAgainstFixtures,
 } = require('./lib/sweepstake-ledger-validation.cjs');
@@ -182,6 +182,25 @@ validateManualMatchesAgainstFixtures(manualMatches, fixtures, errors, {
   requireAllInFixtures: true,
 });
 
+for (const match of manualMatches) {
+  const idDay = match.id.slice(0, 10);
+  const matchDay = londonCalendarDate(match.utcDate);
+  if (matchDay && idDay !== matchDay) {
+    errors.push(
+      `${match.id}: ledger utcDate is London ${matchDay}, but the fixture id is dated ${idDay}.`,
+    );
+  }
+  const fixture = fixtures.find((row) => row.id === match.id);
+  if (fixture) {
+    const fixtureDay = londonCalendarDate(fixture.utcDate);
+    if (matchDay && fixtureDay && matchDay !== fixtureDay) {
+      errors.push(
+        `${match.id}: ledger was played on ${matchDay} but the fixtures list is dated ${fixtureDay}.`,
+      );
+    }
+  }
+}
+
 const recordedIds = seenIds;
 errors.push(
   ...describeIntegrityErrors({
@@ -200,7 +219,7 @@ const playedAudit = summarizePlayedGames(
 console.log(formatPlayedGameAudit(playedAudit));
 if (!playedAudit.balanced) {
   errors.push(
-    'Played-game audit: at least one manager is missing a ledger result for a past league fixture.',
+    'Played-game audit: recorded results do not match past league fixtures (a result is missing, extra, or attached to a rearranged date).',
   );
 }
 

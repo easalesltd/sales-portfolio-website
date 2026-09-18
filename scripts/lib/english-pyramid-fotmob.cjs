@@ -93,6 +93,7 @@ function eventRedCardCounts(detail) {
 
 function parseFotMobFinal(match, detail) {
   const status = detail?.header?.status ?? match?.status;
+  if (status?.cancelled === true || match?.status?.cancelled === true) return null;
   if (status?.finished !== true) return null;
 
   const headerTeams = Array.isArray(detail?.header?.teams) ? detail.header.teams : [];
@@ -116,9 +117,9 @@ function parseFotMobFinal(match, detail) {
 function isFotMobMatchGoingAhead(match) {
   const status = match?.status;
   if (!status) return false;
+  if (status.cancelled) return false;
   if (status.started === true || status.finished === true || status.ongoing === true) return true;
   if (status.scoreStr) return true;
-  if (status.cancelled) return false;
   return Boolean(status.utcTime);
 }
 

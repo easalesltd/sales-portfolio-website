@@ -113,6 +113,20 @@ describe('fixture merge and compare', () => {
       }),
     ]);
   });
+
+  it('keeps a recorded local meeting instead of replacing it with a later replay date', () => {
+    const merged = mergeRemoteFixturesWithLocal(
+      [saturday],
+      [friday],
+      new Set(['2026-08-29-oxc-bux']),
+    );
+    expect(merged).toEqual([
+      expect.objectContaining({
+        id: '2026-08-29-oxc-bux',
+        utcDate: '2026-08-29T14:00:00Z',
+      }),
+    ]);
+  });
 });
 
 describe('live schedule patches', () => {
@@ -208,7 +222,7 @@ describe('live schedule patches', () => {
                 home: { name: 'Horsham', longName: 'Horsham' },
                 away: { name: 'Farnham', longName: 'Farnham Town' },
                 status: {
-                  cancelled: true,
+                  cancelled: false,
                   started: true,
                   finished: true,
                   utcTime: '2026-08-29T14:00:00Z',
@@ -221,6 +235,70 @@ describe('live schedule patches', () => {
       },
     );
     expect(patches).toEqual([]);
+  });
+
+  it('treats a cancelled abandoned match as postponed even if FotMob also marked it finished', () => {
+    const patches = patchesFromFotMobDay(
+      [horsham],
+      '2026-08-29',
+      {
+        leagues: [
+          {
+            name: 'National League South',
+            matches: [
+              {
+                id: 1,
+                home: { name: 'Horsham', longName: 'Horsham' },
+                away: { name: 'Farnham', longName: 'Farnham Town' },
+                status: {
+                  cancelled: true,
+                  started: true,
+                  finished: true,
+                  utcTime: '2026-08-29T14:00:00Z',
+                  scoreStr: '0 - 0',
+                },
+              },
+            ],
+          },
+        ],
+      },
+    );
+    expect(patches[0]).toMatchObject({
+      type: 'postpone',
+      id: '2026-08-29-hor-fnh',
+    });
+  });
+
+  it('does not retarget a recorded ledger result onto a rearranged fixture id', () => {
+    const source = `export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[] = [
+  {
+    id: '2026-08-29-hor-fnh',
+    utcDate: '2026-08-29T14:00:00Z',
+    homeTeam: { name: 'Horsham', tla: 'HOR' },
+    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
+    homeGoals: 1,
+    awayGoals: 0,
+  },
+];
+export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
+  {
+    id: '2026-08-29-hor-fnh',
+    utcDate: '2026-08-29T14:00:00Z',
+    homeTeam: { name: 'Horsham', tla: 'HOR' },
+    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
+  },
+];`;
+    const updated = applySchedulePatches(source, [
+      {
+        type: 'move',
+        fromId: '2026-08-29-hor-fnh',
+        toId: '2026-09-29-hor-fnh',
+        utcDate: '2026-09-29T18:45:00Z',
+        note: 'test',
+      },
+    ]);
+    expect(updated).toContain("id: '2026-08-29-hor-fnh'");
+    expect(updated).not.toContain("id: '2026-09-29-hor-fnh'");
   });
 
   it('clears a stale postponed flag when FotMob lists the match as going ahead', () => {

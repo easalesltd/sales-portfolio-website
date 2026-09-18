@@ -79,15 +79,20 @@ function summarizePlayedGames(players, fixtures, recordedIds, now = new Date()) 
   const managers = players.map((player) => {
     const clubs = player.teams.map((code) => {
       const rows = involvingClub(fixtures, code);
-      const recorded = rows.filter((fixture) => recordedIds.has(fixture.id)).length;
-      const pastDue = rows.filter((fixture) => {
+      const pastDueRows = rows.filter((fixture) => {
         const day = londonCalendarDate(fixture.utcDate);
         return Boolean(day && today && day < today && !fixture.postponed);
+      });
+      const recordedPast = pastDueRows.filter((fixture) => recordedIds.has(fixture.id)).length;
+      const recordedFuture = rows.filter((fixture) => {
+        const day = londonCalendarDate(fixture.utcDate);
+        return recordedIds.has(fixture.id) && Boolean(day && today && day > today);
       }).length;
       return {
         code,
-        recorded,
-        pastDue,
+        recorded: recordedPast,
+        pastDue: pastDueRows.length,
+        recordedFuture,
         postponed: rows.filter((fixture) => fixture.postponed).length,
       };
     });
@@ -98,7 +103,7 @@ function summarizePlayedGames(players, fixtures, recordedIds, now = new Date()) 
       recorded: clubs.reduce((sum, club) => sum + club.recorded, 0),
       pastDue: clubs.reduce((sum, club) => sum + club.pastDue, 0),
       postponed: clubs.reduce((sum, club) => sum + club.postponed, 0),
-      gaps: clubs.filter((club) => club.recorded !== club.pastDue),
+      gaps: clubs.filter((club) => club.recorded !== club.pastDue || club.recordedFuture > 0),
     };
   });
 
@@ -152,7 +157,8 @@ function formatPlayedGameAudit(summary) {
       `  ${manager.name} ${manager.recorded}/${manager.pastDue} recorded/past due (${mark})`,
     );
     for (const gap of manager.gaps) {
-      lines.push(`    ${gap.code}: recorded ${gap.recorded}, past due ${gap.pastDue}`);
+      const futureNote = gap.recordedFuture > 0 ? `, future recorded ${gap.recordedFuture}` : '';
+      lines.push(`    ${gap.code}: recorded ${gap.recorded}, past due ${gap.pastDue}${futureNote}`);
     }
   }
   if (summary.balanced) {
