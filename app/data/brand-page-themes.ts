@@ -187,6 +187,19 @@ const THEMES: Record<string, Omit<BrandPageTheme, 'slug'>> = {
     radius: '0.75rem',
     page: '#fffdf9',
   },
+  'funky-monkey-gifts': {
+    accent: '#c9a227',
+    accentForeground: '#111111',
+    text: '#4b5563',
+    heading: '#111111',
+    card: '#ffffff',
+    headingFont: 'playfair',
+    bodyFont: 'outfit',
+    headingTransform: 'none',
+    headingTracking: '0.02em',
+    radius: '0.35rem',
+    page: '#f7f5f0',
+  },
 };
 
 export function getBrandPageTheme(slug: string): BrandPageTheme {

@@ -32,6 +32,7 @@ const SHOWCASE_SLIDES: ShowcaseSlide[] = [
   { src: '/images/companies/global-journey/official/cake-candles.jpg', alt: 'Global Journey cake candles gift range' },
   { src: '/images/companies/museums-and-galleries/official/range-cards.jpg', alt: 'Museums and Galleries licensed art greeting cards' },
   { src: '/images/companies/rudi-and-bear/official/wholesale-hero.jpg', alt: 'Rudi and Bear Ned character gifts' },
+  { src: '/images/companies/funky-monkey-gifts/official/led-bar-sign.jpg', alt: 'Funky Monkey Gifts personalised LED bar sign' },
   { src: '/images/companies/boxer-gifts/official/deadly-blooms.jpg', alt: 'Boxer Gifts Deadly Blooms catalogue' },
   { src: '/images/companies/emotional-rescue/emo_web.jpeg', alt: 'Emotional Rescue humorous greeting cards' },
   { src: '/images/showcase/b6943adc-3dc7-47b7-9c10-399cd36d33c1.jpeg', alt: 'Greeting cards laid out on a retailer visit' },

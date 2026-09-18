@@ -41,6 +41,15 @@ export const companies: Company[] = [
     websiteUrl: "https://www.emotional-rescue.com"
   },
   {
+    id: "funky-monkey-gifts",
+    name: "Funky Monkey Gifts",
+    slug: "funky-monkey-gifts",
+    description: "We design and manufacture unique gifts and personalised decor in the UK. Family-run production from our Hinckley factory — all under one roof, no middleman — covering novelty signs, LED wall decor, personalised gifts, mugs and garden pieces. Trusted manufacturer supplying trade for 10 years.",
+    logoUrl: "/images/logos/funky-monkey-gifts.png",
+    catalogueUrl: "https://cdn.shopify.com/s/files/1/0956/2433/1595/files/FMG_2026_TRADE_CATALOGUE_3.pdf?v=1776437622",
+    websiteUrl: "https://funkymonkeygifts.co.uk/"
+  },
+  {
     id: "global-journey-gifts",
     name: "Global Journey Gifts",
     slug: "global-journey-gifts",

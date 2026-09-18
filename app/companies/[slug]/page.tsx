@@ -115,6 +115,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description:
         'Rudi & Bear wholesale — hand-painted Neds from Cornwall, plastic-free gift boxes, display stands and bespoke collabs for toy shops, gift shops, garden centres and visitor attractions.',
     },
+    'funky-monkey-gifts': {
+      title: 'Funky Monkey Gifts | British-Made Signs & Personalised Decor',
+      description:
+        'Funky Monkey Gifts wholesale — UK-made signature foil, street and LED signs, garden decor, chalkboards, mugs and personalised gifts from their family-run Hinckley factory.',
+    },
   };
 
   const metadata = companyMetadata[resolvedParams.slug as keyof typeof companyMetadata];
@@ -360,6 +365,20 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
     '/images/companies/rudi-and-bear/official/characters.jpg',
   ] : [];
 
+  const funkyMonkeyGiftsBaseImages = resolvedParams.slug === 'funky-monkey-gifts' ? [
+    '/images/companies/funky-monkey-gifts/official/led-bar-sign.jpg',
+    '/images/companies/funky-monkey-gifts/official/signature-foil-cocktail-bar.jpg',
+    '/images/companies/funky-monkey-gifts/official/signature-foil-gin.jpg',
+    '/images/companies/funky-monkey-gifts/official/signature-street-sign.jpg',
+    '/images/companies/funky-monkey-gifts/official/gaming-led-sign.jpg',
+    '/images/companies/funky-monkey-gifts/official/chalkboard.jpg',
+    '/images/companies/funky-monkey-gifts/official/garden-sign.jpg',
+    '/images/companies/funky-monkey-gifts/official/bbq-sign.jpg',
+    '/images/companies/funky-monkey-gifts/official/ceramic-mug.jpg',
+    '/images/companies/funky-monkey-gifts/official/personalised-street-sign.jpg',
+    '/images/companies/funky-monkey-gifts/official/childrens-height-charts.jpg',
+  ] : [];
+
   // Shuffle all image arrays
   const paperSaladImages = shuffleArray(paperSaladBaseImages);
   const emotionalRescueImages = shuffleArray(emotionalRescueBaseImages);
@@ -374,6 +393,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
   const cgbGiftwareImages = shuffleArray(cgbGiftwareBaseImages);
   const cambridgeConfectioneryCompanyImages = shuffleArray(cambridgeConfectioneryCompanyBaseImages);
   const rudiAndBearImages = shuffleArray(rudiAndBearBaseImages);
+  const funkyMonkeyGiftsImages = shuffleArray(funkyMonkeyGiftsBaseImages);
 
   const companyPageLogoSrc = company.logoUrlDark ?? company.logoUrl;
   const useLightMarkOnDark = Boolean(company.logoUrlDark);
@@ -613,6 +633,18 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                       </p>
                     </div>
                   )}
+                  {resolvedParams.slug === 'funky-monkey-gifts' && (
+                    <div className="mb-8">
+                      <ImageGallery images={funkyMonkeyGiftsImages} interval={5500} />
+                      <p className="mt-2 text-xs text-gray-500">
+                        Product photography from{' '}
+                        <a href="https://funkymonkeygifts.co.uk/" className="underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+                          Funky Monkey Gifts
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex flex-wrap gap-4 mt-8">
@@ -700,6 +732,7 @@ function productSchemaImages(company: Company): string[] {
   const heroBySlug: Partial<Record<Company['slug'], string>> = {
     'peppermint-grove': `${SITE_ORIGIN}/images/companies/peppermint-grove/PGA_Uk_Diffuser_Category_d8e301ee-42b8-4ef0-9d68-5221f68c83b3.jpeg`,
     'rudi-and-bear': `${SITE_ORIGIN}/images/companies/rudi-and-bear/official/display.jpg`,
+    'funky-monkey-gifts': `${SITE_ORIGIN}/images/companies/funky-monkey-gifts/official/led-bar-sign.jpg`,
   };
   const hero = heroBySlug[company.slug];
   return hero && hero !== logo ? [hero, logo] : [logo];
@@ -959,6 +992,22 @@ function generateStructuredData(company: Company) {
         'Cambridgeshire Retail'
       ]
     },
+    'funky-monkey-gifts': {
+      name: 'Funky Monkey Gifts Sales Agent - British-Made Signs & Personalised Decor in East Anglia, Hertfordshire & Cambridgeshire',
+      description: 'UK-made novelty signs, LED wall decor, garden signs, chalkboards, mugs and personalised gifts from a family-run Hinckley factory.',
+      categories: [
+        'Novelty Signs',
+        'Personalised Gifts',
+        'LED Signs',
+        'Garden Decor',
+        'Chalkboards',
+        'Home Decor',
+        'Giftware',
+        'East Anglia Retail',
+        'Hertfordshire Retail',
+        'Cambridgeshire Retail'
+      ]
+    },
     'boxer-gifts': {
       name: 'Boxer Gifts Sales Agent - Official Supplier in East Anglia, Hertfordshire & Cambridgeshire',
       description: 'Quality giftware and retail solutions.',
@@ -1090,6 +1139,7 @@ function generateStructuredData(company: Company) {
     }
   };
 
+  const brandSameAs = company.websiteUrl?.trim() ? [company.websiteUrl.trim()] : undefined;
   const data = companyStructuredData[company.slug as keyof typeof companyStructuredData];
   if (data) {
     return {
@@ -1099,6 +1149,7 @@ function generateStructuredData(company: Company) {
       'name': data.name,
       'description': partnerBrandAgentDescription(company),
       'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
+      ...(brandSameAs ? { sameAs: brandSameAs } : {}),
       'logo': {
         '@type': 'ImageObject',
         'url': `${SITE_ORIGIN}${company.logoUrl}`,
@@ -1159,6 +1210,7 @@ function generateStructuredData(company: Company) {
     'name': `${company.name} Sales Agent - Wholesale Supplier in East Anglia`,
     'description': partnerBrandAgentDescription(company),
     'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
+    ...(brandSameAs ? { sameAs: brandSameAs } : {}),
     'logo': {
       '@type': 'ImageObject',
       'url': `${SITE_ORIGIN}${company.logoUrl}`,
