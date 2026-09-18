@@ -17,5 +17,6 @@ export interface Company {
   websiteUrl: string;
   videos?: string[]; // Array of video URLs for Trade Show Videos
   brandLogos?: string[]; // Array of brand logo URLs
+  alternateNames?: string[];
   metadata?: CompanyMetadata; // Make metadata optional since it's not in the original data
 } 

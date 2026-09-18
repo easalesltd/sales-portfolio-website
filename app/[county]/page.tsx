@@ -111,7 +111,13 @@ export default async function CountyPage({
       <h2 className="mt-10 text-xl font-semibold text-gray-900 dark:text-white">Brands on the territory</h2>
       <p className="mt-3 text-gray-700 dark:text-neutral-300">
         Dave Langdon is the {area.name} sales agent for{' '}
-        {companies.map((company) => company.name).join(', ')}.
+        {companies
+          .map((company) =>
+            company.alternateNames?.length
+              ? `${company.name} (also ${company.alternateNames.join(', ')})`
+              : company.name
+          )
+          .join(', ')}.
       </p>
       <p className="mt-2">
         <Link href="/#partner-brands" className="site-link">

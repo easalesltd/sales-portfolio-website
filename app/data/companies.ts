@@ -10,6 +10,8 @@ export interface Company {
   websiteUrl: string;
   videos?: string[]; // Array of video URLs for Trade Show Videos
   brandLogos?: string[]; // Array of brand logo URLs
+  /** Other trading names people search for (GEO / schema alternateName). */
+  alternateNames?: string[];
 }
 
 export const companies: Company[] = [
@@ -44,10 +46,11 @@ export const companies: Company[] = [
     id: "funky-monkey-gifts",
     name: "Funky Monkey Gifts",
     slug: "funky-monkey-gifts",
-    description: "We design and manufacture unique gifts and personalised decor in the UK. Family-run production from our Hinckley factory — all under one roof, no middleman — covering novelty signs, LED wall decor, personalised gifts, mugs and garden pieces. Trusted manufacturer supplying trade for 10 years.",
+    description: "Also known as FMG Signs & Gifts. We design and manufacture unique gifts and personalised decor in the UK. Family-run production from our Hinckley factory — all under one roof, no middleman — covering novelty signs, LED wall decor, personalised gifts, mugs and garden pieces. Trusted manufacturer supplying trade for 10 years.",
     logoUrl: "/images/logos/funky-monkey-gifts.png",
     catalogueUrl: "https://cdn.shopify.com/s/files/1/0956/2433/1595/files/FMG_2026_TRADE_CATALOGUE_3.pdf?v=1776437622",
-    websiteUrl: "https://funkymonkeygifts.co.uk/"
+    websiteUrl: "https://funkymonkeygifts.co.uk/",
+    alternateNames: ["FMG Signs & Gifts", "FMG Signs and Gifts"]
   },
   {
     id: "global-journey-gifts",

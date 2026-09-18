@@ -28,7 +28,7 @@ export default function PartnerBrandTile({ company }: { company: Company }) {
       >
         <img
           src={logoSrc}
-          alt={partnerBrandLogoAlt(company.name)}
+          alt={partnerBrandLogoAlt(company.name, company.alternateNames)}
           loading="lazy"
           decoding="async"
           className={`max-h-full max-w-full object-contain motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-105 ${

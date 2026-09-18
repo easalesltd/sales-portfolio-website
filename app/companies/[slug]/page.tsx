@@ -116,9 +116,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         'Rudi & Bear wholesale — hand-painted Neds from Cornwall, plastic-free gift boxes, display stands and bespoke collabs for toy shops, gift shops, garden centres and visitor attractions.',
     },
     'funky-monkey-gifts': {
-      title: 'Funky Monkey Gifts | British-Made Signs & Personalised Decor',
+      title: 'Funky Monkey Gifts | FMG Signs & Gifts | British-Made Decor',
       description:
-        'Funky Monkey Gifts wholesale — UK-made signature foil, street and LED signs, garden decor, chalkboards, mugs and personalised gifts from their family-run Hinckley factory.',
+        'Funky Monkey Gifts (FMG Signs & Gifts) wholesale — UK-made signature foil, street and LED signs, garden decor, chalkboards, mugs and personalised gifts from their family-run Hinckley factory.',
     },
   };
 
@@ -142,6 +142,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       imageUrl,
       imageAlt: `${company.name} wholesale range`,
     }),
+    keywords: [company.name, ...(company.alternateNames ?? [])],
   };
 }
 
@@ -437,7 +438,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
               >
                 <img
                   src={companyPageLogoSrc}
-                  alt={partnerBrandLogoAlt(company.name)}
+                  alt={partnerBrandLogoAlt(company.name, company.alternateNames)}
                   className={`max-h-full max-w-full object-contain ${
                     invertLightMarkOnDark ? 'invert' : ''
                   }`}
@@ -993,9 +994,12 @@ function generateStructuredData(company: Company) {
       ]
     },
     'funky-monkey-gifts': {
-      name: 'Funky Monkey Gifts Sales Agent - British-Made Signs & Personalised Decor in East Anglia, Hertfordshire & Cambridgeshire',
-      description: 'UK-made novelty signs, LED wall decor, garden signs, chalkboards, mugs and personalised gifts from a family-run Hinckley factory.',
+      name: 'Funky Monkey Gifts / FMG Signs & Gifts Sales Agent - British-Made Signs & Personalised Decor in East Anglia, Hertfordshire & Cambridgeshire',
+      description: 'Also known as FMG Signs and Gifts. UK-made novelty signs, LED wall decor, garden signs, chalkboards, mugs and personalised gifts from a family-run Hinckley factory.',
       categories: [
+        'Funky Monkey Gifts',
+        'FMG Signs & Gifts',
+        'FMG Signs and Gifts',
         'Novelty Signs',
         'Personalised Gifts',
         'LED Signs',
@@ -1149,6 +1153,7 @@ function generateStructuredData(company: Company) {
       'name': data.name,
       'description': partnerBrandAgentDescription(company),
       'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
+      ...(company.alternateNames?.length ? { alternateName: company.alternateNames } : {}),
       ...(brandSameAs ? { sameAs: brandSameAs } : {}),
       'logo': {
         '@type': 'ImageObject',
@@ -1177,7 +1182,8 @@ function generateStructuredData(company: Company) {
             'image': productSchemaImages(company),
             'brand': {
               '@type': 'Brand',
-              'name': company.name
+              'name': company.name,
+              ...(company.alternateNames?.length ? { alternateName: company.alternateNames } : {}),
             },
             'category': data.categories,
             'offers': {
@@ -1210,6 +1216,7 @@ function generateStructuredData(company: Company) {
     'name': `${company.name} Sales Agent - Wholesale Supplier in East Anglia`,
     'description': partnerBrandAgentDescription(company),
     'url': `https://www.easalesltd.co.uk/companies/${company.slug}`,
+    ...(company.alternateNames?.length ? { alternateName: company.alternateNames } : {}),
     ...(brandSameAs ? { sameAs: brandSameAs } : {}),
     'logo': {
       '@type': 'ImageObject',
@@ -1239,7 +1246,8 @@ function generateStructuredData(company: Company) {
             'image': productSchemaImages(company),
             'brand': {
               '@type': 'Brand',
-              'name': company.name
+              'name': company.name,
+              ...(company.alternateNames?.length ? { alternateName: company.alternateNames } : {}),
             },
             'category': ['Sales Agent Services', 'Wholesale Products', 'East Anglia Retail'],
             'offers': {

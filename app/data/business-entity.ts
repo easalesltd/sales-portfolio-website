@@ -206,12 +206,20 @@ export const BUSINESS_SERVICES = [
 ] as const;
 
 export function partnerBrandNames(): string[] {
-  return companies.map((company) => company.name);
+  return companies.map((company) => {
+    if (company.alternateNames?.length) {
+      return `${company.name} (also ${company.alternateNames.join(', ')})`;
+    }
+    return company.name;
+  });
 }
 
 export function partnerBrandLines(): string[] {
   return companies.map((company) => {
     const firstSentence = company.description.split(/(?<=\.)\s/)[0] ?? company.description;
-    return `${company.name}: ${firstSentence} Agent page: ${SITE_URL}/companies/${company.slug}`;
+    const aka = company.alternateNames?.length
+      ? ` Also known as ${company.alternateNames.join(', ')}.`
+      : '';
+    return `${company.name}: ${firstSentence}${aka} Agent page: ${SITE_URL}/companies/${company.slug}`;
   });
 }

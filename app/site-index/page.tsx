@@ -74,6 +74,7 @@ export default function SiteIndexPage() {
                 className="site-link-quiet"
               >
                 {company.name}
+                {company.alternateNames?.length ? ` (${company.alternateNames.join(', ')})` : ''}
               </Link>
             </li>
           ))}

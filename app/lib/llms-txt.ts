@@ -19,7 +19,12 @@ export function buildLlmsTxt(): string {
   ).join('\n');
 
   const brandLinks = companies
-    .map((company) => `- [${company.name}](${SITE_URL}/companies/${company.slug})`)
+    .map((company) => {
+      const aka = company.alternateNames?.length
+        ? ` (also ${company.alternateNames.join(', ')})`
+        : '';
+      return `- [${company.name}](${SITE_URL}/companies/${company.slug})${aka}`;
+    })
     .join('\n');
 
   return `# ${BUSINESS.legalName}
