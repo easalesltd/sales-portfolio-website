@@ -6140,7 +6140,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-17 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-18 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -9511,12 +9511,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Rochdale', tla: 'RCH' },
   },
   {
-    id: '2026-09-26-hud-lut',
-    utcDate: '2026-09-26T14:00Z',
-    homeTeam: { name: 'Huddersfield Town', tla: 'HUD' },
-    awayTeam: { name: 'Luton Town', tla: 'LUT' },
-  },
-  {
     id: '2026-09-26-kid-yeo',
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
@@ -11897,6 +11891,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-03T19:45Z',
     homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
     awayTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
+  },
+  {
+    id: '2026-11-03-hud-lut',
+    utcDate: '2026-11-03T19:45Z',
+    homeTeam: { name: 'Huddersfield Town', tla: 'HUD' },
+    awayTeam: { name: 'Luton Town', tla: 'LUT' },
   },
   {
     id: '2026-11-03-pne-shu',
