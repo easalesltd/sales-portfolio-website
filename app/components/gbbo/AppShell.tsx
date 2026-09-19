@@ -45,14 +45,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="relative min-h-screen">
-      <div className="hidden sm:block">
-        <Bunting />
-        <div className="mx-auto flex max-w-6xl items-end justify-between gap-3 px-5 pb-4">
+      <div>
+        <Bunting className="h-12 sm:h-auto" />
+        <div className="mx-auto flex max-w-6xl items-end justify-between gap-3 px-4 pb-3 sm:px-5 sm:pb-4">
           <Link href={GBBO_LEAGUE_PATH}>
-            <p className="font-script text-2xl text-raspberry">Great British Bake Off</p>
-            <h1 className="font-display text-5xl leading-none text-tent-dark">{league.name}</h1>
+            <p className="font-script text-xl leading-none text-raspberry sm:text-2xl">Great British Bake Off</p>
+            <h1 className="mt-1 font-display text-[1.85rem] leading-none text-tent-dark sm:mt-0 sm:text-5xl">{league.name}</h1>
           </Link>
-          <div className="text-right text-sm text-chocolate/70">
+          <div className="hidden text-right text-sm text-chocolate/70 sm:block">
             <p>Week {league.currentWeek}/{league.totalWeeks}</p>
             {isChief ? (
               <button className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-raspberry" onClick={() => void lockChief()}>
@@ -61,7 +61,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             ) : null}
           </div>
         </div>
-        <nav className="mx-auto flex max-w-6xl flex-wrap gap-2 px-5 pb-3">
+        <nav className="mx-auto hidden max-w-6xl flex-wrap gap-2 px-5 pb-3 sm:flex">
           {nav.map((item) => {
             const active = pathname === item.href;
             return (
@@ -82,7 +82,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="sticky top-0 z-30 bg-[#fbf4e8]/95 backdrop-blur-md sm:hidden">
         <div className="flex items-center gap-3 px-4 py-2">
           <Link href={GBBO_LEAGUE_PATH} className="min-w-0 flex-1">
-            <h1 className="truncate font-display text-xl leading-none text-tent-dark">{current}</h1>
+            <p className="truncate font-display text-xl leading-none text-tent-dark">{current}</p>
             <p className="text-[11px] text-chocolate/65">Week {league.currentWeek}/{league.totalWeeks}</p>
           </Link>
           <button
