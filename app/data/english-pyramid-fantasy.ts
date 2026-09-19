@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s AFC Wimbledon served up a boring 0-0 against MK Dons. Minus 1 for the 0-0, net minus 1. Chris is on 224.\n\nAsh\'s MK Dons served up a boring 0-0 against AFC Wimbledon. Minus 1 for the 0-0, net minus 1. Ash is on 148.\n\nJon\'s Chelsea leaked three at Brentford. A 3-0 away stuffing, minus 1 for the three conceded, net minus 1. Jon is on 173.\n\nTable: Chris 224, Scott 208, Jon 173, Ben 164, Nest 160, Dave 152, Ash 148.';
+  'Chris\'s West Ham drew 2-2 with Millwall. Plus 1 for the draw, plus 1 for the red, net plus 2. Chris is on 226.\n\nScott\'s Burton Albion drew 2-2 with Mansfield Town. Plus 1 for the draw, net plus 1. Scott is on 209.\n\nJon\'s Hartlepool United lost 3-1 at home to Worthing. No win points, minus 1 for leaking three, net minus 1. Jon is on 172.\n\nBen\'s Cardiff City beat Charlton Athletic 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Tamworth beat Wealdstone 2-1 at home. Plus 3 for the home win, net plus 3. Ben is on 171.\n\nNest\'s Leicester drew 1-1 with Barnsley. Plus 1 for the draw, net plus 1. Then Sheffield United lost 2-1 at Stoke City. No win points, net zero. Then Villa won 3-2 at Spurs. Plus 4 for the away win, plus 1 for three or more, net plus 5. Nest is on 166.\n\nDave\'s Charlton Athletic lost 3-1 at Cardiff City. No win points, minus 1 for leaking three, net minus 1. Then Port Vale lost 2-0 at Walsall. No win points, net zero. Dave is on 151.\n\nAsh\'s Wealdstone lost 2-1 at Tamworth. No win points, plus 1 for the red, net plus 1. Ash is on 149.\n\nTable: Chris 226, Scott 209, Jon 172, Ben 171, Nest 166, Dave 151, Ash 149.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -6123,6 +6123,105 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'Brentford', tla: 'BRE' },
     awayTeam: { name: 'Chelsea', tla: 'CHE' },
     homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-19-bsl-lei',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Barnsley', tla: 'BSL' },
+    awayTeam: { name: 'Leicester City', tla: 'LEI' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-19-btn-mnf',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Burton Albion', tla: 'BTN' },
+    awayTeam: { name: 'Mansfield Town', tla: 'MNF' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-19-cdf-cha',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Cardiff City', tla: 'CDF' },
+    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-19-hpl-wor',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Hartlepool United', tla: 'HPL' },
+    awayTeam: { name: 'Worthing', tla: 'WOR' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-19-mil-whu',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Millwall', tla: 'MIL' },
+    awayTeam: { name: 'West Ham United', tla: 'WHU' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-19-stk-shu',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Stoke City', tla: 'STK' },
+    awayTeam: { name: 'Sheffield United', tla: 'SHU' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-09-19-tam-wea',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Tamworth', tla: 'TAM' },
+    awayTeam: { name: 'Wealdstone', tla: 'WEA' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-19-tot-avl',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Tottenham Hotspur', tla: 'TOT' },
+    awayTeam: { name: 'Aston Villa', tla: 'AVL' },
+    homeGoals: 2,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-19-wal-pvl',
+    utcDate: '2026-09-19T11:30Z',
+    homeTeam: { name: 'Walsall', tla: 'WAL' },
+    awayTeam: { name: 'Port Vale', tla: 'PVL' },
+    homeGoals: 2,
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
