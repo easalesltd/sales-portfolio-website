@@ -148,6 +148,7 @@ export const OPENING_SQUADS: Record<(typeof COMPANIONS)[number], readonly string
 
 export const COMPANION_PHOTOS: Partial<Record<(typeof COMPANIONS)[number], string>> = {
   Cowie: "/gbbo/companions/cowie.jpg",
+  Guns: "/gbbo/companions/guns.jpg",
 };
 
 export function createCompanions() {
