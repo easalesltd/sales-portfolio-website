@@ -51,7 +51,6 @@ function BakerCard({ baker, week, owners }: { baker: Baker; week: number | null;
           </div>
           <Pill tone={out ? "raspberry" : "tent"}>{out ? "Eliminated" : baker.job}</Pill>
         </div>
-        {!out && baker.job ? <p className="text-xs font-bold uppercase tracking-[0.14em] text-tent">{baker.job}</p> : null}
         <p className="text-sm leading-7 text-chocolate/80">{baker.bio}</p>
         {owners.length ? (
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-chocolate/50">
