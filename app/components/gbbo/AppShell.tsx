@@ -87,34 +87,38 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             type="button"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="flex h-11 w-11 shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl bg-[#0d1f1a] text-flour"
+            className={`flex h-11 w-11 shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl bg-[#0d1f1a] text-flour transition-transform duration-300 ease-out ${menuOpen ? "scale-95" : "scale-100"}`}
             onClick={() => setMenuOpen((open) => !open)}
           >
-            <span className={`block h-0.5 w-5 bg-flour transition ${menuOpen ? "translate-y-2 rotate-45" : ""}`} />
-            <span className={`block h-0.5 w-5 bg-flour transition ${menuOpen ? "opacity-0" : ""}`} />
-            <span className={`block h-0.5 w-5 bg-flour transition ${menuOpen ? "-translate-y-2 -rotate-45" : ""}`} />
+            <span className={`block h-0.5 w-5 bg-flour transition-all duration-300 ease-out ${menuOpen ? "translate-y-2 rotate-45" : ""}`} />
+            <span className={`block h-0.5 w-5 bg-flour transition-all duration-200 ease-out ${menuOpen ? "scale-x-0 opacity-0" : ""}`} />
+            <span className={`block h-0.5 w-5 bg-flour transition-all duration-300 ease-out ${menuOpen ? "-translate-y-2 -rotate-45" : ""}`} />
           </button>
         </div>
-        {menuOpen ? (
-          <nav className="bg-[#0d1f1a] px-4 py-3">
-            <div className="grid gap-2">
-              {nav.map((item) => {
-                const active = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`rounded-2xl px-4 py-3 text-sm font-bold ${
-                      active ? "bg-butter text-chocolate" : "bg-[#1a3a31] text-flour"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              })}
+        <nav className="gbbo-burger-panel" data-open={menuOpen} aria-hidden={!menuOpen}>
+          <div className="min-h-0 overflow-hidden">
+            <div className="bg-[#0d1f1a] px-4 py-3">
+              <div className="grid gap-2">
+                {nav.map((item, index) => {
+                  const active = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      tabIndex={menuOpen ? 0 : -1}
+                      style={{ transitionDelay: menuOpen ? `${80 + index * 45}ms` : "0ms" }}
+                      className={`gbbo-burger-item rounded-2xl px-4 py-3 text-sm font-bold ${
+                        active ? "bg-butter text-chocolate" : "bg-[#1a3a31] text-flour"
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-          </nav>
-        ) : null}
+          </div>
+        </nav>
       </div>
 
       <PlayerPicker />
