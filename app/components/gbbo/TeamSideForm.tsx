@@ -104,34 +104,23 @@ export function TeamSideForm({
                 : "No change — last week's bakers will play again."
               : "One substitution. That is the weekly limit."}
       </p>
-      <div className="relative mt-4 flex flex-wrap items-center gap-2">
-        <span className="relative inline-flex flex-wrap items-center gap-2">
-          <Button
-            disabled={!canSubmit}
-            title={blockReason ?? undefined}
-            onClick={() => {
-              void submitSide({ companionSlug: gbboSlug(companion.name), bakerIds: filled }).then((error) => {
-                setMessage(error ?? "Saved. This week's side will be remembered.");
-              });
-            }}
-          >
-            Submit this week's side
+      <div className="mt-4 flex min-w-0 flex-wrap items-center gap-2">
+        <Button
+          disabled={!canSubmit}
+          title={blockReason ?? undefined}
+          onClick={() => {
+            void submitSide({ companionSlug: gbboSlug(companion.name), bakerIds: filled }).then((error) => {
+              setMessage(error ?? "Saved. This week's side will be remembered.");
+            });
+          }}
+        >
+          Submit this week's side
+        </Button>
+        {blockReason ? (
+          <Button tone="ghost" type="button" onClick={() => setWhyOpen((open) => !open)}>
+            Why is this locked?
           </Button>
-          {blockReason ? (
-            <Button tone="ghost" type="button" onClick={() => setWhyOpen((open) => !open)}>
-              Why is this locked?
-            </Button>
-          ) : null}
-          {whyOpen && blockReason ? (
-            <span
-              role="status"
-              className="absolute left-0 top-full z-10 mt-2 w-80 rounded-2xl border border-[#e7d3b4] bg-white px-4 py-3 text-sm leading-6 text-chocolate shadow-lg"
-            >
-              <strong className="block font-bold text-raspberry">Submit is unavailable</strong>
-              {blockReason}
-            </span>
-          ) : null}
-        </span>
+        ) : null}
         <Button
           tone="ghost"
           disabled={locked}
@@ -165,6 +154,15 @@ export function TeamSideForm({
           </Button>
         ) : null}
       </div>
+      {whyOpen && blockReason ? (
+        <div
+          role="status"
+          className="mt-3 w-full min-w-0 rounded-2xl border border-[#e7d3b4] bg-white px-4 py-3 text-sm leading-6 text-chocolate"
+        >
+          <strong className="block font-bold text-raspberry">Submit is unavailable</strong>
+          {blockReason}
+        </div>
+      ) : null}
       <p className="mt-4 text-sm text-chocolate/70">
         {joker ? `Joker played in week ${joker.week}${joker.autoApplied ? " (auto)" : ""}` : "Joker still available in weeks 1–4"}
       </p>

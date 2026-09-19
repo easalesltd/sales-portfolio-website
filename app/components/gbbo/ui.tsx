@@ -14,7 +14,7 @@ export function Card({
   action?: ReactNode;
 }) {
   return (
-    <section className={`paper-card rounded-[28px] border border-[#e7d3b4] p-6 ${className}`}>
+    <section className={`paper-card overflow-hidden rounded-[28px] border border-[#e7d3b4] p-6 ${className}`}>
       {(eyebrow || title || action) && (
         <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
           <div>
