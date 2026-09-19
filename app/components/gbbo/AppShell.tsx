@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Bunting } from "./Bunting";
+import { PlayerPicker } from "./PlayerPicker";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useGbboSession } from "@/app/lib/gbbo/session";
@@ -54,7 +55,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             ) : null}
           </div>
         </div>
-        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 pb-4">
+        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 pb-3">
           {nav.map((item) => {
             const active = pathname === item.href;
             return (
@@ -70,6 +71,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             );
           })}
         </nav>
+        <PlayerPicker />
       </div>
       <main className="mx-auto max-w-6xl px-5 pb-20 pt-6">{children}</main>
     </div>

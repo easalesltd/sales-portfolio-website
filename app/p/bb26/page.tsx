@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
-import { gbboSlug } from "@/app/lib/gbbo/identity";
 import {
   bakerName,
   companionName,
@@ -18,7 +17,7 @@ import { teamWindow } from "@/app/lib/gbbo/window";
 
 export default function LeaguePage() {
   const { league, loaded } = useLeague();
-  const { isChief, playerSlug, setPlayer } = useGbboSession();
+  const { isChief, playerSlug } = useGbboSession();
   if (!loaded) return <p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>;
 
   const table = companionTotals(league);
@@ -77,28 +76,9 @@ export default function LeaguePage() {
                 </Link>
               ) : (
                 <Link href={`${GBBO_LEAGUE_PATH}/teams`} className="mt-4 inline-flex rounded-full bg-tent px-5 py-2.5 text-sm font-bold text-flour">
-                  {gate.open ? (playerSlug ? "Set this week's bakers" : "Choose your name, then set your bakers") : "See your locked side"}
+                  {gate.open ? (playerSlug ? "Set this week's bakers" : "Choose your name at the top, then set your bakers") : "See your locked side"}
                 </Link>
               )}
-            </div>
-          </Card>
-          <Card eyebrow="Who is playing?" title={playerSlug ? `Hello, ${league.companions.find((companion) => gbboSlug(companion.name) === playerSlug)?.name ?? "companion"}` : "Tap your name"}>
-            <p className="mb-3 text-sm text-chocolate/75">
-              The site remembers you on this phone or laptop, and it remembers the side you submit.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {league.companions.map((companion) => {
-                const active = gbboSlug(companion.name) === playerSlug;
-                return (
-                  <button
-                    key={companion.id}
-                    className={`rounded-full px-4 py-2 text-sm font-bold ${active ? "bg-tent text-flour" : "bg-flour text-chocolate"}`}
-                    onClick={() => setPlayer(companion.name)}
-                  >
-                    {companion.name}
-                  </button>
-                );
-              })}
             </div>
           </Card>
         </div>
