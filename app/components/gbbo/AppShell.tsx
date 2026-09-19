@@ -10,23 +10,23 @@ import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 
 const PLAYER_NAV = [
-  { href: GBBO_LEAGUE_PATH, label: "League" },
-  { href: `${GBBO_LEAGUE_PATH}/teams`, label: "My team" },
-  { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties" },
-  { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes" },
-  { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules" },
-  { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
+  { href: GBBO_LEAGUE_PATH, label: "League", short: "League" },
+  { href: `${GBBO_LEAGUE_PATH}/teams`, label: "My team", short: "Team" },
+  { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties", short: "Pens" },
+  { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes", short: "Recipes" },
+  { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules", short: "Rules" },
+  { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut", short: "Slut" },
 ];
 
 const CHIEF_NAV = [
-  { href: GBBO_LEAGUE_PATH, label: "League" },
-  { href: `${GBBO_LEAGUE_PATH}/teams`, label: "Teams" },
-  { href: `${GBBO_LEAGUE_PATH}/score`, label: "Score" },
-  { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties" },
-  { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes" },
-  { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules" },
-  { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
-  { href: `${GBBO_LEAGUE_PATH}/setup`, label: "Setup" },
+  { href: GBBO_LEAGUE_PATH, label: "League", short: "League" },
+  { href: `${GBBO_LEAGUE_PATH}/teams`, label: "Teams", short: "Teams" },
+  { href: `${GBBO_LEAGUE_PATH}/score`, label: "Score", short: "Score" },
+  { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties", short: "Pens" },
+  { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes", short: "Recipes" },
+  { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules", short: "Rules" },
+  { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut", short: "Slut" },
+  { href: `${GBBO_LEAGUE_PATH}/setup`, label: "Setup", short: "Setup" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -38,7 +38,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="relative min-h-screen">
-      <div className="sticky top-0 z-30 bg-gradient-to-b from-[#fbf4e8] to-[#fbf4e8]/90 backdrop-blur-md">
+      <div className="sticky top-0 z-30 overflow-x-hidden bg-gradient-to-b from-[#fbf4e8] to-[#fbf4e8]/90 backdrop-blur-md">
         <Bunting />
         <div className="mx-auto flex max-w-6xl flex-wrap items-end justify-between gap-4 px-5 pb-4">
           <Link href={GBBO_LEAGUE_PATH} className="block">
@@ -57,18 +57,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             ) : null}
           </div>
         </div>
-        <nav className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-5 pb-3">
+        <nav className={`mx-auto grid max-w-6xl gap-1.5 px-4 pb-3 sm:flex sm:flex-wrap sm:gap-2 sm:px-5 ${isChief ? "grid-cols-4" : "grid-cols-3"}`}>
           {nav.map((item) => {
             const active = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-full px-4 py-2 text-sm font-bold ${
+                className={`rounded-full px-1.5 py-2 text-center text-[11px] font-bold leading-none sm:px-4 sm:text-sm ${
                   active ? "bg-tent text-flour" : "bg-flour/80 text-chocolate hover:bg-white"
                 }`}
               >
-                {item.label}
+                <span className="sm:hidden">{item.short}</span>
+                <span className="hidden sm:inline">{item.label}</span>
               </Link>
             );
           })}
