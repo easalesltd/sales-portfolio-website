@@ -9,13 +9,13 @@ import { useGbboSession } from "@/app/lib/gbbo/session";
 export default function PlayAsPage() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
-  const { setPlayer } = useGbboSession();
+  const { setPendingPlayer } = useGbboSession();
 
   useEffect(() => {
     const slug = gbboSlug(params.slug ?? "");
-    if (slug) setPlayer(slug);
-    router.replace(`${GBBO_LEAGUE_PATH}/teams`);
-  }, [params.slug, router, setPlayer]);
+    if (slug) setPendingPlayer(slug);
+    router.replace(slug ? `${GBBO_LEAGUE_PATH}/teams?as=${slug}` : `${GBBO_LEAGUE_PATH}/teams`);
+  }, [params.slug, router, setPendingPlayer]);
 
-  return <p className="font-script text-3xl text-raspberry">Putting your peg on the board…</p>;
+  return <p className="font-script text-3xl text-raspberry">Opening your peg…</p>;
 }

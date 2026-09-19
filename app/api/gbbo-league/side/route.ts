@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { isGbboChiefRequest } from "@/app/lib/gbbo/chief";
+import { isGbboPlayerRequest } from "@/app/lib/gbbo/player-pins";
 import { uid } from "@/app/lib/gbbo/ids";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import {
@@ -28,6 +29,10 @@ export async function POST(request: Request) {
   const companion = league.companions.find((item) => gbboSlug(item.name) === slug);
   if (!companion) {
     return NextResponse.json({ error: "That companion is not in the tent." }, { status: 404 });
+  }
+
+  if (!(await isGbboPlayerRequest(slug, request))) {
+    return NextResponse.json({ error: "Unlock your peg with your player key first." }, { status: 401 });
   }
 
   const gate = teamWindow(new Date(), league.totalWeeks);

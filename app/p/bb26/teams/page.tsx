@@ -1,5 +1,6 @@
 "use client";
 
+import { PlayerUnlockForm } from "@/app/components/gbbo/PlayerUnlockForm";
 import { TeamSideForm } from "@/app/components/gbbo/TeamSideForm";
 import { Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
@@ -10,12 +11,13 @@ import { teamWindow } from "@/app/lib/gbbo/window";
 
 export default function TeamsPage() {
   const { league } = useLeague();
-  const { ready, isChief, playerSlug } = useGbboSession();
+  const { ready, isChief, playerSlug, playerUnlocked, pendingSlug } = useGbboSession();
   const gate = teamWindow(new Date(), league.totalWeeks);
   const week = gate.week;
   const size = teamSizeForWeek(league, week);
   const player = league.companions.find((companion) => gbboSlug(companion.name) === playerSlug);
-  const visible = isChief ? league.companions : player ? [player] : [];
+  const pending = league.companions.find((companion) => gbboSlug(companion.name) === pendingSlug);
+  const visible = isChief ? league.companions : playerUnlocked && player ? [player] : [];
   const locked = !gate.open && !isChief;
 
   if (!ready) return <p className="font-script text-3xl text-raspberry">Finding your peg…</p>;
@@ -24,8 +26,20 @@ export default function TeamsPage() {
     return <Empty title="Week 1 teams come from the draft" body="Opening sides are set by the Chief Companion first." />;
   }
 
-  if (!isChief && !player) {
-    return <Empty title="Say who you are first" body="Go back to League and tap your name. The site will remember you on this phone or laptop." />;
+  if (!isChief && !playerUnlocked) {
+    return (
+      <Card eyebrow="Your peg" title="Unlock your team page">
+        <p className="max-w-xl text-sm leading-7 text-chocolate/75">
+          Each companion has a private key. Tap your name at the top, then enter the key Dave sent you.
+          Nobody else can submit a side as you.
+        </p>
+        {pending ? (
+          <div className="mt-4">
+            <PlayerUnlockForm slug={gbboSlug(pending.name)} name={pending.name} />
+          </div>
+        ) : null}
+      </Card>
+    );
   }
 
   return (

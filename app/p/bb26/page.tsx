@@ -17,7 +17,7 @@ import { teamWindow } from "@/app/lib/gbbo/window";
 
 export default function LeaguePage() {
   const { league, loaded } = useLeague();
-  const { isChief, playerSlug } = useGbboSession();
+  const { isChief, playerUnlocked } = useGbboSession();
   if (!loaded) return <p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>;
 
   const table = companionTotals(league);
@@ -76,7 +76,11 @@ export default function LeaguePage() {
                 </Link>
               ) : (
                 <Link href={`${GBBO_LEAGUE_PATH}/teams`} className="mt-4 inline-flex rounded-full bg-tent px-5 py-2.5 text-sm font-bold text-flour">
-                  {gate.open ? (playerSlug ? "Set this week's bakers" : "Choose your name at the top, then set your bakers") : "See your locked side"}
+                  {gate.open
+                    ? playerUnlocked
+                      ? "Set this week's bakers"
+                      : "Unlock your peg at the top, then set your bakers"
+                    : "See your locked side"}
                 </Link>
               )}
             </div>
