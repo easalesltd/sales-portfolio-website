@@ -52,6 +52,16 @@ export function emptyEpisode(week: number, totalWeeks: number): EpisodeScore {
 
 export const COMPANIONS = ["Dave", "Cowie", "Guns", "Shuker", "Lee", "Nest"] as const;
 
+/** Week 1 sides from the companions' first squads. */
+export const OPENING_SQUADS: Record<(typeof COMPANIONS)[number], readonly string[]> = {
+  Dave: ["Shannon", "Mo", "Connie"],
+  Cowie: ["Clara", "Yannis", "Molly"],
+  Guns: ["Danni", "Molly", "Clara"],
+  Shuker: ["Connie", "Gabe", "Tom"],
+  Lee: ["Moyin", "Tom", "Yannis"],
+  Nest: ["Gary", "Nikki", "Gabe"],
+};
+
 export function createCompanions() {
   return COMPANIONS.map((name, index) => ({
     id: companionIdForName(name),
@@ -60,6 +70,12 @@ export function createCompanions() {
     isChief: name === "Dave",
     isDraftMaster: name === "Dave",
   }));
+}
+
+function rankingForSquad(bakers: Baker[], names: readonly string[]) {
+  const preferred = names.map((name) => bakerIdForName(name));
+  const rest = bakers.map((baker) => baker.id).filter((id) => !preferred.includes(id));
+  return [...preferred, ...rest];
 }
 
 export function createEmptyLeague(): LeagueState {
@@ -77,10 +93,16 @@ export function createEmptyLeague(): LeagueState {
     companions,
     bakers,
     draftRankings: Object.fromEntries(
-      companions.map((companion) => [companion.id, bakers.map((baker) => baker.id)]),
+      companions.map((companion) => [
+        companion.id,
+        rankingForSquad(bakers, OPENING_SQUADS[companion.name as (typeof COMPANIONS)[number]]),
+      ]),
     ),
-    draftComplete: false,
-    initialTeams: [],
+    draftComplete: true,
+    initialTeams: companions.map((companion) => ({
+      companionId: companion.id,
+      bakerIds: OPENING_SQUADS[companion.name as (typeof COMPANIONS)[number]].map((name) => bakerIdForName(name)),
+    })),
     substitutions: [],
     jokers: [],
     episodes: Array.from({ length: 10 }, (_, index) => emptyEpisode(index + 1, 10)),
