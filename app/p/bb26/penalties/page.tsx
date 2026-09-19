@@ -18,7 +18,8 @@ export default function PenaltiesPage() {
         <p className="text-sm leading-7 text-chocolate/75">
           A Beer Baguette is a beer drunk through a baguette, or other bread, in a single motion.
           It must be videoed and shared with the companions or it does not count. Creativity is acceptable.
-          A loverly treat awaits the eventual winner.
+          A loverly treat awaits the eventual winner. The official technical recipe for each week lives on
+          Technical recipes once Love Productions post it.
         </p>
       </Card>
       <div className="grid gap-4">

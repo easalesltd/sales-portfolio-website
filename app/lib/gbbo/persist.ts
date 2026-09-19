@@ -43,6 +43,8 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
   league.draftRankings = nextRankings;
 
   if (!Array.isArray(league.sideConfirmations)) league.sideConfirmations = [];
+  if (!Array.isArray(league.technicalRecipes)) league.technicalRecipes = [];
+  if (!Array.isArray(league.technicalCatalogue)) league.technicalCatalogue = [];
 
   for (const team of league.initialTeams) {
     team.companionId = rewrite(companionMap, team.companionId) ?? team.companionId;

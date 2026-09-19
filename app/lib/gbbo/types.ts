@@ -41,6 +41,19 @@ export type SideConfirmation = {
   week: number;
 };
 
+export type TechnicalRecipe = {
+  week: number;
+  title: string;
+  url: string;
+  fetchedAt: string;
+};
+
+export type TechnicalCatalogueEntry = {
+  title: string;
+  url: string;
+  firstSeen: string;
+};
+
 export type TechnicalPlace = {
   bakerId: Id;
   place: number;
@@ -117,6 +130,8 @@ export type LeagueState = {
   episodes: EpisodeScore[];
   adHocRules: AdHocRule[];
   penalties: Penalty[];
+  technicalRecipes: TechnicalRecipe[];
+  technicalCatalogue: TechnicalCatalogueEntry[];
 };
 
 export type ScoreLine = {
