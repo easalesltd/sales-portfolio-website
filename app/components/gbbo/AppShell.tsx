@@ -87,7 +87,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             type="button"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="flex h-11 w-11 shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl bg-tent text-flour"
+            className="flex h-11 w-11 shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl bg-tent-dark text-flour"
             onClick={() => setMenuOpen((open) => !open)}
           >
             <span className={`block h-0.5 w-5 bg-flour transition ${menuOpen ? "translate-y-2 rotate-45" : ""}`} />
