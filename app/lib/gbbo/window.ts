@@ -83,7 +83,7 @@ export function formatLondon(date: Date): string {
   }).format(date);
 }
 
-export function teamWindow(now: Date = new Date(), totalWeeks = SERIES_17_AIR_DATES.length): TeamWindow {
+export function teamWindow(now: Date = new Date(), totalWeeks: number = SERIES_17_AIR_DATES.length): TeamWindow {
   const firstDone = episodeDoneAt(1);
   if (now < firstDone) {
     return {
