@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
 import {
@@ -41,13 +42,15 @@ export default function LeaguePage() {
         <Card eyebrow="The village fete" title="League table">
           <ol className="space-y-3">
             {table.map((row, index) => {
-              const companion = companionName(league, row.companionId);
+              const companion = league.companions.find((item) => item.id === row.companionId);
+              const name = companion?.name ?? companionName(league, row.companionId);
               const team = teamForWeek(league, row.companionId, gate.week);
               return (
-                <li key={row.companionId} className="ticket flex items-center gap-4 rounded-[22px] px-4 py-3">
-                  <span className="font-display text-3xl text-tent-dark w-10">{index + 1}</span>
-                  <div className="flex-1">
-                    <p className="font-display text-2xl leading-tight">{companion}</p>
+                <li key={row.companionId} className="ticket flex items-center gap-3 rounded-[22px] px-4 py-3 sm:gap-4">
+                  <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
+                  <CompanionPhoto name={name} photo={companion?.photo} />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-display text-2xl leading-tight">{name}</p>
                     <p className="text-sm text-chocolate/70">
                       {team.map((id) => bakerName(league, id)).join(" · ") || "No bakers yet"}
                     </p>
@@ -95,8 +98,11 @@ export default function LeaguePage() {
               const week = scoreCompanionWeek(league, companion.id, latest.week);
               return (
                 <div key={companion.id} className="rounded-[22px] bg-flour/80 p-4">
-                  <div className="flex items-center justify-between">
-                    <p className="font-display text-2xl">{companion.name}</p>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <CompanionPhoto name={companion.name} photo={companion.photo} />
+                      <p className="font-display text-2xl">{companion.name}</p>
+                    </div>
                     <div className="flex items-center gap-2">
                       {week.joker ? <Pill tone="butter">Joker</Pill> : null}
                       <Points value={week.points} />

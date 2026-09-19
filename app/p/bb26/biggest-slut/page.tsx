@@ -1,5 +1,6 @@
 "use client";
 
+import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { bakerName, companionName, lowestScorersForWeek, scoreCompanionWeek } from "@/app/lib/gbbo/league";
 import { useLeague } from "@/app/lib/gbbo/store";
@@ -35,10 +36,16 @@ export default function BiggestSlutPage() {
           {holders.length > 1 ? " The bottom of the table is a tie." : ""}
         </p>
         <div className="mt-5 grid gap-4">
-          {holders.map((score) => (
+          {holders.map((score) => {
+            const companion = league.companions.find((item) => item.id === score.companionId);
+            const name = companion?.name ?? companionName(league, score.companionId);
+            return (
             <div key={score.companionId} className="rounded-[22px] bg-raspberry/10 px-5 py-4">
               <div className="flex items-center justify-between gap-4">
-                <p className="font-display text-3xl text-tent-dark">{companionName(league, score.companionId)}</p>
+                <div className="flex min-w-0 items-center gap-3">
+                  <CompanionPhoto name={name} photo={companion?.photo} size="md" />
+                  <p className="font-display text-3xl text-tent-dark">{name}</p>
+                </div>
                 <Points value={score.points} />
               </div>
               <p className="mt-1 text-sm text-chocolate/70">
@@ -46,7 +53,8 @@ export default function BiggestSlutPage() {
                 {score.joker ? " · joker" : ""}
               </p>
             </div>
-          ))}
+            );
+          })}
         </div>
       </Card>
 
@@ -54,14 +62,17 @@ export default function BiggestSlutPage() {
         <ol className="space-y-3">
           {table.map((score, index) => {
             const crowned = holders.some((holder) => holder.companionId === score.companionId);
+            const companion = league.companions.find((item) => item.id === score.companionId);
+            const name = companion?.name ?? companionName(league, score.companionId);
             return (
               <li
                 key={score.companionId}
-                className={`ticket flex items-center gap-4 rounded-[22px] px-4 py-3 ${crowned ? "ring-2 ring-raspberry" : ""}`}
+                className={`ticket flex items-center gap-3 rounded-[22px] px-4 py-3 sm:gap-4 ${crowned ? "ring-2 ring-raspberry" : ""}`}
               >
-                <span className="w-10 font-display text-3xl text-tent-dark">{index + 1}</span>
-                <div className="flex-1">
-                  <p className="font-display text-2xl leading-tight">{companionName(league, score.companionId)}</p>
+                <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
+                <CompanionPhoto name={name} photo={companion?.photo} />
+                <div className="min-w-0 flex-1">
+                  <p className="font-display text-2xl leading-tight">{name}</p>
                   {crowned ? <p className="text-sm text-raspberry">This week's biggest slut</p> : null}
                 </div>
                 <Points value={score.points} />
