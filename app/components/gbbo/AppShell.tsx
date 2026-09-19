@@ -17,7 +17,6 @@ const PLAYER_NAV = [
 
 const CHIEF_NAV = [
   { href: GBBO_LEAGUE_PATH, label: "League" },
-  { href: `${GBBO_LEAGUE_PATH}/draft`, label: "Draft" },
   { href: `${GBBO_LEAGUE_PATH}/teams`, label: "Teams" },
   { href: `${GBBO_LEAGUE_PATH}/score`, label: "Score" },
   { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties" },

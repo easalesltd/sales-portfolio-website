@@ -62,7 +62,7 @@ export default function LeaguePage() {
           <Card eyebrow="This weekend" title={`Week ${league.currentWeek}`}>
             <div className="space-y-3 text-sm">
               <p>Each companion plays <strong>{size} baker{size === 1 ? "" : "s"}</strong> this week. Last week's side stands unless they substitute one baker.</p>
-              <p>{league.draftComplete ? "The draft is complete." : "Waiting for the Chief Companion to run the draft."}</p>
+              <p>{league.draftComplete ? "Opening sides are set. Change one baker a week from My team." : "Opening sides are not on the board yet."}</p>
               <p>{latest ? `Last published: ${latest.title}.` : "No episode has been published yet."}</p>
               <div className="flex flex-wrap gap-2 pt-2">
                 <Pill tone="tent">Joker weeks 1–4</Pill>

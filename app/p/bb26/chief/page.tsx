@@ -16,7 +16,7 @@ export default function ChiefDoorPage() {
     <Card eyebrow="Steward's door" title="Chief Companion only">
       <p className="mb-4 max-w-xl text-sm leading-7 text-chocolate/75">
         Companions use the public tent link to pick a name and submit their weekly side.
-        Scoring, Setup and the draft stay behind this door.
+        Scoring and Setup stay behind this door.
       </p>
       {isChief ? (
         <p className="text-sm font-bold text-tent">You are already at the steward's desk.</p>

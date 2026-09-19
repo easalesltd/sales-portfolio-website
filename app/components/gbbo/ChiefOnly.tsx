@@ -12,7 +12,7 @@ export function ChiefOnly({ children }: { children: React.ReactNode }) {
     return (
       <Empty
         title="Steward's desk only"
-        body="Scoring, the draft and Setup stay with the Chief Companion. Companions pick their weekly side from My team."
+        body="Scoring and Setup stay with the Chief Companion. Companions pick their weekly side from My team."
       />
     );
   }
