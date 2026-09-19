@@ -6139,7 +6139,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-18 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-19 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -9516,12 +9516,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Yeovil Town', tla: 'YEO' },
   },
   {
-    id: '2026-09-26-lei-wga',
-    utcDate: '2026-09-26T14:00Z',
-    homeTeam: { name: 'Leicester City', tla: 'LEI' },
-    awayTeam: { name: 'Wigan Athletic', tla: 'WGA' },
-  },
-  {
     id: '2026-09-26-mkd-bro',
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
@@ -11404,6 +11398,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-27T19:45Z',
     homeTeam: { name: 'Hornchurch', tla: 'HRN' },
     awayTeam: { name: 'Yeovil Town', tla: 'YEO' },
+  },
+  {
+    id: '2026-10-27-lei-wga',
+    utcDate: '2026-10-27T19:45Z',
+    homeTeam: { name: 'Leicester City', tla: 'LEI' },
+    awayTeam: { name: 'Wigan Athletic', tla: 'WGA' },
   },
   {
     id: '2026-10-27-oxf-stp',
