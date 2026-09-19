@@ -14,6 +14,7 @@ import {
 } from "@/app/lib/gbbo/league";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
+import { teamWindow } from "@/app/lib/gbbo/window";
 
 export default function LeaguePage() {
   const { league, loaded } = useLeague();
@@ -23,7 +24,8 @@ export default function LeaguePage() {
   const table = companionTotals(league);
   const published = league.episodes.filter((episode) => episode.published);
   const latest = published.at(-1);
-  const size = teamSizeForWeek(league, league.currentWeek);
+  const gate = teamWindow(new Date(), league.totalWeeks);
+  const size = teamSizeForWeek(league, gate.week);
 
   if (league.companions.length === 0) {
     return (
@@ -41,7 +43,7 @@ export default function LeaguePage() {
           <ol className="space-y-3">
             {table.map((row, index) => {
               const companion = companionName(league, row.companionId);
-              const team = teamForWeek(league, row.companionId, league.currentWeek);
+              const team = teamForWeek(league, row.companionId, gate.week);
               return (
                 <li key={row.companionId} className="ticket flex items-center gap-4 rounded-[22px] px-4 py-3">
                   <span className="font-display text-3xl text-tent-dark w-10">{index + 1}</span>
@@ -59,10 +61,10 @@ export default function LeaguePage() {
         </Card>
 
         <div className="space-y-6">
-          <Card eyebrow="This weekend" title={`Week ${league.currentWeek}`}>
+          <Card eyebrow="This weekend" title={`Week ${gate.week}`}>
             <div className="space-y-3 text-sm">
               <p>Each companion plays <strong>{size} baker{size === 1 ? "" : "s"}</strong> this week. Last week's side stands unless they substitute one baker.</p>
-              <p>{league.draftComplete ? "Opening sides are set. Change one baker a week from My team." : "Opening sides are not on the board yet."}</p>
+              <p>{gate.summary}</p>
               <p>{latest ? `Last published: ${latest.title}.` : "No episode has been published yet."}</p>
               <div className="flex flex-wrap gap-2 pt-2">
                 <Pill tone="tent">Joker weeks 1–4</Pill>
@@ -75,7 +77,7 @@ export default function LeaguePage() {
                 </Link>
               ) : (
                 <Link href={`${GBBO_LEAGUE_PATH}/teams`} className="mt-4 inline-flex rounded-full bg-tent px-5 py-2.5 text-sm font-bold text-flour">
-                  {playerSlug ? "Set this week's bakers" : "Choose your name, then set your bakers"}
+                  {gate.open ? (playerSlug ? "Set this week's bakers" : "Choose your name, then set your bakers") : "See your locked side"}
                 </Link>
               )}
             </div>

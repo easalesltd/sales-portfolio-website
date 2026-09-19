@@ -13,9 +13,18 @@ function padLineup(bakerIds: string[], size: number): string[] {
   return next;
 }
 
-export function TeamSideForm({ companion }: { companion: Companion }) {
+export function TeamSideForm({
+  companion,
+  week,
+  locked,
+  lockReason,
+}: {
+  companion: Companion;
+  week: number;
+  locked: boolean;
+  lockReason?: string;
+}) {
   const { league, submitSide } = useLeague();
-  const week = league.currentWeek;
   const size = teamSizeForWeek(league, week);
   const remaining = selectableBakers(league, week);
   const lastWeek = week > 1 ? teamForWeek(league, companion.id, week - 1) : carriedTeam(league, companion.id, 1);
@@ -33,9 +42,22 @@ export function TeamSideForm({ companion }: { companion: Companion }) {
   const changes = lineupChanges(livingLast, filled);
   const shrinking = livingLast.length > size;
   const legal = unique.size === filled.length && filled.length === size && (week === 1 ? changes <= 3 : changes <= 1);
+  const shrinkingOk = shrinking && filled.length === size && unique.size === size && changes === 0;
+  const canSubmit = !locked && (legal || shrinkingOk);
   const submitted = league.substitutions.some((sub) => sub.companionId === companion.id && sub.week === week);
   const joker = jokerForCompanion(league, companion.id);
-  const canJoker = week <= 4 && !joker;
+  const canJoker = !locked && week <= 4 && !joker;
+  const [whyOpen, setWhyOpen] = useState(false);
+
+  const blockReason = locked
+    ? (lockReason ?? "The change window is closed, so Submit is unavailable.")
+    : unique.size !== filled.length
+      ? "The same baker is in two slots. Each baker can only appear once."
+      : filled.length !== size
+        ? `Choose ${size} different bakers still in the tent before you can submit.`
+        : week > 1 && changes > 1
+          ? `${changes} bakers are different from last week. Only one substitution is allowed, so put one of last week's bakers back.`
+          : null;
 
   function setSlot(index: number, bakerId: string) {
     setPicks((current) => {
@@ -52,43 +74,68 @@ export function TeamSideForm({ companion }: { companion: Companion }) {
       </p>
       <div className="space-y-2">
         {proposed.map((bakerId, index) => (
-          <select
-            key={`${companion.id}-${index}`}
-            className="w-full rounded-2xl border border-[#e7d3b4] bg-flour px-4 py-2.5 outline-none ring-butter/70 focus:ring-4"
-            value={bakerId}
-            onChange={(event) => setSlot(index, event.target.value)}
-          >
-            <option value="">{`Baker ${index + 1}`}</option>
-            {remaining.map((baker) => (
-              <option key={baker.id} value={baker.id}>{baker.name}</option>
-            ))}
-          </select>
+          locked ? (
+            <p key={`${companion.id}-${index}`} className="rounded-2xl border border-[#e7d3b4] bg-flour px-4 py-2.5">
+              {bakerId ? bakerName(league, bakerId) : `Baker ${index + 1}`}
+            </p>
+          ) : (
+            <select
+              key={`${companion.id}-${index}`}
+              className="w-full rounded-2xl border border-[#e7d3b4] bg-flour px-4 py-2.5 outline-none ring-butter/70 focus:ring-4"
+              value={bakerId}
+              onChange={(event) => setSlot(index, event.target.value)}
+            >
+              <option value="">{`Baker ${index + 1}`}</option>
+              {remaining.map((baker) => (
+                <option key={baker.id} value={baker.id}>{baker.name}</option>
+              ))}
+            </select>
+          )
         ))}
       </div>
-      <p className={`mt-3 text-sm ${legal ? "text-chocolate/65" : "text-raspberry"}`}>
-        {week === 1
-          ? "Week 1: choose three bakers still in the tent."
-          : changes === 0
-            ? shrinking
-              ? "This side is too big. Drop one baker, or leave it for the Chief Companion."
-              : "No change — last week's bakers will play again."
-            : changes === 1
-              ? "One substitution. That is the weekly limit."
-              : `${changes} bakers are different from last week. Only one substitution is allowed.`}
+      <p className={`mt-3 text-sm ${blockReason ? "text-raspberry" : "text-chocolate/65"}`}>
+        {blockReason
+          ? blockReason
+          : week === 1
+            ? "Week 1: choose three bakers still in the tent."
+            : changes === 0
+              ? shrinking
+                ? "This side is too big. Drop one baker, or leave it for the Chief Companion."
+                : "No change — last week's bakers will play again."
+              : "One substitution. That is the weekly limit."}
       </p>
-      <div className="mt-4 flex flex-wrap gap-2">
-        <Button
-          disabled={!legal && !(shrinking && filled.length === size && unique.size === size && changes === 0)}
-          onClick={() => {
-            void submitSide({ companionSlug: gbboSlug(companion.name), bakerIds: filled }).then((error) => {
-              setMessage(error ?? "Saved. This week's side will be remembered.");
-            });
-          }}
-        >
-          Submit this week's side
-        </Button>
+      <div className="relative mt-4 flex flex-wrap items-center gap-2">
+        <span className="relative inline-flex flex-wrap items-center gap-2">
+          <Button
+            disabled={!canSubmit}
+            title={blockReason ?? undefined}
+            onClick={() => {
+              void submitSide({ companionSlug: gbboSlug(companion.name), bakerIds: filled }).then((error) => {
+                setMessage(error ?? "Saved. This week's side will be remembered.");
+              });
+            }}
+          >
+            Submit this week's side
+          </Button>
+          {blockReason ? (
+            <Button tone="ghost" type="button" onClick={() => setWhyOpen((open) => !open)}>
+              Why is this locked?
+            </Button>
+          ) : null}
+          {whyOpen && blockReason ? (
+            <span
+              role="status"
+              className="absolute left-0 top-full z-10 mt-2 w-80 rounded-2xl border border-[#e7d3b4] bg-white px-4 py-3 text-sm leading-6 text-chocolate shadow-lg"
+            >
+              <strong className="block font-bold text-raspberry">Submit is unavailable</strong>
+              {blockReason}
+            </span>
+          ) : null}
+        </span>
         <Button
           tone="ghost"
+          disabled={locked}
+          title={locked ? (lockReason ?? "The change window is closed.") : undefined}
           onClick={() => {
             setPicks(padLineup(carriedTeam(league, companion.id, week), size));
             void submitSide({ companionSlug: gbboSlug(companion.name), keepLastWeek: true }).then((error) => {
@@ -98,17 +145,24 @@ export function TeamSideForm({ companion }: { companion: Companion }) {
         >
           Keep last week
         </Button>
-        {canJoker ? (
-          <Button tone="butter" onClick={() => {
-            void submitSide({
-              companionSlug: gbboSlug(companion.name),
-              bakerIds: filled.length === size ? filled : undefined,
-              keepLastWeek: filled.length !== size,
-              playJoker: true,
-            }).then((error) => {
-              setMessage(error ?? "Joker played for this week.");
-            });
-          }}>Play joker</Button>
+        {week <= 4 && !joker ? (
+          <Button
+            tone="butter"
+            disabled={!canJoker}
+            title={locked ? (lockReason ?? "The change window is closed.") : undefined}
+            onClick={() => {
+              void submitSide({
+                companionSlug: gbboSlug(companion.name),
+                bakerIds: filled.length === size ? filled : undefined,
+                keepLastWeek: filled.length !== size,
+                playJoker: true,
+              }).then((error) => {
+                setMessage(error ?? "Joker played for this week.");
+              });
+            }}
+          >
+            Play joker
+          </Button>
         ) : null}
       </div>
       <p className="mt-4 text-sm text-chocolate/70">

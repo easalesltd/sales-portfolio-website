@@ -32,6 +32,7 @@ export default function RulesPage() {
         </div>
         <div className="mt-6 space-y-3 text-sm leading-7 text-chocolate/80">
           <p>A team is three bakers, then two when six bakers remain, then one for the final two weeks. Last week's team is the default. Companions do not pick a brand-new side every week — they may substitute one baker, or leave the previous side in place.</p>
+          <p>Sides are date-locked. Week 1 cannot be changed. After each Tuesday episode finishes at 10pm, My team opens for one substitution until the next episode starts at 8pm. The site will not accept a change while the window is closed.</p>
           <p>If nobody writes in when the team must shrink, the Chief Companion chooses who leaves. The same baker may be played by more than one companion.</p>
           <p>A joker doubles one weekend and must be played in the first four weeks. If it is still sitting in the drawer, the Chief Companion applies it automatically in week four.</p>
           <p>The companion whose baker finishes last in the technical must complete that technical before the deadline. Fail, and a filmed Beer Baguette is required.</p>

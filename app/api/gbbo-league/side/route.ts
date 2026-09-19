@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isGbboChiefRequest } from "@/app/lib/gbbo/chief";
 import { uid } from "@/app/lib/gbbo/ids";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import {
@@ -9,6 +10,7 @@ import {
   teamSizeForWeek,
 } from "@/app/lib/gbbo/league";
 import { readGbboLeague, writeGbboLeague } from "@/app/lib/gbbo/persist";
+import { teamWindow } from "@/app/lib/gbbo/window";
 
 export const runtime = "nodejs";
 
@@ -27,7 +29,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "That companion is not in the tent." }, { status: 404 });
   }
 
-  const week = league.currentWeek;
+  const gate = teamWindow(new Date(), league.totalWeeks);
+  if (!gate.open && !(await isGbboChiefRequest(request))) {
+    return NextResponse.json({ error: gate.summary }, { status: 403 });
+  }
+
+  const week = gate.week;
   const size = teamSizeForWeek(league, week);
   const previous = (week > 1 ? teamForWeek(league, companion.id, week - 1) : carriedTeam(league, companion.id, 1))
     .filter((id) => bakerStillIn(league, id, week));
