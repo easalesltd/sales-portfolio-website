@@ -68,18 +68,18 @@ export function TeamSideForm({
   }
 
   return (
-    <section className="paper-card overflow-hidden rounded-[28px] border border-[#e7d3b4]">
+    <section className="paper-card overflow-hidden rounded-[28px] border border-[#e7d3b4] md:flex">
       {companion.photo ? (
-        <div className="relative aspect-[4/3] bg-[#efe2c8] sm:aspect-[16/10]">
+        <div className="relative aspect-[4/3] bg-[#efe2c8] md:w-48 md:shrink-0 md:self-stretch md:aspect-auto lg:w-56">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={companion.photo}
             alt={companion.name}
-            className="h-full w-full object-cover object-[center_18%]"
+            className="h-full w-full object-cover object-[center_18%] md:absolute md:inset-0"
           />
         </div>
       ) : null}
-      <div className="p-6">
+      <div className="p-6 md:min-w-0 md:flex-1">
       <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
           {!companion.photo ? (
