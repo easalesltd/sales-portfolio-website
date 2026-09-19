@@ -87,6 +87,7 @@ export default function SetupPage() {
               lastYearPlace: draft.companions.length + 1,
               isChief: draft.companions.length === 0,
               isDraftMaster: draft.companions.length === 0,
+              photo: "",
             });
           })}>Add a companion</Button>
         </div>

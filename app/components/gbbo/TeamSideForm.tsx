@@ -5,7 +5,7 @@ import { bakerName, bakerStillIn, carriedTeam, jokerForCompanion, lineupChanges,
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { Companion } from "@/app/lib/gbbo/types";
-import { Button, Card, Pill } from "./ui";
+import { Button, Pill } from "./ui";
 
 function padLineup(bakerIds: string[], size: number): string[] {
   const next = bakerIds.slice(0, size);
@@ -68,7 +68,29 @@ export function TeamSideForm({
   }
 
   return (
-    <Card title={companion.name} action={submitted ? <Pill tone="tent">Submitted</Pill> : <Pill>Rolled forward</Pill>}>
+    <section className="paper-card overflow-hidden rounded-[28px] border border-[#e7d3b4]">
+      {companion.photo ? (
+        <div className="relative aspect-[4/3] bg-[#efe2c8] sm:aspect-[16/10]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={companion.photo}
+            alt={companion.name}
+            className="h-full w-full object-cover object-[center_18%]"
+          />
+        </div>
+      ) : null}
+      <div className="p-6">
+      <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          {!companion.photo ? (
+            <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-tent font-display text-2xl text-flour">
+              {companion.name.slice(0, 1)}
+            </span>
+          ) : null}
+          <h2 className="font-display text-3xl tracking-tight text-tent-dark">{companion.name}</h2>
+        </div>
+        {submitted ? <Pill tone="tent">Submitted</Pill> : <Pill>Rolled forward</Pill>}
+      </header>
       <p className="mb-3 text-sm text-chocolate/65">
         Last week: {lastWeek.map((id) => bakerName(league, id)).join(" · ") || "No side yet"}
       </p>
@@ -167,6 +189,7 @@ export function TeamSideForm({
         {joker ? `Joker played in week ${joker.week}${joker.autoApplied ? " (auto)" : ""}` : "Joker still available in weeks 1–4"}
       </p>
       {message ? <p className="mt-2 text-sm font-bold text-tent">{message}</p> : null}
-    </Card>
+      </div>
+    </section>
   );
 }

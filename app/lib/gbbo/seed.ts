@@ -146,6 +146,10 @@ export const OPENING_SQUADS: Record<(typeof COMPANIONS)[number], readonly string
   Nest: ["Gary", "Nikki", "Gabe"],
 };
 
+export const COMPANION_PHOTOS: Partial<Record<(typeof COMPANIONS)[number], string>> = {
+  Cowie: "/gbbo/companions/cowie.jpg",
+};
+
 export function createCompanions() {
   return COMPANIONS.map((name, index) => ({
     id: companionIdForName(name),
@@ -153,6 +157,7 @@ export function createCompanions() {
     lastYearPlace: index + 1,
     isChief: name === "Dave",
     isDraftMaster: name === "Dave",
+    photo: COMPANION_PHOTOS[name] ?? "",
   }));
 }
 

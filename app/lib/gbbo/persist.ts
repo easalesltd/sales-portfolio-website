@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
 import { bakerIdForName, companionIdForName, gbboSlug } from "./identity";
-import { SERIES_17_BAKERS, createEmptyLeague } from "./seed";
+import { SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
 import type { LeagueState } from "./types";
 
 const REDIS_KEY = "gbbo:companion-league:2026";
@@ -22,10 +22,13 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
   const companionMap = new Map<string, string>();
   const bakerMap = new Map<string, string>();
 
+  const seededCompanions = createCompanions();
   for (const companion of league.companions) {
     const next = companionIdForName(companion.name);
     if (companion.id !== next) companionMap.set(companion.id, next);
     companion.id = next;
+    const seed = seededCompanions.find((item) => gbboSlug(item.name) === gbboSlug(companion.name));
+    companion.photo = seed?.photo || companion.photo || "";
   }
   for (const baker of league.bakers) {
     const next = bakerIdForName(baker.name);
