@@ -125,7 +125,16 @@ export default function SetupPage() {
           ))}
         </div>
         <Button className="mt-4" onClick={() => update((draft) => {
-          draft.bakers.push({ id: uid("baker"), name: "New baker", bio: "", age: null, eliminatedInWeek: null });
+          draft.bakers.push({
+            id: uid("baker"),
+            name: "New baker",
+            bio: "",
+            age: null,
+            hometown: "",
+            job: "",
+            photo: "",
+            eliminatedInWeek: null,
+          });
         })}>Add a baker</Button>
       </Card>
     </div>

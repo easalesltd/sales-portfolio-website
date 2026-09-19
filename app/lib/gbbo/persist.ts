@@ -2,8 +2,8 @@ import { existsSync } from "fs";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
-import { bakerIdForName, companionIdForName } from "./identity";
-import { createEmptyLeague } from "./seed";
+import { bakerIdForName, companionIdForName, gbboSlug } from "./identity";
+import { SERIES_17_BAKERS, createEmptyLeague } from "./seed";
 import type { LeagueState } from "./types";
 
 const REDIS_KEY = "gbbo:companion-league:2026";
@@ -31,6 +31,18 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
     const next = bakerIdForName(baker.name);
     if (baker.id !== next) bakerMap.set(baker.id, next);
     baker.id = next;
+    const seed = SERIES_17_BAKERS.find((item) => gbboSlug(item.name) === gbboSlug(baker.name));
+    if (seed) {
+      baker.bio = seed.bio;
+      baker.age = seed.age;
+      baker.hometown = seed.hometown;
+      baker.job = seed.job;
+      baker.photo = seed.photo;
+    } else {
+      baker.hometown ??= "";
+      baker.job ??= "";
+      baker.photo ??= "";
+    }
   }
 
   const nextRankings: LeagueState["draftRankings"] = {};

@@ -398,6 +398,19 @@ html[data-sweepstake-standalone][data-sweepstake-theme='gbbo'] #main-content {
     inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
+.gbbo-baker-out img {
+  filter: grayscale(1) contrast(0.85) brightness(0.92);
+  opacity: 0.72;
+}
+
+.gbbo-baker-stamp {
+  transform: rotate(-16deg);
+  border: 3px solid #c43c5b;
+  color: #c43c5b;
+  letter-spacing: 0.12em;
+  text-shadow: 0 1px 0 rgba(255, 250, 242, 0.8);
+}
+
 .ticket {
   background:
     radial-gradient(circle at 0 50%, transparent 12px, #fffaf2 13px) left / 18px 100% no-repeat,

@@ -13,6 +13,9 @@ export type Baker = {
   name: string;
   bio: string;
   age: number | null;
+  hometown: string;
+  job: string;
+  photo: string;
   eliminatedInWeek: number | null;
 };
 

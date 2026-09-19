@@ -30,6 +30,12 @@ export function bakerStillIn(league: LeagueState, bakerId: string, week: number)
   return baker.eliminatedInWeek === null || baker.eliminatedInWeek >= week;
 }
 
+export function bakerEliminatedIn(league: LeagueState, bakerId: string): number | null {
+  const baker = league.bakers.find((item) => item.id === bakerId);
+  if (baker?.eliminatedInWeek) return baker.eliminatedInWeek;
+  return league.episodes.find((episode) => episode.published && episode.eliminatedBakerId === bakerId)?.week ?? null;
+}
+
 export function runDraft(league: LeagueState): { teams: { companionId: string; bakerIds: string[] }[]; leftoverNotes: string[] } {
   const leftoverNotes = [
     "Week 1 teams are each companion's top three preferences. The same baker may sit in more than one tent — with six companions, that is the only way everyone can field three bakers.",
