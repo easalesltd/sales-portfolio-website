@@ -13,6 +13,7 @@ const PLAYER_NAV = [
   { href: `${GBBO_LEAGUE_PATH}/teams`, label: "My team" },
   { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties" },
   { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules" },
+  { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
 ];
 
 const CHIEF_NAV = [
@@ -21,6 +22,7 @@ const CHIEF_NAV = [
   { href: `${GBBO_LEAGUE_PATH}/score`, label: "Score" },
   { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties" },
   { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules" },
+  { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
   { href: `${GBBO_LEAGUE_PATH}/setup`, label: "Setup" },
 ];
 

@@ -191,6 +191,13 @@ export function scoreCompanionWeek(league: LeagueState, companionId: string, wee
   };
 }
 
+export function lowestScorersForWeek(league: LeagueState, week: number): CompanionWeekScore[] {
+  const scores = league.companions.map((companion) => scoreCompanionWeek(league, companion.id, week));
+  if (scores.length === 0) return [];
+  const lowest = Math.min(...scores.map((score) => score.points));
+  return scores.filter((score) => score.points === lowest);
+}
+
 export function companionTotals(league: LeagueState): { companionId: string; points: number; weeks: CompanionWeekScore[] }[] {
   return league.companions.map((companion) => {
     const weeks = league.episodes
