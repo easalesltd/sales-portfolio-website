@@ -17,7 +17,7 @@ export function PlayerPicker() {
   const week = teamWindow(new Date(), league.totalWeeks).week;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 pb-3 sm:px-5">
+    <div className="mx-auto mt-3 max-w-6xl px-4 pb-3 sm:mt-0 sm:px-5">
       <div className={`rounded-2xl px-3 py-2 sm:rounded-[22px] sm:px-4 sm:py-3 ${player ? "bg-flour/80" : "bg-raspberry text-flour"}`}>
         <button
           type="button"

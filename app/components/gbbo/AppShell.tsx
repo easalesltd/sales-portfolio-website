@@ -87,7 +87,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             type="button"
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
-            className="flex h-11 w-11 shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl bg-tent-dark text-flour"
+            className="flex h-11 w-11 shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl bg-[#0d1f1a] text-flour"
             onClick={() => setMenuOpen((open) => !open)}
           >
             <span className={`block h-0.5 w-5 bg-flour transition ${menuOpen ? "translate-y-2 rotate-45" : ""}`} />
@@ -96,7 +96,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </button>
         </div>
         {menuOpen ? (
-          <nav className="border-t border-[#e7d3b4] px-4 py-3">
+          <nav className="bg-[#0d1f1a] px-4 py-3">
             <div className="grid gap-2">
               {nav.map((item) => {
                 const active = pathname === item.href;
@@ -105,7 +105,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     key={item.href}
                     href={item.href}
                     className={`rounded-2xl px-4 py-3 text-sm font-bold ${
-                      active ? "bg-tent text-flour" : "bg-flour text-chocolate"
+                      active ? "bg-butter text-chocolate" : "bg-[#1a3a31] text-flour"
                     }`}
                   >
                     {item.label}
