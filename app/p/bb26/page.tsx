@@ -79,7 +79,7 @@ export default function LeaguePage() {
                   {gate.open
                     ? playerUnlocked
                       ? "Set this week's bakers"
-                      : "Unlock your peg at the top, then set your bakers"
+                      : "Enter your password at the top, then set your bakers"
                     : "See your locked side"}
                 </Link>
               )}

@@ -40,8 +40,8 @@ export function PlayerPicker() {
             {isChief
               ? "Chief desk — who has submitted"
               : pending
-                ? `Unlock ${pending.name}'s peg`
-                : "Tap your name, then enter your key"}
+                ? `Enter ${pending.name}'s password`
+                : "Tap your name, then enter your password"}
           </span>
           <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold ${isChief ? "bg-white text-chocolate" : "bg-flour text-tent-dark"}`}>
             {open ? "Hide" : "Show"}

@@ -32,7 +32,7 @@ export async function POST(request: Request) {
   }
 
   if (!(await isGbboPlayerRequest(slug, request))) {
-    return NextResponse.json({ error: "Unlock your peg with your player key first." }, { status: 401 });
+    return NextResponse.json({ error: "Enter your password first." }, { status: 401 });
   }
 
   const gate = teamWindow(new Date(), league.totalWeeks);

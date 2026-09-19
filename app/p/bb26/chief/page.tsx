@@ -15,7 +15,7 @@ export default function ChiefDoorPage() {
   return (
     <Card eyebrow="Steward's door" title="Chief Companion only">
       <p className="mb-4 max-w-xl text-sm leading-7 text-chocolate/75">
-        Companions unlock their own peg with a player key, then submit their weekly side.
+        Companions unlock with their own password, then submit their weekly side.
         Scoring and Setup stay behind this door.
       </p>
       {isChief ? (

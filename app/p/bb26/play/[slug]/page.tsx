@@ -17,5 +17,5 @@ export default function PlayAsPage() {
     router.replace(slug ? `${GBBO_LEAGUE_PATH}/teams?as=${slug}` : `${GBBO_LEAGUE_PATH}/teams`);
   }, [params.slug, router, setPendingPlayer]);
 
-  return <p className="font-script text-3xl text-raspberry">Opening your peg…</p>;
+  return <p className="font-script text-3xl text-raspberry">Opening your team…</p>;
 }

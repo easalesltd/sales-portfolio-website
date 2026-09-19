@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   const slug = gbboSlug(body.slug ?? "");
   const pin = body.pin ?? "";
   if (!slug || !playerPinMatches(slug, pin)) {
-    return NextResponse.json({ error: "That key does not match that companion." }, { status: 401 });
+    return NextResponse.json({ error: "That password does not match that companion." }, { status: 401 });
   }
 
   const response = NextResponse.json({ ok: true, slug });

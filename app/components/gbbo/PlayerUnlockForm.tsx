@@ -33,10 +33,10 @@ export function PlayerUnlockForm({
     >
       <p className="text-sm leading-6 text-chocolate/75">
         {name
-          ? `Enter the player key Dave sent you for ${name}. It stays on this phone or laptop until you lock your peg.`
-          : "Enter the player key Dave sent you."}
+          ? `Type the password Dave sent you for ${name}. This phone or laptop will remember you.`
+          : "Type the password Dave sent you."}
       </p>
-      <Field label="Player key">
+      <Field label="Password">
         <input
           className={inputClass()}
           type="password"
@@ -47,7 +47,7 @@ export function PlayerUnlockForm({
       </Field>
       {error ? <p className="text-sm text-raspberry">{error}</p> : null}
       <Button type="submit" disabled={busy || !pin.trim()}>
-        {busy ? "Checking…" : "Unlock my peg"}
+        {busy ? "Checking…" : "Unlock"}
       </Button>
     </form>
   );

@@ -20,7 +20,7 @@ export default function TeamsPage() {
   const visible = isChief ? league.companions : playerUnlocked && player ? [player] : [];
   const locked = !gate.open && !isChief;
 
-  if (!ready) return <p className="font-script text-3xl text-raspberry">Finding your peg…</p>;
+  if (!ready) return <p className="font-script text-3xl text-raspberry">Finding your team…</p>;
 
   if (!league.draftComplete) {
     return <Empty title="Week 1 teams come from the draft" body="Opening sides are set by the Chief Companion first." />;
@@ -28,9 +28,9 @@ export default function TeamsPage() {
 
   if (!isChief && !playerUnlocked) {
     return (
-      <Card eyebrow="Your peg" title="Unlock your team page">
+      <Card eyebrow="Password" title="Unlock your team page">
         <p className="max-w-xl text-sm leading-7 text-chocolate/75">
-          Each companion has a private key. Tap your name at the top, then enter the key Dave sent you.
+          Each companion has their own password. Tap your name at the top, then type the one Dave sent you.
           Nobody else can submit a side as you.
         </p>
         {pending ? (
