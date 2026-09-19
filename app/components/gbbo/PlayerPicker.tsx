@@ -1,8 +1,10 @@
 "use client";
 
 import { gbboSlug } from "@/app/lib/gbbo/identity";
+import { sideConfirmed } from "@/app/lib/gbbo/league";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
+import { teamWindow } from "@/app/lib/gbbo/window";
 
 export function PlayerPicker() {
   const { league } = useLeague();
@@ -10,6 +12,7 @@ export function PlayerPicker() {
   if (!ready || league.companions.length === 0) return null;
 
   const player = league.companions.find((companion) => gbboSlug(companion.name) === playerSlug);
+  const week = teamWindow(new Date(), league.totalWeeks).week;
 
   return (
     <div className={`mx-auto max-w-6xl px-5 pb-4 ${player ? "" : "rounded-[22px]"}`}>
@@ -18,25 +21,28 @@ export function PlayerPicker() {
           {player ? `Playing as ${player.name} — tap another name to switch` : "Tap your name to play"}
         </p>
         <p className={`mt-1 text-sm ${player ? "text-chocolate/70" : "text-flour/85"}`}>
-          The site remembers you on this phone or laptop.
+          Green names have locked this week's side. The site remembers you on this phone or laptop.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           {league.companions.map((companion) => {
             const active = gbboSlug(companion.name) === playerSlug;
+            const done = sideConfirmed(league, companion.id, week);
             return (
               <button
                 key={companion.id}
                 type="button"
                 className={`rounded-full px-4 py-2 text-sm font-bold ${
-                  active
-                    ? "bg-tent text-flour"
-                    : player
-                      ? "bg-white text-chocolate"
-                      : "bg-flour text-tent-dark"
+                  done
+                    ? "bg-emerald-600 text-white"
+                    : active
+                      ? "bg-tent text-flour"
+                      : player
+                        ? "bg-white text-chocolate"
+                        : "bg-flour text-tent-dark"
                 }`}
                 onClick={() => setPlayer(companion.name)}
               >
-                {companion.name}
+                {done ? `${companion.name} ✓` : companion.name}
               </button>
             );
           })}

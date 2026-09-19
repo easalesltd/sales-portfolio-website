@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { bakerName, bakerStillIn, carriedTeam, jokerForCompanion, lineupChanges, selectableBakers, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
+import { bakerName, bakerStillIn, carriedTeam, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { Companion } from "@/app/lib/gbbo/types";
@@ -44,7 +44,7 @@ export function TeamSideForm({
   const legal = unique.size === filled.length && filled.length === size && (week === 1 ? changes <= 3 : changes <= 1);
   const shrinkingOk = shrinking && filled.length === size && unique.size === size && changes === 0;
   const canSubmit = !locked && (legal || shrinkingOk);
-  const submitted = league.substitutions.some((sub) => sub.companionId === companion.id && sub.week === week);
+  const submitted = sideConfirmed(league, companion.id, week);
   const joker = jokerForCompanion(league, companion.id);
   const canJoker = !locked && week <= 4 && !joker;
   const [whyOpen, setWhyOpen] = useState(false);

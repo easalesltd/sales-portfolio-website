@@ -104,6 +104,7 @@ export function createEmptyLeague(): LeagueState {
       bakerIds: OPENING_SQUADS[companion.name as (typeof COMPANIONS)[number]].map((name) => bakerIdForName(name)),
     })),
     substitutions: [],
+    sideConfirmations: [],
     jokers: [],
     episodes: Array.from({ length: 10 }, (_, index) => emptyEpisode(index + 1, 10)),
     adHocRules: [],

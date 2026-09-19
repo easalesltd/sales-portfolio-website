@@ -42,6 +42,8 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
   }
   league.draftRankings = nextRankings;
 
+  if (!Array.isArray(league.sideConfirmations)) league.sideConfirmations = [];
+
   for (const team of league.initialTeams) {
     team.companionId = rewrite(companionMap, team.companionId) ?? team.companionId;
     team.bakerIds = team.bakerIds.map((id) => rewrite(bakerMap, id) ?? id);
@@ -50,6 +52,9 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
     sub.companionId = rewrite(companionMap, sub.companionId) ?? sub.companionId;
     sub.outBakerId = rewrite(bakerMap, sub.outBakerId) ?? sub.outBakerId;
     sub.inBakerId = rewrite(bakerMap, sub.inBakerId);
+  }
+  for (const confirmation of league.sideConfirmations) {
+    confirmation.companionId = rewrite(companionMap, confirmation.companionId) ?? confirmation.companionId;
   }
   for (const joker of league.jokers) {
     joker.companionId = rewrite(companionMap, joker.companionId) ?? joker.companionId;

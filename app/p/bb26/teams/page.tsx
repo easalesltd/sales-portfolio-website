@@ -3,7 +3,7 @@
 import { TeamSideForm } from "@/app/components/gbbo/TeamSideForm";
 import { Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
-import { teamSizeForWeek } from "@/app/lib/gbbo/league";
+import { sideConfirmed, teamSizeForWeek } from "@/app/lib/gbbo/league";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { teamWindow } from "@/app/lib/gbbo/window";
@@ -45,9 +45,22 @@ export default function TeamsPage() {
         </div>
       </Card>
       <div className={`grid gap-4 ${isChief ? "md:grid-cols-2" : ""}`}>
-        {visible.map((companion) => (
-          <TeamSideForm key={companion.id} companion={companion} week={week} locked={locked} lockReason={gate.summary} />
-        ))}
+        {visible.map((companion) => {
+          const confirmed = sideConfirmed(league, companion.id, week);
+          const formLocked = locked || (confirmed && !isChief);
+          const reason = confirmed && !isChief
+            ? "Your week is locked. You have already submitted this side."
+            : gate.summary;
+          return (
+            <TeamSideForm
+              key={companion.id}
+              companion={companion}
+              week={week}
+              locked={formLocked}
+              lockReason={reason}
+            />
+          );
+        })}
       </div>
     </div>
   );

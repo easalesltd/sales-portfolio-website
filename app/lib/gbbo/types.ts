@@ -36,6 +36,11 @@ export type JokerPlay = {
   autoApplied: boolean;
 };
 
+export type SideConfirmation = {
+  companionId: Id;
+  week: number;
+};
+
 export type TechnicalPlace = {
   bakerId: Id;
   place: number;
@@ -107,6 +112,7 @@ export type LeagueState = {
   draftComplete: boolean;
   initialTeams: TeamAssignment[];
   substitutions: Substitution[];
+  sideConfirmations: SideConfirmation[];
   jokers: JokerPlay[];
   episodes: EpisodeScore[];
   adHocRules: AdHocRule[];

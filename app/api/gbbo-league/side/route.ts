@@ -6,6 +6,7 @@ import {
   bakerStillIn,
   carriedTeam,
   lineupChanges,
+  sideConfirmed,
   teamForWeek,
   teamSizeForWeek,
 } from "@/app/lib/gbbo/league";
@@ -35,6 +36,10 @@ export async function POST(request: Request) {
   }
 
   const week = gate.week;
+  const chief = await isGbboChiefRequest(request);
+  if (sideConfirmed(league, companion.id, week) && !chief) {
+    return NextResponse.json({ error: "Your week is locked. You have already submitted this side." }, { status: 403 });
+  }
   const size = teamSizeForWeek(league, week);
   const previous = (week > 1 ? teamForWeek(league, companion.id, week - 1) : carriedTeam(league, companion.id, 1))
     .filter((id) => bakerStillIn(league, id, week));
@@ -71,6 +76,11 @@ export async function POST(request: Request) {
   if (body.playJoker && week <= 4 && !league.jokers.some((joker) => joker.companionId === companion.id)) {
     league.jokers.push({ companionId: companion.id, week, autoApplied: false });
   }
+
+  league.sideConfirmations = (league.sideConfirmations ?? []).filter(
+    (item) => !(item.companionId === companion.id && item.week === week),
+  );
+  league.sideConfirmations.push({ companionId: companion.id, week });
 
   await writeGbboLeague(league);
   return NextResponse.json(await readGbboLeague());
