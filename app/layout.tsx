@@ -13,6 +13,7 @@ import MobileRequestButton from './components/MobileRequestButton';
 import HeaderLogo from './components/HeaderLogo';
 import AboutDropdown from './components/AboutDropdown';
 import GoogleWebVitals from './components/GoogleWebVitals';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import CookieConsentBanner from './components/CookieConsentBanner';
 import CookieSettingsButton from './components/CookieSettingsButton';
 import { buildGoogleConsentDefaultScript } from './lib/cookie-consent';
@@ -654,6 +655,7 @@ export default async function RootLayout({
             </div>
           </div>
         </footer>
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -116,6 +116,7 @@ export default async function PrivacyPage() {
           </p>
           <ul className="list-disc pl-6 space-y-1">
             <li>Google Analytics (website analytics, if you consent)</li>
+            <li>Vercel Speed Insights (aggregated page-speed metrics; no cookies)</li>
             <li>Cloudflare Turnstile (form security)</li>
             <li>Our website hosting and email providers</li>
           </ul>

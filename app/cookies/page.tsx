@@ -51,6 +51,12 @@ export default async function CookiesPage() {
             forms from spam and automated abuse.
           </p>
 
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100">Performance (no cookies)</h3>
+          <p>
+            We use Vercel Speed Insights to collect aggregated Core Web Vitals (for example how quickly pages load). It
+            does not set cookies and is used to keep the site fast.
+          </p>
+
           <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100">Analytics (optional)</h3>
           <p>
             If you choose to accept analytics cookies, we use Google Analytics 4 to collect aggregated information about

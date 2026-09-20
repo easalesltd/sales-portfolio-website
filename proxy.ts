@@ -14,6 +14,7 @@ function buildCsp(nonce: string, isDev: boolean): string {
     "'strict-dynamic'",
     'https://www.googletagmanager.com',
     'https://www.google-analytics.com',
+    'https://va.vercel-scripts.com',
     ...(isDev ? (["'unsafe-eval'"] as const) : []),
   ].join(' ')
 
@@ -28,7 +29,7 @@ function buildCsp(nonce: string, isDev: boolean): string {
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com https://www.google.co.uk",
     "media-src 'self' blob:",
-    "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net",
+    "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://region1.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://va.vercel-scripts.com https://vitals.vercel-insights.com",
     "frame-src 'self'",
     "frame-ancestors 'self'",
     "object-src 'none'",
