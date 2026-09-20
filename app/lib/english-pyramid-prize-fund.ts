@@ -8,7 +8,7 @@ import { gameLeaderboardRedis } from '@/app/lib/game-leaderboard-redis';
 
 const YAHOO_CHART = 'https://query1.finance.yahoo.com/v8/finance/chart';
 const CACHE_TTL_SECONDS = 60 * 60; // 1 hour — daily ETF moves, not tick-by-tick
-const REDIS_CACHE_KEY_PREFIX = 'english-pyramid:prize-fund:v1';
+const REDIS_CACHE_KEY_PREFIX = 'english-pyramid:prize-fund:v2';
 
 export type EnglishPyramidPrizeFundSnapshot = {
   fundName: string;
@@ -31,7 +31,7 @@ export type EnglishPyramidPrizeFundSnapshot = {
   error?: string | null;
 };
 
-type YahooChartResult = {
+export type YahooChartResult = {
   meta?: {
     currency?: string;
     symbol?: string;
@@ -60,6 +60,85 @@ type CachedQuote = {
   asOf: string;
   fetchedAtMs: number;
 };
+
+export type PickedYahooChartPrice = {
+  rawPrice: number;
+  previousClose: number | null;
+  asOfMs: number;
+};
+
+/**
+ * Mutual-fund NAVs often land on the daily chart before `regularMarketPrice`
+ * catches up (Yahoo can sit on yesterday’s NAV over a weekend). Prefer the
+ * newest of the last daily close vs the live quote.
+ */
+export function pickYahooChartPrice(result: YahooChartResult): PickedYahooChartPrice {
+  const meta = result.meta ?? {};
+  const timestamps = result.timestamp ?? [];
+  const closes =
+    result.indicators?.adjclose?.[0]?.adjclose ??
+    result.indicators?.quote?.[0]?.close ??
+    [];
+
+  let lastIdx = -1;
+  for (let i = closes.length - 1; i >= 0; i -= 1) {
+    const close = closes[i];
+    if (close != null && Number.isFinite(close)) {
+      lastIdx = i;
+      break;
+    }
+  }
+
+  const barPrice = lastIdx >= 0 ? (closes[lastIdx] as number) : null;
+  const barTimeMs = lastIdx >= 0 && timestamps[lastIdx] != null ? timestamps[lastIdx] * 1000 : null;
+  const marketPrice =
+    meta.regularMarketPrice != null && Number.isFinite(meta.regularMarketPrice)
+      ? meta.regularMarketPrice
+      : null;
+  const marketTimeMs = meta.regularMarketTime != null ? meta.regularMarketTime * 1000 : null;
+
+  const barIsNewer =
+    barPrice != null && barTimeMs != null && (marketTimeMs == null || barTimeMs >= marketTimeMs);
+
+  let rawPrice: number | null = null;
+  let asOfMs: number | null = null;
+  if (barIsNewer) {
+    rawPrice = barPrice;
+    asOfMs = barTimeMs;
+  } else if (marketPrice != null) {
+    rawPrice = marketPrice;
+    asOfMs = marketTimeMs;
+  } else if (barPrice != null) {
+    rawPrice = barPrice;
+    asOfMs = barTimeMs;
+  }
+
+  if (rawPrice == null || !Number.isFinite(rawPrice)) {
+    throw new Error(`No regularMarketPrice for ${meta.symbol ?? 'unknown'}`);
+  }
+
+  let previousClose: number | null = null;
+  if (barIsNewer) {
+    for (let i = lastIdx - 1; i >= 0; i -= 1) {
+      const close = closes[i];
+      if (close != null && Number.isFinite(close)) {
+        previousClose = close;
+        break;
+      }
+    }
+  } else if (barPrice != null) {
+    previousClose = barPrice;
+  }
+  if (previousClose == null && meta.chartPreviousClose != null && Number.isFinite(meta.chartPreviousClose)) {
+    previousClose = meta.chartPreviousClose;
+  }
+
+  return {
+    rawPrice,
+    previousClose,
+    asOfMs: asOfMs ?? Date.now(),
+  };
+}
 
 const memoryQuoteCache = new Map<string, CachedQuote>();
 
@@ -150,20 +229,12 @@ export async function fetchFundQuoteGbp(symbol: string): Promise<CachedQuote> {
   if (cached) return cached;
 
   const result = await fetchYahooChart(symbol, { range: '5d', interval: '1d' });
-  const meta = result.meta ?? {};
-  const rawPrice = meta.regularMarketPrice;
-  if (rawPrice == null || !Number.isFinite(rawPrice)) {
-    throw new Error(`No regularMarketPrice for ${symbol}`);
-  }
-  const currency = meta.currency ?? 'GBP';
-  const priceGbp = toGbp(rawPrice, currency);
-  const prevRaw = meta.chartPreviousClose;
+  const picked = pickYahooChartPrice(result);
+  const currency = result.meta?.currency ?? 'GBP';
+  const priceGbp = toGbp(picked.rawPrice, currency);
   const previousCloseGbp =
-    prevRaw != null && Number.isFinite(prevRaw) ? toGbp(prevRaw, currency) : null;
-  const asOf =
-    meta.regularMarketTime != null
-      ? new Date(meta.regularMarketTime * 1000).toISOString()
-      : new Date().toISOString();
+    picked.previousClose != null ? toGbp(picked.previousClose, currency) : null;
+  const asOf = new Date(picked.asOfMs).toISOString();
 
   const quote: CachedQuote = {
     priceGbp,
