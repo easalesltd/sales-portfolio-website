@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s Palace served up a boring 0-0 against Leeds United. Minus 1 for the 0-0, net minus 1. Chris is on 232.\n\nScott\'s Wolves beat West Brom 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Bolton Wanderers won 4-3 at Norwich City. Plus 4 for the away win, plus 1 for three or more, minus 1 for leaking three, net plus 4. Scott is on 225.\n\nBen\'s Liverpool won 1-0 at Bournemouth. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Ben is on 189.\n\nNest\'s Leeds United served up a boring 0-0 against Palace. Minus 1 for the 0-0, net minus 1. Nest is on 176.\n\nDave\'s City beat Sunderland 5-3 at home. Plus 3 for the home win, plus 1 for three or more, minus 1 for leaking three, net plus 3. Dave is on 162.\n\nAsh\'s Sunderland lost 5-3 at City. No win points, plus 1 for three or more, minus 1 for leaking three, net zero. Ash is on 155.\n\nTable: Chris 232, Scott 225, Ben 189, Jon 181, Nest 176, Dave 162, Ash 155.';
+  'Chris\'s Palace served up a boring 0-0 against Leeds United. Minus 1 for the 0-0, net minus 1. Chris is on 232.\n\nScott\'s Wolves beat West Brom 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Bolton Wanderers won 4-3 at Norwich City. Plus 4 for the away win, plus 1 for three or more, minus 1 for leaking three, net plus 4. Scott is on 225.\n\nBen\'s Liverpool won 1-0 at Bournemouth. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Ben is on 189.\n\nJon\'s Fulham drew 1-1 with United. Plus 1 for the draw, net plus 1. Jon is on 182.\n\nNest\'s Leeds United served up a boring 0-0 against Palace. Minus 1 for the 0-0, net minus 1. Nest is on 176.\n\nDave\'s City beat Sunderland 5-3 at home. Plus 3 for the home win, plus 1 for three or more, minus 1 for leaking three, net plus 3. Dave is on 162.\n\nAsh\'s Sunderland lost 5-3 at City. No win points, plus 1 for three or more, minus 1 for leaking three, net zero. Then United drew 1-1 with Fulham. Plus 1 for the draw, net plus 1. Ash is on 156.\n\nTable: Chris 232, Scott 225, Ben 189, Jon 182, Nest 176, Dave 162, Ash 156.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -6663,6 +6663,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Sunderland', tla: 'SUN' },
     homeGoals: 5,
     awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-09-20-ful-mun',
+    utcDate: '2026-09-20T15:30Z',
+    homeTeam: { name: 'Fulham', tla: 'FUL' },
+    awayTeam: { name: 'Manchester United', tla: 'MUN' },
+    homeGoals: 1,
+    awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
   },
