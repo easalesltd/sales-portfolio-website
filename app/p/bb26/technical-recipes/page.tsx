@@ -59,7 +59,7 @@ export default function TechnicalRecipesPage() {
   return (
     <div className="space-y-6">
       <MustBakeCallout />
-      <Card>
+      <Card
         eyebrow="Penalty homework"
         title="Technical bake recipes"
         action={
@@ -97,11 +97,19 @@ export default function TechnicalRecipesPage() {
             action={week === gate.week ? <Pill tone="tent">This week</Pill> : aired ? <Pill>Aired</Pill> : <Pill tone="butter">Not yet</Pill>}
           >
             {recipe ? (
-              <p className="font-display text-2xl text-tent-dark">
-                <a className="underline decoration-raspberry/40 underline-offset-4 hover:text-raspberry" href={recipe.url} target="_blank" rel="noreferrer">
-                  {recipe.title}
-                </a>
-              </p>
+              <div>
+                {recipe.photo ? (
+                  <a href={recipe.url} target="_blank" rel="noreferrer" className="mb-4 block overflow-hidden rounded-[22px] bg-[#efe2c8]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={recipe.photo} alt={recipe.title} className="aspect-[16/9] w-full object-cover" />
+                  </a>
+                ) : null}
+                <p className="font-display text-2xl text-tent-dark">
+                  <a className="underline decoration-raspberry/40 underline-offset-4 hover:text-raspberry" href={recipe.url} target="_blank" rel="noreferrer">
+                    {recipe.title}
+                  </a>
+                </p>
+              </div>
             ) : (
               <Empty
                 title={aired ? "Waiting for the official recipe" : "Episode has not finished yet"}

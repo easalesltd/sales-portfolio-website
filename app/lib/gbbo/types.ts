@@ -49,6 +49,7 @@ export type TechnicalRecipe = {
   week: number;
   title: string;
   url: string;
+  photo: string;
   fetchedAt: string;
 };
 

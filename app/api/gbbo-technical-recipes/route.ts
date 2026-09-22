@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { isGbboChiefRequest } from "@/app/lib/gbbo/chief";
 import {
   applyTechnicalListing,
+  attachMissingRecipePhotos,
   fetchOfficialTechnicals,
+  fetchRecipePhoto,
   pinTechnicalRecipe,
 } from "@/app/lib/gbbo/recipes";
 import { readGbboLeague, writeGbboLeague } from "@/app/lib/gbbo/persist";
@@ -15,6 +17,7 @@ export async function POST(request: Request) {
     week?: number;
     url?: string;
     title?: string;
+    photo?: string;
   };
 
   if (body.week && body.url) {
@@ -24,6 +27,7 @@ export async function POST(request: Request) {
     pinTechnicalRecipe(league, Number(body.week), {
       title: body.title?.trim() || "This week's technical",
       url: body.url.trim(),
+      photo: body.photo?.trim() || (await fetchRecipePhoto(body.url.trim())),
     });
     await writeGbboLeague(league);
     return NextResponse.json({ league, assignedWeeks: [Number(body.week)], seeded: false });
@@ -32,6 +36,7 @@ export async function POST(request: Request) {
   try {
     const listing = await fetchOfficialTechnicals();
     const result = applyTechnicalListing(league, listing);
+    await attachMissingRecipePhotos(league);
     await writeGbboLeague(league);
     return NextResponse.json({ league, listing, ...result });
   } catch (error) {

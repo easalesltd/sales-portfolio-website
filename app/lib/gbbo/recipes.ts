@@ -7,6 +7,7 @@ export const OFFICIAL_TECHNICAL_INDEX =
 export type OfficialRecipe = {
   title: string;
   url: string;
+  photo?: string;
 };
 
 function decode(text: string): string {
@@ -38,6 +39,33 @@ export function parseOfficialTechnicalListing(html: string): OfficialRecipe[] {
   }
 
   return recipes;
+}
+
+export async function fetchRecipePhoto(url: string): Promise<string> {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "GBBO Companion League/1.0",
+        Accept: "text/html",
+      },
+      cache: "no-store",
+    });
+    if (!response.ok) return "";
+    const html = await response.text();
+    const match =
+      html.match(/property="og:image"\s+content="([^"]+)"/i) ??
+      html.match(/content="([^"]+)"\s+property="og:image"/i);
+    return match?.[1]?.replace(/&amp;/g, "&") ?? "";
+  } catch {
+    return "";
+  }
+}
+
+export async function attachMissingRecipePhotos(league: LeagueState): Promise<void> {
+  for (const recipe of league.technicalRecipes ?? []) {
+    if (recipe.photo) continue;
+    recipe.photo = await fetchRecipePhoto(recipe.url);
+  }
 }
 
 export async function fetchOfficialTechnicals(): Promise<OfficialRecipe[]> {
@@ -100,6 +128,7 @@ export function applyTechnicalListing(
       week,
       title: decode(recipe.title),
       url: recipe.url,
+      photo: "",
       fetchedAt: stamp,
     });
     assignedUrls.add(recipe.url);
@@ -116,6 +145,7 @@ export function pinTechnicalRecipe(league: LeagueState, week: number, recipe: Of
     week,
     title: decode(recipe.title),
     url: recipe.url,
+    photo: recipe.photo ?? "",
     fetchedAt: now.toISOString(),
   });
   league.technicalRecipes.sort((a, b) => a.week - b.week);

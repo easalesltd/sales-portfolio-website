@@ -61,6 +61,9 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
   if (!Array.isArray(league.slutDrops)) league.slutDrops = [];
   if (!Array.isArray(league.technicalRecipes)) league.technicalRecipes = [];
   if (!Array.isArray(league.technicalCatalogue)) league.technicalCatalogue = [];
+  for (const recipe of league.technicalRecipes) {
+    recipe.photo ??= "";
+  }
 
   for (const team of league.initialTeams) {
     team.companionId = rewrite(companionMap, team.companionId) ?? team.companionId;
