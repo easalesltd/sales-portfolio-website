@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button, Card, Empty, Pill } from "@/app/components/gbbo/ui";
+import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
 import { bakerName, companionsOwningBaker, lowestTechnicalBaker } from "@/app/lib/gbbo/league";
 import { OFFICIAL_TECHNICAL_INDEX } from "@/app/lib/gbbo/recipes";
 import { useGbboSession } from "@/app/lib/gbbo/session";
@@ -57,7 +58,8 @@ export default function TechnicalRecipesPage() {
 
   return (
     <div className="space-y-6">
-      <Card
+      <MustBakeCallout />
+      <Card>
         eyebrow="Penalty homework"
         title="Technical bake recipes"
         action={
@@ -111,10 +113,14 @@ export default function TechnicalRecipesPage() {
               />
             )}
             {owners.length > 0 ? (
-              <p className="mt-4 text-sm leading-7 text-chocolate/75">
-                Must bake it: {owners.map((owner) => owner.name).join(", ")}
-                {last ? `, because ${bakerName(league, last)} came last in the technical.` : "."}
-              </p>
+              <div className="mt-5 rounded-[22px] bg-raspberry/10 px-4 py-3">
+                <p className="font-display text-2xl text-tent-dark">
+                  {owners.map((owner) => owner.name).join(" and ")} must bake this
+                </p>
+                <p className="text-sm leading-7 text-chocolate/75">
+                  {last ? `${bakerName(league, last)} came last in the technical.` : ""}
+                </p>
+              </div>
             ) : episode?.published ? (
               <p className="mt-4 text-sm text-chocolate/65">No last-place technical is on the ledger yet.</p>
             ) : (

@@ -33,7 +33,10 @@ export default function PenaltiesPage() {
                 <Pill>Week {penalty.week}</Pill>
                 {penalty.completed ? <Pill tone="butter">Done</Pill> : <Pill tone="raspberry">Outstanding</Pill>}
               </div>
-              <p className="mt-2 font-display text-2xl">{companionName(league, penalty.companionId)}</p>
+              <p className="mt-2 font-display text-3xl text-tent-dark">
+                {companionName(league, penalty.companionId)}
+                {penalty.kind === "technical" && !penalty.completed ? " must bake this" : ""}
+              </p>
               <p className="text-sm text-chocolate/70">
                 After {bakerName(league, penalty.bakerId)}. {penalty.note}
                 {penalty.deadline ? ` Deadline: ${penalty.deadline.replace("T", " ")}.` : ""}

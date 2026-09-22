@@ -81,20 +81,28 @@ export function applyTechnicalListing(
   }
 
   const taken = new Set(league.technicalRecipes.map((item) => item.week));
+  const assignedUrls = new Set(league.technicalRecipes.map((item) => item.url));
   const weeksNeeding = Array.from({ length: league.totalWeeks }, (_, index) => index + 1).filter(
     (week) => !taken.has(week) && now >= episodeDoneAt(week),
   );
+  const seedStamp = [...league.technicalCatalogue].sort((a, b) => a.firstSeen.localeCompare(b.firstSeen))[0]?.firstSeen;
+  const pending = league.technicalCatalogue.filter((item) => {
+    if (assignedUrls.has(item.url)) return false;
+    if (newcomers.some((recipe) => recipe.url === item.url)) return true;
+    return Boolean(seedStamp && item.firstSeen !== seedStamp);
+  });
 
   const assignedWeeks: number[] = [];
-  for (const recipe of newcomers) {
+  for (const recipe of pending) {
     const week = weeksNeeding.shift();
     if (!week) break;
     league.technicalRecipes.push({
       week,
-      title: recipe.title,
+      title: decode(recipe.title),
       url: recipe.url,
       fetchedAt: stamp,
     });
+    assignedUrls.add(recipe.url);
     assignedWeeks.push(week);
   }
 
@@ -106,7 +114,7 @@ export function pinTechnicalRecipe(league: LeagueState, week: number, recipe: Of
   league.technicalRecipes = (league.technicalRecipes ?? []).filter((item) => item.week !== week);
   league.technicalRecipes.push({
     week,
-    title: recipe.title,
+    title: decode(recipe.title),
     url: recipe.url,
     fetchedAt: now.toISOString(),
   });
