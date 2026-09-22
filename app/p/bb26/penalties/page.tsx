@@ -2,7 +2,7 @@
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { Button, Card, Empty, Pill } from "@/app/components/gbbo/ui";
-import { bakerName, companionName, companionPortrait } from "@/app/lib/gbbo/league";
+import { bakerName, companionInDisgrace, companionName, companionPortrait } from "@/app/lib/gbbo/league";
 import { uid } from "@/app/lib/gbbo/ids";
 import { useLeague } from "@/app/lib/gbbo/store";
 
@@ -31,10 +31,10 @@ export default function PenaltiesPage() {
                 name={companionName(league, penalty.companionId)}
                 photo={companionPortrait(
                   league.companions.find((item) => item.id === penalty.companionId),
-                  penalty.kind === "technical" && !penalty.completed,
+                  companionInDisgrace(league, penalty.companionId),
                 )}
                 size="md"
-                crop={penalty.kind === "technical" && !penalty.completed ? "scene" : "face"}
+                crop={companionInDisgrace(league, penalty.companionId) ? "scene" : "face"}
               />
               <div>
               <div className="flex flex-wrap gap-2">
