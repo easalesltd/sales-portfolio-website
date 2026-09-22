@@ -106,6 +106,13 @@ export type Penalty = {
   note: string;
 };
 
+export type SlutDrop = {
+  week: number;
+  companionId: Id;
+  completed: boolean;
+  completedAt: string | null;
+};
+
 export type RecapSuggestion = {
   starBakerId: Id | null;
   eliminatedBakerId: Id | null;
@@ -134,6 +141,7 @@ export type LeagueState = {
   episodes: EpisodeScore[];
   adHocRules: AdHocRule[];
   penalties: Penalty[];
+  slutDrops: SlutDrop[];
   technicalRecipes: TechnicalRecipe[];
   technicalCatalogue: TechnicalCatalogueEntry[];
 };

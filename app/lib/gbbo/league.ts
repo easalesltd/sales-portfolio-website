@@ -5,6 +5,7 @@ import type {
   EpisodeScore,
   LeagueState,
   ScoreLine,
+  SlutDrop,
   Substitution,
 } from "./types";
 
@@ -199,6 +200,36 @@ export function scoreCompanionWeek(league: LeagueState, companionId: string, wee
 
 export function sideConfirmed(league: LeagueState, companionId: string, week: number): boolean {
   return (league.sideConfirmations ?? []).some((item) => item.companionId === companionId && item.week === week);
+}
+
+export function slutDropsOf(league: LeagueState): SlutDrop[] {
+  return league.slutDrops ?? [];
+}
+
+export function slutDropFor(league: LeagueState, companionId: string, week: number): SlutDrop | undefined {
+  return slutDropsOf(league).find((item) => item.companionId === companionId && item.week === week);
+}
+
+export function owesSlutDrop(league: LeagueState, companionId: string, week: number): boolean {
+  const episode = league.episodes.find((item) => item.week === week);
+  if (!episode?.published) return false;
+  return lowestScorersForWeek(league, week).some((score) => score.companionId === companionId);
+}
+
+export function slutDropWeeksFor(league: LeagueState, companionId: string): number[] {
+  return league.episodes
+    .filter((episode) => owesSlutDrop(league, companionId, episode.week))
+    .map((episode) => episode.week)
+    .sort((a, b) => a - b);
+}
+
+export function outstandingSlutDropWeek(league: LeagueState, companionId: string): number | null {
+  return slutDropWeeksFor(league, companionId).find((week) => !slutDropFor(league, companionId, week)?.completed) ?? null;
+}
+
+export function latestSlutDropWeek(league: LeagueState, companionId: string): number | null {
+  const weeks = slutDropWeeksFor(league, companionId);
+  return weeks.at(-1) ?? null;
 }
 
 export function lowestScorersForWeek(league: LeagueState, week: number): CompanionWeekScore[] {

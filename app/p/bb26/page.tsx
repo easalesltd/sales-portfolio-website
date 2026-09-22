@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
+import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
 import {
@@ -50,7 +51,10 @@ export default function LeaguePage() {
                   <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
                   <CompanionPhoto name={name} photo={companion?.photo} />
                   <div className="min-w-0 flex-1">
-                    <p className="font-display text-2xl leading-tight">{name}</p>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-display text-2xl leading-tight">{name}</p>
+                      <SlutDropMark companionId={row.companionId} />
+                    </div>
                     <p className="text-sm text-chocolate/70">
                       {team.map((id) => bakerName(league, id)).join(" · ") || "No bakers yet"}
                     </p>
@@ -72,6 +76,7 @@ export default function LeaguePage() {
                 <Pill tone="tent">Joker weeks 1–4</Pill>
                 <Pill tone="butter">One sub a week</Pill>
                 <Pill tone="raspberry">Beer baguette if late</Pill>
+                <Pill tone="raspberry">Slut drop if last</Pill>
               </div>
               {isChief ? (
                 <Link href={`${GBBO_LEAGUE_PATH}/score`} className="mt-4 inline-flex rounded-full bg-raspberry px-5 py-2.5 text-sm font-bold text-flour">
@@ -101,7 +106,12 @@ export default function LeaguePage() {
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex min-w-0 items-center gap-3">
                       <CompanionPhoto name={companion.name} photo={companion.photo} />
-                      <p className="font-display text-2xl">{companion.name}</p>
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <p className="font-display text-2xl">{companion.name}</p>
+                          <SlutDropMark companionId={companion.id} week={latest.week} />
+                        </div>
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
                       {week.joker ? <Pill tone="butter">Joker</Pill> : null}

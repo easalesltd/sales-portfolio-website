@@ -9,6 +9,7 @@ import {
   bakerName,
   companionName,
   companionsOwningBaker,
+  lowestScorersForWeek,
   lowestTechnicalBaker,
   neededAutoDrops,
   scoreCompanionWeek,
@@ -125,6 +126,22 @@ export default function ScorePage() {
       for (const drop of neededAutoDrops(draft, Math.min(week + 1, draft.totalWeeks))) {
         if (!draft.substitutions.some((sub) => sub.companionId === drop.companionId && sub.week === drop.week)) {
           draft.substitutions.push(drop);
+        }
+      }
+      draft.slutDrops = draft.slutDrops ?? [];
+      const holders = lowestScorersForWeek(draft, week);
+      draft.slutDrops = draft.slutDrops.filter((item) => {
+        if (item.week !== week) return true;
+        return holders.some((holder) => holder.companionId === item.companionId);
+      });
+      for (const holder of holders) {
+        if (!draft.slutDrops.some((item) => item.week === week && item.companionId === holder.companionId)) {
+          draft.slutDrops.push({
+            week,
+            companionId: holder.companionId,
+            completed: false,
+            completedAt: null,
+          });
         }
       }
       draft.currentWeek = Math.min(week + 1, draft.totalWeeks);

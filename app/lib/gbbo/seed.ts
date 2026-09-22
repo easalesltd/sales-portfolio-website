@@ -203,6 +203,7 @@ export function createEmptyLeague(): LeagueState {
     episodes: Array.from({ length: 10 }, (_, index) => emptyEpisode(index + 1, 10)),
     adHocRules: [],
     penalties: [],
+    slutDrops: [],
     technicalRecipes: [],
     technicalCatalogue: [],
   };

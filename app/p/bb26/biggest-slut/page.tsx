@@ -1,6 +1,7 @@
 "use client";
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
+import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { bakerName, companionName, lowestScorersForWeek, scoreCompanionWeek } from "@/app/lib/gbbo/league";
 import { useLeague } from "@/app/lib/gbbo/store";
@@ -44,7 +45,12 @@ export default function BiggestSlutPage() {
               <div className="flex items-center justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-3">
                   <CompanionPhoto name={name} photo={companion?.photo} size="md" />
-                  <p className="font-display text-3xl text-tent-dark">{name}</p>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="font-display text-3xl text-tent-dark">{name}</p>
+                      <SlutDropMark companionId={score.companionId} week={latest.week} />
+                    </div>
+                  </div>
                 </div>
                 <Points value={score.points} />
               </div>
@@ -72,7 +78,10 @@ export default function BiggestSlutPage() {
                 <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
                 <CompanionPhoto name={name} photo={companion?.photo} />
                 <div className="min-w-0 flex-1">
-                  <p className="font-display text-2xl leading-tight">{name}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <p className="font-display text-2xl leading-tight">{name}</p>
+                    <SlutDropMark companionId={score.companionId} week={latest.week} />
+                  </div>
                   {crowned ? <p className="text-sm text-raspberry">This week's biggest slut</p> : null}
                 </div>
                 <Points value={score.points} />
@@ -90,10 +99,14 @@ export default function BiggestSlutPage() {
               return (
                 <li key={episode.week} className="flex flex-wrap items-center justify-between gap-2 rounded-[18px] bg-flour/80 px-4 py-3">
                   <span>Week {episode.week} · {episode.theme}</span>
-                  <span className="font-bold">
-                    {weekHolders.map((score) => companionName(league, score.companionId)).join(" & ")}
-                    {" · "}
-                    {weekHolders[0] ? `${weekHolders[0].points} pts` : ""}
+                  <span className="flex flex-wrap items-center justify-end gap-2 font-bold">
+                    {weekHolders.map((score) => (
+                      <span key={score.companionId} className="inline-flex flex-wrap items-center gap-2">
+                        {companionName(league, score.companionId)}
+                        <SlutDropMark companionId={score.companionId} week={episode.week} />
+                      </span>
+                    ))}
+                    <span>{weekHolders[0] ? `${weekHolders[0].points} pts` : ""}</span>
                   </span>
                 </li>
               );
