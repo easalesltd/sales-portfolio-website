@@ -85,6 +85,7 @@ export type EpisodeScore = {
   adHoc: AdHocAward[];
   recapSource: string;
   recapNotes: string;
+  justification: string;
 };
 
 export type AdHocRule = {

@@ -9,6 +9,7 @@ import {
   bakerName,
   companionName,
   companionTotals,
+  episodeScoringLines,
   scoreCompanionWeek,
   teamForWeek,
   teamSizeForWeek,
@@ -128,6 +129,35 @@ export default function LeaguePage() {
                     ))}
                   </ul>
                 </div>
+              );
+            })}
+          </div>
+        </Card>
+      ) : null}
+
+      {published.length > 0 ? (
+        <Card eyebrow="The ledger" title="How the weeks were scored">
+          <div className="space-y-8">
+            {[...published].reverse().map((episode) => {
+              const lines = episodeScoringLines(league, episode);
+              return (
+                <section key={episode.week} className="border-t border-[#e7d3b4] pt-6 first:border-t-0 first:pt-0">
+                  <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+                    <div>
+                      <p className="font-script text-2xl text-raspberry">Week {episode.week}</p>
+                      <h3 className="font-display text-3xl text-tent-dark">{episode.title}: {episode.theme}</h3>
+                    </div>
+                    <Pill tone="tent">Published</Pill>
+                  </div>
+                  {episode.justification ? (
+                    <p className="max-w-3xl text-sm leading-7 text-chocolate/80">{episode.justification}</p>
+                  ) : null}
+                  <ul className="mt-3 space-y-1.5 text-sm leading-6 text-chocolate/75">
+                    {lines.map((line) => (
+                      <li key={line}>• {line}</li>
+                    ))}
+                  </ul>
+                </section>
               );
             })}
           </div>

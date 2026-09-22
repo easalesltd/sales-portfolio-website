@@ -3,15 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChiefOnly } from "@/app/components/gbbo/ChiefOnly";
 import { Button, Card, Empty, Field, Pill, Points, inputClass } from "@/app/components/gbbo/ui";
-import { uid } from "@/app/lib/gbbo/ids";
 import {
   activeBakersAtWeek,
-  bakerName,
   companionName,
-  companionsOwningBaker,
-  lowestScorersForWeek,
-  lowestTechnicalBaker,
-  neededAutoDrops,
+  publishEpisode,
   scoreCompanionWeek,
 } from "@/app/lib/gbbo/league";
 import { parseRecap } from "@/app/lib/gbbo/recap";
@@ -91,60 +86,7 @@ export default function ScorePage() {
 
   function publish() {
     update((draft) => {
-      const row = draft.episodes.find((item) => item.week === week);
-      if (!row) return;
-      row.published = true;
-      if (row.eliminatedBakerId) {
-        const baker = draft.bakers.find((item) => item.id === row.eliminatedBakerId);
-        if (baker) baker.eliminatedInWeek = week;
-      }
-      draft.jokers = draft.jokers.filter((joker) => joker.week !== week || !joker.autoApplied);
-      if (week === 4) {
-        for (const companion of draft.companions) {
-          if (!draft.jokers.some((joker) => joker.companionId === companion.id)) {
-            draft.jokers.push({ companionId: companion.id, week: 4, autoApplied: true });
-          }
-        }
-      }
-      const last = lowestTechnicalBaker(row);
-      const owners = last ? companionsOwningBaker(draft, last, week) : [];
-      draft.penalties = draft.penalties.filter((penalty) => penalty.week !== week);
-      if (last) {
-        for (const owner of owners) {
-          draft.penalties.push({
-            id: uid("pen"),
-            week,
-            companionId: owner.id,
-            bakerId: last,
-            kind: "technical",
-            deadline: row.deadline,
-            completed: false,
-            note: `${owner.name} must bake this week's technical because ${bakerName(draft, last)} came last.`,
-          });
-        }
-      }
-      for (const drop of neededAutoDrops(draft, Math.min(week + 1, draft.totalWeeks))) {
-        if (!draft.substitutions.some((sub) => sub.companionId === drop.companionId && sub.week === drop.week)) {
-          draft.substitutions.push(drop);
-        }
-      }
-      draft.slutDrops = draft.slutDrops ?? [];
-      const holders = lowestScorersForWeek(draft, week);
-      draft.slutDrops = draft.slutDrops.filter((item) => {
-        if (item.week !== week) return true;
-        return holders.some((holder) => holder.companionId === item.companionId);
-      });
-      for (const holder of holders) {
-        if (!draft.slutDrops.some((item) => item.week === week && item.companionId === holder.companionId)) {
-          draft.slutDrops.push({
-            week,
-            companionId: holder.companionId,
-            completed: false,
-            completedAt: null,
-          });
-        }
-      }
-      draft.currentWeek = Math.min(week + 1, draft.totalWeeks);
+      publishEpisode(draft, week);
     });
   }
 
@@ -259,6 +201,18 @@ export default function ScorePage() {
             })}
           </div>
         </div>
+      </Card>
+
+      <Card title="Scoring justification">
+        <p className="mb-3 max-w-3xl text-sm leading-7 text-chocolate/75">
+          This is the write-up that appears at the bottom of the league page. Keep it to what was scored and why.
+        </p>
+        <textarea
+          className={`${inputClass()} min-h-32`}
+          value={episode.justification ?? ""}
+          onChange={(event) => patch((row) => { row.justification = event.target.value; })}
+          placeholder="Star Baker, who went home, technical places that scored, handshakes, Nigella, drops and tears."
+        />
       </Card>
 
       <Card title="Flavour events">

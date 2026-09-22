@@ -1,3 +1,4 @@
+import { uid } from "./ids";
 import type {
   Baker,
   Companion,
@@ -285,6 +286,97 @@ export function neededAutoDrops(league: LeagueState, week: number): Substitution
     });
   }
   return drops;
+}
+
+export function episodeScoringLines(league: LeagueState, episode: EpisodeScore): string[] {
+  const lines: string[] = [];
+  const name = (id: string | null) => bakerName(league, id);
+  const field = activeBakersAtWeek(league, episode.week).length;
+
+  if (episode.starBakerId) lines.push(`${name(episode.starBakerId)} was Star Baker (+5).`);
+  else lines.push("No Star Baker was awarded.");
+
+  if (episode.eliminatedBakerId) lines.push(`${name(episode.eliminatedBakerId)} left the tent (−5).`);
+  else lines.push("Nobody went home.");
+
+  const technical = [...episode.technical].sort((a, b) => a.place - b.place);
+  for (const entry of technical) {
+    const points = technicalPoints(entry.place, field);
+    if (points === 0) continue;
+    lines.push(`${name(entry.bakerId)} finished ${ordinal(entry.place)} in the technical (${points > 0 ? "+" : ""}${points}).`);
+  }
+
+  for (const bakerId of episode.handshakes) {
+    lines.push(`${name(bakerId)} received a Hollywood handshake (+5).`);
+  }
+  for (const bakerId of episode.innuendos) {
+    lines.push(`${name(bakerId)} shared a naughty innuendo with Nigella (+5).`);
+  }
+  for (const [bakerId, count] of Object.entries(episode.drops)) {
+    if (count > 0) lines.push(`${name(bakerId)} dropped something ${count === 1 ? "once" : `${count} times`} (${-3 * count}).`);
+  }
+  for (const [bakerId, count] of Object.entries(episode.cries)) {
+    if (count > 0) lines.push(`${name(bakerId)} cried ${count === 1 ? "once" : `${count} times`} (${-3 * count}).`);
+  }
+
+  return lines;
+}
+
+export function publishEpisode(league: LeagueState, week: number): void {
+  const row = league.episodes.find((item) => item.week === week);
+  if (!row) return;
+  row.published = true;
+  if (row.eliminatedBakerId) {
+    const baker = league.bakers.find((item) => item.id === row.eliminatedBakerId);
+    if (baker) baker.eliminatedInWeek = week;
+  }
+  league.jokers = league.jokers.filter((joker) => joker.week !== week || !joker.autoApplied);
+  if (week === 4) {
+    for (const companion of league.companions) {
+      if (!league.jokers.some((joker) => joker.companionId === companion.id)) {
+        league.jokers.push({ companionId: companion.id, week: 4, autoApplied: true });
+      }
+    }
+  }
+  const last = lowestTechnicalBaker(row);
+  const owners = last ? companionsOwningBaker(league, last, week) : [];
+  league.penalties = league.penalties.filter((penalty) => penalty.week !== week);
+  if (last) {
+    for (const owner of owners) {
+      league.penalties.push({
+        id: uid("pen"),
+        week,
+        companionId: owner.id,
+        bakerId: last,
+        kind: "technical",
+        deadline: row.deadline,
+        completed: false,
+        note: `${owner.name} must bake this week's technical because ${bakerName(league, last)} came last.`,
+      });
+    }
+  }
+  for (const drop of neededAutoDrops(league, Math.min(week + 1, league.totalWeeks))) {
+    if (!league.substitutions.some((sub) => sub.companionId === drop.companionId && sub.week === drop.week)) {
+      league.substitutions.push(drop);
+    }
+  }
+  league.slutDrops = league.slutDrops ?? [];
+  const holders = lowestScorersForWeek(league, week);
+  league.slutDrops = league.slutDrops.filter((item) => {
+    if (item.week !== week) return true;
+    return holders.some((holder) => holder.companionId === item.companionId);
+  });
+  for (const holder of holders) {
+    if (!league.slutDrops.some((item) => item.week === week && item.companionId === holder.companionId)) {
+      league.slutDrops.push({
+        week,
+        companionId: holder.companionId,
+        completed: false,
+        completedAt: null,
+      });
+    }
+  }
+  league.currentWeek = Math.min(week + 1, league.totalWeeks);
 }
 
 export function ordinal(value: number): string {

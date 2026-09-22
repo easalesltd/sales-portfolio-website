@@ -100,6 +100,7 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
       ...award,
       bakerId: rewrite(bakerMap, award.bakerId) ?? award.bakerId,
     }));
+    episode.justification ??= "";
   }
   for (const rule of league.adHocRules) {
     const votes: typeof rule.votes = {};

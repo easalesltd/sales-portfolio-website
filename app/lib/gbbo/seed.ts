@@ -131,6 +131,7 @@ export function emptyEpisode(week: number, totalWeeks: number): EpisodeScore {
     adHoc: [],
     recapSource: "",
     recapNotes: "",
+    justification: "",
   };
 }
 
