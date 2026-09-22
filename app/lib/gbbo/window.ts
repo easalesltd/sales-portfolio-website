@@ -1,6 +1,6 @@
 const LONDON = "Europe/London";
 const EPISODE_START_HOUR = 20;
-const EPISODE_DONE_HOUR = 22;
+const EPISODE_DONE_HOUR = 21;
 
 /** Series 17 Tuesdays, Cake week through the final. */
 export const SERIES_17_AIR_DATES = [
