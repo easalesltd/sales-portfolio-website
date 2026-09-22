@@ -1,7 +1,8 @@
 "use client";
 
+import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { Button, Card, Empty, Pill } from "@/app/components/gbbo/ui";
-import { bakerName, companionName } from "@/app/lib/gbbo/league";
+import { bakerName, companionName, companionPortrait } from "@/app/lib/gbbo/league";
 import { uid } from "@/app/lib/gbbo/ids";
 import { useLeague } from "@/app/lib/gbbo/store";
 
@@ -25,7 +26,17 @@ export default function PenaltiesPage() {
       <div className="grid gap-4">
         {league.penalties.map((penalty) => (
           <div key={penalty.id} className="paper-card flex flex-wrap items-center justify-between gap-4 rounded-[28px] p-5">
-            <div>
+            <div className="flex min-w-0 items-start gap-3">
+              <CompanionPhoto
+                name={companionName(league, penalty.companionId)}
+                photo={companionPortrait(
+                  league.companions.find((item) => item.id === penalty.companionId),
+                  penalty.kind === "technical" && !penalty.completed,
+                )}
+                size="md"
+                crop={penalty.kind === "technical" && !penalty.completed ? "scene" : "face"}
+              />
+              <div>
               <div className="flex flex-wrap gap-2">
                 <Pill tone={penalty.kind === "beer_baguette" ? "raspberry" : "tent"}>
                   {penalty.kind === "beer_baguette" ? "Beer baguette" : "Technical"}
@@ -41,6 +52,7 @@ export default function PenaltiesPage() {
                 After {bakerName(league, penalty.bakerId)}. {penalty.note}
                 {penalty.deadline ? ` Deadline: ${penalty.deadline.replace("T", " ")}.` : ""}
               </p>
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
               {!penalty.completed && penalty.kind === "technical" ? (

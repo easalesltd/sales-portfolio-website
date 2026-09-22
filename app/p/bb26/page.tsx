@@ -8,7 +8,9 @@ import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
 import {
   bakerName,
+  companionInDisgrace,
   companionName,
+  companionPortrait,
   companionTotals,
   episodeScoringLines,
   scoreCompanionWeek,
@@ -51,7 +53,11 @@ export default function LeaguePage() {
               return (
                 <li key={row.companionId} className="ticket flex items-center gap-3 rounded-[22px] px-4 py-3 sm:gap-4">
                   <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
-                  <CompanionPhoto name={name} photo={companion?.photo} />
+                  <CompanionPhoto
+                    name={name}
+                    photo={companionPortrait(companion, companionInDisgrace(league, row.companionId))}
+                    crop={companionInDisgrace(league, row.companionId) ? "scene" : "face"}
+                  />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-display text-2xl leading-tight">{name}</p>
@@ -109,7 +115,11 @@ export default function LeaguePage() {
                 <div key={companion.id} className="rounded-[22px] bg-flour/80 p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex min-w-0 items-center gap-3">
-                      <CompanionPhoto name={companion.name} photo={companion.photo} />
+                      <CompanionPhoto
+                        name={companion.name}
+                        photo={companionPortrait(companion, companionInDisgrace(league, companion.id))}
+                        crop={companionInDisgrace(league, companion.id) ? "scene" : "face"}
+                      />
                       <div className="min-w-0">
                         <div className="flex flex-wrap items-center gap-2">
                           <p className="font-display text-2xl">{companion.name}</p>

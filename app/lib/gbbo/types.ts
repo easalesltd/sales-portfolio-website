@@ -7,6 +7,7 @@ export type Companion = {
   isChief: boolean;
   isDraftMaster: boolean;
   photo: string;
+  disgracePhoto: string;
 };
 
 export type Baker = {

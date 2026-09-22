@@ -3,7 +3,7 @@
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
-import { bakerName, companionName, lowestScorersForWeek, scoreCompanionWeek } from "@/app/lib/gbbo/league";
+import { bakerName, companionName, companionPortrait, lowestScorersForWeek, scoreCompanionWeek } from "@/app/lib/gbbo/league";
 import { useLeague } from "@/app/lib/gbbo/store";
 
 export default function BiggestSlutPage() {
@@ -44,7 +44,7 @@ export default function BiggestSlutPage() {
             <div key={score.companionId} className="rounded-[22px] bg-raspberry/10 px-5 py-4">
               <div className="flex items-center justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <CompanionPhoto name={name} photo={companion?.photo} size="md" />
+                  <CompanionPhoto name={name} photo={companionPortrait(companion, true)} size="md" crop="scene" />
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-display text-3xl text-tent-dark">{name}</p>
@@ -76,7 +76,7 @@ export default function BiggestSlutPage() {
                 className={`ticket flex items-center gap-3 rounded-[22px] px-4 py-3 sm:gap-4 ${crowned ? "ring-2 ring-raspberry" : ""}`}
               >
                 <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
-                <CompanionPhoto name={name} photo={companion?.photo} />
+                <CompanionPhoto name={name} photo={companionPortrait(companion, crowned)} crop={crowned ? "scene" : "face"} />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="font-display text-2xl leading-tight">{name}</p>

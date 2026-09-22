@@ -253,6 +253,26 @@ export function companionTotals(league: LeagueState): { companionId: string; poi
   }).sort((a, b) => b.points - a.points || companionName(league, a.companionId).localeCompare(companionName(league, b.companionId)));
 }
 
+export function companionInDisgrace(league: LeagueState, companionId: string): boolean {
+  const table = companionTotals(league);
+  if (table.length > 0) {
+    const lowest = Math.min(...table.map((row) => row.points));
+    if (table.some((row) => row.companionId === companionId && row.points === lowest)) return true;
+  }
+  const latest = league.episodes.filter((episode) => episode.published).at(-1);
+  if (!latest) return false;
+  const last = lowestTechnicalBaker(latest);
+  return last
+    ? companionsOwningBaker(league, last, latest.week).some((companion) => companion.id === companionId)
+    : false;
+}
+
+export function companionPortrait(companion: Companion | undefined, disgrace = false): string {
+  if (!companion) return "";
+  if (disgrace && companion.disgracePhoto) return companion.disgracePhoto;
+  return companion.photo || "";
+}
+
 export function lowestTechnicalBaker(episode: EpisodeScore): string | null {
   if (episode.technical.length === 0) return null;
   return [...episode.technical].sort((a, b) => b.place - a.place)[0]?.bakerId ?? null;

@@ -88,6 +88,7 @@ export default function SetupPage() {
               isChief: draft.companions.length === 0,
               isDraftMaster: draft.companions.length === 0,
               photo: "",
+              disgracePhoto: "",
             });
           })}>Add a companion</Button>
         </div>

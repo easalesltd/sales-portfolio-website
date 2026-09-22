@@ -156,6 +156,15 @@ export const COMPANION_PHOTOS: Partial<Record<(typeof COMPANIONS)[number], strin
   Nest: "/gbbo/companions/nest.jpg",
 };
 
+export const COMPANION_DISGRACE_PHOTOS: Partial<Record<(typeof COMPANIONS)[number], string>> = {
+  Dave: "/gbbo/companions/dave-disgrace.jpg",
+  Cowie: "/gbbo/companions/cowie-disgrace.jpg",
+  Guns: "/gbbo/companions/guns-disgrace.jpg",
+  Shuker: "/gbbo/companions/shuker-disgrace.jpg",
+  Lee: "/gbbo/companions/lee-disgrace.jpg",
+  Nest: "/gbbo/companions/nest-disgrace.jpg",
+};
+
 export function createCompanions() {
   return COMPANIONS.map((name, index) => ({
     id: companionIdForName(name),
@@ -164,6 +173,7 @@ export function createCompanions() {
     isChief: name === "Dave",
     isDraftMaster: name === "Dave",
     photo: COMPANION_PHOTOS[name] ?? "",
+    disgracePhoto: COMPANION_DISGRACE_PHOTOS[name] ?? "",
   }));
 }
 

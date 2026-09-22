@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { bakerName, bakerStillIn, carriedTeam, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
+import { bakerName, bakerStillIn, carriedTeam, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { Companion } from "@/app/lib/gbbo/types";
@@ -48,6 +48,8 @@ export function TeamSideForm({
   const joker = jokerForCompanion(league, companion.id);
   const canJoker = !locked && week <= 4 && !joker;
   const [whyOpen, setWhyOpen] = useState(false);
+  const disgrace = companionInDisgrace(league, companion.id);
+  const portrait = companionPortrait(companion, disgrace);
 
   const blockReason = locked
     ? (lockReason ?? "The change window is closed, so Submit is unavailable.")
@@ -69,20 +71,20 @@ export function TeamSideForm({
 
   return (
     <section className="paper-card overflow-hidden rounded-[28px] border border-[#e7d3b4] md:flex">
-      {companion.photo ? (
+      {portrait ? (
         <div className="relative aspect-[4/3] bg-[#efe2c8] md:w-48 md:shrink-0 md:self-stretch md:aspect-auto lg:w-56">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={companion.photo}
+            src={portrait}
             alt={companion.name}
-            className="h-full w-full object-cover object-[center_18%] md:absolute md:inset-0"
+            className={`h-full w-full object-cover md:absolute md:inset-0 ${disgrace ? "object-center" : "object-[center_18%]"}`}
           />
         </div>
       ) : null}
       <div className="p-6 md:min-w-0 md:flex-1">
       <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
-          {!companion.photo ? (
+          {!portrait ? (
             <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-tent font-display text-2xl text-flour">
               {companion.name.slice(0, 1)}
             </span>

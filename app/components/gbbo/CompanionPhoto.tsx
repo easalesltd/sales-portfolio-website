@@ -6,13 +6,17 @@ export function CompanionPhoto({
   name,
   photo,
   size = "sm",
+  crop = "face",
 }: {
   name: string;
   photo?: string;
   size?: "sm" | "md";
+  crop?: "face" | "scene";
 }) {
   const [open, setOpen] = useState(false);
   const box = size === "md" ? "h-14 w-14" : "h-11 w-11";
+  const focus = crop === "scene" ? "object-center" : "object-[center_18%]";
+  const openFocus = crop === "scene" ? "object-center" : "object-[center_15%]";
 
   useEffect(() => {
     if (!open) return;
@@ -25,7 +29,7 @@ export function CompanionPhoto({
 
   const face = photo ? (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={photo} alt="" className="h-full w-full object-cover object-[center_18%]" />
+    <img src={photo} alt="" className={`h-full w-full object-cover ${focus}`} />
   ) : (
     <span className="font-display text-lg text-flour">{name.slice(0, 1)}</span>
   );
@@ -61,7 +65,7 @@ export function CompanionPhoto({
             onClick={(event) => event.stopPropagation()}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photo} alt={name} className="max-h-[78vh] w-full object-cover object-[center_15%]" />
+            <img src={photo} alt={name} className={`max-h-[78vh] w-full object-cover ${openFocus}`} />
             <figcaption className="px-4 py-3 font-display text-2xl text-tent-dark">{name}</figcaption>
           </figure>
         </div>

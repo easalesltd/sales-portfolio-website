@@ -29,6 +29,7 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
     companion.id = next;
     const seed = seededCompanions.find((item) => gbboSlug(item.name) === gbboSlug(companion.name));
     companion.photo = seed?.photo || companion.photo || "";
+    companion.disgracePhoto = seed?.disgracePhoto || companion.disgracePhoto || "";
   }
   for (const baker of league.bakers) {
     const next = bakerIdForName(baker.name);
