@@ -31,13 +31,17 @@ export async function POST(request: Request) {
   const uploadId = String(form.get("uploadId") ?? newVideoId());
   const index = Number(form.get("index") ?? 0);
   const total = Number(form.get("total") ?? 1);
-  const mime = String(form.get("mime") ?? "video/mp4");
+  const mime = String(form.get("mime") ?? "") || (kind === "technical" ? "image/jpeg" : "video/mp4");
   const chunk = form.get("chunk");
 
   if (!(chunk instanceof File)) {
-    return NextResponse.json({ error: "Choose a video first." }, { status: 400 });
+    return NextResponse.json({ error: "Choose a file first." }, { status: 400 });
   }
-  if (!mime.startsWith("video/")) {
+  if (kind === "technical") {
+    if (mime && !mime.startsWith("image/")) {
+      return NextResponse.json({ error: "That file is not a photo of the bake." }, { status: 400 });
+    }
+  } else if (!mime.startsWith("video/")) {
     return NextResponse.json({ error: "That file is not a video." }, { status: 400 });
   }
 
@@ -54,10 +58,10 @@ export async function POST(request: Request) {
     if (!owesSlutDrop(league, companion.id, week)) {
       return NextResponse.json({ error: "That companion does not owe a slut drop this week." }, { status: 403 });
     }
-  } else if (kind === "beer_baguette") {
+  } else if (kind === "beer_baguette" || kind === "technical") {
     const penalty = league.penalties.find((item) => item.id === penaltyId && item.companionId === companion.id);
-    if (!penalty || penalty.kind !== "beer_baguette") {
-      return NextResponse.json({ error: "That beer baguette is not on the ledger." }, { status: 403 });
+    if (!penalty || penalty.kind !== kind) {
+      return NextResponse.json({ error: "That punishment is not on the ledger." }, { status: 403 });
     }
   } else {
     return NextResponse.json({ error: "Unknown punishment." }, { status: 400 });
@@ -75,7 +79,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, uploadId, complete: false });
   }
   if (record.size > VIDEO_MAX_BYTES) {
-    return NextResponse.json({ error: "That video is too long. Trim it to about ten seconds." }, { status: 400 });
+    return NextResponse.json({ error: "That file is too large. Use a shorter clip or a smaller photo." }, { status: 400 });
   }
 
   if (kind === "slut_drop") {

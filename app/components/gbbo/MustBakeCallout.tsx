@@ -1,7 +1,8 @@
 "use client";
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
-import { bakerName, companionInDisgrace, companionPortrait, companionsOwningBaker, lowestTechnicalBaker } from "@/app/lib/gbbo/league";
+import { bakerName, companionInDisgrace, companionPortrait, companionsOwningBaker, lowestTechnicalBaker, penaltyVideoSrc, technicalDeadlineLabel, technicalIsComplete } from "@/app/lib/gbbo/league";
+import { PunishmentPhoto } from "./PunishmentPhoto";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { Pill } from "./ui";
 
@@ -18,14 +19,11 @@ export function MustBakeCallout({ week }: { week?: number }) {
   if (owners.length === 0) return null;
 
   const recipe = (league.technicalRecipes ?? []).find((item) => item.week === episode.week);
+  const technicals = (league.penalties ?? []).filter(
+    (penalty) => penalty.week === episode.week && penalty.kind === "technical",
+  );
   const outstanding = owners.filter((owner) =>
-    (league.penalties ?? []).some(
-      (penalty) =>
-        penalty.week === episode.week &&
-        penalty.companionId === owner.id &&
-        penalty.kind === "technical" &&
-        !penalty.completed,
-    ),
+    technicals.some((penalty) => penalty.companionId === owner.id && !technicalIsComplete(penalty)),
   );
   const names = owners.map((owner) => owner.name).join(" and ");
 
@@ -48,8 +46,8 @@ export function MustBakeCallout({ week }: { week?: number }) {
         <p className="mt-2 max-w-3xl text-sm leading-7 text-chocolate/80">
           {bakerName(league, last)} came last in the {episode.theme} technical.
           {outstanding.length > 0
-            ? ` Still outstanding: ${outstanding.map((owner) => owner.name).join(" and ")}.`
-            : " Marked done on Penalties."}
+            ? ` Still outstanding: ${outstanding.map((owner) => owner.name).join(" and ")}. Upload a photo of the bake before ${technicalDeadlineLabel(episode.week)}.`
+            : " Bake photos are in. The technical is done."}
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-4">
           {owners.map((owner) => (
@@ -64,6 +62,17 @@ export function MustBakeCallout({ week }: { week?: number }) {
             </div>
           ))}
         </div>
+        {technicals.some((penalty) => penalty.videoId) ? (
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {technicals.map((penalty) => (
+              <PunishmentPhoto
+                key={penalty.id}
+                src={penaltyVideoSrc(penalty)}
+                label={`${owners.find((owner) => owner.id === penalty.companionId)?.name ?? "Bake"}'s technical`}
+              />
+            ))}
+          </div>
+        ) : null}
         {recipe ? (
           <p className="mt-4 font-display text-2xl text-tent-dark">
             <a

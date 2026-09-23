@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
 import { bakerIdForName, companionIdForName, gbboSlug } from "./identity";
-import { applySlutDropEscalations, resetVideolessSlutDrops } from "./league";
+import { applySlutDropEscalations, applyTechnicalEscalations, resetVideolessSlutDrops } from "./league";
 import { SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
 import type { LeagueState } from "./types";
 
@@ -118,6 +118,9 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
     penalty.companionId = rewrite(companionMap, penalty.companionId) ?? penalty.companionId;
     penalty.bakerId = rewrite(bakerMap, penalty.bakerId) ?? penalty.bakerId;
     penalty.videoId ??= null;
+    if (penalty.kind === "technical" && penalty.completed && !penalty.videoId) {
+      penalty.completed = false;
+    }
   }
   for (const drop of league.slutDrops) {
     drop.companionId = rewrite(companionMap, drop.companionId) ?? drop.companionId;
@@ -153,8 +156,9 @@ export async function readGbboLeague(): Promise<LeagueState> {
     league = stabilizeLeague(file ?? createEmptyLeague());
   }
   const reset = resetVideolessSlutDrops(league);
-  const escalated = applySlutDropEscalations(league);
-  if (reset || escalated) {
+  const slutEscalated = applySlutDropEscalations(league);
+  const bakeEscalated = applyTechnicalEscalations(league);
+  if (reset || slutEscalated || bakeEscalated) {
     await writeGbboLeague(league);
   }
   return league;
@@ -164,6 +168,7 @@ export async function writeGbboLeague(league: LeagueState): Promise<void> {
   const next = stabilizeLeague(structuredClone(league));
   resetVideolessSlutDrops(next);
   applySlutDropEscalations(next);
+  applyTechnicalEscalations(next);
   const redis = gameLeaderboardRedis();
   if (redis) {
     await redis.set(REDIS_KEY, next);

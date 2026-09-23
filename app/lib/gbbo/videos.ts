@@ -46,7 +46,7 @@ export async function saveVideoChunk(input: {
   bytes: Buffer;
 }): Promise<VideoRecord | null> {
   if (input.total < 1 || input.total > VIDEO_MAX_CHUNKS) {
-    throw new Error("That video is too long. Trim it to about ten seconds.");
+    throw new Error("That file is too large. Use a shorter clip or a smaller photo.");
   }
   if (input.index < 0 || input.index >= input.total) {
     throw new Error("That video chunk is out of range.");

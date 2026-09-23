@@ -13,7 +13,7 @@ export function PunishmentUpload({
   label,
   onUploaded,
 }: {
-  kind: "slut_drop" | "beer_baguette";
+  kind: "slut_drop" | "beer_baguette" | "technical";
   companionId: string;
   week: number;
   penaltyId?: string;
@@ -23,9 +23,14 @@ export function PunishmentUpload({
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const photo = kind === "technical";
 
   async function sendFile(file: File) {
-    if (!file.type.startsWith("video/")) {
+    if (photo && file.type && !file.type.startsWith("image/")) {
+      setError("That file is not a photo of the bake.");
+      return;
+    }
+    if (!photo && !file.type.startsWith("video/")) {
       setError("That file is not a video.");
       return;
     }
@@ -44,8 +49,8 @@ export function PunishmentUpload({
         form.set("uploadId", uploadId);
         form.set("index", String(index));
         form.set("total", String(total));
-        form.set("mime", file.type || "video/mp4");
-        form.set("chunk", chunk, file.name || "punishment.mp4");
+        form.set("mime", file.type || (photo ? "image/jpeg" : "video/mp4"));
+        form.set("chunk", chunk, file.name || (photo ? "bake.jpg" : "punishment.mp4"));
         const response = await fetch("/api/gbbo-league/video", {
           method: "POST",
           credentials: "include",
@@ -53,7 +58,7 @@ export function PunishmentUpload({
         });
         const data = (await response.json()) as { error?: string; complete?: boolean; league?: unknown };
         if (!response.ok) {
-          setError(data.error ?? "That video could not be uploaded.");
+          setError(data.error ?? (photo ? "That photo could not be uploaded." : "That video could not be uploaded."));
           return;
         }
         if (data.complete && data.league) {
@@ -61,9 +66,9 @@ export function PunishmentUpload({
           return;
         }
       }
-      setError("The tent did not finish saving that video. Try a shorter clip.");
+      setError(photo ? "The tent did not finish saving that photo." : "The tent did not finish saving that video. Try a shorter clip.");
     } catch {
-      setError("The tent could not take that video.");
+      setError(photo ? "The tent could not take that photo." : "The tent could not take that video.");
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -75,7 +80,7 @@ export function PunishmentUpload({
       <input
         ref={inputRef}
         type="file"
-        accept="video/*"
+        accept={photo ? "image/*" : "video/*"}
         capture="environment"
         className="sr-only"
         onChange={(event) => {

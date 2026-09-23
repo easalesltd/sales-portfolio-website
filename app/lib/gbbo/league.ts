@@ -10,7 +10,7 @@ import type {
   SlutDrop,
   Substitution,
 } from "./types";
-import { episodeStartsAt } from "./window";
+import { episodeStartsAt, formatLondon } from "./window";
 
 export function activeBakersAtWeek(league: LeagueState, week: number): Baker[] {
   return league.bakers.filter(
@@ -243,11 +243,23 @@ export function penaltyVideoSrc(penalty: Penalty): string | null {
   return penalty.videoId ? `/api/gbbo-league/video?id=${encodeURIComponent(penalty.videoId)}` : null;
 }
 
+export function technicalDeadlineAt(week: number): Date {
+  return episodeStartsAt(week + 1);
+}
+
+export function technicalDeadlineLabel(week: number): string {
+  return formatLondon(technicalDeadlineAt(week));
+}
+
+export function technicalIsComplete(penalty: Penalty): boolean {
+  return penalty.kind === "technical" && penalty.completed && Boolean(penalty.videoId);
+}
+
 export type PunishmentExhibit = {
   id: string;
   week: number;
   companionId: string;
-  kind: "slut_drop" | "beer_baguette";
+  kind: "slut_drop" | "beer_baguette" | "technical";
   src: string | null;
   escalated: boolean;
 };
@@ -262,12 +274,12 @@ export function punishmentExhibits(league: LeagueState): PunishmentExhibit[] {
     escalated: drop.escalated,
   }));
   for (const penalty of league.penalties ?? []) {
-    if (penalty.kind !== "beer_baguette") continue;
+    if (penalty.kind !== "beer_baguette" && penalty.kind !== "technical") continue;
     tapes.push({
       id: penalty.id,
       week: penalty.week,
       companionId: penalty.companionId,
-      kind: "beer_baguette",
+      kind: penalty.kind,
       src: penaltyVideoSrc(penalty),
       escalated: false,
     });
@@ -344,6 +356,43 @@ export function applySlutDropEscalations(league: LeagueState, now = new Date()):
       videoId: null,
       note: `${name} missed the slut drop before the next episode, so a filmed Beer Baguette is now also owed.`,
     });
+  }
+  return changed;
+}
+
+export function applyTechnicalEscalations(league: LeagueState, now = new Date()): boolean {
+  let changed = false;
+  league.penalties = league.penalties ?? [];
+  for (const penalty of league.penalties) {
+    if (penalty.kind !== "technical") continue;
+    const due = technicalDeadlineAt(penalty.week);
+    if (!penalty.deadline) {
+      penalty.deadline = due.toISOString();
+      changed = true;
+    }
+    if (technicalIsComplete(penalty)) continue;
+    if (now < due) continue;
+    const name = companionName(league, penalty.companionId);
+    const already = league.penalties.some(
+      (item) =>
+        item.kind === "beer_baguette" &&
+        item.companionId === penalty.companionId &&
+        item.week === penalty.week &&
+        item.note.includes("technical"),
+    );
+    if (already) continue;
+    league.penalties.push({
+      id: uid("pen"),
+      week: penalty.week,
+      companionId: penalty.companionId,
+      bakerId: penalty.bakerId,
+      kind: "beer_baguette",
+      deadline: "",
+      completed: false,
+      videoId: null,
+      note: `${name} missed the technical bake before the next episode, so a filmed Beer Baguette is now also owed.`,
+    });
+    changed = true;
   }
   return changed;
 }
@@ -479,7 +528,7 @@ export function publishEpisode(league: LeagueState, week: number): void {
         companionId: owner.id,
         bakerId: last,
         kind: "technical",
-        deadline: row.deadline,
+        deadline: technicalDeadlineAt(week).toISOString(),
         completed: false,
         note: `${owner.name} must bake this week's technical because ${bakerName(league, last)} came last.`,
         videoId: null,

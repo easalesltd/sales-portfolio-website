@@ -1,6 +1,7 @@
 "use client";
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
+import { PunishmentPhoto } from "@/app/components/gbbo/PunishmentPhoto";
 import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill } from "@/app/components/gbbo/ui";
@@ -22,8 +23,8 @@ export default function CrimewatchPage() {
     <div className="space-y-6">
       <Card eyebrow="Have you seen this companion?" title="Village Crimewatch">
         <p className="max-w-2xl text-sm leading-7 text-chocolate/75">
-          The official screening room. Every slut drop and beer baguette is shown to the whole tent
-          once it is uploaded. If the CCTV is blank, the accused is still at large.
+          The official screening room. Slut drops, beer baguettes and technical bake photos
+          are shown to the whole tent once they are uploaded. If the CCTV is blank, the accused is still at large.
         </p>
       </Card>
 
@@ -55,7 +56,7 @@ export default function CrimewatchPage() {
                       <p className="font-display text-2xl text-tent-dark">{name}</p>
                       <div className="mt-1 flex flex-wrap gap-2">
                         <Pill tone="raspberry">
-                          {item.kind === "slut_drop" ? "Slut drop" : "Beer baguette"}
+                          {item.kind === "slut_drop" ? "Slut drop" : item.kind === "technical" ? "Technical bake" : "Beer baguette"}
                         </Pill>
                         <Pill>Week {item.week}</Pill>
                       </div>
@@ -64,10 +65,14 @@ export default function CrimewatchPage() {
                       </p>
                     </div>
                   </div>
-                  <PunishmentVideo
-                    src={item.src}
-                    label={`${name} · week ${item.week} ${item.kind === "slut_drop" ? "slut drop" : "beer baguette"}`}
-                  />
+                  {item.kind === "technical" ? (
+                    <PunishmentPhoto src={item.src} label={`${name} · week ${item.week} technical bake`} />
+                  ) : (
+                    <PunishmentVideo
+                      src={item.src}
+                      label={`${name} · week ${item.week} ${item.kind === "slut_drop" ? "slut drop" : "beer baguette"}`}
+                    />
+                  )}
                 </article>
               );
             })}
@@ -93,7 +98,11 @@ export default function CrimewatchPage() {
                     <div className="min-w-0">
                       <p className="font-display text-2xl text-tent-dark">{name}</p>
                       <p className="text-sm text-chocolate/70">
-                        {item.kind === "slut_drop" ? "Owes a filmed slut drop" : "Owes a filmed beer baguette"}
+                        {item.kind === "slut_drop"
+                          ? "Owes a filmed slut drop"
+                          : item.kind === "technical"
+                            ? "Owes a photo of the technical bake"
+                            : "Owes a filmed beer baguette"}
                         {episode ? ` · ${episode.theme}` : ` · week ${item.week}`}
                       </p>
                     </div>
@@ -102,7 +111,7 @@ export default function CrimewatchPage() {
                     {item.kind === "slut_drop" ? (
                       <SlutDropMark companionId={item.companionId} week={item.week} />
                     ) : (
-                      <Pill tone="raspberry">Beer baguette owed</Pill>
+                      <Pill tone="raspberry">{item.kind === "technical" ? "Bake photo owed" : "Beer baguette owed"}</Pill>
                     )}
                     {item.escalated ? <Pill tone="raspberry">Beer baguette also owed</Pill> : null}
                   </div>
