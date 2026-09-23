@@ -44,6 +44,7 @@ export default function PenaltiesPage() {
       </Card>
       <div className="grid gap-4">
         {league.penalties.map((penalty) => {
+          const companion = league.companions.find((item) => item.id === penalty.companionId);
           const name = companionName(league, penalty.companionId);
           const canUpload = isChief || (playerUnlocked && playerSlug === gbboSlug(name));
           const bakeDone = technicalIsComplete(penalty);
@@ -57,7 +58,7 @@ export default function PenaltiesPage() {
               <div className="flex min-w-0 items-start gap-3">
                 <CompanionPhoto
                   name={name}
-                  photo={companionPortrait(league.companions.find((item) => item.id === penalty.companionId), true)}
+                  photo={companion?.disgracePhoto || companionPortrait(companion, true)}
                   size="md"
                   crop="scene"
                 />

@@ -54,7 +54,7 @@ export function MustBakeCallout({ week }: { week?: number }) {
             <div key={owner.id} className="flex items-center gap-3">
               <CompanionPhoto
                 name={owner.name}
-                photo={companionPortrait(owner, true)}
+                photo={owner.disgracePhoto || companionPortrait(owner, true)}
                 size="md"
                 crop="scene"
               />
