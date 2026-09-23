@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
-import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
-import { bakerName, companionName, companionPortrait, lowestScorersForWeek, penaltyVideoSrc, scoreCompanionWeek, slutDropVideoSrc, slutDropsOf } from "@/app/lib/gbbo/league";
+import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
+import { bakerName, companionName, companionPortrait, lowestScorersForWeek, scoreCompanionWeek } from "@/app/lib/gbbo/league";
 import { useLeague } from "@/app/lib/gbbo/store";
 
 export default function BiggestSlutPage() {
@@ -92,34 +93,18 @@ export default function BiggestSlutPage() {
         </ol>
       </Card>
 
-      {slutDropsOf(league).some((drop) => drop.videoId) || league.penalties.some((penalty) => penalty.kind === "beer_baguette" && penalty.videoId) ? (
-        <Card eyebrow="The tapes" title="Punishment videos">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {slutDropsOf(league).map((drop) => {
-              const src = slutDropVideoSrc(drop);
-              if (!src) return null;
-              return (
-                <PunishmentVideo
-                  key={`${drop.companionId}-${drop.week}`}
-                  src={src}
-                  label={`${companionName(league, drop.companionId)} · week ${drop.week} slut drop`}
-                />
-              );
-            })}
-            {league.penalties.map((penalty) => {
-              const src = penaltyVideoSrc(penalty);
-              if (!src || penalty.kind !== "beer_baguette") return null;
-              return (
-                <PunishmentVideo
-                  key={penalty.id}
-                  src={src}
-                  label={`${companionName(league, penalty.companionId)} · week ${penalty.week} beer baguette`}
-                />
-              );
-            })}
-          </div>
-        </Card>
-      ) : null}
+      <Card eyebrow="The tapes" title="Village Crimewatch">
+        <p className="max-w-2xl text-sm leading-7 text-chocolate/75">
+          The screening room for every slut drop and beer baguette lives on Crimewatch.
+          If someone is still at large, they are wanted there too.
+        </p>
+        <Link
+          href={`${GBBO_LEAGUE_PATH}/crimewatch`}
+          className="mt-4 inline-flex rounded-full bg-raspberry px-5 py-2.5 text-sm font-bold text-flour"
+        >
+          Open Crimewatch
+        </Link>
+      </Card>
 
       {published.length > 1 ? (
         <Card eyebrow="Previous disgraces" title="Past weeks">

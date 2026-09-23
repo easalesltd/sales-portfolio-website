@@ -243,6 +243,40 @@ export function penaltyVideoSrc(penalty: Penalty): string | null {
   return penalty.videoId ? `/api/gbbo-league/video?id=${encodeURIComponent(penalty.videoId)}` : null;
 }
 
+export type PunishmentExhibit = {
+  id: string;
+  week: number;
+  companionId: string;
+  kind: "slut_drop" | "beer_baguette";
+  src: string | null;
+  escalated: boolean;
+};
+
+export function punishmentExhibits(league: LeagueState): PunishmentExhibit[] {
+  const tapes: PunishmentExhibit[] = slutDropsOf(league).map((drop) => ({
+    id: `slut-${drop.companionId}-${drop.week}`,
+    week: drop.week,
+    companionId: drop.companionId,
+    kind: "slut_drop" as const,
+    src: slutDropVideoSrc(drop),
+    escalated: drop.escalated,
+  }));
+  for (const penalty of league.penalties ?? []) {
+    if (penalty.kind !== "beer_baguette") continue;
+    tapes.push({
+      id: penalty.id,
+      week: penalty.week,
+      companionId: penalty.companionId,
+      kind: "beer_baguette",
+      src: penaltyVideoSrc(penalty),
+      escalated: false,
+    });
+  }
+  return tapes.sort(
+    (a, b) => b.week - a.week || a.companionId.localeCompare(b.companionId) || a.kind.localeCompare(b.kind),
+  );
+}
+
 export function resetVideolessSlutDrops(league: LeagueState): boolean {
   let changed = false;
   for (const drop of league.slutDrops ?? []) {

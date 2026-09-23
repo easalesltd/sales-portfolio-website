@@ -17,6 +17,7 @@ const PLAYER_NAV = [
   { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes" },
   { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules" },
   { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
+  { href: `${GBBO_LEAGUE_PATH}/crimewatch`, label: "Crimewatch" },
 ];
 
 const CHIEF_NAV = [
@@ -28,6 +29,7 @@ const CHIEF_NAV = [
   { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes" },
   { href: `${GBBO_LEAGUE_PATH}/rules`, label: "Rules" },
   { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
+  { href: `${GBBO_LEAGUE_PATH}/crimewatch`, label: "Crimewatch" },
   { href: `${GBBO_LEAGUE_PATH}/setup`, label: "Setup" },
 ];
 
