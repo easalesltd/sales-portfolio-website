@@ -8,7 +8,6 @@ import { Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import {
   bakerName,
-  companionInDisgrace,
   companionName,
   companionPortrait,
   penaltyVideoSrc,
@@ -58,12 +57,9 @@ export default function PenaltiesPage() {
               <div className="flex min-w-0 items-start gap-3">
                 <CompanionPhoto
                   name={name}
-                  photo={companionPortrait(
-                    league.companions.find((item) => item.id === penalty.companionId),
-                    companionInDisgrace(league, penalty.companionId),
-                  )}
+                  photo={companionPortrait(league.companions.find((item) => item.id === penalty.companionId), true)}
                   size="md"
-                  crop={companionInDisgrace(league, penalty.companionId) ? "scene" : "face"}
+                  crop="scene"
                 />
                 <div>
                   <div className="flex flex-wrap gap-2">

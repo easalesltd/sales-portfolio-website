@@ -6,7 +6,6 @@ import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import {
-  companionInDisgrace,
   companionName,
   companionPortrait,
   punishmentExhibits,
@@ -41,16 +40,15 @@ export default function CrimewatchPage() {
             {onTape.map((item) => {
               const companion = league.companions.find((row) => row.id === item.companionId);
               const name = companion?.name ?? companionName(league, item.companionId);
-              const disgrace = companionInDisgrace(league, item.companionId);
               const episode = league.episodes.find((row) => row.week === item.week);
               return (
                 <article key={item.id} className="rounded-[22px] bg-flour/80 p-4">
                   <div className="mb-3 flex items-center gap-3">
                     <CompanionPhoto
                       name={name}
-                      photo={companionPortrait(companion, disgrace)}
+                      photo={companionPortrait(companion, true)}
                       size="md"
-                      crop={disgrace ? "scene" : "face"}
+                      crop="scene"
                     />
                     <div className="min-w-0">
                       <p className="font-display text-2xl text-tent-dark">{name}</p>

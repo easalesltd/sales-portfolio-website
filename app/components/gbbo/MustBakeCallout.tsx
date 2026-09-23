@@ -1,7 +1,7 @@
 "use client";
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
-import { bakerName, companionInDisgrace, companionPortrait, companionsOwningBaker, lowestTechnicalBaker, penaltyVideoSrc, technicalDeadlineLabel, technicalIsComplete } from "@/app/lib/gbbo/league";
+import { bakerName, companionPortrait, companionsOwningBaker, lowestTechnicalBaker, penaltyVideoSrc, technicalDeadlineLabel, technicalIsComplete } from "@/app/lib/gbbo/league";
 import { PunishmentPhoto } from "./PunishmentPhoto";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { Pill } from "./ui";
@@ -54,9 +54,9 @@ export function MustBakeCallout({ week }: { week?: number }) {
             <div key={owner.id} className="flex items-center gap-3">
               <CompanionPhoto
                 name={owner.name}
-                photo={companionPortrait(owner, companionInDisgrace(league, owner.id))}
+                photo={companionPortrait(owner, true)}
                 size="md"
-                crop={companionInDisgrace(league, owner.id) ? "scene" : "face"}
+                crop="scene"
               />
               <p className="font-display text-2xl text-tent-dark">{owner.name}</p>
             </div>
