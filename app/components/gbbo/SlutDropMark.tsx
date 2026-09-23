@@ -7,9 +7,13 @@ import {
   outstandingSlutDropWeek,
   owesSlutDrop,
   slutDropFor,
+  slutDropVideoSrc,
 } from "@/app/lib/gbbo/league";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
+import type { LeagueState } from "@/app/lib/gbbo/types";
+import { PunishmentUpload } from "./PunishmentUpload";
+import { PunishmentVideo } from "./PunishmentVideo";
 import { Pill } from "./ui";
 
 export function SlutDropMark({
@@ -19,65 +23,52 @@ export function SlutDropMark({
   companionId: string;
   week?: number;
 }) {
-  const { league, completeSlutDrop } = useLeague();
+  const { league, acceptLeague } = useLeague();
   const { isChief, playerSlug, playerUnlocked } = useGbboSession();
   const companion = league.companions.find((item) => item.id === companionId);
   const targetWeek = week ?? outstandingSlutDropWeek(league, companionId) ?? latestSlutDropWeek(league, companionId);
   const [thanks, setThanks] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
 
   if (!companion || targetWeek == null) return null;
   if (week && !owesSlutDrop(league, companionId, week)) return null;
 
   const dropWeek = targetWeek;
-  const completed = Boolean(slutDropFor(league, companionId, dropWeek)?.completed);
+  const drop = slutDropFor(league, companionId, dropWeek);
+  const videoSrc = drop ? slutDropVideoSrc(drop) : null;
+  const completed = Boolean(drop?.completed && drop.videoId);
   const owed = owesSlutDrop(league, companionId, dropWeek) && !completed;
   if (!owed && !completed && !thanks) return null;
 
-  const canPress = owed && (isChief || (playerUnlocked && playerSlug === gbboSlug(companion.name)));
-
-  async function markDone() {
-    if (!canPress) return;
-    setBusy(true);
-    setError("");
-    const message = await completeSlutDrop(companionId, dropWeek);
-    setBusy(false);
-    if (message) {
-      setError(message);
-      return;
-    }
-    setThanks(true);
-    window.setTimeout(() => setThanks(false), 4000);
-  }
+  const canUpload = owed && (isChief || (playerUnlocked && playerSlug === gbboSlug(companion.name)));
 
   if (thanks) {
     return (
       <p className="max-w-[16rem] font-script text-xl leading-tight text-raspberry">
-        Thank you, {companion.name}. Your slut drop is complete.
+        Thank you, {companion.name}. Your slut drop is on the tape.
       </p>
     );
   }
 
-  if (completed) {
-    return <Pill tone="butter">Slut drop complete</Pill>;
-  }
-
-  if (!canPress) {
-    return <Pill tone="raspberry">Slut Drop Owed</Pill>;
-  }
-
   return (
-    <span className="inline-flex min-w-0 flex-col items-start gap-1">
-      <button
-        type="button"
-        disabled={busy}
-        onClick={() => void markDone()}
-        className="rounded-full bg-raspberry px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-flour hover:bg-[#a82f4b] disabled:opacity-50"
-      >
-        {busy ? "Saving…" : "Slut Drop Owed"}
-      </button>
-      {error ? <span className="text-xs text-raspberry">{error}</span> : null}
+    <span className="inline-flex min-w-0 flex-col items-start gap-2">
+      <span className="inline-flex flex-wrap items-center gap-2">
+        {completed ? <Pill tone="butter">Slut drop on tape</Pill> : <Pill tone="raspberry">Slut Drop Owed</Pill>}
+        {drop?.escalated ? <Pill tone="raspberry">Beer baguette also owed</Pill> : null}
+        {canUpload ? (
+          <PunishmentUpload
+            kind="slut_drop"
+            companionId={companionId}
+            week={dropWeek}
+            label="Upload slut drop"
+            onUploaded={(next) => {
+              acceptLeague(next as LeagueState);
+              setThanks(true);
+              window.setTimeout(() => setThanks(false), 4000);
+            }}
+          />
+        ) : null}
+      </span>
+      {videoSrc ? <PunishmentVideo src={videoSrc} label={`${companion.name}'s week ${dropWeek} slut drop`} compact /> : null}
     </span>
   );
 }

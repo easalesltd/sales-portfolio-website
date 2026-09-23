@@ -107,6 +107,7 @@ export type Penalty = {
   deadline: string;
   completed: boolean;
   note: string;
+  videoId: string | null;
 };
 
 export type SlutDrop = {
@@ -114,6 +115,8 @@ export type SlutDrop = {
   companionId: Id;
   completed: boolean;
   completedAt: string | null;
+  videoId: string | null;
+  escalated: boolean;
 };
 
 export type RecapSuggestion = {

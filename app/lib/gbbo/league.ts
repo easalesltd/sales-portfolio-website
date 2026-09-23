@@ -5,10 +5,12 @@ import type {
   CompanionWeekScore,
   EpisodeScore,
   LeagueState,
+  Penalty,
   ScoreLine,
   SlutDrop,
   Substitution,
 } from "./types";
+import { episodeStartsAt } from "./window";
 
 export function activeBakersAtWeek(league: LeagueState, week: number): Baker[] {
   return league.bakers.filter(
@@ -233,6 +235,85 @@ export function latestSlutDropWeek(league: LeagueState, companionId: string): nu
   return weeks.at(-1) ?? null;
 }
 
+export function slutDropVideoSrc(drop: SlutDrop): string | null {
+  return drop.videoId ? `/api/gbbo-league/video?id=${encodeURIComponent(drop.videoId)}` : null;
+}
+
+export function penaltyVideoSrc(penalty: Penalty): string | null {
+  return penalty.videoId ? `/api/gbbo-league/video?id=${encodeURIComponent(penalty.videoId)}` : null;
+}
+
+export function resetVideolessSlutDrops(league: LeagueState): boolean {
+  let changed = false;
+  for (const drop of league.slutDrops ?? []) {
+    if (drop.completed && !drop.videoId) {
+      drop.completed = false;
+      drop.completedAt = null;
+      changed = true;
+    }
+  }
+  return changed;
+}
+
+export function applySlutDropEscalations(league: LeagueState, now = new Date()): boolean {
+  let changed = false;
+  league.slutDrops = league.slutDrops ?? [];
+  league.penalties = league.penalties ?? [];
+  for (const episode of league.episodes.filter((item) => item.published)) {
+    for (const holder of lowestScorersForWeek(league, episode.week)) {
+      if (league.slutDrops.some((item) => item.week === episode.week && item.companionId === holder.companionId)) {
+        continue;
+      }
+      league.slutDrops.push({
+        week: episode.week,
+        companionId: holder.companionId,
+        completed: false,
+        completedAt: null,
+        videoId: null,
+        escalated: false,
+      });
+      changed = true;
+    }
+  }
+  for (const drop of league.slutDrops) {
+    if (drop.escalated) continue;
+    if (!owesSlutDrop(league, drop.companionId, drop.week)) continue;
+    const nextWeek = drop.week + 1;
+    if (nextWeek > league.totalWeeks) continue;
+    const deadline = episodeStartsAt(nextWeek);
+    if (now < deadline) continue;
+    const doneInTime =
+      drop.completed &&
+      Boolean(drop.videoId) &&
+      Boolean(drop.completedAt) &&
+      new Date(drop.completedAt as string) < deadline;
+    if (doneInTime) continue;
+    drop.escalated = true;
+    changed = true;
+    const already = league.penalties.some(
+      (penalty) =>
+        penalty.kind === "beer_baguette" &&
+        penalty.companionId === drop.companionId &&
+        penalty.week === drop.week &&
+        penalty.note.includes("slut drop"),
+    );
+    if (already) continue;
+    const name = companionName(league, drop.companionId);
+    league.penalties.push({
+      id: uid("pen"),
+      week: drop.week,
+      companionId: drop.companionId,
+      bakerId: "",
+      kind: "beer_baguette",
+      deadline: "",
+      completed: false,
+      videoId: null,
+      note: `${name} missed the slut drop before the next episode, so a filmed Beer Baguette is now also owed.`,
+    });
+  }
+  return changed;
+}
+
 export function lowestScorersForWeek(league: LeagueState, week: number): CompanionWeekScore[] {
   const scores = league.companions.map((companion) => scoreCompanionWeek(league, companion.id, week));
   if (scores.length === 0) return [];
@@ -353,7 +434,9 @@ export function publishEpisode(league: LeagueState, week: number): void {
   }
   const last = lowestTechnicalBaker(row);
   const owners = last ? companionsOwningBaker(league, last, week) : [];
-  league.penalties = league.penalties.filter((penalty) => penalty.week !== week);
+  league.penalties = league.penalties.filter(
+    (penalty) => penalty.week !== week || (penalty.kind === "beer_baguette" && penalty.note.includes("slut drop")),
+  );
   if (last) {
     for (const owner of owners) {
       league.penalties.push({
@@ -365,6 +448,7 @@ export function publishEpisode(league: LeagueState, week: number): void {
         deadline: row.deadline,
         completed: false,
         note: `${owner.name} must bake this week's technical because ${bakerName(league, last)} came last.`,
+        videoId: null,
       });
     }
   }
@@ -386,6 +470,8 @@ export function publishEpisode(league: LeagueState, week: number): void {
         companionId: holder.companionId,
         completed: false,
         completedAt: null,
+        videoId: null,
+        escalated: false,
       });
     }
   }

@@ -36,7 +36,7 @@ export default function RulesPage() {
           <p>If nobody writes in when the team must shrink, the Chief Companion chooses who leaves. The same baker may be played by more than one companion.</p>
           <p>A joker doubles one weekend and must be played in the first four weeks. If it is still sitting in the drawer, the Chief Companion applies it automatically in week four.</p>
           <p>The companion whose baker finishes last in the technical must complete that technical before the deadline. Fail, and a filmed Beer Baguette is required.</p>
-          <p>The companion with the fewest points in a published week owes a slut drop. A Slut Drop Owed button sits next to their name until they press it after performing the drop. The tent thanks them, then it shows as complete. A tie means every companion on the bottom of that week owes one.</p>
+          <p>The companion with the fewest points in a published week owes a slut drop. They must film it and upload the video next to their name. The tent plays that tape for everyone. A tie means every companion on the bottom of that week owes one. If the video is not up by the start of the next episode, the punishment is upgraded: they still owe the slut drop, and they also owe a filmed Beer Baguette.</p>
           <p>Ad hoc rules may be added from the weekly theme. They need a two-thirds majority of companions.</p>
         </div>
       </Card>

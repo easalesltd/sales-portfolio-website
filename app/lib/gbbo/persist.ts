@@ -3,6 +3,7 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
 import { bakerIdForName, companionIdForName, gbboSlug } from "./identity";
+import { applySlutDropEscalations, resetVideolessSlutDrops } from "./league";
 import { SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
 import type { LeagueState } from "./types";
 
@@ -116,11 +117,14 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
   for (const penalty of league.penalties) {
     penalty.companionId = rewrite(companionMap, penalty.companionId) ?? penalty.companionId;
     penalty.bakerId = rewrite(bakerMap, penalty.bakerId) ?? penalty.bakerId;
+    penalty.videoId ??= null;
   }
   for (const drop of league.slutDrops) {
     drop.companionId = rewrite(companionMap, drop.companionId) ?? drop.companionId;
     drop.completed ??= false;
     drop.completedAt ??= null;
+    drop.videoId ??= null;
+    drop.escalated ??= false;
   }
 
   return league;
@@ -140,16 +144,26 @@ async function writeToFile(league: LeagueState) {
 
 export async function readGbboLeague(): Promise<LeagueState> {
   const redis = gameLeaderboardRedis();
+  let league: LeagueState;
   if (redis) {
     const stored = await redis.get<LeagueState>(REDIS_KEY);
-    if (isLeague(stored)) return stabilizeLeague(stored);
+    league = stabilizeLeague(isLeague(stored) ? stored : createEmptyLeague());
+  } else {
+    const file = await readFromFile();
+    league = stabilizeLeague(file ?? createEmptyLeague());
   }
-  const file = await readFromFile();
-  return stabilizeLeague(file ?? createEmptyLeague());
+  const reset = resetVideolessSlutDrops(league);
+  const escalated = applySlutDropEscalations(league);
+  if (reset || escalated) {
+    await writeGbboLeague(league);
+  }
+  return league;
 }
 
 export async function writeGbboLeague(league: LeagueState): Promise<void> {
   const next = stabilizeLeague(structuredClone(league));
+  resetVideolessSlutDrops(next);
+  applySlutDropEscalations(next);
   const redis = gameLeaderboardRedis();
   if (redis) {
     await redis.set(REDIS_KEY, next);

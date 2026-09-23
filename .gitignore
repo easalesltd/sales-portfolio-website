@@ -32,6 +32,7 @@ yarn-error.log*
 
 # GBBO league file fallback when Redis is not configured
 /data/gbbo-league.json
+/data/gbbo-videos/
 
 # vercel
 .vercel

@@ -1,9 +1,10 @@
 "use client";
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
+import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
-import { bakerName, companionName, companionPortrait, lowestScorersForWeek, scoreCompanionWeek } from "@/app/lib/gbbo/league";
+import { bakerName, companionName, companionPortrait, lowestScorersForWeek, penaltyVideoSrc, scoreCompanionWeek, slutDropVideoSrc, slutDropsOf } from "@/app/lib/gbbo/league";
 import { useLeague } from "@/app/lib/gbbo/store";
 
 export default function BiggestSlutPage() {
@@ -90,6 +91,35 @@ export default function BiggestSlutPage() {
           })}
         </ol>
       </Card>
+
+      {slutDropsOf(league).some((drop) => drop.videoId) || league.penalties.some((penalty) => penalty.kind === "beer_baguette" && penalty.videoId) ? (
+        <Card eyebrow="The tapes" title="Punishment videos">
+          <div className="grid gap-4 sm:grid-cols-2">
+            {slutDropsOf(league).map((drop) => {
+              const src = slutDropVideoSrc(drop);
+              if (!src) return null;
+              return (
+                <PunishmentVideo
+                  key={`${drop.companionId}-${drop.week}`}
+                  src={src}
+                  label={`${companionName(league, drop.companionId)} · week ${drop.week} slut drop`}
+                />
+              );
+            })}
+            {league.penalties.map((penalty) => {
+              const src = penaltyVideoSrc(penalty);
+              if (!src || penalty.kind !== "beer_baguette") return null;
+              return (
+                <PunishmentVideo
+                  key={penalty.id}
+                  src={src}
+                  label={`${companionName(league, penalty.companionId)} · week ${penalty.week} beer baguette`}
+                />
+              );
+            })}
+          </div>
+        </Card>
+      ) : null}
 
       {published.length > 1 ? (
         <Card eyebrow="Previous disgraces" title="Past weeks">

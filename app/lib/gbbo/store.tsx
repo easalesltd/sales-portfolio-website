@@ -26,6 +26,7 @@ type LeagueContextValue = {
     keepLastWeek?: boolean;
   }) => Promise<string | null>;
   completeSlutDrop: (companionId: string, week: number) => Promise<string | null>;
+  acceptLeague: (next: LeagueState) => void;
 };
 
 const LeagueContext = createContext<LeagueContextValue | null>(null);
@@ -108,6 +109,11 @@ export function LeagueProvider({ children }: { children: React.ReactNode }) {
     return null;
   }, []);
 
+  const acceptLeague = useCallback((next: LeagueState) => {
+    skipSave.current = true;
+    setLeague(clone(next));
+  }, []);
+
   const completeSlutDrop = useCallback(async (companionId: string, week: number) => {
     const response = await fetch("/api/gbbo-league/slut-drop", {
       method: "POST",
@@ -116,15 +122,14 @@ export function LeagueProvider({ children }: { children: React.ReactNode }) {
       body: JSON.stringify({ companionId, week }),
     });
     const data = (await response.json()) as LeagueState & { error?: string };
-    if (!response.ok) return data.error ?? "That slut drop could not be marked done.";
-    skipSave.current = true;
-    setLeague(data);
+    if (!response.ok) return data.error ?? "Upload a video of the slut drop. A button press is not enough.";
+    acceptLeague(data);
     return null;
-  }, []);
+  }, [acceptLeague]);
 
   const value = useMemo(
-    () => ({ league, loaded, saving, update, replace, refresh, submitSide, completeSlutDrop }),
-    [league, loaded, saving, update, replace, refresh, submitSide, completeSlutDrop],
+    () => ({ league, loaded, saving, update, replace, refresh, submitSide, completeSlutDrop, acceptLeague }),
+    [league, loaded, saving, update, replace, refresh, submitSide, completeSlutDrop, acceptLeague],
   );
 
   return <LeagueContext.Provider value={value}>{children}</LeagueContext.Provider>;
