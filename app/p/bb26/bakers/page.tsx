@@ -114,7 +114,8 @@ function BakerCard({
 }
 
 export default function BakersPage() {
-  const { league } = useLeague();
+  const { league, loaded } = useLeague();
+  if (!loaded) return <p className="font-script text-3xl text-raspberry">Counting the crumbs…</p>;
   const gate = teamWindow(new Date(), league.totalWeeks);
   const rows = [...league.bakers]
     .map((baker) => ({
