@@ -1,24 +1,45 @@
 "use client";
 
-import { Card, Pill } from "@/app/components/gbbo/ui";
+import { useState } from "react";
+import { BakerScoreSheet } from "@/app/components/gbbo/BakerScoreSheet";
+import { Card, Pill, Points } from "@/app/components/gbbo/ui";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { bakerEliminatedIn, companionsOwningBaker } from "@/app/lib/gbbo/league";
 import { WEEK_THEMES } from "@/app/lib/gbbo/seed";
+import { bakerLedger, bakerScoreSummary } from "@/app/lib/gbbo/stats";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { teamWindow } from "@/app/lib/gbbo/window";
-import type { Baker } from "@/app/lib/gbbo/types";
+import type { Baker, LeagueState } from "@/app/lib/gbbo/types";
 
 function officialProfile(name: string) {
   return `https://thegreatbritishbakeoff.co.uk/bakers/series-17-${gbboSlug(name)}/`;
 }
 
-function BakerCard({ baker, week, owners }: { baker: Baker; week: number | null; owners: string[] }) {
+function BakerCard({
+  baker,
+  week,
+  owners,
+  league,
+}: {
+  baker: Baker;
+  week: number | null;
+  owners: string[];
+  league: LeagueState;
+}) {
+  const [open, setOpen] = useState(false);
   const out = Boolean(week);
   const theme = week ? WEEK_THEMES[week - 1] : null;
+  const ledger = bakerLedger(league, baker.id);
 
   return (
     <article className={`paper-card overflow-hidden rounded-[28px] border border-[#e7d3b4] ${out ? "gbbo-baker-out" : ""}`}>
-      <div className="relative aspect-square bg-[#efe2c8]">
+      <button
+        type="button"
+        className="relative aspect-square w-full bg-[#efe2c8] text-left"
+        onClick={() => setOpen((value) => !value)}
+        aria-expanded={open}
+        aria-label={`${open ? "Hide" : "Show"} ${baker.name}'s scores`}
+      >
         {baker.photo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={baker.photo} alt={baker.name} className="h-full w-full object-cover object-top" />
@@ -39,7 +60,7 @@ function BakerCard({ baker, week, owners }: { baker: Baker; week: number | null;
             Still baking
           </span>
         )}
-      </div>
+      </button>
       <div className="space-y-3 p-5">
         <div className="flex flex-wrap items-end justify-between gap-2">
           <div>
@@ -49,9 +70,13 @@ function BakerCard({ baker, week, owners }: { baker: Baker; week: number | null;
               {baker.hometown}
             </p>
           </div>
-          <Pill tone={out ? "raspberry" : "tent"}>{out ? "Eliminated" : baker.job}</Pill>
+          <div className="flex flex-col items-end gap-1">
+            <Points value={ledger.points} />
+            <Pill tone={out ? "raspberry" : "tent"}>{out ? "Eliminated" : baker.job}</Pill>
+          </div>
         </div>
         <p className="text-sm leading-7 text-chocolate/80">{baker.bio}</p>
+        {!open ? <p className="text-sm leading-7 text-chocolate/70">{bakerScoreSummary(ledger)}</p> : null}
         {owners.length ? (
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-chocolate/50">
             {out ? "Was in" : "In"}{" "}
@@ -60,14 +85,29 @@ function BakerCard({ baker, week, owners }: { baker: Baker; week: number | null;
               : `${owners.slice(0, -1).join(", ")} and ${owners[owners.length - 1]}'s tents`}
           </p>
         ) : null}
-        <a
-          className="inline-block text-sm font-bold text-tent underline decoration-2 underline-offset-4"
-          href={officialProfile(baker.name)}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Official profile
-        </a>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            className="text-sm font-bold text-tent underline decoration-2 underline-offset-4"
+            onClick={() => setOpen((value) => !value)}
+            aria-expanded={open}
+          >
+            {open ? "Hide the numbers" : "How they scored"}
+          </button>
+          <a
+            className="inline-block text-sm font-bold text-tent underline decoration-2 underline-offset-4"
+            href={officialProfile(baker.name)}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Official profile
+          </a>
+        </div>
+        {open ? (
+          <div className="border-t border-[#e7d3b4] pt-4">
+            <BakerScoreSheet ledger={ledger} />
+          </div>
+        ) : null}
       </div>
     </article>
   );
@@ -94,8 +134,9 @@ export default function BakersPage() {
     <div className="space-y-6">
       <Card eyebrow="Class of 2026" title="This year's bakers">
         <p className="max-w-3xl text-sm leading-7 text-chocolate/75">
-          The twelve amateurs in the Series 17 tent. When you score an elimination, their portrait greys out
-          and gets a week stamp so the tent here matches the telly.
+          The twelve amateurs in the Series 17 tent. Tap <strong>How they scored</strong> on a baker
+          to see the ledger: handshakes, technicals, drops, tears and the rest.
+          When you score an elimination, their portrait greys out and gets a week stamp so the tent here matches the telly.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Pill tone="tent">{stillIn.length} still baking</Pill>
@@ -105,7 +146,7 @@ export default function BakersPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {stillIn.map((row) => (
-          <BakerCard key={row.baker.id} baker={row.baker} week={row.week} owners={row.owners} />
+          <BakerCard key={row.baker.id} baker={row.baker} week={row.week} owners={row.owners} league={league} />
         ))}
       </div>
 
@@ -118,7 +159,7 @@ export default function BakersPage() {
           </Card>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {gone.map((row) => (
-              <BakerCard key={row.baker.id} baker={row.baker} week={row.week} owners={row.owners} />
+              <BakerCard key={row.baker.id} baker={row.baker} week={row.week} owners={row.owners} league={league} />
             ))}
           </div>
         </>

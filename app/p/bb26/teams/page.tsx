@@ -51,6 +51,7 @@ export default function TeamsPage() {
         <p className="mt-3 max-w-3xl text-sm leading-7 text-chocolate/75">
           Field <strong>{size} baker{size === 1 ? "" : "s"}</strong> this week.
           Last week's team is kept unless you substitute <strong>one</strong> baker.
+          Under each side is their form: points, drops, tears and how those numbers were reached.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Pill tone={gate.open || isChief ? "tent" : "raspberry"}>{gate.open || isChief ? "Window open" : "Window locked"}</Pill>

@@ -12,6 +12,7 @@ import { useLeague } from "@/app/lib/gbbo/store";
 const PLAYER_NAV = [
   { href: GBBO_LEAGUE_PATH, label: "League" },
   { href: `${GBBO_LEAGUE_PATH}/bakers`, label: "Bakers" },
+  { href: `${GBBO_LEAGUE_PATH}/weigh-in`, label: "Weigh-in" },
   { href: `${GBBO_LEAGUE_PATH}/teams`, label: "My team" },
   { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties" },
   { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes" },
@@ -23,6 +24,7 @@ const PLAYER_NAV = [
 const CHIEF_NAV = [
   { href: GBBO_LEAGUE_PATH, label: "League" },
   { href: `${GBBO_LEAGUE_PATH}/bakers`, label: "Bakers" },
+  { href: `${GBBO_LEAGUE_PATH}/weigh-in`, label: "Weigh-in" },
   { href: `${GBBO_LEAGUE_PATH}/teams`, label: "Teams" },
   { href: `${GBBO_LEAGUE_PATH}/score`, label: "Score" },
   { href: `${GBBO_LEAGUE_PATH}/penalties`, label: "Penalties" },

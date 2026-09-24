@@ -5,6 +5,7 @@ import { bakerName, bakerStillIn, carriedTeam, companionInDisgrace, companionPor
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { Companion } from "@/app/lib/gbbo/types";
+import { TeamFormGuide } from "./TeamFormGuide";
 import { Button, Pill } from "./ui";
 
 function padLineup(bakerIds: string[], size: number): string[] {
@@ -191,6 +192,7 @@ export function TeamSideForm({
         {joker ? `Joker played in week ${joker.week}${joker.autoApplied ? " (auto)" : ""}` : "Joker still available in weeks 1–4"}
       </p>
       {message ? <p className="mt-2 text-sm font-bold text-tent">{message}</p> : null}
+      <TeamFormGuide league={league} bakerIds={filled} />
       </div>
     </section>
   );
