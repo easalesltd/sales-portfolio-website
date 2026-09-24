@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { BakerScoreMark } from "./BakerScoreMark";
 
 export function Card({
   children,
@@ -77,13 +78,7 @@ export function Points({ value }: { value: number }) {
 }
 
 export function ScoreBadge({ value, className = "" }: { value: number; className?: string }) {
-  const prefix = value > 0 ? "+" : "";
-  const tone = value > 0 ? "bg-tent text-flour" : value < 0 ? "bg-raspberry text-flour" : "bg-flour text-chocolate";
-  return (
-    <span className={`inline-flex min-w-[3.25rem] items-center justify-center rounded-full px-3 py-1 font-display text-lg leading-none ${tone} ${className}`}>
-      {prefix}{value}
-    </span>
-  );
+  return <BakerScoreMark value={value} className={className} />;
 }
 
 export function Pill({ children, tone = "cream" }: { children: ReactNode; tone?: "cream" | "tent" | "raspberry" | "butter" }) {

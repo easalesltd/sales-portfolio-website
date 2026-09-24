@@ -63,7 +63,7 @@ function BakerCard({
       </button>
       <div className="space-y-3 p-5">
         <div>
-          <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center justify-between gap-3">
             <h2 className="min-w-0 font-display text-3xl leading-none text-tent-dark">{baker.name}</h2>
             <ScoreBadge value={ledger.points} className="shrink-0" />
           </div>
