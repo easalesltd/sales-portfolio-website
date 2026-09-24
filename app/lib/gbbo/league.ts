@@ -360,6 +360,28 @@ export function applySlutDropEscalations(league: LeagueState, now = new Date()):
   return changed;
 }
 
+export function ensureDemocracyBaguette(league: LeagueState): boolean {
+  league.penalties = league.penalties ?? [];
+  const shuker = league.companions.find((companion) => companion.id === "comp_shuker");
+  if (!shuker) return false;
+  const already = league.penalties.some(
+    (penalty) => penalty.id === "pen_democracy_shuker" || (penalty.companionId === shuker.id && penalty.note.toLowerCase().includes("democracy")),
+  );
+  if (already) return false;
+  league.penalties.push({
+    id: "pen_democracy_shuker",
+    week: league.currentWeek || 2,
+    companionId: shuker.id,
+    bakerId: "",
+    kind: "beer_baguette",
+    deadline: "",
+    completed: false,
+    videoId: null,
+    note: "Shuker made a mockery of democracy, so a filmed Beer Baguette is owed. The video is the only proof that counts.",
+  });
+  return true;
+}
+
 export function applyTechnicalEscalations(league: LeagueState, now = new Date()): boolean {
   let changed = false;
   league.penalties = league.penalties ?? [];
@@ -518,7 +540,7 @@ export function publishEpisode(league: LeagueState, week: number): void {
   const last = lowestTechnicalBaker(row);
   const owners = last ? companionsOwningBaker(league, last, week) : [];
   league.penalties = league.penalties.filter(
-    (penalty) => penalty.week !== week || (penalty.kind === "beer_baguette" && penalty.note.includes("slut drop")),
+    (penalty) => penalty.week !== week || penalty.kind === "beer_baguette",
   );
   if (last) {
     for (const owner of owners) {

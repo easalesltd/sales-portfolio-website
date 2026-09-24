@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
 import { bakerIdForName, companionIdForName, gbboSlug } from "./identity";
-import { applySlutDropEscalations, applyTechnicalEscalations, resetVideolessSlutDrops } from "./league";
+import { applySlutDropEscalations, applyTechnicalEscalations, ensureDemocracyBaguette, resetVideolessSlutDrops } from "./league";
 import { SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
 import type { LeagueState } from "./types";
 
@@ -158,7 +158,8 @@ export async function readGbboLeague(): Promise<LeagueState> {
   const reset = resetVideolessSlutDrops(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
-  if (reset || slutEscalated || bakeEscalated) {
+  const democracy = ensureDemocracyBaguette(league);
+  if (reset || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;
@@ -169,6 +170,7 @@ export async function writeGbboLeague(league: LeagueState): Promise<void> {
   resetVideolessSlutDrops(next);
   applySlutDropEscalations(next);
   applyTechnicalEscalations(next);
+  ensureDemocracyBaguette(next);
   const redis = gameLeaderboardRedis();
   if (redis) {
     await redis.set(REDIS_KEY, next);
