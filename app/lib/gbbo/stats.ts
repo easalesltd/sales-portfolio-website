@@ -134,7 +134,7 @@ export function bakerScoreSummary(ledger: BakerLedger): string {
   if (ledger.handshakes) bits.push(`${ledger.handshakes} Hollywood handshake${ledger.handshakes === 1 ? "" : "s"}`);
   if (ledger.innuendos) bits.push(`${ledger.innuendos} Nigella innuendo${ledger.innuendos === 1 ? "" : "s"}`);
   if (ledger.technicalFirst) bits.push("won a technical");
-  if (ledger.technicalLast) bits.push(`came last in the technical ${ledger.technicalLast === 1 ? "once" : `${ledger.technicalLast} times`}`);
+  if (ledger.technicalLast) bits.push(`coming last in the technical ${ledger.technicalLast === 1 ? "once" : `${ledger.technicalLast} times`}`);
   if (ledger.drops) bits.push(`dropping ${ledger.drops === 1 ? "something" : `${ledger.drops} things`}`);
   if (ledger.cries) bits.push(`crying`);
   if (bits.length === 0) return `${ledger.name} is on ${ledger.points}.`;
