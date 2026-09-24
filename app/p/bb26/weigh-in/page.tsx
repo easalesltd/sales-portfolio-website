@@ -1,7 +1,7 @@
 "use client";
 
 import { FormBars, SignedBar } from "@/app/components/gbbo/StatBars";
-import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
+import { Card, Empty, Pill, ScoreBadge } from "@/app/components/gbbo/ui";
 import {
   bakerLedgers,
   chargeSheet,
@@ -106,9 +106,9 @@ export default function WeighInPage() {
         <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {companions.map((row) => (
             <div key={`${row.companionId}-form`} className="rounded-2xl border border-[#e7d3b4] bg-flour/60 p-4">
-              <div className="mb-3 flex items-end justify-between">
-                <p className="font-display text-2xl text-tent-dark">{row.name}</p>
-                <Points value={row.total} />
+              <div className="mb-3 flex items-start justify-between gap-3">
+                <p className="min-w-0 font-display text-2xl text-tent-dark">{row.name}</p>
+                <ScoreBadge value={row.total} className="shrink-0" />
               </div>
               <FormBars weeks={row.weeks} />
             </div>

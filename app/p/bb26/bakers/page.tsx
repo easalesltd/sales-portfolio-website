@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { BakerScoreSheet } from "@/app/components/gbbo/BakerScoreSheet";
-import { Card, Pill, Points } from "@/app/components/gbbo/ui";
+import { Card, Pill, ScoreBadge } from "@/app/components/gbbo/ui";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { bakerEliminatedIn, companionsOwningBaker } from "@/app/lib/gbbo/league";
 import { WEEK_THEMES } from "@/app/lib/gbbo/seed";
@@ -62,16 +62,16 @@ function BakerCard({
         )}
       </button>
       <div className="space-y-3 p-5">
-        <div className="flex flex-wrap items-end justify-between gap-2">
-          <div>
-            <h2 className="font-display text-3xl leading-none text-tent-dark">{baker.name}</h2>
-            <p className="mt-1 text-sm text-chocolate/70">
-              {baker.age ? `${baker.age}, ` : ""}
-              {baker.hometown}
-            </p>
+        <div>
+          <div className="flex items-start justify-between gap-3">
+            <h2 className="min-w-0 font-display text-3xl leading-none text-tent-dark">{baker.name}</h2>
+            <ScoreBadge value={ledger.points} className="shrink-0" />
           </div>
-          <div className="flex flex-col items-end gap-1">
-            <Points value={ledger.points} />
+          <p className="mt-1 text-sm text-chocolate/70">
+            {baker.age ? `${baker.age}, ` : ""}
+            {baker.hometown}
+          </p>
+          <div className="mt-2">
             <Pill tone={out ? "raspberry" : "tent"}>{out ? "Eliminated" : baker.job}</Pill>
           </div>
         </div>

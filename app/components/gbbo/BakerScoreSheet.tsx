@@ -1,6 +1,6 @@
 import { bakerCategoryBars, bakerScoreSummary, type BakerLedger } from "@/app/lib/gbbo/stats";
 import { FormBars, SignedBar } from "./StatBars";
-import { Pill, Points } from "./ui";
+import { Pill, ScoreBadge } from "./ui";
 
 export function BakerScoreSheet({ ledger, compact = false }: { ledger: BakerLedger; compact?: boolean }) {
   const categories = bakerCategoryBars(ledger);
@@ -9,9 +9,9 @@ export function BakerScoreSheet({ ledger, compact = false }: { ledger: BakerLedg
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <p className="max-w-xl text-sm leading-7 text-chocolate/80">{bakerScoreSummary(ledger)}</p>
-        <Points value={ledger.points} />
+      <div className="flex items-start justify-between gap-3">
+        <p className="min-w-0 text-sm leading-7 text-chocolate/80">{bakerScoreSummary(ledger)}</p>
+        <ScoreBadge value={ledger.points} className="shrink-0" />
       </div>
 
       {hasScores ? (

@@ -76,6 +76,16 @@ export function Points({ value }: { value: number }) {
   return <span className={`font-display text-2xl ${tone}`}>{prefix}{value}</span>;
 }
 
+export function ScoreBadge({ value, className = "" }: { value: number; className?: string }) {
+  const prefix = value > 0 ? "+" : "";
+  const tone = value > 0 ? "bg-tent text-flour" : value < 0 ? "bg-raspberry text-flour" : "bg-flour text-chocolate";
+  return (
+    <span className={`inline-flex min-w-[3.25rem] items-center justify-center rounded-full px-3 py-1 font-display text-lg leading-none ${tone} ${className}`}>
+      {prefix}{value}
+    </span>
+  );
+}
+
 export function Pill({ children, tone = "cream" }: { children: ReactNode; tone?: "cream" | "tent" | "raspberry" | "butter" }) {
   const tones = {
     cream: "bg-canvas text-chocolate",

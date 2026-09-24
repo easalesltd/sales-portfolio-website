@@ -1,7 +1,7 @@
 import { bakerLedger, bakerScoreSummary, type BakerLedger } from "@/app/lib/gbbo/stats";
 import type { LeagueState } from "@/app/lib/gbbo/types";
 import { FormBars, SignedBar } from "./StatBars";
-import { Pill, Points } from "./ui";
+import { Pill, Points, ScoreBadge } from "./ui";
 
 export function TeamFormGuide({
   league,
@@ -63,7 +63,7 @@ function BakerMiniForm({ ledger }: { ledger: BakerLedger }) {
             {ledger.eliminatedInWeek ? `Left week ${ledger.eliminatedInWeek}` : "Still baking"}
           </p>
         </div>
-        <Points value={ledger.points} />
+        <ScoreBadge value={ledger.points} className="shrink-0" />
       </div>
       <FormBars weeks={ledger.weeks} />
       <p className="mt-3 text-sm leading-6 text-chocolate/75">{bakerScoreSummary(ledger)}</p>
