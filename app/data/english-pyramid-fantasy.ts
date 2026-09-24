@@ -6689,7 +6689,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-22 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-24 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -7224,14 +7224,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-08-16T15:00Z',
     homeTeam: { name: 'Burnley', tla: 'BUR' },
     awayTeam: { name: 'West Ham United', tla: 'WHU' },
-  },
-  {
-    id: '2026-08-17-clm-ebb',
-    utcDate: '2026-08-17T18:45:00Z',
-    homeTeam: { name: 'Chelmsford City', tla: 'CLM' },
-    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-08-17-cdf-wxm',
@@ -12746,6 +12738,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-08T16:30Z',
     homeTeam: { name: 'Manchester United', tla: 'MUN' },
     awayTeam: { name: 'Aston Villa', tla: 'AVL' },
+  },
+  {
+    id: '2026-11-09-clm-ebb',
+    utcDate: '2026-11-09T19:45:00Z',
+    homeTeam: { name: 'Chelmsford City', tla: 'CLM' },
+    awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
   },
   {
     id: '2026-11-14-exe-cht',
