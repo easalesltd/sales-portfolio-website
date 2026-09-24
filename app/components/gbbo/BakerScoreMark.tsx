@@ -43,13 +43,13 @@ const PALETTES = {
     pearl: "#f7d6dc",
   },
   even: {
-    tin: "#8a7350",
-    pastry: "#e6c48a",
-    pastryDark: "#c4a066",
-    icing: "#fff6e8",
+    tin: "#7a5a32",
+    pastry: "#d9a24a",
+    pastryDark: "#b07a28",
+    icing: "#fff3d6",
     icingLight: "#fffaf2",
     text: "#3d2b1f",
-    pearl: "#e8a0bf",
+    pearl: "#c23b5a",
   },
 } as const;
 
@@ -65,7 +65,7 @@ export function BakerScoreMark({ value, className = "" }: { value: number; class
   return (
     <svg
       viewBox="0 0 88 94"
-      className={`h-[4.6rem] w-[4.35rem] shrink-0 ${className}`}
+      className={`h-[5.35rem] w-[5rem] shrink-0 ${className}`}
       role="img"
       aria-label={`${label} points`}
     >
