@@ -1,9 +1,11 @@
 "use client";
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
+import { PenaltyBoard } from "@/app/components/gbbo/PenaltyBoard";
 import { PunishmentPhoto } from "@/app/components/gbbo/PunishmentPhoto";
 import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
+import { TentRules } from "@/app/components/gbbo/TentRules";
 import { Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import {
   companionName,
@@ -20,6 +22,8 @@ export default function CrimewatchPage() {
 
   return (
     <div className="space-y-6">
+      <PenaltyBoard />
+
       <Card eyebrow="Have you seen this companion?" title="Village Crimewatch">
         <p className="max-w-2xl text-sm leading-7 text-chocolate/75">
           The official screening room. Slut drops, beer baguettes and technical bake photos
@@ -119,6 +123,8 @@ export default function CrimewatchPage() {
           </ul>
         </Card>
       ) : null}
+
+      <TentRules />
     </div>
   );
 }
