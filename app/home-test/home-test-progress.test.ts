@@ -1,0 +1,60 @@
+import { describe, expect, it } from '@jest/globals';
+import { firstSlideIndexForSector, sectorIndexForSlide } from './home-test-sectors';
+import {
+  activeSectorIndex,
+  clamp01,
+  progressForSector,
+  reelOffsetPercent,
+  sectorLocalProgress,
+} from './home-test-progress';
+
+describe('home-test scroll mapping', () => {
+  it('clamps progress into 0–1', () => {
+    expect(clamp01(-2)).toBe(0);
+    expect(clamp01(0.4)).toBe(0.4);
+    expect(clamp01(3)).toBe(1);
+  });
+
+  it('slides a four-panel reel from 0% to 75%', () => {
+    expect(reelOffsetPercent(0, 4)).toBe(0);
+    expect(reelOffsetPercent(1, 4)).toBe(75);
+    expect(reelOffsetPercent(0.5, 4)).toBe(37.5);
+  });
+
+  it('picks the nearest sector', () => {
+    expect(activeSectorIndex(0, 4)).toBe(0);
+    expect(activeSectorIndex(0.34, 4)).toBe(1);
+    expect(activeSectorIndex(1, 4)).toBe(3);
+  });
+
+  it('peaks local progress when that sector is centred', () => {
+    expect(sectorLocalProgress(0, 0, 4)).toBe(1);
+    expect(sectorLocalProgress(1, 3, 4)).toBe(1);
+    expect(sectorLocalProgress(0, 2, 4)).toBe(0);
+  });
+
+  it('maps a sector index back to reel progress', () => {
+    expect(progressForSector(0, 4)).toBe(0);
+    expect(progressForSector(3, 4)).toBe(1);
+    expect(progressForSector(1, 4)).toBeCloseTo(1 / 3);
+  });
+
+  it('finds the first slide of each chapter', () => {
+    expect(firstSlideIndexForSector(0)).toBe(0);
+    expect(firstSlideIndexForSector(1)).toBe(4);
+    expect(firstSlideIndexForSector(2)).toBe(10);
+    expect(firstSlideIndexForSector(3)).toBe(13);
+    expect(firstSlideIndexForSector(4)).toBe(16);
+    expect(firstSlideIndexForSector(5)).toBe(18);
+    expect(sectorIndexForSlide(0)).toBe(0);
+    expect(sectorIndexForSlide(3)).toBe(0);
+    expect(sectorIndexForSlide(4)).toBe(1);
+    expect(sectorIndexForSlide(9)).toBe(1);
+    expect(sectorIndexForSlide(10)).toBe(2);
+    expect(sectorIndexForSlide(12)).toBe(2);
+    expect(sectorIndexForSlide(13)).toBe(3);
+    expect(sectorIndexForSlide(15)).toBe(3);
+    expect(sectorIndexForSlide(16)).toBe(4);
+    expect(sectorIndexForSlide(18)).toBe(5);
+  });
+});

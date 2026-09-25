@@ -120,7 +120,7 @@ export default async function CountyPage({
           .join(', ')}.
       </p>
       <p className="mt-2">
-        <Link href="/#partner-brands" className="site-link">
+        <Link href="/" className="site-link">
           See partner brands
         </Link>
       </p>

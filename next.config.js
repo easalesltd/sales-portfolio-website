@@ -40,6 +40,11 @@ const nextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/home-test',
+        destination: '/',
+        permanent: false,
+      },
     ]
   },
   async headers() {
