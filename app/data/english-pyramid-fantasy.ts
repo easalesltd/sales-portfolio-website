@@ -6689,7 +6689,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-24 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-26 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -10118,12 +10118,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Barrow', tla: 'BRW' },
   },
   {
-    id: '2026-09-26-ste-shw',
-    utcDate: '2026-09-26T14:00Z',
-    homeTeam: { name: 'Stevenage', tla: 'STE' },
-    awayTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
-  },
-  {
     id: '2026-09-26-stp-pet',
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Stockport County', tla: 'STP' },
@@ -10244,18 +10238,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Carlisle United', tla: 'CAR' },
   },
   {
-    id: '2026-10-03-bar-yor',
-    utcDate: '2026-10-03T14:00Z',
-    homeTeam: { name: 'Barnet', tla: 'BAR' },
-    awayTeam: { name: 'York City', tla: 'YOR' },
-  },
-  {
-    id: '2026-10-03-blp-lei',
-    utcDate: '2026-10-03T14:00Z',
-    homeTeam: { name: 'Blackpool', tla: 'BLP' },
-    awayTeam: { name: 'Leicester City', tla: 'LEI' },
-  },
-  {
     id: '2026-10-03-bore-alt',
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Boreham Wood', tla: 'BORE' },
@@ -10356,12 +10338,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-  },
-  {
-    id: '2026-10-03-shw-cam',
-    utcDate: '2026-10-03T14:00Z',
-    homeTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
-    awayTeam: { name: 'Cambridge United', tla: 'CAM' },
   },
   {
     id: '2026-10-03-std-fyl',
@@ -11924,6 +11900,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
   },
   {
+    id: '2026-10-27-bar-yor',
+    utcDate: '2026-10-27T19:45Z',
+    homeTeam: { name: 'Barnet', tla: 'BAR' },
+    awayTeam: { name: 'York City', tla: 'YOR' },
+  },
+  {
     id: '2026-10-27-fyl-hpl',
     utcDate: '2026-10-27T19:45Z',
     homeTeam: { name: 'AFC Fylde', tla: 'FYL' },
@@ -11952,6 +11934,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-27T19:45Z',
     homeTeam: { name: 'Oxford United', tla: 'OXF' },
     awayTeam: { name: 'Stockport County', tla: 'STP' },
+  },
+  {
+    id: '2026-10-27-shw-cam',
+    utcDate: '2026-10-27T19:45Z',
+    homeTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
+    awayTeam: { name: 'Cambridge United', tla: 'CAM' },
   },
   {
     id: '2026-10-27-tam-scu',
@@ -13448,6 +13436,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Wealdstone', tla: 'WEA' },
   },
   {
+    id: '2026-11-24-blp-lei',
+    utcDate: '2026-11-24T19:45Z',
+    homeTeam: { name: 'Blackpool', tla: 'BLP' },
+    awayTeam: { name: 'Leicester City', tla: 'LEI' },
+  },
+  {
     id: '2026-11-24-bost-brw',
     utcDate: '2026-11-24T19:45Z',
     homeTeam: { name: 'Boston United', tla: 'BOST' },
@@ -13506,6 +13500,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-24T19:45Z',
     homeTeam: { name: 'Sheffield United', tla: 'SHU' },
     awayTeam: { name: 'Southampton', tla: 'SOU' },
+  },
+  {
+    id: '2026-11-24-ste-shw',
+    utcDate: '2026-11-24T19:45Z',
+    homeTeam: { name: 'Stevenage', tla: 'STE' },
+    awayTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
   },
   {
     id: '2026-11-24-wol-der',
