@@ -9894,6 +9894,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-26T11:30Z',
     homeTeam: { name: 'Crawley Town', tla: 'CRA' },
     awayTeam: { name: 'Barnet', tla: 'BAR' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-09-26-bed-her',
@@ -10062,18 +10064,24 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
     awayTeam: { name: 'Bromley', tla: 'BRO' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-09-26-mnf-ley',
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Mansfield Town', tla: 'MNF' },
     awayTeam: { name: 'Leyton Orient', tla: 'LEY' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-09-26-nco-blp',
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Notts County', tla: 'NCO' },
     awayTeam: { name: 'Blackpool', tla: 'BLP' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-09-26-nwp-gri',
@@ -10092,6 +10100,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Port Vale', tla: 'PVL' },
     awayTeam: { name: 'Northampton Town', tla: 'NHT' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-09-26-scu-hpl',
