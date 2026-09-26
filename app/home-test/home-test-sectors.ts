@@ -47,8 +47,8 @@ export const HOME_TEST_SECTORS: HomeTestSector[] = [
         ink: 'dark',
         href: '/companies/mint-publishing',
         hero: {
-          src: '/images/companies/mint-publishing/official/banner-1-1-26.jpg',
-          alt: 'Mint Publishing humorous greeting cards',
+          src: '/images/companies/mint-publishing/official/banner-1-1-25.jpg',
+          alt: 'Mint Publishing Katie Abey humorous greeting cards',
         },
       },
       {
@@ -83,8 +83,8 @@ export const HOME_TEST_SECTORS: HomeTestSector[] = [
         ink: 'dark',
         href: '/companies/mint-publishing',
         hero: {
-          src: '/images/companies/mint-publishing/official/banner-1-1-27.jpg',
-          alt: 'Mint Publishing giftware and stationery',
+          src: '/images/companies/mint-publishing/official/giftware-spread.jpg',
+          alt: 'Mint Publishing notebooks, bookmarks and giftware',
         },
       },
       {
@@ -149,8 +149,8 @@ export const HOME_TEST_SECTORS: HomeTestSector[] = [
         ink: 'dark',
         href: '/companies/mint-publishing',
         hero: {
-          src: '/images/companies/mint-publishing/official/gift-bags.jpg',
-          alt: 'Mint Publishing neon gift bags',
+          src: '/images/companies/mint-publishing/official/giftware-bags.jpg',
+          alt: 'Mint Publishing gift bags, notebooks and tags',
         },
       },
       {
