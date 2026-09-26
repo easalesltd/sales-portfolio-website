@@ -7,6 +7,7 @@ import {
   reelOffsetPercent,
   sectorLocalProgress,
   slideIndexAfterSwipe,
+  slideScrollTop,
 } from './home-test-progress';
 
 describe('home-test scroll mapping', () => {
@@ -65,5 +66,11 @@ describe('home-test scroll mapping', () => {
     expect(slideIndexAfterSwipe(4, 12, 24)).toBeNull();
     expect(slideIndexAfterSwipe(0, -80, 24)).toBeNull();
     expect(slideIndexAfterSwipe(23, 80, 24)).toBeNull();
+  });
+
+  it('maps each company to one equal step of the track', () => {
+    expect(slideScrollTop(100, 2300, 0, 24)).toBe(100);
+    expect(slideScrollTop(100, 2300, 23, 24)).toBe(2400);
+    expect(slideScrollTop(100, 2300, 1, 24)).toBeCloseTo(100 + 2300 / 23);
   });
 });

@@ -41,3 +41,12 @@ export function slideIndexAfterSwipe(
   if (next < 0 || next >= count) return null;
   return next;
 }
+
+export function slideScrollTop(
+  trackDocumentTop: number,
+  travel: number,
+  index: number,
+  count: number,
+): number {
+  return trackDocumentTop + progressForSector(index, count) * Math.max(0, travel);
+}

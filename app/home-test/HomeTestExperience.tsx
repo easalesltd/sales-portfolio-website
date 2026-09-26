@@ -3,14 +3,16 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { HOME_TEST_SECTORS, HOME_TEST_SLIDES } from './home-test-sectors';
 import {
-  HOME_TEST_SECTORS,
-  HOME_TEST_SLIDES,
-  firstSlideIndexForSector,
-  sectorIndexForSlide,
-} from './home-test-sectors';
-import { activeSectorIndex, clamp01, progressForSector } from './home-test-progress';
+  activeSectorIndex,
+  clamp01,
+  slideIndexAfterSwipe,
+  slideScrollTop,
+} from './home-test-progress';
 import './home-test.css';
+
+const SLIDE_LOCK_MS = 780;
 
 const RequestVisitForm = dynamic(() => import('../components/RequestVisitForm'));
 
@@ -52,69 +54,183 @@ export default function HomeTestExperience({ nonce: _nonce }: { nonce?: string }
 
 function Campaign() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef(0);
   const [active, setActive] = useState(0);
+  const [leaving, setLeaving] = useState<number | null>(null);
+  const [dir, setDir] = useState<'next' | 'prev'>('next');
   const slide = HOME_TEST_SLIDES[active];
-  const sectorIndex = sectorIndexForSlide(active);
+  const nearby = new Set(
+    [active - 1, active, active + 1, leaving].filter(
+      (index): index is number => index != null && index >= 0 && index < SLIDE_COUNT,
+    ),
+  );
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
-    let frame = 0;
-    const update = () => {
-      const total = track.offsetHeight - window.innerHeight;
-      const progress = total <= 0 ? 0 : clamp01(-track.getBoundingClientRect().top / total);
-      setActive(activeSectorIndex(progress, SLIDE_COUNT));
+    let locked = false;
+    let lockTimer = 0;
+    let leavingTimer = 0;
+    let wheelAcc = 0;
+    let wheelReset = 0;
+    let snapTimer = 0;
+    let touchY = 0;
+    let touchOn = false;
+
+    const headerBottom = () => document.querySelector('header')?.getBoundingClientRect().bottom ?? 0;
+
+    const inReel = () => {
+      const stage = track.querySelector('.home-test-stage');
+      if (!stage) return false;
+      const header = headerBottom();
+      const stageRect = stage.getBoundingClientRect();
+      const trackRect = track.getBoundingClientRect();
+      const visible = stageRect.bottom > header + 40 && stageRect.top < window.innerHeight;
+      const pastCloser = trackRect.bottom <= header + 24;
+      return visible && !pastCloser;
+    };
+
+    const topFor = (index: number) =>
+      slideScrollTop(
+        window.scrollY + track.getBoundingClientRect().top,
+        track.offsetHeight - window.innerHeight,
+        index,
+        SLIDE_COUNT,
+      );
+
+    const applySlide = (next: number) => {
+      const current = activeRef.current;
+      if (next === current) return;
+      setDir(next > current ? 'next' : 'prev');
+      setLeaving(current);
+      setActive(next);
+      activeRef.current = next;
+      locked = true;
+      window.scrollTo({ top: topFor(next), behavior: 'auto' });
+      window.clearTimeout(lockTimer);
+      window.clearTimeout(leavingTimer);
+      lockTimer = window.setTimeout(() => {
+        locked = false;
+      }, SLIDE_LOCK_MS);
+      leavingTimer = window.setTimeout(() => {
+        setLeaving(null);
+      }, SLIDE_LOCK_MS + 40);
+    };
+
+    const pageBy = (deltaY: number, threshold = 40) => {
+      if (locked) return false;
+      const next = slideIndexAfterSwipe(activeRef.current, deltaY, SLIDE_COUNT, threshold);
+      if (next === null) return false;
+      applySlide(next);
+      return true;
+    };
+
+    const canPage = (deltaY: number) =>
+      slideIndexAfterSwipe(activeRef.current, Math.sign(deltaY) * 80, SLIDE_COUNT) !== null;
+
+    const onWheel = (event: WheelEvent) => {
+      if (event.ctrlKey) return;
+      if (!inReel() && !locked) return;
+      if (!locked && !canPage(event.deltaY)) return;
+      event.preventDefault();
+      if (locked) return;
+      wheelAcc += event.deltaY;
+      window.clearTimeout(wheelReset);
+      wheelReset = window.setTimeout(() => {
+        wheelAcc = 0;
+      }, 140);
+      if (Math.abs(wheelAcc) < 48) return;
+      pageBy(wheelAcc, 1);
+      wheelAcc = 0;
+    };
+
+    const onTouchStart = (event: TouchEvent) => {
+      if (!inReel()) return;
+      touchOn = true;
+      touchY = event.touches[0]?.clientY ?? 0;
+    };
+
+    const onTouchMove = (event: TouchEvent) => {
+      if (!touchOn) return;
+      const currentY = event.touches[0]?.clientY ?? touchY;
+      const deltaY = touchY - currentY;
+      if (locked || canPage(deltaY)) event.preventDefault();
+    };
+
+    const onTouchEnd = (event: TouchEvent) => {
+      if (!touchOn) return;
+      touchOn = false;
+      const endY = event.changedTouches[0]?.clientY ?? touchY;
+      pageBy(touchY - endY);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!inReel()) return;
+      if (event.key === 'ArrowDown' || event.key === 'PageDown' || event.key === ' ') {
+        if (pageBy(80)) event.preventDefault();
+      } else if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+        if (pageBy(-80)) event.preventDefault();
+      }
+    };
+
+    const nearestFromScroll = () => {
+      const travel = track.offsetHeight - window.innerHeight;
+      const progress = travel <= 0 ? 0 : clamp01(-track.getBoundingClientRect().top / travel);
+      return activeSectorIndex(progress, SLIDE_COUNT);
     };
 
     const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        frame = 0;
-        update();
-      });
+      if (locked) return;
+      window.clearTimeout(snapTimer);
+      snapTimer = window.setTimeout(() => {
+        if (locked || !inReel()) return;
+        const nearest = nearestFromScroll();
+        if (nearest !== activeRef.current) applySlide(nearest);
+      }, 90);
     };
 
-    update();
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd, { passive: true });
+    window.addEventListener('keydown', onKeyDown);
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
     return () => {
+      window.removeEventListener('wheel', onWheel);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+      window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      if (frame) window.cancelAnimationFrame(frame);
+      window.clearTimeout(lockTimer);
+      window.clearTimeout(leavingTimer);
+      window.clearTimeout(wheelReset);
+      window.clearTimeout(snapTimer);
     };
   }, []);
 
-  const goToSector = (index: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const total = track.offsetHeight - window.innerHeight;
-    const start = window.scrollY + track.getBoundingClientRect().top;
-    window.scrollTo({
-      top: start + progressForSector(firstSlideIndexForSector(index), SLIDE_COUNT) * total,
-      behavior: 'smooth',
-    });
-  };
-
   return (
     <section ref={trackRef} className="home-test-track">
-      <div className="home-test-stage" data-ink={slide.ink}>
+      <div className="home-test-stage" data-ink={slide.ink} data-dir={dir} data-slide={slide.id}>
         {HOME_TEST_SLIDES.map((item, index) => (
           <article
             key={item.id}
-            className={`home-test-slide${index === active ? ' is-active' : ''}`}
+            className={`home-test-slide${index === active ? ' is-active' : ''}${
+              index === leaving ? ' is-leaving' : ''
+            }`}
             data-id={item.id}
             data-ink={item.ink}
             aria-hidden={index === active ? undefined : true}
           >
-            <div className="home-test-hero">
-              <img src={item.hero.src} alt={index === active ? item.hero.alt : ''} />
-            </div>
+            {nearby.has(index) ? (
+              <div className="home-test-hero">
+                <img src={item.hero.src} alt={index === active ? item.hero.alt : ''} />
+              </div>
+            ) : (
+              <div className="home-test-hero" />
+            )}
             <div className="home-test-veil" />
-            <div className="home-test-copy">
-              <p className="home-test-kicker">{item.sectorTitle}</p>
-              <Headline text={item.headline} sizeClass={statementSizeClass(item.headline)} />
-            </div>
             <div className="home-test-ticker" aria-hidden>
               <div className="home-test-ticker-track">
                 {[0, 1].map((copy) => (
@@ -131,20 +247,21 @@ function Campaign() {
             </p>
           </article>
         ))}
-        <div className="home-test-bar">
-          <nav className="home-test-nav" aria-label="Ranges">
-            {HOME_TEST_SECTORS.map((item, itemIndex) => (
-              <button
+        <div className="home-test-copy">
+          <p className="home-test-kicker" key={slide.sectorId}>
+            {slide.sectorTitle}
+          </p>
+          <div className="home-test-headlines">
+            {HOME_TEST_SLIDES.map((item, index) => (
+              <div
                 key={item.id}
-                type="button"
-                className={itemIndex === sectorIndex ? 'is-active' : undefined}
-                aria-current={itemIndex === sectorIndex ? 'true' : undefined}
-                onClick={() => goToSector(itemIndex)}
+                className={index === active ? 'is-active' : undefined}
+                aria-hidden={index === active ? undefined : true}
               >
-                {item.title}
-              </button>
+                <Headline text={item.headline} sizeClass={statementSizeClass(item.headline)} />
+              </div>
             ))}
-          </nav>
+          </div>
         </div>
       </div>
     </section>
