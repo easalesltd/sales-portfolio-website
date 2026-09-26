@@ -233,36 +233,6 @@ export const HOME_TEST_SECTORS: HomeTestSector[] = [
     headline: 'The Cambridge Confectionery Company.',
     slides: [
       {
-        id: 'range',
-        statement: 'The range.',
-        ink: 'dark',
-        href: '/companies/cambridge-confectionery-company',
-        hero: {
-          src: '/images/companies/the-cambridge-confectionery-company/official/range.png',
-          alt: 'Cambridge Confectionery chocolate range',
-        },
-      },
-      {
-        id: 'hearts',
-        statement: 'Hearts.',
-        ink: 'dark',
-        href: '/companies/cambridge-confectionery-company',
-        hero: {
-          src: '/images/companies/the-cambridge-confectionery-company/official/hearts.png',
-          alt: 'Cambridge Confectionery boxed chocolate hearts',
-        },
-      },
-      {
-        id: 'fingers',
-        statement: 'Fingers.',
-        ink: 'dark',
-        href: '/companies/cambridge-confectionery-company',
-        hero: {
-          src: '/images/companies/the-cambridge-confectionery-company/official/fingers.jpg',
-          alt: 'Cambridge Confectionery chocolate fingers selection box',
-        },
-      },
-      {
         id: 'buttons',
         statement: 'Buttons.',
         ink: 'dark',
@@ -270,26 +240,6 @@ export const HOME_TEST_SECTORS: HomeTestSector[] = [
         hero: {
           src: '/images/companies/the-cambridge-confectionery-company/official/buttons.png',
           alt: 'Cambridge Confectionery giant chocolate buttons',
-        },
-      },
-      {
-        id: 'domes',
-        statement: 'Domes.',
-        ink: 'dark',
-        href: '/companies/cambridge-confectionery-company',
-        hero: {
-          src: '/images/companies/the-cambridge-confectionery-company/official/domes.png',
-          alt: 'Cambridge Confectionery chocolate domes gift box',
-        },
-      },
-      {
-        id: 'gift-box',
-        statement: 'Gift box.',
-        ink: 'dark',
-        href: '/companies/cambridge-confectionery-company',
-        hero: {
-          src: '/images/companies/the-cambridge-confectionery-company/official/gift-box.png',
-          alt: 'Cambridge Confectionery gift box and chocolates',
         },
       },
     ],
