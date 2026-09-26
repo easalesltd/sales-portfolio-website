@@ -7,6 +7,8 @@ import { HOME_TEST_SECTORS, HOME_TEST_SLIDES } from './home-test-sectors';
 import {
   activeSectorIndex,
   clamp01,
+  isPastLastSlide,
+  shouldReleasePaging,
   slideIndexAfterSwipe,
   slideScrollTop,
 } from './home-test-progress';
@@ -80,7 +82,18 @@ function Campaign() {
 
     const headerBottom = () => document.querySelector('header')?.getBoundingClientRect().bottom ?? 0;
 
+    const topFor = (index: number) =>
+      slideScrollTop(
+        window.scrollY + track.getBoundingClientRect().top,
+        track.offsetHeight - window.innerHeight,
+        index,
+        SLIDE_COUNT,
+      );
+
+    const pastReel = () => isPastLastSlide(window.scrollY, topFor(SLIDE_COUNT - 1));
+
     const inReel = () => {
+      if (pastReel()) return false;
       const stage = track.querySelector('.home-test-stage');
       if (!stage) return false;
       const header = headerBottom();
@@ -91,13 +104,8 @@ function Campaign() {
       return visible && !pastCloser;
     };
 
-    const topFor = (index: number) =>
-      slideScrollTop(
-        window.scrollY + track.getBoundingClientRect().top,
-        track.offsetHeight - window.innerHeight,
-        index,
-        SLIDE_COUNT,
-      );
+    const leavingDown = (deltaY: number) =>
+      shouldReleasePaging(window.scrollY, topFor(SLIDE_COUNT - 1), activeRef.current, SLIDE_COUNT, deltaY);
 
     const applySlide = (next: number) => {
       const current = activeRef.current;
@@ -131,6 +139,7 @@ function Campaign() {
 
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey) return;
+      if (pastReel() || leavingDown(event.deltaY)) return;
       if (!inReel() && !locked) return;
       if (!locked && !canPage(event.deltaY)) return;
       event.preventDefault();
@@ -155,6 +164,7 @@ function Campaign() {
       if (!touchOn) return;
       const currentY = event.touches[0]?.clientY ?? touchY;
       const deltaY = touchY - currentY;
+      if (leavingDown(deltaY) || pastReel()) return;
       if (locked || canPage(deltaY)) event.preventDefault();
     };
 
@@ -162,7 +172,9 @@ function Campaign() {
       if (!touchOn) return;
       touchOn = false;
       const endY = event.changedTouches[0]?.clientY ?? touchY;
-      pageBy(touchY - endY);
+      const deltaY = touchY - endY;
+      if (leavingDown(deltaY) || pastReel()) return;
+      pageBy(deltaY);
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -184,7 +196,7 @@ function Campaign() {
       if (locked) return;
       window.clearTimeout(snapTimer);
       snapTimer = window.setTimeout(() => {
-        if (locked || !inReel()) return;
+        if (locked || pastReel() || !inReel()) return;
         const nearest = nearestFromScroll();
         if (nearest !== activeRef.current) applySlide(nearest);
       }, 90);
