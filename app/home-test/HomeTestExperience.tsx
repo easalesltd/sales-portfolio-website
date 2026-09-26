@@ -7,10 +7,11 @@ import { HOME_TEST_SECTORS, HOME_TEST_SLIDES } from './home-test-sectors';
 import {
   activeSectorIndex,
   clamp01,
-  isPastLastSlide,
+  lastSlideHoldPx,
   shouldReleasePaging,
   slideIndexAfterSwipe,
   slideScrollTop,
+  slideTravel,
 } from './home-test-progress';
 import './home-test.css';
 
@@ -81,16 +82,15 @@ function Campaign() {
     let touchOn = false;
 
     const headerBottom = () => document.querySelector('header')?.getBoundingClientRect().bottom ?? 0;
+    const holdPx = () => lastSlideHoldPx(window.innerHeight);
+    const travel = () => slideTravel(track.offsetHeight, window.innerHeight, holdPx());
 
     const topFor = (index: number) =>
-      slideScrollTop(
-        window.scrollY + track.getBoundingClientRect().top,
-        track.offsetHeight - window.innerHeight,
-        index,
-        SLIDE_COUNT,
-      );
+      slideScrollTop(window.scrollY + track.getBoundingClientRect().top, travel(), index, SLIDE_COUNT);
 
-    const pastReel = () => isPastLastSlide(window.scrollY, topFor(SLIDE_COUNT - 1));
+    const pastReel = () => shouldReleasePaging(window.scrollY, topFor(SLIDE_COUNT - 1), holdPx());
+    const holdingLast = (deltaY: number) =>
+      deltaY > 0 && activeRef.current >= SLIDE_COUNT - 1 && !pastReel();
 
     const inReel = () => {
       if (pastReel()) return false;
@@ -103,9 +103,6 @@ function Campaign() {
       const pastCloser = trackRect.bottom <= header + 24;
       return visible && !pastCloser;
     };
-
-    const leavingDown = (deltaY: number) =>
-      shouldReleasePaging(window.scrollY, topFor(SLIDE_COUNT - 1), activeRef.current, SLIDE_COUNT, deltaY);
 
     const applySlide = (next: number) => {
       const current = activeRef.current;
@@ -126,12 +123,27 @@ function Campaign() {
       }, SLIDE_LOCK_MS + 40);
     };
 
+    const releaseToCloser = () => {
+      locked = true;
+      window.scrollTo({ top: topFor(SLIDE_COUNT - 1) + holdPx(), behavior: 'auto' });
+      window.clearTimeout(lockTimer);
+      lockTimer = window.setTimeout(() => {
+        locked = false;
+      }, SLIDE_LOCK_MS);
+    };
+
     const pageBy = (deltaY: number, threshold = 40) => {
       if (locked) return false;
       const next = slideIndexAfterSwipe(activeRef.current, deltaY, SLIDE_COUNT, threshold);
-      if (next === null) return false;
-      applySlide(next);
-      return true;
+      if (next !== null) {
+        applySlide(next);
+        return true;
+      }
+      if (holdingLast(deltaY)) {
+        releaseToCloser();
+        return true;
+      }
+      return false;
     };
 
     const canPage = (deltaY: number) =>
@@ -139,9 +151,9 @@ function Campaign() {
 
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey) return;
-      if (pastReel() || leavingDown(event.deltaY)) return;
+      if (pastReel()) return;
       if (!inReel() && !locked) return;
-      if (!locked && !canPage(event.deltaY)) return;
+      if (!locked && !canPage(event.deltaY) && !holdingLast(event.deltaY)) return;
       event.preventDefault();
       if (locked) return;
       wheelAcc += event.deltaY;
@@ -164,17 +176,16 @@ function Campaign() {
       if (!touchOn) return;
       const currentY = event.touches[0]?.clientY ?? touchY;
       const deltaY = touchY - currentY;
-      if (leavingDown(deltaY) || pastReel()) return;
-      if (locked || canPage(deltaY)) event.preventDefault();
+      if (pastReel()) return;
+      if (locked || canPage(deltaY) || holdingLast(deltaY)) event.preventDefault();
     };
 
     const onTouchEnd = (event: TouchEvent) => {
       if (!touchOn) return;
       touchOn = false;
+      if (pastReel()) return;
       const endY = event.changedTouches[0]?.clientY ?? touchY;
-      const deltaY = touchY - endY;
-      if (leavingDown(deltaY) || pastReel()) return;
-      pageBy(deltaY);
+      pageBy(touchY - endY);
     };
 
     const onKeyDown = (event: KeyboardEvent) => {
@@ -187,8 +198,8 @@ function Campaign() {
     };
 
     const nearestFromScroll = () => {
-      const travel = track.offsetHeight - window.innerHeight;
-      const progress = travel <= 0 ? 0 : clamp01(-track.getBoundingClientRect().top / travel);
+      const span = travel();
+      const progress = span <= 0 ? 0 : clamp01(-track.getBoundingClientRect().top / span);
       return activeSectorIndex(progress, SLIDE_COUNT);
     };
 
@@ -223,7 +234,7 @@ function Campaign() {
   }, []);
 
   return (
-    <section ref={trackRef} className="home-test-track" style={{ height: `${SLIDE_COUNT * 100}vh` }}>
+    <section ref={trackRef} className="home-test-track" style={{ height: `${(SLIDE_COUNT + 1) * 100}vh` }}>
       <div className="home-test-stage" data-ink={slide.ink} data-dir={dir} data-slide={slide.id}>
         {HOME_TEST_SLIDES.map((item, index) => (
           <article
@@ -243,22 +254,22 @@ function Campaign() {
               <div className="home-test-hero" />
             )}
             <div className="home-test-veil" />
-            <div className="home-test-ticker" aria-hidden>
-              <div className="home-test-ticker-track">
-                {[0, 1].map((copy) => (
-                  <span key={copy}>
-                    {HOME_TEST_SECTORS.find((entry) => entry.id === item.sectorId)
-                      ?.slides.map((entry) => entry.statement.replace(/\.$/, ''))
-                      .join('  ·  ')}
-                  </span>
-                ))}
-              </div>
-            </div>
             <p className="home-test-brands">
               <Link href={item.href}>{item.headline.replace(/\.$/, '')}</Link>
             </p>
           </article>
         ))}
+        <div className="home-test-ticker" aria-hidden>
+          <div className="home-test-ticker-track">
+            {[0, 1].map((copy) => (
+              <span key={`${slide.sectorId}-${copy}`}>
+                {HOME_TEST_SECTORS.find((entry) => entry.id === slide.sectorId)
+                  ?.slides.map((entry) => entry.statement.replace(/\.$/, ''))
+                  .join('  ·  ')}
+              </span>
+            ))}
+          </div>
+        </div>
         <div className="home-test-copy">
           <p className="home-test-kicker" key={slide.sectorId}>
             {slide.sectorTitle}
@@ -318,11 +329,6 @@ function Closer({ onRequestVisit }: { onRequestVisit: () => void }) {
           </button>
           <Link href="/about">About Dave</Link>
         </div>
-        <p className="home-test-close-note">
-          Dave Langdon is the sales agent, not a shop, not a publisher. He calls on independent
-          retailers across East Anglia with greeting cards, gifts, candles and confectionery,
-          wholesale only.
-        </p>
       </div>
     </section>
   );

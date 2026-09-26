@@ -51,19 +51,21 @@ export function slideScrollTop(
   return trackDocumentTop + progressForSector(index, count) * Math.max(0, travel);
 }
 
-/** Past the last photo’s rest stop — the closer should stay in view. */
+/** Extra viewport after the last company so Cambridge can settle before the closer. */
+export function lastSlideHoldPx(viewportHeight: number): number {
+  return Math.max(0, viewportHeight);
+}
+
+export function slideTravel(trackHeight: number, viewportHeight: number, holdPx: number): number {
+  return Math.max(0, trackHeight - viewportHeight - holdPx);
+}
+
+/** Past most of the last-photo hold — the closer should stay in view. */
 export function isPastLastSlide(scrollY: number, lastSlideTop: number, slop = 48): boolean {
   return scrollY > lastSlideTop + slop;
 }
 
-/** Downward on the last slide, or already past it: do not recapture the reel. */
-export function shouldReleasePaging(
-  scrollY: number,
-  lastSlideTop: number,
-  index: number,
-  count: number,
-  deltaY: number,
-): boolean {
-  if (isPastLastSlide(scrollY, lastSlideTop)) return true;
-  return deltaY > 0 && count > 0 && index >= count - 1;
+/** Only release after Cambridge has had its hold, not on the landing swipe. */
+export function shouldReleasePaging(scrollY: number, lastSlideTop: number, holdPx: number): boolean {
+  return isPastLastSlide(scrollY, lastSlideTop, Math.max(48, holdPx * 0.85));
 }

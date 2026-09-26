@@ -6,12 +6,14 @@ import {
   activeSectorIndex,
   clamp01,
   isPastLastSlide,
+  lastSlideHoldPx,
   progressForSector,
   reelOffsetPercent,
   sectorLocalProgress,
   shouldReleasePaging,
   slideIndexAfterSwipe,
   slideScrollTop,
+  slideTravel,
 } from './home-test-progress';
 
 describe('home-test scroll mapping', () => {
@@ -89,14 +91,13 @@ describe('home-test scroll mapping', () => {
     expect(slideScrollTop(100, 2300, 1, 24)).toBeCloseTo(100 + 2300 / 23);
   });
 
-  it('lets the closer stay visible after the last photo', () => {
-    const lastTop = slideScrollTop(100, 1800, 18, 19);
+  it('holds the last company before the closer can take over', () => {
+    expect(lastSlideHoldPx(800)).toBe(800);
+    expect(slideTravel(16000, 800, 800)).toBe(14400);
+    const lastTop = slideScrollTop(100, 14400, 18, 19);
     expect(isPastLastSlide(lastTop, lastTop)).toBe(false);
-    expect(isPastLastSlide(lastTop + 48, lastTop)).toBe(false);
-    expect(isPastLastSlide(lastTop + 49, lastTop)).toBe(true);
-    expect(shouldReleasePaging(lastTop, lastTop, 18, 19, 80)).toBe(true);
-    expect(shouldReleasePaging(lastTop, lastTop, 18, 19, -80)).toBe(false);
-    expect(shouldReleasePaging(lastTop + 80, lastTop, 18, 19, -80)).toBe(true);
-    expect(shouldReleasePaging(lastTop, lastTop, 12, 19, 80)).toBe(false);
+    expect(shouldReleasePaging(lastTop, lastTop, 800)).toBe(false);
+    expect(shouldReleasePaging(lastTop + 679, lastTop, 800)).toBe(false);
+    expect(shouldReleasePaging(lastTop + 681, lastTop, 800)).toBe(true);
   });
 });

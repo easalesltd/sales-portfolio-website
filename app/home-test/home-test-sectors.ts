@@ -83,7 +83,7 @@ export const HOME_TEST_SECTORS: HomeTestSector[] = [
         ink: 'dark',
         href: '/companies/mint-publishing',
         hero: {
-          src: '/images/companies/mint-publishing/official/giftware-spread.jpg',
+          src: '/images/companies/mint-publishing/official/giftware-bags.jpg',
           alt: 'Mint Publishing notebooks, bookmarks and giftware',
         },
       },
