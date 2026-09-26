@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
 import ImageModal from "../components/ImageModal";
 import VideoBackground from "../components/VideoBackground";
 import FadeInOnScroll from "../components/FadeInOnScroll";
@@ -178,32 +177,11 @@ export default function AboutPageClient() {
                     I proudly serve retailers across East Anglia, including:
                   </p>
                   <ul className="text-lg text-gray-700 list-disc list-inside mb-4">
-                    <li>
-                      <Link href="/suffolk" className="site-link">
-                        Suffolk
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/norfolk" className="site-link">
-                        Norfolk
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/essex" className="site-link">
-                        Essex
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/cambridgeshire" className="site-link">
-                        Cambridgeshire
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/hertfordshire" className="site-link">
-                        Hertfordshire
-                      </Link>{' '}
-                      (I do a pretty terrible job in Hertfordshire)
-                    </li>
+                    <li>Suffolk</li>
+                    <li>Norfolk</li>
+                    <li>Essex</li>
+                    <li>Cambridgeshire</li>
+                    <li>Hertfordshire (I do a pretty terrible job in Hertfordshire)</li>
                   </ul>
                 </div>
               </FadeInOnScroll>
