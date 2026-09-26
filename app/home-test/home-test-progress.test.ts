@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { describe, expect, it } from '@jest/globals';
-import { firstSlideIndexForSector, sectorIndexForSlide } from './home-test-sectors';
+import { firstSlideIndexForSector, HOME_TEST_SECTORS, HOME_TEST_SLIDES, sectorIndexForSlide } from './home-test-sectors';
 import {
   activeSectorIndex,
   clamp01,
@@ -60,6 +60,10 @@ describe('home-test scroll mapping', () => {
     expect(sectorIndexForSlide(15)).toBe(3);
     expect(sectorIndexForSlide(16)).toBe(4);
     expect(sectorIndexForSlide(18)).toBe(5);
+    expect(HOME_TEST_SLIDES).toHaveLength(19);
+    const confectionery = HOME_TEST_SECTORS.find((sector) => sector.id === 'confectionery');
+    expect(confectionery?.slides.map((slide) => slide.id)).toEqual(['buttons']);
+    expect(confectionery?.slides[0]?.hero.src).toContain('buttons.png');
   });
 
   it('advances only one slide per swipe and releases at the ends', () => {

@@ -211,7 +211,7 @@ function Campaign() {
   }, []);
 
   return (
-    <section ref={trackRef} className="home-test-track">
+    <section ref={trackRef} className="home-test-track" style={{ height: `${SLIDE_COUNT * 100}vh` }}>
       <div className="home-test-stage" data-ink={slide.ink} data-dir={dir} data-slide={slide.id}>
         {HOME_TEST_SLIDES.map((item, index) => (
           <article
