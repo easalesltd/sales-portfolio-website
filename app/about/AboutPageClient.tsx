@@ -201,7 +201,8 @@ export default function AboutPageClient() {
                     <li>
                       <Link href="/hertfordshire" className="site-link">
                         Hertfordshire
-                      </Link>
+                      </Link>{' '}
+                      (I do a pretty terrible job in Hertfordshire)
                     </li>
                   </ul>
                 </div>
