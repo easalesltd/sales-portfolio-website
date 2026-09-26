@@ -10817,6 +10817,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-10-03-std-fyl',
