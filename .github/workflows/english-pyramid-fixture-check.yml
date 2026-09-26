@@ -56,8 +56,12 @@ jobs:
         if: steps.check.outputs.changed == 'true' && (github.event_name == 'schedule' || inputs.auto_refresh == true)
         run: npm run english-pyramid:fetch-fixtures -- --write
 
+      - name: Mark live postponements
+        if: github.event_name == 'schedule' || inputs.auto_refresh == true
+        run: npm run english-pyramid:reconcile-schedule -- --write
+
       - name: Commit fixture refresh
-        if: steps.check.outputs.changed == 'true' && (github.event_name == 'schedule' || inputs.auto_refresh == true)
+        if: github.event_name == 'schedule' || inputs.auto_refresh == true
         run: |
           if git diff --quiet; then
             echo "No file changes after refresh."

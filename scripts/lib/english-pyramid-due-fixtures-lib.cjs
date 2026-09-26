@@ -319,12 +319,14 @@ function getMatchdaySweepDue(source, dueFixtures, now) {
     homeTla: fixture.homeTeam.tla,
     awayName: fixture.awayTeam.name,
     awayTla: fixture.awayTeam.tla,
+    postponed: fixture.postponed === true,
   }));
   const recordedMatchIds = parseRecordedMatchIds(source);
   const sweepstakeTeamCodes = parseSweepstakeTeamCodes(source);
 
   const unrecordedKickoffsToday = fixtures.filter((fixture) => {
     if (recordedMatchIds.has(fixture.id)) return false;
+    if (fixture.postponed) return false;
     return londonKickoffDate(fixture.utcDate) === london.calendarDate;
   });
 
@@ -352,6 +354,7 @@ function getMatchdaySweepDue(source, dueFixtures, now) {
     matchdaySweepDue,
     matchdaySweepMessage,
     unrecordedKickoffsToday,
+    scheduleDue: unrecordedKickoffsToday.length > 0,
   };
 }
 

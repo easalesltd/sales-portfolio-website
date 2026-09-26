@@ -256,6 +256,24 @@ function fixtureId(utcDate, homeCode, awayCode) {
   return `${dateKey}-${homeCode.toLowerCase()}-${awayCode.toLowerCase()}`;
 }
 
+function espnEventStatusBlob(event) {
+  const type = event?.status?.type ?? {};
+  return `${type.shortDetail ?? ''} ${type.description ?? ''} ${type.name ?? ''} ${type.state ?? ''}`;
+}
+
+function isEspnEventLiveOrFinal(event) {
+  if (isEspnEventPostponed(event)) return false;
+  const state = String(event?.status?.type?.state ?? '').toLowerCase();
+  const name = String(event?.status?.type?.name ?? '').toLowerCase();
+  if (state === 'in' || state === 'post') return true;
+  return /\b(final|in progress|halftime|half[-\s]?time|full time)\b/i.test(name);
+}
+
+/** ESPN season calendar still lists postponed games; read the status or we keep a fake KO. */
+function isEspnEventPostponed(event) {
+  return /postpon|cancel/i.test(espnEventStatusBlob(event));
+}
+
 function normalizeFixture(fixture) {
   return {
     id: fixture.id,
@@ -482,6 +500,7 @@ async function fetchLeagueFixtures(slug) {
           utcDate: event.date,
           homeTeam: { name: homeTeam.name, tla: homeTeam.code },
           awayTeam: { name: awayTeam.name, tla: awayTeam.code },
+          postponed: isEspnEventPostponed(event),
         }),
         involvedOurCodes: [
           homeTeam.isOurs ? homeTeam.code : null,
@@ -875,6 +894,8 @@ module.exports = {
   fetchAllLeagueFixtures,
   fetchLeagueFixtures,
   findNearestDirectedPair,
+  isEspnEventLiveOrFinal,
+  isEspnEventPostponed,
   formatFixtureBlock,
   isOnOrAfterNlReleaseDate,
   londonCalendarDate,

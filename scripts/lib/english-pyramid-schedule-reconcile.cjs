@@ -23,7 +23,7 @@ const {
 } = require('./english-pyramid-fotmob.cjs');
 
 const DEFAULT_PAST_DAYS = 3;
-const DEFAULT_FUTURE_DAYS = 4;
+const DEFAULT_FUTURE_DAYS = 21;
 const FOTMOB_ORIGIN = 'https://www.fotmob.com';
 
 function addUtcDays(isoDay, days) {

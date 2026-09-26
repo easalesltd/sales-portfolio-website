@@ -306,6 +306,11 @@ function Closer({ onRequestVisit }: { onRequestVisit: () => void }) {
           </button>
           <Link href="/about">About Dave</Link>
         </div>
+        <p className="home-test-close-note">
+          Dave Langdon is the sales agent, not a shop, not a publisher. He calls on independent
+          retailers across East Anglia with greeting cards, gifts, candles and confectionery,
+          wholesale only.
+        </p>
       </div>
     </section>
   );

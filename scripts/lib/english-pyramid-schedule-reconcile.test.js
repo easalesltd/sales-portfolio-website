@@ -11,9 +11,13 @@ const {
   formatFixtureBlock,
   mergeRemoteFixturesWithLocal,
 } = require('./english-pyramid-fixture-lib.cjs');
+const { isEspnEventPostponed } = require('./english-pyramid-fixture-lib.cjs');
 const {
   applySchedulePatches,
+  patchesFromEspnEvents,
   patchesFromFotMobDay,
+  windowFixtures,
+  DEFAULT_FUTURE_DAYS,
 } = require('./english-pyramid-schedule-reconcile.cjs');
 
 describe('FWP postponed and finished-score cells', () => {
@@ -374,5 +378,52 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     ]);
     expect(updated).not.toContain('postponed: true');
     expect(updated).not.toContain('FotMob marked postponed');
+  });
+});
+
+describe('ESPN postponement detection', () => {
+  const crawley = {
+    id: '2026-09-26-cra-bar',
+    utcDate: '2026-09-26T11:30Z',
+    homeTeam: { name: 'Crawley Town', tla: 'CRA' },
+    awayTeam: { name: 'Barnet', tla: 'BAR' },
+  };
+
+  it('reads postponed from ESPN calendar status so the daily fetch can mark it', () => {
+    expect(
+      isEspnEventPostponed({
+        status: { type: { name: 'STATUS_POSTPONED', description: 'Postponed', state: 'post' } },
+      }),
+    ).toBe(true);
+    expect(
+      isEspnEventPostponed({
+        status: { type: { name: 'STATUS_POSTPONED', description: 'Postponed', state: 'pre' } },
+      }),
+    ).toBe(true);
+    expect(
+      isEspnEventPostponed({
+        status: { type: { name: 'STATUS_SCHEDULED', description: 'Scheduled', state: 'pre' } },
+      }),
+    ).toBe(false);
+  });
+
+  it('looks three weeks ahead so a mid-month announcement still lands in the live window', () => {
+    expect(DEFAULT_FUTURE_DAYS).toBe(21);
+    const now = new Date('2026-09-14T12:00:00Z');
+    expect(windowFixtures([crawley], new Set(), now, 3, DEFAULT_FUTURE_DAYS)).toEqual([crawley]);
+  });
+
+  it('marks a scoreboard event postponed', () => {
+    const patches = patchesFromEspnEvents([crawley], [
+      {
+        homeTla: 'CRA',
+        awayTla: 'BAR',
+        postponed: true,
+        utcDate: '2026-09-26T11:30Z',
+      },
+    ]);
+    expect(patches).toEqual([
+      expect.objectContaining({ type: 'postpone', id: '2026-09-26-cra-bar' }),
+    ]);
   });
 });

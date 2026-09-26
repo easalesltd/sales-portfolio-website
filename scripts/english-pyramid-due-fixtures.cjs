@@ -23,24 +23,28 @@ async function main() {
   const source = readDataFileSource();
   const dueOptions = getDueFixtureOptionsFromEnv();
   const dueFixtures = await getDueFixtures(source, dueOptions);
-  const { london, ukWindow, matchdaySweepDue, matchdaySweepMessage } = getMatchdaySweepDue(
-    source,
-    dueFixtures,
-    dueOptions.now,
-  );
+  const { london, ukWindow, matchdaySweepDue, matchdaySweepMessage, scheduleDue } =
+    getMatchdaySweepDue(source, dueFixtures, dueOptions.now);
 
   const hasDueFixtures = dueFixtures.length > 0;
-  const isDue = hasDueFixtures || matchdaySweepDue;
+  const isDue = hasDueFixtures || matchdaySweepDue || scheduleDue;
   const needsFollowup = dueFixtures.some(dueFixtureNeedsFollowUp) || matchdaySweepDue;
 
   const fixtureList = hasDueFixtures
     ? await formatDueFixturesWithEspnHints(dueFixtures, source)
-    : matchdaySweepMessage;
+    : matchdaySweepDue
+      ? matchdaySweepMessage
+      : scheduleDue
+        ? `Open fixtures still listed today (${london.calendarDate}); reconcile postponements before treating them as live.`
+        : '';
 
   setOutput('due', isDue ? 'true' : 'false');
   setOutput('needs_followup', needsFollowup ? 'true' : 'false');
   setOutput('forced', forceAgent ? 'true' : 'false');
-  setOutput('scan_mode', hasDueFixtures ? 'fixtures' : matchdaySweepDue ? 'matchday' : 'none');
+  setOutput(
+    'scan_mode',
+    hasDueFixtures ? 'fixtures' : matchdaySweepDue ? 'matchday' : scheduleDue ? 'schedule' : 'none',
+  );
   setOutput('fixtures', fixtureList);
   setOutput('update_delay_minutes', `${dueOptions.updateDelayMinutes}`);
   setOutput('due_lead_minutes', `${dueOptions.dueLeadMinutes}`);
@@ -56,6 +60,9 @@ async function main() {
   } else if (matchdaySweepDue) {
     console.log('English pyramid matchday sweep is due:');
     console.log(matchdaySweepMessage);
+  } else if (scheduleDue) {
+    console.log('English pyramid schedule reconcile is due:');
+    console.log(fixtureList);
   } else if (forceAgent) {
     console.log('English pyramid automation forced by ENGLISH_PYRAMID_FORCE_AGENT=1.');
   } else {

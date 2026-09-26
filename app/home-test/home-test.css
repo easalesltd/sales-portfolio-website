@@ -388,6 +388,14 @@
   margin-top: 1.75rem;
 }
 
+.home-test-close p.home-test-close-note {
+  margin-top: 2.25rem;
+  max-width: 36rem;
+  color: rgba(244, 241, 234, 0.58);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .home-test-actions button,
 .home-test-actions a {
   display: inline-flex;
