@@ -157,11 +157,19 @@ export default function TemporaryRepCoverPage() {
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
               Coverage Areas
             </h2>
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 sm:p-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                 {coverageAreas.map((area, index) => (
-                  <div key={index} className="bg-white rounded-lg p-4 text-center shadow-sm">
-                    <h3 className="font-semibold text-gray-900">{area}</h3>
+                  <div
+                    key={index}
+                    className="min-w-0 bg-white rounded-lg px-2 py-4 text-center shadow-sm [container-type:inline-size] sm:px-3 lg:px-4"
+                  >
+                    <h3
+                      className="whitespace-nowrap font-semibold leading-tight text-gray-900 text-sm"
+                      style={{ fontSize: 'clamp(0.75rem, 12cqi, 1rem)' }}
+                    >
+                      {area}
+                    </h3>
                   </div>
                 ))}
               </div>
