@@ -361,23 +361,23 @@
 }
 
 .home-test-close {
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - var(--home-test-header));
   background: #111;
   color: #f4f1ea;
-  padding: 5rem 1.25rem 6rem;
+  padding: 4.5rem 1.25rem 5.5rem;
 }
 
 .home-test-close-inner {
-  max-width: 40rem;
+  max-width: 42rem;
 }
 
-.home-test-close h2 {
+.home-test-close .home-test-statement {
   margin: 0;
-  font-family: var(--font-home-test-display), sans-serif;
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.92;
-  text-transform: uppercase;
+  max-width: 16ch;
+  color: #f4f1ea;
+  text-align: left;
 }
 
 .home-test-close p {
@@ -388,7 +388,7 @@
 }
 
 .home-test-close p.home-test-close-sub {
-  margin: 0.7rem 0 0;
+  margin: 0.75rem 0 0;
   color: rgba(244, 241, 234, 0.92);
   font-family: var(--font-home-test-display), sans-serif;
   font-size: clamp(1.35rem, 3.2vw, 2rem);
@@ -396,6 +396,59 @@
   letter-spacing: -0.04em;
   line-height: 0.95;
   text-transform: uppercase;
+}
+
+.home-test-close .home-test-word,
+.home-test-close-sub,
+.home-test-close-copy,
+.home-test-actions {
+  opacity: 0;
+  transform: translate3d(0, 0.7rem, 0);
+}
+
+.home-test-close.is-in .home-test-word,
+.home-test-close.is-in .home-test-close-sub,
+.home-test-close.is-in .home-test-close-copy,
+.home-test-close.is-in .home-test-actions {
+  opacity: 1;
+  transform: none;
+  animation: home-test-word 0.82s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.home-test-close.is-in .home-test-word:nth-child(1) {
+  animation-delay: 0.08s;
+}
+
+.home-test-close.is-in .home-test-word:nth-child(2) {
+  animation-delay: 0.13s;
+}
+
+.home-test-close.is-in .home-test-word:nth-child(3) {
+  animation-delay: 0.18s;
+}
+
+.home-test-close.is-in .home-test-word:nth-child(4) {
+  animation-delay: 0.23s;
+}
+
+.home-test-close.is-in .home-test-word:nth-child(5) {
+  animation-delay: 0.28s;
+}
+
+.home-test-close.is-in .home-test-word:nth-child(6) {
+  animation-delay: 0.33s;
+}
+
+.home-test-close.is-in .home-test-close-sub {
+  animation-delay: 0.38s;
+}
+
+.home-test-close.is-in .home-test-close-copy {
+  animation-delay: 0.48s;
+}
+
+.home-test-close.is-in .home-test-actions {
+  animation-delay: 0.58s;
 }
 
 .home-test-actions {
@@ -438,6 +491,15 @@
   }
 
   .home-test-ticker-track {
+    animation: none;
+  }
+
+  .home-test-close .home-test-word,
+  .home-test-close-sub,
+  .home-test-close-copy,
+  .home-test-actions {
+    opacity: 1;
+    transform: none;
     animation: none;
   }
 }

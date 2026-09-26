@@ -7,6 +7,8 @@ import { HOME_TEST_SECTORS, HOME_TEST_SLIDES } from './home-test-sectors';
 import {
   activeSectorIndex,
   clamp01,
+  closerPageTop,
+  easeOutQuint,
   lastSlideHoldPx,
   shouldReleasePaging,
   slideIndexAfterSwipe,
@@ -16,6 +18,7 @@ import {
 import './home-test.css';
 
 const SLIDE_LOCK_MS = 780;
+const CLOSER_REVEAL_MS = 880;
 
 const RequestVisitForm = dynamic(() => import('../components/RequestVisitForm'));
 
@@ -49,7 +52,7 @@ export default function HomeTestExperience({ nonce: _nonce }: { nonce?: string }
     <div className="home-test">
       <h1 className="sr-only">UK Greeting Card & Gift Sales Agent Covering East Anglia</h1>
       {reduceMotion ? <StaticSectors /> : <Campaign />}
-      <Closer onRequestVisit={() => setVisitOpen(true)} />
+      <Closer animate={!reduceMotion} onRequestVisit={() => setVisitOpen(true)} />
       <RequestVisitForm isOpen={visitOpen} onClose={() => setVisitOpen(false)} />
     </div>
   );
@@ -80,15 +83,31 @@ function Campaign() {
     let snapTimer = 0;
     let touchY = 0;
     let touchOn = false;
+    let revealing = false;
+    let revealFrame = 0;
 
     const headerBottom = () => document.querySelector('header')?.getBoundingClientRect().bottom ?? 0;
+    const closerEl = () => document.querySelector<HTMLElement>('.home-test-close');
+
+    const markCloserIn = () => closerEl()?.classList.add('is-in');
     const holdPx = () => lastSlideHoldPx(window.innerHeight);
     const travel = () => slideTravel(track.offsetHeight, window.innerHeight, holdPx());
 
     const topFor = (index: number) =>
       slideScrollTop(window.scrollY + track.getBoundingClientRect().top, travel(), index, SLIDE_COUNT);
 
-    const pastReel = () => shouldReleasePaging(window.scrollY, topFor(SLIDE_COUNT - 1), holdPx());
+    const closerTop = () => {
+      const closer = closerEl();
+      if (!closer) return topFor(SLIDE_COUNT - 1) + holdPx();
+      return closerPageTop(window.scrollY + closer.getBoundingClientRect().top, headerBottom());
+    };
+
+    const pastReel = () => {
+      if (revealing) return false;
+      const closer = closerEl();
+      if (closer && window.scrollY >= closerTop() - 8) return true;
+      return shouldReleasePaging(window.scrollY, topFor(SLIDE_COUNT - 1), holdPx());
+    };
     const holdingLast = (deltaY: number) =>
       deltaY > 0 && activeRef.current >= SLIDE_COUNT - 1 && !pastReel();
 
@@ -124,12 +143,29 @@ function Campaign() {
     };
 
     const releaseToCloser = () => {
+      if (revealing) return;
+      const from = window.scrollY;
+      const to = closerTop();
+      revealing = true;
       locked = true;
-      window.scrollTo({ top: topFor(SLIDE_COUNT - 1) + holdPx(), behavior: 'auto' });
+      markCloserIn();
+      window.cancelAnimationFrame(revealFrame);
       window.clearTimeout(lockTimer);
-      lockTimer = window.setTimeout(() => {
-        locked = false;
-      }, SLIDE_LOCK_MS);
+      const started = performance.now();
+      const tick = (now: number) => {
+        const t = clamp01((now - started) / CLOSER_REVEAL_MS);
+        window.scrollTo({ top: from + (to - from) * easeOutQuint(t), behavior: 'auto' });
+        if (t < 1) {
+          revealFrame = window.requestAnimationFrame(tick);
+          return;
+        }
+        window.scrollTo({ top: to, behavior: 'auto' });
+        revealing = false;
+        lockTimer = window.setTimeout(() => {
+          locked = false;
+        }, 240);
+      };
+      revealFrame = window.requestAnimationFrame(tick);
     };
 
     const pageBy = (deltaY: number, threshold = 40) => {
@@ -204,6 +240,10 @@ function Campaign() {
     };
 
     const onScroll = () => {
+      const closer = closerEl();
+      if (closer && closer.getBoundingClientRect().top < window.innerHeight * 0.78) {
+        markCloserIn();
+      }
       if (locked) return;
       window.clearTimeout(snapTimer);
       snapTimer = window.setTimeout(() => {
@@ -212,6 +252,8 @@ function Campaign() {
         if (nearest !== activeRef.current) applySlide(nearest);
       }, 90);
     };
+
+    onScroll();
 
     window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('touchstart', onTouchStart, { passive: true });
@@ -230,6 +272,7 @@ function Campaign() {
       window.clearTimeout(leavingTimer);
       window.clearTimeout(wheelReset);
       window.clearTimeout(snapTimer);
+      window.cancelAnimationFrame(revealFrame);
     };
   }, []);
 
@@ -313,13 +356,22 @@ function StaticSectors() {
   );
 }
 
-function Closer({ onRequestVisit }: { onRequestVisit: () => void }) {
+function Closer({
+  animate = false,
+  onRequestVisit,
+}: {
+  animate?: boolean;
+  onRequestVisit: () => void;
+}) {
   return (
-    <section className="home-test-close">
+    <section className={`home-test-close${animate ? '' : ' is-in'}`}>
       <div className="home-test-close-inner">
-        <h2>East Anglia. Cards, gifts, scent, confectionery.</h2>
+        <Headline
+          text="East Anglia. Cards, gifts, scent, confectionery."
+          sizeClass=" is-xl"
+        />
         <p className="home-test-close-sub">for the wholesale trade</p>
-        <p>
+        <p className="home-test-close-copy">
           Supplying independent shops, garden centres and farm shops across Suffolk, Norfolk,
           Essex, Cambridgeshire and Hertfordshire.
         </p>

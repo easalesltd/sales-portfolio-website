@@ -6,6 +6,8 @@ import {
   activeSectorIndex,
   clamp01,
   isPastLastSlide,
+  closerPageTop,
+  easeOutQuint,
   lastSlideHoldPx,
   progressForSector,
   reelOffsetPercent,
@@ -99,5 +101,13 @@ describe('home-test scroll mapping', () => {
     expect(shouldReleasePaging(lastTop, lastTop, 800)).toBe(false);
     expect(shouldReleasePaging(lastTop + 679, lastTop, 800)).toBe(false);
     expect(shouldReleasePaging(lastTop + 681, lastTop, 800)).toBe(true);
+  });
+
+  it('pins the closer under the header instead of leaping past it', () => {
+    expect(closerPageTop(2000, 80)).toBe(1920);
+    expect(closerPageTop(40, 80)).toBe(0);
+    expect(easeOutQuint(0)).toBe(0);
+    expect(easeOutQuint(1)).toBe(1);
+    expect(easeOutQuint(0.5)).toBeGreaterThan(0.9);
   });
 });

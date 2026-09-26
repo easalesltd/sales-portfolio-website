@@ -69,3 +69,13 @@ export function isPastLastSlide(scrollY: number, lastSlideTop: number, slop = 48
 export function shouldReleasePaging(scrollY: number, lastSlideTop: number, holdPx: number): boolean {
   return isPastLastSlide(scrollY, lastSlideTop, Math.max(48, holdPx * 0.85));
 }
+
+/** Pin the closer just under the sticky header so the wholesale copy fills the screen. */
+export function closerPageTop(closerDocumentTop: number, headerBottom: number): number {
+  return Math.max(0, closerDocumentTop - Math.max(0, headerBottom));
+}
+
+export function easeOutQuint(progress: number): number {
+  const t = clamp01(progress);
+  return 1 - (1 - t) ** 5;
+}
