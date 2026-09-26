@@ -100,10 +100,11 @@
     radial-gradient(ellipse 85% 48% at 50% 48%, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.28) 46%, transparent 74%);
 }
 
+/* Above .home-test-slide.is-active (z-index 2). A lower layer sits under the photo and only shows while that picture is fading. */
 .home-test-copy {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,14 +120,14 @@
   font-size: 0.78rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  opacity: 0;
-  transform: translate3d(0, 0.7em, 0);
+  opacity: 0.95;
+  transform: none;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9), 0 0 3px rgba(0, 0, 0, 0.95);
-  animation: home-test-kicker 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: home-test-kicker 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 .home-test-static-slide.is-active .home-test-kicker {
-  animation: home-test-kicker 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+  animation: home-test-kicker 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s backwards;
 }
 
 .home-test-headlines {
@@ -177,7 +178,9 @@
 
 .home-test-headlines .is-active .home-test-word,
 .home-test-static-slide.is-active .home-test-word {
-  animation: home-test-word 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+  opacity: 1;
+  transform: none;
+  animation: home-test-word 0.72s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 .home-test-headlines .is-active .home-test-word:nth-child(1),
@@ -211,6 +214,10 @@
 }
 
 @keyframes home-test-kicker {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.7em, 0);
+  }
   to {
     opacity: 0.95;
     transform: none;
@@ -218,6 +225,10 @@
 }
 
 @keyframes home-test-word {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.32em, 0);
+  }
   to {
     opacity: 1;
     transform: none;
@@ -418,7 +429,10 @@
   .home-test-slide.is-leaving,
   .home-test-hero img,
   .home-test-kicker,
-  .home-test-word {
+  .home-test-static-slide.is-active .home-test-kicker,
+  .home-test-word,
+  .home-test-headlines .is-active .home-test-word,
+  .home-test-static-slide.is-active .home-test-word {
     opacity: 1;
     transform: none;
     filter: none;

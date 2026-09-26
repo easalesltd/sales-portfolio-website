@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import { describe, expect, it } from '@jest/globals';
 import { firstSlideIndexForSector, sectorIndexForSlide } from './home-test-sectors';
 import {
@@ -66,6 +68,13 @@ describe('home-test scroll mapping', () => {
     expect(slideIndexAfterSwipe(4, 12, 24)).toBeNull();
     expect(slideIndexAfterSwipe(0, -80, 24)).toBeNull();
     expect(slideIndexAfterSwipe(23, 80, 24)).toBeNull();
+  });
+
+  it('keeps the headline above the photo', () => {
+    const css = readFileSync(join(__dirname, 'home-test.css'), 'utf8');
+    const copy = Number(css.match(/\.home-test-copy\s*\{[^}]*z-index:\s*(\d+)/)?.[1]);
+    const activeSlide = Number(css.match(/\.home-test-slide\.is-active\s*\{[^}]*z-index:\s*(\d+)/)?.[1]);
+    expect(copy).toBeGreaterThan(activeSlide);
   });
 
   it('maps each company to one equal step of the track', () => {
