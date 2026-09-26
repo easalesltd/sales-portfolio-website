@@ -15,6 +15,12 @@
   height: 1680vh;
 }
 
+@media (max-width: 767px) {
+  .home-test-track {
+    height: 2400dvh;
+  }
+}
+
 .home-test-stage {
   position: sticky;
   top: var(--home-test-header);
@@ -333,6 +339,16 @@
   letter-spacing: -0.04em;
   line-height: 0.92;
   text-transform: uppercase;
+}
+
+.home-test-close-sub {
+  margin: 0.7rem 0 0;
+  color: rgba(244, 241, 234, 0.88);
+  font-family: var(--font-home-test-display), sans-serif;
+  font-size: clamp(1.15rem, 2.6vw, 1.55rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 .home-test-close p {

@@ -178,6 +178,7 @@ function Closer({ onRequestVisit }: { onRequestVisit: () => void }) {
     <section className="home-test-close">
       <div className="home-test-close-inner">
         <h2>East Anglia. Cards, gifts, scent, confectionery.</h2>
+        <p className="home-test-close-sub">for the wholesale trade</p>
         <p>
           Supplying independent shops, garden centres and farm shops across Suffolk, Norfolk,
           Essex, Cambridgeshire and Hertfordshire.

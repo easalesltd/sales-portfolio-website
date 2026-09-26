@@ -6,6 +6,7 @@ import {
   progressForSector,
   reelOffsetPercent,
   sectorLocalProgress,
+  slideIndexAfterSwipe,
 } from './home-test-progress';
 
 describe('home-test scroll mapping', () => {
@@ -56,5 +57,13 @@ describe('home-test scroll mapping', () => {
     expect(sectorIndexForSlide(15)).toBe(3);
     expect(sectorIndexForSlide(16)).toBe(4);
     expect(sectorIndexForSlide(18)).toBe(5);
+  });
+
+  it('advances only one slide per swipe and releases at the ends', () => {
+    expect(slideIndexAfterSwipe(4, 80, 24)).toBe(5);
+    expect(slideIndexAfterSwipe(4, -80, 24)).toBe(3);
+    expect(slideIndexAfterSwipe(4, 12, 24)).toBeNull();
+    expect(slideIndexAfterSwipe(0, -80, 24)).toBeNull();
+    expect(slideIndexAfterSwipe(23, 80, 24)).toBeNull();
   });
 });

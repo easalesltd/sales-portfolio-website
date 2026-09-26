@@ -24,3 +24,20 @@ export function progressForSector(index: number, count: number): number {
   if (count <= 1 || index <= 0) return 0;
   return Math.min(1, index / (count - 1));
 }
+
+/**
+ * One swipe, one company. `deltaY` is startY − endY (positive = swipe up = next).
+ * Returns null when the gesture should not be captured (tap, or leaving the reel).
+ */
+export function slideIndexAfterSwipe(
+  current: number,
+  deltaY: number,
+  count: number,
+  threshold = 40,
+): number | null {
+  if (count <= 1 || Math.abs(deltaY) < threshold) return null;
+  const step = deltaY > 0 ? 1 : -1;
+  const next = current + step;
+  if (next < 0 || next >= count) return null;
+  return next;
+}
