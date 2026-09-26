@@ -102,12 +102,12 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   output: 'standalone',
-  // Videos in public/ are static assets. Keep them out of Function traces so
-  // Hobby Deployment Storage is not multiplied by leftover bundle copies.
+  // Static assets in public/ are served as files. Keep them out of Function
+  // traces so Hobby Deployment Storage is not multiplied by leftover copies.
   outputFileTracingExcludes: {
     '*': [
       'public/videos/**',
-      'public/images/**/*.mp4',
+      'public/images/**',
       'cypress/**',
       'deploy/**',
       'coverage/**',
