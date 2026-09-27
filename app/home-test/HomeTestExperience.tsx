@@ -297,9 +297,6 @@ function Campaign() {
               <div className="home-test-hero" />
             )}
             <div className="home-test-veil" />
-            <p className="home-test-brands">
-              <Link href={item.href}>{item.headline.replace(/\.$/, '')}</Link>
-            </p>
           </article>
         ))}
         <div className="home-test-ticker" aria-hidden>
@@ -347,9 +344,6 @@ function StaticSectors() {
             <p className="home-test-kicker">{slide.sectorTitle}</p>
             <Headline text={slide.headline} sizeClass={statementSizeClass(slide.headline)} />
           </div>
-          <p className="home-test-brands">
-            <Link href={slide.href}>{slide.headline.replace(/\.$/, '')}</Link>
-          </p>
         </section>
       ))}
     </div>
