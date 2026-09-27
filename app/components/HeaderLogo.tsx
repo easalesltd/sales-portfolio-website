@@ -72,7 +72,12 @@ export default function HeaderLogo() {
 
   return (
     <>
-      <Link href="/" className="flex items-center select-none" onClick={onLogoClick} aria-label="East Anglian Sales LTD home">
+      <Link
+        href="/"
+        className="flex flex-col items-start gap-0.5 select-none"
+        onClick={onLogoClick}
+        aria-label="East Anglian Sales LTD home. Greeting cards and gifts across the East."
+      >
         <Image
           src="/images/logo.webp"
           alt="East Anglian Sales LTD"
@@ -84,6 +89,9 @@ export default function HeaderLogo() {
           quality={85}
           draggable={false}
         />
+        <span className="max-w-[11rem] text-[0.58rem] font-medium leading-[1.2] tracking-[0.04em] text-neutral-500 dark:text-neutral-400 md:max-w-[13rem] md:text-[0.65rem]">
+          Greeting Cards &amp; Gifts Across the East
+        </span>
       </Link>
       {dashOpen ? <SalesAgentDash onClose={() => setDashOpen(false)} /> : null}
     </>

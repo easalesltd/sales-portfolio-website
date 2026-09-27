@@ -1,5 +1,5 @@
 .home-test {
-  --home-test-header: 4.75rem;
+  --home-test-header: 6.35rem;
   --slide-ink: #fff;
   color: #171717;
   background: #111;
@@ -7,7 +7,7 @@
 
 @media (min-width: 768px) {
   .home-test {
-    --home-test-header: 8.6rem;
+    --home-test-header: 9.35rem;
   }
 }
 
