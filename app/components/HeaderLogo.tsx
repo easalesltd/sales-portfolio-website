@@ -74,22 +74,25 @@ export default function HeaderLogo() {
     <>
       <Link
         href="/"
-        className="flex flex-col items-start gap-0.5 select-none"
+        className="flex flex-col items-center text-center select-none"
         onClick={onLogoClick}
         aria-label="East Anglian Sales LTD home. Greeting cards and gifts across the East."
       >
         <Image
-          src="/images/logo.webp"
-          alt="East Anglian Sales LTD"
-          width={100}
-          height={67}
-          className="object-contain brightness-0 dark:invert"
+          src="/images/logo-map.png"
+          alt=""
+          width={88}
+          height={56}
+          className="h-8 w-auto object-contain brightness-0 dark:invert md:h-10"
           priority
-          sizes="100px"
-          quality={85}
+          sizes="88px"
+          quality={90}
           draggable={false}
         />
-        <span className="max-w-[11rem] text-[0.58rem] font-medium leading-[1.2] tracking-[0.04em] text-neutral-500 dark:text-neutral-400 md:max-w-[13rem] md:text-[0.65rem]">
+        <span className="mt-1 whitespace-nowrap text-[0.55rem] font-semibold uppercase leading-none tracking-[0.1em] text-neutral-950 dark:text-white md:text-[0.62rem]">
+          East Anglian Sales LTD
+        </span>
+        <span className="mt-0.5 whitespace-nowrap text-[0.42rem] font-normal leading-none tracking-[0.015em] text-neutral-400 dark:text-neutral-500 md:text-[0.48rem]">
           Greeting Cards &amp; Gifts Across the East
         </span>
       </Link>

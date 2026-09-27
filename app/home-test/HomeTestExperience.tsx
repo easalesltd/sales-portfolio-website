@@ -44,12 +44,16 @@ function statementSizeClass(headline: string): string {
   return '';
 }
 
-export default function HomeTestExperience({ nonce: _nonce }: { nonce?: string }) {
+export default function HomeTestExperience({ nonce }: { nonce?: string }) {
   const reduceMotion = usePrefersReducedMotion();
   const [visitOpen, setVisitOpen] = useState(false);
+  const headerPx = useHeaderHeight();
 
   return (
     <div className="home-test">
+      {nonce && headerPx != null ? (
+        <style nonce={nonce}>{`.home-test{--home-test-header:${headerPx}px}`}</style>
+      ) : null}
       <h1 className="sr-only">UK Greeting Card & Gift Sales Agent Covering East Anglia</h1>
       {reduceMotion ? <StaticSectors /> : <Campaign />}
       <Closer animate={!reduceMotion} onRequestVisit={() => setVisitOpen(true)} />
@@ -378,6 +382,26 @@ function Closer({
       </div>
     </section>
   );
+}
+
+function useHeaderHeight(): number | null {
+  const [height, setHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    const header = document.querySelector('header');
+    if (!header) return undefined;
+    const sync = () => setHeight(Math.round(header.getBoundingClientRect().height));
+    sync();
+    const observer = new ResizeObserver(sync);
+    observer.observe(header);
+    window.addEventListener('resize', sync);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', sync);
+    };
+  }, []);
+
+  return height;
 }
 
 function usePrefersReducedMotion(): boolean {
