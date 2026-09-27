@@ -525,11 +525,11 @@ export default async function RootLayout({
               Sticky (not fixed) so content always starts below the real header height on mobile — avoids
               guessing with pt-* on main when the row wraps. Slimmer py on small screens; md+ keeps roomy bar.
             */}
-            <div className="flex min-h-0 items-center justify-between py-0 md:min-h-16 md:py-1 md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-x-3 lg:gap-x-4">
-              <div className="flex min-w-0 items-center md:justify-self-start">
+            <div className="flex min-h-0 items-center gap-3 py-0 md:min-h-16 md:gap-6 md:py-1">
+              <div className="shrink-0">
                 <HeaderLogo />
               </div>
-              <div className="hidden min-w-0 flex-wrap items-center justify-center gap-x-3 gap-y-1 lg:gap-x-6 md:flex md:justify-self-center">
+              <div className="hidden min-w-0 flex-1 flex-wrap items-center justify-center gap-x-3 gap-y-1 md:flex lg:gap-x-6">
                 <Link href="/" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Home</Link>
                 <AboutDropdown />
                 <BrandsDropdown />
@@ -537,10 +537,10 @@ export default async function RootLayout({
                 <Link href="/temporary-rep-cover" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Temporary Rep Cover</Link>
                 <Link href="/contact" prefetch className="text-gray-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-900">Contact</Link>
               </div>
-              <div className="hidden items-center md:flex md:justify-self-end">
+              <div className="hidden shrink-0 items-center md:flex">
                 <ClientButton />
               </div>
-              <div className="flex shrink-0 items-center gap-2 md:hidden">
+              <div className="ml-auto flex shrink-0 items-center gap-2 md:hidden">
                 <MobileRequestButton />
                 <MobileMenu />
               </div>
