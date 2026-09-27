@@ -89,10 +89,10 @@ export default function HeaderLogo() {
           quality={90}
           draggable={false}
         />
-        <span className="mt-1 whitespace-nowrap text-[0.5rem] font-semibold uppercase leading-none tracking-[0.06em] text-neutral-950 dark:text-white lg:text-[0.58rem]">
+        <span className="mt-1 max-w-full text-[0.48rem] font-semibold uppercase leading-tight tracking-[0.05em] text-neutral-950 dark:text-white md:whitespace-nowrap md:leading-none lg:text-[0.58rem]">
           East Anglian Sales LTD
         </span>
-        <span className="mt-0.5 whitespace-nowrap text-[0.38rem] font-normal leading-none tracking-[0.01em] text-neutral-400 dark:text-neutral-500 lg:text-[0.45rem]">
+        <span className="mt-0.5 max-w-full text-[0.36rem] font-normal leading-tight tracking-[0.01em] text-neutral-400 dark:text-neutral-500 md:whitespace-nowrap md:leading-none lg:text-[0.45rem]">
           Greeting Cards &amp; Gifts Across the East
         </span>
       </Link>

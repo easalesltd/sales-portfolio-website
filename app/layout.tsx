@@ -525,8 +525,8 @@ export default async function RootLayout({
               Sticky (not fixed) so content always starts below the real header height on mobile — avoids
               guessing with pt-* on main when the row wraps. Slimmer py on small screens; md+ keeps roomy bar.
             */}
-            <div className="flex min-h-0 items-center gap-3 py-0 md:min-h-16 md:gap-6 md:py-1">
-              <div className="shrink-0">
+            <div className="flex min-h-0 items-start gap-2 py-0 md:min-h-16 md:items-center md:gap-6 md:py-1">
+              <div className="min-w-0 flex-1 md:flex-none md:shrink-0">
                 <HeaderLogo />
               </div>
               <div className="hidden min-w-0 flex-1 flex-wrap items-center justify-center gap-x-3 gap-y-1 md:flex lg:gap-x-6">
@@ -540,7 +540,7 @@ export default async function RootLayout({
               <div className="hidden shrink-0 items-center md:flex">
                 <ClientButton />
               </div>
-              <div className="ml-auto flex shrink-0 items-center gap-2 md:hidden">
+              <div className="flex shrink-0 items-center gap-2 pt-0.5 md:hidden">
                 <MobileRequestButton />
                 <MobileMenu />
               </div>

@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { HOME_TEST_SECTORS, HOME_TEST_SLIDES } from './home-test-sectors';
+import { HOME_TEST_SLIDES } from './home-test-sectors';
 import {
   activeSectorIndex,
   clamp01,
@@ -303,17 +303,6 @@ function Campaign() {
             <div className="home-test-veil" />
           </article>
         ))}
-        <div className="home-test-ticker" aria-hidden>
-          <div className="home-test-ticker-track">
-            {[0, 1].map((copy) => (
-              <span key={`${slide.sectorId}-${copy}`}>
-                {HOME_TEST_SECTORS.find((entry) => entry.id === slide.sectorId)
-                  ?.slides.map((entry) => entry.statement.replace(/\.$/, ''))
-                  .join('  ·  ')}
-              </span>
-            ))}
-          </div>
-        </div>
         <div className="home-test-copy">
           <p className="home-test-kicker" key={slide.sectorId}>
             {slide.sectorTitle}

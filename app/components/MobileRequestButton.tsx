@@ -9,8 +9,7 @@ export default function MobileRequestButton() {
     <>
       <button
         onClick={() => setIsRequestFormOpen(true)}
-        className="ml-2 px-2.5 py-1.5 rounded-md font-medium text-sm block md:hidden border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition-colors"
-        style={{ minWidth: 'auto' }}
+        className="px-2.5 py-1.5 rounded-md font-medium text-sm block md:hidden border border-neutral-950 bg-neutral-950 text-white hover:bg-neutral-800 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200 transition-colors"
       >
         Request an Agent Visit
       </button>
