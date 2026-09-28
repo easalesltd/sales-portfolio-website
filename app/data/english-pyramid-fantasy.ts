@@ -7148,7 +7148,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-26 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-28 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -10353,7 +10353,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-26T11:30Z',
     homeTeam: { name: 'Crawley Town', tla: 'CRA' },
     awayTeam: { name: 'Barnet', tla: 'BAR' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10523,7 +10523,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
     awayTeam: { name: 'Bromley', tla: 'BRO' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10531,7 +10531,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Mansfield Town', tla: 'MNF' },
     awayTeam: { name: 'Leyton Orient', tla: 'LEY' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10539,7 +10539,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Notts County', tla: 'NCO' },
     awayTeam: { name: 'Blackpool', tla: 'BLP' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10559,7 +10559,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Port Vale', tla: 'PVL' },
     awayTeam: { name: 'Northampton Town', tla: 'NHT' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10717,7 +10717,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Bromley', tla: 'BRO' },
     awayTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10731,7 +10731,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Barnsley', tla: 'BSL' },
     awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10751,7 +10751,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Colchester United', tla: 'COL' },
     awayTeam: { name: 'Port Vale', tla: 'PVL' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10795,7 +10795,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Luton Town', tla: 'LUT' },
     awayTeam: { name: 'Doncaster Rovers', tla: 'DON' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10803,7 +10803,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Peterborough United', tla: 'PET' },
     awayTeam: { name: 'Notts County', tla: 'NCO' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10829,7 +10829,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Walsall', tla: 'WAL' },
     awayTeam: { name: 'Crawley Town', tla: 'CRA' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -10837,7 +10837,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
     awayTeam: { name: 'Stevenage', tla: 'STE' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
