@@ -110,25 +110,30 @@ export function TeamSideForm({
         </p>
       ) : null}
       <div className="space-y-2">
-        {proposed.map((bakerId, index) => (
-          locked ? (
+        {proposed.map((bakerId, index) => {
+          const livingId = bakerStillIn(league, bakerId, week) ? bakerId : "";
+          return locked ? (
             <p key={`${companion.id}-${index}`} className="rounded-2xl border border-[#e7d3b4] bg-flour px-4 py-2.5">
-              {bakerId ? bakerName(league, bakerId) : "Choose a baker"}
+              {livingId ? bakerName(league, livingId) : "Choose a baker"}
             </p>
           ) : (
             <select
               key={`${companion.id}-${index}`}
               className="w-full rounded-2xl border border-[#e7d3b4] bg-flour px-4 py-2.5 outline-none ring-butter/70 focus:ring-4"
-              value={bakerStillIn(league, bakerId, week) ? bakerId : ""}
+              value={livingId}
               onChange={(event) => setSlot(index, event.target.value)}
             >
-              <option value="">Choose a baker</option>
+              {livingId ? null : (
+                <option value="" disabled hidden>
+                  Choose a baker
+                </option>
+              )}
               {remaining.map((baker) => (
                 <option key={baker.id} value={baker.id}>{baker.name}</option>
               ))}
             </select>
-          )
-        ))}
+          );
+        })}
       </div>
       <p className={`mt-3 text-sm ${blockReason ? "text-raspberry" : "text-chocolate/65"}`}>
         {blockReason

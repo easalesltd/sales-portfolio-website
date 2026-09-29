@@ -88,7 +88,12 @@ export function lineupChanges(previous: string[], next: string[]): number {
 }
 
 export function selectableBakers(league: LeagueState, week: number): Baker[] {
-  return activeBakersAtWeek(league, week).sort((a, b) => a.name.localeCompare(b.name));
+  return activeBakersAtWeek(league, week)
+    .filter((baker) => {
+      const name = baker.name.trim();
+      return Boolean(name) && !/^baker\s+\d+$/i.test(name);
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export function jokerForCompanion(league: LeagueState, companionId: string): { week: number; autoApplied: boolean } | null {
