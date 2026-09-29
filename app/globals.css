@@ -399,16 +399,36 @@ html[data-sweepstake-standalone][data-sweepstake-theme='gbbo'] #main-content {
 }
 
 .gbbo-baker-out img {
-  filter: grayscale(1) contrast(0.85) brightness(0.92);
-  opacity: 0.72;
+  filter: grayscale(1) contrast(0.9) brightness(0.88);
 }
 
 .gbbo-baker-stamp {
-  transform: rotate(-16deg);
-  border: 3px solid #c43c5b;
+  position: absolute;
+  left: 50%;
+  top: 68%;
+  z-index: 1;
+  width: min(56%, 10.25rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(-11deg);
+}
+
+.gbbo-baker-stamp-ring {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 4px solid #c43c5b;
+  box-shadow:
+    inset 0 0 0 3px rgba(196, 60, 91, 0.95),
+    0 10px 22px rgba(28, 20, 15, 0.22);
+  background:
+    radial-gradient(circle at 50% 38%, rgba(255, 250, 242, 0.96), rgba(255, 236, 220, 0.9));
   color: #c43c5b;
-  letter-spacing: 0.12em;
-  text-shadow: 0 1px 0 rgba(255, 250, 242, 0.8);
+  text-align: center;
+  padding: 14%;
 }
 
 .ticket {

@@ -15,6 +15,30 @@ function officialProfile(name: string) {
   return `https://thegreatbritishbakeoff.co.uk/bakers/series-17-${gbboSlug(name)}/`;
 }
 
+function EliminatedStamp({ week, theme }: { week: number; theme: string | null }) {
+  return (
+    <div className="pointer-events-none absolute inset-0">
+      <div className="absolute inset-0 bg-gradient-to-t from-[#1c140f]/55 via-[#1c140f]/15 to-[#1c140f]/10" />
+      <div
+        className="gbbo-baker-stamp"
+        role="img"
+        aria-label={`Sent home in week ${week}${theme ? `, ${theme}` : ""}`}
+      >
+        <span className="gbbo-baker-stamp-ring">
+          <span className="text-[0.62rem] font-black uppercase tracking-[0.26em]">Sent home</span>
+          <span className="my-1 h-px w-9 bg-[#c43c5b]/70" />
+          <span className="font-display text-[1.35rem] leading-none tracking-tight">Week {week}</span>
+          {theme ? (
+            <span className="mt-1 max-w-[7.5rem] text-[0.62rem] font-black uppercase leading-tight tracking-[0.14em]">
+              {theme}
+            </span>
+          ) : null}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function BakerCard({
   baker,
   week,
@@ -48,13 +72,8 @@ function BakerCard({
             {baker.name.slice(0, 1)}
           </div>
         )}
-        {out ? (
-          <div className="pointer-events-none absolute inset-0 bg-[#2b2118]/25">
-            <p className="gbbo-baker-stamp absolute left-1/2 top-1/2 w-[78%] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-[#fffaf2]/80 px-3 py-2 text-center text-xs font-black uppercase">
-              Left week {week}
-              {theme ? <span className="mt-1 block tracking-normal">{theme} Week</span> : null}
-            </p>
-          </div>
+        {out && week ? (
+          <EliminatedStamp week={week} theme={theme ?? null} />
         ) : (
           <span className="absolute left-3 top-3 rounded-full bg-tent px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-flour">
             Still baking
@@ -123,48 +142,30 @@ export default function BakersPage() {
       week: bakerEliminatedIn(league, baker.id),
       owners: companionsOwningBaker(league, baker.id, gate.week).map((companion) => companion.name),
     }))
-    .sort((a, b) => {
-      if (Boolean(a.week) !== Boolean(b.week)) return a.week ? 1 : -1;
-      if (a.week && b.week && a.week !== b.week) return a.week - b.week;
-      return a.baker.name.localeCompare(b.baker.name);
-    });
-  const stillIn = rows.filter((row) => !row.week);
-  const gone = rows.filter((row) => row.week);
+    .sort((a, b) => a.baker.name.localeCompare(b.baker.name));
+  const stillIn = rows.filter((row) => !row.week).length;
+  const gone = rows.length - stillIn;
 
   return (
     <div className="space-y-6">
       <Card eyebrow="Class of 2026" title="This year's bakers">
         <p className="max-w-3xl text-sm leading-7 text-chocolate/75">
-          The twelve amateurs in the Series 17 tent. Tap <strong>How they scored</strong> on a baker
-          to see the ledger: handshakes, technicals, drops, tears and the rest.
-          When you score an elimination, their portrait greys out and gets a week stamp so the tent here matches the telly.
+          The twelve amateurs in the Series 17 tent, in the same order all series. Tap{" "}
+          <strong>How they scored</strong> on a baker to see the ledger: handshakes, technicals, drops,
+          tears and the rest. When someone is sent home they stay in their slot, greyscale, with a
+          week stamp on the portrait.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <Pill tone="tent">{stillIn.length} still baking</Pill>
-          <Pill tone="raspberry">{gone.length} left the tent</Pill>
+          <Pill tone="tent">{stillIn} still baking</Pill>
+          <Pill tone="raspberry">{gone} left the tent</Pill>
         </div>
       </Card>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {stillIn.map((row) => (
+        {rows.map((row) => (
           <BakerCard key={row.baker.id} baker={row.baker} week={row.week} owners={row.owners} league={league} />
         ))}
       </div>
-
-      {gone.length ? (
-        <>
-          <Card eyebrow="Gone but not forgotten" title="Left the tent">
-            <p className="text-sm leading-7 text-chocolate/75">
-              Stamped in the week they were sent home.
-            </p>
-          </Card>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {gone.map((row) => (
-              <BakerCard key={row.baker.id} baker={row.baker} week={row.week} owners={row.owners} league={league} />
-            ))}
-          </div>
-        </>
-      ) : null}
     </div>
   );
 }
