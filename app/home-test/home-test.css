@@ -1,8 +1,26 @@
 .home-test {
   --home-test-header: 4.75rem;
+  /* 100vh until lvh is available. The @supports block below replaces this. */
+  --home-test-stage: calc(100vh - var(--home-test-header));
   --slide-ink: #fff;
   color: #171717;
   background: #111;
+}
+
+/*
+  Phones cover the bottom of the large viewport with the browser toolbar until
+  the first swipe hides it. A 100dvh stage stops at that toolbar, so the swipe
+  uncovers this #111 background as a black bar. Size the frame to the large
+  viewport (and to the visual viewport when that is taller) so the photo is
+  already painted in the strip the toolbar uncovers.
+*/
+@supports (height: 100lvh) {
+  .home-test {
+    --home-test-stage: max(
+      calc(100lvh - var(--home-test-header)),
+      calc(var(--home-test-visible, 0px) - var(--home-test-header))
+    );
+  }
 }
 
 @media (min-width: 768px) {
@@ -18,7 +36,7 @@
 .home-test-stage {
   position: sticky;
   top: var(--home-test-header);
-  height: calc(100dvh - var(--home-test-header));
+  height: var(--home-test-stage);
   overflow: hidden;
   background: #111;
 }
@@ -103,6 +121,10 @@
 .home-test-copy {
   position: absolute;
   inset: 0;
+  /* Keep the type in the visible viewport. The stage is the large viewport, so
+     stretching the copy to it would drop the headline toward the toolbar. */
+  height: calc(100vh - var(--home-test-header));
+  height: calc(100dvh - var(--home-test-header));
   z-index: 3;
   display: flex;
   flex-direction: column;
@@ -294,7 +316,7 @@
 
 .home-test-static-slide {
   position: relative;
-  min-height: calc(100dvh - var(--home-test-header));
+  min-height: var(--home-test-stage);
 }
 
 .home-test-close {

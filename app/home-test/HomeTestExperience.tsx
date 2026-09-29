@@ -48,12 +48,17 @@ export default function HomeTestExperience({ nonce }: { nonce?: string }) {
   const reduceMotion = usePrefersReducedMotion();
   const [visitOpen, setVisitOpen] = useState(false);
   const headerPx = useHeaderHeight();
+  const visiblePx = useVisibleViewportHeight();
+  const homeVars = [
+    headerPx != null ? `--home-test-header:${headerPx}px` : '',
+    visiblePx != null ? `--home-test-visible:${visiblePx}px` : '',
+  ]
+    .filter(Boolean)
+    .join(';');
 
   return (
     <div className="home-test">
-      {nonce && headerPx != null ? (
-        <style nonce={nonce}>{`.home-test{--home-test-header:${headerPx}px}`}</style>
-      ) : null}
+      {nonce && homeVars ? <style nonce={nonce}>{`.home-test{${homeVars}}`}</style> : null}
       <h1 className="sr-only">UK Greeting Card & Gift Sales Agent Covering East Anglia</h1>
       {reduceMotion ? <StaticSectors /> : <Campaign />}
       <Closer animate={!reduceMotion} onRequestVisit={() => setVisitOpen(true)} />
@@ -371,6 +376,30 @@ function Closer({
       </div>
     </section>
   );
+}
+
+function useVisibleViewportHeight(): number | null {
+  const [height, setHeight] = useState<number | null>(null);
+
+  useEffect(() => {
+    const sync = () => {
+      const next = Math.round(window.visualViewport?.height ?? window.innerHeight);
+      setHeight((current) => (current === next ? current : next));
+    };
+    sync();
+    const viewport = window.visualViewport;
+    viewport?.addEventListener('resize', sync);
+    // iOS updates the visual height as the toolbar collapses, sometimes only via scroll.
+    viewport?.addEventListener('scroll', sync);
+    window.addEventListener('resize', sync);
+    return () => {
+      viewport?.removeEventListener('resize', sync);
+      viewport?.removeEventListener('scroll', sync);
+      window.removeEventListener('resize', sync);
+    };
+  }, []);
+
+  return height;
 }
 
 function useHeaderHeight(): number | null {

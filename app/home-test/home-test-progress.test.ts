@@ -87,6 +87,16 @@ describe('home-test scroll mapping', () => {
     expect(copy).toBeGreaterThan(activeSlide);
   });
 
+  it('paints the hero to the large viewport so the first mobile swipe does not uncover a black bar', () => {
+    const css = readFileSync(join(__dirname, 'home-test.css'), 'utf8');
+    const stage = css.match(/\.home-test-stage\s*\{([^}]+)\}/)?.[1] ?? '';
+    expect(stage).toContain('height: var(--home-test-stage)');
+    expect(stage).not.toContain('100dvh');
+    expect(css).toContain('100lvh');
+    expect(css).toContain('--home-test-visible');
+    expect(css).toMatch(/\.home-test-static-slide\s*\{[^}]*min-height:\s*var\(--home-test-stage\)/);
+  });
+
   it('maps each company to one equal step of the track', () => {
     expect(slideScrollTop(100, 2300, 0, 24)).toBe(100);
     expect(slideScrollTop(100, 2300, 23, 24)).toBe(2400);
