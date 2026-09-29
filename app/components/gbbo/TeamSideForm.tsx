@@ -4,14 +4,18 @@ import { useMemo, useState } from "react";
 import { bakerName, bakerStillIn, carriedTeam, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
-import type { Companion } from "@/app/lib/gbbo/types";
+import type { Companion, LeagueState } from "@/app/lib/gbbo/types";
 import { TeamFormGuide } from "./TeamFormGuide";
 import { Button, Pill } from "./ui";
 
 function padLineup(bakerIds: string[], size: number): string[] {
-  const next = bakerIds.slice(0, size);
+  const next = bakerIds.filter(Boolean).slice(0, size);
   while (next.length < size) next.push("");
   return next;
+}
+
+function livingLineup(league: LeagueState, bakerIds: string[], week: number, size: number): string[] {
+  return padLineup(bakerIds.filter((id) => bakerStillIn(league, id, week)), size);
 }
 
 export function TeamSideForm({
@@ -32,7 +36,7 @@ export function TeamSideForm({
   const defaultLineup = useMemo(() => {
     const carried = carriedTeam(league, companion.id, week);
     const current = teamForWeek(league, companion.id, week);
-    return padLineup(current.length >= carried.length ? current : carried, size);
+    return livingLineup(league, current.length >= carried.length ? current : carried, week, size);
   }, [league, companion.id, week, size]);
   const [picks, setPicks] = useState<string[] | null>(null);
   const [message, setMessage] = useState("");
@@ -40,6 +44,7 @@ export function TeamSideForm({
   const filled = proposed.filter(Boolean);
   const unique = new Set(filled);
   const livingLast = lastWeek.filter((id) => bakerStillIn(league, id, week));
+  const sentHome = lastWeek.filter((id) => id && !bakerStillIn(league, id, week));
   const changes = lineupChanges(livingLast, filled);
   const shrinking = livingLast.length > size;
   const legal = unique.size === filled.length && filled.length === size && (week === 1 ? changes <= 3 : changes <= 1);
@@ -97,20 +102,27 @@ export function TeamSideForm({
       <p className="mb-3 text-sm text-chocolate/65">
         Last week: {lastWeek.map((id) => bakerName(league, id)).join(" · ") || "No side yet"}
       </p>
+      {sentHome.length ? (
+        <p className="mb-3 text-sm leading-6 text-raspberry">
+          {sentHome.map((id) => bakerName(league, id)).join(", ")} left the tent
+          {sentHome.length === 1 ? " and has been taken off this side" : " and have been taken off this side"}.
+          Pick a replacement still baking.
+        </p>
+      ) : null}
       <div className="space-y-2">
         {proposed.map((bakerId, index) => (
           locked ? (
             <p key={`${companion.id}-${index}`} className="rounded-2xl border border-[#e7d3b4] bg-flour px-4 py-2.5">
-              {bakerId ? bakerName(league, bakerId) : `Baker ${index + 1}`}
+              {bakerId ? bakerName(league, bakerId) : "Choose a baker"}
             </p>
           ) : (
             <select
               key={`${companion.id}-${index}`}
               className="w-full rounded-2xl border border-[#e7d3b4] bg-flour px-4 py-2.5 outline-none ring-butter/70 focus:ring-4"
-              value={bakerId}
+              value={bakerStillIn(league, bakerId, week) ? bakerId : ""}
               onChange={(event) => setSlot(index, event.target.value)}
             >
-              <option value="">{`Baker ${index + 1}`}</option>
+              <option value="">Choose a baker</option>
               {remaining.map((baker) => (
                 <option key={baker.id} value={baker.id}>{baker.name}</option>
               ))}

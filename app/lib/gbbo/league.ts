@@ -13,9 +13,7 @@ import type {
 import { episodeStartsAt, formatLondon } from "./window";
 
 export function activeBakersAtWeek(league: LeagueState, week: number): Baker[] {
-  return league.bakers.filter(
-    (baker) => baker.eliminatedInWeek === null || baker.eliminatedInWeek >= week,
-  );
+  return league.bakers.filter((baker) => bakerStillIn(league, baker.id, week));
 }
 
 export function teamSizeForWeek(league: LeagueState, week: number): number {
@@ -29,9 +27,9 @@ export function draftOrder(companions: Companion[]): Companion[] {
 }
 
 export function bakerStillIn(league: LeagueState, bakerId: string, week: number): boolean {
-  const baker = league.bakers.find((item) => item.id === bakerId);
-  if (!baker) return false;
-  return baker.eliminatedInWeek === null || baker.eliminatedInWeek >= week;
+  if (!league.bakers.some((item) => item.id === bakerId)) return false;
+  const gone = bakerEliminatedIn(league, bakerId);
+  return gone === null || gone >= week;
 }
 
 export function bakerEliminatedIn(league: LeagueState, bakerId: string): number | null {
@@ -90,7 +88,7 @@ export function lineupChanges(previous: string[], next: string[]): number {
 }
 
 export function selectableBakers(league: LeagueState, week: number): Baker[] {
-  return activeBakersAtWeek(league, week);
+  return activeBakersAtWeek(league, week).sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export function jokerForCompanion(league: LeagueState, companionId: string): { week: number; autoApplied: boolean } | null {
