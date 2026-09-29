@@ -1,5 +1,5 @@
 .home-test {
-  --home-test-header: 4.75rem;
+  --home-test-header: 6.85rem;
   /* 100vh until lvh is available. The @supports block below replaces this. */
   --home-test-stage: calc(100vh - var(--home-test-header));
   --slide-ink: #fff;
@@ -31,6 +31,7 @@
 
 .home-test-track {
   overscroll-behavior-y: contain;
+  height: calc(var(--home-test-pages, 20) * 100vh);
 }
 
 .home-test-stage {
@@ -39,6 +40,13 @@
   height: var(--home-test-stage);
   overflow: hidden;
   background: #111;
+}
+
+.home-test-stage.is-pinned {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
 }
 
 .home-test-slide {
@@ -82,6 +90,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 .home-test-slide[data-id='moss-st'] .home-test-hero img {
@@ -136,13 +145,25 @@
   pointer-events: none;
 }
 
+.home-test-copy-lockup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .home-test-kicker {
-  margin: 0 0 0.6rem;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin: 0 0 0.55rem;
+  width: max-content;
+  max-width: calc(100vw - 2.2rem);
   font-size: 0.78rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   opacity: 0.95;
-  transform: none;
+  transform: translateX(-50%);
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.9), 0 0 3px rgba(0, 0, 0, 0.95);
   animation: home-test-kicker 0.55s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
@@ -237,11 +258,11 @@
 @keyframes home-test-kicker {
   from {
     opacity: 0;
-    transform: translate3d(0, 0.7em, 0);
+    transform: translate3d(-50%, 0.7em, 0);
   }
   to {
     opacity: 0.95;
-    transform: none;
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
@@ -438,14 +459,19 @@
   .home-test-slide.is-active,
   .home-test-slide.is-leaving,
   .home-test-hero img,
-  .home-test-kicker,
-  .home-test-static-slide.is-active .home-test-kicker,
   .home-test-word,
   .home-test-headlines .is-active .home-test-word,
   .home-test-static-slide.is-active .home-test-word {
     opacity: 1;
     transform: none;
     filter: none;
+    animation: none;
+  }
+
+  .home-test-kicker,
+  .home-test-static-slide.is-active .home-test-kicker {
+    opacity: 0.95;
+    transform: translateX(-50%);
     animation: none;
   }
 

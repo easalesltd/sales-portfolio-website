@@ -56,9 +56,15 @@ export default function HomeTestExperience({ nonce }: { nonce?: string }) {
     .filter(Boolean)
     .join(';');
 
+  const vars = [homeVars, `--home-test-pages:${SLIDE_COUNT + 1}`].filter(Boolean).join(';');
+
   return (
     <div className="home-test">
-      {nonce && homeVars ? <style nonce={nonce}>{`.home-test{${homeVars}}`}</style> : null}
+      {nonce ? (
+        <style nonce={nonce}>
+          {`.home-test{${vars}}.home-test-track{height:${(SLIDE_COUNT + 1) * 100}vh}`}
+        </style>
+      ) : null}
       <h1 className="sr-only">UK Greeting Card & Gift Sales Agent Covering East Anglia</h1>
       {reduceMotion ? <StaticSectors /> : <Campaign />}
       <Closer animate={!reduceMotion} onRequestVisit={() => setVisitOpen(true)} />
@@ -102,8 +108,7 @@ function Campaign() {
     const holdPx = () => lastSlideHoldPx(window.innerHeight);
     const travel = () => slideTravel(track.offsetHeight, window.innerHeight, holdPx());
 
-    const topFor = (index: number) =>
-      slideScrollTop(window.scrollY + track.getBoundingClientRect().top, travel(), index, SLIDE_COUNT);
+    const topFor = (index: number) => slideScrollTop(0, travel(), index, SLIDE_COUNT);
 
     const closerTop = () => {
       const closer = closerEl();
@@ -170,6 +175,7 @@ function Campaign() {
         }
         window.scrollTo({ top: to, behavior: 'auto' });
         revealing = false;
+        pinStage();
         lockTimer = window.setTimeout(() => {
           locked = false;
         }, 240);
@@ -244,8 +250,12 @@ function Campaign() {
 
     const nearestFromScroll = () => {
       const span = travel();
-      const progress = span <= 0 ? 0 : clamp01(-track.getBoundingClientRect().top / span);
+      const progress = span <= 0 ? 0 : clamp01(window.scrollY / span);
       return activeSectorIndex(progress, SLIDE_COUNT);
+    };
+
+    const pinStage = () => {
+      track.querySelector('.home-test-stage')?.classList.toggle('is-pinned', !pastReel());
     };
 
     const onScroll = () => {
@@ -253,6 +263,7 @@ function Campaign() {
       if (closer && closer.getBoundingClientRect().top < window.innerHeight * 0.78) {
         markCloserIn();
       }
+      pinStage();
       if (locked) return;
       window.clearTimeout(snapTimer);
       snapTimer = window.setTimeout(() => {
@@ -286,8 +297,8 @@ function Campaign() {
   }, []);
 
   return (
-    <section ref={trackRef} className="home-test-track" style={{ height: `${(SLIDE_COUNT + 1) * 100}vh` }}>
-      <div className="home-test-stage" data-ink={slide.ink} data-dir={dir} data-slide={slide.id}>
+    <section ref={trackRef} className="home-test-track">
+      <div className="home-test-stage is-pinned" data-ink={slide.ink} data-dir={dir} data-slide={slide.id}>
         {HOME_TEST_SLIDES.map((item, index) => (
           <article
             key={item.id}
@@ -309,19 +320,21 @@ function Campaign() {
           </article>
         ))}
         <div className="home-test-copy">
-          <p className="home-test-kicker" key={slide.sectorId}>
-            {slide.sectorTitle}
-          </p>
-          <div className="home-test-headlines">
-            {HOME_TEST_SLIDES.map((item, index) => (
-              <div
-                key={item.id}
-                className={index === active ? 'is-active' : undefined}
-                aria-hidden={index === active ? undefined : true}
-              >
-                <Headline text={item.headline} sizeClass={statementSizeClass(item.headline)} />
-              </div>
-            ))}
+          <div className="home-test-copy-lockup">
+            <p className="home-test-kicker" key={slide.sectorId}>
+              {slide.sectorTitle}
+            </p>
+            <div className="home-test-headlines">
+              {HOME_TEST_SLIDES.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={index === active ? 'is-active' : undefined}
+                  aria-hidden={index === active ? undefined : true}
+                >
+                  <Headline text={item.headline} sizeClass={statementSizeClass(item.headline)} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -339,8 +352,10 @@ function StaticSectors() {
           </div>
           <div className="home-test-veil" />
           <div className="home-test-copy">
-            <p className="home-test-kicker">{slide.sectorTitle}</p>
-            <Headline text={slide.headline} sizeClass={statementSizeClass(slide.headline)} />
+            <div className="home-test-copy-lockup">
+              <p className="home-test-kicker">{slide.sectorTitle}</p>
+              <Headline text={slide.headline} sizeClass={statementSizeClass(slide.headline)} />
+            </div>
           </div>
         </section>
       ))}
@@ -408,14 +423,17 @@ function useHeaderHeight(): number | null {
   useEffect(() => {
     const header = document.querySelector('header');
     if (!header) return undefined;
-    const sync = () => setHeight(Math.round(header.getBoundingClientRect().height));
+    const sync = () => setHeight(Math.round(header.getBoundingClientRect().bottom));
     sync();
     const observer = new ResizeObserver(sync);
     observer.observe(header);
+    observer.observe(document.documentElement);
     window.addEventListener('resize', sync);
+    window.visualViewport?.addEventListener('resize', sync);
     return () => {
       observer.disconnect();
       window.removeEventListener('resize', sync);
+      window.visualViewport?.removeEventListener('resize', sync);
     };
   }, []);
 
