@@ -6,6 +6,12 @@ import { PunishmentPhoto } from "./PunishmentPhoto";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { Pill } from "./ui";
 
+function listNames(names: string[]) {
+  if (names.length <= 1) return names[0] ?? "";
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
+}
+
 export function MustBakeCallout({ week }: { week?: number }) {
   const { league } = useLeague();
   const published = league.episodes.filter((episode) => episode.published);
@@ -25,7 +31,7 @@ export function MustBakeCallout({ week }: { week?: number }) {
   const outstanding = owners.filter((owner) =>
     technicals.some((penalty) => penalty.companionId === owner.id && !technicalIsComplete(penalty)),
   );
-  const names = owners.map((owner) => owner.name).join(" and ");
+  const names = listNames(owners.map((owner) => owner.name));
 
   return (
     <section className="overflow-hidden rounded-[28px] border-2 border-raspberry bg-raspberry/10">
@@ -46,7 +52,7 @@ export function MustBakeCallout({ week }: { week?: number }) {
         <p className="mt-2 max-w-3xl text-sm leading-7 text-chocolate/80">
           {bakerName(league, last)} came last in the {episode.theme} technical.
           {outstanding.length > 0
-            ? ` Still outstanding: ${outstanding.map((owner) => owner.name).join(" and ")}. Upload a photo of the bake before ${technicalDeadlineLabel(episode.week)}.`
+            ? ` Still outstanding: ${listNames(outstanding.map((owner) => owner.name))}. Upload a photo of the bake before ${technicalDeadlineLabel(episode.week)}.`
             : " Bake photos are in. The technical is done."}
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-4">
