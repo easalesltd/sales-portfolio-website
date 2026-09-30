@@ -47,7 +47,7 @@ export function MustBakeCallout({ week }: { week?: number }) {
           <Pill tone="raspberry">Week {episode.week} technical</Pill>
         </div>
         <h2 className="mt-1 font-display text-3xl leading-tight text-tent-dark sm:text-4xl">
-          {names} {owners.length === 1 ? "has" : "have"} to bake this
+          {names} {owners.length === 1 ? "has" : "have"} to bake this week
         </h2>
         <p className="mt-2 max-w-3xl text-sm leading-7 text-chocolate/80">
           {bakerName(league, last)} came last in the {episode.theme} technical.

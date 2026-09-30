@@ -73,7 +73,7 @@ export function PenaltyBoard() {
                   </div>
                   <p className="mt-2 font-display text-3xl text-tent-dark">
                     {name}
-                    {penalty.kind === "technical" && !bakeDone ? " must bake this" : ""}
+                    {penalty.kind === "technical" && !bakeDone ? " must bake this week" : ""}
                   </p>
                   <p className="text-sm text-chocolate/70">
                     {penalty.bakerId ? `After ${bakerName(league, penalty.bakerId)}. ` : ""}

@@ -123,7 +123,9 @@ export default function TechnicalRecipesPage() {
             {owners.length > 0 ? (
               <div className="mt-5 rounded-[22px] bg-raspberry/10 px-4 py-3">
                 <p className="font-display text-2xl text-tent-dark">
-                  {owners.map((owner) => owner.name).join(" and ")} must bake this
+                  {owners.length === 1
+                    ? `${owners[0].name} must bake this week`
+                    : `${owners.slice(0, -1).map((owner) => owner.name).join(", ")} and ${owners.at(-1)?.name} must bake this week`}
                 </p>
                 <p className="text-sm leading-7 text-chocolate/75">
                   {last ? `${bakerName(league, last)} came last in the technical.` : ""}
