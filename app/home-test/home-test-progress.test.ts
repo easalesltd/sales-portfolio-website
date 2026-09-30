@@ -87,6 +87,17 @@ describe('home-test scroll mapping', () => {
     expect(copy).toBeGreaterThan(activeSlide);
   });
 
+  it('covers the last photo before the wholesale closer text comes in', () => {
+    const css = readFileSync(join(__dirname, 'home-test.css'), 'utf8');
+    const source = readFileSync(join(__dirname, 'HomeTestExperience.tsx'), 'utf8');
+    expect(css).toContain('.home-test-stage.is-covering::after');
+    expect(css).toContain('z-index: 20');
+    expect(css).toMatch(/\.home-test-close\s*\{[^}]*z-index:\s*1/);
+    expect(css).toContain('.home-test-close:not(.is-in) .home-test-close-inner');
+    expect(source).toContain('if (pin && !revealing) stage.classList.remove(\'is-covering\')');
+    expect(source).toContain('!revealing');
+  });
+
   it('paints the hero to the large viewport so the first mobile swipe does not uncover a black bar', () => {
     const css = readFileSync(join(__dirname, 'home-test.css'), 'utf8');
     const stage = css.match(/\.home-test-stage\s*\{([^}]+)\}/)?.[1] ?? '';

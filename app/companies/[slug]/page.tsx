@@ -420,10 +420,10 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid min-w-0 grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Company Information */}
             <div
-              className={`brand-card rounded-xl p-6 sm:p-8 shadow-lg transition-all duration-300 hover:shadow-xl ${
+              className={`brand-card min-w-0 overflow-hidden rounded-xl p-6 sm:p-8 shadow-lg transition-all duration-300 hover:shadow-xl ${
                 isCambridgeDarkBrand
                   ? 'border border-neutral-800'
                   : hasVideoBackground
@@ -445,7 +445,7 @@ export default async function CompanyPage({ params }: { params: Promise<{ slug: 
                 />
               </div>
               <div className="space-y-6">
-                <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 relative">
+                <h1 className="relative mb-4 max-w-full text-2xl font-bold leading-snug text-gray-900 break-words dark:text-white sm:text-3xl md:text-4xl">
                   {company.name}
                   {/* Dark bar on light SSR; switches with dark: when html.dark (Cambridge route) hydrates — avoids white-on-white flash */}
                   <div className="brand-rule h-1 w-28 mt-2 bg-neutral-950 dark:bg-white" />

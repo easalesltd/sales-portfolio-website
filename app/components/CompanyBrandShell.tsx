@@ -44,7 +44,11 @@ export default function CompanyBrandShell({
   } as CSSProperties;
 
   return (
-    <div className={`brand-honour ${className ?? ''}`.trim()} style={brandStyle}>
+    <div
+      className={`brand-honour ${className ?? ''}`.trim()}
+      data-brand={slug}
+      style={brandStyle}
+    >
       {children}
     </div>
   );

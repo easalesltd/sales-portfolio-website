@@ -171,7 +171,7 @@ const THEMES: Record<string, Omit<BrandPageTheme, 'slug'>> = {
     headingFont: 'jost',
     bodyFont: 'poppins',
     headingTransform: 'uppercase',
-    headingTracking: '0.12em',
+    headingTracking: '0.08em',
     radius: '0px',
   },
   'rudi-and-bear': {

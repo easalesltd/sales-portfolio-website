@@ -162,7 +162,8 @@ function Campaign() {
       const to = closerTop();
       revealing = true;
       locked = true;
-      markCloserIn();
+      const stage = track.querySelector('.home-test-stage');
+      stage?.classList.add('is-pinned', 'is-covering');
       window.cancelAnimationFrame(revealFrame);
       window.clearTimeout(lockTimer);
       const started = performance.now();
@@ -176,6 +177,7 @@ function Campaign() {
         window.scrollTo({ top: to, behavior: 'auto' });
         revealing = false;
         pinStage();
+        markCloserIn();
         lockTimer = window.setTimeout(() => {
           locked = false;
         }, 240);
@@ -255,15 +257,28 @@ function Campaign() {
     };
 
     const pinStage = () => {
-      track.querySelector('.home-test-stage')?.classList.toggle('is-pinned', !pastReel());
+      const stage = track.querySelector('.home-test-stage');
+      if (!stage) return;
+      const pin = !pastReel();
+      stage.classList.toggle('is-pinned', pin);
+      // Keep the black cover on while the closer ease is running. onScroll
+      // would otherwise strip is-covering on the first tick and the wholesale
+      // copy would paint over the last photo.
+      if (pin && !revealing) stage.classList.remove('is-covering');
     };
 
     const onScroll = () => {
       const closer = closerEl();
-      if (closer && closer.getBoundingClientRect().top < window.innerHeight * 0.78) {
+      pinStage();
+      const stage = track.querySelector('.home-test-stage');
+      if (
+        closer &&
+        !revealing &&
+        !stage?.classList.contains('is-pinned') &&
+        closer.getBoundingClientRect().top < window.innerHeight * 0.78
+      ) {
         markCloserIn();
       }
-      pinStage();
       if (locked) return;
       window.clearTimeout(snapTimer);
       snapTimer = window.setTimeout(() => {

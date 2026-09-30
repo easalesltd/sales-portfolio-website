@@ -122,6 +122,24 @@ body {
   letter-spacing: var(--brand-tracking);
   font-weight: 500;
 }
+
+.brand-honour[data-brand='cambridge-confectionery-company'] h1 {
+  text-transform: uppercase;
+}
+
+@media (max-width: 639px) {
+  .brand-honour h1 {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+  }
+
+  .brand-honour[data-brand='cambridge-confectionery-company'] h1 {
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+}
 .brand-honour .brand-card {
   background: var(--brand-card, #ffffff) !important;
   /* Cap full-pill radii so honour themes cannot turn page cards into stadiums. */
