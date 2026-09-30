@@ -29,29 +29,44 @@ export function SignedBar({
 export function FormBars({
   weeks,
 }: {
-  weeks: { week: number; theme?: string; points: number }[];
+  weeks: { week: number; theme?: string; points: number; last?: boolean }[];
 }) {
   if (weeks.length === 0) {
     return <p className="text-sm text-chocolate/60">No published weeks yet.</p>;
   }
   const max = Math.max(1, ...weeks.map((week) => Math.abs(week.points)));
   return (
-    <div className="flex h-28 items-end gap-2">
+    <div className="flex h-36 items-end gap-2">
       {weeks.map((week) => {
         const height = (Math.abs(week.points) / max) * 100;
         return (
           <div key={week.week} className="flex min-w-0 flex-1 flex-col items-center justify-end gap-1">
-            <span className={`text-xs font-bold ${week.points < 0 ? "text-raspberry" : "text-tent"}`}>
+            {week.last ? (
+              <span className="rounded-full bg-raspberry px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-flour">
+                Last
+              </span>
+            ) : (
+              <span className="h-4" aria-hidden="true" />
+            )}
+            <span className={`text-xs font-bold ${week.last || week.points < 0 ? "text-raspberry" : "text-tent"}`}>
               {week.points > 0 ? "+" : ""}
               {week.points}
             </span>
             <div className="flex h-16 w-full items-end">
               <div
-                className={`w-full rounded-t-lg ${week.points < 0 ? "bg-raspberry" : week.points > 0 ? "bg-tent" : "bg-[#d8c4a4]"}`}
+                className={`w-full rounded-t-lg ${
+                  week.last
+                    ? "bg-raspberry ring-2 ring-[#7a1830]"
+                    : week.points < 0
+                      ? "bg-raspberry"
+                      : week.points > 0
+                        ? "bg-tent"
+                        : "bg-[#d8c4a4]"
+                }`}
                 style={{ height: `${Math.max(height, week.points === 0 ? 8 : 12)}%` }}
               />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-chocolate/50">
+            <span className={`text-[10px] font-bold uppercase tracking-[0.12em] ${week.last ? "text-raspberry" : "text-chocolate/50"}`}>
               W{week.week}
             </span>
           </div>

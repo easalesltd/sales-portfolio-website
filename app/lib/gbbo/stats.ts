@@ -3,6 +3,7 @@ import {
   bakerEliminatedIn,
   bakerName,
   companionsOwningBaker,
+  lowestScorersForWeek,
   scoreCompanionWeek,
   scoreEpisodeForBaker,
   teamForWeek,
@@ -386,12 +387,14 @@ export function companionForm(league: LeagueState) {
     .map((companion) => {
       const weeks = publishedEpisodes(league).map((episode) => {
         const score = scoreCompanionWeek(league, companion.id, episode.week);
+        const last = lowestScorersForWeek(league, episode.week).some((row) => row.companionId === companion.id);
         return {
           week: episode.week,
           theme: episode.theme || WEEK_THEMES[episode.week - 1] || `Week ${episode.week}`,
           points: score.points,
           raw: score.rawPoints,
           joker: score.joker,
+          last,
         };
       });
       return {

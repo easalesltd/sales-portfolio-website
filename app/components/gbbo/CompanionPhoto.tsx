@@ -10,11 +10,12 @@ export function CompanionPhoto({
 }: {
   name: string;
   photo?: string;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
   crop?: "face" | "scene";
 }) {
   const [open, setOpen] = useState(false);
-  const box = size === "md" ? "h-14 w-14" : "h-11 w-11";
+  const box = size === "lg" ? "h-24 w-24" : size === "md" ? "h-14 w-14" : "h-11 w-11";
+  const initial = size === "lg" ? "text-4xl" : "text-lg";
   const focus = crop === "scene" ? "object-center" : "object-[center_18%]";
   const openFocus = crop === "scene" ? "object-center" : "object-[center_15%]";
 
@@ -31,7 +32,7 @@ export function CompanionPhoto({
     // eslint-disable-next-line @next/next/no-img-element
     <img src={photo} alt="" className={`h-full w-full object-cover ${focus}`} />
   ) : (
-    <span className="font-display text-lg text-flour">{name.slice(0, 1)}</span>
+    <span className={`font-display text-flour ${initial}`}>{name.slice(0, 1)}</span>
   );
 
   if (!photo) {

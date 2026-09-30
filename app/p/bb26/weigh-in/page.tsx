@@ -1,5 +1,6 @@
 "use client";
 
+import { LastInPointsBoard } from "@/app/components/gbbo/LastInPointsBoard";
 import { FormBars, SignedBar } from "@/app/components/gbbo/StatBars";
 import { Card, Empty, Pill, ScoreBadge } from "@/app/components/gbbo/ui";
 import {
@@ -42,6 +43,8 @@ export default function WeighInPage() {
 
   return (
     <div className="space-y-6">
+      <LastInPointsBoard />
+
       <Card eyebrow="The Spreadsheet of Shame" title="The Weigh-In">
         <p className="max-w-3xl text-sm leading-7 text-chocolate/75">
           Every published point, tear, drop and handshake, weighed like a slightly dry Madeira.
@@ -95,8 +98,8 @@ export default function WeighInPage() {
 
       <Card eyebrow="Companion form" title="Who drafted the mess">
         <p className="mb-5 text-sm leading-7 text-chocolate/75">
-          Week-by-week companion scores, including any joker. This is the same table as the league,
-          drawn as if it were a very serious sport.
+          Week-by-week companion scores, including any joker. A week stamped Last is the fewest
+          points in the tent that week. A tie stamps every companion on the bottom.
         </p>
         <div className="space-y-4">
           {companions.map((row) => (
@@ -105,9 +108,27 @@ export default function WeighInPage() {
         </div>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {companions.map((row) => (
-            <div key={`${row.companionId}-form`} className="rounded-2xl border border-[#e7d3b4] bg-flour/60 p-4">
+            <div
+              key={`${row.companionId}-form`}
+              className={`rounded-2xl border p-4 ${
+                row.weeks.some((week) => week.last)
+                  ? "border-raspberry bg-raspberry/10"
+                  : "border-[#e7d3b4] bg-flour/60"
+              }`}
+            >
               <div className="mb-3 flex items-start justify-between gap-3">
-                <p className="min-w-0 font-display text-2xl text-tent-dark">{row.name}</p>
+                <div className="min-w-0">
+                  <p className="font-display text-2xl text-tent-dark">{row.name}</p>
+                  {row.weeks.some((week) => week.last) ? (
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-raspberry">
+                      Last in{" "}
+                      {row.weeks
+                        .filter((week) => week.last)
+                        .map((week) => `week ${week.week}`)
+                        .join(", ")}
+                    </p>
+                  ) : null}
+                </div>
                 <ScoreBadge value={row.total} className="shrink-0" />
               </div>
               <FormBars weeks={row.weeks} />

@@ -429,6 +429,33 @@ export function lowestScorersForWeek(league: LeagueState, week: number): Compani
   return scores.filter((score) => score.points === lowest);
 }
 
+export type WeeklyLastPlace = {
+  week: number;
+  title: string;
+  theme: string;
+  points: number;
+  holders: CompanionWeekScore[];
+};
+
+/** Published weeks only, oldest first. Each row is the companion or companions on the fewest points. */
+export function weeklyLastPlace(league: LeagueState): WeeklyLastPlace[] {
+  return league.episodes
+    .filter((episode) => episode.published)
+    .sort((a, b) => a.week - b.week)
+    .map((episode) => {
+      const holders = [...lowestScorersForWeek(league, episode.week)].sort((a, b) =>
+        companionName(league, a.companionId).localeCompare(companionName(league, b.companionId)),
+      );
+      return {
+        week: episode.week,
+        title: episode.title,
+        theme: episode.theme,
+        points: holders[0]?.points ?? 0,
+        holders,
+      };
+    });
+}
+
 export function companionTotals(league: LeagueState): { companionId: string; points: number; weeks: CompanionWeekScore[] }[] {
   return league.companions.map((companion) => {
     const weeks = league.episodes

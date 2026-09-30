@@ -1,6 +1,7 @@
 "use client";
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
+import { LastInPointsBoard } from "@/app/components/gbbo/LastInPointsBoard";
 import { PenaltyBoard } from "@/app/components/gbbo/PenaltyBoard";
 import { PunishmentPhoto } from "@/app/components/gbbo/PunishmentPhoto";
 import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
@@ -22,6 +23,7 @@ export default function CrimewatchPage() {
 
   return (
     <div className="space-y-6">
+      <LastInPointsBoard />
       <PenaltyBoard />
 
       <Card eyebrow="Have you seen this companion?" title="Village Crimewatch">
