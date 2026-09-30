@@ -7237,7 +7237,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-29 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-30 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -10438,14 +10438,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Manchester United', tla: 'MUN' },
   },
   {
-    id: '2026-09-26-cra-bar',
-    utcDate: '2026-09-26T11:30Z',
-    homeTeam: { name: 'Crawley Town', tla: 'CRA' },
-    awayTeam: { name: 'Barnet', tla: 'BAR' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-09-26-bed-her',
     utcDate: '2026-09-26T14:00:00Z',
     homeTeam: { name: 'Bedford Town', tla: 'BED' },
@@ -10906,7 +10898,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -14038,6 +14030,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-24T19:45Z',
     homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
     awayTeam: { name: 'Lincoln City', tla: 'LIN' },
+  },
+  {
+    id: '2026-11-24-cra-bar',
+    utcDate: '2026-11-24T19:45Z',
+    homeTeam: { name: 'Crawley Town', tla: 'CRA' },
+    awayTeam: { name: 'Barnet', tla: 'BAR' },
   },
   {
     id: '2026-11-24-fgr-std',
