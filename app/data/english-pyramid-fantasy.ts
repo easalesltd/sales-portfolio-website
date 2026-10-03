@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Ben\'s Tamworth beat Sutton United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Ben is on 212.\n\nNest\'s Southend United drew 1-1 with Eastleigh. Plus 1 for the draw, net plus 1. Nest is on 185.\n\nDave\'s Sutton United lost 2-0 at Tamworth. No win points, net zero. Dave is on 172.\n\nChris still leads on 252 without a club kicking a ball.\n\nTable: Chris 252, Scott 240, Jon 216, Ben 212, Nest 185, Ash 175, Dave 172.';
+  'Scott\'s Chesterfield beat Tranmere Rovers 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Scott is on 244.\n\nDave\'s Tranmere Rovers lost 4-2 at Chesterfield. No win points, minus 1 for leaking three, net minus 1. Dave is on 171.\n\nChris still leads on 252 without a club kicking a ball.\n\nTable: Chris 252, Scott 244, Jon 216, Ben 212, Nest 185, Ash 175, Dave 171.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -7244,6 +7244,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Sutton United', tla: 'SUT' },
     homeGoals: 2,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-03-chs-trn',
+    utcDate: '2026-10-03T11:30Z',
+    homeTeam: { name: 'Chesterfield', tla: 'CHS' },
+    awayTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
+    homeGoals: 4,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
