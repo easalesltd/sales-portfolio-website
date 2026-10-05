@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useLeague } from "@/app/lib/gbbo/store";
 import { Button } from "./ui";
 
 const CHUNK_BYTES = 400_000;
@@ -21,7 +22,9 @@ export function PunishmentUpload({
   onUploaded: (league: unknown) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { notify } = useLeague();
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState("");
   const photo = kind === "technical";
   const either = kind === "slut_drop";
@@ -40,6 +43,7 @@ export function PunishmentUpload({
       return;
     }
     setBusy(true);
+    setProgress(0);
     setError("");
     const total = Math.max(1, Math.ceil(file.size / CHUNK_BYTES));
     const uploadId = `vid_${Math.random().toString(36).slice(2, 8)}${Date.now().toString(36).slice(-4)}`;
@@ -66,7 +70,11 @@ export function PunishmentUpload({
           setError(data.error ?? (photo ? "That photo could not be uploaded." : "That video could not be uploaded."));
           return;
         }
+        setProgress(Math.round(((index + 1) / total) * 100));
         if (data.complete && data.league) {
+          const media = file.type.startsWith("image/") ? "photo" : "video";
+          const what = kind === "technical" ? "bake photo" : `${kind === "slut_drop" ? "slut drop" : "beer baguette"} ${media}`;
+          notify(`Upload complete. Your ${what} is saved and showing on Crimewatch.`);
           onUploaded(data.league);
           return;
         }
@@ -99,7 +107,7 @@ export function PunishmentUpload({
         className="px-3 py-1 text-xs uppercase tracking-[0.12em]"
         onClick={() => inputRef.current?.click()}
       >
-        {busy ? "Uploading…" : label}
+        {busy ? `Uploading… ${progress}%` : label}
       </Button>
       {error ? <span className="max-w-[16rem] text-xs text-raspberry">{error}</span> : null}
     </span>

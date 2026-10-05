@@ -27,6 +27,7 @@ type LeagueContextValue = {
   }) => Promise<string | null>;
   completeSlutDrop: (companionId: string, week: number) => Promise<string | null>;
   acceptLeague: (next: LeagueState) => void;
+  notify: (message: string) => void;
 };
 
 const LeagueContext = createContext<LeagueContextValue | null>(null);
@@ -44,6 +45,17 @@ export function LeagueProvider({ children }: { children: React.ReactNode }) {
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
   const skipSave = useRef(true);
+  const [notice, setNotice] = useState<{ id: number; message: string } | null>(null);
+
+  const notify = useCallback((message: string) => {
+    setNotice({ id: Date.now(), message });
+  }, []);
+
+  useEffect(() => {
+    if (!notice) return;
+    const timer = window.setTimeout(() => setNotice(null), 6000);
+    return () => window.clearTimeout(timer);
+  }, [notice]);
 
   const refresh = useCallback(async () => {
     const response = await fetch("/api/gbbo-league", { credentials: "include" });
@@ -128,11 +140,32 @@ export function LeagueProvider({ children }: { children: React.ReactNode }) {
   }, [acceptLeague]);
 
   const value = useMemo(
-    () => ({ league, loaded, saving, update, replace, refresh, submitSide, completeSlutDrop, acceptLeague }),
-    [league, loaded, saving, update, replace, refresh, submitSide, completeSlutDrop, acceptLeague],
+    () => ({ league, loaded, saving, update, replace, refresh, submitSide, completeSlutDrop, acceptLeague, notify }),
+    [league, loaded, saving, update, replace, refresh, submitSide, completeSlutDrop, acceptLeague, notify],
   );
 
-  return <LeagueContext.Provider value={value}>{children}</LeagueContext.Provider>;
+  return (
+    <LeagueContext.Provider value={value}>
+      {children}
+      {notice ? (
+        <div
+          key={notice.id}
+          role="status"
+          aria-live="polite"
+          className="fixed inset-x-4 bottom-6 z-50 mx-auto flex max-w-md items-center justify-between gap-3 rounded-2xl bg-tent-dark px-5 py-4 text-flour shadow-xl"
+        >
+          <p className="text-sm font-semibold leading-snug">{notice.message}</p>
+          <button
+            type="button"
+            className="shrink-0 text-xs uppercase tracking-[0.12em] text-flour/70 hover:text-flour"
+            onClick={() => setNotice(null)}
+          >
+            Close
+          </button>
+        </div>
+      ) : null}
+    </LeagueContext.Provider>
+  );
 }
 
 export function useLeague() {
