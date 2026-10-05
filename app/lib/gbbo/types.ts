@@ -150,6 +150,7 @@ export type LeagueState = {
   slutDrops: SlutDrop[];
   technicalRecipes: TechnicalRecipe[];
   technicalCatalogue: TechnicalCatalogueEntry[];
+  resetsApplied?: string[];
 };
 
 export type ScoreLine = {

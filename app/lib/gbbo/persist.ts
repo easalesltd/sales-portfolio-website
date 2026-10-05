@@ -3,12 +3,19 @@ import { mkdir, readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
 import { bakerIdForName, companionIdForName, gbboSlug } from "./identity";
-import { applySlutDropEscalations, applyTechnicalEscalations, ensureDemocracyBaguette, resetVideolessSlutDrops } from "./league";
+import {
+  applySlutDropEscalations,
+  applyTechnicalEscalations,
+  ensureDemocracyBaguette,
+  resetVideolessSlutDrops,
+  resetWeekSidesAndJokers,
+} from "./league";
 import { SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
 import type { LeagueState } from "./types";
 
 const REDIS_KEY = "gbbo:companion-league:2026";
 const DATA_PATH = join(process.cwd(), "data", "gbbo-league.json");
+const WEEK_3_SIDES_AND_JOKERS_RESET = { key: "2026-week-3-sides-and-jokers", week: 3 };
 
 export function isLeague(value: unknown): value is LeagueState {
   return Boolean(value && typeof value === "object" && Array.isArray((value as LeagueState).companions));
@@ -155,11 +162,12 @@ export async function readGbboLeague(): Promise<LeagueState> {
     const file = await readFromFile();
     league = stabilizeLeague(file ?? createEmptyLeague());
   }
+  const sidesReset = resetWeekSidesAndJokers(league, WEEK_3_SIDES_AND_JOKERS_RESET.key, WEEK_3_SIDES_AND_JOKERS_RESET.week);
   const reset = resetVideolessSlutDrops(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (reset || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || reset || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;

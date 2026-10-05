@@ -292,6 +292,17 @@ export function punishmentExhibits(league: LeagueState): PunishmentExhibit[] {
   );
 }
 
+/** One-off ledger reset: clears a week's player-picked sides and every joker, once per `key`. */
+export function resetWeekSidesAndJokers(league: LeagueState, key: string, week: number): boolean {
+  league.resetsApplied = league.resetsApplied ?? [];
+  if (league.resetsApplied.includes(key)) return false;
+  league.substitutions = league.substitutions.filter((sub) => sub.week !== week || sub.autoByChief);
+  league.sideConfirmations = (league.sideConfirmations ?? []).filter((item) => item.week !== week);
+  league.jokers = [];
+  league.resetsApplied.push(key);
+  return true;
+}
+
 export function resetVideolessSlutDrops(league: LeagueState): boolean {
   let changed = false;
   for (const drop of league.slutDrops ?? []) {
