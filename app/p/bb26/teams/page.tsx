@@ -72,6 +72,7 @@ export default function TeamsPage() {
               companion={companion}
               week={week}
               locked={formLocked}
+              jokerLocked={locked}
               lockReason={reason}
             />
           );

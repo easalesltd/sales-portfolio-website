@@ -23,11 +23,13 @@ export function TeamSideForm({
   week,
   locked,
   lockReason,
+  jokerLocked = locked,
 }: {
   companion: Companion;
   week: number;
   locked: boolean;
   lockReason?: string;
+  jokerLocked?: boolean;
 }) {
   const { league, submitSide } = useLeague();
   const size = teamSizeForWeek(league, week);
@@ -52,7 +54,7 @@ export function TeamSideForm({
   const canSubmit = !locked && (legal || shrinkingOk);
   const submitted = sideConfirmed(league, companion.id, week);
   const joker = jokerForCompanion(league, companion.id);
-  const canJoker = !locked && week <= 4 && !joker;
+  const canJoker = !jokerLocked && week <= 4 && !joker;
   const [whyOpen, setWhyOpen] = useState(false);
   const disgrace = companionInDisgrace(league, companion.id);
   const portrait = companionPortrait(companion, disgrace);
@@ -180,15 +182,15 @@ export function TeamSideForm({
           <Button
             tone="butter"
             disabled={!canJoker}
-            title={locked ? (lockReason ?? "The change window is closed.") : undefined}
+            title={jokerLocked ? "The change window is closed." : undefined}
             onClick={() => {
-              void submitSide({
-                companionSlug: gbboSlug(companion.name),
-                bakerIds: filled.length === size ? filled : undefined,
-                keepLastWeek: filled.length !== size,
-                playJoker: true,
-              }).then((error) => {
-                setMessage(error ?? "Joker played for this week.");
+              void submitSide({ companionSlug: gbboSlug(companion.name), jokerOnly: true }).then((error) => {
+                setMessage(
+                  error ??
+                    (submitted
+                      ? `Joker played for week ${week}.`
+                      : `Joker played for week ${week}. You can still change one baker and submit your side.`),
+                );
               });
             }}
           >

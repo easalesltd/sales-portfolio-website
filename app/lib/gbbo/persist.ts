@@ -16,6 +16,7 @@ import type { LeagueState } from "./types";
 const REDIS_KEY = "gbbo:companion-league:2026";
 const DATA_PATH = join(process.cwd(), "data", "gbbo-league.json");
 const WEEK_3_SIDES_AND_JOKERS_RESET = { key: "2026-week-3-sides-and-jokers", week: 3 };
+const LEE_WEEK_3_RESET = { key: "2026-week-3-lee-side-and-joker", week: 3, companion: "Lee" };
 
 export function isLeague(value: unknown): value is LeagueState {
   return Boolean(value && typeof value === "object" && Array.isArray((value as LeagueState).companions));
@@ -163,11 +164,17 @@ export async function readGbboLeague(): Promise<LeagueState> {
     league = stabilizeLeague(file ?? createEmptyLeague());
   }
   const sidesReset = resetWeekSidesAndJokers(league, WEEK_3_SIDES_AND_JOKERS_RESET.key, WEEK_3_SIDES_AND_JOKERS_RESET.week);
+  const leeReset = resetWeekSidesAndJokers(
+    league,
+    LEE_WEEK_3_RESET.key,
+    LEE_WEEK_3_RESET.week,
+    companionIdForName(LEE_WEEK_3_RESET.companion),
+  );
   const reset = resetVideolessSlutDrops(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || reset || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || leeReset || reset || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;

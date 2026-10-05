@@ -295,13 +295,21 @@ export function punishmentExhibits(league: LeagueState): PunishmentExhibit[] {
   );
 }
 
-/** One-off ledger reset: clears a week's player-picked sides and every joker, once per `key`. */
-export function resetWeekSidesAndJokers(league: LeagueState, key: string, week: number): boolean {
+/**
+ * One-off ledger reset, applied once per `key`: clears a week's player-picked sides and jokers.
+ * With `companionId`, only that companion's week is reset; otherwise every side that week and every joker.
+ */
+export function resetWeekSidesAndJokers(league: LeagueState, key: string, week: number, companionId?: string): boolean {
   league.resetsApplied = league.resetsApplied ?? [];
   if (league.resetsApplied.includes(key)) return false;
-  league.substitutions = league.substitutions.filter((sub) => sub.week !== week || sub.autoByChief);
-  league.sideConfirmations = (league.sideConfirmations ?? []).filter((item) => item.week !== week);
-  league.jokers = [];
+  const targeted = (id: string) => !companionId || id === companionId;
+  league.substitutions = league.substitutions.filter(
+    (sub) => sub.week !== week || sub.autoByChief || !targeted(sub.companionId),
+  );
+  league.sideConfirmations = (league.sideConfirmations ?? []).filter(
+    (item) => item.week !== week || !targeted(item.companionId),
+  );
+  league.jokers = companionId ? league.jokers.filter((joker) => joker.companionId !== companionId) : [];
   league.resetsApplied.push(key);
   return true;
 }

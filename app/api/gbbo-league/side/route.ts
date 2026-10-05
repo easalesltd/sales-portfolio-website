@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     bakerIds?: string[];
     playJoker?: boolean;
     keepLastWeek?: boolean;
+    jokerOnly?: boolean;
   };
 
   const slug = gbboSlug(body.companionSlug ?? "");
@@ -42,6 +43,17 @@ export async function POST(request: Request) {
 
   const week = gate.week;
   const chief = await isGbboChiefRequest(request);
+  if (body.jokerOnly) {
+    if (week > 4) {
+      return NextResponse.json({ error: "The joker can only be played in weeks 1 to 4." }, { status: 400 });
+    }
+    if (league.jokers.some((joker) => joker.companionId === companion.id)) {
+      return NextResponse.json({ error: "Your joker has already been played." }, { status: 400 });
+    }
+    league.jokers.push({ companionId: companion.id, week, autoApplied: false });
+    await writeGbboLeague(league);
+    return NextResponse.json(await readGbboLeague());
+  }
   if (sideConfirmed(league, companion.id, week) && !chief) {
     return NextResponse.json({ error: "Your week is locked. You have already submitted this side." }, { status: 403 });
   }

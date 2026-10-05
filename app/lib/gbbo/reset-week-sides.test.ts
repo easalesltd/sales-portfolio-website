@@ -32,4 +32,27 @@ describe("resetWeekSidesAndJokers", () => {
     expect(league.jokers).toHaveLength(1);
     expect(league.sideConfirmations).toHaveLength(2);
   });
+
+  it("resets only one companion's week when a companion is given", () => {
+    const league = createEmptyLeague();
+    const lee = companionIdForName("Lee");
+    const nest = companionIdForName("Nest");
+    league.substitutions = [
+      { id: "lee-3", week: 3, companionId: lee, outBakerId: bakerIdForName("Mo"), inBakerId: null, autoByChief: false },
+      { id: "nest-3", week: 3, companionId: nest, outBakerId: bakerIdForName("Gary"), inBakerId: bakerIdForName("Mo"), autoByChief: false },
+    ];
+    league.sideConfirmations = [
+      { companionId: lee, week: 3 },
+      { companionId: nest, week: 3 },
+    ];
+    league.jokers = [
+      { companionId: lee, week: 3, autoApplied: false },
+      { companionId: nest, week: 3, autoApplied: false },
+    ];
+
+    expect(resetWeekSidesAndJokers(league, "lee-reset", 3, lee)).toBe(true);
+    expect(league.substitutions.map((sub) => sub.id)).toEqual(["nest-3"]);
+    expect(league.sideConfirmations).toEqual([{ companionId: nest, week: 3 }]);
+    expect(league.jokers).toEqual([{ companionId: nest, week: 3, autoApplied: false }]);
+  });
 });
