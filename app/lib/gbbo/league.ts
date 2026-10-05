@@ -264,6 +264,7 @@ export type PunishmentExhibit = {
   companionId: string;
   kind: "slut_drop" | "beer_baguette" | "technical";
   src: string | null;
+  photo: boolean;
   escalated: boolean;
 };
 
@@ -274,6 +275,7 @@ export function punishmentExhibits(league: LeagueState): PunishmentExhibit[] {
     companionId: drop.companionId,
     kind: "slut_drop" as const,
     src: slutDropVideoSrc(drop),
+    photo: drop.mediaType === "photo",
     escalated: drop.escalated,
   }));
   for (const penalty of league.penalties ?? []) {
@@ -284,6 +286,7 @@ export function punishmentExhibits(league: LeagueState): PunishmentExhibit[] {
       companionId: penalty.companionId,
       kind: penalty.kind,
       src: penaltyVideoSrc(penalty),
+      photo: penalty.kind === "technical",
       escalated: false,
     });
   }

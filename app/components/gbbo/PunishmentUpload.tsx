@@ -24,13 +24,18 @@ export function PunishmentUpload({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const photo = kind === "technical";
+  const either = kind === "slut_drop";
 
   async function sendFile(file: File) {
     if (photo && file.type && !file.type.startsWith("image/")) {
       setError("That file is not a photo of the bake.");
       return;
     }
-    if (!photo && !file.type.startsWith("video/")) {
+    if (either && !file.type.startsWith("video/") && !file.type.startsWith("image/")) {
+      setError("That file is not a photo or video.");
+      return;
+    }
+    if (!photo && !either && !file.type.startsWith("video/")) {
       setError("That file is not a video.");
       return;
     }
@@ -80,7 +85,7 @@ export function PunishmentUpload({
       <input
         ref={inputRef}
         type="file"
-        accept={photo ? "image/*" : "video/*"}
+        accept={photo ? "image/*" : either ? "image/*,video/*" : "video/*"}
         className="sr-only"
         onChange={(event) => {
           const file = event.target.files?.[0];

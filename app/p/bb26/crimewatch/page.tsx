@@ -69,8 +69,11 @@ export default function CrimewatchPage() {
                       </p>
                     </div>
                   </div>
-                  {item.kind === "technical" ? (
-                    <PunishmentPhoto src={item.src} label={`${name} · week ${item.week} technical bake`} />
+                  {item.photo ? (
+                    <PunishmentPhoto
+                      src={item.src}
+                      label={`${name} · week ${item.week} ${item.kind === "slut_drop" ? "slut drop" : "technical bake"}`}
+                    />
                   ) : (
                     <PunishmentVideo
                       src={item.src}
@@ -103,7 +106,7 @@ export default function CrimewatchPage() {
                       <p className="font-display text-2xl text-tent-dark">{name}</p>
                       <p className="text-sm text-chocolate/70">
                         {item.kind === "slut_drop"
-                          ? "Owes a filmed slut drop"
+                          ? "Owes a slut drop photo or video"
                           : item.kind === "technical"
                             ? "Owes a photo of the technical bake"
                             : "Owes a filmed beer baguette"}

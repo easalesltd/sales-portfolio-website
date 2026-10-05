@@ -122,7 +122,7 @@ export function LeagueProvider({ children }: { children: React.ReactNode }) {
       body: JSON.stringify({ companionId, week }),
     });
     const data = (await response.json()) as LeagueState & { error?: string };
-    if (!response.ok) return data.error ?? "Upload a video of the slut drop. A button press is not enough.";
+    if (!response.ok) return data.error ?? "Upload a photo or video of the slut drop. A button press is not enough.";
     acceptLeague(data);
     return null;
   }, [acceptLeague]);

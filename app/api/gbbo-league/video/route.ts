@@ -41,6 +41,10 @@ export async function POST(request: Request) {
     if (mime && !mime.startsWith("image/")) {
       return NextResponse.json({ error: "That file is not a photo of the bake." }, { status: 400 });
     }
+  } else if (kind === "slut_drop") {
+    if (!mime.startsWith("video/") && !mime.startsWith("image/")) {
+      return NextResponse.json({ error: "That file is not a photo or video." }, { status: 400 });
+    }
   } else if (!mime.startsWith("video/")) {
     return NextResponse.json({ error: "That file is not a video." }, { status: 400 });
   }
@@ -83,12 +87,14 @@ export async function POST(request: Request) {
   }
 
   if (kind === "slut_drop") {
+    const mediaType = mime.startsWith("image/") ? "photo" : "video";
     league.slutDrops = league.slutDrops ?? [];
     const existing = slutDropFor(league, companion.id, week);
     if (existing) {
       existing.completed = true;
       existing.completedAt = existing.completedAt ?? new Date().toISOString();
       existing.videoId = record.id;
+      existing.mediaType = mediaType;
     } else {
       league.slutDrops.push({
         week,
@@ -96,6 +102,7 @@ export async function POST(request: Request) {
         completed: true,
         completedAt: new Date().toISOString(),
         videoId: record.id,
+        mediaType,
         escalated: false,
       });
     }

@@ -116,6 +116,7 @@ export type SlutDrop = {
   completed: boolean;
   completedAt: string | null;
   videoId: string | null;
+  mediaType?: "photo" | "video";
   escalated: boolean;
 };
 
