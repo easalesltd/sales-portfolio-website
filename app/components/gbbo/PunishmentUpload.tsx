@@ -81,7 +81,6 @@ export function PunishmentUpload({
         ref={inputRef}
         type="file"
         accept={photo ? "image/*" : "video/*"}
-        capture="environment"
         className="sr-only"
         onChange={(event) => {
           const file = event.target.files?.[0];
