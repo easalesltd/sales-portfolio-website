@@ -7424,7 +7424,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-09-30 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-06 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -11059,14 +11059,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
   },
   {
-    id: '2026-10-03-lut-don',
-    utcDate: '2026-10-03T14:00Z',
-    homeTeam: { name: 'Luton Town', tla: 'LUT' },
-    awayTeam: { name: 'Doncaster Rovers', tla: 'DON' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-10-03-pet-nco',
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Peterborough United', tla: 'PET' },
@@ -12681,6 +12673,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-27T19:45Z',
     homeTeam: { name: 'Leicester City', tla: 'LEI' },
     awayTeam: { name: 'Wigan Athletic', tla: 'WGA' },
+  },
+  {
+    id: '2026-10-27-lut-don',
+    utcDate: '2026-10-27T19:45Z',
+    homeTeam: { name: 'Luton Town', tla: 'LUT' },
+    awayTeam: { name: 'Doncaster Rovers', tla: 'DON' },
   },
   {
     id: '2026-10-27-oxf-stp',
