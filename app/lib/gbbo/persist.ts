@@ -4,6 +4,7 @@ import { dirname, join } from "path";
 import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
 import { bakerIdForName, companionIdForName, gbboSlug } from "./identity";
 import {
+  applyEpisodeResult,
   applySlutDropEscalations,
   applyTechnicalEscalations,
   ensureDemocracyBaguette,
@@ -12,11 +13,36 @@ import {
 } from "./league";
 import { SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
 import type { LeagueState } from "./types";
+import type { EpisodeResult } from "./league";
 
 const REDIS_KEY = "gbbo:companion-league:2026";
 const DATA_PATH = join(process.cwd(), "data", "gbbo-league.json");
 const WEEK_3_SIDES_AND_JOKERS_RESET = { key: "2026-week-3-sides-and-jokers", week: 3 };
 const LEE_WEEK_3_RESET = { key: "2026-week-3-lee-side-and-joker", week: 3, companion: "Lee" };
+const WEEK_3_RESULT_KEY = "2026-week-3-bread-results";
+
+function week3Result(): EpisodeResult {
+  const id = bakerIdForName;
+  return {
+    starBakerId: id("Clara"),
+    eliminatedBakerId: id("Shannon"),
+    technical: [
+      { bakerId: id("Gabe"), place: 1 },
+      { bakerId: id("Mo"), place: 2 },
+      { bakerId: id("Clara"), place: 3 },
+      { bakerId: id("Yannis"), place: 9 },
+      { bakerId: id("Molly"), place: 10 },
+      { bakerId: id("Shannon"), place: 11 },
+    ],
+    handshakes: [id("Moyin")],
+    innuendos: [],
+    drops: { [id("Moyin")]: 1 },
+    cries: { [id("Shannon")]: 1 },
+    recapSource: "Chief companion, Bread Week",
+    justification:
+      "Clara was Star Baker. Shannon went home. In the technical Gabe was first, Mo second and Clara third. Shannon finished last (−3), Molly second last (−2) and Yannis third last (−1). Moyin received a Hollywood handshake (+5) but dropped something on the floor (−3). Shannon had a little cry (−3).",
+  };
+}
 
 export function isLeague(value: unknown): value is LeagueState {
   return Boolean(value && typeof value === "object" && Array.isArray((value as LeagueState).companions));
@@ -170,11 +196,12 @@ export async function readGbboLeague(): Promise<LeagueState> {
     LEE_WEEK_3_RESET.week,
     companionIdForName(LEE_WEEK_3_RESET.companion),
   );
+  const week3Published = applyEpisodeResult(league, WEEK_3_RESULT_KEY, 3, week3Result());
   const reset = resetVideolessSlutDrops(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || leeReset || reset || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || leeReset || week3Published || reset || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;

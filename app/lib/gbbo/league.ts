@@ -573,6 +573,23 @@ export function episodeScoringLines(league: LeagueState, episode: EpisodeScore):
   return lines;
 }
 
+export type EpisodeResult = Pick<
+  EpisodeScore,
+  "starBakerId" | "eliminatedBakerId" | "technical" | "handshakes" | "innuendos" | "drops" | "cries" | "recapSource" | "justification"
+>;
+
+/** One-off ledger entry, applied once per `key`: records an episode's results and publishes it. */
+export function applyEpisodeResult(league: LeagueState, key: string, week: number, result: EpisodeResult): boolean {
+  league.resetsApplied = league.resetsApplied ?? [];
+  if (league.resetsApplied.includes(key)) return false;
+  const row = league.episodes.find((item) => item.week === week);
+  if (!row) return false;
+  Object.assign(row, structuredClone(result));
+  publishEpisode(league, week);
+  league.resetsApplied.push(key);
+  return true;
+}
+
 export function publishEpisode(league: LeagueState, week: number): void {
   const row = league.episodes.find((item) => item.week === week);
   if (!row) return;
