@@ -27,7 +27,7 @@ export function PenaltyBoard() {
     return (
       <Empty
         title="No penalties yet"
-        body="The companion whose baker finishes last in the technical must bake it and upload a photo before the next episode. Miss that, and a filmed beer baguette is added."
+        body="The companion whose baker finishes last in the technical must bake it and upload a photo before the next episode. If nobody had them, it passes to whoever had the next-lowest baker. Miss that, and a filmed beer baguette is added."
       />
     );
   }

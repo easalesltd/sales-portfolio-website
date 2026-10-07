@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
-import { bakerName, companionsOwningBaker, lowestTechnicalBaker } from "@/app/lib/gbbo/league";
+import { bakerName, lowestTechnicalBaker, ordinal, technicalPenaltyTarget } from "@/app/lib/gbbo/league";
 import { OFFICIAL_TECHNICAL_INDEX } from "@/app/lib/gbbo/recipes";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
@@ -85,7 +85,8 @@ export default function TechnicalRecipesPage() {
         const episode = league.episodes.find((item) => item.week === week);
         const recipe = league.technicalRecipes.find((item) => item.week === week);
         const last = episode ? lowestTechnicalBaker(episode) : null;
-        const owners = last ? companionsOwningBaker(league, last, week) : [];
+        const target = episode ? technicalPenaltyTarget(league, episode) : null;
+        const owners = target?.owners ?? [];
         const aired = new Date() >= episodeDoneAt(week);
         const theme = episode?.theme || WEEK_THEMES[week - 1] || `Week ${week}`;
 
@@ -128,7 +129,11 @@ export default function TechnicalRecipesPage() {
                     : `${owners.slice(0, -1).map((owner) => owner.name).join(", ")} and ${owners.at(-1)?.name} must bake this week`}
                 </p>
                 <p className="text-sm leading-7 text-chocolate/75">
-                  {last ? `${bakerName(league, last)} came last in the technical.` : ""}
+                  {target?.fallback
+                    ? `${bakerName(league, last ?? "")} came last in the technical, but nobody had them, so it passes to ${bakerName(league, target.bakerId)} (${ordinal(target.place)}).`
+                    : last
+                      ? `${bakerName(league, last)} came last in the technical.`
+                      : ""}
                 </p>
               </div>
             ) : episode?.published ? (

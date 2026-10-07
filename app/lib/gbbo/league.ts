@@ -513,6 +513,47 @@ export function companionsOwningBaker(league: LeagueState, bakerId: string, week
   return league.companions.filter((companion) => teamForWeek(league, companion.id, week).includes(bakerId));
 }
 
+/** The lowest-placed technical baker anyone owned that week, with their owners. Falls back up the order when nobody had last place. */
+export function technicalPenaltyTarget(
+  league: LeagueState,
+  episode: EpisodeScore,
+): { bakerId: string; place: number; owners: Companion[]; fallback: boolean } | null {
+  const order = [...episode.technical].sort((a, b) => b.place - a.place);
+  for (const entry of order) {
+    const owners = companionsOwningBaker(league, entry.bakerId, episode.week);
+    if (owners.length > 0) {
+      return { bakerId: entry.bakerId, place: entry.place, owners, fallback: entry.bakerId !== order[0].bakerId };
+    }
+  }
+  return null;
+}
+
+export function assignTechnicalPenalties(league: LeagueState, week: number): void {
+  const row = league.episodes.find((item) => item.week === week);
+  if (!row) return;
+  const target = technicalPenaltyTarget(league, row);
+  league.penalties = league.penalties.filter(
+    (penalty) => penalty.week !== week || penalty.kind === "beer_baguette",
+  );
+  if (!target) return;
+  const reason = target.fallback
+    ? `nobody had ${bakerName(league, lowestTechnicalBaker(row) ?? "")}, so it passes to ${bakerName(league, target.bakerId)} (${ordinal(target.place)})`
+    : `${bakerName(league, target.bakerId)} came last`;
+  for (const owner of target.owners) {
+    league.penalties.push({
+      id: uid("pen"),
+      week,
+      companionId: owner.id,
+      bakerId: target.bakerId,
+      kind: "technical",
+      deadline: technicalDeadlineAt(week).toISOString(),
+      completed: false,
+      note: `${owner.name} must bake this week's technical because ${reason}.`,
+      videoId: null,
+    });
+  }
+}
+
 export function companionOwningBaker(league: LeagueState, bakerId: string, week: number): Companion | null {
   return companionsOwningBaker(league, bakerId, week)[0] ?? null;
 }
@@ -606,26 +647,7 @@ export function publishEpisode(league: LeagueState, week: number): void {
       }
     }
   }
-  const last = lowestTechnicalBaker(row);
-  const owners = last ? companionsOwningBaker(league, last, week) : [];
-  league.penalties = league.penalties.filter(
-    (penalty) => penalty.week !== week || penalty.kind === "beer_baguette",
-  );
-  if (last) {
-    for (const owner of owners) {
-      league.penalties.push({
-        id: uid("pen"),
-        week,
-        companionId: owner.id,
-        bakerId: last,
-        kind: "technical",
-        deadline: technicalDeadlineAt(week).toISOString(),
-        completed: false,
-        note: `${owner.name} must bake this week's technical because ${bakerName(league, last)} came last.`,
-        videoId: null,
-      });
-    }
-  }
+  assignTechnicalPenalties(league, week);
   for (const drop of neededAutoDrops(league, Math.min(week + 1, league.totalWeeks))) {
     if (!league.substitutions.some((sub) => sub.companionId === drop.companionId && sub.week === drop.week)) {
       league.substitutions.push(drop);

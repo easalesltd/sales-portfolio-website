@@ -7,6 +7,7 @@ import {
   applyEpisodeResult,
   applySlutDropEscalations,
   applyTechnicalEscalations,
+  assignTechnicalPenalties,
   ensureDemocracyBaguette,
   resetVideolessSlutDrops,
   resetWeekSidesAndJokers,
@@ -20,6 +21,7 @@ const DATA_PATH = join(process.cwd(), "data", "gbbo-league.json");
 const WEEK_3_SIDES_AND_JOKERS_RESET = { key: "2026-week-3-sides-and-jokers", week: 3 };
 const LEE_WEEK_3_RESET = { key: "2026-week-3-lee-side-and-joker", week: 3, companion: "Lee" };
 const WEEK_3_RESULT_KEY = "2026-week-3-bread-results";
+const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
 
 function week3Result(): EpisodeResult {
   const id = bakerIdForName;
@@ -197,11 +199,19 @@ export async function readGbboLeague(): Promise<LeagueState> {
     companionIdForName(LEE_WEEK_3_RESET.companion),
   );
   const week3Published = applyEpisodeResult(league, WEEK_3_RESULT_KEY, 3, week3Result());
+  league.resetsApplied = league.resetsApplied ?? [];
+  const week3Technical =
+    !league.resetsApplied.includes(WEEK_3_TECHNICAL_FALLBACK_KEY) &&
+    Boolean(league.episodes.find((item) => item.week === 3)?.published);
+  if (week3Technical) {
+    assignTechnicalPenalties(league, 3);
+    league.resetsApplied.push(WEEK_3_TECHNICAL_FALLBACK_KEY);
+  }
   const reset = resetVideolessSlutDrops(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || leeReset || week3Published || reset || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || leeReset || week3Published || week3Technical || reset || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;

@@ -1,7 +1,7 @@
 "use client";
 
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
-import { bakerName, companionPortrait, companionsOwningBaker, lowestTechnicalBaker, penaltyVideoSrc, technicalDeadlineLabel, technicalIsComplete } from "@/app/lib/gbbo/league";
+import { bakerName, companionPortrait, lowestTechnicalBaker, ordinal, penaltyVideoSrc, technicalPenaltyTarget, technicalDeadlineLabel, technicalIsComplete } from "@/app/lib/gbbo/league";
 import { PunishmentPhoto } from "./PunishmentPhoto";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { Pill } from "./ui";
@@ -20,9 +20,10 @@ export function MustBakeCallout({ week }: { week?: number }) {
     : published.at(-1);
   if (!episode?.published) return null;
 
+  const target = technicalPenaltyTarget(league, episode);
+  if (!target) return null;
+  const owners = target.owners;
   const last = lowestTechnicalBaker(episode);
-  const owners = last ? companionsOwningBaker(league, last, episode.week) : [];
-  if (owners.length === 0) return null;
 
   const recipe = (league.technicalRecipes ?? []).find((item) => item.week === episode.week);
   const technicals = (league.penalties ?? []).filter(
@@ -50,7 +51,9 @@ export function MustBakeCallout({ week }: { week?: number }) {
           {names} {owners.length === 1 ? "has" : "have"} to bake this week
         </h2>
         <p className="mt-2 max-w-3xl text-sm leading-7 text-chocolate/80">
-          {bakerName(league, last)} came last in the {episode.theme} technical.
+          {target.fallback
+            ? `${bakerName(league, last ?? "")} came last in the ${episode.theme} technical, but nobody had them, so it passes to ${bakerName(league, target.bakerId)} (${ordinal(target.place)}).`
+            : `${bakerName(league, target.bakerId)} came last in the ${episode.theme} technical.`}
           {outstanding.length > 0
             ? ` Still outstanding: ${listNames(outstanding.map((owner) => owner.name))}. Upload a photo of the bake before ${technicalDeadlineLabel(episode.week)}.`
             : " Bake photos are in. The technical is done."}
