@@ -62,7 +62,7 @@ export default function LeaguePage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-display text-2xl leading-tight">{name}</p>
-                      <SlutDropMark companionId={row.companionId} />
+                      {latest ? <SlutDropMark companionId={row.companionId} week={latest.week} /> : null}
                     </div>
                     <p className="text-sm text-chocolate/70">
                       {team.map((id) => bakerName(league, id)).join(" · ") || "No bakers yet"}

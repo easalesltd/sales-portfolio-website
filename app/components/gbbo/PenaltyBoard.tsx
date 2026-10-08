@@ -12,19 +12,24 @@ import {
 } from "@/app/lib/gbbo/league";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
-import type { LeagueState } from "@/app/lib/gbbo/types";
+import type { LeagueState, Penalty } from "@/app/lib/gbbo/types";
 import { CompanionPhoto } from "./CompanionPhoto";
 import { PunishmentPhoto } from "./PunishmentPhoto";
 import { PunishmentUpload } from "./PunishmentUpload";
 import { PunishmentVideo } from "./PunishmentVideo";
 import { Card, Empty, Pill } from "./ui";
 
-export function PenaltyBoard() {
+export function PenaltyBoard({ kind }: { kind?: Penalty["kind"] } = {}) {
   const { league, acceptLeague } = useLeague();
   const { isChief, playerSlug, playerUnlocked } = useGbboSession();
+  const penalties = league.penalties
+    .filter((penalty) => !kind || penalty.kind === kind)
+    .sort((a, b) => b.week - a.week);
 
-  if (league.penalties.length === 0) {
-    return (
+  if (penalties.length === 0) {
+    return kind === "beer_baguette" ? (
+      <Empty title="No beer baguettes owed" body="A filmed beer baguette is added when someone misses a punishment deadline. Nobody owes one yet." />
+    ) : (
       <Empty
         title="No penalties yet"
         body="The companion whose baker finishes last in the technical must bake it and upload a photo before the next episode. If nobody had them, it passes to whoever had the next-lowest baker. Miss that, and a filmed beer baguette is added."
@@ -34,7 +39,10 @@ export function PenaltyBoard() {
 
   return (
     <div className="space-y-6">
-      <Card eyebrow="Consequences" title="Technical challenges and beer baguettes">
+      <Card
+        eyebrow="Consequences"
+        title={kind === "technical" ? "Technical challenges" : kind === "beer_baguette" ? "Beer baguettes" : "Technical challenges and beer baguettes"}
+      >
         <p className="text-sm leading-7 text-chocolate/75">
           If your baker comes last in the technical, you bake that recipe and upload a photo here before the next
           episode starts. That photo is the proof. Miss the deadline and a filmed Beer Baguette is added as well.
@@ -43,7 +51,7 @@ export function PenaltyBoard() {
         </p>
       </Card>
       <div className="grid gap-4">
-        {league.penalties.map((penalty) => {
+        {penalties.map((penalty) => {
           const companion = league.companions.find((item) => item.id === penalty.companionId);
           const name = companionName(league, penalty.companionId);
           const canUpload = isChief || (playerUnlocked && playerSlug === gbboSlug(name));
