@@ -30,7 +30,7 @@ export type Substitution = {
   id: Id;
   week: number;
   companionId: Id;
-  outBakerId: Id;
+  outBakerId: Id | null;
   inBakerId: Id | null;
   autoByChief: boolean;
 };

@@ -167,8 +167,14 @@ export function TeamSideForm({
         ) : null}
         <Button
           tone="ghost"
-          disabled={locked}
-          title={locked ? (lockReason ?? "The change window is closed.") : undefined}
+          disabled={locked || livingLast.length < size}
+          title={
+            locked
+              ? (lockReason ?? "The change window is closed.")
+              : livingLast.length < size
+                ? `Only ${livingLast.length} of last week's bakers are still in the tent. Pick a replacement.`
+                : undefined
+          }
           onClick={() => {
             setPicks(padLineup(carriedTeam(league, companion.id, week), size));
             void submitSide({ companionSlug: gbboSlug(companion.name), keepLastWeek: true }).then((error) => {

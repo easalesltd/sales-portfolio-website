@@ -82,6 +82,13 @@ export function teamForWeek(league: LeagueState, companionId: string, week: numb
   return roster.slice(0, size);
 }
 
+/** The one swap that turns last week's living side into `next`. Filling a sent-home baker's slot is an add with no one dropped. */
+export function sideSubstitution(previous: string[], next: string[]): { outBakerId: string | null; inBakerId: string | null } | null {
+  const outBakerId = previous.find((id) => !next.includes(id)) ?? null;
+  const inBakerId = next.find((id) => !previous.includes(id)) ?? null;
+  return outBakerId || inBakerId ? { outBakerId, inBakerId } : null;
+}
+
 export function lineupChanges(previous: string[], next: string[]): number {
   const kept = next.filter((id) => previous.includes(id)).length;
   return next.length - kept;

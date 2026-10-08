@@ -7,6 +7,7 @@ import {
   bakerStillIn,
   carriedTeam,
   lineupChanges,
+  sideSubstitution,
   sideConfirmed,
   teamForWeek,
   teamSizeForWeek,
@@ -63,6 +64,13 @@ export async function POST(request: Request) {
 
   league.substitutions = league.substitutions.filter((sub) => !(sub.companionId === companion.id && sub.week === week));
 
+  if (body.keepLastWeek && previous.length < size) {
+    return NextResponse.json(
+      { error: `Only ${previous.length} of last week's bakers are still in the tent. Pick a replacement so you have ${size}.` },
+      { status: 400 },
+    );
+  }
+
   if (!body.keepLastWeek) {
     const next = (body.bakerIds ?? []).filter(Boolean);
     const unique = new Set(next);
@@ -76,17 +84,16 @@ export async function POST(request: Request) {
     if (week > 1 && changes > 1) {
       return NextResponse.json({ error: "Only one substitution is allowed each week." }, { status: 400 });
     }
-    const outBakerId = previous.find((id) => !next.includes(id)) ?? previous[previous.length - 1] ?? next[0];
-    const inBakerId = next.find((id) => !previous.includes(id)) ?? null;
-    if (outBakerId || inBakerId) {
-      league.substitutions.push({
-        id: uid("sub"),
-        week,
-        companionId: companion.id,
-        outBakerId: outBakerId || next[0],
-        inBakerId,
-        autoByChief: false,
-      });
+    const swap = sideSubstitution(previous, next);
+    if (swap) {
+      league.substitutions.push({ id: uid("sub"), week, companionId: companion.id, ...swap, autoByChief: false });
+    }
+    const saved = teamForWeek(league, companion.id, week);
+    if (week > 1 && (saved.length !== size || next.some((id) => !saved.includes(id)))) {
+      return NextResponse.json(
+        { error: "That side could not be saved exactly as picked, so nothing was changed. Try again or tell the Chief." },
+        { status: 500 },
+      );
     }
   }
 
