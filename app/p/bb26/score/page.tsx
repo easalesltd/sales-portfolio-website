@@ -103,7 +103,7 @@ export default function ScorePage() {
     <div className="space-y-6">
       <Card
         eyebrow="Episode ledger"
-        title={`${episode.title} · ${episode.theme}`}
+        title={`${episode.title} · ${episode.theme || "Theme to confirm"}`}
         action={episode.published ? <Pill tone="tent">Published</Pill> : <Pill tone="butter">Draft scores</Pill>}
       >
         <div className="grid gap-4 md:grid-cols-4">
@@ -117,7 +117,7 @@ export default function ScorePage() {
             </select>
           </Field>
           <Field label="Theme">
-            <input className={inputClass()} value={episode.theme} onChange={(event) => patch((row) => { row.theme = event.target.value; })} />
+            <input className={inputClass()} value={episode.theme} placeholder="As shown on the episode" onChange={(event) => patch((row) => { row.theme = event.target.value; })} />
           </Field>
           <Field label="Penalty deadline">
             <input className={inputClass()} type="datetime-local" value={episode.deadline} onChange={(event) => patch((row) => { row.deadline = event.target.value; })} />
@@ -282,9 +282,12 @@ export default function ScorePage() {
             </div>
           ))}
         </div>
-        <Button className="mt-5" tone="raspberry" onClick={publish}>
+        <Button className="mt-5" tone="raspberry" onClick={publish} disabled={!episode.theme.trim()}>
           Publish week {week} and lock the ledger
         </Button>
+        {!episode.theme.trim() ? (
+          <p className="mt-2 text-sm text-raspberry">Enter this week&apos;s theme exactly as the episode billed it before publishing.</p>
+        ) : null}
       </Card>
     </div>
     </ChiefOnly>

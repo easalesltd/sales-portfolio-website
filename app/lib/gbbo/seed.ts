@@ -100,21 +100,14 @@ export const SERIES_17_BAKERS: Omit<Baker, "id" | "eliminatedInWeek">[] = [
   },
 ];
 
-export const WEEK_THEMES = [
-  "Cake",
-  "Biscuits",
-  "Bread",
-  "Desserts",
-  "Pastry",
-  "Botanical",
-  "Caramel",
-  "Pâtisserie",
-  "Semi-final",
-  "Final",
-];
+/** Aired series 17 themes only. Unknown weeks stay blank until the episode airs; never guess. */
+export const WEEK_THEMES = ["Cake", "Biscuits", "People's Choice", "", "", "", "", "", "Semi-final", "Final"];
+
+/** Placeholder themes the league was originally seeded with; cleared from unaired weeks. */
+export const GUESSED_WEEK_THEMES = ["Bread", "Desserts", "Pastry", "Botanical", "Caramel", "Pâtisserie"];
 
 export function emptyEpisode(week: number, totalWeeks: number): EpisodeScore {
-  const theme = WEEK_THEMES[week - 1] ?? `Week ${week}`;
+  const theme = WEEK_THEMES[week - 1] ?? "";
   return {
     week,
     title: week === totalWeeks ? "The Final" : `Episode ${week}`,

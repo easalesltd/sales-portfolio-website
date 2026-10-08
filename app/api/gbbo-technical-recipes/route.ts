@@ -8,6 +8,7 @@ import {
   pinTechnicalRecipe,
 } from "@/app/lib/gbbo/recipes";
 import { readGbboLeague, writeGbboLeague } from "@/app/lib/gbbo/persist";
+import { applySeriesThemes, fetchSeriesThemes } from "@/app/lib/gbbo/themes";
 
 export const runtime = "nodejs";
 
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
     const listing = await fetchOfficialTechnicals();
     const result = applyTechnicalListing(league, listing);
     await attachMissingRecipePhotos(league);
+    applySeriesThemes(league, await fetchSeriesThemes().catch(() => ({})));
     await writeGbboLeague(league);
     return NextResponse.json({ league, listing, ...result });
   } catch (error) {

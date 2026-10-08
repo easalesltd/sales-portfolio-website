@@ -9,11 +9,12 @@ import {
   applyTechnicalEscalations,
   assignTechnicalPenalties,
   ensureDemocracyBaguette,
+  correctWeekThemes,
   resetVideolessSlutDrops,
   restoreDroppedBaker,
   resetWeekSidesAndJokers,
 } from "./league";
-import { SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
+import { GUESSED_WEEK_THEMES, SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
 import type { LeagueState } from "./types";
 import type { EpisodeResult } from "./league";
 
@@ -24,6 +25,7 @@ const LEE_WEEK_3_RESET = { key: "2026-week-3-lee-side-and-joker", week: 3, compa
 const WEEK_3_RESULT_KEY = "2026-week-3-bread-results";
 const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
 const GUNS_WEEK_3_CLARA_KEY = "2026-week-3-guns-clara-restored";
+const REAL_WEEK_THEMES_KEY = "2026-real-week-themes";
 
 function week3Result(): EpisodeResult {
   const id = bakerIdForName;
@@ -42,7 +44,7 @@ function week3Result(): EpisodeResult {
     innuendos: [],
     drops: { [id("Moyin")]: 1 },
     cries: { [id("Shannon")]: 1 },
-    recapSource: "Chief companion, Bread Week",
+    recapSource: "Chief companion, People's Choice",
     justification:
       "Clara was Star Baker. Shannon went home. In the technical Gabe was first, Mo second and Clara third. Shannon finished last (−3), Molly second last (−2) and Yannis third last (−1). Moyin received a Hollywood handshake (+5) but dropped something on the floor (−3). Shannon had a little cry (−3).",
   };
@@ -210,11 +212,17 @@ export async function readGbboLeague(): Promise<LeagueState> {
     league.resetsApplied.push(WEEK_3_TECHNICAL_FALLBACK_KEY);
   }
   const gunsRestored = restoreDroppedBaker(league, GUNS_WEEK_3_CLARA_KEY, companionIdForName("Guns"), 3, bakerIdForName("Clara"));
+  const themesFixed = correctWeekThemes(
+    league,
+    REAL_WEEK_THEMES_KEY,
+    { 3: { theme: "People's Choice", from: "Bread Week" } },
+    GUESSED_WEEK_THEMES,
+  );
   const reset = resetVideolessSlutDrops(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || reset || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || reset || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;

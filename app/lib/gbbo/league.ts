@@ -104,6 +104,32 @@ export function restoreDroppedBaker(league: LeagueState, key: string, companionI
   return Boolean(sub);
 }
 
+export function episodeTheme(league: LeagueState, week: number): string {
+  return league.episodes.find((episode) => episode.week === week)?.theme.trim() || `Week ${week}`;
+}
+
+/** One-off: replaces guessed episode themes with the real ones. Published weeks are only changed when listed in `fixes`. */
+export function correctWeekThemes(
+  league: LeagueState,
+  key: string,
+  fixes: Record<number, { theme: string; from?: string }>,
+  guessed: string[],
+): boolean {
+  league.resetsApplied = league.resetsApplied ?? [];
+  if (league.resetsApplied.includes(key)) return false;
+  for (const episode of league.episodes) {
+    const fix = fixes[episode.week];
+    if (fix) {
+      if (fix.from) episode.recapSource = episode.recapSource.replaceAll(fix.from, fix.theme);
+      episode.theme = fix.theme;
+    } else if (!episode.published && guessed.includes(episode.theme)) {
+      episode.theme = "";
+    }
+  }
+  league.resetsApplied.push(key);
+  return true;
+}
+
 export function lineupChanges(previous: string[], next: string[]): number {
   const kept = next.filter((id) => previous.includes(id)).length;
   return next.length - kept;

@@ -3,12 +3,12 @@ import {
   bakerEliminatedIn,
   bakerName,
   companionsOwningBaker,
+  episodeTheme,
   lowestScorersForWeek,
   scoreCompanionWeek,
   scoreEpisodeForBaker,
   teamForWeek,
 } from "./league";
-import { WEEK_THEMES } from "./seed";
 import type { LeagueState, ScoreLine } from "./types";
 import { teamWindow } from "./window";
 
@@ -83,7 +83,7 @@ export function bakerLedger(league: LeagueState, bakerId: string): BakerLedger {
     if (place === field) technicalLast += 1;
     weeks.push({
       week: episode.week,
-      theme: episode.theme || WEEK_THEMES[episode.week - 1] || `Week ${episode.week}`,
+      theme: episodeTheme(league, episode.week),
       title: episode.title,
       points,
       lines,
@@ -372,7 +372,7 @@ export function chargeSheet(league: LeagueState): ChargeSheetRow[] {
     league.bakers.flatMap((baker) =>
       scoreEpisodeForBaker(league, episode, baker.id).map((line) => ({
         week: episode.week,
-        theme: episode.theme || WEEK_THEMES[episode.week - 1] || `Week ${episode.week}`,
+        theme: episodeTheme(league, episode.week),
         bakerId: baker.id,
         baker: baker.name,
         label: line.label,
@@ -390,7 +390,7 @@ export function companionForm(league: LeagueState) {
         const last = lowestScorersForWeek(league, episode.week).some((row) => row.companionId === companion.id);
         return {
           week: episode.week,
-          theme: episode.theme || WEEK_THEMES[episode.week - 1] || `Week ${episode.week}`,
+          theme: episodeTheme(league, episode.week),
           points: score.points,
           raw: score.rawPoints,
           joker: score.joker,

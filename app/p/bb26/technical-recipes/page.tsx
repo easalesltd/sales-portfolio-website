@@ -3,11 +3,10 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
-import { bakerName, lowestTechnicalBaker, ordinal, technicalPenaltyTarget } from "@/app/lib/gbbo/league";
+import { bakerName, episodeTheme, lowestTechnicalBaker, ordinal, technicalPenaltyTarget } from "@/app/lib/gbbo/league";
 import { OFFICIAL_TECHNICAL_INDEX } from "@/app/lib/gbbo/recipes";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
-import { WEEK_THEMES } from "@/app/lib/gbbo/seed";
 import { episodeDoneAt, formatLondon, teamWindow } from "@/app/lib/gbbo/window";
 import type { LeagueState } from "@/app/lib/gbbo/types";
 
@@ -88,7 +87,7 @@ export default function TechnicalRecipesPage() {
         const target = episode ? technicalPenaltyTarget(league, episode) : null;
         const owners = target?.owners ?? [];
         const aired = new Date() >= episodeDoneAt(week);
-        const theme = episode?.theme || WEEK_THEMES[week - 1] || `Week ${week}`;
+        const theme = episodeTheme(league, week);
 
         return (
           <Card

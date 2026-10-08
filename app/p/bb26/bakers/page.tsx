@@ -4,8 +4,7 @@ import { useState } from "react";
 import { BakerScoreSheet } from "@/app/components/gbbo/BakerScoreSheet";
 import { Card, Pill, ScoreBadge } from "@/app/components/gbbo/ui";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
-import { bakerEliminatedIn, companionsOwningBaker } from "@/app/lib/gbbo/league";
-import { WEEK_THEMES } from "@/app/lib/gbbo/seed";
+import { bakerEliminatedIn, companionsOwningBaker, episodeTheme } from "@/app/lib/gbbo/league";
 import { bakerLedger, bakerScoreSummary } from "@/app/lib/gbbo/stats";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { teamWindow } from "@/app/lib/gbbo/window";
@@ -52,7 +51,7 @@ function BakerCard({
 }) {
   const [open, setOpen] = useState(false);
   const out = Boolean(week);
-  const theme = week ? WEEK_THEMES[week - 1] : null;
+  const theme = week ? episodeTheme(league, week) : null;
   const ledger = bakerLedger(league, baker.id);
 
   return (
