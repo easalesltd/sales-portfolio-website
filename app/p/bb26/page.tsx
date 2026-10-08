@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
+import { OfficialStatement } from "@/app/components/gbbo/OfficialStatement";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
@@ -103,6 +104,8 @@ export default function LeaguePage() {
           </Card>
         </div>
       </div>
+
+      <OfficialStatement />
 
       <MustBakeCallout />
 

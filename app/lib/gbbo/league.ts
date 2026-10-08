@@ -89,6 +89,21 @@ export function sideSubstitution(previous: string[], next: string[]): { outBaker
   return outBakerId || inBakerId ? { outBakerId, inBakerId } : null;
 }
 
+/** One-off fix for a side saved with the wrong baker dropped: turns that week's swap into a pure add and re-settles the slut drop. */
+export function restoreDroppedBaker(league: LeagueState, key: string, companionId: string, week: number, bakerId: string): boolean {
+  league.resetsApplied = league.resetsApplied ?? [];
+  if (league.resetsApplied.includes(key)) return false;
+  const sub = league.substitutions.find(
+    (item) => item.companionId === companionId && item.week === week && item.outBakerId === bakerId,
+  );
+  if (sub) {
+    sub.outBakerId = null;
+    if (league.episodes.find((item) => item.week === week)?.published) syncSlutDropsForWeek(league, week);
+  }
+  league.resetsApplied.push(key);
+  return Boolean(sub);
+}
+
 export function lineupChanges(previous: string[], next: string[]): number {
   const kept = next.filter((id) => previous.includes(id)).length;
   return next.length - kept;
@@ -638,6 +653,28 @@ export function applyEpisodeResult(league: LeagueState, key: string, week: numbe
   return true;
 }
 
+/** Gives this week's fewest-points companions a slut drop and clears it from anyone no longer bottom. */
+export function syncSlutDropsForWeek(league: LeagueState, week: number): void {
+  league.slutDrops = league.slutDrops ?? [];
+  const holders = lowestScorersForWeek(league, week);
+  league.slutDrops = league.slutDrops.filter((item) => {
+    if (item.week !== week) return true;
+    return holders.some((holder) => holder.companionId === item.companionId);
+  });
+  for (const holder of holders) {
+    if (!league.slutDrops.some((item) => item.week === week && item.companionId === holder.companionId)) {
+      league.slutDrops.push({
+        week,
+        companionId: holder.companionId,
+        completed: false,
+        completedAt: null,
+        videoId: null,
+        escalated: false,
+      });
+    }
+  }
+}
+
 export function publishEpisode(league: LeagueState, week: number): void {
   const row = league.episodes.find((item) => item.week === week);
   if (!row) return;
@@ -660,24 +697,7 @@ export function publishEpisode(league: LeagueState, week: number): void {
       league.substitutions.push(drop);
     }
   }
-  league.slutDrops = league.slutDrops ?? [];
-  const holders = lowestScorersForWeek(league, week);
-  league.slutDrops = league.slutDrops.filter((item) => {
-    if (item.week !== week) return true;
-    return holders.some((holder) => holder.companionId === item.companionId);
-  });
-  for (const holder of holders) {
-    if (!league.slutDrops.some((item) => item.week === week && item.companionId === holder.companionId)) {
-      league.slutDrops.push({
-        week,
-        companionId: holder.companionId,
-        completed: false,
-        completedAt: null,
-        videoId: null,
-        escalated: false,
-      });
-    }
-  }
+  syncSlutDropsForWeek(league, week);
   league.currentWeek = Math.min(week + 1, league.totalWeeks);
 }
 

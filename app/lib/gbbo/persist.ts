@@ -10,6 +10,7 @@ import {
   assignTechnicalPenalties,
   ensureDemocracyBaguette,
   resetVideolessSlutDrops,
+  restoreDroppedBaker,
   resetWeekSidesAndJokers,
 } from "./league";
 import { SERIES_17_BAKERS, createCompanions, createEmptyLeague } from "./seed";
@@ -22,6 +23,7 @@ const WEEK_3_SIDES_AND_JOKERS_RESET = { key: "2026-week-3-sides-and-jokers", wee
 const LEE_WEEK_3_RESET = { key: "2026-week-3-lee-side-and-joker", week: 3, companion: "Lee" };
 const WEEK_3_RESULT_KEY = "2026-week-3-bread-results";
 const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
+const GUNS_WEEK_3_CLARA_KEY = "2026-week-3-guns-clara-restored";
 
 function week3Result(): EpisodeResult {
   const id = bakerIdForName;
@@ -207,11 +209,12 @@ export async function readGbboLeague(): Promise<LeagueState> {
     assignTechnicalPenalties(league, 3);
     league.resetsApplied.push(WEEK_3_TECHNICAL_FALLBACK_KEY);
   }
+  const gunsRestored = restoreDroppedBaker(league, GUNS_WEEK_3_CLARA_KEY, companionIdForName("Guns"), 3, bakerIdForName("Clara"));
   const reset = resetVideolessSlutDrops(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || reset || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || reset || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;
