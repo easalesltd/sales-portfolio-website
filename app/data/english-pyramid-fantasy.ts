@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Truro City drew 2-2 with Farnham Town. Plus 1 for the draw, net plus 1. Jon is on 219.\n\nNest\'s Farnham Town drew 2-2 with Truro City. Plus 1 for the draw, net plus 1. Nest is on 192.\n\nDave\'s Walton & Hersham won 3-1 at Braintree Town. Plus 4 for the away win, plus 1 for three or more, net plus 5. Dave is on 182.\n\nChris still leads on 252 without a club kicking a ball.\n\nTable: Chris 252, Scott 248, Ben 225, Jon 219, Nest 192, Ash 185, Dave 182.';
+  'Chris\'s West Ham drew 1-1 with QPR. Plus 1 for the draw, net plus 1. Chris is on 253.\n\nScott\'s Boreham Wood won 2-0 at Sutton United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Scott is on 253.\n\nDave\'s Sutton United lost 2-0 at home to Boreham Wood. No win points, net zero. Dave is on 182.\n\nTable: Chris 253, Scott 253, Ben 225, Jon 219, Nest 192, Ash 185, Dave 182.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -7435,6 +7435,28 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
     redsUnchecked: true,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-09-sut-bore',
+    utcDate: '2026-10-09T18:45Z',
+    homeTeam: { name: 'Sutton United', tla: 'SUT' },
+    awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-09-whu-qpr',
+    utcDate: '2026-10-09T19:00Z',
+    homeTeam: { name: 'West Ham United', tla: 'WHU' },
+    awayTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
 ];
 
