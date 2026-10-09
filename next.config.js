@@ -41,6 +41,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/companies',
+        destination: '/partner-brands',
+        permanent: false,
+      },
+      {
         source: '/home-test',
         destination: '/',
         permanent: false,

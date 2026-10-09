@@ -4,12 +4,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { companies } from '../data/companies';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { useRouter } from 'next/navigation';
 
 export default function BrandsDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const router = useRouter();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -28,7 +30,8 @@ export default function BrandsDropdown() {
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsOpen((open) => !open);
+    setIsOpen(false);
+    router.push('/partner-brands');
   };
 
   if (!mounted) {
@@ -86,6 +89,14 @@ export default function BrandsDropdown() {
             <div className="relative bg-white px-5 py-5 dark:bg-neutral-900 sm:p-6">
               <h3 className="text-base font-medium text-gray-900 dark:text-neutral-100">My Partner Brands</h3>
               <div className="mt-2">
+                <Link
+                  href="/partner-brands"
+                  className="block rounded-md px-3 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-100 dark:text-neutral-100 dark:hover:bg-neutral-800"
+                  role="menuitem"
+                  onClick={() => setIsOpen(false)}
+                >
+                  See all brands
+                </Link>
                 {companies.map((company) => (
                   <Link
                     key={company.id}

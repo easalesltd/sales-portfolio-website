@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 const corePages = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About Dave' },
+  { href: '/partner-brands', label: 'My Partner Brands' },
   { href: '/what-is-a-sales-agent', label: 'What Is a Sales Agent?' },
   { href: '/faq', label: 'FAQ' },
   { href: '/display-solutions', label: 'Display Solutions' },
