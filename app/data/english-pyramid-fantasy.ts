@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s West Ham drew 1-1 with QPR. Plus 1 for the draw, net plus 1. Chris is on 253.\n\nScott\'s Boreham Wood won 2-0 at Sutton United. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Scott is on 253.\n\nDave\'s Sutton United lost 2-0 at home to Boreham Wood. No win points, net zero. Dave is on 182.\n\nTable: Chris 253, Scott 253, Ben 225, Jon 219, Nest 192, Ash 185, Dave 182.';
+  'Scott\'s Arsenal beat Leeds United 2-1 at home. Plus 3 for the home win, net plus 3. Then Kidderminster Harriers served up a boring 0-0 against Carlisle United. Minus 1 for the 0-0, net minus 1. Scott is on 255.\n\nChris\'s Aldershot Town lost 3-1 at Altrincham. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Then AFC Wimbledon lost 2-1 at Plymouth Argyle. No win points, net zero. Chris is on 253.\n\nJon\'s Altrincham beat Aldershot Town 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Oxford United won 2-1 at Notts County. Plus 4 for the away win, net plus 4. Then Birmingham City won 1-0 at West Brom. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Jon is on 232.\n\nBen\'s Notts County lost 2-1 at home to Oxford United. No win points, net zero. Ben is on 225.\n\nNest\'s Leeds United lost 2-1 at Arsenal. No win points, net zero. Then Accrington Stanley served up a boring 0-0 against Oldham Athletic. Minus 1 for the 0-0, net minus 1. Nest is on 191.\n\nDave\'s Charlton Athletic drew 1-1 with Bristol City. Plus 1 for the draw, net plus 1. Then Plymouth Argyle beat AFC Wimbledon 2-1 at home. Plus 3 for the home win, net plus 3. Dave is on 186.\n\nAsh\'s Carlisle United served up a boring 0-0 against Kidderminster Harriers. Minus 1 for the 0-0, net minus 1. Ash is on 184.\n\nTable: Scott 255, Chris 253, Jon 232, Ben 225, Nest 191, Dave 186, Ash 184.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -7454,6 +7454,94 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'West Ham United', tla: 'WHU' },
     awayTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
     homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-10-alt-ald',
+    utcDate: '2026-10-10T11:30Z',
+    homeTeam: { name: 'Altrincham', tla: 'ALT' },
+    awayTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-10-ars-lee',
+    utcDate: '2026-10-10T11:30Z',
+    homeTeam: { name: 'Arsenal', tla: 'ARS' },
+    awayTeam: { name: 'Leeds United', tla: 'LEE' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-10-car-kid',
+    utcDate: '2026-10-10T11:30Z',
+    homeTeam: { name: 'Carlisle United', tla: 'CAR' },
+    awayTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-10-cha-brc',
+    utcDate: '2026-10-10T11:30Z',
+    homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    awayTeam: { name: 'Bristol City', tla: 'BRC' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-10-nco-oxf',
+    utcDate: '2026-10-10T11:30Z',
+    homeTeam: { name: 'Notts County', tla: 'NCO' },
+    awayTeam: { name: 'Oxford United', tla: 'OXF' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-10-old-acc',
+    utcDate: '2026-10-10T11:30Z',
+    homeTeam: { name: 'Oldham Athletic', tla: 'OLD' },
+    awayTeam: { name: 'Accrington Stanley', tla: 'ACC' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-10-ply-wim',
+    utcDate: '2026-10-10T11:30Z',
+    homeTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
+    awayTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-10-wba-bir',
+    utcDate: '2026-10-10T11:30Z',
+    homeTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+    homeGoals: 0,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
