@@ -7470,7 +7470,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-09 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-10 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -10869,14 +10869,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Burton Albion', tla: 'BTN' },
   },
   {
-    id: '2026-09-26-pvl-nht',
-    utcDate: '2026-09-26T14:00Z',
-    homeTeam: { name: 'Port Vale', tla: 'PVL' },
-    awayTeam: { name: 'Northampton Town', tla: 'NHT' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-09-26-scu-hpl',
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
@@ -11771,14 +11763,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     postponed: true,
   },
   {
-    id: '2026-10-17-sca-mar',
-    utcDate: '2026-10-17T14:00:00Z',
-    homeTeam: { name: 'Scarborough Athletic', tla: 'SCA' },
-    awayTeam: { name: 'Marine', tla: 'MAR' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-10-17-slo-hor',
     utcDate: '2026-10-17T14:00:00Z',
     homeTeam: { name: 'Slough Town', tla: 'SLO' },
@@ -11819,14 +11803,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-17T14:00:00Z',
     homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
     awayTeam: { name: 'Chesham United', tla: 'CHU' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
-    id: '2026-10-17-tru-bil',
-    utcDate: '2026-10-17T14:00:00Z',
-    homeTeam: { name: 'Truro City', tla: 'TRU' },
-    awayTeam: { name: 'Billericay Town', tla: 'BIL' },
     /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
@@ -13549,6 +13525,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
   },
   {
+    id: '2026-11-10-sca-mar',
+    utcDate: '2026-11-10T19:45:00Z',
+    homeTeam: { name: 'Scarborough Athletic', tla: 'SCA' },
+    awayTeam: { name: 'Marine', tla: 'MAR' },
+  },
+  {
     id: '2026-11-14-exe-cht',
     utcDate: '2026-11-14T12:30Z',
     homeTeam: { name: 'Exeter City', tla: 'EXE' },
@@ -13739,6 +13721,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T17:30Z',
     homeTeam: { name: 'Fleetwood Town', tla: 'FLE' },
     awayTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
+  },
+  {
+    id: '2026-11-17-tru-bil',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Billericay Town', tla: 'BIL' },
   },
   {
     id: '2026-11-20-std-bore',
@@ -14309,6 +14297,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-24T19:45Z',
     homeTeam: { name: 'Portsmouth', tla: 'POR' },
     awayTeam: { name: 'West Ham United', tla: 'WHU' },
+  },
+  {
+    id: '2026-11-24-pvl-nht',
+    utcDate: '2026-11-24T19:45Z',
+    homeTeam: { name: 'Port Vale', tla: 'PVL' },
+    awayTeam: { name: 'Northampton Town', tla: 'NHT' },
   },
   {
     id: '2026-11-24-scu-gat',
