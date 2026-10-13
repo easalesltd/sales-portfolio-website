@@ -96,7 +96,7 @@ function BakerCard({
             {baker.hometown}
           </p>
           <div className="mt-2">
-            <Pill tone={out ? "raspberry" : "tent"}>{out ? "Eliminated" : baker.job}</Pill>
+            <Pill tone={out ? "raspberry" : "tent"}>{out ? (baker.exitLabel ?? "Eliminated") : baker.job}</Pill>
           </div>
         </div>
         <p className="text-sm leading-7 text-chocolate/80">{baker.bio}</p>
