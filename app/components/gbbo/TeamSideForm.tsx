@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { bakerName, bakerStillIn, carriedTeam, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
+import { bakerName, bakerStillIn, barredBakersForWeek, carriedTeam, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { Companion, LeagueState } from "@/app/lib/gbbo/types";
@@ -14,8 +14,8 @@ function padLineup(bakerIds: string[], size: number): string[] {
   return next;
 }
 
-function livingLineup(league: LeagueState, bakerIds: string[], week: number, size: number): string[] {
-  return padLineup(bakerIds.filter((id) => bakerStillIn(league, id, week)), size);
+function livingLineup(league: LeagueState, bakerIds: string[], week: number, size: number, barred: string[]): string[] {
+  return padLineup(bakerIds.filter((id) => bakerStillIn(league, id, week) && !barred.includes(id)), size);
 }
 
 export function TeamSideForm({
@@ -33,20 +33,22 @@ export function TeamSideForm({
 }) {
   const { league, submitSide } = useLeague();
   const size = teamSizeForWeek(league, week);
-  const remaining = selectableBakers(league, week);
+  const barred = useMemo(() => barredBakersForWeek(league, week), [league, week]);
+  const remaining = selectableBakers(league, week).filter((baker) => !barred.includes(baker.id));
   const lastWeek = week > 1 ? teamForWeek(league, companion.id, week - 1) : carriedTeam(league, companion.id, 1);
   const defaultLineup = useMemo(() => {
     const carried = carriedTeam(league, companion.id, week);
     const current = teamForWeek(league, companion.id, week);
-    return livingLineup(league, current.length >= carried.length ? current : carried, week, size);
-  }, [league, companion.id, week, size]);
+    return livingLineup(league, current.length >= carried.length ? current : carried, week, size, barred);
+  }, [league, companion.id, week, size, barred]);
   const [picks, setPicks] = useState<string[] | null>(null);
   const [message, setMessage] = useState("");
   const proposed = picks ?? defaultLineup;
   const filled = proposed.filter(Boolean);
   const unique = new Set(filled);
-  const livingLast = lastWeek.filter((id) => bakerStillIn(league, id, week));
+  const livingLast = lastWeek.filter((id) => bakerStillIn(league, id, week) && !barred.includes(id));
   const sentHome = lastWeek.filter((id) => id && !bakerStillIn(league, id, week));
+  const benched = lastWeek.filter((id) => barred.includes(id) && bakerStillIn(league, id, week));
   const changes = lineupChanges(livingLast, filled);
   const shrinking = livingLast.length > size;
   const legal = unique.size === filled.length && filled.length === size && (week === 1 ? changes <= 3 : changes <= 1);
@@ -111,9 +113,15 @@ export function TeamSideForm({
           Pick a replacement still baking.
         </p>
       ) : null}
+      {benched.length ? (
+        <p className="mb-3 text-sm leading-6 text-raspberry">
+          Every companion picked {benched.map((id) => bakerName(league, id)).join(" and ")} last week, so they cannot
+          be picked this week. Your substitution must be used to replace them, so no other changes are allowed.
+        </p>
+      ) : null}
       <div className="space-y-2">
         {proposed.map((bakerId, index) => {
-          const livingId = bakerStillIn(league, bakerId, week) ? bakerId : "";
+          const livingId = bakerStillIn(league, bakerId, week) && !barred.includes(bakerId) ? bakerId : "";
           return locked ? (
             <p key={`${companion.id}-${index}`} className="rounded-2xl border border-[#e7d3b4] bg-flour px-4 py-2.5">
               {livingId ? bakerName(league, livingId) : "Choose a baker"}
@@ -171,9 +179,11 @@ export function TeamSideForm({
           title={
             locked
               ? (lockReason ?? "The change window is closed.")
-              : livingLast.length < size
-                ? `Only ${livingLast.length} of last week's bakers are still in the tent. Pick a replacement.`
-                : undefined
+              : benched.length
+                ? "Last week's side includes a baker who cannot be picked this week. Pick a replacement."
+                : livingLast.length < size
+                  ? `Only ${livingLast.length} of last week's bakers are still in the tent. Pick a replacement.`
+                  : undefined
           }
           onClick={() => {
             setPicks(padLineup(carriedTeam(league, companion.id, week), size));

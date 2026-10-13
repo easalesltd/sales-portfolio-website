@@ -60,26 +60,71 @@ export function companionName(league: LeagueState, companionId: string): string 
   return league.companions.find((companion) => companion.id === companionId)?.name ?? "Companion";
 }
 
-export function carriedTeam(league: LeagueState, companionId: string, week: number): string[] {
-  if (week <= 1) {
-    return (league.initialTeams.find((team) => team.companionId === companionId)?.bakerIds ?? []).filter((bakerId) =>
-      bakerStillIn(league, bakerId, week),
-    );
+/** First week a baker can be barred for having been picked by every companion the week before. */
+export const COMMON_BAKER_RULE_FROM_WEEK = 5;
+
+type SideHistory = {
+  carried: Record<string, string[]>;
+  sides: Record<string, string[]>;
+  barred: string[];
+};
+
+function commonBakers(sides: string[][]): string[] {
+  if (sides.length < 2) return [];
+  return sides[0].filter((id) => sides.every((side) => side.includes(id)));
+}
+
+function sideHistory(league: LeagueState, companionId: string, throughWeek: number): SideHistory {
+  const ids = league.companions.some((companion) => companion.id === companionId)
+    ? league.companions.map((companion) => companion.id)
+    : [...league.companions.map((companion) => companion.id), companionId];
+  let sides: Record<string, string[]> = {};
+  let current: SideHistory = { carried: {}, sides: {}, barred: [] };
+  for (let week = 1; week <= Math.max(1, throughWeek); week += 1) {
+    const barred =
+      week >= COMMON_BAKER_RULE_FROM_WEEK && week < league.totalWeeks
+        ? commonBakers(league.companions.map((companion) => sides[companion.id] ?? []))
+        : [];
+    const size = teamSizeForWeek(league, week);
+    const carried: Record<string, string[]> = {};
+    const next: Record<string, string[]> = {};
+    for (const id of ids) {
+      const base = week <= 1
+        ? (league.initialTeams.find((team) => team.companionId === id)?.bakerIds ?? [])
+        : (sides[id] ?? []);
+      carried[id] = base.filter((bakerId) => bakerStillIn(league, bakerId, week) && !barred.includes(bakerId));
+      let roster = carried[id];
+      const change = league.substitutions.find((sub) => sub.companionId === id && sub.week === week);
+      if (change) {
+        roster = roster.filter((bakerId) => bakerId !== change.outBakerId);
+        if (
+          change.inBakerId &&
+          bakerStillIn(league, change.inBakerId, week) &&
+          !barred.includes(change.inBakerId) &&
+          !roster.includes(change.inBakerId)
+        ) {
+          roster.push(change.inBakerId);
+        }
+      }
+      next[id] = roster.slice(0, size);
+    }
+    sides = next;
+    current = { carried, sides: next, barred };
   }
-  return teamForWeek(league, companionId, week - 1).filter((bakerId) => bakerStillIn(league, bakerId, week));
+  return current;
+}
+
+/** Bakers every companion played last week, who cannot be picked this week. */
+export function barredBakersForWeek(league: LeagueState, week: number): string[] {
+  return sideHistory(league, league.companions[0]?.id ?? "", week).barred;
+}
+
+export function carriedTeam(league: LeagueState, companionId: string, week: number): string[] {
+  return sideHistory(league, companionId, week).carried[companionId] ?? [];
 }
 
 export function teamForWeek(league: LeagueState, companionId: string, week: number): string[] {
-  const size = teamSizeForWeek(league, week);
-  let roster = carriedTeam(league, companionId, week);
-  const change = league.substitutions.find((sub) => sub.companionId === companionId && sub.week === week);
-  if (change) {
-    roster = roster.filter((id) => id !== change.outBakerId);
-    if (change.inBakerId && bakerStillIn(league, change.inBakerId, week) && !roster.includes(change.inBakerId)) {
-      roster.push(change.inBakerId);
-    }
-  }
-  return roster.slice(0, size);
+  return sideHistory(league, companionId, week).sides[companionId] ?? [];
 }
 
 /** The one swap that turns last week's living side into `next`. Filling a sent-home baker's slot is an add with no one dropped. */

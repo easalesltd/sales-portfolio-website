@@ -4,7 +4,9 @@ import { isGbboPlayerRequest } from "@/app/lib/gbbo/player-pins";
 import { uid } from "@/app/lib/gbbo/ids";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import {
+  bakerName,
   bakerStillIn,
+  barredBakersForWeek,
   carriedTeam,
   lineupChanges,
   sideSubstitution,
@@ -59,8 +61,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Your week is locked. You have already submitted this side." }, { status: 403 });
   }
   const size = teamSizeForWeek(league, week);
-  const previous = (week > 1 ? teamForWeek(league, companion.id, week - 1) : carriedTeam(league, companion.id, 1))
-    .filter((id) => bakerStillIn(league, id, week));
+  const barred = barredBakersForWeek(league, week);
+  const lastWeek = week > 1 ? teamForWeek(league, companion.id, week - 1) : carriedTeam(league, companion.id, 1);
+  const previous = lastWeek.filter((id) => bakerStillIn(league, id, week) && !barred.includes(id));
+  const barredNames = barred.map((id) => bakerName(league, id)).join(" and ");
+
+  if (body.keepLastWeek && lastWeek.some((id) => barred.includes(id))) {
+    return NextResponse.json(
+      { error: `${barredNames} cannot be picked this week. Use your substitution to replace them.` },
+      { status: 400 },
+    );
+  }
 
   league.substitutions = league.substitutions.filter((sub) => !(sub.companionId === companion.id && sub.week === week));
 
@@ -79,6 +90,12 @@ export async function POST(request: Request) {
     }
     if (next.some((id) => !bakerStillIn(league, id, week))) {
       return NextResponse.json({ error: "One of those bakers has already left the tent." }, { status: 400 });
+    }
+    if (next.some((id) => barred.includes(id))) {
+      return NextResponse.json(
+        { error: `Every companion picked ${barredNames} last week, so they cannot be picked this week.` },
+        { status: 400 },
+      );
     }
     const changes = lineupChanges(previous, next);
     if (week > 1 && changes > 1) {
