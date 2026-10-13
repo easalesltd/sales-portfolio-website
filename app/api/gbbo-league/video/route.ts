@@ -3,22 +3,52 @@ import { isGbboPlayerRequest } from "@/app/lib/gbbo/player-pins";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { owesSlutDrop, slutDropFor } from "@/app/lib/gbbo/league";
 import { readGbboLeague, writeGbboLeague } from "@/app/lib/gbbo/persist";
-import { newVideoId, saveVideoChunk, readVideo, VIDEO_MAX_BYTES } from "@/app/lib/gbbo/videos";
+import { newVideoId, readVideoRange, readVideoRecord, saveVideoChunk, streamVideo, VIDEO_MAX_BYTES } from "@/app/lib/gbbo/videos";
 
 export const runtime = "nodejs";
+
+const MAX_RANGE_BYTES = 4 * 1024 * 1024;
 
 export async function GET(request: Request) {
   const id = new URL(request.url).searchParams.get("id")?.trim() ?? "";
   if (!id) return NextResponse.json({ error: "Missing video." }, { status: 400 });
-  const video = await readVideo(id);
-  if (!video) return NextResponse.json({ error: "That video is not on the ledger." }, { status: 404 });
-  const body = Uint8Array.from(video.body);
-  return new NextResponse(body, {
-    headers: {
-      "Content-Type": video.mime,
-      "Content-Length": String(body.byteLength),
-      "Cache-Control": "private, max-age=3600",
-    },
+  const record = await readVideoRecord(id);
+  if (!record) return NextResponse.json({ error: "That video is not on the ledger." }, { status: 404 });
+  const headers = {
+    "Content-Type": record.mime || "video/mp4",
+    "Accept-Ranges": "bytes",
+    "Cache-Control": "private, max-age=3600",
+  };
+
+  const range = /^bytes=(\d*)-(\d*)$/.exec(request.headers.get("range")?.trim() ?? "");
+  if (range && (range[1] || range[2])) {
+    let start: number;
+    let end: number;
+    if (range[1]) {
+      start = Number(range[1]);
+      end = range[2] ? Number(range[2]) : record.size - 1;
+    } else {
+      start = Math.max(0, record.size - Number(range[2]));
+      end = record.size - 1;
+    }
+    end = Math.min(end, record.size - 1, start + MAX_RANGE_BYTES - 1);
+    if (start >= record.size || start > end) {
+      return new NextResponse(null, { status: 416, headers: { ...headers, "Content-Range": `bytes */${record.size}` } });
+    }
+    const body = await readVideoRange(record, start, end);
+    if (!body) return NextResponse.json({ error: "That video is missing a piece." }, { status: 404 });
+    return new NextResponse(Uint8Array.from(body), {
+      status: 206,
+      headers: {
+        ...headers,
+        "Content-Range": `bytes ${start}-${end}/${record.size}`,
+        "Content-Length": String(body.byteLength),
+      },
+    });
+  }
+
+  return new NextResponse(streamVideo(record), {
+    headers: { ...headers, "Content-Length": String(record.size) },
   });
 }
 

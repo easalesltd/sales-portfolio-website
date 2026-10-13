@@ -2,9 +2,18 @@
 
 import { useRef, useState } from "react";
 import { useLeague } from "@/app/lib/gbbo/store";
+import { VIDEO_CHUNK_BYTES as CHUNK_BYTES, VIDEO_MAX_BYTES, VIDEO_MAX_LABEL } from "@/app/lib/gbbo/video-limits";
 import { Button } from "./ui";
 
-const CHUNK_BYTES = 400_000;
+async function postChunk(form: FormData): Promise<Response> {
+  try {
+    const response = await fetch("/api/gbbo-league/video", { method: "POST", credentials: "include", body: form });
+    if (response.status < 500) return response;
+  } catch {
+    // One retry for a dropped mobile connection.
+  }
+  return fetch("/api/gbbo-league/video", { method: "POST", credentials: "include", body: form });
+}
 
 export function PunishmentUpload({
   kind,
@@ -42,6 +51,11 @@ export function PunishmentUpload({
       setError("That file is not a video.");
       return;
     }
+    if (file.size > VIDEO_MAX_BYTES) {
+      const size = Math.round(file.size / (1024 * 1024));
+      setError(`That file is ${size} MB. The limit is ${VIDEO_MAX_LABEL}, about 30 seconds of phone video. Trim it and try again.`);
+      return;
+    }
     setBusy(true);
     setProgress(0);
     setError("");
@@ -60,11 +74,7 @@ export function PunishmentUpload({
         form.set("total", String(total));
         form.set("mime", file.type || (photo ? "image/jpeg" : "video/mp4"));
         form.set("chunk", chunk, file.name || (photo ? "bake.jpg" : "punishment.mp4"));
-        const response = await fetch("/api/gbbo-league/video", {
-          method: "POST",
-          credentials: "include",
-          body: form,
-        });
+        const response = await postChunk(form);
         const data = (await response.json()) as { error?: string; complete?: boolean; league?: unknown };
         if (!response.ok) {
           setError(data.error ?? (photo ? "That photo could not be uploaded." : "That video could not be uploaded."));
