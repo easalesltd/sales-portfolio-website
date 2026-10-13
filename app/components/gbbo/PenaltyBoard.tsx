@@ -73,7 +73,7 @@ export function PenaltyBoard({ kind }: { kind?: Penalty["kind"] } = {}) {
                 <div>
                   <div className="flex flex-wrap gap-2">
                     <Pill tone={penalty.kind === "beer_baguette" ? "raspberry" : "tent"}>
-                      {penalty.kind === "beer_baguette" ? "Beer baguette" : "Technical"}
+                      {penalty.kind === "beer_baguette" ? "Beer baguette" : penalty.cause === "short_side" ? "Technical · short side" : "Technical"}
                     </Pill>
                     <Pill>Week {penalty.week}</Pill>
                     {done ? <Pill tone="butter">Done</Pill> : <Pill tone="raspberry">Outstanding</Pill>}

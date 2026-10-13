@@ -5,6 +5,7 @@ import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
 import { bakerIdForName, companionIdForName, gbboSlug } from "./identity";
 import {
   applyEpisodeResult,
+  applyShortSideEscalations,
   applySlutDropEscalations,
   applyTechnicalEscalations,
   assignTechnicalPenalties,
@@ -219,10 +220,11 @@ export async function readGbboLeague(): Promise<LeagueState> {
     GUESSED_WEEK_THEMES,
   );
   const reset = resetVideolessSlutDrops(league);
+  const shortSides = applyShortSideEscalations(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || reset || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || reset || shortSides || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;
@@ -231,6 +233,7 @@ export async function readGbboLeague(): Promise<LeagueState> {
 export async function writeGbboLeague(league: LeagueState): Promise<void> {
   const next = stabilizeLeague(structuredClone(league));
   resetVideolessSlutDrops(next);
+  applyShortSideEscalations(next);
   applySlutDropEscalations(next);
   applyTechnicalEscalations(next);
   ensureDemocracyBaguette(next);

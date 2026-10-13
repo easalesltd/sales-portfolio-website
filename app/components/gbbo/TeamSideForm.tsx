@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { bakerName, bakerStillIn, barredBakersForWeek, carriedTeam, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
+import { SHORT_SIDE_RULE_FROM_WEEK, bakerName, bakerStillIn, barredBakersForWeek, carriedTeam, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { Companion, LeagueState } from "@/app/lib/gbbo/types";
@@ -111,6 +111,9 @@ export function TeamSideForm({
           {sentHome.map((id) => bakerName(league, id)).join(", ")} left the tent
           {sentHome.length === 1 ? " and has been taken off this side" : " and have been taken off this side"}.
           Pick a replacement still baking.
+          {week >= SHORT_SIDE_RULE_FROM_WEEK
+            ? " If your side is still short when the episode starts, you must bake this week's technical and lose 5 points."
+            : ""}
         </p>
       ) : null}
       {benched.length ? (

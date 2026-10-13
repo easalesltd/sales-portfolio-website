@@ -283,18 +283,68 @@ export function scoreEpisodeForBaker(league: LeagueState, episode: EpisodeScore,
 export function scoreCompanionWeek(league: LeagueState, companionId: string, week: number): CompanionWeekScore {
   const episode = league.episodes.find((item) => item.week === week);
   const bakerIds = teamForWeek(league, companionId, week);
-  const lines = episode ? bakerIds.flatMap((bakerId) => scoreEpisodeForBaker(league, episode, bakerId)) : [];
-  const rawPoints = lines.reduce((sum, line) => sum + line.points, 0);
+  const bakerLines = episode ? bakerIds.flatMap((bakerId) => scoreEpisodeForBaker(league, episode, bakerId)) : [];
+  const bakerPoints = bakerLines.reduce((sum, line) => sum + line.points, 0);
+  const lazy = episode?.published && shortSidePenalty(league, companionId, week)
+    ? [{ label: "Short side: a baker who left the tent was not replaced", bakerId: null, points: SHORT_SIDE_POINTS, kind: "minus" as const }]
+    : [];
+  const lazyPoints = lazy.reduce((sum, line) => sum + line.points, 0);
   const joker = league.jokers.some((item) => item.companionId === companionId && item.week === week);
   return {
     companionId,
     week,
     bakerIds,
-    lines,
-    rawPoints,
+    lines: [...bakerLines, ...lazy],
+    rawPoints: bakerPoints + lazyPoints,
     joker,
-    points: joker ? rawPoints * 2 : rawPoints,
+    points: (joker ? bakerPoints * 2 : bakerPoints) + lazyPoints,
   };
+}
+
+/** First week a companion is punished for not replacing a baker who left the tent. */
+export const SHORT_SIDE_RULE_FROM_WEEK = 5;
+export const SHORT_SIDE_POINTS = -5;
+
+export function shortSidePenalty(league: LeagueState, companionId: string, week: number): Penalty | undefined {
+  return (league.penalties ?? []).find(
+    (penalty) => penalty.cause === "short_side" && penalty.companionId === companionId && penalty.week === week,
+  );
+}
+
+/** Bakers from last week's side who have left the tent, when the companion's side this week is still short. */
+export function unreplacedDepartures(league: LeagueState, companionId: string, week: number): string[] {
+  if (week < 2) return [];
+  if (teamForWeek(league, companionId, week).length >= teamSizeForWeek(league, week)) return [];
+  return teamForWeek(league, companionId, week - 1).filter((id) => !bakerStillIn(league, id, week));
+}
+
+/** Once a week's sides lock, anyone still short after a baker left the tent owes that week's technical bake. */
+export function applyShortSideEscalations(league: LeagueState, now = new Date()): boolean {
+  let changed = false;
+  league.penalties = league.penalties ?? [];
+  for (let week = SHORT_SIDE_RULE_FROM_WEEK; week <= league.totalWeeks; week += 1) {
+    if (now < episodeStartsAt(week)) break;
+    for (const companion of league.companions) {
+      if (shortSidePenalty(league, companion.id, week)) continue;
+      const gone = unreplacedDepartures(league, companion.id, week);
+      if (gone.length === 0) continue;
+      const names = gone.map((id) => bakerName(league, id)).join(" and ");
+      league.penalties.push({
+        id: `pen_short_${companion.id}_${week}`,
+        week,
+        companionId: companion.id,
+        bakerId: "",
+        kind: "technical",
+        deadline: technicalDeadlineAt(week).toISOString(),
+        completed: false,
+        videoId: null,
+        cause: "short_side",
+        note: `${companion.name} did not replace ${names} after they left the tent, so must bake the week ${week} technical and loses ${Math.abs(SHORT_SIDE_POINTS)} points for being lazy.`,
+      });
+      changed = true;
+    }
+  }
+  return changed;
 }
 
 export function sideConfirmed(league: LeagueState, companionId: string, week: number): boolean {
@@ -626,7 +676,7 @@ export function assignTechnicalPenalties(league: LeagueState, week: number): voi
   if (!row) return;
   const target = technicalPenaltyTarget(league, row);
   league.penalties = league.penalties.filter(
-    (penalty) => penalty.week !== week || penalty.kind === "beer_baguette",
+    (penalty) => penalty.week !== week || penalty.kind === "beer_baguette" || penalty.cause === "short_side",
   );
   if (!target) return;
   const reason = target.fallback

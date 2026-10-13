@@ -27,7 +27,7 @@ export function MustBakeCallout({ week }: { week?: number }) {
 
   const recipe = (league.technicalRecipes ?? []).find((item) => item.week === episode.week);
   const technicals = (league.penalties ?? []).filter(
-    (penalty) => penalty.week === episode.week && penalty.kind === "technical",
+    (penalty) => penalty.week === episode.week && penalty.kind === "technical" && penalty.cause !== "short_side",
   );
   const outstanding = owners.filter((owner) =>
     technicals.some((penalty) => penalty.companionId === owner.id && !technicalIsComplete(penalty)),

@@ -108,6 +108,8 @@ export type Penalty = {
   completed: boolean;
   note: string;
   videoId: string | null;
+  /** Set when the bake is owed for fielding a short side, not for owning the lowest technical baker. */
+  cause?: "short_side";
 };
 
 export type SlutDrop = {
