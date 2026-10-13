@@ -8226,7 +8226,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-12 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-13 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -12467,8 +12467,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'AFC Totton', tla: 'AFT' },
   },
   {
-    id: '2026-10-27-heb-sca',
-    utcDate: '2026-10-27T19:45:00Z',
+    id: '2026-10-17-heb-sca',
+    utcDate: '2026-10-17T14:00:00Z',
     homeTeam: { name: 'Hebburn Town', tla: 'HEB' },
     awayTeam: { name: 'Scarborough Athletic', tla: 'SCA' },
   },
