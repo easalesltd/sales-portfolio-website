@@ -202,6 +202,10 @@ export function ruleApproved(league: LeagueState, ruleId: string): boolean {
   return yes / league.companions.length >= 2 / 3;
 }
 
+export function technicalField(league: LeagueState, episode: EpisodeScore): number {
+  return episode.technicalFieldSize ?? activeBakersAtWeek(league, episode.week).length;
+}
+
 export function technicalPoints(place: number, fieldSize: number): number {
   let points = 0;
   if (place === 1) points += 3;
@@ -227,7 +231,7 @@ export function scoreEpisodeForBaker(league: LeagueState, episode: EpisodeScore,
     lines.push({ label: `${baker} was Star Baker`, bakerId, points: 5, kind: "plus" });
   }
 
-  const fieldSize = activeBakersAtWeek(league, episode.week).length;
+  const fieldSize = technicalField(league, episode);
   const technical = episode.technical.find((entry) => entry.bakerId === bakerId);
   if (technical) {
     const points = technicalPoints(technical.place, fieldSize);
@@ -726,7 +730,7 @@ export function neededAutoDrops(league: LeagueState, week: number): Substitution
 export function episodeScoringLines(league: LeagueState, episode: EpisodeScore): string[] {
   const lines: string[] = [];
   const name = (id: string | null) => bakerName(league, id);
-  const field = activeBakersAtWeek(league, episode.week).length;
+  const field = technicalField(league, episode);
 
   if (episode.starBakerId) lines.push(`${name(episode.starBakerId)} was Star Baker (+5).`);
   else lines.push("No Star Baker was awarded.");
@@ -759,7 +763,7 @@ export function episodeScoringLines(league: LeagueState, episode: EpisodeScore):
 
 export type EpisodeResult = Pick<
   EpisodeScore,
-  "starBakerId" | "eliminatedBakerId" | "technical" | "handshakes" | "innuendos" | "drops" | "cries" | "recapSource" | "justification"
+  "starBakerId" | "eliminatedBakerId" | "technical" | "handshakes" | "innuendos" | "drops" | "cries" | "recapSource" | "justification" | "technicalFieldSize"
 >;
 
 /** One-off ledger entry, applied once per `key`: records an episode's results and publishes it. */

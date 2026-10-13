@@ -88,6 +88,8 @@ export type EpisodeScore = {
   recapSource: string;
   recapNotes: string;
   justification: string;
+  /** Bakers who took part in the technical, when someone in the tent that week did not. */
+  technicalFieldSize?: number;
 };
 
 export type AdHocRule = {

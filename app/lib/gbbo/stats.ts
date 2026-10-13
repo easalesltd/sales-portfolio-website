@@ -1,5 +1,4 @@
 import {
-  activeBakersAtWeek,
   bakerEliminatedIn,
   bakerName,
   companionsOwningBaker,
@@ -8,6 +7,7 @@ import {
   scoreCompanionWeek,
   scoreEpisodeForBaker,
   teamForWeek,
+  technicalField,
 } from "./league";
 import type { LeagueState, ScoreLine } from "./types";
 import { teamWindow } from "./window";
@@ -76,7 +76,7 @@ export function bakerLedger(league: LeagueState, bakerId: string): BakerLedger {
     if (episode.innuendos.includes(bakerId)) innuendos += 1;
     if (episode.starBakerId === bakerId) starBaker += 1;
     if (baker?.eliminatedInWeek && baker.eliminatedInWeek < episode.week) continue;
-    const field = activeBakersAtWeek(league, episode.week).length;
+    const field = technicalField(league, episode);
     const place = episode.technical.find((entry) => entry.bakerId === bakerId)?.place;
     if (place === 1) technicalFirst += 1;
     if (place && place <= 3) technicalPodium += 1;
