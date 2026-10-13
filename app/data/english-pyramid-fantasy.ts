@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s Newcastle lost 4-1 at Coventry City. No win points, minus 1 for leaking three, net minus 1. Chris is on 279.\n\nBen\'s Coventry City beat Newcastle 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Ben is on 238.\n\nAsh is still last on 197.\n\nTable: Chris 279, Scott 271, Jon 265, Ben 238, Dave 226, Nest 210, Ash 197.';
+  'Scott\'s Wolves and Bolton Wanderers played each other and finished 1-3. No win points, minus 1 for leaking three for one, plus 4 for the away win, plus 1 for three or more for the other. Scott is on 275.\n\nJon\'s Birmingham City beat Preston North End 4-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Jon is on 270.\n\nBen\'s Cardiff City beat Watford 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Middlesbrough won 3-2 at Stoke City. Plus 4 for the away win, plus 1 for three or more, net plus 5. Ben is on 247.\n\nDave\'s Burnley and Charlton Athletic played each other and finished 2-2. Plus 1 for the draw for one, plus 1 for the draw for the other. Dave is on 228.\n\nNest\'s Blackburn Rovers won 1-0 at Bristol City. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Nest is on 215.\n\nAsh\'s AFC Totton lost 5-0 at Ebbsfleet United. No win points, minus 1 for leaking three, net minus 1. Then Preston North End lost 4-0 at Birmingham City. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Ash is on 196.\n\nChris still leads on 279 without a club kicking a ball.\n\nTable: Chris 279, Scott 275, Jon 270, Ben 247, Dave 228, Nest 215, Ash 196.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -8211,6 +8211,84 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Newcastle United', tla: 'NEW' },
     homeGoals: 4,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/afc-totton/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-10-13-ebb-aft',
+    utcDate: '2026-10-13T18:45:00Z',
+    homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
+    awayTeam: { name: 'AFC Totton', tla: 'AFT' },
+    homeGoals: 5,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-13-brc-blk',
+    utcDate: '2026-10-13T18:45Z',
+    homeTeam: { name: 'Bristol City', tla: 'BRC' },
+    awayTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-13-bur-cha',
+    utcDate: '2026-10-13T18:45Z',
+    homeTeam: { name: 'Burnley', tla: 'BUR' },
+    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-13-cdf-wat',
+    utcDate: '2026-10-13T18:45Z',
+    homeTeam: { name: 'Cardiff City', tla: 'CDF' },
+    awayTeam: { name: 'Watford', tla: 'WAT' },
+    homeGoals: 5,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-13-wol-bol',
+    utcDate: '2026-10-13T18:45Z',
+    homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+    awayTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-13-bir-pne',
+    utcDate: '2026-10-13T19:00Z',
+    homeTeam: { name: 'Birmingham City', tla: 'BIR' },
+    awayTeam: { name: 'Preston North End', tla: 'PNE' },
+    homeGoals: 4,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-13-stk-mid',
+    utcDate: '2026-10-13T19:00Z',
+    homeTeam: { name: 'Stoke City', tla: 'STK' },
+    awayTeam: { name: 'Middlesbrough', tla: 'MID' },
+    homeGoals: 2,
+    awayGoals: 3,
     homeRedCards: 0,
     awayRedCards: 0,
   },
