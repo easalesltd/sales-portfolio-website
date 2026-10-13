@@ -19,6 +19,8 @@ export type Baker = {
   job: string;
   photo: string;
   eliminatedInWeek: number | null;
+  /** Shown instead of "Sent home" when the baker left the tent for another reason. */
+  exitLabel?: string;
 };
 
 export type TeamAssignment = {

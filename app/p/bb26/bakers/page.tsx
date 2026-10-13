@@ -14,17 +14,23 @@ function officialProfile(name: string) {
   return `https://thegreatbritishbakeoff.co.uk/bakers/series-17-${gbboSlug(name)}/`;
 }
 
-function EliminatedStamp({ week, theme }: { week: number; theme: string | null }) {
+function EliminatedStamp({ week, theme, label }: { week: number; theme: string | null; label?: string }) {
   return (
     <div className="pointer-events-none absolute inset-0">
       <div className="absolute inset-0 bg-gradient-to-t from-[#1c140f]/55 via-[#1c140f]/15 to-[#1c140f]/10" />
       <div
         className="gbbo-baker-stamp"
         role="img"
-        aria-label={`Sent home in week ${week}${theme ? `, ${theme}` : ""}`}
+        aria-label={`${label ?? "Sent home"} in week ${week}${theme ? `, ${theme}` : ""}`}
       >
         <span className="gbbo-baker-stamp-ring">
-          <span className="text-[0.62rem] font-black uppercase tracking-[0.26em]">Sent home</span>
+          {label ? (
+            <span className="max-w-[7.5rem] text-center text-[0.58rem] font-black uppercase leading-tight tracking-[0.1em]">
+              {label}
+            </span>
+          ) : (
+            <span className="text-[0.62rem] font-black uppercase tracking-[0.26em]">Sent home</span>
+          )}
           <span className="my-1 h-px w-9 bg-[#c43c5b]/70" />
           <span className="font-display text-[1.35rem] leading-none tracking-tight">Week {week}</span>
           {theme ? (
@@ -72,7 +78,7 @@ function BakerCard({
           </div>
         )}
         {out && week ? (
-          <EliminatedStamp week={week} theme={theme ?? null} />
+          <EliminatedStamp week={week} theme={theme ?? null} label={baker.exitLabel} />
         ) : (
           <span className="absolute left-3 top-3 rounded-full bg-tent px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-flour">
             Still baking

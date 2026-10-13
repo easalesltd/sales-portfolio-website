@@ -109,6 +109,8 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
       baker.hometown = seed.hometown;
       baker.job = seed.job;
       baker.photo = seed.photo;
+      if (seed.exitLabel) baker.exitLabel = seed.exitLabel;
+      else delete baker.exitLabel;
     } else {
       baker.hometown ??= "";
       baker.job ??= "";

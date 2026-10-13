@@ -72,6 +72,7 @@ export const SERIES_17_BAKERS: Omit<Baker, "id" | "eliminatedInWeek">[] = [
     hometown: "London",
     job: "Advertising post-producer",
     photo: "/gbbo/bakers/nikki.jpg",
+    exitLabel: "Compassionately left",
     bio: "Nikki has baked with her mum since she was seven and still treats the kitchen as therapy. She feeds family and friends, has been with Tom for 22 years, and still hits the R&B dancefloor after a 90s spell as a podium dancer.",
   },
   {
