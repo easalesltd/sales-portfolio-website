@@ -7,6 +7,7 @@ import {
   applyEpisodeResult,
   applyShortSideEscalations,
   applySlutDropEscalations,
+  correctEpisodeResult,
   applyTechnicalEscalations,
   assignTechnicalPenalties,
   ensureDemocracyBaguette,
@@ -25,6 +26,7 @@ const WEEK_3_SIDES_AND_JOKERS_RESET = { key: "2026-week-3-sides-and-jokers", wee
 const LEE_WEEK_3_RESET = { key: "2026-week-3-lee-side-and-joker", week: 3, companion: "Lee" };
 const WEEK_3_RESULT_KEY = "2026-week-3-bread-results";
 const WEEK_4_RESULT_KEY = "2026-week-4-bread-results";
+const WEEK_4_CRIES_FIX_KEY = "2026-week-4-only-molly-cried";
 const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
 const GUNS_WEEK_3_CLARA_KEY = "2026-week-3-guns-clara-restored";
 const REAL_WEEK_THEMES_KEY = "2026-real-week-themes";
@@ -69,10 +71,10 @@ function week4Result(): EpisodeResult {
     handshakes: [],
     innuendos: [],
     drops: {},
-    cries: { [id("Molly")]: 1, [id("Tom")]: 1, [id("Gabe")]: 1 },
+    cries: { [id("Molly")]: 1 },
     recapSource: "Chief companion, Bread Week",
     justification:
-      "Tom was Star Baker. Molly went home, and Nikki also left the tent for personal reasons. Nine bakers took the technical: Gabe was first, Clara second and Moyin third. Gary finished last (−3), Yannis second last (−2) and Molly seventh, third last (−1). Molly, Tom and Gabe each had a cry (−3 each).",
+      "Tom was Star Baker. Molly went home, and Nikki also left the tent for personal reasons. Nine bakers took the technical: Gabe was first, Clara second and Moyin third. Gary finished last (−3), Yannis second last (−2) and Molly seventh, third last (−1). Molly had a cry (−3).",
   };
 }
 
@@ -251,12 +253,13 @@ export async function readGbboLeague(): Promise<LeagueState> {
     if (nikki) nikki.eliminatedInWeek = 4;
   }
   const week4Published = applyEpisodeResult(league, WEEK_4_RESULT_KEY, 4, week4Result());
+  const week4CriesFixed = correctEpisodeResult(league, WEEK_4_CRIES_FIX_KEY, 4, week4Result());
   const reset = resetVideolessSlutDrops(league);
   const shortSides = applyShortSideEscalations(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || reset || shortSides || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || reset || shortSides || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;

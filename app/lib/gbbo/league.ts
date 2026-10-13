@@ -778,6 +778,18 @@ export function applyEpisodeResult(league: LeagueState, key: string, week: numbe
   return true;
 }
 
+/** One-off correction to a published week, applied once per `key`: re-records the results and re-settles that week's slut drops. */
+export function correctEpisodeResult(league: LeagueState, key: string, week: number, result: EpisodeResult): boolean {
+  league.resetsApplied = league.resetsApplied ?? [];
+  if (league.resetsApplied.includes(key)) return false;
+  const row = league.episodes.find((item) => item.week === week);
+  if (!row?.published) return false;
+  Object.assign(row, structuredClone(result));
+  syncSlutDropsForWeek(league, week);
+  league.resetsApplied.push(key);
+  return true;
+}
+
 /** Gives this week's fewest-points companions a slut drop and clears it from anyone no longer bottom. */
 export function syncSlutDropsForWeek(league: LeagueState, week: number): void {
   league.slutDrops = league.slutDrops ?? [];
