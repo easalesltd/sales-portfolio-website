@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Wolves and Bolton Wanderers played each other and finished 1-3. No win points, minus 1 for leaking three for one, plus 4 for the away win, plus 1 for three or more for the other. Scott is on 275.\n\nJon\'s Birmingham City beat Preston North End 4-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Jon is on 270.\n\nBen\'s Cardiff City beat Watford 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Middlesbrough won 3-2 at Stoke City. Plus 4 for the away win, plus 1 for three or more, net plus 5. Ben is on 247.\n\nDave\'s Burnley and Charlton Athletic played each other and finished 2-2. Plus 1 for the draw for one, plus 1 for the draw for the other. Dave is on 228.\n\nNest\'s Blackburn Rovers won 1-0 at Bristol City. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Nest is on 215.\n\nAsh\'s AFC Totton lost 5-0 at Ebbsfleet United. No win points, minus 1 for leaking three, net minus 1. Then Preston North End lost 4-0 at Birmingham City. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Ash is on 196.\n\nChris still leads on 279 without a club kicking a ball.\n\nTable: Chris 279, Scott 275, Jon 270, Ben 247, Dave 228, Nest 215, Ash 196.';
+  'Chris\'s Lincoln City and West Ham played each other and finished 0-6. No win points, minus 1 for leaking three, plus 2 for the reds for one, plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more for the other. Chris is on 286.\n\nJon\'s Portsmouth beat Sheffield United 3-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Jon is on 274.\n\nNest\'s Sheffield United lost 3-2 at Portsmouth. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Nest is on 215.\n\nAsh\'s Southampton won 1-0 at Norwich City. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Ash is on 201.\n\nTable: Chris 286, Scott 275, Jon 274, Ben 247, Dave 228, Nest 215, Ash 201.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -8290,6 +8290,39 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeGoals: 2,
     awayGoals: 3,
     homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-14-nor-sou',
+    utcDate: '2026-10-14T18:45Z',
+    homeTeam: { name: 'Norwich City', tla: 'NOR' },
+    awayTeam: { name: 'Southampton', tla: 'SOU' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-14-por-shu',
+    utcDate: '2026-10-14T18:45Z',
+    homeTeam: { name: 'Portsmouth', tla: 'POR' },
+    awayTeam: { name: 'Sheffield United', tla: 'SHU' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-14-lin-whu',
+    utcDate: '2026-10-14T19:00Z',
+    homeTeam: { name: 'Lincoln City', tla: 'LIN' },
+    awayTeam: { name: 'West Ham United', tla: 'WHU' },
+    homeGoals: 0,
+    awayGoals: 6,
+    homeRedCards: 2,
     awayRedCards: 0,
   },
 ];
