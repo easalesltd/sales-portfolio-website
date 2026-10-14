@@ -8304,7 +8304,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-13 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-14 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -12519,14 +12519,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Worksop Town', tla: 'WRK' },
   },
   {
-    id: '2026-10-17-clm-fnh',
-    utcDate: '2026-10-17T14:00:00Z',
-    homeTeam: { name: 'Chelmsford City', tla: 'CLM' },
-    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-10-17-ebb-wsm',
     utcDate: '2026-10-17T14:00:00Z',
     homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
@@ -12605,14 +12597,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-17T14:00:00Z',
     homeTeam: { name: 'AFC Telford United', tla: 'TEL' },
     awayTeam: { name: 'Darlington', tla: 'DAR' },
-  },
-  {
-    id: '2026-10-17-ton-chu',
-    utcDate: '2026-10-17T14:00:00Z',
-    homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
-    awayTeam: { name: 'Chesham United', tla: 'CHU' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-10-17-ton-hem',
@@ -14009,6 +13993,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Arsenal', tla: 'ARS' },
   },
   {
+    id: '2026-11-02-clm-fnh',
+    utcDate: '2026-11-02T19:45:00Z',
+    homeTeam: { name: 'Chelmsford City', tla: 'CLM' },
+    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
+  },
+  {
     id: '2026-11-02-new-eve',
     utcDate: '2026-11-02T20:00Z',
     homeTeam: { name: 'Newcastle United', tla: 'NEW' },
@@ -14553,6 +14543,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-17T19:45:00Z',
     homeTeam: { name: 'South Shields', tla: 'SSH' },
     awayTeam: { name: 'Harborough Town', tla: 'HBO' },
+  },
+  {
+    id: '2026-11-17-ton-chu',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
+    awayTeam: { name: 'Chesham United', tla: 'CHU' },
   },
   {
     id: '2026-11-17-tru-bil',
@@ -17513,12 +17509,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Chester FC', tla: 'CHF' },
   },
   {
-    id: '2026-12-28-ssh-dar',
-    utcDate: '2026-12-28T15:00:00Z',
-    homeTeam: { name: 'South Shields', tla: 'SSH' },
-    awayTeam: { name: 'Darlington', tla: 'DAR' },
-  },
-  {
     id: '2026-12-28-tel-mac',
     utcDate: '2026-12-28T15:00:00Z',
     homeTeam: { name: 'AFC Telford United', tla: 'TEL' },
@@ -17595,6 +17585,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-29T19:30Z',
     homeTeam: { name: 'Hull City', tla: 'HUL' },
     awayTeam: { name: 'Leeds United', tla: 'LEE' },
+  },
+  {
+    id: '2026-12-29-ssh-dar',
+    utcDate: '2026-12-29T19:45:00Z',
+    homeTeam: { name: 'South Shields', tla: 'SSH' },
+    awayTeam: { name: 'Darlington', tla: 'DAR' },
   },
   {
     id: '2026-12-29-acc-rot',
