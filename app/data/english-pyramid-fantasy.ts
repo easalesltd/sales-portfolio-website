@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris owns both Lincoln City and West Ham, so Wednesday night was basically him wanking himself off in a mirror. West Ham went to Sincil Bank and won 0-6, Lincoln had two players sent off for the crime of being shit, and Chris got paid for both ends of the massacre. Plus 7 for watching his own club get its head kicked in. He is on 286 and the rest of you should be filing a complaint with the FA, the police and his mum.\n\nJon\'s Portsmouth beat Sheffield United 3-2 at Fratton Park, which is plus 4 and puts Jon on 274. That is one point behind Scott, who spent Wednesday on the sofa and is clinging on at 275 like a drunk to a lamppost.\n\nNest\'s Sheffield United leaked three, got a man sent off and walked away with exactly zero points. Net nothing. A full 90 minutes of sweat for the fantasy equivalent of a shrug. Nest stays on 215.\n\nAsh\'s Southampton nicked it 1-0 at Norwich City with a clean sheet for plus 5, and Ash finally crawls over 200 to 201. Still bottom, mate. Breaking 200 in October is not an achievement, it is a cry for help.\n\nBen on 247 and Dave on 228 had nobody playing, which is still more dignified than being Lincoln.\n\nTable: Chris 286, Scott 275, Jon 274, Ben 247, Dave 228, Nest 215, Ash 201.';
+  'Jon\'s Oxford United drew 1-1 with Mansfield Town. Plus 1 for the draw, plus 2 for the reds, net plus 3. Jon is on 277.\n\nChris still leads on 286 without a club kicking a ball. Ash is still last on 201.\n\nTable: Chris 286, Jon 277, Scott 275, Ben 247, Dave 228, Nest 215, Ash 201.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -8324,6 +8324,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 6,
     homeRedCards: 2,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-15-mnf-oxf',
+    utcDate: '2026-10-15T19:00Z',
+    homeTeam: { name: 'Mansfield Town', tla: 'MNF' },
+    awayTeam: { name: 'Oxford United', tla: 'OXF' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 2,
   },
 ];
 
