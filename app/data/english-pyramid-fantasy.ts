@@ -8337,7 +8337,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-14 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-15 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -12832,12 +12832,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Horsham', tla: 'HOR' },
   },
   {
-    id: '2026-10-20-spa-heb',
-    utcDate: '2026-10-20T18:45:00Z',
-    homeTeam: { name: 'Spalding United', tla: 'SPA' },
-    awayTeam: { name: 'Hebburn Town', tla: 'HEB' },
-  },
-  {
     id: '2026-10-20-bar-swi',
     utcDate: '2026-10-20T18:45Z',
     homeTeam: { name: 'Barnet', tla: 'BAR' },
@@ -14570,6 +14564,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-17T19:45:00Z',
     homeTeam: { name: 'Oxford City', tla: 'OXC' },
     awayTeam: { name: 'Macclesfield', tla: 'MAC' },
+  },
+  {
+    id: '2026-11-17-spa-heb',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Spalding United', tla: 'SPA' },
+    awayTeam: { name: 'Hebburn Town', tla: 'HEB' },
   },
   {
     id: '2026-11-17-ssh-hbo',
