@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Oxford United drew 1-1 with Mansfield Town. Plus 1 for the draw, plus 2 for the reds, net plus 3. Jon is on 277.\n\nChris still leads on 286 without a club kicking a ball. Ash is still last on 201.\n\nTable: Chris 286, Jon 277, Scott 275, Ben 247, Dave 228, Nest 215, Ash 201.';
+  'Scott\'s Wolves won 2-1 at Burnley. Plus 4 for the away win, net plus 4. Scott is on 279.\n\nDave\'s Burnley lost 2-1 at home to Wolves. No win points, net zero. Dave is on 228.\n\nChris still leads on 286 without a club kicking a ball. Ash is still last on 201.\n\nTable: Chris 286, Scott 279, Jon 277, Ben 247, Dave 228, Nest 215, Ash 201.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -8335,6 +8335,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 2,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-16-bur-wol',
+    utcDate: '2026-10-16T19:00Z',
+    homeTeam: { name: 'Burnley', tla: 'BUR' },
+    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
 ];
 
