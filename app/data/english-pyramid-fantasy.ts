@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Wolves went to Burnley and won 2-1. Away win is plus 4, the goal they shipped kills the clean sheet, and two is not three, so that is the lot. Scott is on 279. He has just shoved Jon out of second and sits seven off Chris. Spare key energy. The door was not even locked.\n\nDave\'s Burnley lost 2-1 at home to Wolves and still left with fuck all. No win points, no red cards, net zero. Dave is on 228. A goal that does not pay is just noise.\n\nChris had no club on the pitch and he is still top on 286. Jon is third on 277 after getting jumped by a match he was not in. Ben is on 247. Nest is on 215. Ash is last on 201, still touring the basement like he bought a season ticket for it.\n\nTable: Chris 286, Scott 279, Jon 277, Ben 247, Dave 228, Nest 215, Ash 201.';
+  'Chris\'s Lincoln City drew 2-2 with Millwall. Plus 1 for the draw, plus 1 for the red, net plus 2. Chris is on 288.\n\nJon\'s Chelsea won 2-0 at Everton. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Jon is on 282.\n\nScott\'s Luton Town lost 2-1 at MK Dons. No win points, net zero. Then Burton Albion drew 2-2 with Peterborough United. Plus 1 for the draw, net plus 1. Scott is on 280.\n\nBen\'s Fleetwood Town beat Rotherham United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Middlesbrough drew 2-2 with Cardiff City. Plus 1 for the draw, net plus 1. Then Cardiff City drew 2-2 with Middlesbrough. Plus 1 for the draw, plus 1 for the red, net plus 2. Ben is on 254.\n\nDave\'s Charlton Athletic lost 2-0 at Watford. No win points, net zero. Dave is on 228.\n\nNest\'s Bristol Rovers lost 1-0 at Shrewsbury Town. No win points, net zero. Nest is on 215.\n\nAsh\'s MK Dons beat Luton Town 2-1 at home. Plus 3 for the home win, net plus 3. Then Shrewsbury Town beat Bristol Rovers 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 2 for the reds, net plus 6. Ash is on 210.\n\nTable: Chris 288, Jon 282, Scott 280, Ben 254, Dave 228, Nest 215, Ash 210.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -8344,6 +8344,94 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
     homeGoals: 1,
     awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-17-eve-che',
+    utcDate: '2026-10-17T11:30Z',
+    homeTeam: { name: 'Everton', tla: 'EVE' },
+    awayTeam: { name: 'Chelsea', tla: 'CHE' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-17-fle-rot',
+    utcDate: '2026-10-17T11:30Z',
+    homeTeam: { name: 'Fleetwood Town', tla: 'FLE' },
+    awayTeam: { name: 'Rotherham United', tla: 'ROT' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-17-mid-cdf',
+    utcDate: '2026-10-17T11:30Z',
+    homeTeam: { name: 'Middlesbrough', tla: 'MID' },
+    awayTeam: { name: 'Cardiff City', tla: 'CDF' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-17-mil-lin',
+    utcDate: '2026-10-17T11:30Z',
+    homeTeam: { name: 'Millwall', tla: 'MIL' },
+    awayTeam: { name: 'Lincoln City', tla: 'LIN' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-17-mkd-lut',
+    utcDate: '2026-10-17T11:30Z',
+    homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+    awayTeam: { name: 'Luton Town', tla: 'LUT' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-17-pet-btn',
+    utcDate: '2026-10-17T11:30Z',
+    homeTeam: { name: 'Peterborough United', tla: 'PET' },
+    awayTeam: { name: 'Burton Albion', tla: 'BTN' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-17-shr-brst',
+    utcDate: '2026-10-17T11:30Z',
+    homeTeam: { name: 'Shrewsbury Town', tla: 'SHR' },
+    awayTeam: { name: 'Bristol Rovers', tla: 'BRST' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 2,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-17-wat-cha',
+    utcDate: '2026-10-17T11:30Z',
+    homeTeam: { name: 'Watford', tla: 'WAT' },
+    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    homeGoals: 2,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
