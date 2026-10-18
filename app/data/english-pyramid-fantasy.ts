@@ -8840,7 +8840,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-15 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-18 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -12203,14 +12203,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Yeovil Town', tla: 'YEO' },
   },
   {
-    id: '2026-09-26-mkd-bro',
-    utcDate: '2026-09-26T14:00Z',
-    homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
-    awayTeam: { name: 'Bromley', tla: 'BRO' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-09-26-mnf-ley',
     utcDate: '2026-09-26T14:00Z',
     homeTeam: { name: 'Mansfield Town', tla: 'MNF' },
@@ -12491,14 +12483,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Walsall', tla: 'WAL' },
     awayTeam: { name: 'Crawley Town', tla: 'CRA' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
-    id: '2026-10-03-wim-ste',
-    utcDate: '2026-10-03T14:00Z',
-    homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
-    awayTeam: { name: 'Stevenage', tla: 'STE' },
     /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
@@ -14047,6 +14031,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-27T19:45Z',
     homeTeam: { name: 'Luton Town', tla: 'LUT' },
     awayTeam: { name: 'Doncaster Rovers', tla: 'DON' },
+  },
+  {
+    id: '2026-10-27-mkd-bro',
+    utcDate: '2026-10-27T19:45Z',
+    homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+    awayTeam: { name: 'Bromley', tla: 'BRO' },
   },
   {
     id: '2026-10-27-oxf-stp',
@@ -20233,6 +20223,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-26T19:45Z',
     homeTeam: { name: 'Tamworth', tla: 'TAM' },
     awayTeam: { name: 'Carlisle United', tla: 'CAR' },
+  },
+  {
+    id: '2027-01-26-wim-ste',
+    utcDate: '2027-01-26T19:45Z',
+    homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
+    awayTeam: { name: 'Stevenage', tla: 'STE' },
   },
   {
     id: '2027-01-27-mid-wxm',
