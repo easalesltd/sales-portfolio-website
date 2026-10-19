@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Arsenal beat Nottingham Forest 1-0 away. Four for the win on the road, one for the shutout, five altogether, and not a single red card to argue about. Scott is on 288. He sat through three o\'clock like a coat on a chair, then the late kick-off cut the gap to Jon to seventeen. Third place did not change hands. A plaster, not a rescue.\n\nChris\'s Crystal Palace were beaten 5-0 at Brighton. Nothing for the loss, and a minus for conceding three or more, so the day cost him one. Chris is on 310. Still first, five ahead of Jon, which is a disgusting way to survive shipping five.\n\nNest\'s Leeds United drew 1-1 with Manchester United. One point. They scored, they conceded, nobody was sent off. Nest is on 233. Sixth, and the match was as lively as a service station sandwich.\n\nAsh\'s Sunderland lost 2-0 at Bournemouth. The defeat pays nothing. The red card pays one, because this game is an idiot. Manchester United then drew 1-1 at Leeds and handed him another point. Ash is on 216. Still bottom. Seventeen behind Nest, who only needed the draw.\n\nJon is on 305. Ben is on 264. Dave is on 241. Sunday happened around them. Their squads were in the pub.\n\nTable: Chris 310, Jon 305, Scott 288, Ben 264, Dave 241, Nest 233, Ash 216.';
+  'Ben\'s Coventry City lost 3-1 at Spurs. No win points, minus 1 for leaking three, net minus 1. Ben is on 263.\n\nChris still leads on 310 without a club kicking a ball. Ash is still last on 216.\n\nTable: Chris 310, Jon 305, Scott 288, Ben 263, Dave 241, Nest 233, Ash 216.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -8868,6 +8868,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'Nottingham Forest', tla: 'NFO' },
     awayTeam: { name: 'Arsenal', tla: 'ARS' },
     homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-19-tot-cov',
+    utcDate: '2026-10-19T19:00Z',
+    homeTeam: { name: 'Tottenham Hotspur', tla: 'TOT' },
+    awayTeam: { name: 'Coventry City', tla: 'COV' },
+    homeGoals: 3,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
