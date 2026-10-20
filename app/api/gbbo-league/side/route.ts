@@ -100,7 +100,7 @@ export async function POST(request: Request) {
     }
     const changes = lineupChanges(previous, next);
     const addsAllowed = Math.max(0, size - previous.length);
-    if (week > 1 && barredOnLastWeek && (changes > addsAllowed || previous.some((id) => !next.includes(id)))) {
+    if (week > 1 && barredOnLastWeek && addsAllowed > 0 && (changes > addsAllowed || previous.some((id) => !next.includes(id)))) {
       return NextResponse.json(
         { error: `${barredNames} coming off uses your substitution, so you cannot change anyone else.` },
         { status: 400 },

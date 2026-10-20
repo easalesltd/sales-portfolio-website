@@ -52,7 +52,7 @@ export function TeamSideForm({
   const changes = lineupChanges(livingLast, filled);
   const shrinking = livingLast.length > size;
   const addsAllowed = Math.max(0, size - livingLast.length);
-  const brokeTheBar = benched.length > 0 && (livingLast.some((id) => !filled.includes(id)) || changes > addsAllowed);
+  const brokeTheBar = benched.length > 0 && addsAllowed > 0 && (livingLast.some((id) => !filled.includes(id)) || changes > addsAllowed);
   const legal = unique.size === filled.length && filled.length === size && (week === 1 ? changes <= 3 : changes <= 1);
   const shrinkingOk = shrinking && filled.length === size && unique.size === size && changes === 0;
   const canSubmit = !locked && !brokeTheBar && (legal || shrinkingOk);
@@ -125,7 +125,7 @@ export function TeamSideForm({
           Every companion picked {benched.map((id) => bakerName(league, id)).join(" and ")} last week, so they cannot
           be picked this week.
           {addsAllowed === 0
-            ? " Taking them off uses your substitution, so the rest of this side stays and no other change is allowed."
+            ? " They are off this side, and you can still substitute one baker."
             : " Your substitution must be used to replace them, so no other changes are allowed."}
         </p>
       ) : null}
@@ -164,7 +164,7 @@ export function TeamSideForm({
               ? shrinking
                 ? "This side is too big. Drop one baker, or leave it for the Chief Companion."
                 : benched.length
-                  ? "No other change. The bakers still on this side will play."
+                  ? "No change yet. You can still substitute one baker."
                   : "No change — last week's bakers will play again."
               : "One substitution. That is the weekly limit."}
       </p>
