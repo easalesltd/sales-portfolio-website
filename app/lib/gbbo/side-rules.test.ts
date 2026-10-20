@@ -8,6 +8,7 @@ import {
   barredBakersForWeek,
   scoreCompanionWeek,
   teamForWeek,
+  teamSizeForWeek,
 } from "@/app/lib/gbbo/league";
 import { createEmptyLeague } from "@/app/lib/gbbo/seed";
 import { episodeStartsAt } from "@/app/lib/gbbo/window";
@@ -38,6 +39,15 @@ describe("common baker rule", () => {
     expect(barredBakersForWeek(league, 5)).toEqual([bakerIdForName("Mo")]);
     expect(teamForWeek(league, companionIdForName("Dave"), 5)).toEqual(["Tom", "Gabe"].map(bakerIdForName));
     expect(barredBakersForWeek(league, league.totalWeeks)).toEqual([]);
+  });
+
+  it("fields two bakers from week 6, and one for the final two weeks", () => {
+    const league = createEmptyLeague();
+    expect(teamSizeForWeek(league, 5)).toBe(3);
+    expect(teamSizeForWeek(league, 6)).toBe(2);
+    expect(teamSizeForWeek(league, 8)).toBe(2);
+    expect(teamSizeForWeek(league, 9)).toBe(1);
+    expect(teamSizeForWeek(league, 10)).toBe(1);
   });
 });
 

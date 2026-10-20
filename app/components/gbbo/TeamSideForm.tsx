@@ -51,9 +51,11 @@ export function TeamSideForm({
   const benched = lastWeek.filter((id) => barred.includes(id) && bakerStillIn(league, id, week));
   const changes = lineupChanges(livingLast, filled);
   const shrinking = livingLast.length > size;
+  const addsAllowed = Math.max(0, size - livingLast.length);
+  const brokeTheBar = benched.length > 0 && (livingLast.some((id) => !filled.includes(id)) || changes > addsAllowed);
   const legal = unique.size === filled.length && filled.length === size && (week === 1 ? changes <= 3 : changes <= 1);
   const shrinkingOk = shrinking && filled.length === size && unique.size === size && changes === 0;
-  const canSubmit = !locked && (legal || shrinkingOk);
+  const canSubmit = !locked && !brokeTheBar && (legal || shrinkingOk);
   const submitted = sideConfirmed(league, companion.id, week);
   const joker = jokerForCompanion(league, companion.id);
   const canJoker = !jokerLocked && week <= 4 && !joker;
@@ -65,8 +67,10 @@ export function TeamSideForm({
     ? (lockReason ?? "The change window is closed, so Submit is unavailable.")
     : unique.size !== filled.length
       ? "The same baker is in two slots. Each baker can only appear once."
-      : filled.length !== size
+        : filled.length !== size
         ? `Choose ${size} different bakers still in the tent before you can submit.`
+        : brokeTheBar
+          ? `${benched.map((id) => bakerName(league, id)).join(" and ")} coming off uses your substitution, so you cannot change anyone else.`
         : week > 1 && changes > 1
           ? `${changes} bakers are different from last week. Only one substitution is allowed, so put one of last week's bakers back.`
           : null;
@@ -119,7 +123,10 @@ export function TeamSideForm({
       {benched.length ? (
         <p className="mb-3 text-sm leading-6 text-raspberry">
           Every companion picked {benched.map((id) => bakerName(league, id)).join(" and ")} last week, so they cannot
-          be picked this week. Your substitution must be used to replace them, so no other changes are allowed.
+          be picked this week.
+          {addsAllowed === 0
+            ? " Taking them off uses your substitution, so the rest of this side stays and no other change is allowed."
+            : " Your substitution must be used to replace them, so no other changes are allowed."}
         </p>
       ) : null}
       <div className="space-y-2">
@@ -156,7 +163,9 @@ export function TeamSideForm({
             : changes === 0
               ? shrinking
                 ? "This side is too big. Drop one baker, or leave it for the Chief Companion."
-                : "No change — last week's bakers will play again."
+                : benched.length
+                  ? "No other change. The bakers still on this side will play."
+                  : "No change — last week's bakers will play again."
               : "One substitution. That is the weekly limit."}
       </p>
       <div className="mt-4 flex min-w-0 flex-wrap items-center gap-2">
@@ -182,7 +191,7 @@ export function TeamSideForm({
           title={
             locked
               ? (lockReason ?? "The change window is closed.")
-              : benched.length
+              : livingLast.length < size && benched.length
                 ? "Last week's side includes a baker who cannot be picked this week. Pick a replacement."
                 : livingLast.length < size
                   ? `Only ${livingLast.length} of last week's bakers are still in the tent. Pick a replacement.`

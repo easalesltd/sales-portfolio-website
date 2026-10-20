@@ -16,8 +16,12 @@ export function activeBakersAtWeek(league: LeagueState, week: number): Baker[] {
   return league.bakers.filter((baker) => bakerStillIn(league, baker.id, week));
 }
 
+/** Weeks 6 to 8 are two bakers. The final two weeks stay at one. */
+export const TEAM_OF_TWO_FROM_WEEK = 6;
+
 export function teamSizeForWeek(league: LeagueState, week: number): number {
   if (week > league.totalWeeks - 2) return 1;
+  if (week >= TEAM_OF_TWO_FROM_WEEK) return 2;
   if (activeBakersAtWeek(league, week).length <= 6) return 2;
   return 3;
 }

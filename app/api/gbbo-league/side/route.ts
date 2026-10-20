@@ -66,7 +66,8 @@ export async function POST(request: Request) {
   const previous = lastWeek.filter((id) => bakerStillIn(league, id, week) && !barred.includes(id));
   const barredNames = barred.map((id) => bakerName(league, id)).join(" and ");
 
-  if (body.keepLastWeek && lastWeek.some((id) => barred.includes(id))) {
+  const barredOnLastWeek = lastWeek.some((id) => barred.includes(id));
+  if (body.keepLastWeek && barredOnLastWeek && previous.length < size) {
     return NextResponse.json(
       { error: `${barredNames} cannot be picked this week. Use your substitution to replace them.` },
       { status: 400 },
@@ -98,6 +99,13 @@ export async function POST(request: Request) {
       );
     }
     const changes = lineupChanges(previous, next);
+    const addsAllowed = Math.max(0, size - previous.length);
+    if (week > 1 && barredOnLastWeek && (changes > addsAllowed || previous.some((id) => !next.includes(id)))) {
+      return NextResponse.json(
+        { error: `${barredNames} coming off uses your substitution, so you cannot change anyone else.` },
+        { status: 400 },
+      );
+    }
     if (week > 1 && changes > 1) {
       return NextResponse.json({ error: "Only one substitution is allowed each week." }, { status: 400 });
     }
