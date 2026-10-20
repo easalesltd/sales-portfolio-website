@@ -27,6 +27,7 @@ const LEE_WEEK_3_RESET = { key: "2026-week-3-lee-side-and-joker", week: 3, compa
 const WEEK_3_RESULT_KEY = "2026-week-3-bread-results";
 const WEEK_4_RESULT_KEY = "2026-week-4-bread-results";
 const WEEK_4_CRIES_FIX_KEY = "2026-week-4-only-molly-cried";
+const WEEK_5_RESULT_KEY = "2026-week-5-pudding-results";
 const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
 const GUNS_WEEK_3_CLARA_KEY = "2026-week-3-guns-clara-restored";
 const REAL_WEEK_THEMES_KEY = "2026-real-week-themes";
@@ -75,6 +76,29 @@ function week4Result(): EpisodeResult {
     recapSource: "Chief companion, Bread Week",
     justification:
       "Tom was Star Baker. Molly went home, and Nikki also left the tent for personal reasons. Nine bakers took the technical: Gabe was first, Clara second and Moyin third. Gary finished last (−3), Yannis second last (−2) and Molly seventh, third last (−1). Molly had a cry (−3).",
+  };
+}
+
+function week5Result(): EpisodeResult {
+  const id = bakerIdForName;
+  return {
+    starBakerId: id("Connie"),
+    eliminatedBakerId: id("Yannis"),
+    technical: [
+      { bakerId: id("Gary"), place: 1 },
+      { bakerId: id("Connie"), place: 2 },
+      { bakerId: id("Clara"), place: 3 },
+      { bakerId: id("Mo"), place: 6 },
+      { bakerId: id("Yannis"), place: 7 },
+      { bakerId: id("Moyin"), place: 8 },
+    ],
+    handshakes: [id("Connie")],
+    innuendos: [],
+    drops: {},
+    cries: {},
+    recapSource: "Chief companion, Pudding Week",
+    justification:
+      "Connie was Star Baker and received a Hollywood handshake. Yannis went home. Eight bakers took the technical: Gary was first, Connie second and Clara third. Moyin finished last (−3), Yannis seventh, second last (−2) and Mo sixth, third last (−1).",
   };
 }
 
@@ -254,12 +278,15 @@ export async function readGbboLeague(): Promise<LeagueState> {
   }
   const week4Published = applyEpisodeResult(league, WEEK_4_RESULT_KEY, 4, week4Result());
   const week4CriesFixed = correctEpisodeResult(league, WEEK_4_CRIES_FIX_KEY, 4, week4Result());
+  const pudding = league.episodes.find((episode) => episode.week === 5);
+  if (pudding && !(league.resetsApplied ?? []).includes(WEEK_5_RESULT_KEY)) pudding.theme = "Pudding";
+  const week5Published = applyEpisodeResult(league, WEEK_5_RESULT_KEY, 5, week5Result());
   const reset = resetVideolessSlutDrops(league);
   const shortSides = applyShortSideEscalations(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || reset || shortSides || slutEscalated || bakeEscalated || democracy) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || reset || shortSides || slutEscalated || bakeEscalated || democracy) {
     await writeGbboLeague(league);
   }
   return league;

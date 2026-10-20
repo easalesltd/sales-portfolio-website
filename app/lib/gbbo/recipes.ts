@@ -13,6 +13,7 @@ export type OfficialRecipe = {
 function decode(text: string): string {
   return text
     .replace(/&#8217;/g, "’")
+    .replace(/&#038;/g, "&")
     .replace(/&amp;/g, "&")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
