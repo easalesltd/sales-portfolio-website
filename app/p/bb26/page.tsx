@@ -15,6 +15,7 @@ import {
   companionTotals,
   episodeScoringLines,
   scoreCompanionWeek,
+  sideConfirmed,
   teamForWeek,
   teamSizeForWeek,
 } from "@/app/lib/gbbo/league";
@@ -51,6 +52,7 @@ export default function LeaguePage() {
               const companion = league.companions.find((item) => item.id === row.companionId);
               const name = companion?.name ?? companionName(league, row.companionId);
               const team = teamForWeek(league, row.companionId, gate.week);
+              const locked = sideConfirmed(league, row.companionId, gate.week);
               return (
                 <li key={row.companionId} className="ticket flex items-center gap-3 rounded-[22px] px-4 py-3 sm:gap-4">
                   <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
@@ -62,6 +64,7 @@ export default function LeaguePage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-display text-2xl leading-tight">{name}</p>
+                      {locked ? <Pill tone="tent">Team locked</Pill> : null}
                       {latest ? <SlutDropMark companionId={row.companionId} week={latest.week} /> : null}
                     </div>
                     <p className="text-sm text-chocolate/70">
