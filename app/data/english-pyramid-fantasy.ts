@@ -15000,6 +15000,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Macclesfield', tla: 'MAC' },
     awayTeam: { name: 'Worksop Town', tla: 'WRK' },
+    /** FotMob marked postponed (2026-11-07). */
+    postponed: true,
   },
   {
     id: '2026-11-07-mar-bed',
