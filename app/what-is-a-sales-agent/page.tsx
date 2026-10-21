@@ -51,83 +51,87 @@ export default async function WhatIsASalesAgentPage() {
 
         <div className="prose prose-lg text-gray-700 space-y-6">
           <p>
-            A <strong>sales agent</strong> is a professional who works on a <strong>self-employed basis</strong>, 
-            representing <strong>multiple brands</strong> (often referred to as principal, manufacturers or brands) to retailers. Rather 
-            than being employed by one company, the agent acts for several brands at once, so one local contact 
-            can bring a curated range of products to a shop&apos;s door.
+            A <strong>sales agent</strong> is a <strong>self-employed</strong> professional who sells on
+            behalf of <strong>several brands</strong> at once, rather than working for a single company. For
+            a shop owner, that means one person can show you ranges from a number of suppliers in a single
+            visit, instead of you dealing with a different rep from each one.
           </p>
 
           <p>
-            Agents tend to cover a <strong>specific region</strong>. Companies often divide the country into 
-            territories and assign one agent (or a small team) to each area, so retailers get a dedicated 
-            local contact who knows the patch.
+            Most agents cover a <strong>defined patch</strong>. Brands usually split the country into
+            territories and appoint an agent to each, so the person calling on you knows your area, your
+            type of shop and your customers.
           </p>
 
           <TerritoryImage />
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
-            How does it work for greeting cards and gifts?
+            How it works in greeting cards and gifts
           </h2>
           <p>
-            In the greeting card and gift industry, a sales agent visits 
-            independent shops, garden centres, and other retailers in their area. Because they work for multiple 
-            brands, they can show new ranges from several brands in a single visit, take orders, help with 
-            display ideas, and provide one point of contact for many products. That makes it easier for shop 
-            owners to stock a varied selection without managing lots of separate accounts and deliveries.
+            I visit independent card shops, gift shops, garden centres and farm shops across East Anglia.
+            On each visit I show new ranges, take orders, and help with display and merchandising. You can
+            stock a varied selection without managing a dozen separate reps, accounts and sales calls.
           </p>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
-            Commission-based work
+            Does it cost retailers anything?
           </h2>
           <p>
-            Sales agents typically work on a <strong>commission-only basis</strong>. They are paid by the 
-            manufacturers or suppliers they represent, based on the sales they generate, so there is no 
-            extra cost to the retailer for using an agent. There are set industry standards for commission 
-            levels, which helps keep arrangements fair and consistent across the trade.
+            No. Agents are paid <strong>commission</strong> by the brands they represent, so ordering
+            through an agent doesn&apos;t add anything to your costs. Commission rates follow
+            well-established trade norms.
           </p>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
-            Benefits of working with a sales agent
+            Why shops like working with an agent
           </h2>
           <ul className="list-disc pl-6 space-y-2">
-            <li>Companies save money by not having to cover any of the sales agent&apos;s expenses, car costs, travel, national insurance, pension, and so on</li>
-            <li>Sales agents typically offer 30 days terms on commission</li>
-            <li>Display solutions and merchandising help</li>
-            <li>Ongoing relationship and support rather than one-off transactions</li>
-            <li>Personal advice on what sells and how to display it</li>
-            <li>Trade terms and ordering through someone who knows your business</li>
+            <li>One regular, local contact for several brands</li>
+            <li>Honest advice on what&apos;s selling and how to display it</li>
+            <li>Help with display solutions and merchandising</li>
+            <li>Ordering and trade terms handled by someone who knows your business</li>
+            <li>A continuing relationship, not one-off transactions</li>
           </ul>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
-            Sectors and territories
+            Why brands use agents
           </h2>
           <p>
-            In the <strong>greeting card and gift</strong> sector, sales agents like Dave Langdon work with 
-            stationery, giftware, and card brands. They cover defined <strong>territories</strong> so that 
-            retailers in each area have a dedicated contact. East Anglian Sales LTD serves the East Anglia 
-            territory: <strong>Suffolk</strong>, <strong>Norfolk</strong>, <strong>Essex</strong>,{' '}
-            <strong>Cambridgeshire</strong>, and <strong>Hertfordshire</strong>.
+            Taking on an agent is a low-risk way for a brand to cover a region. The brand doesn&apos;t pay
+            for a salary, car, travel, National Insurance or pension, and only pays commission on sales
+            actually made. If a brand is looking for coverage in the East of England,{' '}
+            <Link
+              href="/contact"
+              className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline"
+            >
+              get in touch
+            </Link>.
           </p>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-8 mb-4">
-            East Anglian Sales LTD
+            Who I am and where I work
           </h2>
           <p>
-            Greeting card and gift companies that need an East Anglia agent appoint Dave Langdon. He covers
-            Suffolk, Norfolk, Essex, Cambridgeshire, and Hertfordshire, and he is a member of the UK Greeting
-            Card Association. If you are hiring UK agents by territory, this is the East Anglia contact.
+            I&apos;m Dave Langdon, a self-employed sales agent for greeting card, stationery and gift
+            brands, and the director of East Anglian Sales Ltd. I cover Suffolk, Norfolk, Essex,
+            Cambridgeshire and Hertfordshire, and I&apos;m a member of the UK Greeting Card Association.
           </p>
           <p>
-            <Link href="/about" className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline">Dave Langdon</Link> at 
-            East Anglian Sales LTD is a self-employed sales agent for greeting card and gift brands across 
-            East Anglia. If you run a shop in Suffolk, Norfolk, Essex, Cambridgeshire, or Hertfordshire and 
-            want to stock greeting cards, stationery, or gifts from trusted brands, you can{' '}
-            <Link href="/contact" className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline">
+            If you run a shop in that area and want to stock cards, stationery or gifts from brands I
+            represent,{' '}
+            <Link
+              href="/contact"
+              className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline"
+            >
               get in touch
             </Link>{' '}
             or{' '}
-            <Link href="/about" className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline">
-              find out more about Dave
+            <Link
+              href="/about"
+              className="text-neutral-900 hover:text-neutral-600 dark:text-neutral-100 dark:hover:text-neutral-300 underline"
+            >
+              read more about me
             </Link>.
           </p>
 
