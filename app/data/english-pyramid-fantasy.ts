@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Salford City won 2-1 at Bristol Rovers. Plus 4 for the away win, net plus 4. Then Stockport County won 2-0 at Doncaster Rovers. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Oxford United beat Wigan Athletic 2-1 at home. Plus 3 for the home win, net plus 3. Then Newport County drew 2-2 with Rotherham United. Plus 1 for the draw, net plus 1. Then Portsmouth drew 1-1 with Wolves. Plus 1 for the draw, net plus 1. Jon is on 319.\n\nChris\'s Barnet lost 3-1 at home to Swindon Town. No win points, minus 1 for leaking three, net minus 1. Then Cheltenham Town beat Fleetwood Town 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Wednesday lost 2-0 at Notts County. No win points, plus 1 for the red, net plus 1. Then AFC Wimbledon lost 3-0 at home to Mansfield Town. No win points, minus 1 for leaking three, net minus 1. Chris is on 313.\n\nScott\'s Horsham drew 2-2 with Ebbsfleet United. Plus 1 for the draw, net plus 1. Then Burton Albion served up a boring 0-0 against Bradford City. Minus 1 for the 0-0, net minus 1. Then Chesterfield drew 1-1 with Colchester United. Plus 1 for the draw, net plus 1. Then Crawley Town lost 3-2 at home to Shrewsbury Town. No win points, minus 1 for leaking three, net minus 1. Then Luton Town beat Barnsley 2-1 at home. Plus 3 for the home win, net plus 3. Then Wolves drew 1-1 with Portsmouth. Plus 1 for the draw, net plus 1. Scott is on 292.\n\nBen\'s Fleetwood Town lost 4-2 at Cheltenham Town. No win points, minus 1 for leaking three, net minus 1. Then Huddersfield Town beat Peterborough United 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Notts County beat Wednesday 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Grimsby Town drew 2-2 with Rochdale. Plus 1 for the draw, net plus 1. Ben is on 271.\n\nDave\'s Cambridge United drew 2-2 with Wycombe Wanderers. Plus 1 for the draw, net plus 1. Then Tranmere Rovers won 1-0 at Northampton Town. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Plymouth Argyle lost 3-0 at Stevenage. No win points, minus 1 for leaking three, net minus 1. Then Port Vale drew 1-1 with Gillingham. Plus 1 for the draw, net plus 1. Dave is on 247.\n\nNest\'s Bromley lost 4-0 at home to Leicester. No win points, minus 1 for leaking three, net minus 1. Then Leicester won 4-0 at Bromley. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more, net plus 6. Then Bristol Rovers lost 2-1 at home to Salford City. No win points, net zero. Then Accrington Stanley drew 1-1 with York City. Plus 1 for the draw, net plus 1. Nest is on 239.\n\nAsh\'s MK Dons lost 2-0 at Blackpool. No win points, net zero. Then Shrewsbury Town won 3-2 at Crawley Town. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then York City drew 1-1 with Accrington Stanley. Plus 1 for the draw, net plus 1. Ash is on 222.\n\nTable: Jon 319, Chris 313, Scott 292, Ben 271, Dave 247, Nest 239, Ash 222.';
+  'Ash\'s Leyton Orient lost 1-0 at Reading. No win points, net zero. Ash is on 222.\n\nJon still leads on 319 without a club kicking a ball.\n\nTable: Jon 319, Chris 313, Scott 292, Ben 271, Dave 247, Nest 239, Ash 222.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -9134,6 +9134,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Port Vale', tla: 'PVL' },
     homeGoals: 1,
     awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-21-rea-ley',
+    utcDate: '2026-10-21T19:00Z',
+    homeTeam: { name: 'Reading', tla: 'REA' },
+    awayTeam: { name: 'Leyton Orient', tla: 'LEY' },
+    homeGoals: 1,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
