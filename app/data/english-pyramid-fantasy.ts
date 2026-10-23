@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Ash\'s Leyton Orient lost 1-0 at Reading. No win points, net zero. Ash is on 222.\n\nJon still leads on 319 without a club kicking a ball.\n\nTable: Jon 319, Chris 313, Scott 292, Ben 271, Dave 247, Nest 239, Ash 222.';
+  'Scott\'s Bolton Wanderers lost 5-1 at home to Middlesbrough. No win points, minus 1 for leaking three, net minus 1. Scott is on 291.\n\nBen\'s Middlesbrough won 5-1 at Bolton Wanderers. Plus 4 for the away win, plus 1 for three or more, net plus 5. Ben is on 276.\n\nDave\'s Ipswich drew 1-1 with Forest. Plus 1 for the draw, net plus 1. Dave is on 248.\n\nJon still leads on 319 without a club kicking a ball. Ash is still last on 222.\n\nTable: Jon 319, Chris 313, Scott 291, Ben 276, Dave 248, Nest 239, Ash 222.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -9148,6 +9148,28 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-23-bol-mid',
+    utcDate: '2026-10-23T19:00Z',
+    homeTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
+    awayTeam: { name: 'Middlesbrough', tla: 'MID' },
+    homeGoals: 1,
+    awayGoals: 5,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-23-ips-nfo',
+    utcDate: '2026-10-23T19:00Z',
+    homeTeam: { name: 'Ipswich Town', tla: 'IPS' },
+    awayTeam: { name: 'Nottingham Forest', tla: 'NFO' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -13765,6 +13787,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-23T18:45Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
+    /** FotMob marked postponed (2026-10-23). */
+    postponed: true,
   },
   {
     id: '2026-10-23-bol-mid',
