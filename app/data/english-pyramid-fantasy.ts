@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Bolton Wanderers lost 5-1 at home to Middlesbrough. No win points, minus 1 for leaking three, net minus 1. Scott is on 291.\n\nBen\'s Middlesbrough won 5-1 at Bolton Wanderers. Plus 4 for the away win, plus 1 for three or more, net plus 5. Ben is on 276.\n\nDave\'s Ipswich drew 1-1 with Forest. Plus 1 for the draw, net plus 1. Dave is on 248.\n\nJon still leads on 319 without a club kicking a ball. Ash is still last on 222.\n\nTable: Jon 319, Chris 313, Scott 291, Ben 276, Dave 248, Nest 239, Ash 222.';
+  'Jon\'s Newport County lost 1-0 at Cheltenham Town. No win points, net zero. Then Portsmouth beat Millwall 2-1 at home. Plus 3 for the home win, net plus 3. Jon is on 322.\n\nChris\'s Cheltenham Town beat Newport County 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Aldershot Town lost 1-0 at home to Wealdstone. No win points, net zero. Chris is on 317.\n\nScott\'s Luton Town beat Leicester 2-1 at home. Plus 3 for the home win, net plus 3. Then Burton Albion beat Leyton Orient 2-1 at home. Plus 3 for the home win, net plus 3. Then Crawley Town drew 1-1 with Tranmere Rovers. Plus 1 for the draw, net plus 1. Scott is on 298.\n\nBen\'s Huddersfield Town beat Wigan Athletic 2-1 at home. Plus 3 for the home win, net plus 3. Ben is on 279.\n\nNest\'s Villa beat City 2-1 at home. Plus 3 for the home win, net plus 3. Then Bristol Rovers served up a boring 0-0 against Swindon Town. Minus 1 for the 0-0, net minus 1. Then Leicester lost 2-1 at Luton Town. No win points, plus 1 for the red, net plus 1. Then Sheffield United drew 1-1 with Derby County. Plus 1 for the draw, net plus 1. Then Blackburn Rovers beat Wrexham 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Nest is on 247.\n\nDave\'s City lost 2-1 at Villa. No win points, net zero. Then Charlton Athletic lost 3-1 at home to Norwich City. No win points, minus 1 for leaking three, net minus 1. Then Sutton United lost 3-1 at Harrogate Town. No win points, minus 1 for leaking three, net minus 1. Then Tranmere Rovers drew 1-1 with Crawley Town. Plus 1 for the draw, net plus 1. Dave is on 247.\n\nAsh\'s Wealdstone won 1-0 at Aldershot Town. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Leyton Orient lost 2-1 at Burton Albion. No win points, net zero. Ash is on 227.\n\nTable: Jon 322, Chris 317, Scott 298, Ben 279, Nest 247, Dave 247, Ash 227.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -9170,6 +9170,149 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-avl-mci',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Aston Villa', tla: 'AVL' },
+    awayTeam: { name: 'Manchester City', tla: 'MCI' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-brst-swi',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Bristol Rovers', tla: 'BRST' },
+    awayTeam: { name: 'Swindon Town', tla: 'SWI' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-cha-nor',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    awayTeam: { name: 'Norwich City', tla: 'NOR' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-cht-nwp',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Cheltenham Town', tla: 'CHT' },
+    awayTeam: { name: 'Newport County', tla: 'NWP' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-24-har-sut',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Harrogate Town', tla: 'HAR' },
+    awayTeam: { name: 'Sutton United', tla: 'SUT' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-hud-wga',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Huddersfield Town', tla: 'HUD' },
+    awayTeam: { name: 'Wigan Athletic', tla: 'WGA' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-lut-lei',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Luton Town', tla: 'LUT' },
+    awayTeam: { name: 'Leicester City', tla: 'LEI' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-por-mil',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Portsmouth', tla: 'POR' },
+    awayTeam: { name: 'Millwall', tla: 'MIL' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-shu-der',
+    utcDate: '2026-10-24T11:30Z',
+    homeTeam: { name: 'Sheffield United', tla: 'SHU' },
+    awayTeam: { name: 'Derby County', tla: 'DER' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-ald-wea',
+    utcDate: '2026-10-24T14:00Z',
+    homeTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    awayTeam: { name: 'Wealdstone', tla: 'WEA' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-blk-wxm',
+    utcDate: '2026-10-24T14:00Z',
+    homeTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+    awayTeam: { name: 'Wrexham', tla: 'WXM' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-btn-ley',
+    utcDate: '2026-10-24T14:00Z',
+    homeTeam: { name: 'Burton Albion', tla: 'BTN' },
+    awayTeam: { name: 'Leyton Orient', tla: 'LEY' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-24-cra-trn',
+    utcDate: '2026-10-24T14:00Z',
+    homeTeam: { name: 'Crawley Town', tla: 'CRA' },
+    awayTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -14013,6 +14156,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-24T14:00Z',
     homeTeam: { name: 'Barrow', tla: 'BRW' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    /** FotMob marked postponed (2026-10-24). */
+    postponed: true,
   },
   {
     id: '2026-10-24-btn-ley',
