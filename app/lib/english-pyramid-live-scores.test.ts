@@ -3,6 +3,7 @@
 import {
   applyLiveScoresToSchedule,
   matchLiveScoreForFixture,
+  mergeLiveScoreEvents,
   normalizeEspnAbbrevToTeamCode,
   parseEspnScoreboard,
   scoreboardFetchKeysForInPlayEntries,
@@ -279,6 +280,47 @@ describe('english-pyramid-live-scores', () => {
       homeRedCards: 0,
       awayRedCards: 1,
     });
+  });
+
+  it('keeps an abandoned live row postponed instead of promoting a score to full time', () => {
+    expect(
+      mergeLiveScoreEvents(
+        [
+          {
+            homeTla: 'WSM',
+            awayTla: 'BIL',
+            homeGoals: 0,
+            awayGoals: 1,
+            period: 'HT',
+            homeRedCards: 0,
+            awayRedCards: 0,
+          },
+        ],
+        [
+          {
+            homeTla: 'WSM',
+            awayTla: 'BIL',
+            homeGoals: 0,
+            awayGoals: 1,
+            period: 'Postponed',
+            homeRedCards: 0,
+            awayRedCards: 0,
+            postponed: true,
+          },
+        ]
+      )
+    ).toEqual([
+      {
+        homeTla: 'WSM',
+        awayTla: 'BIL',
+        homeGoals: 0,
+        awayGoals: 1,
+        period: 'Postponed',
+        homeRedCards: 0,
+        awayRedCards: 0,
+        postponed: true,
+      },
+    ]);
   });
 
   it('overrides a stale postponed fixture when a live source has the score', () => {

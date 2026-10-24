@@ -537,6 +537,17 @@ export function mergeLiveScoreEvents(
       continue;
     }
 
+    if (primary.postponed || supplementary.postponed) {
+      merged.set(key, {
+        ...(primary.postponed ? primary : supplementary),
+        postponed: true,
+        period: 'Postponed',
+        homeRedCards: Math.max(primary.homeRedCards, supplementary.homeRedCards),
+        awayRedCards: Math.max(primary.awayRedCards, supplementary.awayRedCards),
+      });
+      continue;
+    }
+
     const primaryFinished =
       isEspnFullTimePeriod(primary.period) || isFwpFullTimePeriod(primary.period);
     const supplementaryFinished =

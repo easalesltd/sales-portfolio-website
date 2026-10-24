@@ -27,6 +27,14 @@ describe('FWP postponed and finished-score cells', () => {
     expect(isFwpPostponedText('7.45pm')).toBe(false);
   });
 
+  it('treats FWP A-A abandoned cells as postponements, not a 0-1 result', () => {
+    expect(isFwpPostponedText('A-A')).toBe(true);
+    expect(isFwpPostponedText('A - A')).toBe(true);
+    expect(isFwpPostponedText('Abandoned')).toBe(true);
+    expect(isFwpPostponedText('Weston-super-Mare A-A Billericay Town')).toBe(true);
+    expect(isFwpScoreText('A-A')).toBe(false);
+  });
+
   it('reads a finished KO cell that wraps the score in spans', () => {
     const visible = htmlToVisibleText(
       '<span class="d-none d-sm-inline half-time-score">(1)</span>1 - 0<span class="d-none d-sm-inline"></span>',

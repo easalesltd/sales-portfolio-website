@@ -92,32 +92,42 @@ describe('english-pyramid-fotmob-live-scores', () => {
     });
   });
 
-  it('does not treat a cancelled-but-finished FotMob row as postponed', () => {
+  it('treats an abandoned FotMob row as postponed even with a score and FT flags', () => {
+    // Weston-super-Mare 0-1 Billericay, 24 Oct 2026 — weather abandonment.
     expect(
       matchFotMobEventToFixture(
         {
-          homeTeam: { name: 'Horsham', tla: 'HOR', flag: 'NLS' },
-          awayTeam: { name: 'Farnham Town', tla: 'FNH', flag: 'NLS' },
+          homeTeam: { name: 'Weston-super-Mare', tla: 'WSM', flag: 'NLS' },
+          awayTeam: { name: 'Billericay Town', tla: 'BIL', flag: 'NLS' },
         },
         [
           {
-            id: 5907536,
-            home: { name: 'Horsham', longName: 'Horsham', score: 1 },
-            away: { name: 'Farnham Town', longName: 'Farnham Town', score: 2 },
+            id: 5907639,
+            home: { name: 'Weston Super Mare', longName: 'Weston Super Mare', score: 0 },
+            away: { name: 'Billericay', longName: 'Billericay', score: 1 },
             status: {
               cancelled: true,
               started: true,
               finished: true,
+              reason: {
+                short: 'Ab',
+                shortKey: 'aborted_short',
+                long: 'Abandoned',
+                longKey: 'aborted',
+              },
             },
           },
         ]
       )
-    ).toMatchObject({
-      homeTla: 'HOR',
-      awayTla: 'FNH',
-      homeGoals: 1,
-      awayGoals: 2,
-      period: 'FT',
+    ).toEqual({
+      homeTla: 'WSM',
+      awayTla: 'BIL',
+      homeGoals: 0,
+      awayGoals: 1,
+      period: 'Postponed',
+      homeRedCards: 0,
+      awayRedCards: 0,
+      postponed: true,
     });
   });
 

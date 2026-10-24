@@ -28,7 +28,23 @@ type FotMobStatus = {
   numberOfHomeRedCards?: number;
   numberOfAwayRedCards?: number;
   liveTime?: { short?: string };
+  reason?: {
+    short?: string;
+    shortKey?: string;
+    long?: string;
+    longKey?: string;
+  };
 };
+
+export function isFotMobAbandonedOrCancelled(status: FotMobStatus | undefined): boolean {
+  if (!status) return false;
+  if (status.cancelled === true) return true;
+  const reason = [status.reason?.short, status.reason?.long, status.reason?.shortKey, status.reason?.longKey]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  return /\b(ab|abandoned|aborted)\b/.test(reason) || reason.includes('aborted_short');
+}
 
 export type FotMobDayMatch = {
   id: number;
@@ -134,11 +150,10 @@ export function matchFotMobEventToFixture(
 
   const homeGoals = parseNonNegativeInteger(match.home.score);
   const awayGoals = parseNonNegativeInteger(match.away.score);
-  const goingAhead =
-    match.status.started === true ||
-    match.status.finished === true ||
-    match.status.ongoing === true;
-  if (match.status.cancelled && !goingAhead) {
+  // Abandoned games (Weston vs Billericay 24 Oct 2026) arrive as
+  // cancelled + started + finished with reason "Ab" and the score at
+  // abandonment. That is not a result.
+  if (isFotMobAbandonedOrCancelled(match.status)) {
     return {
       homeTla: fixture.homeTeam.tla,
       awayTla: fixture.awayTeam.tla,

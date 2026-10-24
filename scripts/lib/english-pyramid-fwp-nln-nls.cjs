@@ -296,8 +296,15 @@ function isFwpPostponedText(text) {
     compact === 'p-p' ||
     compact === 'p.p' ||
     compact === 'pp' ||
+    compact === 'a:a' ||
+    compact === 'a-a' ||
+    compact === 'a.a' ||
+    compact === 'ab' ||
     compact === 'postponed' ||
-    /\bpostponed\b/.test(raw)
+    compact === 'abandoned' ||
+    /\bpostponed\b/.test(raw) ||
+    /\babandoned\b/.test(raw) ||
+    /\ba\s*[-:.–]\s*a\b/.test(raw)
   );
 }
 
@@ -493,6 +500,9 @@ async function fetchFwpResultForFixture(fixture) {
   const rows = await loadClubFixtureRows(ourCode);
   const row = rows.find((entry) => entry.homeSlug === homeSlug && entry.awaySlug === awaySlug);
   if (!row) return null;
+
+  // Abandoned (A-A) is not a finished league result — Weston vs Billericay 24 Oct 2026.
+  if (isFwpPostponedText(row.koText) || isFwpPostponedText(row.title)) return null;
 
   const parsed = parseFinishedHomeAwayGoals(row.title, row.koText, row.venue);
   if (!parsed.final) return null;

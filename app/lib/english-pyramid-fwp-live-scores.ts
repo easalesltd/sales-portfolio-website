@@ -19,6 +19,7 @@ export type FwpScoreboardEvent = {
   period: string;
   homeRedCards: number;
   awayRedCards: number;
+  postponed?: boolean;
 };
 
 const FWP_CODE_BY_SLUG: Record<string, string> = {
@@ -106,11 +107,41 @@ export function isFwpFullTimePeriod(period: string): boolean {
   );
 }
 
+export function isFwpAbandonedOrPostponedText(text: string): boolean {
+  const raw = text.trim().toLowerCase();
+  const compact = raw.replace(/\s+/g, '');
+  return (
+    compact === 'p:p' ||
+    compact === 'p-p' ||
+    compact === 'p.p' ||
+    compact === 'pp' ||
+    compact === 'a:a' ||
+    compact === 'a-a' ||
+    compact === 'a.a' ||
+    compact === 'ab' ||
+    compact === 'postponed' ||
+    compact === 'abandoned' ||
+    /\bpostponed\b/.test(raw) ||
+    /\babandoned\b/.test(raw) ||
+    /\ba\s*[-:.–]\s*a\b/.test(raw)
+  );
+}
+
 function parseLiveFromTitleAndStatus(
   title: string,
   status: string
 ): Omit<FwpScoreboardEvent, 'homeTla' | 'awayTla'> | null {
   const statusTrim = status.trim();
+  if (isFwpAbandonedOrPostponedText(statusTrim) || isFwpAbandonedOrPostponedText(title)) {
+    return {
+      homeGoals: 0,
+      awayGoals: 0,
+      period: 'Postponed',
+      homeRedCards: 0,
+      awayRedCards: 0,
+      postponed: true,
+    };
+  }
   if (!statusTrim || looksLikeKickoff(statusTrim)) return null;
 
   const titleScore = title.match(/^(.+?)\s+(\d+)\s*[-–]\s*(\d+)\s+(.+)$/);
@@ -183,6 +214,7 @@ export function parseFwpCompetitionDayHtml(html: string): FwpScoreboardEvent[] {
       period: live.period,
       homeRedCards: 0,
       awayRedCards: 0,
+      ...(live.postponed ? { postponed: true } : {}),
     });
   }
 

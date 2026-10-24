@@ -13969,6 +13969,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-24T14:00:00Z',
     homeTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
     awayTeam: { name: 'Billericay Town', tla: 'BIL' },
+    /** Abandoned (weather). FotMob reason Ab / FWP A-A — not a 0-1 result. */
+    postponed: true,
   },
   {
     id: '2026-10-24-ald-wea',

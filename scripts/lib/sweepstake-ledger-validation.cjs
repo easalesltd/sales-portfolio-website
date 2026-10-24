@@ -26,6 +26,11 @@ function validateManualMatchesAgainstFixtures(manualMatches, fixtures, errors, o
         `${match.id}: manual teams (${match.homeTla} vs ${match.awayTla}) do not match fixture (${homeTla} vs ${awayTla})`,
       );
     }
+    if (fixture.postponed === true) {
+      errors.push(
+        `${match.id}: ledger has a result but the fixture is postponed/abandoned. Remove the score until the match is replayed.`,
+      );
+    }
   }
 }
 

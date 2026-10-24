@@ -91,8 +91,20 @@ function eventRedCardCounts(detail) {
   return { homeRedCards, awayRedCards };
 }
 
+function isFotMobAbandoned(match) {
+  const status = match?.status;
+  if (!status) return false;
+  if (status.cancelled === true) return true;
+  const reason = [status.reason?.short, status.reason?.long, status.reason?.shortKey, status.reason?.longKey]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  return /\b(ab|abandoned|aborted)\b/.test(reason) || reason.includes('aborted_short');
+}
+
 function parseFotMobFinal(match, detail) {
   const status = detail?.header?.status ?? match?.status;
+  if (isFotMobAbandoned(match) || isFotMobAbandoned({ status })) return null;
   if (status?.cancelled === true || match?.status?.cancelled === true) return null;
   if (status?.finished !== true) return null;
 
@@ -124,6 +136,7 @@ function isFotMobMatchGoingAhead(match) {
 }
 
 function isFotMobPostponed(match) {
+  if (isFotMobAbandoned(match)) return true;
   return Boolean(match?.status?.cancelled) && !isFotMobMatchGoingAhead(match);
 }
 
@@ -155,6 +168,7 @@ async function fetchFotMobResultForFixture(fixture, caches = {}) {
 module.exports = {
   fetchFotMobResultForFixture,
   findFotMobMatchForFixture,
+  isFotMobAbandoned,
   isFotMobMatchGoingAhead,
   isFotMobPostponed,
   nationalLeagueMatches,

@@ -1,5 +1,7 @@
 const {
   findFotMobMatchForFixture,
+  isFotMobAbandoned,
+  isFotMobPostponed,
   normalizeTeamName,
   parseFotMobFinal,
 } = require('./english-pyramid-fotmob.cjs');
@@ -124,6 +126,16 @@ describe('english-pyramid-fotmob', () => {
   });
 
   it('does not treat a cancelled abandoned match as a finished 0-0', () => {
+    const abandoned = {
+      status: {
+        cancelled: true,
+        started: true,
+        finished: true,
+        reason: { short: 'Ab', long: 'Abandoned', shortKey: 'aborted_short', longKey: 'aborted' },
+      },
+    };
+    expect(isFotMobAbandoned(abandoned)).toBe(true);
+    expect(isFotMobPostponed(abandoned)).toBe(true);
     expect(
       parseFotMobFinal(
         {
