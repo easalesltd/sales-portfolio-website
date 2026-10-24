@@ -304,7 +304,9 @@ function isFwpPostponedText(text) {
     compact === 'abandoned' ||
     /\bpostponed\b/.test(raw) ||
     /\babandoned\b/.test(raw) ||
-    /\ba\s*[-:.–]\s*a\b/.test(raw)
+    /\ba\s*-\s*a\b/.test(raw) ||
+    /\ba\s*:\s*a\b/.test(raw) ||
+    /\ba\s*\.\s*a\b/.test(raw)
   );
 }
 

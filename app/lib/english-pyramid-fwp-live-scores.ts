@@ -123,7 +123,9 @@ export function isFwpAbandonedOrPostponedText(text: string): boolean {
     compact === 'abandoned' ||
     /\bpostponed\b/.test(raw) ||
     /\babandoned\b/.test(raw) ||
-    /\ba\s*[-:.–]\s*a\b/.test(raw)
+    /\ba\s*-\s*a\b/.test(raw) ||
+    /\ba\s*:\s*a\b/.test(raw) ||
+    /\ba\s*\.\s*a\b/.test(raw)
   );
 }
 
@@ -144,8 +146,8 @@ function parseLiveFromTitleAndStatus(
   }
   if (!statusTrim || looksLikeKickoff(statusTrim)) return null;
 
-  const titleScore = title.match(/^(.+?)\s+(\d+)\s*[-–]\s*(\d+)\s+(.+)$/);
-  const statusScore = statusTrim.match(/^(\d+)\s*[-–]\s*(\d+)$/);
+  const titleScore = title.match(/^(.+?)\s+(\d+)\s*[-]\s*(\d+)\s+(.+)$/);
+  const statusScore = statusTrim.match(/^(\d+)\s*[-]\s*(\d+)$/);
   const isFt = isFwpFullTimePeriod(statusTrim);
 
   if (titleScore) {
