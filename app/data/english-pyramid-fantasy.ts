@@ -14691,8 +14691,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-24T14:00Z',
     homeTeam: { name: 'Barrow', tla: 'BRW' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** FotMob marked postponed (2026-10-24). */
-    postponed: true,
   },
   {
     id: '2026-10-24-btn-ley',
