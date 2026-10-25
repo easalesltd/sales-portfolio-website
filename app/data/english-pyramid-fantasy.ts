@@ -9860,7 +9860,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-22 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-25 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -14465,7 +14465,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-23T18:45Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
-    /** FotMob marked postponed (2026-10-23). */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -14647,7 +14647,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-24T14:00:00Z',
     homeTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
     awayTeam: { name: 'Billericay Town', tla: 'BIL' },
-    /** Abandoned (weather). FotMob reason Ab / FWP A-A — not a 0-1 result. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
