@@ -16005,6 +16005,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Luton Town', tla: 'LUT' },
     awayTeam: { name: 'Cambridge United', tla: 'CAM' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-14-mkd-btn',
@@ -16017,6 +16019,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Peterborough United', tla: 'PET' },
     awayTeam: { name: 'Oxford United', tla: 'OXF' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-14-pvl-acc',
