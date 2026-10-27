@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
 import { OfficialStatement } from "@/app/components/gbbo/OfficialStatement";
+import { BeerBaguetteMark } from "@/app/components/gbbo/BeerBaguetteMark";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
@@ -65,6 +66,7 @@ export default function LeaguePage() {
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-display text-2xl leading-tight">{name}</p>
                       {locked ? <Pill tone="tent">Team locked</Pill> : null}
+                      <BeerBaguetteMark companionId={row.companionId} />
                       {latest ? <SlutDropMark companionId={row.companionId} week={latest.week} /> : null}
                     </div>
                     <p className="text-sm text-chocolate/70">

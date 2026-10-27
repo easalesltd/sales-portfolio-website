@@ -13,6 +13,7 @@ import {
   companionName,
   companionPortrait,
   episodeTheme,
+  outstandingBeerBaguettes,
   punishmentExhibits,
   technicalIsComplete,
 } from "@/app/lib/gbbo/league";
@@ -28,14 +29,15 @@ const PUNISHMENTS: { id: Punishment; label: string }[] = [
 
 export default function CrimewatchPage() {
   const { league } = useLeague();
-  const [shown, setShown] = useState<Punishment>("slut_drop");
+  const baguettesAtLarge = outstandingBeerBaguettes(league);
+  const [shown, setShown] = useState<Punishment>(baguettesAtLarge.length > 0 ? "beer_baguette" : "slut_drop");
   const slutDrops = punishmentExhibits(league).filter((item) => item.kind === "slut_drop");
   const onTape = slutDrops.filter((item) => item.src);
   const atLarge = slutDrops.filter((item) => !item.src);
   const owed: Record<Punishment, number> = {
     slut_drop: atLarge.length,
     technical: league.penalties.filter((penalty) => penalty.kind === "technical" && !technicalIsComplete(penalty)).length,
-    beer_baguette: league.penalties.filter((penalty) => penalty.kind === "beer_baguette" && !penalty.videoId).length,
+    beer_baguette: baguettesAtLarge.length,
   };
 
   return (
@@ -70,6 +72,29 @@ export default function CrimewatchPage() {
           })}
         </div>
       </Card>
+
+      {baguettesAtLarge.length > 0 ? (
+        <Card eyebrow="Still at large" title="Beer baguettes wanted">
+          <ul className="space-y-3">
+            {baguettesAtLarge.map((penalty) => {
+              const companion = league.companions.find((row) => row.id === penalty.companionId);
+              const name = companion?.name ?? companionName(league, penalty.companionId);
+              return (
+                <li key={penalty.id} className="flex flex-wrap items-center justify-between gap-3 rounded-[22px] bg-raspberry/10 px-4 py-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <CompanionPhoto name={name} photo={companionPortrait(companion, true)} crop="scene" />
+                    <div className="min-w-0">
+                      <p className="font-display text-2xl text-tent-dark">{name}</p>
+                      <p className="text-sm text-chocolate/70">{penalty.note}</p>
+                    </div>
+                  </div>
+                  <Pill tone="raspberry">Beer baguette owed</Pill>
+                </li>
+              );
+            })}
+          </ul>
+        </Card>
+      ) : null}
 
       {shown === "technical" ? <PenaltyBoard kind="technical" /> : null}
       {shown === "beer_baguette" ? <PenaltyBoard kind="beer_baguette" /> : null}

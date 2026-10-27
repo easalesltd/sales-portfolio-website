@@ -536,6 +536,13 @@ export function applySlutDropEscalations(league: LeagueState, now = new Date()):
   return changed;
 }
 
+/** Outstanding filmed beer baguettes, newest week first. */
+export function outstandingBeerBaguettes(league: LeagueState): Penalty[] {
+  return (league.penalties ?? [])
+    .filter((penalty) => penalty.kind === "beer_baguette" && !penalty.videoId)
+    .sort((a, b) => b.week - a.week || a.companionId.localeCompare(b.companionId));
+}
+
 export function ensureDemocracyBaguette(league: LeagueState): boolean {
   league.penalties = league.penalties ?? [];
   const shuker = league.companions.find((companion) => companion.id === "comp_shuker");
