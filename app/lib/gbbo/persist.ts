@@ -11,6 +11,7 @@ import {
   applyTechnicalEscalations,
   assignTechnicalPenalties,
   ensureDemocracyBaguette,
+  ensureFalseAccusationBaguette,
   correctWeekThemes,
   resetVideolessSlutDrops,
   restoreDroppedBaker,
@@ -286,7 +287,8 @@ export async function readGbboLeague(): Promise<LeagueState> {
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || reset || shortSides || slutEscalated || bakeEscalated || democracy) {
+  const falseAccusation = ensureFalseAccusationBaguette(league);
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
     await writeGbboLeague(league);
   }
   return league;
@@ -299,6 +301,7 @@ export async function writeGbboLeague(league: LeagueState): Promise<void> {
   applySlutDropEscalations(next);
   applyTechnicalEscalations(next);
   ensureDemocracyBaguette(next);
+  ensureFalseAccusationBaguette(next);
   const redis = gameLeaderboardRedis();
   if (redis) {
     await redis.set(REDIS_KEY, next);

@@ -558,6 +558,33 @@ export function ensureDemocracyBaguette(league: LeagueState): boolean {
   return true;
 }
 
+/** Nest falsely claimed the website was broken. A filmed Beer Baguette is the only apology that counts. */
+export function ensureFalseAccusationBaguette(league: LeagueState): boolean {
+  league.penalties = league.penalties ?? [];
+  const nest = league.companions.find((companion) => companion.id === "comp_nest");
+  if (!nest) return false;
+  const already = league.penalties.some(
+    (penalty) =>
+      penalty.id === "pen_false_accusation_nest" ||
+      (penalty.companionId === nest.id &&
+        penalty.kind === "beer_baguette" &&
+        penalty.note.toLowerCase().includes("false accusation")),
+  );
+  if (already) return false;
+  league.penalties.push({
+    id: "pen_false_accusation_nest",
+    week: league.currentWeek || 6,
+    companionId: nest.id,
+    bakerId: "",
+    kind: "beer_baguette",
+    deadline: "",
+    completed: false,
+    videoId: null,
+    note: "Nest made a false accusation that the website was not working. That insult to the tent and the Chief earns a filmed Beer Baguette. The video is the only proof that counts.",
+  });
+  return true;
+}
+
 export function applyTechnicalEscalations(league: LeagueState, now = new Date()): boolean {
   let changed = false;
   league.penalties = league.penalties ?? [];
