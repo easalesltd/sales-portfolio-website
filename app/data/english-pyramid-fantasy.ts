@@ -9926,7 +9926,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-26 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-27 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -14195,14 +14195,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
   },
   {
-    id: '2026-10-17-wah-dov',
-    utcDate: '2026-10-17T14:00:00Z',
-    homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
-    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-10-17-acc-gil',
     utcDate: '2026-10-17T14:00Z',
     homeTeam: { name: 'Accrington Stanley', tla: 'ACC' },
@@ -14525,14 +14517,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-21T19:00Z',
     homeTeam: { name: 'Reading', tla: 'REA' },
     awayTeam: { name: 'Leyton Orient', tla: 'LEY' },
-  },
-  {
-    id: '2026-10-23-gat-tam',
-    utcDate: '2026-10-23T18:45Z',
-    homeTeam: { name: 'Gateshead', tla: 'GAT' },
-    awayTeam: { name: 'Tamworth', tla: 'TAM' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-10-23-bol-mid',
@@ -15041,6 +15025,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-27T19:45:00Z',
     homeTeam: { name: 'Southport', tla: 'SPT' },
     awayTeam: { name: 'Macclesfield', tla: 'MAC' },
+    /** FotMob marked postponed (2026-10-27). */
+    postponed: true,
   },
   {
     id: '2026-10-27-ton-fol',
@@ -15727,14 +15713,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Billericay Town', tla: 'BIL' },
   },
   {
-    id: '2026-11-07-dar-oxc',
-    utcDate: '2026-11-07T15:00:00Z',
-    homeTeam: { name: 'Darlington', tla: 'DAR' },
-    awayTeam: { name: 'Oxford City', tla: 'OXC' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-11-07-ebb-chu',
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
@@ -15791,14 +15769,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Merthyr Town', tla: 'MER' },
     awayTeam: { name: 'Hebburn Town', tla: 'HEB' },
-  },
-  {
-    id: '2026-11-07-sby-dor',
-    utcDate: '2026-11-07T15:00:00Z',
-    homeTeam: { name: 'Salisbury', tla: 'SBY' },
-    awayTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-11-07-sca-bux',
@@ -15875,6 +15845,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Newcastle United', tla: 'NEW' },
   },
   {
+    id: '2026-11-07-gat-tam',
+    utcDate: '2026-11-07T15:00Z',
+    homeTeam: { name: 'Gateshead', tla: 'GAT' },
+    awayTeam: { name: 'Tamworth', tla: 'TAM' },
+  },
+  {
     id: '2026-11-07-pne-sou',
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Preston North End', tla: 'PNE' },
@@ -15929,6 +15905,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
   },
   {
+    id: '2026-11-10-dar-oxc',
+    utcDate: '2026-11-10T19:45:00Z',
+    homeTeam: { name: 'Darlington', tla: 'DAR' },
+    awayTeam: { name: 'Oxford City', tla: 'OXC' },
+  },
+  {
     id: '2026-11-10-mor-her',
     utcDate: '2026-11-10T19:45:00Z',
     homeTeam: { name: 'Morecambe', tla: 'MOR' },
@@ -15939,6 +15921,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-10T19:45:00Z',
     homeTeam: { name: 'Scarborough Athletic', tla: 'SCA' },
     awayTeam: { name: 'Marine', tla: 'MAR' },
+  },
+  {
+    id: '2026-11-10-wah-dov',
+    utcDate: '2026-11-10T19:45:00Z',
+    homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
+    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
   },
   {
     id: '2026-11-14-exe-cht',
@@ -18189,6 +18177,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-14T20:00Z',
     homeTeam: { name: 'Hull City', tla: 'HUL' },
     awayTeam: { name: 'Tottenham Hotspur', tla: 'TOT' },
+  },
+  {
+    id: '2026-12-15-sby-dor',
+    utcDate: '2026-12-15T19:45:00Z',
+    homeTeam: { name: 'Salisbury', tla: 'SBY' },
+    awayTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
   },
   {
     id: '2026-12-15-col-pvl',
