@@ -102,7 +102,7 @@ export const SERIES_17_BAKERS: Omit<Baker, "id" | "eliminatedInWeek">[] = [
 ];
 
 /** Aired series 17 themes only. Unknown weeks stay blank until the episode airs; never guess. */
-export const WEEK_THEMES = ["Cake", "Biscuits", "People's Choice", "", "", "", "", "", "Semi-final", "Final"];
+export const WEEK_THEMES = ["Cake", "Biscuits", "People's Choice", "", "", "Pastry", "", "", "Semi-final", "Final"];
 
 /** Placeholder themes the league was originally seeded with; cleared from unaired weeks. */
 export const GUESSED_WEEK_THEMES = ["Bread", "Desserts", "Pastry", "Botanical", "Caramel", "Pâtisserie"];
