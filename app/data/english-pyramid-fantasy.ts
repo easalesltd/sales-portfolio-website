@@ -15059,6 +15059,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-10-24T14:00Z',
     homeTeam: { name: 'Barrow', tla: 'BRW' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    /** Abandoned 14' (waterlogged pitch) — replay from 0-0; no ledger result until rearranged. */
+    postponed: true,
   },
   {
     id: '2026-10-24-btn-ley',
