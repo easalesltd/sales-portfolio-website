@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon is having a midweek so filthy it should come with a towel. Bedford Town nicked a 1-0 clean sheet, Truro City battered Slough Town 3-1, Salisbury went and won 2-0 at Walton & Hersham like they had a train to catch, and Oxford United shut Stockport County out 1-0. Then Altrincham and Hartlepool United both faceplanted for a combined minus 2, which is still more competent than most of this league. Jon sits pretty on 366 and looks like he is collecting rent.\n\nChris keeps turning midweek into a personal highlight reel while somehow staying second. Chester FC edged Marine, Tonbridge Angels blanked Folkestone Invicta, Barnet put three past York City, and Wednesday scraped a 1-1 with Cambridge United. Maidstone United shipping three at home was the only wet fart on the card. Chris is on 345 and breathing down Jon\'s neck like a man who has found the spare key.\n\nScott is the quiet menace again. Oxford City spanked Merthyr Town 3-0, Luton Town put three on Doncaster Rovers, and Boreham Wood pinched a 2-1 at Woking. Horsham\'s 1-1 at Maidenhead United was a shrug, Darlington were useless, and Kidderminster Harriers at least got a red out of a boring 0-0. Scott is on 340 and one more greedy night from making this a three-horse pile-up.\n\nBen finally remembered how away goals work. Barrow nicked a 3-2 at FC Halifax Town, Morecambe banked a 1-0 clean sheet against Darlington, and Tamworth absolutely rinsed Scunthorpe United 4-1. Dover Athletic managed a red in a home loss, which is the Ben special: chaos points when the football will not cooperate. Ben is on 318 and still close enough to smell the podium.\n\nNest\'s evening was a carnival of both ends. Buxton hammered Harborough Town 3-0, Farnham Town smashed Chesham United 4-2 on the road, and Leicester City put three past Wigan Athletic with a clean sheet for the grown-ups. Then the same night handed him Harborough leaking three, Chesham leaking four, Bromley getting leathered at MK Dons, Hornchurch losing at home, and Southend United somehow escaping with a 3-3. Nest is on 278 and looks like a man who left the oven on.\n\nAsh keeps doing the non-league grind while the top three play Monopoly. AFC Totton beat Torquay United 1-0, Chelmsford City won 1-0 at Dover Athletic, South Shields pinched one at Spennymoor Town, and MK Dons put four past Bromley. Spalding United drew 2-2, York City lost with two reds for pocket change, and Wealdstone coughed up another home beating. Ash is on 275 and still stuck in the bargain bin.\n\nDave got one proper night out and five reminders why he is last. Worksop Town murdered King\'s Lynn Town 5-0, Cambridge United held Wednesday to 1-1, and Torquay United at least produced a red while losing. Marine, Walton & Hersham, and Scunthorpe United did fuck all useful. Dave is on 259. If dignity was a clean sheet, he would be minus three.\n\nTable: Jon 366, Chris 345, Scott 340, Ben 318, Nest 278, Ash 275, Dave 259.';
+  'Chris\'s Forest Green beat Eastleigh 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Aldershot Town lost 2-0 at Sutton United. No win points, net zero. Chris is on 349.\n\nScott\'s Weston-super-Mare lost 2-1 at Farnborough. No win points, net zero. Scott is on 340.\n\nAsh\'s Carlisle United beat Harrogate Town 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, plus 2 for the reds, net plus 7. Ash is on 282.\n\nDave\'s Sutton United beat Aldershot Town 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Dave is on 263.\n\nJon still leads on 366 without a club kicking a ball.\n\nTable: Jon 366, Chris 349, Scott 340, Ben 318, Ash 282, Nest 278, Dave 263.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -10269,6 +10269,51 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Southend United', tla: 'STD' },
     homeGoals: 3,
     awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/weston-super-mare/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-10-28-far-wsm',
+    utcDate: '2026-10-28T19:45:00Z',
+    homeTeam: { name: 'Farnborough', tla: 'FAR' },
+    awayTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-28-car-har',
+    utcDate: '2026-10-28T19:45Z',
+    homeTeam: { name: 'Carlisle United', tla: 'CAR' },
+    awayTeam: { name: 'Harrogate Town', tla: 'HAR' },
+    homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 2,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-28-fgr-elh',
+    utcDate: '2026-10-28T19:45Z',
+    homeTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    awayTeam: { name: 'Eastleigh', tla: 'ELH' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-28-sut-ald',
+    utcDate: '2026-10-28T19:45Z',
+    homeTeam: { name: 'Sutton United', tla: 'SUT' },
+    awayTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    homeGoals: 2,
+    awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 0,
   },
