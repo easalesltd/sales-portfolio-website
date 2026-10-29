@@ -10329,7 +10329,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-28 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-29 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -13884,14 +13884,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Wealdstone', tla: 'WEA' },
   },
   {
-    id: '2026-10-03-bsl-mkd',
-    utcDate: '2026-10-03T14:00Z',
-    homeTeam: { name: 'Barnsley', tla: 'BSL' },
-    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-10-03-btn-hud',
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Burton Albion', tla: 'BTN' },
@@ -15100,14 +15092,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Peterborough United', tla: 'PET' },
   },
   {
-    id: '2026-10-24-brw-fgr',
-    utcDate: '2026-10-24T14:00Z',
-    homeTeam: { name: 'Barrow', tla: 'BRW' },
-    awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** Abandoned 14' (waterlogged pitch) — replay from 0-0; no ledger result until rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-10-24-btn-ley',
     utcDate: '2026-10-24T14:00Z',
     homeTeam: { name: 'Burton Albion', tla: 'BTN' },
@@ -16092,14 +16076,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
     awayTeam: { name: 'Truro City', tla: 'TRU' },
-  },
-  {
-    id: '2026-11-07-hbo-rad',
-    utcDate: '2026-11-07T15:00:00Z',
-    homeTeam: { name: 'Harborough Town', tla: 'HBO' },
-    awayTeam: { name: 'Radcliffe', tla: 'RAD' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-11-07-hed-mor',
@@ -17610,6 +17586,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Peterborough United', tla: 'PET' },
   },
   {
+    id: '2026-12-01-hbo-rad',
+    utcDate: '2026-12-01T19:45:00Z',
+    homeTeam: { name: 'Harborough Town', tla: 'HBO' },
+    awayTeam: { name: 'Radcliffe', tla: 'RAD' },
+  },
+  {
     id: '2026-12-01-mar-bed',
     utcDate: '2026-12-01T19:45:00Z',
     homeTeam: { name: 'Marine', tla: 'MAR' },
@@ -18568,6 +18550,18 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-15T19:45:00Z',
     homeTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
     awayTeam: { name: 'Billericay Town', tla: 'BIL' },
+  },
+  {
+    id: '2026-12-15-brw-fgr',
+    utcDate: '2026-12-15T19:45Z',
+    homeTeam: { name: 'Barrow', tla: 'BRW' },
+    awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+  },
+  {
+    id: '2026-12-15-bsl-mkd',
+    utcDate: '2026-12-15T19:45Z',
+    homeTeam: { name: 'Barnsley', tla: 'BSL' },
+    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
   },
   {
     id: '2026-12-15-col-pvl',
