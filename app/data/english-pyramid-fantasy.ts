@@ -10329,7 +10329,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-29 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-10-30 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
