@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s Forest Green beat Eastleigh 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Aldershot Town lost 2-0 at Sutton United. No win points, net zero. Chris is on 349.\n\nScott\'s Weston-super-Mare lost 2-1 at Farnborough. No win points, net zero. Scott is on 340.\n\nAsh\'s Carlisle United beat Harrogate Town 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, plus 2 for the reds, net plus 7. Ash is on 282.\n\nDave\'s Sutton United beat Aldershot Town 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Dave is on 263.\n\nJon still leads on 366 without a club kicking a ball.\n\nTable: Jon 366, Chris 349, Scott 340, Ben 318, Ash 282, Nest 278, Dave 263.';
+  'Jon\'s Newport County beat Chesterfield 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Jon is on 370.\n\nScott\'s Chesterfield lost 4-1 at Newport County. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Scott is on 340.\n\nNest\'s Hornchurch lost 3-1 at AFC Fylde. No win points, minus 1 for leaking three, net minus 1. Then Sheffield United beat Wrexham 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Nest is on 281.\n\nDave is still last on 263.\n\nTable: Jon 370, Chris 349, Scott 340, Ben 318, Ash 282, Nest 281, Dave 263.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -10317,6 +10317,39 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-30-fyl-hrn',
+    utcDate: '2026-10-30T19:45Z',
+    homeTeam: { name: 'AFC Fylde', tla: 'FYL' },
+    awayTeam: { name: 'Hornchurch', tla: 'HRN' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-30-nwp-chs',
+    utcDate: '2026-10-30T19:45Z',
+    homeTeam: { name: 'Newport County', tla: 'NWP' },
+    awayTeam: { name: 'Chesterfield', tla: 'CHS' },
+    homeGoals: 4,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-30-shu-wxm',
+    utcDate: '2026-10-30T20:00Z',
+    homeTeam: { name: 'Sheffield United', tla: 'SHU' },
+    awayTeam: { name: 'Wrexham', tla: 'WXM' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -16456,8 +16489,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
-    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
