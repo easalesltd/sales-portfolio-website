@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Newport County beat Chesterfield 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Jon is on 370.\n\nScott\'s Chesterfield lost 4-1 at Newport County. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Scott is on 340.\n\nNest\'s Hornchurch lost 3-1 at AFC Fylde. No win points, minus 1 for leaking three, net minus 1. Then Sheffield United beat Wrexham 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Nest is on 281.\n\nDave is still last on 263.\n\nTable: Jon 370, Chris 349, Scott 340, Ben 318, Ash 282, Nest 281, Dave 263.';
+  'Jon\'s Chelsea beat United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Birmingham City won 3-1 at Lincoln City. Plus 4 for the away win, plus 1 for three or more, net plus 5. Jon is on 379.\n\nChris\'s Forest Green drew 2-2 with Harrogate Town. Plus 1 for the draw, net plus 1. Then Lincoln City lost 3-1 at home to Birmingham City. No win points, minus 1 for leaking three, net minus 1. Chris is on 349.\n\nBen\'s Huddersfield Town won 3-0 at Bradford City. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more, net plus 6. Then Grimsby Town beat York City 5-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Ben is on 328.\n\nAsh\'s United lost 2-0 at Chelsea. No win points, plus 1 for the red, net plus 1. Then York City lost 5-2 at Grimsby Town. No win points, minus 1 for leaking three, net minus 1. Then Leyton Orient beat Cambridge United 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Then Preston North End lost 2-0 at Stoke City. No win points, net zero. Ash is on 287.\n\nDave\'s Cambridge United lost 3-0 at Leyton Orient. No win points, minus 1 for leaking three, net minus 1. Then Plymouth Argyle served up a boring 0-0 against Reading. Minus 1 for the 0-0, net minus 1. Then Port Vale beat Rochdale 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Dave is on 265.\n\nTable: Jon 379, Chris 349, Scott 340, Ben 328, Ash 287, Nest 281, Dave 265.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -10350,6 +10350,105 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-31-brd-hud',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Bradford City', tla: 'BRD' },
+    awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
+    homeGoals: 0,
+    awayGoals: 3,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-31-che-mun',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Chelsea', tla: 'CHE' },
+    awayTeam: { name: 'Manchester United', tla: 'MUN' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-10-31-fgr-har',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    awayTeam: { name: 'Harrogate Town', tla: 'HAR' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-31-gri-yor',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Grimsby Town', tla: 'GRI' },
+    awayTeam: { name: 'York City', tla: 'YOR' },
+    homeGoals: 5,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-31-ley-cam',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Leyton Orient', tla: 'LEY' },
+    awayTeam: { name: 'Cambridge United', tla: 'CAM' },
+    homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-31-lin-bir',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Lincoln City', tla: 'LIN' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-31-ply-rea',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
+    awayTeam: { name: 'Reading', tla: 'REA' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-31-pvl-rch',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Port Vale', tla: 'PVL' },
+    awayTeam: { name: 'Rochdale', tla: 'RCH' },
+    homeGoals: 4,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-10-31-stk-pne',
+    utcDate: '2026-10-31T12:30Z',
+    homeTeam: { name: 'Stoke City', tla: 'STK' },
+    awayTeam: { name: 'Preston North End', tla: 'PNE' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -16189,8 +16288,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
-    /** ESPN marked postponed. */
-    postponed: true,
   },
   {
     id: '2026-11-07-pne-sou',
@@ -16459,8 +16556,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
-    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
