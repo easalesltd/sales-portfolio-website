@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Arsenal won 1-0 at Liverpool. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Scott is on 368.\n\nChris\'s Wednesday drew 1-1 with Blackpool. Plus 1 for the draw, plus 1 for the red, net plus 2. Chris is on 364.\n\nBen\'s Liverpool lost 1-0 at home to Arsenal. No win points, net zero. Ben is on 355.\n\nJon still leads on 400 without a club kicking a ball. Dave is still last on 278.\n\nTable: Jon 400, Scott 368, Chris 364, Ben 355, Ash 318, Nest 286, Dave 278.';
+  'Chris\'s Newcastle lost 1-0 at home to Everton. No win points, plus 1 for the red, net plus 1. Chris is on 365.\n\nAsh\'s Chelmsford City lost 2-0 at home to Farnham Town. No win points, net zero. Ash is on 318.\n\nNest\'s Farnham Town won 2-0 at Chelmsford City. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Nest is on 291.\n\nJon still leads on 400 without a club kicking a ball. Dave is still last on 278.\n\nTable: Jon 400, Scott 368, Chris 365, Ben 355, Ash 318, Nest 291, Dave 278.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11094,6 +11094,29 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chelmsford-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-02-clm-fnh',
+    utcDate: '2026-11-02T19:45:00Z',
+    homeTeam: { name: 'Chelmsford City', tla: 'CLM' },
+    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-02-new-eve',
+    utcDate: '2026-11-02T20:00Z',
+    homeTeam: { name: 'Newcastle United', tla: 'NEW' },
+    awayTeam: { name: 'Everton', tla: 'EVE' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -16933,6 +16956,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-07-pne-sou',
@@ -17201,6 +17226,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
