@@ -16,11 +16,12 @@ export function activeBakersAtWeek(league: LeagueState, week: number): Baker[] {
   return league.bakers.filter((baker) => bakerStillIn(league, baker.id, week));
 }
 
-/** Weeks 6 to 8 are two bakers. The final two weeks stay at one. */
+/** Weeks 6 and 7 are two bakers. From week 8 to the end it is one. */
 export const TEAM_OF_TWO_FROM_WEEK = 6;
+export const TEAM_OF_ONE_FROM_WEEK = 8;
 
 export function teamSizeForWeek(league: LeagueState, week: number): number {
-  if (week > league.totalWeeks - 2) return 1;
+  if (week >= TEAM_OF_ONE_FROM_WEEK || week > league.totalWeeks - 2) return 1;
   if (week >= TEAM_OF_TWO_FROM_WEEK) return 2;
   if (activeBakersAtWeek(league, week).length <= 6) return 2;
   return 3;
@@ -108,6 +109,9 @@ function sideHistory(league: LeagueState, companionId: string, throughWeek: numb
           !roster.includes(change.inBakerId)
         ) {
           roster.push(change.inBakerId);
+        }
+        if (change.inBakerId && roster.length > size && roster.includes(change.inBakerId)) {
+          roster = [change.inBakerId, ...roster.filter((bakerId) => bakerId !== change.inBakerId)];
         }
       }
       next[id] = roster.slice(0, size);

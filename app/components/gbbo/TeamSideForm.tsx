@@ -68,7 +68,7 @@ export function TeamSideForm({
     : unique.size !== filled.length
       ? "The same baker is in two slots. Each baker can only appear once."
         : filled.length !== size
-        ? `Choose ${size} different bakers still in the tent before you can submit.`
+        ? `Choose ${size} different baker${size === 1 ? "" : "s"} still in the tent before you can submit.`
         : brokeTheBar
           ? `${benched.map((id) => bakerName(league, id)).join(" and ")} coming off uses your substitution, so you cannot change anyone else.`
         : week > 1 && changes > 1
@@ -162,7 +162,7 @@ export function TeamSideForm({
             ? "Week 1: choose three bakers still in the tent."
             : changes === 0
               ? shrinking
-                ? "This side is too big. Drop one baker, or leave it for the Chief Companion."
+                ? "This side is too big. Drop down to one baker, or leave it for the Chief Companion."
                 : benched.length
                   ? "No change yet. You can still substitute one baker."
                   : "No change — last week's bakers will play again."
@@ -187,10 +187,12 @@ export function TeamSideForm({
         ) : null}
         <Button
           tone="ghost"
-          disabled={locked || livingLast.length < size}
+          disabled={locked || livingLast.length !== size}
           title={
             locked
               ? (lockReason ?? "The change window is closed.")
+              : livingLast.length > size
+                ? "Last week's side is too big for this week. Drop down to one baker, or leave it for the Chief Companion."
               : livingLast.length < size && benched.length
                 ? "Last week's side includes a baker who cannot be picked this week. Pick a replacement."
                 : livingLast.length < size

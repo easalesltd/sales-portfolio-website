@@ -83,7 +83,12 @@ export default function LeaguePage() {
         <div className="space-y-6">
           <Card eyebrow="This weekend" title={`Week ${gate.week}`}>
             <div className="space-y-3 text-sm">
-              <p>Each companion plays <strong>{size} baker{size === 1 ? "" : "s"}</strong> this week. Last week's side stands unless they substitute one baker.</p>
+              <p>
+                Each companion plays <strong>{size} baker{size === 1 ? "" : "s"}</strong> this week.
+                {size === 1
+                  ? " One baker each, for the rest of the competition."
+                  : " Last week's side stands unless they substitute one baker."}
+              </p>
               <p>{gate.summary}</p>
               <p>{latest ? `Last published: ${latest.title}.` : "No episode has been published yet."}</p>
               <div className="flex flex-wrap gap-2 pt-2">

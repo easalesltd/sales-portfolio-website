@@ -41,13 +41,28 @@ describe("common baker rule", () => {
     expect(barredBakersForWeek(league, league.totalWeeks)).toEqual([]);
   });
 
-  it("fields two bakers from week 6, and one for the final two weeks", () => {
+  it("fields two bakers in weeks 6 and 7, then one from week 8 to the end", () => {
     const league = createEmptyLeague();
     expect(teamSizeForWeek(league, 5)).toBe(3);
     expect(teamSizeForWeek(league, 6)).toBe(2);
-    expect(teamSizeForWeek(league, 8)).toBe(2);
+    expect(teamSizeForWeek(league, 7)).toBe(2);
+    expect(teamSizeForWeek(league, 8)).toBe(1);
     expect(teamSizeForWeek(league, 9)).toBe(1);
     expect(teamSizeForWeek(league, 10)).toBe(1);
+  });
+
+  it("keeps the incoming baker when a two-baker side shrinks to one", () => {
+    const league = leagueWithSides();
+    league.substitutions.push({
+      id: "sub_week8_dave",
+      week: 8,
+      companionId: companionIdForName("Dave"),
+      outBakerId: bakerIdForName("Tom"),
+      inBakerId: bakerIdForName("Connie"),
+      autoByChief: false,
+    });
+    expect(teamForWeek(league, companionIdForName("Dave"), 7)).toEqual(["Tom", "Gabe"].map(bakerIdForName));
+    expect(teamForWeek(league, companionIdForName("Dave"), 8)).toEqual([bakerIdForName("Connie")]);
   });
 });
 
