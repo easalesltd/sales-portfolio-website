@@ -19,14 +19,14 @@ async function removeLeagueFile() {
 }
 
 describe("free from party week results", () => {
-  it("publishes week 7 with Mo's handshake and Gary leaving", async () => {
+  it("publishes week 7 with Gabe as Star Baker, Mo's handshake and Gary leaving", async () => {
     await removeLeagueFile();
     try {
       const league = await readGbboLeague();
       const episode = league.episodes.find((item) => item.week === 7);
       expect(episode?.published).toBe(true);
       expect(episode?.theme).toBe("Free From Party");
-      expect(episode?.starBakerId).toBeNull();
+      expect(episode?.starBakerId).toBe(bakerIdForName("Gabe"));
       expect(episode?.eliminatedBakerId).toBe(bakerIdForName("Gary"));
       expect(episode?.handshakes).toEqual([bakerIdForName("Mo")]);
       expect(episode && technicalField(league, episode)).toBe(6);
@@ -37,7 +37,7 @@ describe("free from party week results", () => {
         scoreEpisodeForBaker(league, episode!, bakerIdForName(name)).reduce((sum, line) => sum + line.points, 0);
 
       expect(points("Tom")).toBe(3);
-      expect(points("Gabe")).toBe(2);
+      expect(points("Gabe")).toBe(7);
       expect(points("Moyin")).toBe(1);
       expect(points("Mo")).toBe(4);
       expect(points("Gary")).toBe(-7);

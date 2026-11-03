@@ -32,6 +32,7 @@ const WEEK_4_CRIES_FIX_KEY = "2026-week-4-only-molly-cried";
 const WEEK_5_RESULT_KEY = "2026-week-5-pudding-results";
 const WEEK_6_RESULT_KEY = "2026-week-6-pastry-results";
 const WEEK_7_RESULT_KEY = "2026-week-7-free-from-party-results";
+const WEEK_7_STAR_BAKER_KEY = "2026-week-7-gabe-star-baker";
 const WEEK_7_RECIPE_KEY = "2026-week-7-axolotl-recipe";
 const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
 const GUNS_WEEK_3_CLARA_KEY = "2026-week-3-guns-clara-restored";
@@ -134,7 +135,7 @@ function week6Result(): EpisodeResult {
 function week7Result(): EpisodeResult {
   const id = bakerIdForName;
   return {
-    starBakerId: null,
+    starBakerId: id("Gabe"),
     eliminatedBakerId: id("Gary"),
     technicalFieldSize: 6,
     technical: [
@@ -151,7 +152,7 @@ function week7Result(): EpisodeResult {
     cries: {},
     recapSource: "Chief companion, Free From Party Week",
     justification:
-      "Mo received a Hollywood handshake. Gary went home. Six bakers took the technical: Tom was first, Gabe second and Moyin third. Connie finished last (−3), Gary fifth, second last (−2) and Mo fourth, third last (−1).",
+      "Gabe was Star Baker. Mo received a Hollywood handshake. Gary went home. Six bakers took the technical: Tom was first, Gabe second and Moyin third. Connie finished last (−3), Gary fifth, second last (−2) and Mo fourth, third last (−1).",
   };
 }
 
@@ -340,6 +341,7 @@ export async function readGbboLeague(): Promise<LeagueState> {
   const freeFrom = league.episodes.find((episode) => episode.week === 7);
   if (freeFrom && !(league.resetsApplied ?? []).includes(WEEK_7_RESULT_KEY)) freeFrom.theme = "Free From Party";
   const week7Published = applyEpisodeResult(league, WEEK_7_RESULT_KEY, 7, week7Result());
+  const week7StarBaker = correctEpisodeResult(league, WEEK_7_STAR_BAKER_KEY, 7, week7Result());
   league.resetsApplied = league.resetsApplied ?? [];
   const week7Recipe = !league.resetsApplied.includes(WEEK_7_RECIPE_KEY);
   if (week7Recipe) {
@@ -356,7 +358,7 @@ export async function readGbboLeague(): Promise<LeagueState> {
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
   const falseAccusation = ensureFalseAccusationBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7Recipe || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
     await writeGbboLeague(league);
   }
   return league;
