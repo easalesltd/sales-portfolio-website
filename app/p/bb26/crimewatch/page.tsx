@@ -1,176 +1,187 @@
 "use client";
 
-import { useState } from "react";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { LastInPointsBoard } from "@/app/components/gbbo/LastInPointsBoard";
-import { PenaltyBoard } from "@/app/components/gbbo/PenaltyBoard";
 import { PunishmentPhoto } from "@/app/components/gbbo/PunishmentPhoto";
+import { PunishmentUpload } from "@/app/components/gbbo/PunishmentUpload";
 import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { TentRules } from "@/app/components/gbbo/TentRules";
 import { Card, Empty, Pill } from "@/app/components/gbbo/ui";
+import { gbboSlug } from "@/app/lib/gbbo/identity";
 import {
+  bakerName,
   companionName,
   companionPortrait,
   episodeTheme,
-  outstandingBeerBaguettes,
   punishmentExhibits,
+  technicalDeadlineAt,
+  technicalDeadlineLabel,
   technicalIsComplete,
+  type PunishmentExhibit,
 } from "@/app/lib/gbbo/league";
+import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
+import type { LeagueState, Penalty } from "@/app/lib/gbbo/types";
 
-type Punishment = "slut_drop" | "technical" | "beer_baguette";
+const KIND_ORDER: Record<PunishmentExhibit["kind"], number> = {
+  slut_drop: 0,
+  beer_baguette: 1,
+  technical: 2,
+};
 
-const PUNISHMENTS: { id: Punishment; label: string }[] = [
-  { id: "slut_drop", label: "Slut drops" },
-  { id: "technical", label: "Technicals" },
-  { id: "beer_baguette", label: "Beer baguettes" },
-];
+const KIND_LABEL: Record<PunishmentExhibit["kind"], string> = {
+  slut_drop: "Slut drop",
+  beer_baguette: "Beer baguette",
+  technical: "Technical",
+};
+
+function Exhibit({ item }: { item: PunishmentExhibit }) {
+  const { league, acceptLeague } = useLeague();
+  const { isChief, playerSlug, playerUnlocked } = useGbboSession();
+  const companion = league.companions.find((row) => row.id === item.companionId);
+  const name = companion?.name ?? companionName(league, item.companionId);
+  const penalty = league.penalties.find((row) => row.id === item.id);
+  const canUpload = isChief || (playerUnlocked && playerSlug === gbboSlug(name));
+  const label = `${name} · week ${item.week} ${KIND_LABEL[item.kind].toLowerCase()}`;
+  const onTape = Boolean(item.src);
+  const bakeDone = penalty ? technicalIsComplete(penalty) : false;
+  const missedBake = penalty?.kind === "technical" && !bakeDone && new Date() >= technicalDeadlineAt(penalty.week);
+
+  return (
+    <article className="paper-card rounded-[28px] p-5">
+      <div className="mb-4 flex items-start gap-3">
+        <CompanionPhoto name={name} photo={companionPortrait(companion, true)} size="md" crop="scene" />
+        <div className="min-w-0">
+          <p className="font-display text-3xl text-tent-dark">{name}</p>
+          <div className="mt-1 flex flex-wrap gap-2">
+            <Pill tone={item.kind === "technical" ? "tent" : "raspberry"}>{KIND_LABEL[item.kind]}</Pill>
+            {onTape || bakeDone ? <Pill tone="butter">On tape</Pill> : <Pill tone="raspberry">Still owed</Pill>}
+            {item.escalated ? <Pill tone="raspberry">Beer baguette also owed</Pill> : null}
+            {missedBake ? <Pill tone="raspberry">Deadline passed</Pill> : null}
+          </div>
+          <ExhibitNote item={item} penalty={penalty} name={name} />
+        </div>
+      </div>
+      {item.photo ? <PunishmentPhoto src={item.src} label={label} /> : <PunishmentVideo src={item.src} label={label} />}
+      <ExhibitUpload item={item} penalty={penalty} canUpload={canUpload} onUploaded={(next) => acceptLeague(next)} />
+    </article>
+  );
+}
+
+function ExhibitNote({
+  item,
+  penalty,
+  name,
+}: {
+  item: PunishmentExhibit;
+  penalty: Penalty | undefined;
+  name: string;
+}) {
+  const { league } = useLeague();
+  if (item.kind === "slut_drop") {
+    return (
+      <p className="mt-2 text-sm text-chocolate/70">
+        {item.src ? "Caught on tape." : `Owes a slut drop photo or video · ${episodeTheme(league, item.week)}`}
+      </p>
+    );
+  }
+  if (!penalty) return null;
+  return (
+    <div className="mt-2 space-y-1 text-sm text-chocolate/70">
+      <p>
+        {penalty.bakerId ? `After ${bakerName(league, penalty.bakerId)}. ` : ""}
+        {penalty.note}
+      </p>
+      {penalty.kind === "technical" ? (
+        <p className="font-bold text-tent-dark">
+          {technicalIsComplete(penalty)
+            ? "Bake photo uploaded."
+            : `${name} must bake this week. Upload a photo before ${technicalDeadlineLabel(penalty.week)}.`}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function ExhibitUpload({
+  item,
+  penalty,
+  canUpload,
+  onUploaded,
+}: {
+  item: PunishmentExhibit;
+  penalty: Penalty | undefined;
+  canUpload: boolean;
+  onUploaded: (next: LeagueState) => void;
+}) {
+  if (item.kind === "slut_drop" && !item.src) {
+    return (
+      <div className="mt-3">
+        <SlutDropMark companionId={item.companionId} week={item.week} />
+      </div>
+    );
+  }
+  if (!penalty || !canUpload || item.src) return null;
+  if (penalty.kind === "technical" && technicalIsComplete(penalty)) return null;
+  return (
+    <div className="mt-3">
+      <PunishmentUpload
+        kind={penalty.kind}
+        companionId={penalty.companionId}
+        week={penalty.week}
+        penaltyId={penalty.id}
+        label={penalty.kind === "technical" ? "Upload bake photo" : "Upload beer baguette"}
+        onUploaded={(next) => onUploaded(next as LeagueState)}
+      />
+    </div>
+  );
+}
 
 export default function CrimewatchPage() {
   const { league } = useLeague();
-  const baguettesAtLarge = outstandingBeerBaguettes(league);
-  const [shown, setShown] = useState<Punishment>(baguettesAtLarge.length > 0 ? "beer_baguette" : "slut_drop");
-  const slutDrops = punishmentExhibits(league).filter((item) => item.kind === "slut_drop");
-  const onTape = slutDrops.filter((item) => item.src);
-  const atLarge = slutDrops.filter((item) => !item.src);
-  const owed: Record<Punishment, number> = {
-    slut_drop: atLarge.length,
-    technical: league.penalties.filter((penalty) => penalty.kind === "technical" && !technicalIsComplete(penalty)).length,
-    beer_baguette: baguettesAtLarge.length,
-  };
+  const exhibits = [...punishmentExhibits(league)].sort(
+    (a, b) => a.week - b.week || KIND_ORDER[a.kind] - KIND_ORDER[b.kind] || a.companionId.localeCompare(b.companionId),
+  );
+  const weeks = [...new Set(exhibits.map((item) => item.week))];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Card eyebrow="Have you seen this companion?" title="Village Crimewatch">
         <p className="max-w-2xl text-sm leading-7 text-chocolate/75">
-          The official screening room. Slut drops, beer baguettes and technical bake photos
-          are shown to the whole tent once they are uploaded. If the CCTV is blank, the accused is still at large.
+          The tape runs in order. Scroll down and each week plays that week’s slut drops, then its beer baguettes,
+          then the technical bakes. If a frame is missing, the accused is still at large.
         </p>
-        <div role="tablist" aria-label="Punishments" className="mt-5 flex flex-wrap gap-2">
-          {PUNISHMENTS.map((punishment) => {
-            const active = shown === punishment.id;
-            return (
-              <button
-                key={punishment.id}
-                type="button"
-                role="tab"
-                aria-selected={active}
-                onClick={() => setShown(punishment.id)}
-                className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold tracking-wide transition ${
-                  active ? "bg-raspberry text-flour" : "border border-[#e7d3b4] bg-flour/70 text-chocolate hover:bg-white"
-                }`}
-              >
-                {punishment.label}
-                {owed[punishment.id] > 0 ? (
-                  <span className={`rounded-full px-2 py-0.5 text-xs ${active ? "bg-flour text-raspberry" : "bg-raspberry text-flour"}`}>
-                    {owed[punishment.id]} owed
-                  </span>
-                ) : null}
-              </button>
-            );
-          })}
-        </div>
       </Card>
 
-      {baguettesAtLarge.length > 0 ? (
-        <Card eyebrow="Still at large" title="Beer baguettes wanted">
-          <ul className="space-y-3">
-            {baguettesAtLarge.map((penalty) => {
-              const companion = league.companions.find((row) => row.id === penalty.companionId);
-              const name = companion?.name ?? companionName(league, penalty.companionId);
-              return (
-                <li key={penalty.id} className="flex flex-wrap items-center justify-between gap-3 rounded-[22px] bg-raspberry/10 px-4 py-3">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <CompanionPhoto name={name} photo={companionPortrait(companion, true)} crop="scene" />
-                    <div className="min-w-0">
-                      <p className="font-display text-2xl text-tent-dark">{name}</p>
-                      <p className="text-sm text-chocolate/70">{penalty.note}</p>
-                    </div>
-                  </div>
-                  <Pill tone="raspberry">Beer baguette owed</Pill>
-                </li>
-              );
-            })}
-          </ul>
-        </Card>
-      ) : null}
-
-      {shown === "technical" ? <PenaltyBoard kind="technical" /> : null}
-      {shown === "beer_baguette" ? <PenaltyBoard kind="beer_baguette" /> : null}
-
-      {shown === "slut_drop" ? (
-        <>
-          <LastInPointsBoard />
-
-          {slutDrops.length === 0 ? (
-            <Empty
-              title="No slut drops on tape"
-              body="The village CCTV is still empty. When the first slut drop is uploaded, it shows here for everyone."
-            />
-          ) : null}
-
-          {atLarge.length > 0 ? (
-            <Card eyebrow="Still at large" title="Wanted">
-              <ul className="space-y-3">
-                {atLarge.map((item) => {
-                  const companion = league.companions.find((row) => row.id === item.companionId);
-                  const name = companion?.name ?? companionName(league, item.companionId);
-                  return (
-                    <li key={item.id} className="flex flex-wrap items-center justify-between gap-3 rounded-[22px] bg-raspberry/10 px-4 py-3">
-                      <div className="flex min-w-0 items-center gap-3">
-                        <CompanionPhoto name={name} photo={companionPortrait(companion, true)} crop="scene" />
-                        <div className="min-w-0">
-                          <p className="font-display text-2xl text-tent-dark">{name}</p>
-                          <p className="text-sm text-chocolate/70">
-                            Owes a slut drop photo or video · {episodeTheme(league, item.week)}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <SlutDropMark companionId={item.companionId} week={item.week} />
-                        {item.escalated ? <Pill tone="raspberry">Beer baguette also owed</Pill> : null}
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </Card>
-          ) : null}
-
-          {onTape.length > 0 ? (
-            <Card eyebrow="Exhibit A, B and so on" title="Caught on tape">
-              <div className="grid gap-5 sm:grid-cols-2">
-                {onTape.map((item) => {
-                  const companion = league.companions.find((row) => row.id === item.companionId);
-                  const name = companion?.name ?? companionName(league, item.companionId);
-                  const episode = league.episodes.find((row) => row.week === item.week);
-                  const label = `${name} · week ${item.week} slut drop`;
-                  return (
-                    <article key={item.id} className="rounded-[22px] bg-flour/80 p-4">
-                      <div className="mb-3 flex items-center gap-3">
-                        <CompanionPhoto name={name} photo={companionPortrait(companion, true)} size="md" crop="scene" />
-                        <div className="min-w-0">
-                          <p className="font-display text-2xl text-tent-dark">{name}</p>
-                          <div className="mt-1 flex flex-wrap gap-2">
-                            <Pill tone="raspberry">Slut drop</Pill>
-                            <Pill>Week {item.week}</Pill>
-                          </div>
-                          <p className="mt-1 text-sm text-chocolate/65">
-                            {episode ? `${episode.title}: ${episodeTheme(league, item.week)}` : `Week ${item.week}`}
-                          </p>
-                        </div>
-                      </div>
-                      {item.photo ? <PunishmentPhoto src={item.src} label={label} /> : <PunishmentVideo src={item.src} label={label} />}
-                    </article>
-                  );
-                })}
+      {exhibits.length === 0 ? (
+        <Empty
+          title="Nothing on the tape"
+          body="The village CCTV is still empty. When the first slut drop or beer baguette is uploaded, it shows here, week by week."
+        />
+      ) : (
+        weeks.map((week) => {
+          const episode = league.episodes.find((row) => row.week === week);
+          const theme = episode?.theme.trim();
+          const subtitle = [episode?.title, theme].filter(Boolean).join(" · ");
+          const items = exhibits.filter((item) => item.week === week);
+          return (
+            <section key={week} aria-label={`Week ${week}`} className="mx-auto max-w-md space-y-4">
+              <header className="border-b border-[#e7d3b4] pb-3">
+                <p className="font-script text-2xl text-raspberry">{subtitle || episodeTheme(league, week)}</p>
+                <h2 className="font-display text-4xl text-tent-dark">Week {week}</h2>
+              </header>
+              <div className="flex flex-col gap-5">
+                {items.map((item) => (
+                  <Exhibit key={item.id} item={item} />
+                ))}
               </div>
-            </Card>
-          ) : null}
-        </>
-      ) : null}
+            </section>
+          );
+        })
+      )}
 
+      <LastInPointsBoard />
       <TentRules />
     </div>
   );

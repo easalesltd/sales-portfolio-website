@@ -1,16 +1,22 @@
 /** @jest-environment jsdom */
 
 import { describe, expect, it, jest } from "@jest/globals";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import CrimewatchPage from "./page";
 
 jest.mock("@/app/lib/gbbo/store", () => {
   const { createEmptyLeague } = require("@/app/lib/gbbo/seed") as typeof import("@/app/lib/gbbo/seed");
   const { companionIdForName } = require("@/app/lib/gbbo/identity") as typeof import("@/app/lib/gbbo/identity");
   const league = createEmptyLeague();
-  league.slutDrops = [{ week: 3, companionId: companionIdForName("Cowie"), completed: false, completedAt: null, videoId: null, escalated: false }];
+  const cowie = companionIdForName("Cowie");
+  const guns = companionIdForName("Guns");
+  league.slutDrops = [
+    { week: 5, companionId: cowie, completed: false, completedAt: null, videoId: null, escalated: false },
+    { week: 3, companionId: cowie, completed: false, completedAt: null, videoId: null, escalated: false },
+  ];
   league.penalties = [
-    { id: "tech-guns", week: 3, companionId: companionIdForName("Guns"), bakerId: "baker_molly", kind: "technical", deadline: "", completed: false, note: "Molly came 10th.", videoId: null },
+    { id: "tech-guns", week: 3, companionId: guns, bakerId: "baker_molly", kind: "technical", deadline: "", completed: false, note: "Molly came 10th.", videoId: null },
+    { id: "bag-week-1", week: 1, companionId: guns, bakerId: "", kind: "beer_baguette", deadline: "", completed: false, note: "Week one baguette.", videoId: null },
   ];
   return { useLeague: () => ({ league, acceptLeague: jest.fn(), loaded: true }) };
 });
@@ -19,21 +25,25 @@ jest.mock("@/app/lib/gbbo/session", () => ({
   useGbboSession: () => ({ isChief: false, playerSlug: null, playerUnlocked: false }),
 }));
 
-describe("Crimewatch punishment buttons", () => {
-  it("shows one punishment at a time, starting with slut drops", () => {
+describe("Crimewatch punishment tape", () => {
+  it("shows every punishment in week order as one scroll", () => {
     render(<CrimewatchPage />);
-    const tabs = screen.getAllByRole("tab");
-    expect(tabs.map((tab) => tab.textContent)).toEqual(["Slut drops1 owed", "Technicals1 owed", "Beer baguettes"]);
-    expect(tabs[0].getAttribute("aria-selected")).toBe("true");
-    expect(screen.queryByText("Wanted")).not.toBeNull();
-    expect(screen.queryByText("Technical challenges")).toBeNull();
+    expect(screen.queryAllByRole("tab")).toEqual([]);
 
-    fireEvent.click(tabs[1]);
-    expect(screen.queryByText("Technical challenges")).not.toBeNull();
-    expect(screen.queryByText(/Molly came 10th/)).not.toBeNull();
-    expect(screen.queryByText("Wanted")).toBeNull();
+    const tape = screen.getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent);
+    expect(tape).toEqual([
+      "Village Crimewatch",
+      "Week 1",
+      "Week 3",
+      "Week 5",
+      "How the tent is scored",
+      "Ad hoc rules",
+    ]);
 
-    fireEvent.click(tabs[2]);
-    expect(screen.queryByText("No beer baguettes owed")).not.toBeNull();
+    const week3 = screen.getByRole("region", { name: "Week 3" }).textContent ?? "";
+    expect(week3.indexOf("Slut drop")).toBeLessThan(week3.indexOf("Technical"));
+    expect(week3).toContain("Molly came 10th.");
+    expect(screen.getByRole("region", { name: "Week 1" }).textContent).toContain("Week one baguette.");
+    expect(screen.getByText("Owes a slut drop photo or video · Week 5")).toBeTruthy();
   });
 });
