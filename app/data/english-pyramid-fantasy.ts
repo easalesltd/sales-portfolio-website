@@ -11128,7 +11128,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-02 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-03 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -14661,14 +14661,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Altrincham', tla: 'ALT' },
   },
   {
-    id: '2026-10-03-bro-wyc',
-    utcDate: '2026-10-03T14:00Z',
-    homeTeam: { name: 'Bromley', tla: 'BRO' },
-    awayTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-10-03-brw-wea',
     utcDate: '2026-10-03T14:00Z',
     homeTeam: { name: 'Barrow', tla: 'BRW' },
@@ -16955,8 +16947,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
-    /** Club + ESPN: postponed (stadium events / Bonfire Night). FotMob still lists as scheduled. */
-    postponed: true,
   },
   {
     id: '2026-11-07-pne-sou',
@@ -17225,8 +17215,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** Club + ESPN: postponed (FGR international call-ups). FotMob still lists as scheduled. */
-    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
@@ -17809,6 +17797,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-24T19:45Z',
     homeTeam: { name: 'Boston United', tla: 'BOST' },
     awayTeam: { name: 'Barrow', tla: 'BRW' },
+  },
+  {
+    id: '2026-11-24-bro-wyc',
+    utcDate: '2026-11-24T19:45Z',
+    homeTeam: { name: 'Bromley', tla: 'BRO' },
+    awayTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
   },
   {
     id: '2026-11-24-car-tam',
