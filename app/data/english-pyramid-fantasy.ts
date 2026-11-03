@@ -11095,7 +11095,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayRedCards: 0,
   },
   {
-    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chelmsford-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    /** Verified final score (Chelmsford City FC match report; BBC). Reds verified: yellows only, no dismissals. */
     id: '2026-11-02-clm-fnh',
     utcDate: '2026-11-02T19:45:00Z',
     homeTeam: { name: 'Chelmsford City', tla: 'CLM' },
@@ -11104,7 +11104,6 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
-    redsUnchecked: true,
   },
   {
     /** Verified final result (ESPN sync). */
@@ -16956,7 +16955,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
-    /** ESPN marked postponed. */
+    /** Club + ESPN: postponed (stadium events / Bonfire Night). FotMob still lists as scheduled. */
     postponed: true,
   },
   {
@@ -17226,7 +17225,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
+    /** Club + ESPN: postponed (FGR international call-ups). FotMob still lists as scheduled. */
     postponed: true,
   },
   {
