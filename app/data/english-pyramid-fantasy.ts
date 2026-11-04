@@ -17046,8 +17046,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
-    /** ESPN marked postponed. */
-    postponed: true,
   },
   {
     id: '2026-11-07-pne-sou',
@@ -17320,8 +17318,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
-    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
