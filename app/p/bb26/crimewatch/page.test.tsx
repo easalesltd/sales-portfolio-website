@@ -45,5 +45,8 @@ describe("Crimewatch punishment tape", () => {
     expect(week3).toContain("Molly came 10th.");
     expect(screen.getByRole("region", { name: "Week 1" }).textContent).toContain("Week one baguette.");
     expect(screen.getByText("Owes a slut drop photo or video · Week 5")).toBeTruthy();
+    expect(screen.getByText(/uses the week's substitution, so no other tactical change is allowed/)).toBeTruthy();
+    expect(screen.getByText(/lose 5 points for being lazy/)).toBeTruthy();
+    expect(screen.getByText(/lowest-placed baker still bake it as well/)).toBeTruthy();
   });
 });

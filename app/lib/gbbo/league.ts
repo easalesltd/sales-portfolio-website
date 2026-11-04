@@ -127,6 +127,26 @@ export function barredBakersForWeek(league: LeagueState, week: number): string[]
   return sideHistory(league, league.companions[0]?.id ?? "", week).barred;
 }
 
+/**
+ * Taking off a baker every companion played last week spends this week's substitution.
+ * A short side may only fill that gap. A side that is already full cannot change anyone else.
+ */
+export function commonBakerBlocksFurtherChange(
+  lastWeek: string[],
+  previous: string[],
+  next: string[],
+  barred: string[],
+  size: number,
+): boolean {
+  if (!lastWeek.some((id) => barred.includes(id))) return false;
+  const addsAllowed = Math.max(0, size - previous.length);
+  const changes = lineupChanges(previous, next);
+  if (addsAllowed > 0) {
+    return changes > addsAllowed || previous.some((id) => !next.includes(id));
+  }
+  return changes > 0;
+}
+
 export function carriedTeam(league: LeagueState, companionId: string, week: number): string[] {
   return sideHistory(league, companionId, week).carried[companionId] ?? [];
 }
