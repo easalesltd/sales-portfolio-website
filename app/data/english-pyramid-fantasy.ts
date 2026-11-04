@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Portsmouth beat Swansea City 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Birmingham City beat Millwall 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Jon is on 409.\n\nScott\'s Bolton Wanderers won 1-0 at Charlton Athletic. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Luton Town drew 1-1 with Huddersfield Town. Plus 1 for the draw, net plus 1. Scott is on 374.\n\nChris\'s Lincoln City lost 1-0 at Watford. No win points, net zero. Chris is on 365.\n\nBen\'s Huddersfield Town drew 1-1 with Luton Town. Plus 1 for the draw, net plus 1. Ben is on 356.\n\nAsh\'s Preston North End lost 3-2 at home to Sheffield United. No win points, minus 1 for leaking three, net minus 1. Then Southampton drew 1-1 with West Brom. Plus 1 for the draw, net plus 1. Ash is on 318.\n\nNest\'s Blackburn Rovers lost 2-1 at home to Stoke City. No win points, net zero. Then Sheffield United won 3-2 at Preston North End. Plus 4 for the away win, plus 1 for three or more, net plus 5. Nest is on 296.\n\nDave\'s Charlton Athletic lost 1-0 at home to Bolton Wanderers. No win points, net zero. Then Burnley drew 1-1 with QPR. Plus 1 for the draw, net plus 1. Dave is on 279.\n\nTable: Jon 409, Scott 374, Chris 365, Ben 356, Ash 318, Nest 296, Dave 279.';
+  'Jon\'s Oxford United beat Reading 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Jon is on 413.\n\nScott\'s Wolves won 2-1 at Bristol City. Plus 4 for the away win, net plus 4. Scott is on 378.\n\nChris\'s West Ham drew 3-3 with Cardiff City. Plus 1 for the draw, plus 1 for three or more, minus 1 for leaking three, net plus 1. Chris is on 366.\n\nBen\'s Cardiff City drew 3-3 with West Ham. Plus 1 for the draw, plus 1 for three or more, minus 1 for leaking three, net plus 1. Then Middlesbrough lost 2-0 at Wrexham. No win points, net zero. Ben is on 357.\n\nDave is still last on 279.\n\nTable: Jon 413, Scott 378, Chris 366, Ben 357, Ash 318, Nest 296, Dave 279.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11215,6 +11215,50 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-04-cdf-whu',
+    utcDate: '2026-11-04T19:45Z',
+    homeTeam: { name: 'Cardiff City', tla: 'CDF' },
+    awayTeam: { name: 'West Ham United', tla: 'WHU' },
+    homeGoals: 3,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-04-oxf-rea',
+    utcDate: '2026-11-04T19:45Z',
+    homeTeam: { name: 'Oxford United', tla: 'OXF' },
+    awayTeam: { name: 'Reading', tla: 'REA' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-04-wxm-mid',
+    utcDate: '2026-11-04T19:45Z',
+    homeTeam: { name: 'Wrexham', tla: 'WXM' },
+    awayTeam: { name: 'Middlesbrough', tla: 'MID' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-04-brc-wol',
+    utcDate: '2026-11-04T20:00Z',
+    homeTeam: { name: 'Bristol City', tla: 'BRC' },
+    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -17046,6 +17090,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-07-pne-sou',
@@ -17318,6 +17364,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
