@@ -6,6 +6,7 @@ import {
   applyShortSideEscalations,
   assignTechnicalPenalties,
   barredBakersForWeek,
+  commonBakerBlocksFurtherChange,
   scoreCompanionWeek,
   teamForWeek,
   teamSizeForWeek,
@@ -49,6 +50,30 @@ describe("common baker rule", () => {
     expect(teamSizeForWeek(league, 8)).toBe(1);
     expect(teamSizeForWeek(league, 9)).toBe(1);
     expect(teamSizeForWeek(league, 10)).toBe(1);
+  });
+
+  it("spends the substitution when a barred baker leaves a full side", () => {
+    const tom = bakerIdForName("Tom");
+    const gabe = bakerIdForName("Gabe");
+    const clara = bakerIdForName("Clara");
+    const connie = bakerIdForName("Connie");
+    const lastWeek = [tom, gabe, clara];
+    const previous = [gabe, clara];
+
+    expect(commonBakerBlocksFurtherChange(lastWeek, previous, [gabe, clara], [tom], 2)).toBe(false);
+    expect(commonBakerBlocksFurtherChange(lastWeek, previous, [gabe, connie], [tom], 2)).toBe(true);
+  });
+
+  it("lets a short side replace only the barred baker", () => {
+    const tom = bakerIdForName("Tom");
+    const gabe = bakerIdForName("Gabe");
+    const clara = bakerIdForName("Clara");
+    const connie = bakerIdForName("Connie");
+    const lastWeek = [tom, gabe];
+    const previous = [gabe];
+
+    expect(commonBakerBlocksFurtherChange(lastWeek, previous, [gabe, connie], [tom], 2)).toBe(false);
+    expect(commonBakerBlocksFurtherChange(lastWeek, previous, [clara, connie], [tom], 2)).toBe(true);
   });
 
   it("keeps the incoming baker when a two-baker side shrinks to one", () => {

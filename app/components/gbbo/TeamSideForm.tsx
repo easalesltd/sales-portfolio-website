@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { SHORT_SIDE_RULE_FROM_WEEK, bakerName, bakerStillIn, barredBakersForWeek, carriedTeam, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
+import { SHORT_SIDE_RULE_FROM_WEEK, bakerName, bakerStillIn, barredBakersForWeek, carriedTeam, commonBakerBlocksFurtherChange, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { Companion, LeagueState } from "@/app/lib/gbbo/types";
@@ -51,8 +51,7 @@ export function TeamSideForm({
   const benched = lastWeek.filter((id) => barred.includes(id) && bakerStillIn(league, id, week));
   const changes = lineupChanges(livingLast, filled);
   const shrinking = livingLast.length > size;
-  const addsAllowed = Math.max(0, size - livingLast.length);
-  const brokeTheBar = benched.length > 0 && addsAllowed > 0 && (livingLast.some((id) => !filled.includes(id)) || changes > addsAllowed);
+  const brokeTheBar = commonBakerBlocksFurtherChange(lastWeek, livingLast, filled, barred, size);
   const legal = unique.size === filled.length && filled.length === size && (week === 1 ? changes <= 3 : changes <= 1);
   const shrinkingOk = shrinking && filled.length === size && unique.size === size && changes === 0;
   const canSubmit = !locked && !brokeTheBar && (legal || shrinkingOk);
@@ -123,10 +122,7 @@ export function TeamSideForm({
       {benched.length ? (
         <p className="mb-3 text-sm leading-6 text-raspberry">
           Every companion picked {benched.map((id) => bakerName(league, id)).join(" and ")} last week, so they cannot
-          be picked this week.
-          {addsAllowed === 0
-            ? " They are off this side, and you can still substitute one baker."
-            : " Your substitution must be used to replace them, so no other changes are allowed."}
+          be picked this week. Taking them off uses your substitution, so no other change is allowed.
         </p>
       ) : null}
       <div className="space-y-2">
@@ -164,7 +160,7 @@ export function TeamSideForm({
               ? shrinking
                 ? "This side is too big. Drop down to one baker, or leave it for the Chief Companion."
                 : benched.length
-                  ? "No change yet. You can still substitute one baker."
+                  ? "No other change. The bakers still on this side will play."
                   : "No change — last week's bakers will play again."
               : "One substitution. That is the weekly limit."}
       </p>
