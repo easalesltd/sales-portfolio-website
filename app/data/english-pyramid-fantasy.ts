@@ -11271,7 +11271,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-03 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-05 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -17090,7 +17090,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Gateshead', tla: 'GAT' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -17178,12 +17178,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Marine', tla: 'MAR' },
   },
   {
-    id: '2026-11-10-wah-dov',
-    utcDate: '2026-11-10T19:45:00Z',
-    homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
-    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
-  },
-  {
     id: '2026-11-14-exe-cht',
     utcDate: '2026-11-14T12:30Z',
     homeTeam: { name: 'Exeter City', tla: 'EXE' },
@@ -17194,7 +17188,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Bromley', tla: 'BRO' },
     awayTeam: { name: 'Notts County', tla: 'NCO' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -17256,7 +17250,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Leicester City', tla: 'LEI' },
     awayTeam: { name: 'Bradford City', tla: 'BRD' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -17364,8 +17358,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
-    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
@@ -18518,6 +18510,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-01T19:45:00Z',
     homeTeam: { name: 'Southport', tla: 'SPT' },
     awayTeam: { name: 'Macclesfield', tla: 'MAC' },
+  },
+  {
+    id: '2026-12-01-wah-dov',
+    utcDate: '2026-12-01T19:45:00Z',
+    homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
+    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
   },
   {
     id: '2026-12-01-acc-cax',
