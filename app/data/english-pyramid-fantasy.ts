@@ -11271,7 +11271,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-05 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-06 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -17292,6 +17292,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Rotherham United', tla: 'ROT' },
     awayTeam: { name: 'Crawley Town', tla: 'CRA' },
+    /** League match postponed — no ledger result until it is rearranged. */
+    postponed: true,
   },
   {
     id: '2026-11-14-sal-nht',
@@ -21560,6 +21562,48 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Blackpool', tla: 'BLP' },
   },
   {
+    id: '2027-01-15-whu-swa',
+    utcDate: '2027-01-15T20:00Z',
+    homeTeam: { name: 'West Ham United', tla: 'WHU' },
+    awayTeam: { name: 'Swansea City', tla: 'SWA' },
+  },
+  {
+    id: '2027-01-16-bro-stp',
+    utcDate: '2027-01-16T12:30Z',
+    homeTeam: { name: 'Bromley', tla: 'BRO' },
+    awayTeam: { name: 'Stockport County', tla: 'STP' },
+  },
+  {
+    id: '2027-01-16-brst-shr',
+    utcDate: '2027-01-16T12:30Z',
+    homeTeam: { name: 'Bristol Rovers', tla: 'BRST' },
+    awayTeam: { name: 'Shrewsbury Town', tla: 'SHR' },
+  },
+  {
+    id: '2027-01-16-chs-pvl',
+    utcDate: '2027-01-16T12:30Z',
+    homeTeam: { name: 'Chesterfield', tla: 'CHS' },
+    awayTeam: { name: 'Port Vale', tla: 'PVL' },
+  },
+  {
+    id: '2027-01-16-lut-mkd',
+    utcDate: '2027-01-16T12:30Z',
+    homeTeam: { name: 'Luton Town', tla: 'LUT' },
+    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+  },
+  {
+    id: '2027-01-16-qpr-bir',
+    utcDate: '2027-01-16T12:30Z',
+    homeTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+  },
+  {
+    id: '2027-01-16-wol-bur',
+    utcDate: '2027-01-16T12:30Z',
+    homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+    awayTeam: { name: 'Burnley', tla: 'BUR' },
+  },
+  {
     id: '2027-01-16-aft-dov',
     utcDate: '2027-01-16T15:00:00Z',
     homeTeam: { name: 'AFC Totton', tla: 'AFT' },
@@ -21716,18 +21760,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Ipswich Town', tla: 'IPS' },
   },
   {
-    id: '2027-01-16-bro-stp',
-    utcDate: '2027-01-16T15:00Z',
-    homeTeam: { name: 'Bromley', tla: 'BRO' },
-    awayTeam: { name: 'Stockport County', tla: 'STP' },
-  },
-  {
-    id: '2027-01-16-brst-shr',
-    utcDate: '2027-01-16T15:00Z',
-    homeTeam: { name: 'Bristol Rovers', tla: 'BRST' },
-    awayTeam: { name: 'Shrewsbury Town', tla: 'SHR' },
-  },
-  {
     id: '2027-01-16-btn-pet',
     utcDate: '2027-01-16T15:00Z',
     homeTeam: { name: 'Burton Albion', tla: 'BTN' },
@@ -21746,22 +21778,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Middlesbrough', tla: 'MID' },
   },
   {
-    id: '2027-01-16-cha-wat',
-    utcDate: '2027-01-16T15:00Z',
-    homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
-    awayTeam: { name: 'Watford', tla: 'WAT' },
-  },
-  {
     id: '2027-01-16-che-sun',
     utcDate: '2027-01-16T15:00Z',
     homeTeam: { name: 'Chelsea', tla: 'CHE' },
     awayTeam: { name: 'Sunderland', tla: 'SUN' },
-  },
-  {
-    id: '2027-01-16-chs-pvl',
-    utcDate: '2027-01-16T15:00Z',
-    homeTeam: { name: 'Chesterfield', tla: 'CHS' },
-    awayTeam: { name: 'Port Vale', tla: 'PVL' },
   },
   {
     id: '2027-01-16-cht-old',
@@ -21818,12 +21838,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Crystal Palace', tla: 'CRY' },
   },
   {
-    id: '2027-01-16-lut-mkd',
-    utcDate: '2027-01-16T15:00Z',
-    homeTeam: { name: 'Luton Town', tla: 'LUT' },
-    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
-  },
-  {
     id: '2027-01-16-mci-nfo',
     utcDate: '2027-01-16T15:00Z',
     homeTeam: { name: 'Manchester City', tla: 'MCI' },
@@ -21866,12 +21880,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Norwich City', tla: 'NOR' },
   },
   {
-    id: '2027-01-16-qpr-bir',
-    utcDate: '2027-01-16T15:00Z',
-    homeTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
-    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
-  },
-  {
     id: '2027-01-16-rot-fle',
     utcDate: '2027-01-16T15:00Z',
     homeTeam: { name: 'Rotherham United', tla: 'ROT' },
@@ -21890,28 +21898,22 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Leeds United', tla: 'LEE' },
   },
   {
-    id: '2027-01-16-whu-swa',
-    utcDate: '2027-01-16T15:00Z',
-    homeTeam: { name: 'West Ham United', tla: 'WHU' },
-    awayTeam: { name: 'Swansea City', tla: 'SWA' },
-  },
-  {
     id: '2027-01-16-wim-shw',
     utcDate: '2027-01-16T15:00Z',
     homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
     awayTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
   },
   {
-    id: '2027-01-16-wol-bur',
-    utcDate: '2027-01-16T15:00Z',
-    homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
-    awayTeam: { name: 'Burnley', tla: 'BUR' },
-  },
-  {
     id: '2027-01-16-yor-nwp',
     utcDate: '2027-01-16T15:00Z',
     homeTeam: { name: 'York City', tla: 'YOR' },
     awayTeam: { name: 'Newport County', tla: 'NWP' },
+  },
+  {
+    id: '2027-01-17-cha-wat',
+    utcDate: '2027-01-17T12:00Z',
+    homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    awayTeam: { name: 'Watford', tla: 'WAT' },
   },
   {
     id: '2027-01-19-acc-yor',
@@ -21974,12 +21976,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
   },
   {
-    id: '2027-01-19-nwp-rot',
-    utcDate: '2027-01-19T19:45Z',
-    homeTeam: { name: 'Newport County', tla: 'NWP' },
-    awayTeam: { name: 'Rotherham United', tla: 'ROT' },
-  },
-  {
     id: '2027-01-19-pet-hud',
     utcDate: '2027-01-19T19:45Z',
     homeTeam: { name: 'Peterborough United', tla: 'PET' },
@@ -22034,22 +22030,70 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Northampton Town', tla: 'NHT' },
   },
   {
-    id: '2027-01-19-wga-oxf',
-    utcDate: '2027-01-19T19:45Z',
-    homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
-    awayTeam: { name: 'Oxford United', tla: 'OXF' },
-  },
-  {
     id: '2027-01-19-wyc-cam',
     utcDate: '2027-01-19T19:45Z',
     homeTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
     awayTeam: { name: 'Cambridge United', tla: 'CAM' },
   },
   {
+    id: '2027-01-19-nwp-rot',
+    utcDate: '2027-01-19T20:00Z',
+    homeTeam: { name: 'Newport County', tla: 'NWP' },
+    awayTeam: { name: 'Rotherham United', tla: 'ROT' },
+  },
+  {
+    id: '2027-01-20-wga-oxf',
+    utcDate: '2027-01-20T20:00Z',
+    homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
+    awayTeam: { name: 'Oxford United', tla: 'OXF' },
+  },
+  {
     id: '2027-01-22-elh-kid',
     utcDate: '2027-01-22T19:45Z',
     homeTeam: { name: 'Eastleigh', tla: 'ELH' },
     awayTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+  },
+  {
+    id: '2027-01-22-pne-stk',
+    utcDate: '2027-01-22T20:00Z',
+    homeTeam: { name: 'Preston North End', tla: 'PNE' },
+    awayTeam: { name: 'Stoke City', tla: 'STK' },
+  },
+  {
+    id: '2027-01-23-bir-lin',
+    utcDate: '2027-01-23T12:30Z',
+    homeTeam: { name: 'Birmingham City', tla: 'BIR' },
+    awayTeam: { name: 'Lincoln City', tla: 'LIN' },
+  },
+  {
+    id: '2027-01-23-qpr-sou',
+    utcDate: '2027-01-23T12:30Z',
+    homeTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
+    awayTeam: { name: 'Southampton', tla: 'SOU' },
+  },
+  {
+    id: '2027-01-23-sal-wal',
+    utcDate: '2027-01-23T12:30Z',
+    homeTeam: { name: 'Salford City', tla: 'SAL' },
+    awayTeam: { name: 'Walsall', tla: 'WAL' },
+  },
+  {
+    id: '2027-01-23-shw-don',
+    utcDate: '2027-01-23T12:30Z',
+    homeTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
+    awayTeam: { name: 'Doncaster Rovers', tla: 'DON' },
+  },
+  {
+    id: '2027-01-23-wba-whu',
+    utcDate: '2027-01-23T12:30Z',
+    homeTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
+    awayTeam: { name: 'West Ham United', tla: 'WHU' },
+  },
+  {
+    id: '2027-01-23-wga-hud',
+    utcDate: '2027-01-23T12:30Z',
+    homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
+    awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
   },
   {
     id: '2027-01-23-bux-ssh',
@@ -22190,12 +22234,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Manchester City', tla: 'MCI' },
   },
   {
-    id: '2027-01-23-bir-lin',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'Birmingham City', tla: 'BIR' },
-    awayTeam: { name: 'Lincoln City', tla: 'LIN' },
-  },
-  {
     id: '2027-01-23-blk-swa',
     utcDate: '2027-01-23T15:00Z',
     homeTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
@@ -22230,12 +22268,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-23T15:00Z',
     homeTeam: { name: 'Crewe Alexandra', tla: 'CAX' },
     awayTeam: { name: 'Chesterfield', tla: 'CHS' },
-  },
-  {
-    id: '2027-01-23-cdf-wol',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'Cardiff City', tla: 'CDF' },
-    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
   },
   {
     id: '2027-01-23-cha-mid',
@@ -22352,18 +22384,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Bromley', tla: 'BRO' },
   },
   {
-    id: '2027-01-23-ply-cam',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
-    awayTeam: { name: 'Cambridge United', tla: 'CAM' },
-  },
-  {
-    id: '2027-01-23-pne-stk',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'Preston North End', tla: 'PNE' },
-    awayTeam: { name: 'Stoke City', tla: 'STK' },
-  },
-  {
     id: '2027-01-23-por-bur',
     utcDate: '2027-01-23T15:00Z',
     homeTeam: { name: 'Portsmouth', tla: 'POR' },
@@ -22376,28 +22396,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'York City', tla: 'YOR' },
   },
   {
-    id: '2027-01-23-qpr-sou',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
-    awayTeam: { name: 'Southampton', tla: 'SOU' },
-  },
-  {
-    id: '2027-01-23-sal-wal',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'Salford City', tla: 'SAL' },
-    awayTeam: { name: 'Walsall', tla: 'WAL' },
-  },
-  {
     id: '2027-01-23-shr-rot',
     utcDate: '2027-01-23T15:00Z',
     homeTeam: { name: 'Shrewsbury Town', tla: 'SHR' },
     awayTeam: { name: 'Rotherham United', tla: 'ROT' },
-  },
-  {
-    id: '2027-01-23-shw-don',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
-    awayTeam: { name: 'Doncaster Rovers', tla: 'DON' },
   },
   {
     id: '2027-01-23-stp-nco',
@@ -22424,18 +22426,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Crawley Town', tla: 'CRA' },
   },
   {
-    id: '2027-01-23-wba-whu',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
-    awayTeam: { name: 'West Ham United', tla: 'WHU' },
-  },
-  {
-    id: '2027-01-23-wga-hud',
-    utcDate: '2027-01-23T15:00Z',
-    homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
-    awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
-  },
-  {
     id: '2027-01-23-wxm-shu',
     utcDate: '2027-01-23T15:00Z',
     homeTeam: { name: 'Wrexham', tla: 'WXM' },
@@ -22452,6 +22442,18 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-23T17:30Z',
     homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
     awayTeam: { name: 'Southend United', tla: 'STD' },
+  },
+  {
+    id: '2027-01-24-cdf-wol',
+    utcDate: '2027-01-24T12:00Z',
+    homeTeam: { name: 'Cardiff City', tla: 'CDF' },
+    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+  },
+  {
+    id: '2027-01-25-ply-cam',
+    utcDate: '2027-01-25T20:00Z',
+    homeTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
+    awayTeam: { name: 'Cambridge United', tla: 'CAM' },
   },
   {
     id: '2027-01-26-aft-sby',
@@ -22664,12 +22666,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
   },
   {
-    id: '2027-01-27-swa-por',
-    utcDate: '2027-01-27T19:45Z',
-    homeTeam: { name: 'Swansea City', tla: 'SWA' },
-    awayTeam: { name: 'Portsmouth', tla: 'POR' },
-  },
-  {
     id: '2027-01-27-wea-alt',
     utcDate: '2027-01-27T19:45Z',
     homeTeam: { name: 'Wealdstone', tla: 'WEA' },
@@ -22688,10 +22684,40 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Bristol City', tla: 'BRC' },
   },
   {
+    id: '2027-01-27-swa-por',
+    utcDate: '2027-01-27T20:00Z',
+    homeTeam: { name: 'Swansea City', tla: 'SWA' },
+    awayTeam: { name: 'Portsmouth', tla: 'POR' },
+  },
+  {
+    id: '2027-01-29-lin-qpr',
+    utcDate: '2027-01-29T20:00Z',
+    homeTeam: { name: 'Lincoln City', tla: 'LIN' },
+    awayTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
+  },
+  {
+    id: '2027-01-30-bol-der',
+    utcDate: '2027-01-30T12:30Z',
+    homeTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
+    awayTeam: { name: 'Derby County', tla: 'DER' },
+  },
+  {
     id: '2027-01-30-hud-brd',
     utcDate: '2027-01-30T12:30Z',
     homeTeam: { name: 'Huddersfield Town', tla: 'HUD' },
     awayTeam: { name: 'Bradford City', tla: 'BRD' },
+  },
+  {
+    id: '2027-01-30-lut-pet',
+    utcDate: '2027-01-30T12:30Z',
+    homeTeam: { name: 'Luton Town', tla: 'LUT' },
+    awayTeam: { name: 'Peterborough United', tla: 'PET' },
+  },
+  {
+    id: '2027-01-30-swa-bir',
+    utcDate: '2027-01-30T12:30Z',
+    homeTeam: { name: 'Swansea City', tla: 'SWA' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
   },
   {
     id: '2027-01-30-wea-fyl',
@@ -22700,10 +22726,22 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'AFC Fylde', tla: 'FYL' },
   },
   {
+    id: '2027-01-30-wol-wxm',
+    utcDate: '2027-01-30T12:30Z',
+    homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+    awayTeam: { name: 'Wrexham', tla: 'WXM' },
+  },
+  {
     id: '2027-01-30-yeo-scu',
     utcDate: '2027-01-30T12:30Z',
     homeTeam: { name: 'Yeovil Town', tla: 'YEO' },
     awayTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+  },
+  {
+    id: '2027-01-30-yor-gri',
+    utcDate: '2027-01-30T12:30Z',
+    homeTeam: { name: 'York City', tla: 'YOR' },
+    awayTeam: { name: 'Grimsby Town', tla: 'GRI' },
   },
   {
     id: '2027-01-30-cho-wrk',
@@ -22844,12 +22882,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
   },
   {
-    id: '2027-01-30-bol-der',
-    utcDate: '2027-01-30T15:00Z',
-    homeTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
-    awayTeam: { name: 'Derby County', tla: 'DER' },
-  },
-  {
     id: '2027-01-30-bou-ful',
     utcDate: '2027-01-30T15:00Z',
     homeTeam: { name: 'AFC Bournemouth', tla: 'BOU' },
@@ -22964,22 +22996,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Hornchurch', tla: 'HRN' },
   },
   {
-    id: '2027-01-30-lin-qpr',
-    utcDate: '2027-01-30T15:00Z',
-    homeTeam: { name: 'Lincoln City', tla: 'LIN' },
-    awayTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
-  },
-  {
     id: '2027-01-30-liv-eve',
     utcDate: '2027-01-30T15:00Z',
     homeTeam: { name: 'Liverpool', tla: 'LIV' },
     awayTeam: { name: 'Everton', tla: 'EVE' },
-  },
-  {
-    id: '2027-01-30-lut-pet',
-    utcDate: '2027-01-30T15:00Z',
-    homeTeam: { name: 'Luton Town', tla: 'LUT' },
-    awayTeam: { name: 'Peterborough United', tla: 'PET' },
   },
   {
     id: '2027-01-30-mci-ars',
@@ -23066,12 +23086,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Woking', tla: 'WOK' },
   },
   {
-    id: '2027-01-30-swa-bir',
-    utcDate: '2027-01-30T15:00Z',
-    homeTeam: { name: 'Swansea City', tla: 'SWA' },
-    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
-  },
-  {
     id: '2027-01-30-tam-bore',
     utcDate: '2027-01-30T15:00Z',
     homeTeam: { name: 'Tamworth', tla: 'TAM' },
@@ -23096,22 +23110,58 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Stockport County', tla: 'STP' },
   },
   {
-    id: '2027-01-30-wol-wxm',
-    utcDate: '2027-01-30T15:00Z',
-    homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
-    awayTeam: { name: 'Wrexham', tla: 'WXM' },
-  },
-  {
-    id: '2027-01-30-yor-gri',
-    utcDate: '2027-01-30T15:00Z',
-    homeTeam: { name: 'York City', tla: 'YOR' },
-    awayTeam: { name: 'Grimsby Town', tla: 'GRI' },
-  },
-  {
     id: '2027-01-30-wor-car',
     utcDate: '2027-01-30T17:30Z',
     homeTeam: { name: 'Worthing', tla: 'WOR' },
     awayTeam: { name: 'Carlisle United', tla: 'CAR' },
+  },
+  {
+    id: '2027-02-05-brc-mid',
+    utcDate: '2027-02-05T20:00Z',
+    homeTeam: { name: 'Bristol City', tla: 'BRC' },
+    awayTeam: { name: 'Middlesbrough', tla: 'MID' },
+  },
+  {
+    id: '2027-02-06-cax-pvl',
+    utcDate: '2027-02-06T12:30Z',
+    homeTeam: { name: 'Crewe Alexandra', tla: 'CAX' },
+    awayTeam: { name: 'Port Vale', tla: 'PVL' },
+  },
+  {
+    id: '2027-02-06-cha-wol',
+    utcDate: '2027-02-06T12:30Z',
+    homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+  },
+  {
+    id: '2027-02-06-lei-mkd',
+    utcDate: '2027-02-06T12:30Z',
+    homeTeam: { name: 'Leicester City', tla: 'LEI' },
+    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+  },
+  {
+    id: '2027-02-06-rea-oxf',
+    utcDate: '2027-02-06T12:30Z',
+    homeTeam: { name: 'Reading', tla: 'REA' },
+    awayTeam: { name: 'Oxford United', tla: 'OXF' },
+  },
+  {
+    id: '2027-02-06-trn-nwp',
+    utcDate: '2027-02-06T12:30Z',
+    homeTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
+    awayTeam: { name: 'Newport County', tla: 'NWP' },
+  },
+  {
+    id: '2027-02-06-wat-shu',
+    utcDate: '2027-02-06T12:30Z',
+    homeTeam: { name: 'Watford', tla: 'WAT' },
+    awayTeam: { name: 'Sheffield United', tla: 'SHU' },
+  },
+  {
+    id: '2027-02-06-wxm-lin',
+    utcDate: '2027-02-06T12:30Z',
+    homeTeam: { name: 'Wrexham', tla: 'WXM' },
+    awayTeam: { name: 'Lincoln City', tla: 'LIN' },
   },
   {
     id: '2027-02-06-aft-hor',
@@ -23270,12 +23320,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Stoke City', tla: 'STK' },
   },
   {
-    id: '2027-02-06-blk-bur',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
-    awayTeam: { name: 'Burnley', tla: 'BUR' },
-  },
-  {
     id: '2027-02-06-bore-std',
     utcDate: '2027-02-06T15:00Z',
     homeTeam: { name: 'Boreham Wood', tla: 'BORE' },
@@ -23286,12 +23330,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-06T15:00Z',
     homeTeam: { name: 'Boston United', tla: 'BOST' },
     awayTeam: { name: 'Sutton United', tla: 'SUT' },
-  },
-  {
-    id: '2027-02-06-brc-mid',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Bristol City', tla: 'BRC' },
-    awayTeam: { name: 'Middlesbrough', tla: 'MID' },
   },
   {
     id: '2027-02-06-brd-ply',
@@ -23330,22 +23368,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Barrow', tla: 'BRW' },
   },
   {
-    id: '2027-02-06-cax-pvl',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Crewe Alexandra', tla: 'CAX' },
-    awayTeam: { name: 'Port Vale', tla: 'PVL' },
-  },
-  {
     id: '2027-02-06-cdf-nor',
     utcDate: '2027-02-06T15:00Z',
     homeTeam: { name: 'Cardiff City', tla: 'CDF' },
     awayTeam: { name: 'Norwich City', tla: 'NOR' },
-  },
-  {
-    id: '2027-02-06-cha-wol',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Charlton Athletic', tla: 'CHA' },
-    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
   },
   {
     id: '2027-02-06-chs-rot',
@@ -23444,12 +23470,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'AFC Bournemouth', tla: 'BOU' },
   },
   {
-    id: '2027-02-06-lei-mkd',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Leicester City', tla: 'LEI' },
-    awayTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
-  },
-  {
     id: '2027-02-06-lut-mnf',
     utcDate: '2027-02-06T15:00Z',
     homeTeam: { name: 'Luton Town', tla: 'LUT' },
@@ -23474,12 +23494,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
   },
   {
-    id: '2027-02-06-rea-oxf',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Reading', tla: 'REA' },
-    awayTeam: { name: 'Oxford United', tla: 'OXF' },
-  },
-  {
     id: '2027-02-06-sal-shr',
     utcDate: '2027-02-06T15:00Z',
     homeTeam: { name: 'Salford City', tla: 'SAL' },
@@ -23498,34 +23512,22 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Aston Villa', tla: 'AVL' },
   },
   {
-    id: '2027-02-06-trn-nwp',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
-    awayTeam: { name: 'Newport County', tla: 'NWP' },
-  },
-  {
-    id: '2027-02-06-wat-shu',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Watford', tla: 'WAT' },
-    awayTeam: { name: 'Sheffield United', tla: 'SHU' },
-  },
-  {
     id: '2027-02-06-wga-wim',
     utcDate: '2027-02-06T15:00Z',
     homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
     awayTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
   },
   {
-    id: '2027-02-06-wxm-lin',
-    utcDate: '2027-02-06T15:00Z',
-    homeTeam: { name: 'Wrexham', tla: 'WXM' },
-    awayTeam: { name: 'Lincoln City', tla: 'LIN' },
-  },
-  {
     id: '2027-02-06-wyc-stp',
     utcDate: '2027-02-06T15:00Z',
     homeTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
     awayTeam: { name: 'Stockport County', tla: 'STP' },
+  },
+  {
+    id: '2027-02-07-blk-bur',
+    utcDate: '2027-02-07T12:00Z',
+    homeTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+    awayTeam: { name: 'Burnley', tla: 'BUR' },
   },
   {
     id: '2027-02-09-bar-exe',
@@ -23598,12 +23600,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-09T19:45Z',
     homeTeam: { name: 'Oxford United', tla: 'OXF' },
     awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
-  },
-  {
-    id: '2027-02-09-ply-lei',
-    utcDate: '2027-02-09T19:45Z',
-    homeTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
-    awayTeam: { name: 'Leicester City', tla: 'LEI' },
   },
   {
     id: '2027-02-09-pvl-swi',
@@ -23702,10 +23698,58 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Chelsea', tla: 'CHE' },
   },
   {
+    id: '2027-02-10-ply-lei',
+    utcDate: '2027-02-10T20:00Z',
+    homeTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
+    awayTeam: { name: 'Leicester City', tla: 'LEI' },
+  },
+  {
     id: '2027-02-10-tot-mci',
     utcDate: '2027-02-10T20:00Z',
     homeTeam: { name: 'Tottenham Hotspur', tla: 'TOT' },
     awayTeam: { name: 'Manchester City', tla: 'MCI' },
+  },
+  {
+    id: '2027-02-12-bir-der',
+    utcDate: '2027-02-12T20:00Z',
+    homeTeam: { name: 'Birmingham City', tla: 'BIR' },
+    awayTeam: { name: 'Derby County', tla: 'DER' },
+  },
+  {
+    id: '2027-02-13-brc-sou',
+    utcDate: '2027-02-13T12:30Z',
+    homeTeam: { name: 'Bristol City', tla: 'BRC' },
+    awayTeam: { name: 'Southampton', tla: 'SOU' },
+  },
+  {
+    id: '2027-02-13-mil-blk',
+    utcDate: '2027-02-13T12:30Z',
+    homeTeam: { name: 'Millwall', tla: 'MIL' },
+    awayTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+  },
+  {
+    id: '2027-02-13-mkd-wyc',
+    utcDate: '2027-02-13T12:30Z',
+    homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+    awayTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
+  },
+  {
+    id: '2027-02-13-old-trn',
+    utcDate: '2027-02-13T12:30Z',
+    homeTeam: { name: 'Oldham Athletic', tla: 'OLD' },
+    awayTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
+  },
+  {
+    id: '2027-02-13-por-cha',
+    utcDate: '2027-02-13T12:30Z',
+    homeTeam: { name: 'Portsmouth', tla: 'POR' },
+    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+  },
+  {
+    id: '2027-02-13-pvl-sal',
+    utcDate: '2027-02-13T12:30Z',
+    homeTeam: { name: 'Port Vale', tla: 'PVL' },
+    awayTeam: { name: 'Salford City', tla: 'SAL' },
   },
   {
     id: '2027-02-13-brk-wrk',
@@ -23822,22 +23866,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Chesterfield', tla: 'CHS' },
   },
   {
-    id: '2027-02-13-bir-der',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Birmingham City', tla: 'BIR' },
-    awayTeam: { name: 'Derby County', tla: 'DER' },
-  },
-  {
     id: '2027-02-13-bore-sol',
     utcDate: '2027-02-13T15:00Z',
     homeTeam: { name: 'Boreham Wood', tla: 'BORE' },
     awayTeam: { name: 'Solihull Moors', tla: 'SOL' },
-  },
-  {
-    id: '2027-02-13-brc-sou',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Bristol City', tla: 'BRC' },
-    awayTeam: { name: 'Southampton', tla: 'SOU' },
   },
   {
     id: '2027-02-13-brw-std',
@@ -23856,12 +23888,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-13T15:00Z',
     homeTeam: { name: 'Cambridge United', tla: 'CAM' },
     awayTeam: { name: 'Burton Albion', tla: 'BTN' },
-  },
-  {
-    id: '2027-02-13-cdf-bol',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Cardiff City', tla: 'CDF' },
-    awayTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
   },
   {
     id: '2027-02-13-cra-acc',
@@ -23906,24 +23932,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Luton Town', tla: 'LUT' },
   },
   {
-    id: '2027-02-13-lin-pne',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Lincoln City', tla: 'LIN' },
-    awayTeam: { name: 'Preston North End', tla: 'PNE' },
-  },
-  {
-    id: '2027-02-13-mil-blk',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Millwall', tla: 'MIL' },
-    awayTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
-  },
-  {
-    id: '2027-02-13-mkd-wyc',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
-    awayTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
-  },
-  {
     id: '2027-02-13-nco-hud',
     utcDate: '2027-02-13T15:00Z',
     homeTeam: { name: 'Notts County', tla: 'NCO' },
@@ -23942,12 +23950,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Northampton Town', tla: 'NHT' },
   },
   {
-    id: '2027-02-13-old-trn',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Oldham Athletic', tla: 'OLD' },
-    awayTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
-  },
-  {
     id: '2027-02-13-oxf-lei',
     utcDate: '2027-02-13T15:00Z',
     homeTeam: { name: 'Oxford United', tla: 'OXF' },
@@ -23958,18 +23960,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-13T15:00Z',
     homeTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
     awayTeam: { name: 'Doncaster Rovers', tla: 'DON' },
-  },
-  {
-    id: '2027-02-13-por-cha',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Portsmouth', tla: 'POR' },
-    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
-  },
-  {
-    id: '2027-02-13-pvl-sal',
-    utcDate: '2027-02-13T15:00Z',
-    homeTeam: { name: 'Port Vale', tla: 'PVL' },
-    awayTeam: { name: 'Salford City', tla: 'SAL' },
   },
   {
     id: '2027-02-13-rot-brst',
@@ -24036,6 +24026,18 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-13T15:00Z',
     homeTeam: { name: 'York City', tla: 'YOR' },
     awayTeam: { name: 'Crewe Alexandra', tla: 'CAX' },
+  },
+  {
+    id: '2027-02-13-lin-pne',
+    utcDate: '2027-02-13T17:30Z',
+    homeTeam: { name: 'Lincoln City', tla: 'LIN' },
+    awayTeam: { name: 'Preston North End', tla: 'PNE' },
+  },
+  {
+    id: '2027-02-14-cdf-bol',
+    utcDate: '2027-02-14T12:00Z',
+    homeTeam: { name: 'Cardiff City', tla: 'CDF' },
+    awayTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
   },
   {
     id: '2027-02-15-clm-dov',
@@ -24164,12 +24166,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Gateshead', tla: 'GAT' },
   },
   {
-    id: '2027-02-16-blk-brc',
-    utcDate: '2027-02-16T19:45Z',
-    homeTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
-    awayTeam: { name: 'Bristol City', tla: 'BRC' },
-  },
-  {
     id: '2027-02-16-car-fyl',
     utcDate: '2027-02-16T19:45Z',
     homeTeam: { name: 'Carlisle United', tla: 'CAR' },
@@ -24192,6 +24188,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-16T19:45Z',
     homeTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
     awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
+  },
+  {
+    id: '2027-02-16-mid-stk',
+    utcDate: '2027-02-16T19:45Z',
+    homeTeam: { name: 'Middlesbrough', tla: 'MID' },
+    awayTeam: { name: 'Stoke City', tla: 'STK' },
   },
   {
     id: '2027-02-16-pne-bir',
@@ -24224,12 +24226,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
   },
   {
-    id: '2027-02-16-wat-cdf',
-    utcDate: '2027-02-16T19:45Z',
-    homeTeam: { name: 'Watford', tla: 'WAT' },
-    awayTeam: { name: 'Cardiff City', tla: 'CDF' },
-  },
-  {
     id: '2027-02-16-wea-fgr',
     utcDate: '2027-02-16T19:45Z',
     homeTeam: { name: 'Wealdstone', tla: 'WEA' },
@@ -24240,6 +24236,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-16T19:45Z',
     homeTeam: { name: 'West Ham United', tla: 'WHU' },
     awayTeam: { name: 'Lincoln City', tla: 'LIN' },
+  },
+  {
+    id: '2027-02-16-blk-brc',
+    utcDate: '2027-02-16T20:00Z',
+    homeTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+    awayTeam: { name: 'Bristol City', tla: 'BRC' },
   },
   {
     id: '2027-02-17-ald-hrn',
@@ -24254,16 +24256,58 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
   },
   {
-    id: '2027-02-17-mid-stk',
-    utcDate: '2027-02-17T19:45Z',
-    homeTeam: { name: 'Middlesbrough', tla: 'MID' },
-    awayTeam: { name: 'Stoke City', tla: 'STK' },
-  },
-  {
     id: '2027-02-17-sou-nor',
     utcDate: '2027-02-17T19:45Z',
     homeTeam: { name: 'Southampton', tla: 'SOU' },
     awayTeam: { name: 'Norwich City', tla: 'NOR' },
+  },
+  {
+    id: '2027-02-17-wat-cdf',
+    utcDate: '2027-02-17T20:00Z',
+    homeTeam: { name: 'Watford', tla: 'WAT' },
+    awayTeam: { name: 'Cardiff City', tla: 'CDF' },
+  },
+  {
+    id: '2027-02-19-mid-bir',
+    utcDate: '2027-02-19T20:00Z',
+    homeTeam: { name: 'Middlesbrough', tla: 'MID' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+  },
+  {
+    id: '2027-02-20-cht-cra',
+    utcDate: '2027-02-20T12:30Z',
+    homeTeam: { name: 'Cheltenham Town', tla: 'CHT' },
+    awayTeam: { name: 'Crawley Town', tla: 'CRA' },
+  },
+  {
+    id: '2027-02-20-exe-pvl',
+    utcDate: '2027-02-20T12:30Z',
+    homeTeam: { name: 'Exeter City', tla: 'EXE' },
+    awayTeam: { name: 'Port Vale', tla: 'PVL' },
+  },
+  {
+    id: '2027-02-20-lei-stp',
+    utcDate: '2027-02-20T12:30Z',
+    homeTeam: { name: 'Leicester City', tla: 'LEI' },
+    awayTeam: { name: 'Stockport County', tla: 'STP' },
+  },
+  {
+    id: '2027-02-20-shu-stk',
+    utcDate: '2027-02-20T12:30Z',
+    homeTeam: { name: 'Sheffield United', tla: 'SHU' },
+    awayTeam: { name: 'Stoke City', tla: 'STK' },
+  },
+  {
+    id: '2027-02-20-wba-wol',
+    utcDate: '2027-02-20T12:30Z',
+    homeTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
+    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+  },
+  {
+    id: '2027-02-20-wga-shw',
+    utcDate: '2027-02-20T12:30Z',
+    homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
+    awayTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
   },
   {
     id: '2027-02-20-aft-hem',
@@ -24488,12 +24532,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Oldham Athletic', tla: 'OLD' },
   },
   {
-    id: '2027-02-20-cht-cra',
-    utcDate: '2027-02-20T15:00Z',
-    homeTeam: { name: 'Cheltenham Town', tla: 'CHT' },
-    awayTeam: { name: 'Crawley Town', tla: 'CRA' },
-  },
-  {
     id: '2027-02-20-der-bur',
     utcDate: '2027-02-20T15:00Z',
     homeTeam: { name: 'Derby County', tla: 'DER' },
@@ -24504,12 +24542,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-20T15:00Z',
     homeTeam: { name: 'Doncaster Rovers', tla: 'DON' },
     awayTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
-  },
-  {
-    id: '2027-02-20-exe-pvl',
-    utcDate: '2027-02-20T15:00Z',
-    homeTeam: { name: 'Exeter City', tla: 'EXE' },
-    awayTeam: { name: 'Port Vale', tla: 'PVL' },
   },
   {
     id: '2027-02-20-fle-nwp',
@@ -24542,12 +24574,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Aston Villa', tla: 'AVL' },
   },
   {
-    id: '2027-02-20-lei-stp',
-    utcDate: '2027-02-20T15:00Z',
-    homeTeam: { name: 'Leicester City', tla: 'LEI' },
-    awayTeam: { name: 'Stockport County', tla: 'STP' },
-  },
-  {
     id: '2027-02-20-liv-hul',
     utcDate: '2027-02-20T15:00Z',
     homeTeam: { name: 'Liverpool', tla: 'LIV' },
@@ -24564,12 +24590,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-20T15:00Z',
     homeTeam: { name: 'Manchester City', tla: 'MCI' },
     awayTeam: { name: 'Newcastle United', tla: 'NEW' },
-  },
-  {
-    id: '2027-02-20-mid-bir',
-    utcDate: '2027-02-20T15:00Z',
-    homeTeam: { name: 'Middlesbrough', tla: 'MID' },
-    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
   },
   {
     id: '2027-02-20-nfo-mun',
@@ -24614,12 +24634,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Hornchurch', tla: 'HRN' },
   },
   {
-    id: '2027-02-20-shu-stk',
-    utcDate: '2027-02-20T15:00Z',
-    homeTeam: { name: 'Sheffield United', tla: 'SHU' },
-    awayTeam: { name: 'Stoke City', tla: 'STK' },
-  },
-  {
     id: '2027-02-20-sou-wxm',
     utcDate: '2027-02-20T15:00Z',
     homeTeam: { name: 'Southampton', tla: 'SOU' },
@@ -24662,22 +24676,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Gillingham', tla: 'GIL' },
   },
   {
-    id: '2027-02-20-wba-wol',
-    utcDate: '2027-02-20T15:00Z',
-    homeTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
-    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
-  },
-  {
     id: '2027-02-20-wea-tam',
     utcDate: '2027-02-20T15:00Z',
     homeTeam: { name: 'Wealdstone', tla: 'WEA' },
     awayTeam: { name: 'Tamworth', tla: 'TAM' },
-  },
-  {
-    id: '2027-02-20-wga-shw',
-    utcDate: '2027-02-20T15:00Z',
-    homeTeam: { name: 'Wigan Athletic', tla: 'WGA' },
-    awayTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
   },
   {
     id: '2027-02-20-wor-hpl',
@@ -24890,10 +24892,40 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Worthing', tla: 'WOR' },
   },
   {
+    id: '2027-02-26-bir-wba',
+    utcDate: '2027-02-26T20:00Z',
+    homeTeam: { name: 'Birmingham City', tla: 'BIR' },
+    awayTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
+  },
+  {
+    id: '2027-02-27-bar-wal',
+    utcDate: '2027-02-27T12:30Z',
+    homeTeam: { name: 'Barnet', tla: 'BAR' },
+    awayTeam: { name: 'Walsall', tla: 'WAL' },
+  },
+  {
+    id: '2027-02-27-brc-cha',
+    utcDate: '2027-02-27T12:30Z',
+    homeTeam: { name: 'Bristol City', tla: 'BRC' },
+    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
+  },
+  {
     id: '2027-02-27-cam-pet',
     utcDate: '2027-02-27T12:30Z',
     homeTeam: { name: 'Cambridge United', tla: 'CAM' },
     awayTeam: { name: 'Peterborough United', tla: 'PET' },
+  },
+  {
+    id: '2027-02-27-oxf-lut',
+    utcDate: '2027-02-27T12:30Z',
+    homeTeam: { name: 'Oxford United', tla: 'OXF' },
+    awayTeam: { name: 'Luton Town', tla: 'LUT' },
+  },
+  {
+    id: '2027-02-27-qpr-whu',
+    utcDate: '2027-02-27T12:30Z',
+    homeTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
+    awayTeam: { name: 'West Ham United', tla: 'WHU' },
   },
   {
     id: '2027-02-27-brt-dov',
@@ -25040,18 +25072,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Chelsea', tla: 'CHE' },
   },
   {
-    id: '2027-02-27-bar-wal',
-    utcDate: '2027-02-27T15:00Z',
-    homeTeam: { name: 'Barnet', tla: 'BAR' },
-    awayTeam: { name: 'Walsall', tla: 'WAL' },
-  },
-  {
-    id: '2027-02-27-bir-wba',
-    utcDate: '2027-02-27T15:00Z',
-    homeTeam: { name: 'Birmingham City', tla: 'BIR' },
-    awayTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
-  },
-  {
     id: '2027-02-27-blp-wim',
     utcDate: '2027-02-27T15:00Z',
     homeTeam: { name: 'Blackpool', tla: 'BLP' },
@@ -25062,12 +25082,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-27T15:00Z',
     homeTeam: { name: 'Boreham Wood', tla: 'BORE' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-  },
-  {
-    id: '2027-02-27-brc-cha',
-    utcDate: '2027-02-27T15:00Z',
-    homeTeam: { name: 'Bristol City', tla: 'BRC' },
-    awayTeam: { name: 'Charlton Athletic', tla: 'CHA' },
   },
   {
     id: '2027-02-27-brd-lei',
@@ -25226,22 +25240,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Shrewsbury Town', tla: 'SHR' },
   },
   {
-    id: '2027-02-27-oxf-lut',
-    utcDate: '2027-02-27T15:00Z',
-    homeTeam: { name: 'Oxford United', tla: 'OXF' },
-    awayTeam: { name: 'Luton Town', tla: 'LUT' },
-  },
-  {
     id: '2027-02-27-ply-shw',
     utcDate: '2027-02-27T15:00Z',
     homeTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
     awayTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
-  },
-  {
-    id: '2027-02-27-qpr-whu',
-    utcDate: '2027-02-27T15:00Z',
-    homeTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
-    awayTeam: { name: 'West Ham United', tla: 'WHU' },
   },
   {
     id: '2027-02-27-rea-stp',
@@ -25316,12 +25318,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Queens Park Rangers', tla: 'QPR' },
   },
   {
-    id: '2027-03-02-brc-bir',
-    utcDate: '2027-03-02T19:45Z',
-    homeTeam: { name: 'Bristol City', tla: 'BRC' },
-    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
-  },
-  {
     id: '2027-03-02-bur-wba',
     utcDate: '2027-03-02T19:45Z',
     homeTeam: { name: 'Burnley', tla: 'BUR' },
@@ -25346,10 +25342,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
   },
   {
-    id: '2027-03-03-por-lin',
-    utcDate: '2027-03-03T19:45Z',
-    homeTeam: { name: 'Portsmouth', tla: 'POR' },
-    awayTeam: { name: 'Lincoln City', tla: 'LIN' },
+    id: '2027-03-02-brc-bir',
+    utcDate: '2027-03-02T20:00Z',
+    homeTeam: { name: 'Bristol City', tla: 'BRC' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
   },
   {
     id: '2027-03-03-shu-swa',
@@ -25416,6 +25412,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-03-03T20:00Z',
     homeTeam: { name: 'Nottingham Forest', tla: 'NFO' },
     awayTeam: { name: 'Newcastle United', tla: 'NEW' },
+  },
+  {
+    id: '2027-03-03-por-lin',
+    utcDate: '2027-03-03T20:00Z',
+    homeTeam: { name: 'Portsmouth', tla: 'POR' },
+    awayTeam: { name: 'Lincoln City', tla: 'LIN' },
   },
   {
     id: '2027-03-03-sun-mun',
