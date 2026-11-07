@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Bolton Wanderers lost 3-1 at Derby County. No win points, minus 1 for leaking three, net minus 1. Scott is on 377.\n\nBen\'s Coventry City lost 3-1 at Everton. No win points, minus 1 for leaking three, net minus 1. Ben is on 356.\n\nJon still leads on 413 without a club kicking a ball. Dave is still last on 279.\n\nTable: Jon 413, Scott 377, Chris 366, Ben 356, Ash 318, Nest 296, Dave 279.';
+  'Nest\'s Leeds United beat Tottenham 1-0 at Elland Road. Home win, clean sheet, plus 4. Nest crawls up to 300 and still looks like a bloke who found a tenner in a bin and called it a career.\n\nScott\'s Wolves drew 1-1 at Wrexham. One filthy point for the draw. Scott is on 378, clinging to second like a drunk to a kebab.\n\nJon\'s Portsmouth lost 1-2 at home to Stoke. Zero fantasy points, still top on 413, coasting on old glory while Fratton Park shits the bed again.\n\nChris is idle on 366. Ben is idle on 356. Ash is idle on 318. Dave remains last on 279, a human wet patch at the bottom of the table.\n\nTable: Jon 413, Scott 378, Chris 366, Ben 356, Ash 318, Nest 300, Dave 279.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11277,6 +11277,39 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'Everton', tla: 'EVE' },
     awayTeam: { name: 'Coventry City', tla: 'COV' },
     homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-07-lee-tot',
+    utcDate: '2026-11-07T12:30Z',
+    homeTeam: { name: 'Leeds United', tla: 'LEE' },
+    awayTeam: { name: 'Tottenham Hotspur', tla: 'TOT' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-07-por-stk',
+    utcDate: '2026-11-07T12:30Z',
+    homeTeam: { name: 'Portsmouth', tla: 'POR' },
+    awayTeam: { name: 'Stoke City', tla: 'STK' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-07-wxm-wol',
+    utcDate: '2026-11-07T12:30Z',
+    homeTeam: { name: 'Wrexham', tla: 'WXM' },
+    awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
+    homeGoals: 1,
     awayGoals: 1,
     homeRedCards: 0,
     awayRedCards: 0,
