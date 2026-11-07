@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Oxford United beat Reading 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Jon is on 413.\n\nScott\'s Wolves won 2-1 at Bristol City. Plus 4 for the away win, net plus 4. Scott is on 378.\n\nChris\'s West Ham drew 3-3 with Cardiff City. Plus 1 for the draw, plus 1 for three or more, minus 1 for leaking three, net plus 1. Chris is on 366.\n\nBen\'s Cardiff City drew 3-3 with West Ham. Plus 1 for the draw, plus 1 for three or more, minus 1 for leaking three, net plus 1. Then Middlesbrough lost 2-0 at Wrexham. No win points, net zero. Ben is on 357.\n\nDave is still last on 279.\n\nTable: Jon 413, Scott 378, Chris 366, Ben 357, Ash 318, Nest 296, Dave 279.';
+  'Scott\'s Bolton Wanderers lost 3-1 at Derby County. No win points, minus 1 for leaking three, net minus 1. Scott is on 377.\n\nBen\'s Coventry City lost 3-1 at Everton. No win points, minus 1 for leaking three, net minus 1. Ben is on 356.\n\nJon still leads on 413 without a club kicking a ball. Dave is still last on 279.\n\nTable: Jon 413, Scott 377, Chris 366, Ben 356, Ash 318, Nest 296, Dave 279.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11259,6 +11259,28 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-06-der-bol',
+    utcDate: '2026-11-06T20:00Z',
+    homeTeam: { name: 'Derby County', tla: 'DER' },
+    awayTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-06-eve-cov',
+    utcDate: '2026-11-06T20:00Z',
+    homeTeam: { name: 'Everton', tla: 'EVE' },
+    awayTeam: { name: 'Coventry City', tla: 'COV' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -17360,8 +17382,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
-    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
