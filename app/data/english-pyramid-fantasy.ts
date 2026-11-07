@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Portsmouth lost 2-1 at home to Stoke City. No win points, net zero. Then Birmingham City beat Swansea City 2-1 at home. Plus 3 for the home win, net plus 3. Then Fulham drew 1-1 with Newcastle. Plus 1 for the draw, net plus 1. Jon is on 417.\n\nScott\'s Wolves drew 1-1 with Wrexham. Plus 1 for the draw, net plus 1. Then Horsham lost 3-2 at home to AFC Totton. No win points, minus 1 for leaking three, net minus 1. Then Weston-super-Mare beat Braintree Town 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Arsenal beat Hull City 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Hull City lost 1-0 at Arsenal. No win points, net zero. Scott is on 385.\n\nChris\'s Chester FC won 1-0 at Brackley Town. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Tonbridge Angels lost 3-1 at Farnham Town. No win points, minus 1 for leaking three, net minus 1. Then Hednesford Town beat Morecambe 6-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Maidstone United won 2-1 at Hemel Hempstead Town. Plus 4 for the away win, net plus 4. Then West Ham lost 2-1 at Blackburn Rovers. No win points, net zero. Then Newcastle drew 1-1 with Fulham. Plus 1 for the draw, net plus 1. Then Lincoln City lost 2-1 at QPR. No win points, net zero. Chris is on 379.\n\nBen\'s Dagenham & Redbridge drew 2-2 with Billericay Town. Plus 1 for the draw, net plus 1. Then Morecambe lost 6-2 at Hednesford Town. No win points, minus 1 for leaking three, net minus 1. Then Hebburn Town lost 4-1 at Merthyr Town. No win points, minus 1 for leaking three, net minus 1. Then Cardiff City beat Burnley 5-4 at home. Plus 3 for the home win, plus 1 for three or more, minus 1 for leaking three, net plus 3. Then Middlesbrough served up a boring 0-0 against Watford. Minus 1 for the 0-0, net minus 1. Ben is on 357.\n\nAsh\'s Chelmsford City beat Farnborough 2-1 at home. Plus 3 for the home win, net plus 3. Then AFC Totton won 3-2 at Horsham. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then South Shields beat Southport 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Spalding United lost 2-1 at AFC Telford United. No win points, net zero. Then Preston North End beat Southampton 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Southampton lost 1-0 at Preston North End. No win points, net zero. Ash is on 334.\n\nNest\'s Leeds United beat Spurs 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Chesham United lost 1-0 at Ebbsfleet United. No win points, plus 1 for the red, net plus 1. Then Farnham Town beat Tonbridge Angels 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Buxton drew 2-2 with Scarborough Athletic. Plus 1 for the draw, net plus 1. Then Blackburn Rovers beat West Ham 2-1 at home. Plus 3 for the home win, net plus 3. Then Sheffield United lost 2-1 at Charlton Athletic. No win points, net zero. Nest is on 309.\n\nDave\'s Walton & Hersham lost 3-1 at Slough Town. No win points, minus 1 for leaking three, net minus 1. Then Burnley lost 5-4 at Cardiff City. No win points, plus 1 for three or more, minus 1 for leaking three, net zero. Then Charlton Athletic beat Sheffield United 2-1 at home. Plus 3 for the home win, net plus 3. Dave is on 281.\n\nTable: Jon 417, Scott 385, Chris 379, Ben 357, Ash 334, Nest 309, Dave 281.';
+  'Jon is still sat on the throne like a smug landlord who just put the rent up. Portsmouth got stuffed 2-1 at home by Stoke City and contributed absolutely nothing, then Birmingham City beat Swansea City 2-1 for a clean plus 3, and Fulham scraped a 1-1 with Newcastle for another plus 1. Jon is on 417 and somehow still looks bored about it.\n\nScott had the afternoon of a man who keeps finding fivers in old coats. Wolves drew 1-1 at Wrexham for a measly plus 1, Horsham leaked a 3-2 home defeat to AFC Totton for minus 1, then Weston-super-Mare battered Braintree Town 4-1 for a juicy plus 4. Arsenal then did the grown-up thing and beat Hull City 1-0 with a clean sheet for plus 4, while Hull themselves returned a fat zero from the same game. Scott is on 385 and breathing down Jon\'s neck like a bailiff with a clipboard.\n\nChris spent the day living in National League chaos and somehow came out richer. Chester FC pinched a 1-0 away win at Brackley Town with a clean sheet for plus 5, Tonbridge Angels got pumped 3-1 at Farnham Town for minus 1, Hednesford Town smashed Morecambe 6-2 for plus 4, and Maidstone United nicked a 2-1 away win at Hemel Hempstead Town for plus 4. West Ham lost 2-1 at Blackburn Rovers for nothing, Newcastle took plus 1 from the Fulham draw, and Lincoln City lost 2-1 at QPR for nothing. Chris is on 379 and looking dangerously competent.\n\nBen had the classic Mulletman buffet: one nice bit, three mouthfuls of gravel. Dagenham & Redbridge drew 2-2 with Billericay Town for plus 1, Morecambe got demolished 6-2 at Hednesford Town for minus 1, Hebburn Town shipped a 4-1 pasting at Merthyr Town for another minus 1, then Cardiff City somehow won a 5-4 firefight with Burnley for plus 3. Middlesbrough finished the day with a soul-destroying 0-0 at Watford for minus 1. Ben is on 357 and needs a lie down.\n\nAsh finally remembered his clubs have legs. Chelmsford City beat Farnborough 2-1 for plus 3, AFC Totton won 3-2 at Horsham for plus 5, South Shields steamrollered Southport 5-1 for plus 4, Spalding United lost 2-1 at AFC Telford United for nothing, and Preston North End beat Southampton 1-0 with a clean sheet for plus 4 while Southampton themselves contributed the traditional away blank. Ash is on 334 and briefly looks alive.\n\nNest mixed Premier League competence with sixth-tier self-harm. Leeds United beat Spurs 1-0 with a clean sheet for plus 4, Chesham United lost 1-0 at Ebbsfleet United but still banked plus 1 for the red card because this game rewards absolute nonsense, Farnham Town leathered Tonbridge Angels 3-1 for plus 4, Buxton drew 2-2 at Scarborough Athletic for plus 1, and Blackburn Rovers beat West Ham 2-1 for plus 3. Sheffield United lost 2-1 at Charlton Athletic for nothing. Nest is on 309 and still climbing out of the swamp.\n\nDave continues to treat Saturday like a contact sport he never consented to. Walton & Hersham lost 3-1 at Slough Town for minus 1, Burnley lost that 5-4 madness at Cardiff City and somehow netted zero after the bonuses cancelled out, then Charlton Athletic beat Sheffield United 2-1 for a lonely plus 3. Dave is on 281 and the floor is starting to look load-bearing.\n\nTable: Jon 417, Scott 385, Chris 379, Ben 357, Ash 334, Nest 309, Dave 281.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11315,7 +11315,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayRedCards: 0,
   },
   {
-    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chester/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    /** Verified final score (FotMob; FWP 403). Reds verified: Brackley Coates + Tomlinson (Live-Result). */
     id: '2026-11-07-brk-chf',
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Brackley Town', tla: 'BRK' },
@@ -11324,7 +11324,6 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 1,
     homeRedCards: 2,
     awayRedCards: 0,
-    redsUnchecked: true,
   },
   {
     /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chelmsford-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
@@ -11351,7 +11350,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     redsUnchecked: true,
   },
   {
-    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chesham-united/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    /** Verified final score (FotMob; FWP 403). Reds verified: Chesham Lench second yellow (Kent Online). */
     id: '2026-11-07-ebb-chu',
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Ebbsfleet United', tla: 'EBB' },
@@ -11360,7 +11359,6 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 1,
-    redsUnchecked: true,
   },
   {
     /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/farnham-town/fixtures-results). Red cards from FotMob — redsUnchecked. */
@@ -11387,7 +11385,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     redsUnchecked: true,
   },
   {
-    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/maidstone-united/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    /** Verified final score (FotMob; FWP 403). Reds verified: Hemel Angol second yellow (Kent Online); manager red ignored. */
     id: '2026-11-07-hem-mai',
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
@@ -11396,7 +11394,6 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 2,
     homeRedCards: 1,
     awayRedCards: 0,
-    redsUnchecked: true,
   },
   {
     /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/horsham/fixtures-results). Red cards from FotMob — redsUnchecked. */
@@ -17684,7 +17681,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
+    /** Club postponed (Woking FC / FGR, 30 Oct 2026 - internationals). ESPN marked postponed. Keep even if FotMob still lists as going ahead. */
     postponed: true,
   },
   {
