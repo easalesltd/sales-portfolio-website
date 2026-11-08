@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Chelsea lost 1-0 at Sunderland. No win points, net zero. Jon is on 417.\n\nChris\'s Palace lost 3-1 at home to Liverpool. No win points, minus 1 for leaking three, net minus 1. Chris is on 378.\n\nBen\'s Liverpool won 3-1 at Palace. Plus 4 for the away win, plus 1 for three or more, net plus 5. Ben is on 362.\n\nAsh\'s Sunderland beat Chelsea 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Ash is on 338.\n\nDave\'s Ipswich lost 2-1 at home to Bournemouth. No win points, net zero. Dave is on 280.\n\nTable: Jon 417, Scott 385, Chris 378, Ben 362, Ash 338, Nest 309, Dave 280.';
+  'Jon\'s Chelsea lost 1-0 at Sunderland. No win points, net zero. Jon is on 417.\n\nChris\'s Palace lost 3-1 at home to Liverpool. No win points, minus 1 for leaking three, net minus 1. Chris is on 378.\n\nBen\'s Liverpool won 3-1 at Palace. Plus 4 for the away win, plus 1 for three or more, net plus 5. Ben is on 362.\n\nAsh\'s Sunderland beat Chelsea 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then United drew 4-4 with Villa. Plus 1 for the draw, plus 1 for three or more, minus 1 for leaking three, net plus 1. Ash is on 339.\n\nNest\'s Villa drew 4-4 with United. Plus 1 for the draw, plus 1 for three or more, minus 1 for leaking three, net plus 1. Nest is on 310.\n\nDave\'s Ipswich lost 2-1 at home to Bournemouth. No win points, net zero. Dave is on 280.\n\nTable: Jon 417, Scott 385, Chris 378, Ben 362, Ash 339, Nest 310, Dave 280.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11622,6 +11622,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-08-mun-avl',
+    utcDate: '2026-11-08T16:30Z',
+    homeTeam: { name: 'Manchester United', tla: 'MUN' },
+    awayTeam: { name: 'Aston Villa', tla: 'AVL' },
+    homeGoals: 4,
+    awayGoals: 4,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -17725,8 +17736,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
-    /** ESPN marked postponed. */
-    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
