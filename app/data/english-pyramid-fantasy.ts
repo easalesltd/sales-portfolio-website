@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Portsmouth lost 2-1 at home to Stoke City. No win points, net zero. Then Birmingham City beat Swansea City 2-1 at home. Plus 3 for the home win, net plus 3. Then Fulham drew 1-1 with Newcastle. Plus 1 for the draw, net plus 1. Jon is on 417.\n\nScott\'s Wolves drew 1-1 with Wrexham. Plus 1 for the draw, net plus 1. Then Horsham lost 3-2 at home to AFC Totton. No win points, minus 1 for leaking three, net minus 1. Then Weston-super-Mare beat Braintree Town 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Arsenal beat Hull City 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Hull City lost 1-0 at Arsenal. No win points, net zero. Scott is on 385.\n\nChris\'s Chester FC won 1-0 at Brackley Town. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Tonbridge Angels lost 3-1 at Farnham Town. No win points, minus 1 for leaking three, net minus 1. Then Hednesford Town beat Morecambe 6-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Maidstone United won 2-1 at Hemel Hempstead Town. Plus 4 for the away win, net plus 4. Then West Ham lost 2-1 at Blackburn Rovers. No win points, net zero. Then Newcastle drew 1-1 with Fulham. Plus 1 for the draw, net plus 1. Then Lincoln City lost 2-1 at QPR. No win points, net zero. Chris is on 379.\n\nBen\'s Dagenham & Redbridge drew 2-2 with Billericay Town. Plus 1 for the draw, net plus 1. Then Morecambe lost 6-2 at Hednesford Town. No win points, minus 1 for leaking three, net minus 1. Then Hebburn Town lost 4-1 at Merthyr Town. No win points, minus 1 for leaking three, net minus 1. Then Cardiff City beat Burnley 5-4 at home. Plus 3 for the home win, plus 1 for three or more, minus 1 for leaking three, net plus 3. Then Middlesbrough served up a boring 0-0 against Watford. Minus 1 for the 0-0, net minus 1. Ben is on 357.\n\nAsh\'s Chelmsford City beat Farnborough 2-1 at home. Plus 3 for the home win, net plus 3. Then AFC Totton won 3-2 at Horsham. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then South Shields beat Southport 5-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Spalding United lost 2-1 at AFC Telford United. No win points, net zero. Then Preston North End beat Southampton 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Southampton lost 1-0 at Preston North End. No win points, net zero. Ash is on 334.\n\nNest\'s Leeds United beat Spurs 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Chesham United lost 1-0 at Ebbsfleet United. No win points, plus 1 for the red, net plus 1. Then Farnham Town beat Tonbridge Angels 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Buxton drew 2-2 with Scarborough Athletic. Plus 1 for the draw, net plus 1. Then Blackburn Rovers beat West Ham 2-1 at home. Plus 3 for the home win, net plus 3. Then Sheffield United lost 2-1 at Charlton Athletic. No win points, net zero. Nest is on 309.\n\nDave\'s Walton & Hersham lost 3-1 at Slough Town. No win points, minus 1 for leaking three, net minus 1. Then Burnley lost 5-4 at Cardiff City. No win points, plus 1 for three or more, minus 1 for leaking three, net zero. Then Charlton Athletic beat Sheffield United 2-1 at home. Plus 3 for the home win, net plus 3. Then City lost 3-1 at Forest. No win points, minus 1 for leaking three, net minus 1. Dave is on 280.\n\nTable: Jon 417, Scott 385, Chris 379, Ben 357, Ash 334, Nest 309, Dave 280.';
+  'Jon\'s Chelsea lost 1-0 at Sunderland. No win points, net zero. Jon is on 417.\n\nChris\'s Palace lost 3-1 at home to Liverpool. No win points, minus 1 for leaking three, net minus 1. Chris is on 378.\n\nBen\'s Liverpool won 3-1 at Palace. Plus 4 for the away win, plus 1 for three or more, net plus 5. Ben is on 362.\n\nAsh\'s Sunderland beat Chelsea 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Ash is on 338.\n\nDave\'s Ipswich lost 2-1 at home to Bournemouth. No win points, net zero. Dave is on 280.\n\nTable: Jon 417, Scott 385, Chris 378, Ben 362, Ash 338, Nest 309, Dave 280.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11589,6 +11589,39 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-08-cry-liv',
+    utcDate: '2026-11-08T14:00Z',
+    homeTeam: { name: 'Crystal Palace', tla: 'CRY' },
+    awayTeam: { name: 'Liverpool', tla: 'LIV' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-08-ips-bou',
+    utcDate: '2026-11-08T14:00Z',
+    homeTeam: { name: 'Ipswich Town', tla: 'IPS' },
+    awayTeam: { name: 'AFC Bournemouth', tla: 'BOU' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-08-sun-che',
+    utcDate: '2026-11-08T14:00Z',
+    homeTeam: { name: 'Sunderland', tla: 'SUN' },
+    awayTeam: { name: 'Chelsea', tla: 'CHE' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -17692,6 +17725,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
