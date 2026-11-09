@@ -17582,6 +17582,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Doncaster Rovers', tla: 'DON' },
     awayTeam: { name: 'Leyton Orient', tla: 'LEY' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-14-gat-brw',
@@ -17716,6 +17718,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Walsall', tla: 'WAL' },
     awayTeam: { name: 'Barnet', tla: 'BAR' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-14-wim-blp',
@@ -17736,6 +17740,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
     awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
+    /** ESPN marked postponed. */
+    postponed: true,
   },
   {
     id: '2026-11-14-yeo-bore',
