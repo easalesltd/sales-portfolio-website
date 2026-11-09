@@ -11645,7 +11645,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-08 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-09 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -17412,14 +17412,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Spalding United', tla: 'SPA' },
   },
   {
-    id: '2026-11-07-tor-dov',
-    utcDate: '2026-11-07T15:00:00Z',
-    homeTeam: { name: 'Torquay United', tla: 'TOR' },
-    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-11-07-wsm-brt',
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
@@ -17736,6 +17728,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Woking', tla: 'WOK' },
     awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+    /** League match postponed — no ledger result until it is rearranged. */
+    postponed: true,
   },
   {
     id: '2026-11-14-wyc-hud',
@@ -19850,6 +19844,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Dorking Wanderers', tla: 'DOR' },
   },
   {
+    id: '2026-12-15-tor-dov',
+    utcDate: '2026-12-15T19:45:00Z',
+    homeTeam: { name: 'Torquay United', tla: 'TOR' },
+    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
+  },
+  {
     id: '2026-12-15-wsm-bil',
     utcDate: '2026-12-15T19:45:00Z',
     homeTeam: { name: 'Weston-super-Mare', tla: 'WSM' },
@@ -20306,6 +20306,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Aston Villa', tla: 'AVL' },
   },
   {
+    id: '2026-12-26-heb-ssh',
+    utcDate: '2026-12-26T12:30:00Z',
+    homeTeam: { name: 'Hebburn Town', tla: 'HEB' },
+    awayTeam: { name: 'South Shields', tla: 'SSH' },
+  },
+  {
     id: '2026-12-26-ald-wok',
     utcDate: '2026-12-26T12:30Z',
     homeTeam: { name: 'Aldershot Town', tla: 'ALD' },
@@ -20388,12 +20394,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-26T15:00:00Z',
     homeTeam: { name: 'Harborough Town', tla: 'HBO' },
     awayTeam: { name: 'Bedford Town', tla: 'BED' },
-  },
-  {
-    id: '2026-12-26-heb-ssh',
-    utcDate: '2026-12-26T15:00:00Z',
-    homeTeam: { name: 'Hebburn Town', tla: 'HEB' },
-    awayTeam: { name: 'South Shields', tla: 'SSH' },
   },
   {
     id: '2026-12-26-hem-chu',
