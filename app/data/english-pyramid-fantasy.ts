@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Ash\'s Chelmsford City drew 2-2 with Ebbsfleet United. Plus 1 for the draw, net plus 1. Ash is on 340.\n\nJon still leads on 417 without a club kicking a ball. Dave is still last on 280.\n\nTable: Jon 417, Scott 385, Chris 378, Ben 362, Ash 340, Nest 310, Dave 280.';
+  'Jon\'s Salisbury beat Braintree Town 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for the red, net plus 5. Jon is on 422.\n\nScott\'s Darlington and Oxford City played each other and finished 1-1. Plus 1 for the draw for one, plus 1 for the draw for the other. Scott is on 387.\n\nBen\'s Morecambe drew 2-2 with Hereford. Plus 1 for the draw, net plus 1. Ben is on 363.\n\nDave\'s Torquay United won 2-0 at Hemel Hempstead Town. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Marine won 3-1 at Scarborough Athletic. Plus 4 for the away win, plus 1 for three or more, net plus 5. Dave is on 290.\n\nTable: Jon 422, Scott 387, Chris 378, Ben 363, Ash 340, Nest 310, Dave 290.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11643,6 +11643,66 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/darlington/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-10-dar-oxc',
+    utcDate: '2026-11-10T19:45:00Z',
+    homeTeam: { name: 'Darlington', tla: 'DAR' },
+    awayTeam: { name: 'Oxford City', tla: 'OXC' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/torquay-united/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-10-hem-tor',
+    utcDate: '2026-11-10T19:45:00Z',
+    homeTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
+    awayTeam: { name: 'Torquay United', tla: 'TOR' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/morecambe/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-10-mor-her',
+    utcDate: '2026-11-10T19:45:00Z',
+    homeTeam: { name: 'Morecambe', tla: 'MOR' },
+    awayTeam: { name: 'Hereford', tla: 'HER' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/salisbury/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-10-sby-brt',
+    utcDate: '2026-11-10T19:45:00Z',
+    homeTeam: { name: 'Salisbury', tla: 'SBY' },
+    awayTeam: { name: 'Braintree Town', tla: 'BRT' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 1,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/marine/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-10-sca-mar',
+    utcDate: '2026-11-10T19:45:00Z',
+    homeTeam: { name: 'Scarborough Athletic', tla: 'SCA' },
+    awayTeam: { name: 'Marine', tla: 'MAR' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
   },
 ];
 
