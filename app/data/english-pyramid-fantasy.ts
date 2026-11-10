@@ -11656,7 +11656,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-09 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-10 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -17593,7 +17593,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Doncaster Rovers', tla: 'DON' },
     awayTeam: { name: 'Leyton Orient', tla: 'LEY' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -17647,14 +17647,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
     awayTeam: { name: 'Burton Albion', tla: 'BTN' },
-  },
-  {
-    id: '2026-11-14-pet-oxf',
-    utcDate: '2026-11-14T15:00Z',
-    homeTeam: { name: 'Peterborough United', tla: 'PET' },
-    awayTeam: { name: 'Oxford United', tla: 'OXF' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-11-14-pvl-acc',
@@ -17729,7 +17721,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Walsall', tla: 'WAL' },
     awayTeam: { name: 'Barnet', tla: 'BAR' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -17751,7 +17743,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Wycombe Wanderers', tla: 'WYC' },
     awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
-    /** ESPN marked postponed. */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -19103,6 +19095,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T12:30Z',
     homeTeam: { name: 'Barrow', tla: 'BRW' },
     awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
+    /** League match postponed — no ledger result until it is rearranged. */
+    postponed: true,
   },
   {
     id: '2026-12-05-che-liv',
@@ -19283,6 +19277,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T15:00Z',
     homeTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
     awayTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+    /** League match postponed — no ledger result until it is rearranged. */
+    postponed: true,
   },
   {
     id: '2026-12-05-lee-ips',
@@ -19295,6 +19291,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T15:00Z',
     homeTeam: { name: 'Manchester United', tla: 'MUN' },
     awayTeam: { name: 'Coventry City', tla: 'COV' },
+  },
+  {
+    id: '2026-12-05-pet-oxf',
+    utcDate: '2026-12-05T15:00Z',
+    homeTeam: { name: 'Peterborough United', tla: 'PET' },
+    awayTeam: { name: 'Oxford United', tla: 'OXF' },
   },
   {
     id: '2026-12-05-por-wba',
@@ -19313,6 +19315,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T15:00Z',
     homeTeam: { name: 'Sutton United', tla: 'SUT' },
     awayTeam: { name: 'AFC Fylde', tla: 'FYL' },
+    /** League match postponed — no ledger result until it is rearranged. */
+    postponed: true,
   },
   {
     id: '2026-12-05-tam-alt',
@@ -19337,6 +19341,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T17:30Z',
     homeTeam: { name: 'FC Halifax Town', tla: 'HAL' },
     awayTeam: { name: 'Carlisle United', tla: 'CAR' },
+    /** League match postponed — no ledger result until it is rearranged. */
+    postponed: true,
   },
   {
     id: '2026-12-05-bre-mci',
