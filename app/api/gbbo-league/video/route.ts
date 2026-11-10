@@ -1,9 +1,20 @@
 import { NextResponse } from "next/server";
+import { compressPunishmentPhoto } from "@/app/lib/gbbo/compress-media";
 import { isGbboPlayerRequest } from "@/app/lib/gbbo/player-pins";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { owesSlutDrop, slutDropFor } from "@/app/lib/gbbo/league";
 import { readGbboLeague, writeGbboLeague } from "@/app/lib/gbbo/persist";
-import { newVideoId, readVideoRange, readVideoRecord, saveVideoChunk, streamVideo, VIDEO_MAX_BYTES } from "@/app/lib/gbbo/videos";
+import {
+  newVideoId,
+  purgeIncompleteUploads,
+  readVideoBytes,
+  readVideoRange,
+  readVideoRecord,
+  saveVideoChunk,
+  streamVideo,
+  writeVideoBytes,
+  VIDEO_MAX_BYTES,
+} from "@/app/lib/gbbo/videos";
 
 export const runtime = "nodejs";
 
@@ -101,12 +112,30 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unknown punishment." }, { status: 400 });
   }
 
+  // Failed quota uploads leave orphan chunks. Clear them before the first chunk of a new try.
+  if (index === 0) {
+    try {
+      await purgeIncompleteUploads();
+    } catch {
+      // Best-effort: a full database may still reject the new write.
+    }
+  }
+
   const bytes = Buffer.from(await chunk.arrayBuffer());
   let record;
   try {
     record = await saveVideoChunk({ id: uploadId, index, total, mime, bytes });
   } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Could not save that video." }, { status: 400 });
+    const message = error instanceof Error ? error.message : "Could not save that video.";
+    const quota = /capacity quota exceeded|max requests limit exceeded/i.test(message);
+    return NextResponse.json(
+      {
+        error: quota
+          ? "The tent's evidence cupboard is full. Ask the Chief to free space, then try a shorter clip or a smaller photo."
+          : message,
+      },
+      { status: quota ? 507 : 400 },
+    );
   }
 
   if (!record) {
@@ -116,8 +145,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "That file is too large. Use a shorter clip or a smaller photo." }, { status: 400 });
   }
 
+  let storedMime = mime;
+  if (storedMime.startsWith("image/")) {
+    const original = await readVideoBytes(record);
+    if (original) {
+      const compressed = await compressPunishmentPhoto(original);
+      if (compressed) {
+        try {
+          record = await writeVideoBytes(record.id, compressed.mime, compressed.bytes);
+          storedMime = compressed.mime;
+        } catch {
+          // Keep the original upload if recompress fails (e.g. still no Redis room).
+        }
+      }
+    }
+  }
+
   if (kind === "slut_drop") {
-    const mediaType = mime.startsWith("image/") ? "photo" : "video";
+    const mediaType = storedMime.startsWith("image/") ? "photo" : "video";
     league.slutDrops = league.slutDrops ?? [];
     const existing = slutDropFor(league, companion.id, week);
     if (existing) {

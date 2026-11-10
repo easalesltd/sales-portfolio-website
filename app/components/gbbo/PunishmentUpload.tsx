@@ -53,7 +53,7 @@ export function PunishmentUpload({
     }
     if (file.size > VIDEO_MAX_BYTES) {
       const size = Math.round(file.size / (1024 * 1024));
-      setError(`That file is ${size} MB. The limit is ${VIDEO_MAX_LABEL}, about 30 seconds of phone video. Trim it and try again.`);
+      setError(`That file is ${size} MB. The limit is ${VIDEO_MAX_LABEL} (short phone clip). Trim it and try again.`);
       return;
     }
     setBusy(true);

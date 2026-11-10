@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, readdirSync, unlinkSync } from "fs";
 import { mkdir, readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import { gameLeaderboardRedis } from "@/app/lib/game-leaderboard-redis";
@@ -48,6 +48,19 @@ export function newVideoId() {
 
 function chunkBytesOf(record: VideoRecord) {
   return record.chunkBytes ?? LEGACY_CHUNK_BYTES;
+}
+
+async function scanKeys(match: string): Promise<string[]> {
+  const redis = gameLeaderboardRedis();
+  if (!redis) return [];
+  const found: string[] = [];
+  let cursor: number | string = 0;
+  do {
+    const result = (await redis.scan(cursor, { match, count: 200 })) as [string | number, string[]];
+    cursor = result[0];
+    found.push(...(result[1] ?? []));
+  } while (String(cursor) !== "0");
+  return found;
 }
 
 export async function saveVideoChunk(input: {
@@ -102,6 +115,27 @@ export async function saveVideoChunk(input: {
   return record;
 }
 
+/** Write a complete file under a stable id, replacing any previous bytes for that id. */
+export async function writeVideoBytes(id: string, mime: string, bytes: Buffer): Promise<VideoRecord> {
+  if (bytes.length < 1 || bytes.length > VIDEO_MAX_BYTES) {
+    throw new Error("That file is too large. Use a shorter clip or a smaller photo.");
+  }
+  await deleteVideo(id);
+  const total = Math.max(1, Math.ceil(bytes.length / VIDEO_CHUNK_BYTES));
+  let record: VideoRecord | null = null;
+  for (let index = 0; index < total; index += 1) {
+    record = await saveVideoChunk({
+      id,
+      index,
+      total,
+      mime,
+      bytes: bytes.subarray(index * VIDEO_CHUNK_BYTES, (index + 1) * VIDEO_CHUNK_BYTES),
+    });
+  }
+  if (!record) throw new Error("The tent could not save that file.");
+  return record;
+}
+
 export async function readVideoRecord(id: string): Promise<VideoRecord | null> {
   const redis = gameLeaderboardRedis();
   if (redis) {
@@ -111,6 +145,95 @@ export async function readVideoRecord(id: string): Promise<VideoRecord | null> {
   const metaPath = fileMetaPath(id);
   if (!existsSync(metaPath)) return null;
   return JSON.parse(await readFile(metaPath, "utf8")) as VideoRecord;
+}
+
+export async function readVideoBytes(record: VideoRecord): Promise<Buffer | null> {
+  return readVideoRange(record, 0, record.size - 1);
+}
+
+export async function listVideoRecords(): Promise<VideoRecord[]> {
+  const redis = gameLeaderboardRedis();
+  if (redis) {
+    const keys = await scanKeys(`${PREFIX}:meta:*`);
+    const records: VideoRecord[] = [];
+    for (let i = 0; i < keys.length; i += READ_BATCH) {
+      const batch = keys.slice(i, i + READ_BATCH);
+      const values = await redis.mget<(VideoRecord | null)[]>(...batch);
+      for (const value of values) {
+        if (value?.chunks) records.push(value);
+      }
+    }
+    return records.sort((a, b) => b.size - a.size || a.id.localeCompare(b.id));
+  }
+  if (!existsSync(DATA_DIR)) return [];
+  const records: VideoRecord[] = [];
+  for (const name of readdirSync(DATA_DIR)) {
+    if (!name.endsWith(".json")) continue;
+    try {
+      const record = JSON.parse(await readFile(join(DATA_DIR, name), "utf8")) as VideoRecord;
+      if (record?.chunks) records.push(record);
+    } catch {
+      // skip broken meta
+    }
+  }
+  return records.sort((a, b) => b.size - a.size || a.id.localeCompare(b.id));
+}
+
+export async function listIncompleteUploadIds(): Promise<string[]> {
+  const redis = gameLeaderboardRedis();
+  if (redis) {
+    const keys = await scanKeys(`${PREFIX}:recv:*`);
+    return keys
+      .map((key) => key.slice(`${PREFIX}:recv:`.length))
+      .filter(Boolean)
+      .sort();
+  }
+  return [];
+}
+
+/** Drop unfinished multipart uploads (common after a Redis quota failure mid-upload). */
+export async function purgeIncompleteUploads(): Promise<{ deletedIds: string[]; keysRemoved: number }> {
+  const ids = await listIncompleteUploadIds();
+  let keysRemoved = 0;
+  const deletedIds: string[] = [];
+  for (const id of ids) {
+    const removed = await deleteVideo(id);
+    keysRemoved += removed;
+    deletedIds.push(id);
+  }
+  return { deletedIds, keysRemoved };
+}
+
+export async function deleteVideo(id: string): Promise<number> {
+  const redis = gameLeaderboardRedis();
+  if (redis) {
+    const record = await redis.get<VideoRecord>(metaKey(id));
+    const keys = new Set<string>([metaKey(id), receivedKey(id)]);
+    const chunkCount = record?.chunks ?? 0;
+    for (let index = 0; index < chunkCount; index += 1) keys.add(chunkKey(id, index));
+    for (const key of await scanKeys(`${PREFIX}:${id}:*`)) keys.add(key);
+    const list = [...keys];
+    if (list.length === 0) return 0;
+    for (let i = 0; i < list.length; i += 50) {
+      await redis.del(...list.slice(i, i + 50));
+    }
+    return list.length;
+  }
+
+  let removed = 0;
+  const metaPath = fileMetaPath(id);
+  if (existsSync(metaPath)) {
+    unlinkSync(metaPath);
+    removed += 1;
+  }
+  if (existsSync(DATA_DIR)) {
+    for (const name of readdirSync(DATA_DIR)) {
+      if (!name.startsWith(`${id}.`) || !name.endsWith(".bin")) continue;
+      unlinkSync(join(DATA_DIR, name));
+      removed += 1;
+    }
+  }
+  return removed;
 }
 
 async function readChunks(id: string, indexes: number[]): Promise<Buffer[] | null> {

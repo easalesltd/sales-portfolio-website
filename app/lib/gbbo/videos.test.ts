@@ -87,4 +87,16 @@ describe("chunked punishment videos", () => {
     );
     expect(Buffer.from(await response.arrayBuffer()).equals(file.subarray(legacy - 5, legacy + 6))).toBe(true);
   });
+
+  it("can replace and delete a finished upload", async () => {
+    const file = bytes(videos.VIDEO_CHUNK_BYTES + 50, 4);
+    await upload("vid_swap", file);
+    const smaller = bytes(1200, 5);
+    const replaced = await videos.writeVideoBytes("vid_swap", "image/jpeg", smaller);
+    expect(replaced).toMatchObject({ id: "vid_swap", size: smaller.length, mime: "image/jpeg" });
+    const roundTrip = await videos.readVideoBytes(replaced);
+    expect(roundTrip?.equals(smaller)).toBe(true);
+    expect(await videos.deleteVideo("vid_swap")).toBeGreaterThan(0);
+    expect(await videos.readVideoRecord("vid_swap")).toBeNull();
+  });
 });
