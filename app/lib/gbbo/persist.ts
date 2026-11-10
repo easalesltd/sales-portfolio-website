@@ -34,6 +34,7 @@ const WEEK_6_RESULT_KEY = "2026-week-6-pastry-results";
 const WEEK_7_RESULT_KEY = "2026-week-7-free-from-party-results";
 const WEEK_7_STAR_BAKER_KEY = "2026-week-7-gabe-star-baker";
 const WEEK_7_RECIPE_KEY = "2026-week-7-axolotl-recipe";
+const WEEK_8_RESULT_KEY = "2026-week-8-caramel-results";
 const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
 const GUNS_WEEK_3_CLARA_KEY = "2026-week-3-guns-clara-restored";
 const REAL_WEEK_THEMES_KEY = "2026-real-week-themes";
@@ -153,6 +154,29 @@ function week7Result(): EpisodeResult {
     recapSource: "Chief companion, Free From Party Week",
     justification:
       "Gabe was Star Baker. Mo received a Hollywood handshake. Gary went home. Six bakers took the technical: Tom was first, Gabe second and Moyin third. Connie finished last (−3), Gary fifth, second last (−2) and Mo fourth, third last (−1).",
+  };
+}
+
+function week8Result(): EpisodeResult {
+  const id = bakerIdForName;
+  return {
+    starBakerId: id("Moyin"),
+    eliminatedBakerId: id("Connie"),
+    technicalFieldSize: 5,
+    technical: [
+      { bakerId: id("Tom"), place: 1 },
+      { bakerId: id("Moyin"), place: 2 },
+      { bakerId: id("Gabe"), place: 3 },
+      { bakerId: id("Connie"), place: 4 },
+      { bakerId: id("Mo"), place: 5 },
+    ],
+    handshakes: [],
+    innuendos: [],
+    drops: { [id("Connie")]: 1 },
+    cries: { [id("Moyin")]: 2 },
+    recapSource: "Chief companion, Caramel Week",
+    justification:
+      "Moyin was Star Baker. Connie went home. Five bakers took the technical: Tom was first, Moyin second and Gabe third. Mo finished last (−3), Connie fourth, second last (−2) and Gabe third, third last (−1). Connie dropped something (−3). Moyin cried twice (−6).",
   };
 }
 
@@ -342,6 +366,9 @@ export async function readGbboLeague(): Promise<LeagueState> {
   if (freeFrom && !(league.resetsApplied ?? []).includes(WEEK_7_RESULT_KEY)) freeFrom.theme = "Free From Party";
   const week7Published = applyEpisodeResult(league, WEEK_7_RESULT_KEY, 7, week7Result());
   const week7StarBaker = correctEpisodeResult(league, WEEK_7_STAR_BAKER_KEY, 7, week7Result());
+  const caramel = league.episodes.find((episode) => episode.week === 8);
+  if (caramel && !(league.resetsApplied ?? []).includes(WEEK_8_RESULT_KEY)) caramel.theme = "Caramel";
+  const week8Published = applyEpisodeResult(league, WEEK_8_RESULT_KEY, 8, week8Result());
   league.resetsApplied = league.resetsApplied ?? [];
   const week7Recipe = !league.resetsApplied.includes(WEEK_7_RECIPE_KEY);
   if (week7Recipe) {
@@ -358,7 +385,7 @@ export async function readGbboLeague(): Promise<LeagueState> {
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
   const falseAccusation = ensureFalseAccusationBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || week8Published || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
     await writeGbboLeague(league);
   }
   return league;
