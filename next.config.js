@@ -23,6 +23,13 @@ const corsOrigin = corsAllowOrigin()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Keep the ffmpeg binary out of the webpack graph; include it in the serverless trace.
+  serverExternalPackages: ['ffmpeg-static'],
+  outputFileTracingIncludes: {
+    '/api/gbbo-league/video': ['./node_modules/ffmpeg-static/**'],
+    '/api/gbbo-league/video-storage': ['./node_modules/ffmpeg-static/**'],
+  },
+
   async redirects() {
     return [
       {

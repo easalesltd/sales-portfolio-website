@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { compressPunishmentPhoto } from "@/app/lib/gbbo/compress-media";
+import { compressPunishmentMedia } from "@/app/lib/gbbo/compress-media";
 import { isGbboPlayerRequest } from "@/app/lib/gbbo/player-pins";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { owesSlutDrop, slutDropFor } from "@/app/lib/gbbo/league";
@@ -17,6 +17,8 @@ import {
 } from "@/app/lib/gbbo/videos";
 
 export const runtime = "nodejs";
+/** Phone uploads can be large; allow time to re-encode before answering. */
+export const maxDuration = 60;
 
 const MAX_RANGE_BYTES = 4 * 1024 * 1024;
 
@@ -146,17 +148,15 @@ export async function POST(request: Request) {
   }
 
   let storedMime = mime;
-  if (storedMime.startsWith("image/")) {
-    const original = await readVideoBytes(record);
-    if (original) {
-      const compressed = await compressPunishmentPhoto(original);
-      if (compressed) {
-        try {
-          record = await writeVideoBytes(record.id, compressed.mime, compressed.bytes);
-          storedMime = compressed.mime;
-        } catch {
-          // Keep the original upload if recompress fails (e.g. still no Redis room).
-        }
+  const original = await readVideoBytes(record);
+  if (original) {
+    const compressed = await compressPunishmentMedia(original, storedMime);
+    if (compressed) {
+      try {
+        record = await writeVideoBytes(record.id, compressed.mime, compressed.bytes);
+        storedMime = compressed.mime;
+      } catch {
+        // Keep the original upload if recompress fails (e.g. still no Redis room).
       }
     }
   }
