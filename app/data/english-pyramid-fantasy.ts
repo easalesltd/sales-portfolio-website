@@ -11634,7 +11634,7 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayRedCards: 0,
   },
   {
-    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chelmsford-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    /** Verified final score (BBC; Kent Online; Ebbsfleet United FC). Reds verified: yellows only, no dismissals. */
     id: '2026-11-09-clm-ebb',
     utcDate: '2026-11-09T19:45:00Z',
     homeTeam: { name: 'Chelmsford City', tla: 'CLM' },
@@ -11643,7 +11643,6 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
-    redsUnchecked: true,
   },
 ];
 
