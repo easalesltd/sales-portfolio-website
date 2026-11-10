@@ -67,7 +67,7 @@ export default function LeaguePage() {
                       <p className="font-display text-2xl leading-tight">{name}</p>
                       {locked ? <Pill tone="tent">Team locked</Pill> : null}
                       <BeerBaguetteMark companionId={row.companionId} />
-                      {latest ? <SlutDropMark companionId={row.companionId} week={latest.week} /> : null}
+                      <SlutDropMark companionId={row.companionId} />
                     </div>
                     <p className="text-sm text-chocolate/70">
                       {team.map((id) => bakerName(league, id)).join(" · ") || "No bakers yet"}

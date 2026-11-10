@@ -4,15 +4,21 @@ import { useState } from "react";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import {
   latestSlutDropWeek,
-  outstandingSlutDropWeek,
   owesSlutDrop,
   slutDropFor,
+  slutDropWeeksFor,
 } from "@/app/lib/gbbo/league";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { LeagueState } from "@/app/lib/gbbo/types";
 import { PunishmentUpload } from "./PunishmentUpload";
 import { Pill } from "./ui";
+
+function slutDropStillOwed(league: LeagueState, companionId: string, week: number): boolean {
+  if (!owesSlutDrop(league, companionId, week)) return false;
+  const drop = slutDropFor(league, companionId, week);
+  return !(drop?.completed && drop.videoId);
+}
 
 export function SlutDropMark({
   companionId,
@@ -24,13 +30,30 @@ export function SlutDropMark({
   const { league, acceptLeague } = useLeague();
   const { isChief, playerSlug, playerUnlocked } = useGbboSession();
   const companion = league.companions.find((item) => item.id === companionId);
-  const targetWeek = week ?? outstandingSlutDropWeek(league, companionId) ?? latestSlutDropWeek(league, companionId);
   const [thanks, setThanks] = useState(false);
 
-  if (!companion || targetWeek == null) return null;
-  if (week && !owesSlutDrop(league, companionId, week)) return null;
+  if (!companion) return null;
 
-  const dropWeek = targetWeek;
+  // No week prop: show every outstanding slut drop so the standings table can upload each one.
+  if (week == null) {
+    const weeks = slutDropWeeksFor(league, companionId).filter((item) => slutDropStillOwed(league, companionId, item));
+    if (weeks.length === 0) {
+      const latest = latestSlutDropWeek(league, companionId);
+      if (latest == null) return null;
+      return <SlutDropMark companionId={companionId} week={latest} />;
+    }
+    return (
+      <span className="inline-flex min-w-0 flex-wrap items-center gap-2">
+        {weeks.map((item) => (
+          <SlutDropMark key={`${companionId}-${item}`} companionId={companionId} week={item} />
+        ))}
+      </span>
+    );
+  }
+
+  if (!owesSlutDrop(league, companionId, week)) return null;
+
+  const dropWeek = week;
   const drop = slutDropFor(league, companionId, dropWeek);
   const completed = Boolean(drop?.completed && drop.videoId);
   const owed = owesSlutDrop(league, companionId, dropWeek) && !completed;
