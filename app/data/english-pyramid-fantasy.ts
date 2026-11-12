@@ -11716,7 +11716,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-10 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-12 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -19067,12 +19067,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Bromley', tla: 'BRO' },
   },
   {
-    id: '2026-12-01-trn-sal',
-    utcDate: '2026-12-01T19:45Z',
-    homeTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
-    awayTeam: { name: 'Salford City', tla: 'SAL' },
-  },
-  {
     id: '2026-12-01-yor-shr',
     utcDate: '2026-12-01T19:45Z',
     homeTeam: { name: 'York City', tla: 'YOR' },
@@ -19353,12 +19347,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Coventry City', tla: 'COV' },
   },
   {
-    id: '2026-12-05-pet-oxf',
-    utcDate: '2026-12-05T15:00Z',
-    homeTeam: { name: 'Peterborough United', tla: 'PET' },
-    awayTeam: { name: 'Oxford United', tla: 'OXF' },
-  },
-  {
     id: '2026-12-05-por-wba',
     utcDate: '2026-12-05T15:00Z',
     homeTeam: { name: 'Portsmouth', tla: 'POR' },
@@ -19385,6 +19373,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Altrincham', tla: 'ALT' },
   },
   {
+    id: '2026-12-05-trn-sal',
+    utcDate: '2026-12-05T15:00Z',
+    homeTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
+    awayTeam: { name: 'Salford City', tla: 'SAL' },
+  },
+  {
     id: '2026-12-05-wol-sou',
     utcDate: '2026-12-05T15:00Z',
     homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
@@ -19403,6 +19397,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Carlisle United', tla: 'CAR' },
     /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
+  },
+  {
+    id: '2026-12-05-pet-oxf',
+    utcDate: '2026-12-05T19:45Z',
+    homeTeam: { name: 'Peterborough United', tla: 'PET' },
+    awayTeam: { name: 'Oxford United', tla: 'OXF' },
   },
   {
     id: '2026-12-05-bre-mci',
@@ -20023,12 +20023,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
   },
   {
-    id: '2026-12-19-col-fle',
-    utcDate: '2026-12-19T12:30Z',
-    homeTeam: { name: 'Colchester United', tla: 'COL' },
-    awayTeam: { name: 'Fleetwood Town', tla: 'FLE' },
-  },
-  {
     id: '2026-12-19-hrn-har',
     utcDate: '2026-12-19T12:30Z',
     homeTeam: { name: 'Hornchurch', tla: 'HRN' },
@@ -20351,6 +20345,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-19T19:45Z',
     homeTeam: { name: 'Tamworth', tla: 'TAM' },
     awayTeam: { name: 'Hartlepool United', tla: 'HPL' },
+  },
+  {
+    id: '2026-12-20-col-fle',
+    utcDate: '2026-12-20T13:00Z',
+    homeTeam: { name: 'Colchester United', tla: 'COL' },
+    awayTeam: { name: 'Fleetwood Town', tla: 'FLE' },
   },
   {
     id: '2026-12-20-bha-ips',
