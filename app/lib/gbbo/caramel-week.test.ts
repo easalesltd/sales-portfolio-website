@@ -29,7 +29,7 @@ describe("caramel week results", () => {
       expect(episode?.starBakerId).toBe(bakerIdForName("Moyin"));
       expect(episode?.eliminatedBakerId).toBe(bakerIdForName("Connie"));
       expect(episode?.drops).toEqual({ [bakerIdForName("Connie")]: 1 });
-      expect(episode?.cries).toEqual({ [bakerIdForName("Moyin")]: 2 });
+      expect(episode?.cries).toEqual({ [bakerIdForName("Moyin")]: 2, [bakerIdForName("Connie")]: 1 });
       expect(episode && technicalField(league, episode)).toBe(5);
       expect(league.bakers.find((baker) => baker.name === "Connie")?.eliminatedInWeek).toBe(8);
       expect(league.currentWeek).toBe(9);
@@ -40,7 +40,7 @@ describe("caramel week results", () => {
       expect(points("Tom")).toBe(3);
       expect(points("Moyin")).toBe(1);
       expect(points("Gabe")).toBe(0);
-      expect(points("Connie")).toBe(-10);
+      expect(points("Connie")).toBe(-13);
       expect(points("Mo")).toBe(-3);
 
       const again = await readGbboLeague();

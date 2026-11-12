@@ -35,6 +35,7 @@ const WEEK_7_RESULT_KEY = "2026-week-7-free-from-party-results";
 const WEEK_7_STAR_BAKER_KEY = "2026-week-7-gabe-star-baker";
 const WEEK_7_RECIPE_KEY = "2026-week-7-axolotl-recipe";
 const WEEK_8_RESULT_KEY = "2026-week-8-caramel-results";
+const WEEK_8_CONNIE_CRIED_KEY = "2026-week-8-connie-cried";
 const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
 const GUNS_WEEK_3_CLARA_KEY = "2026-week-3-guns-clara-restored";
 const REAL_WEEK_THEMES_KEY = "2026-real-week-themes";
@@ -173,10 +174,10 @@ function week8Result(): EpisodeResult {
     handshakes: [],
     innuendos: [],
     drops: { [id("Connie")]: 1 },
-    cries: { [id("Moyin")]: 2 },
+    cries: { [id("Moyin")]: 2, [id("Connie")]: 1 },
     recapSource: "Chief companion, Caramel Week",
     justification:
-      "Moyin was Star Baker. Connie went home. Five bakers took the technical: Tom was first, Moyin second and Gabe third. Mo finished last (−3), Connie fourth, second last (−2) and Gabe third, third last (−1). Connie dropped something (−3). Moyin cried twice (−6).",
+      "Moyin was Star Baker. Connie went home. Five bakers took the technical: Tom was first, Moyin second and Gabe third. Mo finished last (−3), Connie fourth, second last (−2) and Gabe third, third last (−1). Connie dropped something (−3) and had a cry (−3). Moyin cried twice (−6).",
   };
 }
 
@@ -369,6 +370,7 @@ export async function readGbboLeague(): Promise<LeagueState> {
   const caramel = league.episodes.find((episode) => episode.week === 8);
   if (caramel && !(league.resetsApplied ?? []).includes(WEEK_8_RESULT_KEY)) caramel.theme = "Caramel";
   const week8Published = applyEpisodeResult(league, WEEK_8_RESULT_KEY, 8, week8Result());
+  const week8ConnieCried = correctEpisodeResult(league, WEEK_8_CONNIE_CRIED_KEY, 8, week8Result());
   league.resetsApplied = league.resetsApplied ?? [];
   const week7Recipe = !league.resetsApplied.includes(WEEK_7_RECIPE_KEY);
   if (week7Recipe) {
@@ -385,7 +387,7 @@ export async function readGbboLeague(): Promise<LeagueState> {
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
   const falseAccusation = ensureFalseAccusationBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || week8Published || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || week8Published || week8ConnieCried || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
     await writeGbboLeague(league);
   }
   return league;
