@@ -11716,7 +11716,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-12 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-13 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -17695,14 +17695,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     postponed: true,
   },
   {
-    id: '2026-11-14-lut-cam',
-    utcDate: '2026-11-14T15:00Z',
-    homeTeam: { name: 'Luton Town', tla: 'LUT' },
-    awayTeam: { name: 'Cambridge United', tla: 'CAM' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-11-14-mkd-btn',
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
@@ -19379,6 +19371,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Salford City', tla: 'SAL' },
   },
   {
+    id: '2026-12-05-wal-cra',
+    utcDate: '2026-12-05T15:00Z',
+    homeTeam: { name: 'Walsall', tla: 'WAL' },
+    awayTeam: { name: 'Crawley Town', tla: 'CRA' },
+  },
+  {
     id: '2026-12-05-wol-sou',
     utcDate: '2026-12-05T15:00Z',
     homeTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
@@ -19967,12 +19965,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-15T19:45Z',
     homeTeam: { name: 'Peterborough United', tla: 'PET' },
     awayTeam: { name: 'Notts County', tla: 'NCO' },
-  },
-  {
-    id: '2026-12-15-wal-cra',
-    utcDate: '2026-12-15T19:45Z',
-    homeTeam: { name: 'Walsall', tla: 'WAL' },
-    awayTeam: { name: 'Crawley Town', tla: 'CRA' },
   },
   {
     id: '2026-12-17-cax-sal',
@@ -23573,6 +23565,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-30T17:30Z',
     homeTeam: { name: 'Worthing', tla: 'WOR' },
     awayTeam: { name: 'Carlisle United', tla: 'CAR' },
+  },
+  {
+    id: '2027-02-02-lut-cam',
+    utcDate: '2027-02-02T19:45Z',
+    homeTeam: { name: 'Luton Town', tla: 'LUT' },
+    awayTeam: { name: 'Cambridge United', tla: 'CAM' },
   },
   {
     id: '2027-02-05-brc-mid',
