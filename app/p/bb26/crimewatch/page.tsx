@@ -178,6 +178,12 @@ export default function CrimewatchPage() {
       league.penalties.find((row) => row.id === item.id),
     ),
   );
+  // Beer baguettes first so Nest (and Lee) stay visible above a long slut-drop / technical queue.
+  const freshTape = useMemo(() => {
+    const bags = onTape.filter((item) => item.kind === "beer_baguette");
+    const rest = onTape.filter((item) => item.kind !== "beer_baguette");
+    return [...bags, ...rest].slice(0, Math.max(8, bags.length));
+  }, [onTape]);
   const defaultFilter: TapeFilter = baguettesAtLarge.length > 0 && onTape.length === 0 ? "beer_baguette" : "all";
   const [filter, setFilter] = useState<TapeFilter>(defaultFilter);
   const visible = filterExhibits(exhibits, league, filter);
@@ -226,11 +232,10 @@ export default function CrimewatchPage() {
       {onTape.length > 0 && filter !== "owed" ? (
         <Card eyebrow="Freshly booked" title="Just on the tape">
           <p className="mb-4 max-w-2xl text-sm leading-7 text-chocolate/75">
-            Jump straight to a companion who has already uploaded. Nest&apos;s beer baguette shows here the moment it
-            hits the ledger.
+            Beer baguettes lead this list, then the newest slut drops and technicals. Tap a name to jump to the clip.
           </p>
           <ul className="grid gap-3 sm:grid-cols-2">
-            {onTape.slice(0, 8).map((item) => {
+            {freshTape.map((item) => {
               const companion = league.companions.find((row) => row.id === item.companionId);
               const name = companion?.name ?? companionName(league, item.companionId);
               const portrait = companionPortrait(companion, true);

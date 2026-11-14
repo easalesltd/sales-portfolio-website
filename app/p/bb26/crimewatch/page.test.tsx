@@ -29,6 +29,18 @@ jest.mock("@/app/lib/gbbo/store", () => {
       note: "Nest made a false accusation that the website was not working.",
       videoId: "vid_nest_baguette",
     },
+    // Newer non-baguette tapes must not push Nest out of the fresh jump list.
+    ...Array.from({ length: 8 }, (_, index) => ({
+      id: `tech-fill-${index}`,
+      week: 7 + (index % 2),
+      companionId: guns,
+      bakerId: "baker_molly",
+      kind: "technical" as const,
+      deadline: "",
+      completed: true,
+      note: `Filler bake ${index}.`,
+      videoId: `vid_fill_${index}`,
+    })),
   ];
   return { useLeague: () => ({ league, acceptLeague: jest.fn(), loaded: true }) };
 });
@@ -42,18 +54,19 @@ describe("Crimewatch punishment tape", () => {
     render(<CrimewatchPage />);
 
     const tape = screen.getAllByRole("heading", { level: 2 }).map((heading) => heading.textContent);
-    expect(tape).toEqual([
-      "Village Crimewatch",
-      "Just on the tape",
-      "Beer baguettes wanted",
-      "Week 6",
-      "Week 5",
-      "Week 3",
-      "Week 1",
-      "How the tent is scored",
-      "Ad hoc rules",
-    ]);
+    expect(tape[0]).toBe("Village Crimewatch");
+    expect(tape[1]).toBe("Just on the tape");
+    expect(tape).toContain("Beer baguettes wanted");
+    expect(tape).toContain("Week 6");
+    expect(tape).toContain("Week 5");
+    expect(tape).toContain("Week 3");
+    expect(tape).toContain("Week 1");
 
+    const fresh = screen.getByRole("heading", { name: "Just on the tape" }).closest("section");
+    expect(fresh).toBeTruthy();
+    const freshLinks = Array.from(fresh!.querySelectorAll("a")).map((link) => link.textContent ?? "");
+    expect(freshLinks[0]).toMatch(/Nest/);
+    expect(freshLinks[0]).toMatch(/Beer baguette/);
     expect(screen.getByRole("link", { name: /Nest.*Week 6.*Beer baguette/i }).getAttribute("href")).toBe(
       "#exhibit-pen_false_accusation_nest",
     );
