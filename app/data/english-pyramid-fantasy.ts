@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Chris\'s Cheltenham Town lost 1-0 at Exeter City. No win points, net zero. Chris is on 378.\n\nJon still leads on 422 without a club kicking a ball. Dave is still last on 290.\n\nTable: Jon 422, Scott 387, Chris 378, Ben 363, Ash 340, Nest 310, Dave 290.';
+  'Jon\'s Newport County drew 2-2 with Crewe Alexandra. Plus 1 for the draw, net plus 1. Then Altrincham lost 4-0 at Harrogate Town. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Then Hartlepool United drew 1-1 with Wealdstone. Plus 1 for the draw, net plus 1. Then Salford City drew 1-1 with Northampton Town. Plus 1 for the draw, net plus 1. Then Stockport County beat Reading 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Jon is on 429.\n\nScott\'s Chesterfield won 2-0 at Bristol Rovers. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Kidderminster Harriers drew 1-1 with FC Halifax Town. Plus 1 for the draw, net plus 1. Then Burton Albion lost 6-2 at MK Dons. No win points, minus 1 for leaking three, net minus 1. Then Boreham Wood drew 2-2 with Yeovil Town. Plus 1 for the draw, net plus 1. Scott is on 393.\n\nChris\'s Cheltenham Town lost 1-0 at Exeter City. No win points, net zero. Then Wednesday beat Plymouth Argyle 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Then Aldershot Town lost 2-1 at Southend United. No win points, plus 1 for the red, net plus 1. Then AFC Wimbledon beat Blackpool 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for the red, net plus 5. Chris is on 389.\n\nBen\'s Barrow won 3-0 at Gateshead. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more, net plus 6. Then Tamworth lost 2-1 at Hornchurch. No win points, net zero. Then Grimsby Town won 4-1 at Swindon Town. Plus 4 for the away win, plus 1 for three or more, net plus 5. Ben is on 374.\n\nAsh\'s Carlisle United beat Boston United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Wealdstone drew 1-1 with Hartlepool United. Plus 1 for the draw, net plus 1. Then MK Dons beat Burton Albion 6-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then York City won 1-0 at Rochdale. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Shrewsbury Town beat Oldham Athletic 2-1 at home. Plus 3 for the home win, net plus 3. Ash is on 357.\n\nNest\'s Bristol Rovers lost 2-0 at home to Chesterfield. No win points, net zero. Then Hornchurch beat Tamworth 2-1 at home. Plus 3 for the home win, net plus 3. Then Accrington Stanley lost 4-2 at Port Vale. No win points, minus 1 for leaking three, net minus 1. Then Southend United beat Aldershot Town 2-1 at home. Plus 3 for the home win, net plus 3. Nest is on 315.\n\nDave\'s Port Vale beat Accrington Stanley 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Scunthorpe United drew 1-1 with Worthing. Plus 1 for the draw, net plus 1. Then Plymouth Argyle lost 3-0 at Wednesday. No win points, minus 1 for leaking three, net minus 1. Then Sutton United lost 2-0 at home to Solihull Moors. No win points, plus 1 for the red, net plus 1. Dave is on 295.\n\nTable: Jon 429, Scott 393, Chris 389, Ben 374, Ash 357, Nest 315, Dave 295.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11712,6 +11712,237 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayTeam: { name: 'Cheltenham Town', tla: 'CHT' },
     homeGoals: 1,
     awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-brst-chs',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Bristol Rovers', tla: 'BRST' },
+    awayTeam: { name: 'Chesterfield', tla: 'CHS' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-car-bost',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Carlisle United', tla: 'CAR' },
+    awayTeam: { name: 'Boston United', tla: 'BOST' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-cax-nwp',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Crewe Alexandra', tla: 'CAX' },
+    awayTeam: { name: 'Newport County', tla: 'NWP' },
+    homeGoals: 2,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-gat-brw',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Gateshead', tla: 'GAT' },
+    awayTeam: { name: 'Barrow', tla: 'BRW' },
+    homeGoals: 0,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-har-alt',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Harrogate Town', tla: 'HAR' },
+    awayTeam: { name: 'Altrincham', tla: 'ALT' },
+    homeGoals: 4,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-hpl-wea',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Hartlepool United', tla: 'HPL' },
+    awayTeam: { name: 'Wealdstone', tla: 'WEA' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-hrn-tam',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Hornchurch', tla: 'HRN' },
+    awayTeam: { name: 'Tamworth', tla: 'TAM' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-kid-hal',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+    awayTeam: { name: 'FC Halifax Town', tla: 'HAL' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-mkd-btn',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Milton Keynes Dons', tla: 'MKD' },
+    awayTeam: { name: 'Burton Albion', tla: 'BTN' },
+    homeGoals: 6,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-pvl-acc',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Port Vale', tla: 'PVL' },
+    awayTeam: { name: 'Accrington Stanley', tla: 'ACC' },
+    homeGoals: 4,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-rch-yor',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Rochdale', tla: 'RCH' },
+    awayTeam: { name: 'York City', tla: 'YOR' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-sal-nht',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Salford City', tla: 'SAL' },
+    awayTeam: { name: 'Northampton Town', tla: 'NHT' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-scu-wor',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+    awayTeam: { name: 'Worthing', tla: 'WOR' },
+    homeGoals: 1,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-shr-old',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Shrewsbury Town', tla: 'SHR' },
+    awayTeam: { name: 'Oldham Athletic', tla: 'OLD' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-shw-ply',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Sheffield Wednesday', tla: 'SHW' },
+    awayTeam: { name: 'Plymouth Argyle', tla: 'PLY' },
+    homeGoals: 3,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-std-ald',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Southend United', tla: 'STD' },
+    awayTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    homeGoals: 2,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-stp-rea',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Stockport County', tla: 'STP' },
+    awayTeam: { name: 'Reading', tla: 'REA' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-sut-sol',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Sutton United', tla: 'SUT' },
+    awayTeam: { name: 'Solihull Moors', tla: 'SOL' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-swi-gri',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Swindon Town', tla: 'SWI' },
+    awayTeam: { name: 'Grimsby Town', tla: 'GRI' },
+    homeGoals: 1,
+    awayGoals: 4,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-wim-blp',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'AFC Wimbledon', tla: 'WIM' },
+    awayTeam: { name: 'Blackpool', tla: 'BLP' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 1,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-14-yeo-bore',
+    utcDate: '2026-11-14T15:00Z',
+    homeTeam: { name: 'Yeovil Town', tla: 'YEO' },
+    awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
+    homeGoals: 2,
+    awayGoals: 2,
     homeRedCards: 0,
     awayRedCards: 0,
   },
