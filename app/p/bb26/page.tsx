@@ -15,6 +15,8 @@ import {
   companionPortrait,
   companionTotals,
   episodeScoringLines,
+  outstandingBeerBaguettes,
+  punishmentExhibits,
   scoreCompanionWeek,
   sideConfirmed,
   teamForWeek,
@@ -34,6 +36,9 @@ export default function LeaguePage() {
   const latest = published.at(-1);
   const gate = teamWindow(new Date(), league.totalWeeks);
   const size = teamSizeForWeek(league, gate.week);
+  const tapes = punishmentExhibits(league);
+  const onTape = tapes.filter((item) => Boolean(item.src));
+  const baguettesOwed = outstandingBeerBaguettes(league);
 
   if (league.companions.length === 0) {
     return (
@@ -111,6 +116,26 @@ export default function LeaguePage() {
                 </Link>
               )}
             </div>
+          </Card>
+
+          <Card eyebrow="The tapes" title="Village Crimewatch">
+            <p className="text-sm leading-7 text-chocolate/75">
+              {onTape.length > 0
+                ? `${onTape.length} punishment${onTape.length === 1 ? "" : "s"} already on tape${
+                    baguettesOwed.length > 0
+                      ? `, and ${baguettesOwed.length} beer baguette${baguettesOwed.length === 1 ? "" : "s"} still owed`
+                      : ""
+                  }. Nest\u2019s beer baguette lands here the moment it uploads.`
+                : baguettesOwed.length > 0
+                  ? `${baguettesOwed.length} beer baguette${baguettesOwed.length === 1 ? "" : "s"} still wanted. Uploads play on Crimewatch.`
+                  : "Slut drops, beer baguettes, and technical bake photos all screen on Crimewatch."}
+            </p>
+            <Link
+              href={`${GBBO_LEAGUE_PATH}/crimewatch`}
+              className="mt-4 inline-flex rounded-full bg-raspberry px-5 py-2.5 text-sm font-bold text-flour"
+            >
+              {onTape.length > 0 ? "Watch Crimewatch" : "Open Crimewatch"}
+            </Link>
           </Card>
         </div>
       </div>
