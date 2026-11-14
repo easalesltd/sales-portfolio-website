@@ -11,25 +11,37 @@ import { useLeague } from "@/app/lib/gbbo/store";
 
 const PLAYER_NAV = [
   { href: GBBO_LEAGUE_PATH, label: "League" },
-  { href: `${GBBO_LEAGUE_PATH}/bakers`, label: "Bakers" },
-  { href: `${GBBO_LEAGUE_PATH}/weigh-in`, label: "Weigh-in" },
-  { href: `${GBBO_LEAGUE_PATH}/teams`, label: "My team" },
-  { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes" },
-  { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
   { href: `${GBBO_LEAGUE_PATH}/crimewatch`, label: "Crimewatch" },
+  { href: `${GBBO_LEAGUE_PATH}/weigh-in`, label: "Weigh-in" },
+  { href: `${GBBO_LEAGUE_PATH}/bakers`, label: "Bakers" },
+  { href: `${GBBO_LEAGUE_PATH}/teams`, label: "My team" },
+  { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Recipes" },
+  { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
 ];
 
 const CHIEF_NAV = [
   { href: GBBO_LEAGUE_PATH, label: "League" },
-  { href: `${GBBO_LEAGUE_PATH}/bakers`, label: "Bakers" },
+  { href: `${GBBO_LEAGUE_PATH}/crimewatch`, label: "Crimewatch" },
   { href: `${GBBO_LEAGUE_PATH}/weigh-in`, label: "Weigh-in" },
+  { href: `${GBBO_LEAGUE_PATH}/bakers`, label: "Bakers" },
   { href: `${GBBO_LEAGUE_PATH}/teams`, label: "Teams" },
   { href: `${GBBO_LEAGUE_PATH}/score`, label: "Score" },
-  { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Technical recipes" },
+  { href: `${GBBO_LEAGUE_PATH}/technical-recipes`, label: "Recipes" },
   { href: `${GBBO_LEAGUE_PATH}/biggest-slut`, label: "Biggest slut" },
-  { href: `${GBBO_LEAGUE_PATH}/crimewatch`, label: "Crimewatch" },
   { href: `${GBBO_LEAGUE_PATH}/setup`, label: "Setup" },
 ];
+
+function navItemActive(pathname: string, href: string): boolean {
+  if (href === GBBO_LEAGUE_PATH) return pathname === href;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function currentNavLabel(pathname: string, nav: { href: string; label: string }[]): string {
+  const exact = nav.find((item) => item.href === pathname);
+  if (exact) return exact.label;
+  const nested = nav.find((item) => item.href !== GBBO_LEAGUE_PATH && pathname.startsWith(`${item.href}/`));
+  return nested?.label ?? "League";
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -37,7 +49,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { isChief, lockChief } = useGbboSession();
   const nav = isChief ? CHIEF_NAV : PLAYER_NAV;
   const [menuOpen, setMenuOpen] = useState(false);
-  const current = nav.find((item) => item.href === pathname)?.label ?? "League";
+  const current = currentNavLabel(pathname, nav);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -61,29 +73,41 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             ) : null}
           </div>
         </div>
-        <nav className="mx-auto hidden max-w-6xl flex-wrap gap-2 px-5 pb-3 sm:flex">
-          {nav.map((item) => {
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`rounded-full px-4 py-2 text-sm font-bold ${
-                  active ? "bg-tent text-flour" : "bg-flour/80 text-chocolate hover:bg-white"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav aria-label="Tent sections" className="mx-auto hidden max-w-6xl px-5 pb-3 sm:block">
+          <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {nav.map((item) => {
+              const active = navItemActive(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold ${
+                    active ? "bg-tent text-flour" : "bg-flour/80 text-chocolate hover:bg-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
       </div>
 
       <div className="sticky top-0 z-30 bg-[#fbf4e8]/95 backdrop-blur-md sm:hidden">
         <div className="flex items-center gap-3 px-4 py-2">
-          <Link href={GBBO_LEAGUE_PATH} className="min-w-0 flex-1">
+          <div className="min-w-0 flex-1">
             <p className="truncate font-display text-xl leading-none text-tent-dark">{current}</p>
             <p className="text-[11px] text-chocolate/65">Week {league.currentWeek}/{league.totalWeeks}</p>
+          </div>
+          <Link
+            href={`${GBBO_LEAGUE_PATH}/crimewatch`}
+            className={`shrink-0 rounded-full px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] ${
+              navItemActive(pathname, `${GBBO_LEAGUE_PATH}/crimewatch`)
+                ? "bg-raspberry text-flour"
+                : "bg-raspberry/15 text-raspberry"
+            }`}
+          >
+            Crimewatch
           </Link>
           <button
             type="button"
@@ -102,7 +126,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="bg-[#0d1f1a] px-4 py-3">
               <div className="grid gap-2">
                 {nav.map((item, index) => {
-                  const active = pathname === item.href;
+                  const active = navItemActive(pathname, item.href);
                   return (
                     <Link
                       key={item.href}

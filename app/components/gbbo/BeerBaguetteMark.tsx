@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
+import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { outstandingBeerBaguettes } from "@/app/lib/gbbo/league";
 import { useGbboSession } from "@/app/lib/gbbo/session";
@@ -21,7 +23,11 @@ export function BeerBaguetteMark({ companionId }: { companionId: string }) {
     if (!thanksName) return null;
     return (
       <p className="max-w-[16rem] font-script text-xl leading-tight text-raspberry">
-        Thank you, {thanksName}. That beer baguette is on the tape.
+        Thank you, {thanksName}. That beer baguette is{" "}
+        <Link href={`${GBBO_LEAGUE_PATH}/crimewatch`} className="underline decoration-raspberry/40 underline-offset-2">
+          on Crimewatch
+        </Link>
+        .
       </p>
     );
   }
