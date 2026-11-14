@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Salisbury beat Braintree Town 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for the red, net plus 5. Jon is on 422.\n\nScott\'s Darlington and Oxford City played each other and finished 1-1. Plus 1 for the draw for one, plus 1 for the draw for the other. Scott is on 387.\n\nBen\'s Morecambe drew 2-2 with Hereford. Plus 1 for the draw, net plus 1. Ben is on 363.\n\nDave\'s Torquay United won 2-0 at Hemel Hempstead Town. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Marine won 3-1 at Scarborough Athletic. Plus 4 for the away win, plus 1 for three or more, net plus 5. Dave is on 290.\n\nTable: Jon 422, Scott 387, Chris 378, Ben 363, Ash 340, Nest 310, Dave 290.';
+  'Chris\'s Cheltenham Town lost 1-0 at Exeter City. No win points, net zero. Chris is on 378.\n\nJon still leads on 422 without a club kicking a ball. Dave is still last on 290.\n\nTable: Jon 422, Scott 387, Chris 378, Ben 363, Ash 340, Nest 310, Dave 290.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11704,6 +11704,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayRedCards: 0,
     redsUnchecked: true,
   },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-14-exe-cht',
+    utcDate: '2026-11-14T12:30Z',
+    homeTeam: { name: 'Exeter City', tla: 'EXE' },
+    awayTeam: { name: 'Cheltenham Town', tla: 'CHT' },
+    homeGoals: 1,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -19191,6 +19202,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T15:00:00Z',
     homeTeam: { name: 'Chesham United', tla: 'CHU' },
     awayTeam: { name: 'Salisbury', tla: 'SBY' },
+    /** FotMob marked postponed (2026-12-05). */
+    postponed: true,
   },
   {
     id: '2026-12-05-clm-slo',
@@ -19209,6 +19222,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T15:00:00Z',
     homeTeam: { name: 'Dover Athletic', tla: 'DOV' },
     awayTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
+    /** FotMob marked postponed (2026-12-05). */
+    postponed: true,
   },
   {
     id: '2026-12-05-ebb-tor',
