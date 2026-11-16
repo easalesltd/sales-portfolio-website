@@ -11969,7 +11969,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-13 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-16 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -19198,12 +19198,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Macclesfield', tla: 'MAC' },
   },
   {
-    id: '2026-12-01-wah-dov',
-    utcDate: '2026-12-01T19:45:00Z',
-    homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
-    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
-  },
-  {
     id: '2026-12-01-acc-cax',
     utcDate: '2026-12-01T19:45Z',
     homeTeam: { name: 'Accrington Stanley', tla: 'ACC' },
@@ -19440,14 +19434,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Oxford City', tla: 'OXC' },
   },
   {
-    id: '2026-12-05-chu-sby',
-    utcDate: '2026-12-05T15:00:00Z',
-    homeTeam: { name: 'Chesham United', tla: 'CHU' },
-    awayTeam: { name: 'Salisbury', tla: 'SBY' },
-    /** FotMob marked postponed (2026-12-05). */
-    postponed: true,
-  },
-  {
     id: '2026-12-05-clm-slo',
     utcDate: '2026-12-05T15:00:00Z',
     homeTeam: { name: 'Chelmsford City', tla: 'CLM' },
@@ -19464,7 +19450,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T15:00:00Z',
     homeTeam: { name: 'Dover Athletic', tla: 'DOV' },
     awayTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
-    /** FotMob marked postponed (2026-12-05). */
+    /** League match postponed — no ledger result until it is rearranged. */
     postponed: true,
   },
   {
@@ -19606,14 +19592,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T15:00Z',
     homeTeam: { name: 'Southend United', tla: 'STD' },
     awayTeam: { name: 'Harrogate Town', tla: 'HAR' },
-  },
-  {
-    id: '2026-12-05-sut-fyl',
-    utcDate: '2026-12-05T15:00Z',
-    homeTeam: { name: 'Sutton United', tla: 'SUT' },
-    awayTeam: { name: 'AFC Fylde', tla: 'FYL' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-12-05-tam-alt',
@@ -19906,12 +19884,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Middlesbrough', tla: 'MID' },
   },
   {
-    id: '2026-12-09-far-mai',
-    utcDate: '2026-12-09T19:45:00Z',
-    homeTeam: { name: 'Farnborough', tla: 'FAR' },
-    awayTeam: { name: 'Maidstone United', tla: 'MAI' },
-  },
-  {
     id: '2026-12-09-brw-tam',
     utcDate: '2026-12-09T19:45Z',
     homeTeam: { name: 'Barrow', tla: 'BRW' },
@@ -19982,6 +19954,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-12T12:30Z',
     homeTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
     awayTeam: { name: 'York City', tla: 'YOR' },
+  },
+  {
+    id: '2026-12-12-far-mai',
+    utcDate: '2026-12-12T15:00:00Z',
+    homeTeam: { name: 'Farnborough', tla: 'FAR' },
+    awayTeam: { name: 'Maidstone United', tla: 'MAI' },
   },
   {
     id: '2026-12-12-bar-nht',
@@ -22264,10 +22242,28 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'FC Halifax Town', tla: 'HAL' },
   },
   {
+    id: '2027-01-12-chu-sby',
+    utcDate: '2027-01-12T19:45:00Z',
+    homeTeam: { name: 'Chesham United', tla: 'CHU' },
+    awayTeam: { name: 'Salisbury', tla: 'SBY' },
+  },
+  {
+    id: '2027-01-12-wah-dov',
+    utcDate: '2027-01-12T19:45:00Z',
+    homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
+    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
+  },
+  {
     id: '2027-01-12-nco-blp',
     utcDate: '2027-01-12T19:45Z',
     homeTeam: { name: 'Notts County', tla: 'NCO' },
     awayTeam: { name: 'Blackpool', tla: 'BLP' },
+  },
+  {
+    id: '2027-01-12-sut-fyl',
+    utcDate: '2027-01-12T19:45Z',
+    homeTeam: { name: 'Sutton United', tla: 'SUT' },
+    awayTeam: { name: 'AFC Fylde', tla: 'FYL' },
   },
   {
     id: '2027-01-15-whu-swa',
