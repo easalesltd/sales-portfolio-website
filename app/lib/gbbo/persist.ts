@@ -38,6 +38,7 @@ const WEEK_8_RESULT_KEY = "2026-week-8-caramel-results";
 const WEEK_8_CONNIE_CRIED_KEY = "2026-week-8-connie-cried";
 const WEEK_9_RESULT_KEY = "2026-week-9-patisserie-results";
 const WEEK_9_TOM_CRY_GABE_HANDSHAKE_KEY = "2026-week-9-tom-cry-gabe-handshake";
+const WEEK_9_RECIPE_KEY = "2026-week-9-gateau-concorde-recipe";
 const WEEK_3_TECHNICAL_FALLBACK_KEY = "2026-week-3-technical-fallback";
 const GUNS_WEEK_3_CLARA_KEY = "2026-week-3-guns-clara-restored";
 const REAL_WEEK_THEMES_KEY = "2026-real-week-themes";
@@ -409,13 +410,22 @@ export async function readGbboLeague(): Promise<LeagueState> {
     });
     league.resetsApplied.push(WEEK_7_RECIPE_KEY);
   }
+  const week9Recipe = !league.resetsApplied.includes(WEEK_9_RECIPE_KEY);
+  if (week9Recipe) {
+    pinTechnicalRecipe(league, 9, {
+      title: "Paul Hollywood’s Gâteau Concorde",
+      url: "https://thegreatbritishbakeoff.co.uk/recipes/all/paul-hollywood-gateau-concorde/",
+      photo: "/gbbo/recipes/gateau-concorde.jpg",
+    });
+    league.resetsApplied.push(WEEK_9_RECIPE_KEY);
+  }
   const reset = resetVideolessSlutDrops(league);
   const shortSides = applyShortSideEscalations(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
   const falseAccusation = ensureFalseAccusationBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || week8Published || week8ConnieCried || week9Published || week9TomCryGabeHandshake || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || week8Published || week8ConnieCried || week9Published || week9TomCryGabeHandshake || week9Recipe || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
     await writeGbboLeague(league);
   }
   return league;

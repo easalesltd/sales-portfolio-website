@@ -34,6 +34,12 @@ describe("patisserie week results", () => {
       expect(episode?.innuendos.filter((id) => id === bakerIdForName("Gabe"))).toHaveLength(3);
       expect(episode && technicalField(league, episode)).toBe(4);
       expect(league.bakers.find((baker) => baker.name === "Gabe")?.eliminatedInWeek).toBe(9);
+      expect(league.technicalRecipes.find((recipe) => recipe.week === 9)?.url).toContain(
+        "paul-hollywood-gateau-concorde",
+      );
+      expect(league.technicalRecipes.find((recipe) => recipe.week === 9)?.photo).toBe(
+        "/gbbo/recipes/gateau-concorde.jpg",
+      );
       expect(league.currentWeek).toBe(10);
 
       const points = (name: string) =>
