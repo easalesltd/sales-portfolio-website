@@ -28,6 +28,8 @@ describe("patisserie week results", () => {
       expect(episode?.theme).toBe("Patisserie");
       expect(episode?.starBakerId).toBe(bakerIdForName("Mo"));
       expect(episode?.eliminatedBakerId).toBe(bakerIdForName("Gabe"));
+      expect(episode?.handshakes).toEqual([bakerIdForName("Gabe")]);
+      expect(episode?.cries).toEqual({ [bakerIdForName("Tom")]: 1 });
       expect(episode?.innuendos.filter((id) => id === bakerIdForName("Moyin"))).toHaveLength(1);
       expect(episode?.innuendos.filter((id) => id === bakerIdForName("Gabe"))).toHaveLength(3);
       expect(episode && technicalField(league, episode)).toBe(4);
@@ -38,8 +40,8 @@ describe("patisserie week results", () => {
         scoreEpisodeForBaker(league, episode!, bakerIdForName(name)).reduce((sum, line) => sum + line.points, 0);
 
       expect(points("Mo")).toBe(8);
-      expect(points("Tom")).toBe(1);
-      expect(points("Gabe")).toBe(9);
+      expect(points("Tom")).toBe(-2);
+      expect(points("Gabe")).toBe(14);
       expect(points("Moyin")).toBe(2);
 
       const again = await readGbboLeague();
