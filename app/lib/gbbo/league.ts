@@ -252,8 +252,17 @@ export function scoreEpisodeForBaker(league: LeagueState, episode: EpisodeScore,
   if (episode.handshakes.includes(bakerId)) {
     lines.push({ label: `${baker} received a Hollywood handshake`, bakerId, points: 5, kind: "plus" });
   }
-  if (episode.innuendos.includes(bakerId)) {
-    lines.push({ label: `${baker} shared a naughty innuendo with Nigella`, bakerId, points: 5, kind: "plus" });
+  const innuendoCount = episode.innuendos.filter((id) => id === bakerId).length;
+  if (innuendoCount > 0) {
+    lines.push({
+      label:
+        innuendoCount === 1
+          ? `${baker} shared a naughty innuendo with Nigella`
+          : `${baker} shared ${innuendoCount} naughty innuendos with Nigella`,
+      bakerId,
+      points: 5 * innuendoCount,
+      kind: "plus",
+    });
   }
   if (episode.starBakerId === bakerId) {
     lines.push({ label: `${baker} was Star Baker`, bakerId, points: 5, kind: "plus" });
@@ -810,8 +819,13 @@ export function episodeScoringLines(league: LeagueState, episode: EpisodeScore):
   for (const bakerId of episode.handshakes) {
     lines.push(`${name(bakerId)} received a Hollywood handshake (+5).`);
   }
+  const innuendoCounts = new Map<string, number>();
   for (const bakerId of episode.innuendos) {
-    lines.push(`${name(bakerId)} shared a naughty innuendo with Nigella (+5).`);
+    innuendoCounts.set(bakerId, (innuendoCounts.get(bakerId) ?? 0) + 1);
+  }
+  for (const [bakerId, count] of innuendoCounts) {
+    if (count === 1) lines.push(`${name(bakerId)} shared a naughty innuendo with Nigella (+5).`);
+    else lines.push(`${name(bakerId)} shared ${count} naughty innuendos with Nigella (+${5 * count}).`);
   }
   for (const [bakerId, count] of Object.entries(episode.drops)) {
     if (count > 0) lines.push(`${name(bakerId)} dropped something ${count === 1 ? "once" : `${count} times`} (${-3 * count}).`);

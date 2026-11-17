@@ -73,7 +73,7 @@ export function bakerLedger(league: LeagueState, bakerId: string): BakerLedger {
     drops += episode.drops[bakerId] ?? 0;
     cries += episode.cries[bakerId] ?? 0;
     if (episode.handshakes.includes(bakerId)) handshakes += 1;
-    if (episode.innuendos.includes(bakerId)) innuendos += 1;
+    innuendos += episode.innuendos.filter((id) => id === bakerId).length;
     if (episode.starBakerId === bakerId) starBaker += 1;
     if (baker?.eliminatedInWeek && baker.eliminatedInWeek < episode.week) continue;
     const field = technicalField(league, episode);
