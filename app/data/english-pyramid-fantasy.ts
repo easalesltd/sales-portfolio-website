@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Newport County drew 2-2 with Crewe Alexandra. Plus 1 for the draw, net plus 1. Then Altrincham lost 4-0 at Harrogate Town. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Then Hartlepool United drew 1-1 with Wealdstone. Plus 1 for the draw, net plus 1. Then Salford City drew 1-1 with Northampton Town. Plus 1 for the draw, net plus 1. Then Stockport County beat Reading 3-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Jon is on 429.\n\nScott\'s Chesterfield won 2-0 at Bristol Rovers. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Kidderminster Harriers drew 1-1 with FC Halifax Town. Plus 1 for the draw, net plus 1. Then Burton Albion lost 6-2 at MK Dons. No win points, minus 1 for leaking three, net minus 1. Then Boreham Wood drew 2-2 with Yeovil Town. Plus 1 for the draw, net plus 1. Scott is on 393.\n\nChris\'s Cheltenham Town lost 1-0 at Exeter City. No win points, net zero. Then Wednesday beat Plymouth Argyle 3-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Then Aldershot Town lost 2-1 at Southend United. No win points, plus 1 for the red, net plus 1. Then AFC Wimbledon beat Blackpool 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for the red, net plus 5. Chris is on 389.\n\nBen\'s Barrow won 3-0 at Gateshead. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more, net plus 6. Then Tamworth lost 2-1 at Hornchurch. No win points, net zero. Then Grimsby Town won 4-1 at Swindon Town. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Fleetwood Town beat Tranmere Rovers 1-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Ben is on 378.\n\nAsh\'s Carlisle United beat Boston United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Then Wealdstone drew 1-1 with Hartlepool United. Plus 1 for the draw, net plus 1. Then MK Dons beat Burton Albion 6-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then York City won 1-0 at Rochdale. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Shrewsbury Town beat Oldham Athletic 2-1 at home. Plus 3 for the home win, net plus 3. Ash is on 357.\n\nNest\'s Bristol Rovers lost 2-0 at home to Chesterfield. No win points, net zero. Then Hornchurch beat Tamworth 2-1 at home. Plus 3 for the home win, net plus 3. Then Accrington Stanley lost 4-2 at Port Vale. No win points, minus 1 for leaking three, net minus 1. Then Southend United beat Aldershot Town 2-1 at home. Plus 3 for the home win, net plus 3. Nest is on 315.\n\nDave\'s Port Vale beat Accrington Stanley 4-2 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Scunthorpe United drew 1-1 with Worthing. Plus 1 for the draw, net plus 1. Then Plymouth Argyle lost 3-0 at Wednesday. No win points, minus 1 for leaking three, net minus 1. Then Sutton United lost 2-0 at home to Solihull Moors. No win points, plus 1 for the red, net plus 1. Then Tranmere Rovers lost 1-0 at Fleetwood Town. No win points, net zero. Dave is on 295.\n\nTable: Jon 429, Scott 393, Chris 389, Ben 378, Ash 357, Nest 315, Dave 295.';
+  'Jon\'s Bedford Town lost 2-1 at home to Chorley. No win points, plus 1 for the red, net plus 1. Then Macclesfield won 3-1 at Oxford City. Plus 4 for the away win, plus 1 for three or more, net plus 5. Then Truro City served up a boring 0-0 against Billericay Town. Minus 1 for the 0-0, net minus 1. Jon is on 434.\n\nChris\'s Chester FC won 5-0 at Spennymoor Town. Plus 4 for the away win, plus 1 for the clean sheet, plus 1 for three or more, net plus 6. Then Tonbridge Angels beat Chesham United 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Chris is on 399.\n\nScott\'s Oxford City lost 3-1 at home to Macclesfield. No win points, minus 1 for leaking three, net minus 1. Scott is on 392.\n\nBen\'s Hebburn Town served up a boring 0-0 against Spalding United. Minus 1 for the 0-0, net minus 1. Ben is on 377.\n\nAsh\'s Spalding United served up a boring 0-0 against Hebburn Town. Minus 1 for the 0-0, net minus 1. Ash is on 356.\n\nNest\'s Chesham United lost 2-0 at Tonbridge Angels. No win points, net zero. Nest is on 315.\n\nDave is still last on 295.\n\nTable: Jon 434, Chris 399, Scott 392, Ben 377, Ash 356, Nest 315, Dave 295.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -11957,6 +11957,78 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeRedCards: 0,
     awayRedCards: 0,
   },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/bedford-town/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-17-bed-cho',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Bedford Town', tla: 'BED' },
+    awayTeam: { name: 'Chorley', tla: 'CHO' },
+    homeGoals: 1,
+    awayGoals: 2,
+    homeRedCards: 1,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/oxford-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-17-oxc-mac',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Oxford City', tla: 'OXC' },
+    awayTeam: { name: 'Macclesfield', tla: 'MAC' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/spalding-united/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-17-spa-heb',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Spalding United', tla: 'SPA' },
+    awayTeam: { name: 'Hebburn Town', tla: 'HEB' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/chester/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-17-spe-chf',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Spennymoor Town', tla: 'SPE' },
+    awayTeam: { name: 'Chester FC', tla: 'CHF' },
+    homeGoals: 0,
+    awayGoals: 5,
+    homeRedCards: 1,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/tonbridge-angels/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-17-ton-chu',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Tonbridge Angels', tla: 'TON' },
+    awayTeam: { name: 'Chesham United', tla: 'CHU' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
+  {
+    /** Verified final score (FotMob; FWP unavailable: FWP request failed (403): https://www.footballwebpages.co.uk/truro-city/fixtures-results). Red cards from FotMob — redsUnchecked. */
+    id: '2026-11-17-tru-bil',
+    utcDate: '2026-11-17T19:45:00Z',
+    homeTeam: { name: 'Truro City', tla: 'TRU' },
+    awayTeam: { name: 'Billericay Town', tla: 'BIL' },
+    homeGoals: 0,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+    redsUnchecked: true,
+  },
 ];
 
 export type EnglishPyramidFixture = {
@@ -18084,6 +18156,8 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-17T19:45:00Z',
     homeTeam: { name: 'South Shields', tla: 'SSH' },
     awayTeam: { name: 'Harborough Town', tla: 'HBO' },
+    /** FotMob marked postponed (2026-11-17). */
+    postponed: true,
   },
   {
     id: '2026-11-17-ton-chu',
