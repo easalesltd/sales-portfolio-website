@@ -12041,7 +12041,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-19 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-20 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -17752,14 +17752,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Tonbridge Angels', tla: 'TON' },
   },
   {
-    id: '2026-11-07-fol-tru',
-    utcDate: '2026-11-07T15:00:00Z',
-    homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
-    awayTeam: { name: 'Truro City', tla: 'TRU' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-11-07-hed-mor',
     utcDate: '2026-11-07T15:00:00Z',
     homeTeam: { name: 'Hednesford Town', tla: 'HED' },
@@ -19746,12 +19738,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Sutton United', tla: 'SUT' },
   },
   {
-    id: '2026-12-08-aft-fnh',
-    utcDate: '2026-12-08T19:45:00Z',
-    homeTeam: { name: 'AFC Totton', tla: 'AFT' },
-    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
-  },
-  {
     id: '2026-12-08-bed-oxc',
     utcDate: '2026-12-08T19:45:00Z',
     homeTeam: { name: 'Bedford Town', tla: 'BED' },
@@ -19830,12 +19816,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Morecambe', tla: 'MOR' },
   },
   {
-    id: '2026-12-08-spt-heb',
-    utcDate: '2026-12-08T19:45:00Z',
-    homeTeam: { name: 'Southport', tla: 'SPT' },
-    awayTeam: { name: 'Hebburn Town', tla: 'HEB' },
-  },
-  {
     id: '2026-12-08-ssh-sca',
     utcDate: '2026-12-08T19:45:00Z',
     homeTeam: { name: 'South Shields', tla: 'SSH' },
@@ -19902,12 +19882,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Wolverhampton Wanderers', tla: 'WOL' },
   },
   {
-    id: '2026-12-08-scu-fyl',
-    utcDate: '2026-12-08T19:45Z',
-    homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
-    awayTeam: { name: 'AFC Fylde', tla: 'FYL' },
-  },
-  {
     id: '2026-12-08-std-bost',
     utcDate: '2026-12-08T19:45Z',
     homeTeam: { name: 'Southend United', tla: 'STD' },
@@ -19962,6 +19936,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Portsmouth', tla: 'POR' },
   },
   {
+    id: '2026-12-08-scu-fyl',
+    utcDate: '2026-12-08T19:45:00Z',
+    homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+    awayTeam: { name: 'AFC Fylde', tla: 'FYL' },
+  },
+  {
     id: '2026-12-09-yeo-wea',
     utcDate: '2026-12-09T19:45Z',
     homeTeam: { name: 'Yeovil Town', tla: 'YEO' },
@@ -20014,6 +19994,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-12T12:30Z',
     homeTeam: { name: 'Tranmere Rovers', tla: 'TRN' },
     awayTeam: { name: 'York City', tla: 'YOR' },
+  },
+  {
+    id: '2026-12-12-aft-fnh',
+    utcDate: '2026-12-12T15:00:00Z',
+    homeTeam: { name: 'AFC Totton', tla: 'AFT' },
+    awayTeam: { name: 'Farnham Town', tla: 'FNH' },
   },
   {
     id: '2026-12-12-chf-cho',
@@ -20718,6 +20704,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Dagenham & Redbridge', tla: 'DAG' },
   },
   {
+    id: '2026-12-26-mai-bil',
+    utcDate: '2026-12-26T13:00:00Z',
+    homeTeam: { name: 'Maidstone United', tla: 'MAI' },
+    awayTeam: { name: 'Billericay Town', tla: 'BIL' },
+  },
+  {
     id: '2026-12-26-brk-oxc',
     utcDate: '2026-12-26T15:00:00Z',
     homeTeam: { name: 'Brackley Town', tla: 'BRK' },
@@ -20788,12 +20780,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-26T15:00:00Z',
     homeTeam: { name: 'Macclesfield', tla: 'MAC' },
     awayTeam: { name: 'Buxton', tla: 'BUX' },
-  },
-  {
-    id: '2026-12-26-mai-bil',
-    utcDate: '2026-12-26T15:00:00Z',
-    homeTeam: { name: 'Maidstone United', tla: 'MAI' },
-    awayTeam: { name: 'Billericay Town', tla: 'BIL' },
   },
   {
     id: '2026-12-26-mar-spt',
@@ -22314,6 +22300,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Salisbury', tla: 'SBY' },
   },
   {
+    id: '2027-01-12-fol-tru',
+    utcDate: '2027-01-12T19:45:00Z',
+    homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
+    awayTeam: { name: 'Truro City', tla: 'TRU' },
+  },
+  {
     id: '2027-01-12-wah-dov',
     utcDate: '2027-01-12T19:45:00Z',
     homeTeam: { name: 'Walton & Hersham', tla: 'WAH' },
@@ -22690,6 +22682,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-17T16:30Z',
     homeTeam: { name: 'Tottenham Hotspur', tla: 'TOT' },
     awayTeam: { name: 'Leeds United', tla: 'LEE' },
+  },
+  {
+    id: '2027-01-19-spt-heb',
+    utcDate: '2027-01-19T19:45:00Z',
+    homeTeam: { name: 'Southport', tla: 'SPT' },
+    awayTeam: { name: 'Hebburn Town', tla: 'HEB' },
   },
   {
     id: '2027-01-19-acc-yor',
