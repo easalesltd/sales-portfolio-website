@@ -12063,7 +12063,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-20 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-21 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -17864,14 +17864,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Newcastle United', tla: 'NEW' },
   },
   {
-    id: '2026-11-07-gat-tam',
-    utcDate: '2026-11-07T15:00Z',
-    homeTeam: { name: 'Gateshead', tla: 'GAT' },
-    awayTeam: { name: 'Tamworth', tla: 'TAM' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-11-07-pne-sou',
     utcDate: '2026-11-07T15:00Z',
     homeTeam: { name: 'Preston North End', tla: 'PNE' },
@@ -19959,7 +19951,7 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   },
   {
     id: '2026-12-09-scu-fyl',
-    utcDate: '2026-12-09T19:45:00Z',
+    utcDate: '2026-12-09T19:45Z',
     homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
     awayTeam: { name: 'AFC Fylde', tla: 'FYL' },
   },
@@ -22740,6 +22732,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-19T19:45Z',
     homeTeam: { name: 'Fleetwood Town', tla: 'FLE' },
     awayTeam: { name: 'Cheltenham Town', tla: 'CHT' },
+  },
+  {
+    id: '2027-01-19-gat-tam',
+    utcDate: '2027-01-19T19:45Z',
+    homeTeam: { name: 'Gateshead', tla: 'GAT' },
+    awayTeam: { name: 'Tamworth', tla: 'TAM' },
   },
   {
     id: '2027-01-19-gri-rch',
