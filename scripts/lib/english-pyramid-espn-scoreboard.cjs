@@ -90,7 +90,11 @@ function parseEspnScoreboardEvent(event, slug, ignoreStatuses) {
   const statusState = event.status?.type?.state ?? '';
 
   const statusBlob = `${period} ${statusName} ${statusState}`;
-  const isPostponed = /postpon/i.test(statusBlob);
+  // Suspended/abandoned matches (ESPN STATUS_SUSPENDED / STATUS_ABANDONED) freeze the
+  // score at the point of abandonment, e.g. Barrow 1-0 Forest Green on 2026-10-24. That
+  // is not a league result — the match is replayed — so treat it like a postponement
+  // instead of promoting the partial score (mirrors the FotMob/FWP abandoned handling).
+  const isPostponed = /postpon|abandon|suspend/i.test(statusBlob);
   const normalizedPeriod = period.trim().toLowerCase();
 
   if (isPostponed) {

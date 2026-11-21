@@ -12,6 +12,7 @@ const {
   mergeRemoteFixturesWithLocal,
 } = require('./english-pyramid-fixture-lib.cjs');
 const { isEspnEventPostponed } = require('./english-pyramid-fixture-lib.cjs');
+const { parseEspnScoreboard } = require('./english-pyramid-espn-scoreboard.cjs');
 const {
   applySchedulePatches,
   patchesFromEspnEvents,
@@ -433,5 +434,74 @@ describe('ESPN postponement detection', () => {
     expect(patches).toEqual([
       expect.objectContaining({ type: 'postpone', id: '2026-09-26-cra-bar' }),
     ]);
+  });
+
+  it('reads suspended and abandoned ESPN statuses as not a going-ahead result', () => {
+    expect(
+      isEspnEventPostponed({
+        status: { type: { name: 'STATUS_SUSPENDED', shortDetail: 'Susp', state: 'post' } },
+      }),
+    ).toBe(true);
+    expect(
+      isEspnEventPostponed({
+        status: { type: { name: 'STATUS_ABANDONED', description: 'Abandoned', state: 'post' } },
+      }),
+    ).toBe(true);
+  });
+
+  it('parses a suspended ESPN scoreboard event as postponed, not a frozen score', () => {
+    // Barrow 1-0 Forest Green, 24 Oct 2026 — abandoned/suspended with the score frozen.
+    const [event] = parseEspnScoreboard(
+      {
+        events: [
+          {
+            date: '2026-10-24T14:00Z',
+            status: { type: { name: 'STATUS_SUSPENDED', shortDetail: 'Susp', state: 'post' } },
+            competitions: [
+              {
+                competitors: [
+                  { homeAway: 'home', score: '1', team: { abbreviation: 'BRW' } },
+                  { homeAway: 'away', score: '0', team: { abbreviation: 'FGR' } },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      'eng.5',
+      new Set(),
+    );
+    expect(event).toMatchObject({ homeTla: 'BRW', awayTla: 'FGR', postponed: true, period: 'Postponed' });
+  });
+
+  it('does not unpostpone an already-postponed fixture when ESPN only suspended it', () => {
+    const barrow = {
+      id: '2026-10-24-brw-fgr',
+      utcDate: '2026-10-24T14:00Z',
+      homeTeam: { name: 'Barrow', tla: 'BRW' },
+      awayTeam: { name: 'Forest Green Rovers', tla: 'FGR' },
+      postponed: true,
+    };
+    const events = parseEspnScoreboard(
+      {
+        events: [
+          {
+            date: '2026-10-24T14:00Z',
+            status: { type: { name: 'STATUS_SUSPENDED', shortDetail: 'Susp', state: 'post' } },
+            competitions: [
+              {
+                competitors: [
+                  { homeAway: 'home', score: '1', team: { abbreviation: 'BRW' } },
+                  { homeAway: 'away', score: '0', team: { abbreviation: 'FGR' } },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      'eng.5',
+      new Set(),
+    );
+    expect(patchesFromEspnEvents([barrow], events)).toEqual([]);
   });
 });
