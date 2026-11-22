@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Scott\'s Hull City beat Brighton 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Scott is on 424.\n\nNest\'s Blackburn Rovers drew 2-2 with Burnley. Plus 1 for the draw, net plus 1. Nest is on 349.\n\nDave\'s Burnley drew 2-2 with Blackburn Rovers. Plus 1 for the draw, net plus 1. Dave is on 308.\n\nJon still leads on 459 without a club kicking a ball.\n\nTable: Jon 459, Scott 424, Chris 419, Ben 397, Ash 382, Nest 349, Dave 308.';
+  'Scott\'s Hull City beat Brighton 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Scott is on 424.\n\nBen\'s Liverpool beat United 4-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, plus 1 for three or more, net plus 5. Ben is on 402.\n\nAsh\'s United lost 4-0 at Liverpool. No win points, minus 1 for leaking three, plus 1 for the red, net zero. Ash is on 382.\n\nNest\'s Blackburn Rovers drew 2-2 with Burnley. Plus 1 for the draw, net plus 1. Nest is on 349.\n\nDave\'s Burnley drew 2-2 with Blackburn Rovers. Plus 1 for the draw, net plus 1. Dave is on 308.\n\nJon still leads on 459 without a club kicking a ball.\n\nTable: Jon 459, Scott 424, Chris 419, Ben 402, Ash 382, Nest 349, Dave 308.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -12759,6 +12759,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeTeam: { name: 'Hull City', tla: 'HUL' },
     awayTeam: { name: 'Brighton & Hove Albion', tla: 'BHA' },
     homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 1,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-22-liv-mun',
+    utcDate: '2026-11-22T16:30Z',
+    homeTeam: { name: 'Liverpool', tla: 'LIV' },
+    awayTeam: { name: 'Manchester United', tla: 'MUN' },
+    homeGoals: 4,
     awayGoals: 0,
     homeRedCards: 0,
     awayRedCards: 1,
