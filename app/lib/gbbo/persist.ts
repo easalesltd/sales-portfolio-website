@@ -258,6 +258,7 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
   league.draftRankings = nextRankings;
 
   if (!Array.isArray(league.sideConfirmations)) league.sideConfirmations = [];
+  if (!Array.isArray(league.technicalPodiumPredictions)) league.technicalPodiumPredictions = [];
   if (!Array.isArray(league.slutDrops)) league.slutDrops = [];
   if (!Array.isArray(league.technicalRecipes)) league.technicalRecipes = [];
   if (!Array.isArray(league.technicalCatalogue)) league.technicalCatalogue = [];
@@ -276,6 +277,12 @@ export function stabilizeLeague(league: LeagueState): LeagueState {
   }
   for (const confirmation of league.sideConfirmations) {
     confirmation.companionId = rewrite(companionMap, confirmation.companionId) ?? confirmation.companionId;
+  }
+  for (const pick of league.technicalPodiumPredictions) {
+    pick.companionId = rewrite(companionMap, pick.companionId) ?? pick.companionId;
+    pick.firstId = rewrite(bakerMap, pick.firstId) ?? pick.firstId;
+    pick.secondId = rewrite(bakerMap, pick.secondId) ?? pick.secondId;
+    pick.thirdId = rewrite(bakerMap, pick.thirdId) ?? pick.thirdId;
   }
   for (const joker of league.jokers) {
     joker.companionId = rewrite(companionMap, joker.companionId) ?? joker.companionId;

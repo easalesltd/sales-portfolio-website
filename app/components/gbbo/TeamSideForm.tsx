@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { SHORT_SIDE_RULE_FROM_WEEK, bakerName, bakerStillIn, barredBakersForWeek, carriedTeam, commonBakerBlocksFurtherChange, companionInDisgrace, companionPortrait, jokerForCompanion, lineupChanges, selectableBakers, sideConfirmed, teamForWeek, teamSizeForWeek } from "@/app/lib/gbbo/league";
+import { SHORT_SIDE_RULE_FROM_WEEK, bakerName, bakerStillIn, barredBakersForWeek, carriedTeam, commonBakerBlocksFurtherChange, companionInDisgrace, companionPortrait, isFinalWeek, jokerForCompanion, lineupChanges, parseTechnicalPodium, podiumBakerNames, selectableBakers, sideSubmissionComplete, teamForWeek, teamSizeForWeek, technicalPodiumPrediction } from "@/app/lib/gbbo/league";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useLeague } from "@/app/lib/gbbo/store";
 import type { Companion, LeagueState } from "@/app/lib/gbbo/types";
@@ -33,15 +33,22 @@ export function TeamSideForm({
 }) {
   const { league, submitSide } = useLeague();
   const size = teamSizeForWeek(league, week);
+  const finalWeek = isFinalWeek(league, week);
   const barred = useMemo(() => barredBakersForWeek(league, week), [league, week]);
   const remaining = selectableBakers(league, week).filter((baker) => !barred.includes(baker.id));
+  const finalists = useMemo(
+    () => league.bakers.filter((baker) => bakerStillIn(league, baker.id, week)),
+    [league, week],
+  );
   const lastWeek = week > 1 ? teamForWeek(league, companion.id, week - 1) : carriedTeam(league, companion.id, 1);
   const defaultLineup = useMemo(() => {
     const carried = carriedTeam(league, companion.id, week);
     const current = teamForWeek(league, companion.id, week);
     return livingLineup(league, current.length >= carried.length ? current : carried, week, size, barred);
   }, [league, companion.id, week, size, barred]);
+  const savedPodium = technicalPodiumPrediction(league, companion.id, week);
   const [picks, setPicks] = useState<string[] | null>(null);
+  const [podiumDraft, setPodiumDraft] = useState<{ firstId: string; secondId: string; thirdId: string } | null>(null);
   const [message, setMessage] = useState("");
   const proposed = picks ?? defaultLineup;
   const filled = proposed.filter(Boolean);
@@ -54,8 +61,13 @@ export function TeamSideForm({
   const brokeTheBar = commonBakerBlocksFurtherChange(lastWeek, livingLast, filled, barred, size);
   const legal = unique.size === filled.length && filled.length === size && (week === 1 ? changes <= 3 : changes <= 1);
   const shrinkingOk = shrinking && filled.length === size && unique.size === size && changes === 0;
-  const canSubmit = !locked && !brokeTheBar && (legal || shrinkingOk);
-  const submitted = sideConfirmed(league, companion.id, week);
+  const proposedPodium = podiumDraft ?? (savedPodium
+    ? { firstId: savedPodium.firstId, secondId: savedPodium.secondId, thirdId: savedPodium.thirdId }
+    : { firstId: "", secondId: "", thirdId: "" });
+  const parsedPodium = parseTechnicalPodium(proposedPodium);
+  const podiumReady = !finalWeek || Boolean(parsedPodium);
+  const canSubmit = !locked && !brokeTheBar && (legal || shrinkingOk) && podiumReady;
+  const submitted = sideSubmissionComplete(league, companion.id, week);
   const joker = jokerForCompanion(league, companion.id);
   const canJoker = !jokerLocked && week <= 4 && !joker;
   const [whyOpen, setWhyOpen] = useState(false);
@@ -72,6 +84,8 @@ export function TeamSideForm({
           ? `${benched.map((id) => bakerName(league, id)).join(" and ")} coming off uses your substitution, so you cannot change anyone else.`
         : week > 1 && changes > 1
           ? `${changes} bakers are different from last week. Only one substitution is allowed, so put one of last week's bakers back.`
+          : finalWeek && !parsedPodium
+            ? "Predict 1st, 2nd and 3rd in the technical. Three different bakers still in the tent."
           : null;
 
   function setSlot(index: number, bakerId: string) {
@@ -151,6 +165,40 @@ export function TeamSideForm({
           );
         })}
       </div>
+      {finalWeek ? (
+        <div className="mt-5 rounded-[22px] border border-[#e7d3b4] bg-flour/80 p-4">
+          <p className="font-display text-2xl text-tent-dark">Final bonus: technical 1-2-3</p>
+          <p className="mt-1 text-sm leading-6 text-chocolate/70">
+            Predict who finishes first, second and third in the technical. The exact order is worth 20 points.
+            Submit this with your baker before 8pm Tuesday.
+          </p>
+          {locked ? (
+            <p className="mt-3 text-sm text-chocolate">
+              {parsedPodium ? podiumBakerNames(league, parsedPodium) : "No technical 1-2-3 yet"}
+            </p>
+          ) : (
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              {(["firstId", "secondId", "thirdId"] as const).map((slot, index) => (
+                <label key={slot} className="block text-sm font-bold text-chocolate/80">
+                  {index === 0 ? "1st" : index === 1 ? "2nd" : "3rd"}
+                  <select
+                    className="mt-1 w-full rounded-2xl border border-[#e7d3b4] bg-white px-3 py-2.5 font-normal outline-none ring-butter/70 focus:ring-4"
+                    value={proposedPodium[slot]}
+                    onChange={(event) => {
+                      setPodiumDraft({ ...proposedPodium, [slot]: event.target.value });
+                    }}
+                  >
+                    <option value="">Choose</option>
+                    {finalists.map((baker) => (
+                      <option key={baker.id} value={baker.id}>{baker.name}</option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : null}
       <p className={`mt-3 text-sm ${blockReason ? "text-raspberry" : "text-chocolate/65"}`}>
         {blockReason
           ? blockReason
@@ -169,12 +217,20 @@ export function TeamSideForm({
           disabled={!canSubmit}
           title={blockReason ?? undefined}
           onClick={() => {
-            void submitSide({ companionSlug: gbboSlug(companion.name), bakerIds: filled }).then((error) => {
-              setMessage(error ?? "Saved. This week's side will be remembered.");
+            void submitSide({
+              companionSlug: gbboSlug(companion.name),
+              bakerIds: filled,
+              ...(parsedPodium
+                ? { technicalPodium: { firstId: parsedPodium[0], secondId: parsedPodium[1], thirdId: parsedPodium[2] } }
+                : {}),
+            }).then((error) => {
+              setMessage(error ?? (finalWeek
+                ? "Saved. Your baker and technical 1-2-3 are in."
+                : "Saved. This week's side will be remembered."));
             });
           }}
         >
-          Submit this week's side
+          {finalWeek ? "Submit baker and 1-2-3" : "Submit this week's side"}
         </Button>
         {blockReason ? (
           <Button tone="ghost" type="button" onClick={() => setWhyOpen((open) => !open)}>
@@ -183,7 +239,7 @@ export function TeamSideForm({
         ) : null}
         <Button
           tone="ghost"
-          disabled={locked || livingLast.length !== size}
+          disabled={locked || livingLast.length !== size || (finalWeek && !parsedPodium)}
           title={
             locked
               ? (lockReason ?? "The change window is closed.")
@@ -193,12 +249,22 @@ export function TeamSideForm({
                 ? "Last week's side includes a baker who cannot be picked this week. Pick a replacement."
                 : livingLast.length < size
                   ? `Only ${livingLast.length} of last week's bakers are still in the tent. Pick a replacement.`
+                  : finalWeek && !parsedPodium
+                    ? "Predict 1st, 2nd and 3rd in the technical as well."
                   : undefined
           }
           onClick={() => {
             setPicks(padLineup(carriedTeam(league, companion.id, week), size));
-            void submitSide({ companionSlug: gbboSlug(companion.name), keepLastWeek: true }).then((error) => {
-              setMessage(error ?? "Last week's bakers will play again.");
+            void submitSide({
+              companionSlug: gbboSlug(companion.name),
+              keepLastWeek: true,
+              ...(parsedPodium
+                ? { technicalPodium: { firstId: parsedPodium[0], secondId: parsedPodium[1], thirdId: parsedPodium[2] } }
+                : {}),
+            }).then((error) => {
+              setMessage(error ?? (finalWeek
+                ? "Last week's baker will play, and your technical 1-2-3 is in."
+                : "Last week's bakers will play again."));
             });
           }}
         >

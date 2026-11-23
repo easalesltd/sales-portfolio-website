@@ -4,7 +4,7 @@ import { PlayerUnlockForm } from "@/app/components/gbbo/PlayerUnlockForm";
 import { TeamSideForm } from "@/app/components/gbbo/TeamSideForm";
 import { Card, Empty, Pill } from "@/app/components/gbbo/ui";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
-import { sideConfirmed, teamSizeForWeek } from "@/app/lib/gbbo/league";
+import { isFinalWeek, sideSubmissionComplete, teamSizeForWeek } from "@/app/lib/gbbo/league";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { teamWindow } from "@/app/lib/gbbo/window";
@@ -53,20 +53,25 @@ export default function TeamsPage() {
           {size === 1
             ? " Pick one baker still in the tent. You may keep one from last week or substitute."
             : " Last week's team is kept unless you substitute one baker."}
-          Under each side is their form: points, drops, tears and how those numbers were reached.
+          {isFinalWeek(league, week)
+            ? " For the Final you also predict 1st, 2nd and 3rd in the technical. The exact order is worth 20 bonus points. Both the baker and the 1-2-3 must be in before 8pm Tuesday."
+            : " Under each side is their form: points, drops, tears and how those numbers were reached."}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Pill tone={gate.open || isChief ? "tent" : "raspberry"}>{gate.open || isChief ? "Window open" : "Window locked"}</Pill>
           <Pill tone="tent">{size} to play</Pill>
           <Pill tone="butter">One change from last week</Pill>
+          {isFinalWeek(league, week) ? <Pill tone="butter">+20 for the technical 1-2-3</Pill> : null}
         </div>
       </Card>
       <div className={`grid gap-4 ${isChief ? "md:grid-cols-2" : ""}`}>
         {visible.map((companion) => {
-          const confirmed = sideConfirmed(league, companion.id, week);
+          const confirmed = sideSubmissionComplete(league, companion.id, week);
           const formLocked = locked || (confirmed && !isChief);
           const reason = confirmed && !isChief
-            ? "Your week is locked. You have already submitted this side."
+            ? isFinalWeek(league, week)
+              ? "Your Final is locked. Your baker and technical 1-2-3 are in."
+              : "Your week is locked. You have already submitted this side."
             : gate.summary;
           return (
             <TeamSideForm

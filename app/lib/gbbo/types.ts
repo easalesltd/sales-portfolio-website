@@ -48,6 +48,15 @@ export type SideConfirmation = {
   week: number;
 };
 
+/** Final-week bonus: predicted technical 1st, 2nd and 3rd. Exact order only. */
+export type TechnicalPodiumPrediction = {
+  companionId: Id;
+  week: number;
+  firstId: Id;
+  secondId: Id;
+  thirdId: Id;
+};
+
 export type TechnicalRecipe = {
   week: number;
   title: string;
@@ -150,6 +159,7 @@ export type LeagueState = {
   initialTeams: TeamAssignment[];
   substitutions: Substitution[];
   sideConfirmations: SideConfirmation[];
+  technicalPodiumPredictions: TechnicalPodiumPrediction[];
   jokers: JokerPlay[];
   episodes: EpisodeScore[];
   adHocRules: AdHocRule[];

@@ -204,6 +204,7 @@ export function createEmptyLeague(): LeagueState {
     })),
     substitutions: [],
     sideConfirmations: [],
+    technicalPodiumPredictions: [],
     jokers: [],
     episodes: Array.from({ length: 10 }, (_, index) => emptyEpisode(index + 1, 10)),
     adHocRules: [],

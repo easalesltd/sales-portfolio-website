@@ -25,6 +25,7 @@ type LeagueContextValue = {
     playJoker?: boolean;
     keepLastWeek?: boolean;
     jokerOnly?: boolean;
+    technicalPodium?: { firstId: string; secondId: string; thirdId: string };
   }) => Promise<string | null>;
   completeSlutDrop: (companionId: string, week: number) => Promise<string | null>;
   acceptLeague: (next: LeagueState) => void;
@@ -109,6 +110,7 @@ export function LeagueProvider({ children }: { children: React.ReactNode }) {
     playJoker?: boolean;
     keepLastWeek?: boolean;
     jokerOnly?: boolean;
+    technicalPodium?: { firstId: string; secondId: string; thirdId: string };
   }) => {
     const response = await fetch("/api/gbbo-league/side", {
       method: "POST",

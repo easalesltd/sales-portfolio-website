@@ -20,8 +20,33 @@ describe("resetWeekSidesAndJokers", () => {
       { companionId: dave, week: 3 },
     ];
     league.jokers = [{ companionId: lee, week: 3, autoApplied: false }];
+    league.technicalPodiumPredictions = [
+      {
+        companionId: dave,
+        week: 3,
+        firstId: bakerIdForName("Mo"),
+        secondId: bakerIdForName("Tom"),
+        thirdId: bakerIdForName("Gabe"),
+      },
+      {
+        companionId: lee,
+        week: 2,
+        firstId: bakerIdForName("Mo"),
+        secondId: bakerIdForName("Tom"),
+        thirdId: bakerIdForName("Gabe"),
+      },
+    ];
 
     expect(resetWeekSidesAndJokers(league, "test-reset", 3)).toBe(true);
+    expect(league.technicalPodiumPredictions).toEqual([
+      {
+        companionId: lee,
+        week: 2,
+        firstId: bakerIdForName("Mo"),
+        secondId: bakerIdForName("Tom"),
+        thirdId: bakerIdForName("Gabe"),
+      },
+    ]);
     expect(league.substitutions.map((sub) => sub.id)).toEqual(["lee-2", "auto-3"]);
     expect(league.sideConfirmations).toEqual([{ companionId: lee, week: 2 }]);
     expect(league.jokers).toEqual([]);

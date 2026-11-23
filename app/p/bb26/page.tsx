@@ -15,20 +15,25 @@ import {
   companionPortrait,
   companionTotals,
   episodeScoringLines,
+  isFinalWeek,
   outstandingBeerBaguettes,
+  podiumBakerNames,
   punishmentExhibits,
   scoreCompanionWeek,
-  sideConfirmed,
+  sideSubmissionComplete,
   teamForWeek,
   teamSizeForWeek,
+  technicalPodiumPrediction,
+  technicalPodiumsRevealed,
 } from "@/app/lib/gbbo/league";
+import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { teamWindow } from "@/app/lib/gbbo/window";
 
 export default function LeaguePage() {
   const { league, loaded } = useLeague();
-  const { isChief, playerUnlocked } = useGbboSession();
+  const { isChief, playerUnlocked, playerSlug } = useGbboSession();
   if (!loaded) return <p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>;
 
   const table = companionTotals(league);
@@ -58,7 +63,12 @@ export default function LeaguePage() {
               const companion = league.companions.find((item) => item.id === row.companionId);
               const name = companion?.name ?? companionName(league, row.companionId);
               const team = teamForWeek(league, row.companionId, gate.week);
-              const locked = sideConfirmed(league, row.companionId, gate.week);
+              const locked = sideSubmissionComplete(league, row.companionId, gate.week);
+              const podium = technicalPodiumPrediction(league, row.companionId, gate.week);
+              const ownRow = gbboSlug(name) === playerSlug;
+              const showPodium = isFinalWeek(league, gate.week) && podium && (
+                technicalPodiumsRevealed(league) || isChief || ownRow
+              );
               return (
                 <li key={row.companionId} className="ticket flex items-center gap-3 rounded-[22px] px-4 py-3 sm:gap-4">
                   <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
@@ -77,6 +87,13 @@ export default function LeaguePage() {
                     <p className="text-sm text-chocolate/70">
                       {team.map((id) => bakerName(league, id)).join(" · ") || "No bakers yet"}
                     </p>
+                    {showPodium && podium ? (
+                      <p className="text-sm text-chocolate/60">
+                        1-2-3: {podiumBakerNames(league, [podium.firstId, podium.secondId, podium.thirdId])}
+                      </p>
+                    ) : isFinalWeek(league, gate.week) && !podium && (isChief || ownRow) && (gate.open || isChief) ? (
+                      <p className="text-sm text-raspberry">Technical 1-2-3 still needed</p>
+                    ) : null}
                   </div>
                   <Points value={row.points} />
                 </li>
@@ -93,12 +110,16 @@ export default function LeaguePage() {
                 {size === 1
                   ? " One baker each, for the rest of the competition."
                   : " Last week's side stands unless they substitute one baker."}
+                {isFinalWeek(league, gate.week)
+                  ? " Predict 1st, 2nd and 3rd in the technical as well. The exact order is worth 20 bonus points, and both picks lock at 8pm Tuesday."
+                  : ""}
               </p>
               <p>{gate.summary}</p>
               <p>{latest ? `Last published: ${latest.title}.` : "No episode has been published yet."}</p>
               <div className="flex flex-wrap gap-2 pt-2">
                 <Pill tone="tent">Joker weeks 1–4</Pill>
                 <Pill tone="butter">One sub a week</Pill>
+                {isFinalWeek(league, gate.week) ? <Pill tone="butter">+20 for the technical 1-2-3</Pill> : null}
                 <Pill tone="raspberry">Beer baguette if late</Pill>
                 <Pill tone="raspberry">Slut drop if last</Pill>
               </div>
@@ -110,7 +131,9 @@ export default function LeaguePage() {
                 <Link href={`${GBBO_LEAGUE_PATH}/teams`} className="mt-4 inline-flex rounded-full bg-tent px-5 py-2.5 text-sm font-bold text-flour">
                   {gate.open
                     ? playerUnlocked
-                      ? "Set this week's bakers"
+                      ? isFinalWeek(league, gate.week)
+                        ? "Set your baker and 1-2-3"
+                        : "Set this week's bakers"
                       : "Enter your password at the top, then set your bakers"
                     : "See your locked side"}
                 </Link>

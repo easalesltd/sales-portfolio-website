@@ -9,9 +9,11 @@ import {
   barredBakersForWeek,
   carriedTeam,
   commonBakerBlocksFurtherChange,
+  isFinalWeek,
   lineupChanges,
+  parseTechnicalPodium,
+  sideSubmissionComplete,
   sideSubstitution,
-  sideConfirmed,
   teamForWeek,
   teamSizeForWeek,
 } from "@/app/lib/gbbo/league";
@@ -27,6 +29,7 @@ export async function POST(request: Request) {
     playJoker?: boolean;
     keepLastWeek?: boolean;
     jokerOnly?: boolean;
+    technicalPodium?: { firstId?: string; secondId?: string; thirdId?: string };
   };
 
   const slug = gbboSlug(body.companionSlug ?? "");
@@ -58,7 +61,7 @@ export async function POST(request: Request) {
     await writeGbboLeague(league);
     return NextResponse.json(await readGbboLeague());
   }
-  if (sideConfirmed(league, companion.id, week) && !chief) {
+  if (sideSubmissionComplete(league, companion.id, week) && !chief) {
     return NextResponse.json({ error: "Your week is locked. You have already submitted this side." }, { status: 403 });
   }
   const size = teamSizeForWeek(league, week);
@@ -124,6 +127,29 @@ export async function POST(request: Request) {
 
   if (body.playJoker && week <= 4 && !league.jokers.some((joker) => joker.companionId === companion.id)) {
     league.jokers.push({ companionId: companion.id, week, autoApplied: false });
+  }
+
+  if (isFinalWeek(league, week)) {
+    const podium = parseTechnicalPodium(body.technicalPodium);
+    if (!podium) {
+      return NextResponse.json(
+        { error: "Predict 1st, 2nd and 3rd in the technical as well. Three different bakers still in the tent." },
+        { status: 400 },
+      );
+    }
+    if (podium.some((id) => !bakerStillIn(league, id, week))) {
+      return NextResponse.json({ error: "Those bakers have to still be in the tent." }, { status: 400 });
+    }
+    league.technicalPodiumPredictions = (league.technicalPodiumPredictions ?? []).filter(
+      (item) => !(item.companionId === companion.id && item.week === week),
+    );
+    league.technicalPodiumPredictions.push({
+      companionId: companion.id,
+      week,
+      firstId: podium[0],
+      secondId: podium[1],
+      thirdId: podium[2],
+    });
   }
 
   league.sideConfirmations = (league.sideConfirmations ?? []).filter(

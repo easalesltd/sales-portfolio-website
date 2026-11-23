@@ -9,6 +9,7 @@ import type {
   ScoreLine,
   SlutDrop,
   Substitution,
+  TechnicalPodiumPrediction,
 } from "./types";
 import { episodeStartsAt, formatLondon } from "./window";
 
@@ -330,15 +331,18 @@ export function scoreCompanionWeek(league: LeagueState, companionId: string, wee
     ? [{ label: "Short side: a baker who left the tent was not replaced", bakerId: null, points: SHORT_SIDE_POINTS, kind: "minus" as const }]
     : [];
   const lazyPoints = lazy.reduce((sum, line) => sum + line.points, 0);
+  const bonus = scoreTechnicalPodium(league, companionId, week);
+  const bonusLines = bonus ? [bonus] : [];
+  const bonusPoints = bonusLines.reduce((sum, line) => sum + line.points, 0);
   const joker = league.jokers.some((item) => item.companionId === companionId && item.week === week);
   return {
     companionId,
     week,
     bakerIds,
-    lines: [...bakerLines, ...lazy],
-    rawPoints: bakerPoints + lazyPoints,
+    lines: [...bakerLines, ...lazy, ...bonusLines],
+    rawPoints: bakerPoints + lazyPoints + bonusPoints,
     joker,
-    points: (joker ? bakerPoints * 2 : bakerPoints) + lazyPoints,
+    points: (joker ? bakerPoints * 2 : bakerPoints) + lazyPoints + bonusPoints,
   };
 }
 
@@ -390,6 +394,82 @@ export function applyShortSideEscalations(league: LeagueState, now = new Date())
 
 export function sideConfirmed(league: LeagueState, companionId: string, week: number): boolean {
   return (league.sideConfirmations ?? []).some((item) => item.companionId === companionId && item.week === week);
+}
+
+export const FINAL_TECHNICAL_PODIUM_POINTS = 20;
+
+export function isFinalWeek(league: LeagueState, week: number): boolean {
+  return week === league.totalWeeks;
+}
+
+export function technicalPodiumPrediction(
+  league: LeagueState,
+  companionId: string,
+  week: number,
+): TechnicalPodiumPrediction | null {
+  return (league.technicalPodiumPredictions ?? []).find(
+    (item) => item.companionId === companionId && item.week === week,
+  ) ?? null;
+}
+
+/** Baker pick is in, and on the final the technical 1-2-3 is in as well. */
+export function sideSubmissionComplete(league: LeagueState, companionId: string, week: number): boolean {
+  if (!sideConfirmed(league, companionId, week)) return false;
+  if (!isFinalWeek(league, week)) return true;
+  return Boolean(technicalPodiumPrediction(league, companionId, week));
+}
+
+export function technicalPodiumsRevealed(league: LeagueState, now = new Date()): boolean {
+  const week = league.totalWeeks;
+  if (league.episodes.find((episode) => episode.week === week)?.published) return true;
+  return now >= episodeStartsAt(week);
+}
+
+export function parseTechnicalPodium(ids: {
+  firstId?: string | null;
+  secondId?: string | null;
+  thirdId?: string | null;
+} | null | undefined): [string, string, string] | null {
+  const firstId = ids?.firstId ?? "";
+  const secondId = ids?.secondId ?? "";
+  const thirdId = ids?.thirdId ?? "";
+  const all = [firstId, secondId, thirdId];
+  if (all.some((id) => !id) || new Set(all).size !== 3) return null;
+  return [firstId, secondId, thirdId];
+}
+
+export function technicalPodiumFromEpisode(episode: EpisodeScore): [string, string, string] | null {
+  const firstId = episode.technical.find((entry) => entry.place === 1)?.bakerId ?? "";
+  const secondId = episode.technical.find((entry) => entry.place === 2)?.bakerId ?? "";
+  const thirdId = episode.technical.find((entry) => entry.place === 3)?.bakerId ?? "";
+  return parseTechnicalPodium({ firstId, secondId, thirdId });
+}
+
+export function podiumBakerNames(league: LeagueState, ids: [string, string, string]): string {
+  const names = ids.map((id) => bakerName(league, id));
+  return `${names[0]}, ${names[1]} and ${names[2]}`;
+}
+
+export function scoreTechnicalPodium(league: LeagueState, companionId: string, week: number): ScoreLine | null {
+  if (!isFinalWeek(league, week)) return null;
+  const episode = league.episodes.find((item) => item.week === week);
+  if (!episode?.published) return null;
+  const pick = technicalPodiumPrediction(league, companionId, week);
+  const guessed = pick ? parseTechnicalPodium(pick) : null;
+  const actual = technicalPodiumFromEpisode(episode);
+  if (!guessed) {
+    return { label: "No technical 1-2-3 prediction", bakerId: null, points: 0, kind: "info" };
+  }
+  const names = podiumBakerNames(league, guessed);
+  if (actual && guessed[0] === actual[0] && guessed[1] === actual[1] && guessed[2] === actual[2]) {
+    return {
+      label: `Predicted the technical 1-2-3: ${names}`,
+      bakerId: null,
+      points: FINAL_TECHNICAL_PODIUM_POINTS,
+      kind: "plus",
+    };
+  }
+  return { label: `Technical 1-2-3 prediction missed (${names})`, bakerId: null, points: 0, kind: "info" };
 }
 
 export function slutDropsOf(league: LeagueState): SlutDrop[] {
@@ -491,6 +571,9 @@ export function resetWeekSidesAndJokers(league: LeagueState, key: string, week: 
     (sub) => sub.week !== week || sub.autoByChief || !targeted(sub.companionId),
   );
   league.sideConfirmations = (league.sideConfirmations ?? []).filter(
+    (item) => item.week !== week || !targeted(item.companionId),
+  );
+  league.technicalPodiumPredictions = (league.technicalPodiumPredictions ?? []).filter(
     (item) => item.week !== week || !targeted(item.companionId),
   );
   league.jokers = companionId ? league.jokers.filter((joker) => joker.companionId !== companionId) : [];
@@ -832,6 +915,20 @@ export function episodeScoringLines(league: LeagueState, episode: EpisodeScore):
   }
   for (const [bakerId, count] of Object.entries(episode.cries)) {
     if (count > 0) lines.push(`${name(bakerId)} cried ${count === 1 ? "once" : `${count} times`} (${-3 * count}).`);
+  }
+
+  if (episode.published && isFinalWeek(league, episode.week)) {
+    for (const companion of league.companions) {
+      const bonus = scoreTechnicalPodium(league, companion.id, episode.week);
+      if (!bonus) continue;
+      if (bonus.points > 0) {
+        lines.push(`${companion.name} predicted the technical 1-2-3 exactly (+${bonus.points}).`);
+      } else if (bonus.label.startsWith("No technical")) {
+        lines.push(`${companion.name} did not predict the technical 1-2-3.`);
+      } else {
+        lines.push(`${companion.name}'s technical 1-2-3 missed.`);
+      }
+    }
   }
 
   return lines;

@@ -105,7 +105,10 @@ export function teamWindow(now: Date = new Date(), totalWeeks: number = SERIES_1
         open: true,
         opensAt,
         closesAt,
-        summary: `Week ${week} is open. You may substitute one baker before ${formatLondon(closesAt)}.`,
+        summary:
+          week === totalWeeks
+            ? `The Final is open. Pick your baker and predict 1st, 2nd and 3rd in the technical before ${formatLondon(closesAt)}. Nail the exact order and you get 20 bonus points.`
+            : `Week ${week} is open. You may substitute one baker before ${formatLondon(closesAt)}.`,
       };
     }
     if (now < locksUntil) {
