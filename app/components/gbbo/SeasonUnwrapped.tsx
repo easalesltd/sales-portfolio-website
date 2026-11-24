@@ -115,6 +115,7 @@ export function SeasonUnwrapped({
     >
       <div
         ref={scrollerRef}
+        data-unwrapped-scroller
         tabIndex={fullscreen ? 0 : undefined}
         className={`${fullscreen ? "h-dvh" : "max-h-[100svh]"} snap-y snap-mandatory overflow-y-auto scroll-smooth outline-none`}
       >
@@ -229,7 +230,7 @@ export function SeasonUnwrapped({
                   tape.photo ? (
                     <PunishmentPhoto key={tape.id} src={tape.src} label={tape.label} />
                   ) : (
-                    <PunishmentVideo key={tape.id} src={tape.src} label={tape.label} compact />
+                    <PunishmentVideo key={tape.id} src={tape.src} label={tape.label} compact lazy />
                   ),
                 )}
               </div>

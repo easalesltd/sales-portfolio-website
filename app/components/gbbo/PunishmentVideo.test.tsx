@@ -13,4 +13,12 @@ describe("PunishmentVideo", () => {
     expect(video?.getAttribute("src")).toBe("/api/gbbo-league/video?id=vid_demo#t=0.001");
     expect(video?.getAttribute("preload")).toBe("metadata");
   });
+
+  it("defers the media element until the tape is near the viewport when lazy", () => {
+    const { container } = render(
+      <PunishmentVideo src="/api/gbbo-league/video?id=vid_demo" label="Nest · slut drop" lazy />,
+    );
+    expect(container.querySelector("video")).toBeNull();
+    expect(container.querySelector("button")?.textContent).toMatch(/tap to load tape/i);
+  });
 });
