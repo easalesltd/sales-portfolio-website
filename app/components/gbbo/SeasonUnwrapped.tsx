@@ -5,7 +5,12 @@ import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { PunishmentPhoto } from "@/app/components/gbbo/PunishmentPhoto";
 import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { Pill, Points } from "@/app/components/gbbo/ui";
-import { buildSeasonUnwrapped, type SeasonUnwrappedModel } from "@/app/lib/gbbo/season-unwrapped";
+import {
+  buildSeasonUnwrapped,
+  type SeasonUnwrappedModel,
+  type WeekPunishment,
+  type WeekReel,
+} from "@/app/lib/gbbo/season-unwrapped";
 import { useLeague } from "@/app/lib/gbbo/store";
 
 function finalSecretsLive(model: SeasonUnwrappedModel): boolean {
@@ -16,6 +21,56 @@ function joinNames(names: string[]): string {
   if (names.length <= 1) return names[0] ?? "Nobody";
   if (names.length === 2) return `${names[0]} and ${names[1]}`;
   return `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
+}
+
+const CRIMEWATCH_SECTIONS: Array<{ kind: WeekPunishment["kind"]; title: string }> = [
+  { kind: "slut_drop", title: "Slut drops" },
+  { kind: "beer_baguette", title: "Beer baguettes" },
+  { kind: "technical", title: "Technical bakes" },
+];
+
+function CrimewatchWeek({ week }: { week: WeekReel }) {
+  return (
+    <div className="space-y-4">
+      {week.mustBake.length > 0 ? (
+        <p>Had to bake the technical: {joinNames(week.mustBake)}.</p>
+      ) : null}
+      {week.crimewatch.length === 0 ? (
+        <p className="text-sm opacity-80">Clean sheet — nobody owed Crimewatch this week.</p>
+      ) : (
+        CRIMEWATCH_SECTIONS.map((section) => {
+          const rows = week.crimewatch.filter((item) => item.kind === section.kind);
+          if (rows.length === 0) return null;
+          return (
+            <div key={section.kind} className="space-y-2">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] opacity-80">{section.title}</p>
+              <ul className="space-y-3">
+                {rows.map((row) => (
+                  <li key={row.id} className="rounded-[18px] bg-black/5 p-3 sm:bg-white/25">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-bold">{row.companionName}</span>
+                      <Pill tone={row.status === "owed" ? "raspberry" : "tent"}>
+                        {row.status === "owed" ? "Still owed" : row.status === "photo in" ? "Photo in" : "On tape"}
+                      </Pill>
+                    </div>
+                    {row.tape ? (
+                      <div className="mt-3">
+                        {row.tape.photo ? (
+                          <PunishmentPhoto src={row.tape.src} label={row.tape.label} />
+                        ) : (
+                          <PunishmentVideo src={row.tape.src} label={row.tape.label} compact />
+                        )}
+                      </div>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })
+      )}
+    </div>
+  );
 }
 
 function Slide({
@@ -140,27 +195,7 @@ export function SeasonUnwrapped({ preview = false }: { preview?: boolean }) {
                 {week.woodenPoints}.
               </p>
             ) : null}
-            {week.mustBake.length > 0 ? <p>Had to bake the technical: {joinNames(week.mustBake)}.</p> : null}
-            {week.punishments.length > 0 ? (
-              <ul className="space-y-1 text-sm sm:text-base">
-                {week.punishments.map((line) => (
-                  <li key={line}>• {line}</li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm opacity-80">No punishments on the tape this week.</p>
-            )}
-            {week.tapes.length > 0 ? (
-              <div className="flex flex-wrap gap-3 pt-2">
-                {week.tapes.map((tape) =>
-                  tape.photo ? (
-                    <PunishmentPhoto key={tape.id} src={tape.src} label={tape.label} />
-                  ) : (
-                    <PunishmentVideo key={tape.id} src={tape.src} label={tape.label} compact />
-                  ),
-                )}
-              </div>
-            ) : null}
+            <CrimewatchWeek week={week} />
           </Slide>
         ))}
 

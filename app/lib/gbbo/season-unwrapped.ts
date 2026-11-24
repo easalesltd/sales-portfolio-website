@@ -39,6 +39,14 @@ export type WeekTape = {
   photo: boolean;
 };
 
+export type WeekPunishment = {
+  id: string;
+  companionName: string;
+  kind: "slut_drop" | "beer_baguette" | "technical";
+  status: "on tape" | "owed" | "photo in";
+  tape: WeekTape | null;
+};
+
 export type WeekReel = {
   week: number;
   title: string;
@@ -48,8 +56,10 @@ export type WeekReel = {
   woodenSpoon: string[];
   woodenPoints: number;
   mustBake: string[];
+  /** @deprecated Prefer `crimewatch` — kept for older callers/tests. */
   punishments: string[];
   tapes: WeekTape[];
+  crimewatch: WeekPunishment[];
 };
 
 export type SeasonUnwrappedModel = {
@@ -128,29 +138,45 @@ export function buildSeasonUnwrapped(
       const spoon = wooden.find((row) => row.week === episode.week);
       const target = technicalPenaltyTarget(league, episode);
       const weekExhibits = exhibits.filter((item) => item.week === episode.week);
-      const punishments = weekExhibits.map((item) => {
+      const crimewatch: WeekPunishment[] = weekExhibits.map((item) => {
         const who = companionName(league, item.companionId);
-        if (item.kind === "slut_drop") return `${who}: slut drop${item.src ? " on tape" : " owed"}`;
-        if (item.kind === "beer_baguette") return `${who}: beer baguette${item.src ? " on tape" : " owed"}`;
-        return `${who}: technical bake${item.src ? " photo in" : " owed"}`;
+        const kindLabel =
+          item.kind === "slut_drop"
+            ? "slut drop"
+            : item.kind === "beer_baguette"
+              ? "beer baguette"
+              : "technical bake";
+        const status: WeekPunishment["status"] = !item.src
+          ? "owed"
+          : item.kind === "technical"
+            ? "photo in"
+            : "on tape";
+        const tape: WeekTape | null = item.src
+          ? {
+              id: item.id,
+              label: `${who} · ${kindLabel}`,
+              src: item.src,
+              photo: item.photo,
+            }
+          : null;
+        return {
+          id: item.id,
+          companionName: who,
+          kind: item.kind,
+          status,
+          tape,
+        };
       });
-      const tapes: WeekTape[] = weekExhibits
-        .filter((item) => Boolean(item.src))
-        .map((item) => {
-          const who = companionName(league, item.companionId);
-          const kind =
-            item.kind === "slut_drop"
-              ? "slut drop"
-              : item.kind === "beer_baguette"
-                ? "beer baguette"
-                : "technical bake";
-          return {
-            id: item.id,
-            label: `${who} · ${kind}`,
-            src: item.src,
-            photo: item.photo,
-          };
-        });
+      const punishments = crimewatch.map((item) => {
+        const kindLabel =
+          item.kind === "slut_drop"
+            ? "slut drop"
+            : item.kind === "beer_baguette"
+              ? "beer baguette"
+              : "technical bake";
+        return `${item.companionName}: ${kindLabel} ${item.status}`;
+      });
+      const tapes = crimewatch.flatMap((item) => (item.tape ? [item.tape] : []));
       return {
         week: episode.week,
         title: episode.title,
@@ -162,6 +188,7 @@ export function buildSeasonUnwrapped(
         mustBake: target?.owners.map((owner) => owner.name) ?? [],
         punishments,
         tapes,
+        crimewatch,
       };
     });
 

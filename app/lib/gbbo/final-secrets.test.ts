@@ -97,4 +97,57 @@ describe("final secrets", () => {
     expect(preview.champion).not.toBeNull();
     expect(preview.woodenSpoon).not.toBeNull();
   });
+
+  it("puts slut drops, beer baguettes and technical bakes on each week reel", () => {
+    const league = createEmptyLeague();
+    const cake = league.episodes.find((item) => item.week === 1)!;
+    cake.published = true;
+    cake.theme = "Cake";
+    league.slutDrops = [
+      {
+        companionId: companionIdForName("Guns"),
+        week: 1,
+        completed: true,
+        completedAt: "2026-01-01T00:00:00.000Z",
+        videoId: "vid_guns_1",
+        mediaType: "video",
+        escalated: false,
+      },
+    ];
+    league.penalties = [
+      {
+        id: "pen_tech_cowie_1",
+        week: 1,
+        companionId: companionIdForName("Cowie"),
+        bakerId: bakerIdForName("Danni"),
+        kind: "technical",
+        deadline: "2026-01-08T00:00:00.000Z",
+        completed: true,
+        note: "technical bake",
+        videoId: "photo_cowie_1",
+      },
+      {
+        id: "pen_beer_shuker_1",
+        week: 1,
+        companionId: companionIdForName("Shuker"),
+        bakerId: bakerIdForName("Danni"),
+        kind: "beer_baguette",
+        deadline: "2026-01-08T00:00:00.000Z",
+        completed: false,
+        note: "short side",
+        videoId: null,
+        cause: "short_side",
+      },
+    ];
+
+    const week = buildSeasonUnwrapped(league, { preview: true }).weeks.find((item) => item.week === 1);
+    expect(week?.crimewatch.map((item) => item.kind).sort()).toEqual([
+      "beer_baguette",
+      "slut_drop",
+      "technical",
+    ]);
+    expect(week?.crimewatch.some((item) => item.kind === "slut_drop" && item.status === "on tape")).toBe(true);
+    expect(week?.crimewatch.some((item) => item.kind === "technical" && item.status === "photo in")).toBe(true);
+    expect(week?.crimewatch.some((item) => item.kind === "beer_baguette" && item.status === "owed")).toBe(true);
+  });
 });
