@@ -7,6 +7,7 @@ import {
   applyEpisodeResult,
   applyShortSideEscalations,
   applySlutDropEscalations,
+  clearFalseFinalTechnicalBaguettes,
   correctEpisodeResult,
   applyTechnicalEscalations,
   assignTechnicalPenalties,
@@ -452,12 +453,13 @@ export async function readGbboLeague(): Promise<LeagueState> {
     league.resetsApplied.push(WEEK_9_RECIPE_KEY);
   }
   const reset = resetVideolessSlutDrops(league);
+  const falseFinalBaguettes = clearFalseFinalTechnicalBaguettes(league);
   const shortSides = applyShortSideEscalations(league);
   const slutEscalated = applySlutDropEscalations(league);
   const bakeEscalated = applyTechnicalEscalations(league);
   const democracy = ensureDemocracyBaguette(league);
   const falseAccusation = ensureFalseAccusationBaguette(league);
-  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || week8Published || week8ConnieCried || week9Published || week9TomCryGabeHandshake || week9Recipe || week10Published || reset || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
+  if (sidesReset || leeReset || week3Published || week3Technical || gunsRestored || themesFixed || week4Published || week4CriesFixed || week5Published || week6Published || week7Published || week7StarBaker || week7Recipe || week8Published || week8ConnieCried || week9Published || week9TomCryGabeHandshake || week9Recipe || week10Published || reset || falseFinalBaguettes || shortSides || slutEscalated || bakeEscalated || democracy || falseAccusation) {
     await writeGbboLeague(league);
   }
   return league;
@@ -466,6 +468,7 @@ export async function readGbboLeague(): Promise<LeagueState> {
 export async function writeGbboLeague(league: LeagueState): Promise<void> {
   const next = stabilizeLeague(structuredClone(league));
   resetVideolessSlutDrops(next);
+  clearFalseFinalTechnicalBaguettes(next);
   applyShortSideEscalations(next);
   applySlutDropEscalations(next);
   applyTechnicalEscalations(next);

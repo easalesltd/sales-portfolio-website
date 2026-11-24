@@ -11,7 +11,7 @@ import type {
   Substitution,
   TechnicalPodiumPrediction,
 } from "./types";
-import { episodeStartsAt, formatLondon } from "./window";
+import { episodeStartsAt, formatLondon, technicalDeadlineAt, SERIES_17_AIR_DATES } from "./window";
 
 export function activeBakersAtWeek(league: LeagueState, week: number): Baker[] {
   return league.bakers.filter((baker) => bakerStillIn(league, baker.id, week));
@@ -509,12 +509,40 @@ export function penaltyVideoSrc(penalty: Penalty): string | null {
   return penalty.videoId ? `/api/gbbo-league/video?id=${encodeURIComponent(penalty.videoId)}` : null;
 }
 
-export function technicalDeadlineAt(week: number): Date {
-  return episodeStartsAt(week + 1);
-}
+export { technicalDeadlineAt };
 
 export function technicalDeadlineLabel(week: number): string {
   return formatLondon(technicalDeadlineAt(week));
+}
+
+/** Final-week technicals used to deadline as week 1 (no episode 11) and escalate instantly — strip those false baguettes. */
+export function clearFalseFinalTechnicalBaguettes(league: LeagueState): boolean {
+  league.penalties = league.penalties ?? [];
+  const finalWeek = league.totalWeeks || SERIES_17_AIR_DATES.length;
+  const due = technicalDeadlineAt(finalWeek).toISOString();
+  let changed = false;
+  const before = league.penalties.length;
+  league.penalties = league.penalties.filter((penalty) => {
+    if (
+      penalty.kind === "beer_baguette" &&
+      penalty.week === finalWeek &&
+      !penalty.videoId &&
+      penalty.note.includes("technical bake")
+    ) {
+      changed = true;
+      return false;
+    }
+    return true;
+  });
+  for (const penalty of league.penalties) {
+    if (penalty.kind !== "technical" || penalty.week !== finalWeek) continue;
+    if (penalty.deadline !== due) {
+      penalty.deadline = due;
+      changed = true;
+    }
+  }
+  if (league.penalties.length !== before) changed = true;
+  return changed;
 }
 
 export function technicalIsComplete(penalty: Penalty): boolean {
@@ -712,11 +740,19 @@ export function applyTechnicalEscalations(league: LeagueState, now = new Date())
   league.penalties = league.penalties ?? [];
   for (const penalty of league.penalties) {
     if (penalty.kind !== "technical") continue;
-    const due = technicalDeadlineAt(penalty.week);
-    if (!penalty.deadline) {
-      penalty.deadline = due.toISOString();
+    const computedDue = technicalDeadlineAt(penalty.week);
+    if (!penalty.deadline || Number.isNaN(Date.parse(penalty.deadline))) {
+      penalty.deadline = computedDue.toISOString();
+      changed = true;
+    } else if (
+      penalty.week >= (league.totalWeeks || SERIES_17_AIR_DATES.length) &&
+      Date.parse(penalty.deadline) < computedDue.getTime() - 24 * 60 * 60 * 1000
+    ) {
+      // Final used to wrap to Cake Week (far in the past) — repair before escalating.
+      penalty.deadline = computedDue.toISOString();
       changed = true;
     }
+    const due = new Date(penalty.deadline);
     if (technicalIsComplete(penalty)) continue;
     if (now < due) continue;
     const name = companionName(league, penalty.companionId);

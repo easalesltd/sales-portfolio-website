@@ -67,6 +67,14 @@ export function episodeStartsAt(week: number): Date {
   return instantInLondon(date.year, date.month, date.day, EPISODE_START_HOUR);
 }
 
+/** Bake / slut-drop deadline: next episode start, or one week after the Final when there is no next episode. */
+export function technicalDeadlineAt(week: number): Date {
+  if (week >= SERIES_17_AIR_DATES.length) {
+    return new Date(episodeStartsAt(week).getTime() + 7 * 24 * 60 * 60 * 1000);
+  }
+  return episodeStartsAt(week + 1);
+}
+
 export function episodeDoneAt(week: number): Date {
   const date = SERIES_17_AIR_DATES[week - 1] ?? SERIES_17_AIR_DATES[0];
   return instantInLondon(date.year, date.month, date.day, EPISODE_DONE_HOUR);
