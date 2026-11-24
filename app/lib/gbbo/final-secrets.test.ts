@@ -87,4 +87,14 @@ describe("final secrets", () => {
     expect(model.champion).not.toBeNull();
     expect(model.woodenSpoon).not.toBeNull();
   });
+
+  it("lets Spongeify rehearse before the Final is published", () => {
+    const league = createEmptyLeague();
+    expect(buildSeasonUnwrapped(league).ready).toBe(false);
+    const preview = buildSeasonUnwrapped(league, { preview: true });
+    expect(preview.ready).toBe(true);
+    expect(preview.actualPodium).toBeNull();
+    expect(preview.champion).not.toBeNull();
+    expect(preview.woodenSpoon).not.toBeNull();
+  });
 });

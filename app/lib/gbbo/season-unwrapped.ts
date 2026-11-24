@@ -73,10 +73,13 @@ function rankMap(rows: Array<{ companionId: string; points: number }>): Map<stri
   return ranks;
 }
 
-export function buildSeasonUnwrapped(league: LeagueState): SeasonUnwrappedModel {
+export function buildSeasonUnwrapped(
+  league: LeagueState,
+  opts: { preview?: boolean } = {},
+): SeasonUnwrappedModel {
   const week = league.totalWeeks;
   const final = league.episodes.find((episode) => episode.week === week);
-  const ready = Boolean(final?.published);
+  const ready = Boolean(final?.published) || Boolean(opts.preview);
   const totals = companionTotals(league);
   const withRanks = rankMap(totals);
 

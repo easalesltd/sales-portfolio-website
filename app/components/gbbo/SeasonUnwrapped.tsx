@@ -5,8 +5,12 @@ import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { PunishmentPhoto } from "@/app/components/gbbo/PunishmentPhoto";
 import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { Pill, Points } from "@/app/components/gbbo/ui";
-import { buildSeasonUnwrapped } from "@/app/lib/gbbo/season-unwrapped";
+import { buildSeasonUnwrapped, type SeasonUnwrappedModel } from "@/app/lib/gbbo/season-unwrapped";
 import { useLeague } from "@/app/lib/gbbo/store";
+
+function finalSecretsLive(model: SeasonUnwrappedModel): boolean {
+  return model.actualPodium !== null;
+}
 
 function joinNames(names: string[]): string {
   if (names.length <= 1) return names[0] ?? "Nobody";
@@ -44,9 +48,9 @@ function Slide({
   );
 }
 
-export function SeasonUnwrapped() {
+export function SeasonUnwrapped({ preview = false }: { preview?: boolean }) {
   const { league } = useLeague();
-  const model = useMemo(() => buildSeasonUnwrapped(league), [league]);
+  const model = useMemo(() => buildSeasonUnwrapped(league, { preview }), [league, preview]);
 
   if (!model.ready) {
     return (
@@ -57,6 +61,9 @@ export function SeasonUnwrapped() {
           Final baker picks and technical 1-2-3 votes are sealed. When the Chief posts the Final results,
           this page becomes your Spongeify Wrapped: every week, every punishment tape, then the champion and the wooden spoon.
         </p>
+        <p className="mt-3 text-sm text-chocolate/70">
+          Rehearse any time with <code className="rounded bg-flour px-1.5 py-0.5">?spongeify=1</code> on this page.
+        </p>
       </section>
     );
   }
@@ -65,6 +72,11 @@ export function SeasonUnwrapped() {
 
   return (
     <div className="-mx-4 sm:-mx-5">
+      {preview && !finalSecretsLive(model) ? (
+        <p className="mb-3 rounded-2xl bg-butter px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.16em] text-chocolate">
+          Spongeify rehearsal — Final not published yet, so podium hits are a dress rehearsal
+        </p>
+      ) : null}
       <div className="max-h-[100svh] snap-y snap-mandatory overflow-y-auto scroll-smooth">
         <Slide eyebrow="Spongeify Wrapped" title="Your year in flour" tone="tent">
           <p>
