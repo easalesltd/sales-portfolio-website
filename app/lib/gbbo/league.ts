@@ -419,10 +419,9 @@ export function sideSubmissionComplete(league: LeagueState, companionId: string,
   return Boolean(technicalPodiumPrediction(league, companionId, week));
 }
 
-export function technicalPodiumsRevealed(league: LeagueState, now = new Date()): boolean {
-  const week = league.totalWeeks;
-  if (league.episodes.find((episode) => episode.week === week)?.published) return true;
-  return now >= episodeStartsAt(week);
+/** @deprecated Prefer finalSecretsRevealed — picks stay sealed until the Final is published. */
+export function technicalPodiumsRevealed(league: LeagueState): boolean {
+  return Boolean(league.episodes.find((episode) => episode.week === league.totalWeeks)?.published);
 }
 
 export function parseTechnicalPodium(ids: {

@@ -4,6 +4,7 @@ import { isGbboPlayerRequest } from "@/app/lib/gbbo/player-pins";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
 import { owesSlutDrop, slutDropFor } from "@/app/lib/gbbo/league";
 import { readGbboLeague, writeGbboLeague } from "@/app/lib/gbbo/persist";
+import { leaguePayloadForRequest } from "@/app/lib/gbbo/public-league";
 import {
   newVideoId,
   purgeIncompleteUploads,
@@ -190,5 +191,10 @@ export async function POST(request: Request) {
   }
 
   await writeGbboLeague(league);
-  return NextResponse.json({ ok: true, uploadId: record.id, complete: true, league: await readGbboLeague() });
+  return NextResponse.json({
+    ok: true,
+    uploadId: record.id,
+    complete: true,
+    league: await leaguePayloadForRequest(await readGbboLeague(), request),
+  });
 }

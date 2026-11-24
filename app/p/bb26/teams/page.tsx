@@ -54,7 +54,7 @@ export default function TeamsPage() {
             ? " Pick one baker still in the tent. You may keep one from last week or substitute."
             : " Last week's team is kept unless you substitute one baker."}
           {isFinalWeek(league, week)
-            ? " For the Final you also predict 1st, 2nd and 3rd in the technical. The exact order is worth 20 bonus points. Both the baker and the 1-2-3 must be in before 8pm Tuesday."
+            ? " For the Final you also predict 1st, 2nd and 3rd in the technical. The exact order is worth 20 bonus points. Both the baker and the 1-2-3 must be in before 8pm Tuesday. Everyone else's picks stay sealed until the Chief posts the results."
             : " Under each side is their form: points, drops, tears and how those numbers were reached."}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">

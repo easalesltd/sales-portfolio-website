@@ -18,6 +18,7 @@ import {
   teamSizeForWeek,
 } from "@/app/lib/gbbo/league";
 import { readGbboLeague, writeGbboLeague } from "@/app/lib/gbbo/persist";
+import { leaguePayloadForRequest } from "@/app/lib/gbbo/public-league";
 import { teamWindow } from "@/app/lib/gbbo/window";
 
 export const runtime = "nodejs";
@@ -59,7 +60,7 @@ export async function POST(request: Request) {
     }
     league.jokers.push({ companionId: companion.id, week, autoApplied: false });
     await writeGbboLeague(league);
-    return NextResponse.json(await readGbboLeague());
+    return NextResponse.json(await leaguePayloadForRequest(await readGbboLeague(), request));
   }
   if (sideSubmissionComplete(league, companion.id, week) && !chief) {
     return NextResponse.json({ error: "Your week is locked. You have already submitted this side." }, { status: 403 });
@@ -158,5 +159,5 @@ export async function POST(request: Request) {
   league.sideConfirmations.push({ companionId: companion.id, week });
 
   await writeGbboLeague(league);
-  return NextResponse.json(await readGbboLeague());
+  return NextResponse.json(await leaguePayloadForRequest(await readGbboLeague(), request));
 }

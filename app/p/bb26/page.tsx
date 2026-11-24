@@ -5,6 +5,7 @@ import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
 import { OfficialStatement } from "@/app/components/gbbo/OfficialStatement";
 import { BeerBaguetteMark } from "@/app/components/gbbo/BeerBaguetteMark";
+import { SeasonUnwrapped } from "@/app/components/gbbo/SeasonUnwrapped";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
@@ -24,9 +25,9 @@ import {
   teamForWeek,
   teamSizeForWeek,
   technicalPodiumPrediction,
-  technicalPodiumsRevealed,
 } from "@/app/lib/gbbo/league";
 import { gbboSlug } from "@/app/lib/gbbo/identity";
+import { canViewFinalPick, finalSecretsRevealed } from "@/app/lib/gbbo/season-unwrapped";
 import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { teamWindow } from "@/app/lib/gbbo/window";
@@ -36,6 +37,7 @@ export default function LeaguePage() {
   const { isChief, playerUnlocked, playerSlug } = useGbboSession();
   if (!loaded) return <p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>;
 
+  const revealed = finalSecretsRevealed(league);
   const table = companionTotals(league);
   const published = league.episodes.filter((episode) => episode.published);
   const latest = published.at(-1);
@@ -44,6 +46,7 @@ export default function LeaguePage() {
   const tapes = punishmentExhibits(league);
   const onTape = tapes.filter((item) => Boolean(item.src));
   const baguettesOwed = outstandingBeerBaguettes(league);
+  const finalWeek = isFinalWeek(league, gate.week);
 
   if (league.companions.length === 0) {
     return (
@@ -54,10 +57,26 @@ export default function LeaguePage() {
     );
   }
 
+  if (revealed) {
+    return (
+      <div className="space-y-6">
+        <SeasonUnwrapped />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {finalWeek ? <SeasonUnwrapped /> : null}
+
       <div className="grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
         <Card eyebrow="The village fete" title="League table">
+          {finalWeek ? (
+            <p className="mb-4 text-sm leading-7 text-chocolate/75">
+              Final baker picks and technical 1-2-3 votes are sealed until the Chief posts the results.
+              You can still see your own lock-in once you unlock.
+            </p>
+          ) : null}
           <ol className="space-y-3">
             {table.map((row, index) => {
               const companion = league.companions.find((item) => item.id === row.companionId);
@@ -66,9 +85,8 @@ export default function LeaguePage() {
               const locked = sideSubmissionComplete(league, row.companionId, gate.week);
               const podium = technicalPodiumPrediction(league, row.companionId, gate.week);
               const ownRow = gbboSlug(name) === playerSlug;
-              const showPodium = isFinalWeek(league, gate.week) && podium && (
-                technicalPodiumsRevealed(league) || isChief || ownRow
-              );
+              const canSeePick = !finalWeek || canViewFinalPick(league, row.companionId, { isChief, playerSlug });
+              const showPodium = finalWeek && podium && canSeePick;
               return (
                 <li key={row.companionId} className="ticket flex items-center gap-3 rounded-[22px] px-4 py-3 sm:gap-4">
                   <span className="w-8 shrink-0 font-display text-3xl text-tent-dark sm:w-10">{index + 1}</span>
@@ -80,18 +98,23 @@ export default function LeaguePage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-display text-2xl leading-tight">{name}</p>
-                      {locked ? <Pill tone="tent">Team locked</Pill> : null}
+                      {locked ? <Pill tone="tent">{finalWeek ? "Final locked" : "Team locked"}</Pill> : null}
+                      {finalWeek && locked && !canSeePick ? <Pill tone="butter">Sealed</Pill> : null}
                       <BeerBaguetteMark companionId={row.companionId} />
                       <SlutDropMark companionId={row.companionId} />
                     </div>
                     <p className="text-sm text-chocolate/70">
-                      {team.map((id) => bakerName(league, id)).join(" · ") || "No bakers yet"}
+                      {canSeePick
+                        ? team.map((id) => bakerName(league, id)).join(" · ") || "No bakers yet"
+                        : locked
+                          ? "Sealed until the reveal"
+                          : "No bakers yet"}
                     </p>
                     {showPodium && podium ? (
                       <p className="text-sm text-chocolate/60">
                         1-2-3: {podiumBakerNames(league, [podium.firstId, podium.secondId, podium.thirdId])}
                       </p>
-                    ) : isFinalWeek(league, gate.week) && !podium && (isChief || ownRow) && (gate.open || isChief) ? (
+                    ) : finalWeek && !podium && canSeePick && (gate.open || isChief) ? (
                       <p className="text-sm text-raspberry">Technical 1-2-3 still needed</p>
                     ) : null}
                   </div>
@@ -110,8 +133,8 @@ export default function LeaguePage() {
                 {size === 1
                   ? " One baker each, for the rest of the competition."
                   : " Last week's side stands unless they substitute one baker."}
-                {isFinalWeek(league, gate.week)
-                  ? " Predict 1st, 2nd and 3rd in the technical as well. The exact order is worth 20 bonus points, and both picks lock at 8pm Tuesday."
+                {finalWeek
+                  ? " Predict 1st, 2nd and 3rd in the technical as well. The exact order is worth 20 bonus points, and both picks lock at 8pm Tuesday. Votes stay secret until results are posted."
                   : ""}
               </p>
               <p>{gate.summary}</p>
@@ -119,7 +142,8 @@ export default function LeaguePage() {
               <div className="flex flex-wrap gap-2 pt-2">
                 <Pill tone="tent">Joker weeks 1–4</Pill>
                 <Pill tone="butter">One sub a week</Pill>
-                {isFinalWeek(league, gate.week) ? <Pill tone="butter">+20 for the technical 1-2-3</Pill> : null}
+                {finalWeek ? <Pill tone="butter">+20 for the technical 1-2-3</Pill> : null}
+                {finalWeek ? <Pill tone="raspberry">Picks sealed</Pill> : null}
                 <Pill tone="raspberry">Beer baguette if late</Pill>
                 <Pill tone="raspberry">Slut drop if last</Pill>
               </div>
@@ -131,7 +155,7 @@ export default function LeaguePage() {
                 <Link href={`${GBBO_LEAGUE_PATH}/teams`} className="mt-4 inline-flex rounded-full bg-tent px-5 py-2.5 text-sm font-bold text-flour">
                   {gate.open
                     ? playerUnlocked
-                      ? isFinalWeek(league, gate.week)
+                      ? finalWeek
                         ? "Set your baker and 1-2-3"
                         : "Set this week's bakers"
                       : "Enter your password at the top, then set your bakers"
@@ -148,7 +172,7 @@ export default function LeaguePage() {
                     baguettesOwed.length > 0
                       ? `, and ${baguettesOwed.length} beer baguette${baguettesOwed.length === 1 ? "" : "s"} still owed`
                       : ""
-                  }. Nest\u2019s beer baguette lands here the moment it uploads.`
+                  }.`
                 : baguettesOwed.length > 0
                   ? `${baguettesOwed.length} beer baguette${baguettesOwed.length === 1 ? "" : "s"} still wanted. Uploads play on Crimewatch.`
                   : "Slut drops, beer baguettes, and technical bake photos all screen on Crimewatch."}
