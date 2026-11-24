@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
 import { OfficialStatement } from "@/app/components/gbbo/OfficialStatement";
@@ -32,10 +33,24 @@ import { useGbboSession } from "@/app/lib/gbbo/session";
 import { useLeague } from "@/app/lib/gbbo/store";
 import { teamWindow } from "@/app/lib/gbbo/window";
 
+const UNWRAPPED_SEEN_KEY = "gbbo-spongeify-wrapped-seen-2026";
+
 export default function LeaguePage() {
   const { league, loaded } = useLeague();
   const { isChief, playerUnlocked, playerSlug } = useGbboSession();
-  if (!loaded) return <p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>;
+  const [wrappedSeen, setWrappedSeen] = useState(false);
+  const [wrappedReady, setWrappedReady] = useState(false);
+
+  useEffect(() => {
+    try {
+      setWrappedSeen(window.localStorage.getItem(UNWRAPPED_SEEN_KEY) === "1");
+    } catch {
+      setWrappedSeen(false);
+    }
+    setWrappedReady(true);
+  }, []);
+
+  if (!loaded || !wrappedReady) return <p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>;
 
   const revealed = finalSecretsRevealed(league);
   const table = companionTotals(league);
@@ -57,17 +72,46 @@ export default function LeaguePage() {
     );
   }
 
-  if (revealed) {
+  if (revealed && !wrappedSeen) {
     return (
       <div className="space-y-6">
-        <SeasonUnwrapped />
+        <SeasonUnwrapped
+          onFinished={() => {
+            try {
+              window.localStorage.setItem(UNWRAPPED_SEEN_KEY, "1");
+            } catch {
+              /* ignore */
+            }
+            setWrappedSeen(true);
+          }}
+        />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {finalWeek ? <SeasonUnwrapped /> : null}
+      {revealed ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[22px] border border-[#e7d3b4] bg-[#fff8ea] px-4 py-3">
+          <p className="text-sm text-chocolate/80">Spongeify Wrapped is ready whenever you want another scroll.</p>
+          <button
+            type="button"
+            className="rounded-full bg-tent px-4 py-2 text-sm font-bold text-flour"
+            onClick={() => {
+              try {
+                window.localStorage.removeItem(UNWRAPPED_SEEN_KEY);
+              } catch {
+                /* ignore */
+              }
+              setWrappedSeen(false);
+            }}
+          >
+            Rewatch Wrapped
+          </button>
+        </div>
+      ) : finalWeek ? (
+        <SeasonUnwrapped />
+      ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
         <Card eyebrow="The village fete" title="League table">

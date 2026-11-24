@@ -44,7 +44,7 @@ function Slide({
   );
 }
 
-export function SeasonUnwrapped() {
+export function SeasonUnwrapped({ onFinished }: { onFinished?: () => void }) {
   const { league } = useLeague();
   const model = useMemo(() => buildSeasonUnwrapped(league), [league]);
 
@@ -259,6 +259,20 @@ export function SeasonUnwrapped() {
               </li>
             ))}
           </ol>
+          {onFinished ? (
+            <div className="pt-6">
+              <button
+                type="button"
+                onClick={onFinished}
+                className="rounded-full bg-tent px-6 py-3 font-display text-2xl text-flour shadow-[0_6px_0_rgba(0,0,0,0.18)] transition hover:translate-y-0.5 hover:shadow-[0_4px_0_rgba(0,0,0,0.18)]"
+              >
+                Back to the tent
+              </button>
+              <p className="mt-3 text-sm text-chocolate/70">
+                Returns you to the league table, Crimewatch, and who must bake this week&apos;s technical.
+              </p>
+            </div>
+          ) : null}
         </Slide>
       </div>
     </div>
