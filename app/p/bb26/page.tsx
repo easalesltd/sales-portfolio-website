@@ -6,7 +6,7 @@ import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
 import { OfficialStatement } from "@/app/components/gbbo/OfficialStatement";
 import { BeerBaguetteMark } from "@/app/components/gbbo/BeerBaguetteMark";
-import { SeasonUnwrapped } from "@/app/components/gbbo/SeasonUnwrapped";
+import { requestUnwrappedFullscreen, SeasonUnwrapped } from "@/app/components/gbbo/SeasonUnwrapped";
 import { SlutDropMark } from "@/app/components/gbbo/SlutDropMark";
 import { Card, Empty, Pill, Points } from "@/app/components/gbbo/ui";
 import { GBBO_LEAGUE_PATH } from "@/app/lib/gbbo-league-path";
@@ -40,6 +40,7 @@ export default function LeaguePage() {
   const { isChief, playerUnlocked, playerSlug } = useGbboSession();
   const [wrappedSeen, setWrappedSeen] = useState(false);
   const [wrappedReady, setWrappedReady] = useState(false);
+  const [playingWrapped, setPlayingWrapped] = useState(false);
 
   useEffect(() => {
     try {
@@ -72,43 +73,50 @@ export default function LeaguePage() {
     );
   }
 
-  if (revealed && !wrappedSeen) {
-    return (
-      <div className="space-y-6">
-        <SeasonUnwrapped
-          onFinished={() => {
-            try {
-              window.localStorage.setItem(UNWRAPPED_SEEN_KEY, "1");
-            } catch {
-              /* ignore */
-            }
-            setWrappedSeen(true);
-          }}
-        />
-      </div>
-    );
-  }
+  const startWrapped = () => {
+    void requestUnwrappedFullscreen();
+    setPlayingWrapped(true);
+  };
+
+  const finishWrapped = () => {
+    try {
+      window.localStorage.setItem(UNWRAPPED_SEEN_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    setWrappedSeen(true);
+    setPlayingWrapped(false);
+  };
 
   return (
     <div className="space-y-6">
+      {playingWrapped ? (
+        <SeasonUnwrapped fullscreen onFinished={finishWrapped} />
+      ) : null}
+
       {revealed ? (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[22px] border border-[#e7d3b4] bg-[#fff8ea] px-4 py-3">
-          <p className="text-sm text-chocolate/80">Spongeify Wrapped is ready whenever you want another scroll.</p>
+        <section
+          className={`overflow-hidden rounded-[28px] border-2 px-5 py-6 sm:px-8 sm:py-8 ${
+            wrappedSeen ? "border-[#e7d3b4] bg-[#fff8ea]" : "border-raspberry bg-raspberry/10"
+          }`}
+        >
+          <p className="font-script text-3xl text-raspberry">
+            {wrappedSeen ? "One more scroll?" : "The grand reveal"}
+          </p>
+          <h2 className="mt-1 font-display text-4xl text-tent-dark sm:text-5xl">Spongeify Wrapped</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-chocolate/80">
+            {wrappedSeen
+              ? "Rewatch the sealed Final votes, every punishment tape, then the champion and wooden spoon — fullscreen."
+              : "Tap start for the fullscreen season reveal: every sealed 1-2-3 vote, who got +20, the weekly tapes, then back to the tent for who must bake."}
+          </p>
           <button
             type="button"
-            className="rounded-full bg-tent px-4 py-2 text-sm font-bold text-flour"
-            onClick={() => {
-              try {
-                window.localStorage.removeItem(UNWRAPPED_SEEN_KEY);
-              } catch {
-                /* ignore */
-              }
-              setWrappedSeen(false);
-            }}
+            onClick={startWrapped}
+            className="mt-5 rounded-full bg-tent px-6 py-3 font-display text-2xl text-flour shadow-[0_6px_0_rgba(0,0,0,0.18)] transition hover:translate-y-0.5 hover:shadow-[0_4px_0_rgba(0,0,0,0.18)]"
           >
-            Rewatch Wrapped
+            {wrappedSeen ? "Rewatch Wrapped" : "Start Spongeify Wrapped"}
           </button>
-        </div>
+        </section>
       ) : finalWeek ? (
         <SeasonUnwrapped />
       ) : null}

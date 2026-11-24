@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { PunishmentPhoto } from "@/app/components/gbbo/PunishmentPhoto";
 import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
@@ -44,9 +44,49 @@ function Slide({
   );
 }
 
-export function SeasonUnwrapped({ onFinished }: { onFinished?: () => void }) {
+async function exitBrowserFullscreen() {
+  if (typeof document === "undefined" || !document.fullscreenElement) return;
+  try {
+    await document.exitFullscreen();
+  } catch {
+    /* ignore */
+  }
+}
+
+export function SeasonUnwrapped({
+  onFinished,
+  fullscreen = false,
+}: {
+  onFinished?: () => void;
+  /** Full-viewport overlay experience (started from a click). */
+  fullscreen?: boolean;
+}) {
   const { league } = useLeague();
   const model = useMemo(() => buildSeasonUnwrapped(league), [league]);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const onFinishedRef = useRef(onFinished);
+  onFinishedRef.current = onFinished;
+
+  const finish = () => {
+    void exitBrowserFullscreen().finally(() => onFinishedRef.current?.());
+  };
+
+  useEffect(() => {
+    if (!fullscreen || !model.ready) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    scrollerRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      void exitBrowserFullscreen().finally(() => onFinishedRef.current?.());
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [fullscreen, model.ready]);
 
   if (!model.ready) {
     return (
@@ -64,9 +104,20 @@ export function SeasonUnwrapped({ onFinished }: { onFinished?: () => void }) {
 
   const swingers = model.podiumRows.filter((row) => row.swungTable);
 
-  return (
-    <div className="-mx-4 sm:-mx-5">
-      <div className="max-h-[100svh] snap-y snap-mandatory overflow-y-auto scroll-smooth">
+  const shell = (
+    <div
+      ref={shellRef}
+      className={
+        fullscreen
+          ? "fixed inset-0 z-[200] bg-tent text-flour"
+          : "-mx-4 sm:-mx-5"
+      }
+    >
+      <div
+        ref={scrollerRef}
+        tabIndex={fullscreen ? 0 : undefined}
+        className={`${fullscreen ? "h-dvh" : "max-h-[100svh]"} snap-y snap-mandatory overflow-y-auto scroll-smooth outline-none`}
+      >
         <Slide eyebrow="Spongeify Wrapped" title="Your year in flour" tone="tent">
           <p>
             Ten weeks. One village. Not Spotify — Spongeify. First up: the sealed Final technical votes —
@@ -263,7 +314,7 @@ export function SeasonUnwrapped({ onFinished }: { onFinished?: () => void }) {
             <div className="pt-6">
               <button
                 type="button"
-                onClick={onFinished}
+                onClick={finish}
                 className="rounded-full bg-tent px-6 py-3 font-display text-2xl text-flour shadow-[0_6px_0_rgba(0,0,0,0.18)] transition hover:translate-y-0.5 hover:shadow-[0_4px_0_rgba(0,0,0,0.18)]"
               >
                 Back to the tent
@@ -275,6 +326,28 @@ export function SeasonUnwrapped({ onFinished }: { onFinished?: () => void }) {
           ) : null}
         </Slide>
       </div>
+      {fullscreen ? (
+        <button
+          type="button"
+          onClick={finish}
+          className="absolute right-3 top-3 z-10 rounded-full bg-black/35 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-flour backdrop-blur sm:right-5 sm:top-5"
+        >
+          Close
+        </button>
+      ) : null}
     </div>
   );
+
+  return shell;
+}
+
+/** Start browser fullscreen from a click (gesture-safe). Falls back quietly on phones that block it. */
+export async function requestUnwrappedFullscreen(target?: HTMLElement | null) {
+  const node = target ?? document.documentElement;
+  if (!node?.requestFullscreen) return;
+  try {
+    await node.requestFullscreen();
+  } catch {
+    /* iOS / denied — CSS overlay still covers the viewport */
+  }
 }
