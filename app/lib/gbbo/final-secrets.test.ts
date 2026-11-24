@@ -72,18 +72,35 @@ describe("final secrets", () => {
       { bakerId: bakerIdForName("Moyin"), place: 3 },
     ];
     league.sideConfirmations.push({ companionId: companionIdForName("Dave"), week: 10 });
-    league.technicalPodiumPredictions = [{
-      companionId: companionIdForName("Dave"),
-      week: 10,
-      firstId: bakerIdForName("Mo"),
-      secondId: bakerIdForName("Tom"),
-      thirdId: bakerIdForName("Moyin"),
-    }];
+    league.technicalPodiumPredictions = [
+      {
+        companionId: companionIdForName("Dave"),
+        week: 10,
+        firstId: bakerIdForName("Mo"),
+        secondId: bakerIdForName("Tom"),
+        thirdId: bakerIdForName("Moyin"),
+      },
+      {
+        companionId: companionIdForName("Nest"),
+        week: 10,
+        firstId: bakerIdForName("Tom"),
+        secondId: bakerIdForName("Mo"),
+        thirdId: bakerIdForName("Moyin"),
+      },
+    ];
 
     const model = buildSeasonUnwrapped(league);
     expect(model.ready).toBe(true);
+    expect(model.actualPlaces).toEqual(["Mo", "Tom", "Moyin"]);
     expect(model.actualPodium).toContain("Mo");
-    expect(model.podiumRows.some((row) => row.name === "Dave" && row.hit)).toBe(true);
+    const dave = model.podiumRows.find((row) => row.name === "Dave");
+    const nest = model.podiumRows.find((row) => row.name === "Nest");
+    expect(dave?.hit).toBe(true);
+    expect(dave?.guessedPlaces).toEqual(["Mo", "Tom", "Moyin"]);
+    expect(nest?.hit).toBe(false);
+    expect(nest?.guessedPlaces).toEqual(["Tom", "Mo", "Moyin"]);
+    expect(model.podiumHits.map((row) => row.name)).toEqual(["Dave"]);
+    expect(model.podiumRows[0]?.name).toBe("Dave");
     expect(model.champion).not.toBeNull();
     expect(model.woodenSpoon).not.toBeNull();
   });

@@ -54,8 +54,9 @@ export function SeasonUnwrapped() {
         <p className="font-script text-3xl text-raspberry">Tonight&apos;s grand reveal</p>
         <h2 className="mt-1 font-display text-4xl text-tent-dark sm:text-5xl">Spongeify Wrapped</h2>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-chocolate/80">
-          Final baker picks and technical 1-2-3 votes are sealed. When the Chief posts the Final results,
-          this page becomes your Spongeify Wrapped: every week, every punishment tape, then the champion and the wooden spoon.
+          Final baker picks and technical 1-2-3 votes stay sealed from each other. When the Chief posts the Final results,
+          Spongeify Wrapped opens with every companion&apos;s locked 1st / 2nd / 3rd, who nailed the exact order for +20,
+          then the season tapes, champion, and wooden spoon.
         </p>
       </section>
     );
@@ -68,17 +69,38 @@ export function SeasonUnwrapped() {
       <div className="max-h-[100svh] snap-y snap-mandatory overflow-y-auto scroll-smooth">
         <Slide eyebrow="Spongeify Wrapped" title="Your year in flour" tone="tent">
           <p>
-            Ten weeks. One village. Not Spotify — Spongeify. Scroll the season: first the secret Final votes,
-            then every bake and punishment tape, and finally who took the cake and who took the wooden spoon.
+            Ten weeks. One village. Not Spotify — Spongeify. First up: the sealed Final technical votes —
+            who each companion put 1st, 2nd and 3rd, and who got the exact order. Then every bake and
+            punishment tape, and finally who took the cake and who took the wooden spoon.
           </p>
           <p className="text-sm uppercase tracking-[0.18em] text-flour/70">Scroll to begin</p>
         </Slide>
 
-        <Slide eyebrow="The sealed votes" title="Technical 1-2-3" tone="butter">
+        <Slide eyebrow="The sealed votes" title="Who called the technical?" tone="butter">
           <p>
-            Everyone locked a baker and a podium. Exact order paid +20.
-            {model.actualPodium ? ` The real finish was ${model.actualPodium}.` : ""}
+            Nobody saw each other&apos;s 1-2-3 until now. Exact order paid +20.
           </p>
+          {model.actualPlaces ? (
+            <div className="rounded-[22px] bg-tent px-4 py-4 text-flour sm:px-5">
+              <p className="font-script text-2xl text-flour/85">The real finish</p>
+              <ol className="mt-2 space-y-1 font-display text-2xl sm:text-3xl">
+                <li>1st — {model.actualPlaces[0]}</li>
+                <li>2nd — {model.actualPlaces[1]}</li>
+                <li>3rd — {model.actualPlaces[2]}</li>
+              </ol>
+            </div>
+          ) : null}
+          <div className="rounded-[22px] bg-white/80 px-4 py-4 text-chocolate">
+            <p className="font-script text-2xl text-raspberry">Who got it right</p>
+            {model.podiumHits.length > 0 ? (
+              <p className="mt-1 font-display text-3xl leading-tight sm:text-4xl">
+                {joinNames(model.podiumHits.map((row) => row.name))}
+                <span className="ml-2 align-middle text-base font-sans font-bold text-tent">+20</span>
+              </p>
+            ) : (
+              <p className="mt-1 font-display text-3xl leading-tight">Nobody. The village blanked it.</p>
+            )}
+          </div>
           <ul className="space-y-4">
             {model.podiumRows.map((row) => (
               <li key={row.companionId} className="rounded-[22px] bg-white/70 p-4 text-chocolate">
@@ -87,14 +109,26 @@ export function SeasonUnwrapped() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <p className="font-display text-3xl leading-none">{row.name}</p>
-                      {row.hit ? <Pill tone="tent">+20 hit</Pill> : <Pill tone="raspberry">Miss</Pill>}
+                      {row.hit ? <Pill tone="tent">Nailed it · +20</Pill> : <Pill tone="raspberry">Miss</Pill>}
                       {row.swungTable ? <Pill tone="butter">Moved the table</Pill> : null}
                     </div>
                     <p className="mt-2 text-sm">Final baker: <strong>{row.bakerPick}</strong></p>
-                    <p className="text-sm">
-                      1-2-3: <strong>{row.guessed ?? "No prediction"}</strong>
-                    </p>
-                    <p className="mt-1 text-sm text-chocolate/70">
+                    {row.guessedPlaces ? (
+                      <ol className="mt-2 space-y-0.5 text-sm sm:text-base">
+                        <li>
+                          <span className="font-bold text-tent">1st</span> {row.guessedPlaces[0]}
+                        </li>
+                        <li>
+                          <span className="font-bold text-tent">2nd</span> {row.guessedPlaces[1]}
+                        </li>
+                        <li>
+                          <span className="font-bold text-tent">3rd</span> {row.guessedPlaces[2]}
+                        </li>
+                      </ol>
+                    ) : (
+                      <p className="mt-2 text-sm text-chocolate/70">No 1-2-3 locked in.</p>
+                    )}
+                    <p className="mt-2 text-sm text-chocolate/70">
                       Rank {row.rankWithoutBonus} without the bonus → {row.rankWithBonus} with it.
                     </p>
                   </div>

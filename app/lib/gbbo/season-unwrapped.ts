@@ -23,7 +23,10 @@ export type PodiumRevealRow = {
   companionId: string;
   name: string;
   photo: string;
+  /** Flat "A, B and C" for copy / tests. */
   guessed: string | null;
+  /** Explicit 1st / 2nd / 3rd baker names from the sealed vote. */
+  guessedPlaces: [string, string, string] | null;
   hit: boolean;
   points: number;
   bakerPick: string;
@@ -56,7 +59,10 @@ export type SeasonUnwrappedModel = {
   ready: boolean;
   seasonTitle: string;
   actualPodium: string | null;
+  actualPlaces: [string, string, string] | null;
   podiumRows: PodiumRevealRow[];
+  /** Companions who locked the exact technical 1-2-3. */
+  podiumHits: PodiumRevealRow[];
   weeks: WeekReel[];
   funny: FunnyStat[];
   champion: { companion: Companion; points: number; photo: string } | null;
@@ -88,6 +94,13 @@ export function buildSeasonUnwrapped(league: LeagueState): SeasonUnwrappedModel 
   const withoutRanks = rankMap(withoutBonus);
 
   const actualIds = final ? technicalPodiumFromEpisode(final) : null;
+  const actualPlaces = actualIds
+    ? ([bakerName(league, actualIds[0]), bakerName(league, actualIds[1]), bakerName(league, actualIds[2])] as [
+        string,
+        string,
+        string,
+      ])
+    : null;
   const actualPodium = actualIds ? podiumBakerNames(league, actualIds) : null;
 
   const podiumRows: PodiumRevealRow[] = league.companions
@@ -101,11 +114,19 @@ export function buildSeasonUnwrapped(league: LeagueState): SeasonUnwrappedModel 
         .join(" · ");
       const rankWithBonus = withRanks.get(companion.id) ?? 0;
       const rankWithoutBonus = withoutRanks.get(companion.id) ?? 0;
+      const guessedPlaces = guessedIds
+        ? ([bakerName(league, guessedIds[0]), bakerName(league, guessedIds[1]), bakerName(league, guessedIds[2])] as [
+            string,
+            string,
+            string,
+          ])
+        : null;
       return {
         companionId: companion.id,
         name: companion.name,
         photo: companionPortrait(companion, false),
         guessed: guessedIds ? podiumBakerNames(league, guessedIds) : null,
+        guessedPlaces,
         hit,
         points: line?.points ?? 0,
         bakerPick: bakerPick || "No baker locked",
@@ -114,7 +135,12 @@ export function buildSeasonUnwrapped(league: LeagueState): SeasonUnwrappedModel 
         swungTable: rankWithBonus !== rankWithoutBonus,
       };
     })
-    .sort((a, b) => a.rankWithBonus - b.rankWithBonus || a.name.localeCompare(b.name));
+    .sort((a, b) => {
+      // Hits first — the unwrapped reveal is "who got it right", then everyone else's sealed vote.
+      if (a.hit !== b.hit) return a.hit ? -1 : 1;
+      return a.rankWithBonus - b.rankWithBonus || a.name.localeCompare(b.name);
+    });
+  const podiumHits = podiumRows.filter((row) => row.hit);
 
   const wooden = weeklyLastPlace(league);
   const exhibits = punishmentExhibits(league);
@@ -175,7 +201,9 @@ export function buildSeasonUnwrapped(league: LeagueState): SeasonUnwrappedModel 
     ready,
     seasonTitle: league.name || "Companion League 2026",
     actualPodium,
+    actualPlaces,
     podiumRows,
+    podiumHits,
     weeks,
     funny: funnyLeagueStats(league).slice(0, 8),
     champion: championCompanion && championRow
