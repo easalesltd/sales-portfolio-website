@@ -15,10 +15,25 @@ describe("PunishmentVideo", () => {
   });
 
   it("defers the media element until the tape is near the viewport when lazy", () => {
+    const Original = window.IntersectionObserver;
+    window.IntersectionObserver = class {
+      readonly root = null;
+      readonly rootMargin = "";
+      readonly thresholds = [];
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+      takeRecords() {
+        return [];
+      }
+    } as typeof IntersectionObserver;
+
     const { container } = render(
       <PunishmentVideo src="/api/gbbo-league/video?id=vid_demo" label="Nest · slut drop" lazy />,
     );
     expect(container.querySelector("video")).toBeNull();
     expect(container.querySelector("button")?.textContent).toMatch(/tap to load tape/i);
+
+    window.IntersectionObserver = Original;
   });
 });
