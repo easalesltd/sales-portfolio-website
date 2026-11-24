@@ -2,6 +2,8 @@
 
 import { useMemo, type ReactNode } from "react";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
+import { PunishmentPhoto } from "@/app/components/gbbo/PunishmentPhoto";
+import { PunishmentVideo } from "@/app/components/gbbo/PunishmentVideo";
 import { Pill, Points } from "@/app/components/gbbo/ui";
 import { buildSeasonUnwrapped } from "@/app/lib/gbbo/season-unwrapped";
 import { useLeague } from "@/app/lib/gbbo/store";
@@ -50,10 +52,10 @@ export function SeasonUnwrapped() {
     return (
       <section className="overflow-hidden rounded-[28px] border-2 border-raspberry bg-raspberry/10 p-6 sm:p-8">
         <p className="font-script text-3xl text-raspberry">Tonight&apos;s grand reveal</p>
-        <h2 className="mt-1 font-display text-4xl text-tent-dark sm:text-5xl">Bake Off Unwrapped</h2>
+        <h2 className="mt-1 font-display text-4xl text-tent-dark sm:text-5xl">Spongeify Wrapped</h2>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-chocolate/80">
           Final baker picks and technical 1-2-3 votes are sealed. When the Chief posts the Final results,
-          this page becomes the season scroll: every week, every punishment, then the champion and the wooden spoon.
+          this page becomes your Spongeify Wrapped: every week, every punishment tape, then the champion and the wooden spoon.
         </p>
       </section>
     );
@@ -64,10 +66,10 @@ export function SeasonUnwrapped() {
   return (
     <div className="-mx-4 sm:-mx-5">
       <div className="max-h-[100svh] snap-y snap-mandatory overflow-y-auto scroll-smooth">
-        <Slide eyebrow="Companion League 2026" title="Your tent, unwrapped" tone="tent">
+        <Slide eyebrow="Spongeify Wrapped" title="Your year in flour" tone="tent">
           <p>
-            Ten weeks. One village. Scroll the season: first the secret Final votes, then every bake and punishment,
-            and finally who took the cake and who took the wooden spoon.
+            Ten weeks. One village. Not Spotify — Spongeify. Scroll the season: first the secret Final votes,
+            then every bake and punishment tape, and finally who took the cake and who took the wooden spoon.
           </p>
           <p className="text-sm uppercase tracking-[0.18em] text-flour/70">Scroll to begin</p>
         </Slide>
@@ -136,6 +138,17 @@ export function SeasonUnwrapped() {
             ) : (
               <p className="text-sm opacity-80">No punishments on the tape this week.</p>
             )}
+            {week.tapes.length > 0 ? (
+              <div className="flex flex-wrap gap-3 pt-2">
+                {week.tapes.map((tape) =>
+                  tape.photo ? (
+                    <PunishmentPhoto key={tape.id} src={tape.src} label={tape.label} />
+                  ) : (
+                    <PunishmentVideo key={tape.id} src={tape.src} label={tape.label} compact />
+                  ),
+                )}
+              </div>
+            ) : null}
           </Slide>
         ))}
 

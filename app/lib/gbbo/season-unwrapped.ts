@@ -32,6 +32,13 @@ export type PodiumRevealRow = {
   swungTable: boolean;
 };
 
+export type WeekTape = {
+  id: string;
+  label: string;
+  src: string | null;
+  photo: boolean;
+};
+
 export type WeekReel = {
   week: number;
   title: string;
@@ -42,6 +49,7 @@ export type WeekReel = {
   woodenPoints: number;
   mustBake: string[];
   punishments: string[];
+  tapes: WeekTape[];
 };
 
 export type SeasonUnwrappedModel = {
@@ -123,6 +131,23 @@ export function buildSeasonUnwrapped(league: LeagueState): SeasonUnwrappedModel 
         if (item.kind === "beer_baguette") return `${who}: beer baguette${item.src ? " on tape" : " owed"}`;
         return `${who}: technical bake${item.src ? " photo in" : " owed"}`;
       });
+      const tapes: WeekTape[] = weekExhibits
+        .filter((item) => Boolean(item.src))
+        .map((item) => {
+          const who = companionName(league, item.companionId);
+          const kind =
+            item.kind === "slut_drop"
+              ? "slut drop"
+              : item.kind === "beer_baguette"
+                ? "beer baguette"
+                : "technical bake";
+          return {
+            id: item.id,
+            label: `${who} · ${kind}`,
+            src: item.src,
+            photo: item.photo,
+          };
+        });
       return {
         week: episode.week,
         title: episode.title,
@@ -133,6 +158,7 @@ export function buildSeasonUnwrapped(league: LeagueState): SeasonUnwrappedModel 
         woodenPoints: spoon?.points ?? 0,
         mustBake: target?.owners.map((owner) => owner.name) ?? [],
         punishments,
+        tapes,
       };
     });
 
