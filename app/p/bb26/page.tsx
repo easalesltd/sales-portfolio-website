@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { CompanionPhoto } from "@/app/components/gbbo/CompanionPhoto";
 import { MustBakeCallout } from "@/app/components/gbbo/MustBakeCallout";
 import { OfficialStatement } from "@/app/components/gbbo/OfficialStatement";
@@ -33,8 +35,18 @@ import { useLeague } from "@/app/lib/gbbo/store";
 import { teamWindow } from "@/app/lib/gbbo/window";
 
 export default function LeaguePage() {
+  return (
+    <Suspense fallback={<p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>}>
+      <LeaguePageInner />
+    </Suspense>
+  );
+}
+
+function LeaguePageInner() {
   const { league, loaded } = useLeague();
   const { isChief, playerUnlocked, playerSlug } = useGbboSession();
+  const search = useSearchParams();
+  const spongeifyPreview = search.get("spongeify") === "1";
   if (!loaded) return <p className="font-script text-3xl text-raspberry">Laying the tablecloth…</p>;
 
   const revealed = finalSecretsRevealed(league);
@@ -57,10 +69,10 @@ export default function LeaguePage() {
     );
   }
 
-  if (revealed) {
+  if (revealed || spongeifyPreview) {
     return (
       <div className="space-y-6">
-        <SeasonUnwrapped />
+        <SeasonUnwrapped preview={spongeifyPreview && !revealed} />
       </div>
     );
   }
