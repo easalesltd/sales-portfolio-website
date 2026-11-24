@@ -12798,7 +12798,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-21 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-24 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -20191,14 +20191,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
   },
   {
-    id: '2026-12-05-brw-bore',
-    utcDate: '2026-12-05T12:30Z',
-    homeTeam: { name: 'Barrow', tla: 'BRW' },
-    awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-12-05-che-liv',
     utcDate: '2026-12-05T12:30Z',
     homeTeam: { name: 'Chelsea', tla: 'CHE' },
@@ -20435,14 +20427,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-05T15:00Z',
     homeTeam: { name: 'Yeovil Town', tla: 'YEO' },
     awayTeam: { name: 'Hartlepool United', tla: 'HPL' },
-  },
-  {
-    id: '2026-12-05-hal-car',
-    utcDate: '2026-12-05T17:30Z',
-    homeTeam: { name: 'FC Halifax Town', tla: 'HAL' },
-    awayTeam: { name: 'Carlisle United', tla: 'CAR' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-12-05-bre-mci',
@@ -20761,6 +20745,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-12-12T15:00:00Z',
     homeTeam: { name: 'Farnborough', tla: 'FAR' },
     awayTeam: { name: 'Maidstone United', tla: 'MAI' },
+  },
+  {
+    id: '2026-12-12-her-hbo',
+    utcDate: '2026-12-12T15:00:00Z',
+    homeTeam: { name: 'Hereford', tla: 'HER' },
+    awayTeam: { name: 'Harborough Town', tla: 'HBO' },
   },
   {
     id: '2026-12-12-mac-wrk',
@@ -21453,10 +21443,22 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Dagenham & Redbridge', tla: 'DAG' },
   },
   {
+    id: '2026-12-26-fol-dov',
+    utcDate: '2026-12-26T13:00:00Z',
+    homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
+    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
+  },
+  {
     id: '2026-12-26-mai-bil',
     utcDate: '2026-12-26T13:00:00Z',
     homeTeam: { name: 'Maidstone United', tla: 'MAI' },
     awayTeam: { name: 'Billericay Town', tla: 'BIL' },
+  },
+  {
+    id: '2026-12-26-hem-chu',
+    utcDate: '2026-12-26T14:00:00Z',
+    homeTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
+    awayTeam: { name: 'Chesham United', tla: 'CHU' },
   },
   {
     id: '2026-12-26-brk-oxc',
@@ -21501,22 +21503,10 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Farnham Town', tla: 'FNH' },
   },
   {
-    id: '2026-12-26-fol-dov',
-    utcDate: '2026-12-26T15:00:00Z',
-    homeTeam: { name: 'Folkestone Invicta', tla: 'FOL' },
-    awayTeam: { name: 'Dover Athletic', tla: 'DOV' },
-  },
-  {
     id: '2026-12-26-hbo-bed',
     utcDate: '2026-12-26T15:00:00Z',
     homeTeam: { name: 'Harborough Town', tla: 'HBO' },
     awayTeam: { name: 'Bedford Town', tla: 'BED' },
-  },
-  {
-    id: '2026-12-26-hem-chu',
-    utcDate: '2026-12-26T15:00:00Z',
-    homeTeam: { name: 'Hemel Hempstead Town', tla: 'HEM' },
-    awayTeam: { name: 'Chesham United', tla: 'CHU' },
   },
   {
     id: '2026-12-26-klt-spa',
@@ -22689,6 +22679,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'Hull City', tla: 'HUL' },
   },
   {
+    id: '2027-01-05-hal-car',
+    utcDate: '2027-01-05T19:45Z',
+    homeTeam: { name: 'FC Halifax Town', tla: 'HAL' },
+    awayTeam: { name: 'Carlisle United', tla: 'CAR' },
+  },
+  {
     id: '2027-01-05-scu-fgr',
     utcDate: '2027-01-05T19:45Z',
     homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
@@ -23449,6 +23445,12 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-01-19T19:45Z',
     homeTeam: { name: 'Bradford City', tla: 'BRD' },
     awayTeam: { name: 'Burton Albion', tla: 'BTN' },
+  },
+  {
+    id: '2027-01-19-brw-bore',
+    utcDate: '2027-01-19T19:45Z',
+    homeTeam: { name: 'Barrow', tla: 'BRW' },
+    awayTeam: { name: 'Boreham Wood', tla: 'BORE' },
   },
   {
     id: '2027-01-19-bsl-lut',
@@ -26293,12 +26295,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-23T19:45:00Z',
     homeTeam: { name: 'Hednesford Town', tla: 'HED' },
     awayTeam: { name: 'King\'s Lynn Town', tla: 'KLT' },
-  },
-  {
-    id: '2027-02-23-her-hbo',
-    utcDate: '2027-02-23T19:45:00Z',
-    homeTeam: { name: 'Hereford', tla: 'HER' },
-    awayTeam: { name: 'Harborough Town', tla: 'HBO' },
   },
   {
     id: '2027-02-23-hor-fol',
