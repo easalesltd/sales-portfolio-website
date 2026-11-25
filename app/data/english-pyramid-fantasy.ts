@@ -13189,7 +13189,7 @@ export type EnglishPyramidFixture = {
   postponed?: boolean;
 };
 
-/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-24 via npm run english-pyramid:fetch-fixtures. */
+/** Sweepstake fixtures for all 98 clubs (PL → NL South; title + survival drafts). ESPN covers PL→NL; NL North/South from Football Web Pages. League matches only — cup ties excluded. Fetched 2026-11-25 via npm run english-pyramid:fetch-fixtures. */
 export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
   {
     id: '2026-08-08-bil-dov',
@@ -19170,14 +19170,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     awayTeam: { name: 'York City', tla: 'YOR' },
   },
   {
-    id: '2026-11-14-rot-cra',
-    utcDate: '2026-11-14T15:00Z',
-    homeTeam: { name: 'Rotherham United', tla: 'ROT' },
-    awayTeam: { name: 'Crawley Town', tla: 'CRA' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
-  },
-  {
     id: '2026-11-14-sal-nht',
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Salford City', tla: 'SAL' },
@@ -19224,14 +19216,6 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2026-11-14T15:00Z',
     homeTeam: { name: 'Swindon Town', tla: 'SWI' },
     awayTeam: { name: 'Grimsby Town', tla: 'GRI' },
-  },
-  {
-    id: '2026-11-14-wal-bar',
-    utcDate: '2026-11-14T15:00Z',
-    homeTeam: { name: 'Walsall', tla: 'WAL' },
-    awayTeam: { name: 'Barnet', tla: 'BAR' },
-    /** League match postponed — no ledger result until it is rearranged. */
-    postponed: true,
   },
   {
     id: '2026-11-14-wim-blp',
@@ -25042,6 +25026,18 @@ export const ENGLISH_PYRAMID_FIXTURES: readonly EnglishPyramidFixture[] = [
     utcDate: '2027-02-02T19:45Z',
     homeTeam: { name: 'Luton Town', tla: 'LUT' },
     awayTeam: { name: 'Cambridge United', tla: 'CAM' },
+  },
+  {
+    id: '2027-02-02-rot-cra',
+    utcDate: '2027-02-02T19:45Z',
+    homeTeam: { name: 'Rotherham United', tla: 'ROT' },
+    awayTeam: { name: 'Crawley Town', tla: 'CRA' },
+  },
+  {
+    id: '2027-02-02-wal-bar',
+    utcDate: '2027-02-02T19:45Z',
+    homeTeam: { name: 'Walsall', tla: 'WAL' },
+    awayTeam: { name: 'Barnet', tla: 'BAR' },
   },
   {
     id: '2027-02-05-brc-mid',
