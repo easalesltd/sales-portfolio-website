@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon keeps topping this farce like a man who pays someone else to do the hard yards. Truro City got rolled 1-0 at Horsham, then Macclesfield battered Morecambe 3-2 for a proper midweek haul, Altrincham stuffed Wealdstone 3-0, and Portsmouth nicked West Ham 1-0 at Fratton. Salisbury scraped a 1-1 with AFC Totton. Jon sits on 473 and looks disgustingly smug about it.\n\nScott had a tidy night until Crawley Town and Barnet served up a 0-0 that should be illegal. Darlington beat Southport 2-1, Horsham shut out Truro, Weston-super-Mare blanked Walton & Hersham 2-0, and Wolves absolutely ruined Derby County 3-0. Scott is on 440, still chasing Jon like a bloke who turned up late to the buffet.\n\nBen lived every emotion in one evening. Dover Athletic smashed Hampton & Richmond Borough 5-0 away, Dagenham & Redbridge put four past Tonbridge Angels, Barrow pinched Boston United 1-0, Tamworth nicked Carlisle United 2-1, and Middlesbrough saw off Swansea City 2-1. Then Cardiff City shipped four at home to Preston North End like they\'d never met a football. Ben is on 423.\n\nChris is welded to Ben on 423 and somehow made it look harder. Chester FC won at Harborough Town, Hednesford Town beat Oxford City 1-0, and that was the good bit. Tonbridge Angels leaked four at Dagenham, Lincoln City got spanked 4-0 at Charlton Athletic, Forest Green Rovers lost 2-0 at home to Southend United, West Ham bottled it at Portsmouth, and both Barnet and Sheffield Wednesday banked a miserable 0-0. Absolute character-building bollocks.\n\nAsh finally remembered Preston North End exist. They went to Cardiff and won 4-0 like adults, South Shields beat Worksop Town 2-1, Southampton ground out a 1-1 at Sheffield United, and AFC Totton pinched a point at Salisbury. Wealdstone still got done 3-0 at Altrincham. Ash is on 397 and clinging on with fingernails and optimism.\n\nNest somehow turned a full fixture list into beige. Farnham Town beat Maidenhead United 2-1 and Southend United won 2-0 at Forest Green, then everything else was draws, soft losses, and Hornchurch versus Sutton United boring everyone rigid with a 0-0. Nest is on 359, which is what happens when your clubs treat Tuesday night like a dentist appointment.\n\nDave remains the league\'s emotional support punching bag. Marine murdered Spennymoor Town 5-0 and Charlton Athletic put four past Lincoln, Torquay United beat Chesham United 2-1, then Scunthorpe United lost at home to Gateshead and Walton & Hersham got blanked at Weston. Dave is on 321. If this was a pub crawl he\'d already be asleep in the toilets.\n\nTable: Jon 473, Scott 440, Ben 423, Chris 423, Ash 397, Nest 359, Dave 321.';
+  'Jon\'s Birmingham City won 2-0 at Burnley. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Hartlepool United beat Solihull Moors 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Jon is on 482.\n\nScott\'s Boreham Wood beat Aldershot Town 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Bolton Wanderers lost 3-1 at home to West Brom. No win points, minus 1 for leaking three, net minus 1. Then Kidderminster Harriers lost 3-1 at Harrogate Town. No win points, minus 1 for leaking three, net minus 1. Scott is on 442.\n\nChris\'s Aldershot Town lost 4-1 at Boreham Wood. No win points, minus 1 for leaking three, net minus 1. Chris is on 422.\n\nNest\'s Blackburn Rovers won 1-0 at Watford. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Nest is on 364.\n\nDave\'s Burnley lost 2-0 at home to Birmingham City. No win points, net zero. Dave is on 321.\n\nTable: Jon 482, Scott 442, Ben 423, Chris 422, Ash 397, Nest 364, Dave 321.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -13175,6 +13175,72 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     homeGoals: 3,
     awayGoals: 0,
     homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-25-bore-ald',
+    utcDate: '2026-11-25T19:00Z',
+    homeTeam: { name: 'Boreham Wood', tla: 'BORE' },
+    awayTeam: { name: 'Aldershot Town', tla: 'ALD' },
+    homeGoals: 4,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-25-bol-wba',
+    utcDate: '2026-11-25T19:45Z',
+    homeTeam: { name: 'Bolton Wanderers', tla: 'BOL' },
+    awayTeam: { name: 'West Bromwich Albion', tla: 'WBA' },
+    homeGoals: 1,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-25-bur-bir',
+    utcDate: '2026-11-25T19:45Z',
+    homeTeam: { name: 'Burnley', tla: 'BUR' },
+    awayTeam: { name: 'Birmingham City', tla: 'BIR' },
+    homeGoals: 0,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-25-har-kid',
+    utcDate: '2026-11-25T19:45Z',
+    homeTeam: { name: 'Harrogate Town', tla: 'HAR' },
+    awayTeam: { name: 'Kidderminster Harriers', tla: 'KID' },
+    homeGoals: 3,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-25-hpl-sol',
+    utcDate: '2026-11-25T19:45Z',
+    homeTeam: { name: 'Hartlepool United', tla: 'HPL' },
+    awayTeam: { name: 'Solihull Moors', tla: 'SOL' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-25-wat-blk',
+    utcDate: '2026-11-25T19:45Z',
+    homeTeam: { name: 'Watford', tla: 'WAT' },
+    awayTeam: { name: 'Blackburn Rovers', tla: 'BLK' },
+    homeGoals: 0,
+    awayGoals: 1,
+    homeRedCards: 1,
     awayRedCards: 0,
   },
 ];
