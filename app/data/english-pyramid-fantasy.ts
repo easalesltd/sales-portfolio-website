@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Jon\'s Birmingham City won 2-0 at Burnley. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Then Hartlepool United beat Solihull Moors 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Jon is on 482.\n\nScott\'s Boreham Wood beat Aldershot Town 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Then Bolton Wanderers lost 3-1 at home to West Brom. No win points, minus 1 for leaking three, net minus 1. Then Kidderminster Harriers lost 3-1 at Harrogate Town. No win points, minus 1 for leaking three, net minus 1. Scott is on 442.\n\nChris\'s Aldershot Town lost 4-1 at Boreham Wood. No win points, minus 1 for leaking three, net minus 1. Chris is on 422.\n\nNest\'s Blackburn Rovers won 1-0 at Watford. Plus 4 for the away win, plus 1 for the clean sheet, net plus 5. Nest is on 364.\n\nDave\'s Burnley lost 2-0 at home to Birmingham City. No win points, net zero. Dave is on 321.\n\nTable: Jon 482, Scott 442, Ben 423, Chris 422, Ash 397, Nest 364, Dave 321.';
+  'Ben\'s Huddersfield Town won 3-2 at Doncaster Rovers. Plus 4 for the away win, plus 1 for three or more, plus 1 for the red, net plus 6. Ben is on 429.\n\nJon still leads on 482 without a club kicking a ball. Dave is still last on 321.\n\nTable: Jon 482, Scott 442, Ben 429, Chris 422, Ash 397, Nest 364, Dave 321.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -13242,6 +13242,17 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 1,
     homeRedCards: 1,
     awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-26-don-hud',
+    utcDate: '2026-11-26T20:00Z',
+    homeTeam: { name: 'Doncaster Rovers', tla: 'DON' },
+    awayTeam: { name: 'Huddersfield Town', tla: 'HUD' },
+    homeGoals: 2,
+    awayGoals: 3,
+    homeRedCards: 0,
+    awayRedCards: 1,
   },
 ];
 
