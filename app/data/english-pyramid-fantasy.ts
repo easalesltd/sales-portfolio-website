@@ -348,7 +348,7 @@ export const ENGLISH_PYRAMID_SWEEPSTAKE_FAIRNESS =
   "Within each division we drafted two bands from August 2026 betting odds. Title band: clubs ranked 1-7 by pre-season outright winner odds. Survival band: the bottom 7 by relegation odds (or longest title shots where markets are thin) - R#1 is the relegation favourite. In every league, the same manager gets title rank k and survival rank k together (Arsenal #1 with Hull R#1, and so on). Draft seats were rotated for the August redraw (offset 3) so the Premier League favourite was not inherited by the same manager as the June draft - everyone still holds exactly one pick at every title rank and every survival rank across the seven rungs. National League North/South ranks use published favourites plus season-preview estimates where bookie boards are thin.";
 
 export const ENGLISH_PYRAMID_FANTASY_DAILY_UPDATE =
-  'Ben\'s Huddersfield Town won 3-2 at Doncaster Rovers. Plus 4 for the away win, plus 1 for three or more, plus 1 for the red, net plus 6. Ben is on 429.\n\nJon still leads on 482 without a club kicking a ball. Dave is still last on 321.\n\nTable: Jon 482, Scott 442, Ben 429, Chris 422, Ash 397, Nest 364, Dave 321.';
+  'Jon\'s Chelsea lost 3-2 at Forest. No win points, minus 1 for leaking three, net minus 1. Jon is on 481.\n\nBen\'s Middlesbrough lost 2-0 at Southampton. No win points, net zero. Ben is on 429.\n\nAsh\'s Wealdstone lost 4-1 at Scunthorpe United. No win points, minus 1 for leaking three, net minus 1. Then Southampton beat Middlesbrough 2-0 at home. Plus 3 for the home win, plus 1 for the clean sheet, net plus 4. Ash is on 400.\n\nDave\'s Scunthorpe United beat Wealdstone 4-1 at home. Plus 3 for the home win, plus 1 for three or more, net plus 4. Dave is on 325.\n\nTable: Jon 481, Scott 442, Ben 429, Chris 422, Ash 400, Nest 364, Dave 325.';
 
 export type EnglishPyramidOfficialStatement = {
   headline: string;
@@ -13253,6 +13253,39 @@ export const ENGLISH_PYRAMID_MANUAL_MATCHES: readonly EnglishPyramidManualMatch[
     awayGoals: 3,
     homeRedCards: 0,
     awayRedCards: 1,
+  },
+  {
+    /** Verified final result and red cards (ESPN + FotMob). */
+    id: '2026-11-27-scu-wea',
+    utcDate: '2026-11-27T19:45Z',
+    homeTeam: { name: 'Scunthorpe United', tla: 'SCU' },
+    awayTeam: { name: 'Wealdstone', tla: 'WEA' },
+    homeGoals: 4,
+    awayGoals: 1,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-27-nfo-che',
+    utcDate: '2026-11-27T20:00Z',
+    homeTeam: { name: 'Nottingham Forest', tla: 'NFO' },
+    awayTeam: { name: 'Chelsea', tla: 'CHE' },
+    homeGoals: 3,
+    awayGoals: 2,
+    homeRedCards: 0,
+    awayRedCards: 0,
+  },
+  {
+    /** Verified final result (ESPN sync). */
+    id: '2026-11-27-sou-mid',
+    utcDate: '2026-11-27T20:00Z',
+    homeTeam: { name: 'Southampton', tla: 'SOU' },
+    awayTeam: { name: 'Middlesbrough', tla: 'MID' },
+    homeGoals: 2,
+    awayGoals: 0,
+    homeRedCards: 0,
+    awayRedCards: 0,
   },
 ];
 
