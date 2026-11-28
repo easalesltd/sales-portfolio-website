@@ -269,9 +269,15 @@ function isEspnEventLiveOrFinal(event) {
   return /\b(final|in progress|halftime|half[-\s]?time|full time)\b/i.test(name);
 }
 
-/** ESPN season calendar still lists postponed games; read the status or we keep a fake KO. */
+/**
+ * ESPN season calendar still lists postponed games; read the status or we keep a fake KO.
+ * Suspended/abandoned matches (ESPN STATUS_SUSPENDED / STATUS_ABANDONED, e.g. a
+ * weather abandonment with the score frozen at the point of abandonment) are not a
+ * league result either — they are replayed — so treat them like a postponement,
+ * mirroring the FotMob A-A / abandoned handling.
+ */
 function isEspnEventPostponed(event) {
-  return /postpon|cancel/i.test(espnEventStatusBlob(event));
+  return /postpon|cancel|abandon|suspend/i.test(espnEventStatusBlob(event));
 }
 
 function normalizeFixture(fixture) {
